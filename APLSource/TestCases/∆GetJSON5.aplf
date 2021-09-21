@@ -1,0 +1,5 @@
+ ∆GetJSON5←{
+     filename←⍵
+     json←⊃⎕NGET filename
+     ⎕JSON⍠('Dialect' 'JSON5')⊣json
+ }

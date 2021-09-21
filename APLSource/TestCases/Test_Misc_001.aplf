@@ -1,0 +1,17 @@
+ R←Test_Misc_001(stopFlag batchFlag);⎕TRAP;parms;folder;filename;cfg
+⍝ Load a Cider config file and check the basics.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ folder←∆GetTestPath⊃⎕SI
+ filename←folder,'/cider.config'
+ cfg←∆GetJSON5 filename
+
+ →T.PassesIf'LINK' 'CIDER' 'USER'≡' '~¨⍨↓cfg.⎕NL 9
+ →T.PassesIf 1=≢cfg.USER.⎕NL⍳16
+ →T.PassesIf cfg.USER.Name≡⊃⎕SI
+ →T.PassesIf cfg.CIDER.parent≡'⎕SE'
+ →T.PassesIf'⎕SE.TEMP'≡⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)
+
+ R←T._OK
+⍝Done

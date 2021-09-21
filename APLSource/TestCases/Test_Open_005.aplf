@@ -1,0 +1,26 @@
+ R←Test_Open_005(stopFlag batchFlag);⎕TRAP;parms;folder;r;res
+⍝ Load project with an initialisation function
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+
+ parms←''
+ parms,←⊂folder
+ parms,←⊂''                         ⍝ Project space
+ parms,←⊂'#.TEMP'                   ⍝ parent
+ parms,←⊂''                         ⍝ alias (tested separately)
+ parms,←⊂1                          ⍝ quietFlag
+ →T.GoToTidyUp~⎕SE.Cider.OpenProject parms
+
+ →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello
+ →T.GoToTidyUp 2≠#.TEMP.Foo.⎕NC'∆GLOBAL_TestOpen_005'
+
+ R←T._OK
+
+∆TidyUp:
+ res←⎕SE.Link.Break'#.TEMP.Foo'
+ Assert res ∆StartsWith'Unlinked:'
+ #.⎕EX'TEMP'
+⍝Done

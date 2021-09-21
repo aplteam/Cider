@@ -1,0 +1,46 @@
+ R←Test_Alias_001(stopFlag batchFlag);⎕TRAP;res;parms;list
+⍝ Exercise the ListOpenProjects function with -verbose (involves aliases)
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ 'TEMP'#.⎕NS''
+ 'TEMP2'#.⎕NS''
+
+ parms←''
+ parms,←⊂∆ALIAS_TEMP_FOLDER,'/Project1'
+ parms,←⊂''
+ parms,←⊂''
+ parms,←⊂'test-project-1'
+ parms,←⊂1
+ res←⎕SE.Cider.OpenProject parms
+ →T.PassesIf res
+ →T.PassesIf 1=≢#.TEMP.⎕NL 3
+ →T.PassesIf 0=≢(' '~¨⍨↓#.TEMP.⎕NL(⍳16)~3)~⊂'CiderConfig'
+
+ parms←''
+ parms,←⊂∆ALIAS_TEMP_FOLDER,'/Project2'
+ parms,←⊂''
+ parms,←⊂''
+ parms,←⊂'test-project-2'
+ parms,←⊂1
+ res←⎕SE.Cider.OpenProject parms
+ →T.GoToTidyUp~res
+ →T.GoToTidyUp 1≠≢#.TEMP2.⎕NL 3
+ →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP2.⎕NL(⍳16)~3)~⊂'CiderConfig'
+
+ list←⎕SE.Cider.ListOpenProjects 1
+ →T.GoToTidyUp 4≠2⊃⍴list   ⍝ Namespace, folder, object count, alias
+ →T.GoToTidyUp 2>≢list
+ →T.GoToTidyUp 2≠+/((-1+≢'Project1')↑¨list[;2])∊'/Project1' '/Project2' '\Project1' '\Project2'
+ →T.GoToTidyUp~∧/'test-project-1' 'test-project-2'∊list[;4]
+
+ R←T._OK
+
+∆TidyUp:
+ ⍝ The aliase are removed by later test cases
+ res←∆LINK'Break' '#.TEMP'
+ Assert res ∆StartsWith'Unlinked:'
+ res←∆LINK'Break' '#.TEMP2'
+ Assert res ∆StartsWith'Unlinked:'
+ #.⎕EX¨'TEMP' 'TEMP2'
+⍝Done

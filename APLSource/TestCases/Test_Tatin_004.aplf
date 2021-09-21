@@ -1,0 +1,30 @@
+ R←Test_Tatin_004(stopFlag batchFlag);⎕TRAP;res;folder;parms;dmx
+⍝ Attempt to load project with a path pointing to installed Tatin packages that is non-existen.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+
+ parms←''
+ parms,←⊂folder
+ parms,←⊂''
+ parms,←⊂''
+ parms,←⊂''
+ parms,←⊂1
+
+ :Trap 0
+     res←⎕SE.Cider.OpenProject parms
+     →T.GoToTidyUp 1
+ :Else
+     dmx←⎕DMX
+     →T.GoToTidyUp~dmx.EM ∆StartsWith'Tatin installation folder does not exist'
+ :EndTrap
+
+ R←T._OK
+
+∆TidyUp:
+ res←∆LINK'Break' '#.TEMP'
+ Assert res ∆StartsWith'Unlinked:'
+ #.⎕EX'TEMP'
+⍝Done

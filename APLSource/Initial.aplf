@@ -1,0 +1,5 @@
+ Initial;⎕TRAP
+ ⎕TRAP←0 'S'
+⍝ ∘∘∘  ⍝TODO⍝
+ SyncCiderScripts 1
+⍝Done

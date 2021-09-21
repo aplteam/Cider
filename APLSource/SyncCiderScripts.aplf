@@ -1,0 +1,32 @@
+ {r}←SyncCiderScripts reportFlag;folder1;folder2;filenames;filename;F;path2;path1
+⍝ Attempts to sync the Cider user command and the Cider class between the MyUCMDs folder and the project.
+⍝ Does not do anything if...
+⍝ * The Cider user command cannot be found in MyUCMDs
+⍝ * The two versions are not different
+⍝ Otherwise the younger (later) version is copied over.
+⍝ Returns the number of copies files (0, 1 or 2)
+ r←0
+ F←TestCases.FilesAndDirs
+ folder1←Cider.GetMyUCMDsFolder,'/Cider/'
+ :If ⎕NEXISTS folder1
+     folder2←CiderConfig.HOME,'\APLSource\'
+     (folder1 folder2)←{'/'@(⍸⍵='\')⊣⍵}¨folder1 folder2
+     filenames←'Cider.aplc' 'Cider_uc.dyalog'
+     :For filename :In filenames
+         (path1 path2)←(⊂filename),¨⍨folder1 folder2
+         :If ≢/{⊃⎕NGET ⍵}¨path1 path2
+             :If path1 F.YoungerThan path2
+                 path2 ⎕NCOPY⍠('IfExists' 'Replace')⊣path1
+                 {~⍵: ⋄ ⎕←'Copied: ',filename,' from ',folder1,' to ',folder2}reportFlag
+                 r+←1
+             :Else
+                 path1 ⎕NCOPY⍠('IfExists' 'Replace')⊣path2
+                 {~⍵: ⋄ ⎕←'Copied: ',filename,' from ',folder2,' to ',folder1}reportFlag
+                 r+←1
+             :EndIf
+         :Else
+             {~⍵: ⋄ ⎕←filename,' matches in ',folder2,' and ',folder1}reportFlag
+         :EndIf
+     :EndFor
+ :EndIf
+⍝Done

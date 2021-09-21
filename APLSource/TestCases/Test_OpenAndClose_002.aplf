@@ -1,0 +1,25 @@
+ R←Test_OpenAndClose_002(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list
+⍝ Creates and opens two projects and then closes both of them, one by alias and one by path
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+
+ :If batchFlag
+     R←T._NoBatchTest
+ :Else
+     R←T._Failed
+     0 0⍴⍞,0/⍞←'This test needs you: please enter "Foo" as "projectSpace" when the editor pops up. Press <enter> to continue'
+     tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+     sourceFolder←tempDir,'/APLSource'
+     'Create!'FilesAndDirs.CheckPath sourceFolder
+     (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
+
+     {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'"'
+     list←FilesAndDirs.ListFiles tempDir
+     →T.GoToTidyUp 1≠≢list
+     →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
+
+     R←T._OK
+
+∆TidyUp:
+     FilesAndDirs.RmDir tempDir
+ :EndIf
+⍝Done

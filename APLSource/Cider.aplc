@@ -1,0 +1,502 @@
+:Class Cider
+⍝ Cider's application code.
+
+    ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
+    L←⎕SE.Link
+
+
+    ∇ r←Version
+      :Access Public Shared
+      r←'Cider' '0.1.0+82' '2021-09-21'
+      ⍝   * Initial version
+    ∇
+
+    :Field Private Shared ReadOnly    failure←0
+    :Field Private Shared ReadOnly    success←1
+
+    Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⎕ML←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),11}
+
+    ∇ successFlag←OpenProject y;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;msg;parms;fn
+    ⍝ Open a Cider project.\\
+    ⍝ `y` must be one of:\\
+    ⍝ * A namespace holding all the required parameters. Such a namespace can be created by calling `CreateOpenParms`
+    ⍝ * A vector with up to 6 positional parameters:
+    ⍝   1. folder
+    ⍝   2. projectSpace
+    ⍝   3. parent
+    ⍝   4. alias
+    ⍝   5. Flags
+    ⍝      1. quietFlag
+    ⍝      2. suppressLX
+      :Access Public Shared
+      successFlag←failure
+      parms←CreateOpenParms ⍬
+      :If 9=⎕NC'y'
+          'parms'⎕NS y
+      :Else
+          'At least two parameters must be specified: "folder" and "projectSpace"'Assert 2≤≢y
+          'folder' 'projectSpace' 'parent' 'alias'parms.{⍎⍺,'←''',⍵,''''}¨4↑(⊆y),(≢⊆y)↓⍬'' '#' ''
+          'quietFlag' 'suppressLX'parms.{⍎⍺,'←',⍕⍵}¨2↑IntToBits 5⊃(⊆y),(≢⊆y)↓⍬'' '#' 0 0
+      :EndIf
+      '"folder" must be specified'Assert 0<≢parms.folder
+      parms←GetFromAlias parms
+      ('Folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
+      :If ~parms.quietFlag
+          ⎕←' Loading project from ',parms.folder
+      :EndIf
+      parms.projectSpace←⍕parms.projectSpace
+      :If 0<≢parms.parent
+          parms.parent←,parms.parent
+          'First level of parent must be either "#" or "⎕SE"'Assert(⊆1 ⎕C{⍵↑⍨¯1+⍵⍳'.'}parms.parent)∊,¨'#' '⎕SE'
+          ('Parent namespace "',parms.parent,'" does not exist')Assert(9=⎕NC parms.parent)∨(⊂,1 ⎕C parms.parent)∊,¨'#' '⎕SE'
+      :EndIf
+      :If 0<≢parms.projectSpace
+          ('"projectSpace" must not carry a "." (see "parent"')Assert 0='.'+.=parms.projectSpace
+          'Project space is not a valid APL name'Assert{0::0 ⋄ 0=(⎕NS'').⎕NC ⍵}⍕parms.projectSpace
+      :EndIf
+      msg←SaveAlias parms.folder parms.alias
+      msg Assert 0=≢msg
+      p←(~parms.quietFlag)∘ToQSE                                                        ⍝ Function for printing to the session
+      configFilename←parms.folder,'/cider.config'
+      ('No file "cider.config" found in ',parms.folder)Assert ⎕NEXISTS configFilename
+      config←Get_JSON5 configFilename
+      CheckParameters config
+      :If 0=≢parms.projectSpace                                                         ⍝ Was it specified as argument?
+          parms.projectSpace←config.CIDER.projectSpace                                  ⍝ Nope, so the config file rules
+      :EndIf
+      :If 0=≢parms.parent                                                               ⍝ Was it specified as argument?
+          parms.parent←config.CIDER.parent                                              ⍝ Nope, so the config file rules
+      :EndIf
+      source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source  ⍝ For linking we are only interested in the code folder
+      ('Source folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
+      projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                            ⍝ Create project space from "parent" to avoid problems
+      'Project space is not empty'Assert 0=≢projectSpace_.⎕NL⍳16
+      projectSpace_.(⎕IO ⎕ML ⎕WX)←config.CIDER.(io ml wx)                               ⍝ For inheritance we specify the system vars early
+      linkOptions←ExtractLinkOptions config                                             ⍝ Merge the default options with Cider's options
+      p'Bringing in the source code...'
+      res←linkOptions ⎕SE.Link.Create projectSpace_ source                              ⍝ Get the code into the WS
+      dmx←⎕DMX
+      ('Link failed to load the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
+      p'  Code established'
+      LoadTatinPackages config parms.folder projectSpace_
+      InjectConfigDataIntoProject config projectSpace_ parms.folder
+      {}ExecProjectFunction⍣(~parms.suppressLX)⊣config projectSpace_
+      ExecUserFunction config
+      p'*** Project successfully opened and established in ',parms.projectSpace
+      successFlag←success
+      ⍝Done
+    ∇
+
+    ∇ parms←CreateOpenParms dummy
+      :Access Public Shared
+      parms←⎕NS''
+      parms.folder←''
+      parms.projectSpace←''
+      parms.quietFlag←0
+      parms.alias←''
+      parms.parent←'#'
+      parms.suppressLX←0
+    ∇
+
+    ∇ r←GetValidLinkParams
+      r←⍬
+      r,←⊂'arrays'
+      r,←⊂'beforeRead'
+      r,←⊂'beforeWrite'
+      r,←⊂'caseCode'
+      r,←⊂'codeExtensions'
+      r,←⊂'fastLoad'
+      r,←⊂'flatten'
+      r,←⊂'forceExtensions'
+      r,←⊂'forceFilenames'
+      r,←⊂'getFilename'
+      r,←⊂'typeExtensions'
+      r,←⊂'watch'
+    ∇
+
+    ∇ r←GetValidCiderParams
+      r←⍬
+      r,←⊂'source'
+      r,←⊂'io'
+      r,←⊂'lx'
+      r,←⊂'ml'
+      r,←⊂'parent'
+      r,←⊂'projectSpace'
+      r,←⊂'tatinFolder'
+      r,←⊂'wx'
+      r,←⊂'info_url'
+    ∇
+
+    ∇ options←ExtractLinkOptions config;C;overWrite
+      options←L.U.DefaultOpts ⎕NS''
+      C←config.LINK
+      overWrite←{0=≢⍵:⍺ ⋄ ⍵}
+      options.arrays(overWrite)←C.arrays
+      options.beforeRead(overWrite)←C.beforeRead
+      options.beforeWrite(overWrite)←C.beforeWrite
+      options.caseCode(overWrite)←C.caseCode
+      options.codeExtensions(overWrite)←C.codeExtensions
+      options.fastLoad(overWrite)←C.fastLoad
+      options.flatten(overWrite)←C.flatten
+      options.forceExtensions(overWrite)←C.forceExtensions
+      options.forceFilenames(overWrite)←C.forceFilenames
+      options.getFilename(overWrite)←C.getFilename
+      options.typeExtensions(overWrite)←↑C.typeExtensions
+      options.watch←C.watch
+      options.fastLoad←config.LINK.fastLoad
+    ∇
+
+    ∇ {r}←CheckParameters config;list;bool;list2
+    ⍝ Check the parameters for being complete and valid
+      r←⍬
+      p'Checking parameters...'
+      list←' '~⍨¨⊃,/↓¨config.(LINK CIDER).⎕NL 2
+      list2←list~GetValidCiderParams
+      bool←(list~GetValidCiderParams)∊GetValidLinkParams
+      ('Invalid LINK parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool
+      bool←GetValidLinkParams∊list2
+      ('Missing LINK parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidLinkParams)Assert∧/bool
+      list2←list~GetValidLinkParams
+      bool←(list~GetValidLinkParams)∊GetValidCiderParams
+      ('Invalid Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool
+      bool←GetValidCiderParams∊list2
+      ('Missing Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams)Assert∧/bool
+      p'  All fine'
+    ∇
+
+    ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_
+      r←failure
+      :If 0<≢config.CIDER.tatinFolder
+          pkgFolders←⊆','(≠⊆⊢)config.CIDER.tatinFolder
+          :For pkgFolder :In pkgFolders
+              :If '='∊pkgFolder
+                  (pkgFolder_ target)←'='(≠⊆⊢)pkgFolder
+                  'Target namespace for Tatin packages is addressed with absolute path (invalid)'Assert~(⊃target)∊'#⎕'
+                  :If (⊃config.CIDER.projectSpace)∊'#⎕'
+                      target←config.CIDER.projectSpace,'.',target
+                  :Else
+                      target←'#.',config.CIDER.projectSpace,'.',target
+                  :EndIf
+              :Else
+                  target←projectSpace
+                  pkgFolder_←pkgFolder
+              :EndIf⍝
+              p'Attempting to load Tatin packages from ',pkgFolder_,' into ',target,'...'
+              folder2←folder,'/',pkgFolder_
+              'Tatin installation folder does not exist'Assert ⎕NEXISTS folder2
+              p'   '∘,¨⍕¨⎕SE.Tatin.LoadDependencies folder2 target
+              r←success
+          :EndFor
+      :EndIf
+    ∇
+
+    ∇ {r}←flag ToQSE msg
+      :If flag
+          ⎕←⍪⊆msg
+      :EndIf
+    ∇
+
+    ∇ {r}←ExecProjectFunction(config projectSpace);fns
+      r←0
+      :If 0<≢config.CIDER.lx
+          :If 3=projectSpace.⎕NC config.CIDER.lx
+              p'Executing project initialising function "',config.CIDER.lx,'"...'
+              :Select 1 2⊃projectSpace.⎕AT config.CIDER.lx
+              :Case 0
+                  projectSpace.⍎config.CIDER.lx
+                  r←1
+              :CaseList 1 ¯2
+                  fns←projectSpace.⍎config.CIDER.lx
+                  fns config
+                  r←1
+              :Else
+                  p'  Invalid function valence: is ambivalent'
+              :EndSelect
+          :Else
+              ⎕←'Could not execute "',config.CIDER.lx,'"; function not found'
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ ExecUserFunction config;fn
+      :If 0<≢fn←GetFunctionNameFromCiderConfigFile ⍬
+          :If 1=1 1⊃⎕AT fn
+              ⍎'{}',fn,' config'
+          :Else
+              ⍎fn,' config'
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ {r}←InjectConfigDataIntoProject(config projectSpace_ folder)
+    ⍝ Create a namespace "CiderConfig" inside projectSpace and populate it with the configuration data
+      r←⍬
+      'CiderConfig'projectSpace_.⎕NS config
+      projectSpace_.CiderConfig.HOME←folder
+    ∇
+
+    ∇ r←ListOpenProjects verboseFlag;res;aliases;ind
+      :Access Public Shared
+      r←(0(2+2×verboseFlag))⍴''
+      res←⎕SE.Link.Status''
+      :If 'No active links'≢res
+          :If 0<≢res←('Namespace' 'Directory' 'Files'≡res[1;])↓res   ⍝ Will become superfluous with a proper Link API but don't do damage
+          :AndIf 0<≢res←({⊃9=⍵.⎕NC'CiderConfig'}∘⍎¨res[;1])⌿res
+              r←res[;,1],({6::'' ⋄ ⍎⍵,'.CiderConfig.HOME'}¨res[;1])
+              :If verboseFlag
+                  r,←res[;3]
+              :EndIf
+              r←(0<≢¨r[;2])⌿r
+              r[;2]←DropTrailingSlash¨r[;2]
+              r[;2]←{'/'@(⍸'\'=⍵)⊣⍵}¨r[;2]
+              :If verboseFlag
+                  :If 0<≢aliases←GetAliasFileContent
+                      aliases[;2]←DropTrailingSlash¨aliases[;2]
+                  :AndIf 0<≢aliases←(aliases[;2]∊r[;2])⌿aliases
+                      r,←⊂''
+                      ind←r[;2]⍳aliases[;2]
+                      r[ind;4]←aliases[;1]
+                  :Else
+                      r,←⊂''
+                  :EndIf
+              :EndIf
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ r←GetMyUCMDsFolder
+      :Access Public Shared
+    ⍝ Returns standard path for Dyalog's MyUCMDs folder.
+    ⍝ Works on all platforms but returns different results.\\
+    ⍝ Under Windows typically:\\
+    ⍝ `C:\Users\{⎕AN}\Documents\MyUCMDs\'  ←→ GetMyUCMDsFolder
+      :If 'Win'≡3↑⊃'.'⎕WG'APLVersion'
+          r←(2 ⎕NQ'.' 'GetEnvironment' 'USERPROFILE'),'/Documents\MyUCMDs'
+      :Else
+          r←(2 ⎕NQ'.' 'GetEnvironment' 'Home'),'/MyUCMDs'
+      :EndIf
+    ∇
+
+    ∇ r←GetAliasFileContent;filename;buff
+      :Access Public Shared
+      r←0 2⍴''
+      filename←GetCiderAliasFilename
+      :If ⎕NEXISTS filename
+      :AndIf 0<≢buff←⊃⎕NGET filename 1
+      :AndIf 0<≢buff←(0<≢¨buff)/buff
+          r←↑{'='(≠⊆⊢)⍵}¨buff
+          r[;1]←⎕C¨r[;1]
+          r[;2]←{'/'@(⍸'\'=⍵)⊣⍵}¨r[;2]
+          r[;2]←{⍵↓⍨¯1×(¯1↑⍵)∊'/\'}¨r[;2]
+      :EndIf
+    ∇
+
+    ∇ r←CloseProject y;list;project;bool
+    ⍝ Simply breaks the Link between a project and its folder in disk.
+    ⍝ In case ⍵ is empty ALL projects are closed.
+    ⍝ `y` may be one of:
+    ⍝ * Empty vector (=close all)
+    ⍝ * A projectName like #.Foo
+    ⍝ * An alias like [my-alias]
+    ⍝ Returns the number of projects closed.
+      :Access Public Shared
+      r←0
+      :If 0<≢list←ListOpenProjects 1
+          :If ∧/'[]'∊y
+              :If 0=+/bool←list[;4]≡¨⊂⎕C y~'[]'
+                  :Return
+              :Else
+                  project←⊃(list[;4]≡¨⊂⎕C y~'[]')⌿list[;1]
+              :EndIf
+          :Else
+              project←y
+          :EndIf
+          :If (⊂project)∊list[;1]
+              {}⎕SE.Link.Break project
+              r←1
+          :Else
+              {}{⎕SE.Link.Break ⍵}¨list
+              r←≢list
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ yesOrNo←{default}YesOrNo question;isOkay;answer;add;dtb;answer2
+      :Access Public Shared
+    ⍝ Ask a simple question and allows just "Yes" or "No" as answers.
+    ⍝ You may specify a default via the optional left argument which when specified
+    ⍝ rules what happens when the user just presses <enter>.
+    ⍝ `default` must be either 1 (yes) or 0 (no).
+    ⍝ Note that this function does not work as expected when traced!
+      isOkay←0
+      default←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'default'
+      isOkay←0
+      :If 0≠≢default
+          'Left argument must be a scalar'⎕SIGNAL 11/⍨1≠≢default
+      :AndIf ~default∊0 1
+          'The left argument. if specified, must be a Boolean or empty'⎕SIGNAL 11
+      :EndIf
+      :If 0=≢default
+          add←' (y/n) '
+      :Else
+          :If default
+              add←' (Y/n) '
+          :Else
+              add←' (y/N) '
+          :EndIf
+      :EndIf
+      :If 1<≡question
+          ((≢question)⊃question)←((≢question)⊃question),add
+          question←⍪question
+      :Else
+          question←question,add
+      :EndIf
+      :Repeat
+          ⍞←question
+          answer←⍞
+          :If answer≡question                        ⍝ Did...  (since version 18.0 trailing blanks are not removed anynmore)
+          :OrIf (≢answer)=¯1+≢question               ⍝ ..the ...
+          :OrIf 0=≢answer                            ⍝ ...user just...
+              dtb←{⍵↓⍨-+/∧\' '=⌽⍵}
+              answer2←dtb answer
+          :OrIf answer2≡((-≢answer2)↑(⎕UCS 10){~⍺∊⍵:⍵ ⋄ ' ',dtb ⍺{⌽⍵↑⍨1+⍵⍳⍺}⌽⍵}question)   ⍝ ...press <enter>?
+              :If 0≠≢default
+                  yesOrNo←default
+                  isOkay←1
+              :EndIf
+          :Else
+              answer←¯1↑{⍵↓⍨-+/∧\' '=⌽⍵}answer
+              :If answer∊'YyNn'
+                  isOkay←1
+                  yesOrNo←answer∊'Yy'
+              :EndIf
+          :EndIf
+      :Until isOkay
+    ∇
+
+    ∇ {r}←SaveAlias(folder alias);ciderAliasFilename;data
+      :Access Public Shared
+      ciderAliasFilename←GetCiderAliasFilename
+      r←''
+      :If 0≠≢alias
+      :AndIf 0<≢ciderAliasFilename
+          :If ⎕NEXISTS ciderAliasFilename
+              data←⊃⎕NGET ciderAliasFilename 1
+              :If ~⎕NEXISTS folder
+                  r←'Could not find "',folder,'"'
+              :ElseIf 0=+/(alias,'=')∘{⍺≡(≢⍺)↑⍵}¨data
+                  (⊂data,⊂alias,'=',folder)⎕NPUT ciderAliasFilename 1
+              :Else
+                  r←'Alias "',alias,'" is already in use'
+              :EndIf
+          :Else
+              (⊂alias,'=',folder)⎕NPUT ciderAliasFilename
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ {r}←DropAlias alias;ciderAliasFilename;data
+      :Access Public Shared
+      ciderAliasFilename←GetCiderAliasFilename
+      r←⍬
+      :If 0≠≢alias
+      :AndIf 0<≢ciderAliasFilename
+          :If ⎕NEXISTS ciderAliasFilename
+              data←⊃⎕NGET ciderAliasFilename 1
+              data←((⊆alias),¨'='){⍵/⍨~((⍵↑⍨¨⍵⍳¨'='))∊⍺}data
+              (⊂data)⎕NPUT ciderAliasFilename 1
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ filename←GetCiderAliasFilename;folder
+      :Access Public Shared
+      filename←''
+      :If 'W'=⊃1⊃#.APLVersion
+          :If 0=≢folder←⊃⎕SH'echo %APPDATA%'
+              '%APPDATA% is undefined'⎕SIGNAL 11
+          :Else
+              folder,←'/.cider/'
+          :EndIf
+      :Else
+          folder←(⊃⎕SH'echo $HOME'),'/.cider/'
+      :EndIf
+      1 ⎕MKDIR folder
+      filename←folder,'aliase.txt'
+    ∇
+
+    ∇ filename←GetCiderConfigFilename;folder
+    ⍝ Returns the name of the Cider config file.
+    ⍝ As a side effect it creates the file with defaults if it does not yet exist.
+      :Access Public Shared
+      filename←''
+      :If 'W'=⊃1⊃#.APLVersion
+          :If 0=≢folder←⊃⎕SH'echo %APPDATA%'
+              '%APPDATA% is undefined'⎕SIGNAL 11
+          :Else
+              folder,←'/.cider/'
+          :EndIf
+      :Else
+          folder←(⊃⎕SH'echo $HOME'),'/.cider/'
+      :EndIf
+      1 ⎕MKDIR folder
+      filename←folder,'config.json'
+      :If ~⎕NEXISTS filename
+          filename ⎕NCOPY GetMyUCMDsFolder,'/Cider/.cider/config.json'
+      :EndIf
+    ∇
+
+    ∇ parms←GetFromAlias parms;data;filename
+      :If ∧/'[]'∊parms.folder
+          filename←GetCiderAliasFilename
+          :If ⎕NEXISTS filename
+              :If 0=≢data←⊃⎕NGET filename 1
+                  ('Alias ',parms.folder,' not found')⎕SIGNAL 6
+              :EndIf
+              data←↑{'='(≠⊆⊢)⍵}¨data
+              :If (⊂⎕C parms.folder~'[]')∊data[;1]
+                  parms.folder←2⊃data[data[;1]⍳⊂⎕C parms.folder~'[]';]
+              :ElseIf (⎕NS'').{0≠⎕NC ⍵}⎕C parms.folder~'[]'
+                  (parms.folder,' is not a valid alias')⎕SIGNAL 11
+              :Else
+                  ('Alias ',parms.folder,' not found')⎕SIGNAL 6
+              :EndIf
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ txt←DropTrailingSlash txt
+      txt↓⍨←-'/\'∊⍨¯1↑txt
+    ∇
+
+    ∇ json←Get_JSON5 filename
+      :If 0<≢json←⊃⎕NGET filename
+          json←⎕JSON⍠('Dialect' 'JSON5')⊣json
+      :EndIf
+    ∇
+
+    BitsToInt←{(32⍴2)⊥⌽32↑⍵}
+
+    IntToBits←{⌽(32⍴2)⊤⍵}
+
+    ∇ functionName←GetFunctionNameFromCiderConfigFile dummy;filename;cfg
+      functionName←''
+      :If ⎕NEXISTS filename←GetCiderConfigFilename
+          cfg←Get_JSON5 filename
+      :AndIf 0<≢cfg
+      :AndIf 2=cfg.⎕NC'ExecuteAfterProjectOpen'
+      :AndIf 0<≢functionName←cfg.ExecuteAfterProjectOpen
+          :If 3≠⎕NC functionName
+              '"ExecuteAfterProjectOpen" is not a function, therefore not executed'
+              functionName←''
+              :Return
+          :EndIf
+          :If 1≠1 2⊃⎕AT functionName
+              '"ExecuteAfterProjectOpen" is not a monadic function, therefore not executed'
+              functionName←''
+              :Return
+          :EndIf
+      :EndIf
+    ∇
+
+:EndClass

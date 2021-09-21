@@ -1,0 +1,13 @@
+ Prepare;testFilename;ask;answer
+ T←⎕NEW Tester2 ⎕THIS
+ testFilename←FilesAndDirs.GetTempPath,'CiderTestCoverage.dcf'
+ :If ⎕NEXISTS testFilename
+     ask←{⎕←⍵,'; 1=append, 2=replace' ⋄ a←⎕ ⋄ ~(⊂a)∊1 2:∇ ⍵ ⋄ ⊃a}
+     answer←⊃ask'Coverage file already exists'
+     :If 2≡answer
+         1 ⎕NDELETE testFilename
+     :EndIf
+ :EndIf
+ T.codeCoverage←⎕NEW CodeCoverage(,⊂'#.Cider')
+ T.codeCoverage.filename←testFilename
+⍝Done

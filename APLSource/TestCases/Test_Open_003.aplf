@@ -1,0 +1,30 @@
+ R←Test_Open_003(stopFlag batchFlag);⎕TRAP;parms;folder;r;res
+⍝ Load simple project but specify a different parent space and a different project space name with positional parms
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP'
+ 'TEMP'#.⎕NS''
+ 'Goo'⎕SE.⎕NS''  ⍝ Defined in the config file but overwritten by the argument
+ folder←∆GetTestPath⊃⎕SI
+
+ parms←''
+ parms,←⊂folder
+ parms,←⊂'___Zoo___'
+ parms,←⊂'⎕SE'                      ⍝ parent
+ parms,←⊂''                         ⍝ alias (tested separately)
+ →T.GoToTidyUp 1≠⎕SE.Cider.OpenProject parms
+ parms,←⊂1                          ⍝ quietFlag
+
+ →T.GoToTidyUp 0≠≢#.TEMP.⎕NL⍳16
+ →T.GoToTidyUp 9≠⎕SE.⎕NC'___Zoo___'
+ →T.GoToTidyUp'World'≢⎕SE.___Zoo___.Hello
+
+ R←T._OK
+
+∆TidyUp:
+ res←∆LINK'Break' '⎕se.___Zoo___'
+ Assert res ∆StartsWith'Unlinked:'
+ ⎕SE.⎕EX'___Zoo___'
+ #.⎕EX'Goo'
+⍝Done
