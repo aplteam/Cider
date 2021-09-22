@@ -7,7 +7,12 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.1.0+82' '2021-09-21'
+      r←'Cider' '0.1.1+85' '2021-09-22'
+      ⍝ * 0.1.1 ⋄ 2021-09-22
+      ⍝   * `json.Cider` should have been `json.CIDER`
+      ⍝   * When `CreateProject` did not create a project because of an invalid config file it did not tell
+      ⍝   * When `CreateProject` did not create a project it still created an (invalid) file `cider.config`
+      ⍝ * 0.1.0 ⋄ 2021-09-21
       ⍝   * Initial version
     ∇
 

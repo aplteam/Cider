@@ -7,7 +7,7 @@
  filename←folder,'/cider.config'
  cfg←∆GetJSON5 filename
 
- →T.PassesIf'LINK' 'CIDER' 'USER'≡' '~¨⍨↓cfg.⎕NL 9
+ →T.PassesIf'LINK' 'CIDER' 'USER'∆LazyMatch' '~¨⍨↓cfg.⎕NL 9
  →T.PassesIf 1=≢cfg.USER.⎕NL⍳16
  →T.PassesIf cfg.USER.Name≡⊃⎕SI
  →T.PassesIf cfg.CIDER.parent≡'⎕SE'

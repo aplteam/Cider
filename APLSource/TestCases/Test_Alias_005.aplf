@@ -7,7 +7,7 @@
  Delete_∆ALIAS_TEMP_FOLDER
  res←⎕SE.UCMD'Cider.ListAliases -prune -quiet'
  mat2←⎕SE.Cider.GetAliasFileContent
- →T.PassesIf(¯1+≢mat1)=≢mat2
+ →T.PassesIf(+/~⎕NEXISTS mat1[;2])=-/≢¨mat1 mat2
 
  R←T._OK
 ⍝Done

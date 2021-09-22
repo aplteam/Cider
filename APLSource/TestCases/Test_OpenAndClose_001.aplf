@@ -17,7 +17,7 @@
      {}⎕SE.UCMD'Cider.CreateProject "',projectFolder1,'" #.Foo -alias=test-case-alias-Foo'
      list←FilesAndDirs.ListFiles projectFolder1
      →T.GoToTidyUp 1≠≢list
-     →T.GoToTidyUp'Cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
+     →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
      aliase←⎕SE.Cider.GetAliasFileContent
      →T.GoToTidyUp~(⊂⎕C'test-case-alias-Foo')∊aliase[;1]
 

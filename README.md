@@ -2,6 +2,7 @@
 
 Cider offers some User commands that are useful to manage projects. An API is also available.
 
+
 ## Requirements
 
 Cider requires 
@@ -10,6 +11,7 @@ Cider requires
 * Link 3.0.0 or better
 
 If Tatin packages are part of a project then Tatin is required as well.
+
 
 ## Overview
 
@@ -28,9 +30,21 @@ For all other commands only basic information is provided.
 
 For details refer to the user command help. Regarding the API details are available from the document "Cider-API-Syntax".
 
+
+## Installation
+
+The contents of the ZIP file needs to go in any of the folders that Dyalog APL scans for user commands.
+
+For example, under Windows a folder `MyUCMDs` will be created in `%USERPROFILE%\Documents` when Dyalog is installed, and that is a good place for putting the `Cider\` folder.
+
+However, note that under Linux and Mac-OS no such folder will be created, although it will be scanned for user commands in case it exists.
+
+
 ## Methods
 
+
 ### OpenProject
+
 
 #### Parameter
 
@@ -40,6 +54,7 @@ Accepts one optional parameter which may be one of:
 * An alias that points to such a folder
 
 If no such parameter is specified then the current directory is searched for a file `cider.config`. If no such file exists then under Windows a dialog box is opened that allows the user to navigate to a Cider project. On non-Windows platforms an error is thrown.
+
 
 #### Actions 
 
@@ -67,11 +82,13 @@ Notes:
   after the folder
 
 
+
 ### CloseProject
 
 Takes a folder or an alias and breaks the Link between the namespace and its folder.
 
 You may specify the `-all` flag to close all project in `#`.
+
 
 ### CreateProject
 
@@ -79,10 +96,12 @@ Requires one mandatory parameter: a folder to what is going to be a project.
 
 Creates a file `cider.config` in that folder.
 
+
  
 ### ListOpenProjects
 
 This command lists the project spaces of all currently linked projects.
+
 
 
 ### ListAliases
@@ -93,11 +112,3 @@ This command lists all Cider aliase together with their folders.
 ### Version
 
 Returns a three-item-vector with "Name", "Version number" and "Version date" regarding "Cider".
-
-## Installation
-
-The contents of the ZIP file needs to go in any of the folders that Dyalog APL scans for user commands.
-
-For example, under Windows a folder `MyUCMDs` will be created in `%USERPROFILE%\Documents` when Dyalog is installed, and that is a good place for putting the `Cider\` folder.
-
-However, note that under Linux and Mac-OS no such folder will be created, although it will be scanned for user commands in case it exists.

@@ -4,7 +4,7 @@
 
 # Cider User Guide
 
-## What is the problem?
+## What is Cider for?
 
 In this document we use the word "project" for an application or a tool that consists not only of what is  finally delivered, like an Installer EXE under Windows or a Tatin package or a workspace or whatnot, but also of stuff that is required only during development, like test cases and test data, tools, helpers and similar stuff.
 

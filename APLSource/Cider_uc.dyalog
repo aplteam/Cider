@@ -1,6 +1,6 @@
-﻿:Class  Cider_uc
+:Class  Cider_uc
 ⍝ User Command class for the project manager "Cider"
-⍝ Version 0.2.0+11 from 2021-09-12
+⍝ Version 0.2.1+11 from 2021-09-21
 ⍝ Kai Jaeger ⋄ APL Team Ltd
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
@@ -172,11 +172,12 @@
           r,←⊂'[;3] Number of objects in the project'
           r,←⊂'[;4] Alias name (if any)'
       :Case ⎕C'ListAliases'
-          r,←⊂'Print all defined aliases together with their folder.'
+          r,←⊂'Print all defined aliases together with their folders.'
           r,←⊂''
           r,←⊂'There are two mutually exclusive options available:'
           r,←⊂'-edit   Cider will allow you to edit the file that keeps the alias information'
           r,←⊂'-prune  Cider will delete all aliases for which their folders cannot be found'
+          r,←⊂''
           r,←⊂'-quiet  When -prune is specified the user will be asked for confirmation in case there'
           r,←⊂'        is something to prune at all. You can specify -quiet in order to prevent this.'
           r,←⊂'        All reporting to the session will be suppressed as well.'
@@ -305,11 +306,14 @@
           :If namespace≢⍬
               projectFolder←1⊃⎕NPARTS filename
               (⍎namespace).{⎕EX ⎕NL⍳16}⍬
-          :AndIf P.OpenProject(⊂projectFolder),config.Cider.(projectSpace parent)
+          :AndIf P.OpenProject(⊂projectFolder),config.CIDER.(projectSpace parent)
               ⎕←'Project created and opened'
           :Else
               ⎕←'Project created'
           :EndIf
+      :Else
+          ⎕NDELETE filename
+          ⎕←'*** No action taken'
       :EndIf
     ∇
 
@@ -397,21 +401,21 @@
               ⎕←'*** Error - could not convert JSON into a namespace: ',dmx.Message
               :Continue
           :EndTrap
-          :If 0=json.Cider.⎕NC'projectSpace'
+          :If 0=json.CIDER.⎕NC'projectSpace'
               ⎕←'"projectSpace" is missing in the [Cider] section'
-          :ElseIf '?'∊json.Cider.projectSpace
-          :OrIf 0=≢json.Cider.projectSpace
+          :ElseIf '?'∊json.CIDER.projectSpace
+          :OrIf 0=≢json.CIDER.projectSpace
               ⎕←'"projectSpace" is not defined properly in the [Cider] section'
-          :ElseIf ∨/'#⎕'∊json.Cider.projectSpace
+          :ElseIf ∨/'#⎕'∊json.CIDER.projectSpace
               ⎕←'"projectSpace" carries either a "#" or a "⎕" but must not'
-          :ElseIf 0∨.≠{⊃(⎕NS'').⎕NC ⍵}¨⊆{'.'(≠⊆⊢)⍵}json.Cider.projectSpace
+          :ElseIf 0∨.≠{⊃(⎕NS'').⎕NC ⍵}¨⊆{'.'(≠⊆⊢)⍵}json.CIDER.projectSpace
               ⎕←'"projectSpace" is not the name of a namespace (like "foo" or "foo.goo")'
-          :ElseIf 0=json.Cider.⎕NC'parent'
+          :ElseIf 0=json.CIDER.⎕NC'parent'
               ⎕←'"parent" is not defined in the [Cider] section'
-          :ElseIf ~{('#'=1⍴⍵)∨('⎕SE'≡1 ⎕C 3⍴⍵)}json.Cider.parent
+          :ElseIf ~{('#'=1⍴⍵)∨('⎕SE'≡1 ⎕C 3⍴⍵)}json.CIDER.parent
               ⎕←'"parent" starts with neither "#" nor "⎕SE"'
-          :ElseIf {('#'=1⍴⍵)∨('⎕SE'≡1 ⎕C 3⍴⍵)}json.Cider.parent
-          :AndIf 0∨.≠{⊃(⎕NS'').⎕NC ⍵}¨⊆1↓{'.'(≠⊆⊢)⍵}json.Cider.parent
+          :ElseIf {('#'=1⍴⍵)∨('⎕SE'≡1 ⎕C 3⍴⍵)}json.CIDER.parent
+          :AndIf 0∨.≠{⊃(⎕NS'').⎕NC ⍵}¨⊆1↓{'.'(≠⊆⊢)⍵}json.CIDER.parent
               ⎕←'"parent" is not a proper definition (like "#" or "⎕SE" or "#.foo" etc.)'
           :Else
               flag←1
@@ -422,7 +426,9 @@
               flag←1
           :EndIf
       :Until flag
-      (⊂config)⎕NPUT filename 1
+      :If isOkay
+          (⊂config)⎕NPUT filename 1
+      :EndIf
     ∇
 
     ∇ {r}←EditAliasFile dummy;filename;data_;Local;aliases;aliases_;b;report;buff;b2;b3;flag;b4;b5
