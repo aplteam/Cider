@@ -2,24 +2,20 @@
 ⍝ Create a project from a folder without Linking a namespace
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
 
- :If batchFlag
-     R←T._NoBatchTest
- :Else
-     R←T._Failed
-     0 0⍴⍞,0/⍞←'This test needs you: please enter "Foo" as "projectSpace" when the editor pops up. Press <enter> to continue'
-     tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
-     sourceFolder←tempDir,'/APLSource'
-     'Create!'FilesAndDirs.CheckPath sourceFolder
-     (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
+ R←T._Failed
+ tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
+ sourceFolder←tempDir,'/APLSource'
+ 'Create!'FilesAndDirs.CheckPath sourceFolder
+ (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
 
-     {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'"'
-     list←FilesAndDirs.ListFiles tempDir
-     →T.GoToTidyUp 1≠≢list
-     →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
+ {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig'
+ list←FilesAndDirs.ListFiles tempDir
+ →T.GoToTidyUp 1≠≢list
+ →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
 
-     R←T._OK
+ R←T._OK
 
 ∆TidyUp:
-     FilesAndDirs.RmDir tempDir
- :EndIf
+ FilesAndDirs.RmDir tempDir
 ⍝Done

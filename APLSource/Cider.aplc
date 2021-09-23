@@ -7,7 +7,10 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.1.1+85' '2021-09-22'
+      r←'Cider' '0.1.2+88' '2021-09-23'
+      ⍝ * 0.1.2 ⋄ 2021-09-23
+      ⍝   * When an unknown project name was passed to `CloseProject` then ALL projects were closed rather than none.
+      ⍝   * Reporting to the session improved
       ⍝ * 0.1.1 ⋄ 2021-09-22
       ⍝   * `json.Cider` should have been `json.CIDER`
       ⍝   * When `CreateProject` did not create a project because of an invalid config file it did not tell
@@ -319,7 +322,7 @@
           :If (⊂project)∊list[;1]
               {}⎕SE.Link.Break project
               r←1
-          :Else
+          :Elseif 0=≢⍕y
               {}{⎕SE.Link.Break ⍵}¨list
               r←≢list
           :EndIf

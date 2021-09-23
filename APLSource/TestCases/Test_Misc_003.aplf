@@ -1,5 +1,5 @@
  R←Test_Misc_003(stopFlag batchFlag);⎕TRAP;res;folder;parms;list;filename;cfg;was
-⍝ Exercise the ListOpenProjects function
+⍝ Exercise the ListOpenProjects function with ExecuteAfterProjectOpen set
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

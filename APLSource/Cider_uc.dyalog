@@ -38,7 +38,7 @@
           c.Name←'CreateProject'
           c.Desc←'Makes the given folder a project folder'
           c.Group←'Cider'
-          c.Parse←'2s -alias='
+          c.Parse←'2s -alias= -acceptConfig -noEdit'
           r,←c
      
           c←⎕NS''
@@ -118,13 +118,13 @@
           :EndIf
           :If 0=≢Args._2
           :OrIf 0≡Args._2
-              r←CreateProject folder
+              r←CreateProject folder(Args.acceptConfig)(Args.noEdit)
           :Else
-              r←Args._2 CreateProject folder
+              r←Args._2 CreateProject folder(Args.acceptConfig)(Args.noEdit)
           :EndIf
           :If 0≢Args.alias
               :If 0<≢msg←P.SaveAlias folder Args.alias
-                  ⎕←msg
+                  r,←(⎕UCS 13)msg
               :EndIf
           :EndIf
       :Case ⎕C'CloseProject'
@@ -194,6 +194,12 @@
           r,←⊂''
           r,←⊂'If no path is specified it acts on the current directory, but in that case the user'
           r,←⊂'is prompted for confirmation to avoid mishaps.'
+          r,←⊂''
+          r,←⊂'By default a file cider.config is created, and an error is thrown in case it already'
+          r,←⊂'exists. You can use -acceptConfig to overwrite this and force CreateProject to accept'
+          r,←⊂'an already existing config file.'
+          r,←⊂''
+          r,←⊂'With -noEdit you can prevent the user from being asked to edit the config file.'
           r,←⊂''
           r,←⊂'In case you are going to work on that project frequently you may specify'
           r,←⊂'-alias=name'
@@ -288,7 +294,7 @@
       P←⍎P,'.Cider'
     ∇
 
-    ∇ r←{namespace}CreateProject folder;filename;success;config;projectFolder
+    ∇ r←{namespace}CreateProject(folder acceptFlag noEditFlag);filename;success;config;projectFolder
       :Access Public Shared
       namespace←{0<⎕NC ⍵:⍎⍵ ⋄ ⍬}'namespace'
       r←''
@@ -299,21 +305,30 @@
           :EndIf
       :EndIf
       filename←(AddSlash folder),configFilename
-      ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
-      filename ⎕NCOPY(⊃⎕NPARTS ##.SourceFile),configFilename,'.RemoveMe'
-      (success config)←EditCiderConfig filename
+      :If acceptFlag
+          ('The -accepConfig flag was set but no file "',configFilename,'" was found')Assert ⎕NEXISTS filename
+      :Else
+          ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
+          filename ⎕NCOPY(⊃⎕NPARTS ##.SourceFile),configFilename,'.RemoveMe'
+      :EndIf
+      :If ~noEditFlag
+          (success config)←EditCiderConfig filename
+      :Else
+          success←1
+          config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕nget filename
+      :EndIf
       :If success
           :If namespace≢⍬
               projectFolder←1⊃⎕NPARTS filename
               (⍎namespace).{⎕EX ⎕NL⍳16}⍬
           :AndIf P.OpenProject(⊂projectFolder),config.CIDER.(projectSpace parent)
-              ⎕←'Project created and opened'
+              r←'Project created and opened'
           :Else
-              ⎕←'Project created'
+              r←'Project created'
           :EndIf
       :Else
           ⎕NDELETE filename
-          ⎕←'*** No action taken'
+          r←'*** No action taken'
       :EndIf
     ∇
 
@@ -375,7 +390,7 @@
       :EndIf
     ∇
 
-    ∇ {(isOkay json)}←EditCiderConfig filename;config;flag;dmx;config
+    ∇ {(isOkay json)}←EditCiderConfig filename;config;dmx;config;rc;msg;flag
     ⍝ Allows the user to edit the contents of the file in Dyalog's editor and checks the changes afterwards.
     ⍝ Returns a 1 in case the contents of the file os valid and 0 otherwise
       isOkay←0
@@ -401,34 +416,43 @@
               ⎕←'*** Error - could not convert JSON into a namespace: ',dmx.Message
               :Continue
           :EndTrap
-          :If 0=json.CIDER.⎕NC'projectSpace'
-              ⎕←'"projectSpace" is missing in the [Cider] section'
-          :ElseIf '?'∊json.CIDER.projectSpace
-          :OrIf 0=≢json.CIDER.projectSpace
-              ⎕←'"projectSpace" is not defined properly in the [Cider] section'
-          :ElseIf ∨/'#⎕'∊json.CIDER.projectSpace
-              ⎕←'"projectSpace" carries either a "#" or a "⎕" but must not'
-          :ElseIf 0∨.≠{⊃(⎕NS'').⎕NC ⍵}¨⊆{'.'(≠⊆⊢)⍵}json.CIDER.projectSpace
-              ⎕←'"projectSpace" is not the name of a namespace (like "foo" or "foo.goo")'
-          :ElseIf 0=json.CIDER.⎕NC'parent'
-              ⎕←'"parent" is not defined in the [Cider] section'
-          :ElseIf ~{('#'=1⍴⍵)∨('⎕SE'≡1 ⎕C 3⍴⍵)}json.CIDER.parent
-              ⎕←'"parent" starts with neither "#" nor "⎕SE"'
-          :ElseIf {('#'=1⍴⍵)∨('⎕SE'≡1 ⎕C 3⍴⍵)}json.CIDER.parent
-          :AndIf 0∨.≠{⊃(⎕NS'').⎕NC ⍵}¨⊆1↓{'.'(≠⊆⊢)⍵}json.CIDER.parent
-              ⎕←'"parent" is not a proper definition (like "#" or "⎕SE" or "#.foo" etc.)'
+          (rc msg)←CheckConfig json
+          :If 0=rc
+              flag←isOkay←1
           :Else
-              flag←1
-              isOkay←1
-          :EndIf
-          :If 0=flag
-          :AndIf 0=1 YesOrNo'Would you like to correct the error? ("n"= save as is)'
-              flag←1
+              ⎕←msg
+              flag←0=1 YesOrNo'Would you like to correct the error? ("n"= save as is)'
           :EndIf
       :Until flag
       :If isOkay
           (⊂config)⎕NPUT filename 1
       :EndIf
+    ∇
+
+    ∇ (rc msg)←CheckConfig json;dmx
+    ⍝ Reads the config file and performs basic checks on it
+    ⍝ Returns:
+    ⍝  0 in case all is fine
+    ⍝  1 in case something is wrong. In this case `msg` is not empty and carries a message
+      msg←''
+      :If 0=json.CIDER.⎕NC'projectSpace'
+          msg←'"projectSpace" is missing in the [Cider] section'
+      :ElseIf '?'∊json.CIDER.projectSpace
+      :OrIf 0=≢json.CIDER.projectSpace
+          msg←'"projectSpace" is not defined properly in the [Cider] section'
+      :ElseIf ∨/'#⎕'∊json.CIDER.projectSpace
+          msg←'"projectSpace" carries either a "#" or a "⎕" but must not'
+      :ElseIf 0∨.≠{⊃(⎕NS'').⎕NC ⍵}¨⊆{'.'(≠⊆⊢)⍵}json.CIDER.projectSpace
+          msg←'"projectSpace" is not the name of a namespace (like "foo" or "foo.goo")'
+      :ElseIf 0=json.CIDER.⎕NC'parent'
+          msg←'"parent" is not defined in the [Cider] section'
+      :ElseIf ~{('#'=1⍴⍵)∨('⎕SE'≡1 ⎕C 3⍴⍵)}json.CIDER.parent
+          msg←'"parent" starts with neither "#" nor "⎕SE"'
+      :ElseIf {('#'=1⍴⍵)∨('⎕SE'≡1 ⎕C 3⍴⍵)}json.CIDER.parent
+      :AndIf 0∨.≠{⊃(⎕NS'').⎕NC ⍵}¨⊆1↓{'.'(≠⊆⊢)⍵}json.CIDER.parent
+          msg←'"parent" is not a proper definition (like "#" or "⎕SE" or "#.foo" etc.)'
+      :EndIf
+      rc←0≠≢msg
     ∇
 
     ∇ {r}←EditAliasFile dummy;filename;data_;Local;aliases;aliases_;b;report;buff;b2;b3;flag;b4;b5
