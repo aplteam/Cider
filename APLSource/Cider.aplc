@@ -7,7 +7,11 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.1.2+88' '2021-09-23'
+      r←'Cider' '0.2.0+89' '2021-09-23'
+      ⍝ * 0.2.0 ⋄ 2021-09-23
+      ⍝   * `CreateProject` now creates the folder if it does not already exists (confirmation permitted)
+      ⍝   * `CreateProject` throws an error if an invalid path is provided
+      ⍝   * `CreateProject` injects the last part of the path into the config file as "projectSpace"
       ⍝ * 0.1.2 ⋄ 2021-09-23
       ⍝   * When an unknown project name was passed to `CloseProject` then ALL projects were closed rather than none.
       ⍝   * Reporting to the session improved

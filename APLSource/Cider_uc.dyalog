@@ -1,6 +1,5 @@
-:Class  Cider_uc
+﻿:Class  Cider_uc
 ⍝ User Command class for the project manager "Cider"
-⍝ Version 0.2.1+11 from 2021-09-21
 ⍝ Kai Jaeger ⋄ APL Team Ltd
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
@@ -300,7 +299,7 @@
       r←''
       :If 0≡folder
           folder←⊃1 ⎕NPARTS''
-          :If ~YesOrNo'Sure that you to convert ',folder,' into a project?'
+          :If ~0 YesOrNo'Sure that you to convert ',folder,' into a project?'
               :Return
           :EndIf
       :EndIf
@@ -308,14 +307,19 @@
       :If acceptFlag
           ('The -accepConfig flag was set but no file "',configFilename,'" was found')Assert ⎕NEXISTS filename
       :Else
-          ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
-          filename ⎕NCOPY(⊃⎕NPARTS ##.SourceFile),configFilename,'.RemoveMe'
+          :If ~⎕NEXISTS folder
+              'Invalid path'Assert ⎕NEXISTS 1⊃⎕NPARTS{⍵↓⍨-(¯1↑⍵)∊'/\'}folder
+              :If 1 YesOrNo'"',folder,'" does not exist yet - create?'
+                  ⎕MKDIR folder
+              :EndIf
+          :EndIf
+          CreateConfigFile filename
       :EndIf
       :If ~noEditFlag
           (success config)←EditCiderConfig filename
       :Else
           success←1
-          config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕nget filename
+          config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
       :EndIf
       :If success
           :If namespace≢⍬
@@ -330,6 +334,15 @@
           ⎕NDELETE filename
           r←'*** No action taken'
       :EndIf
+    ∇
+    
+    ∇ {name}←CreateConfigFile filename;config
+    ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"    
+      ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
+      config←⊃⎕NGET(⊃⎕NPARTS ##.SourceFile),configFilename,'.RemoveMe'
+      name←2⊃⎕NPARTS ¯1↓1⊃⎕NPARTS filename
+      config←'"projectSpace": "\?\?"'⎕R('"projectSpace": "',name,'"')⊣config
+      (⊂config)⎕NPUT filename
     ∇
 
     ∇ path←OpenFileDialogBox caption;ref;res;filename
