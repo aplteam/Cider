@@ -1,5 +1,5 @@
  R←Test_Open_005(stopFlag batchFlag);⎕TRAP;parms;folder;r;res
-⍝ Load project with an initialisation function
+⍝ Open a project with an initialisation function
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

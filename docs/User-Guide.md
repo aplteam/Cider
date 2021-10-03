@@ -52,7 +52,12 @@ Note that from now on we will refer to:
 
 `{parent}.{projectSpace}` as _the root of a project_.
 
-In order to achieve this Cider uses Link[^link].
+In order to achieve this Cider uses Link[^link]. 
+
+By default a link is established between the root of the project and the folder. When your intention is to work on the project (read: change the code) then this is the obvious thing to do.
+
+However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the `-import` flag.
+
 
 #### 4. Loading Tatin packages (optional)
  

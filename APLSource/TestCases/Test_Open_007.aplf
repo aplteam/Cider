@@ -1,5 +1,5 @@
- R←Test_Open_006(stopFlag batchFlag);⎕TRAP;parms;folder;r;res
-⍝ Open a project but suppress execution of the init function with positional parms
+ R←Test_Open_007(stopFlag batchFlag);⎕TRAP;parms;folder;r;res
+⍝ Open a project with two (diamondized) initialisation functions
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -11,16 +11,16 @@
  parms,←⊂''                         ⍝ Project space
  parms,←⊂'#.TEMP'                   ⍝ parent
  parms,←⊂''                         ⍝ alias (tested separately)
- parms,←⊂3                          ⍝ quietFlag + read-only
  →T.GoToTidyUp~⎕SE.Cider.OpenProject parms
 
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello
- →T.GoToTidyUp 0≠#.TEMP.Foo.⎕NC'∆GLOBAL_TestOpen_006'
+ →T.GoToTidyUp 2≠#.TEMP.Foo.⎕NC'∆GLOBAL_TestOpen_007_1'
+ →T.GoToTidyUp 2≠#.TEMP.Foo.⎕NC'∆GLOBAL_TestOpen_007_2'
 
  R←T._OK
 
 ∆TidyUp:
- res←∆LINK'Break' '#.TEMP.Foo'
+ res←⎕SE.Link.Break'#.TEMP.Foo'
  Assert res ∆StartsWith'Unlinked:'
  #.⎕EX'TEMP'
 ⍝Done

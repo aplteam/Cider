@@ -16,7 +16,7 @@
           c.Name←'OpenProject'
           c.Desc←'Load all source files into the WS and keep it linked by default'
           c.Group←'Cider'
-          c.Parse←'1s -target= -parent= -alias= -suppressLX -quiet'
+          c.Parse←'1s -target= -parent= -alias= -suppressLX -quiet -import'
           r,←c
      
           c←⎕NS''
@@ -95,7 +95,7 @@
           path←⎕C⍣(∧/'[]'∊path)⊣path
           Args.parent←'#'Args.Switch Args.parent
           Args.alias←⎕C''Args.Switch'alias'
-          flags←BitsToInt 0 0 1
+          flags←BitsToInt Args.(quiet suppressLX import)
           {}P.OpenProject(⊂path),Args.(target parent alias),flags
       :Case ⎕C'ListOpenProjects'
           r←P.ListOpenProjects Args.verbose
@@ -145,7 +145,7 @@
           r,←⊂'Takes a path to a folder that must contain a file "',configFilename,'" (JSON5).'
           r,←⊂''
           r,←⊂'The config file must specify all variables required by Cider, including "source".'
-          r,←⊂'The contents of "source" is then linked to "ProjectSpace".'
+          r,←⊂'The contents of "source" is then linked to "ProjectSpace" by default.'
           r,←⊂''
           r,←⊂'The user command prints messages to the session unless -quiet is specified.'
           r,←⊂''
@@ -156,6 +156,9 @@
           r,←⊂'current directory. If no such file is found then...'
           r,←⊂'* under Windows a dialog box is opened that allows you to navigate to the right folder'
           r,←⊂'* an error is thrown on non-Windows platforms'
+          r,←⊂''
+          r,←⊂'By default the files on disk are Linked to a namespace. By specifying the -import flag this'          
+          r,←⊂'can be avoided: the code is then loaded into the workspace with the Link.Import method.' 
           r,←⊂''
           r,←⊂'In case you are going to work on a project frequently you may specify'
           r,←⊂'-alias=name'
@@ -335,12 +338,13 @@
           r←'*** No action taken'
       :EndIf
     ∇
-    
+
     ∇ {name}←CreateConfigFile filename;config
-    ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"    
+    ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"
       ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
       config←⊃⎕NGET(⊃⎕NPARTS ##.SourceFile),configFilename,'.RemoveMe'
       name←2⊃⎕NPARTS ¯1↓1⊃⎕NPARTS filename
+      ((~name∊⎕D,⎕A,'_∆⍙',⎕C ⎕A)/name)←'_'
       config←'"projectSpace": "\?\?"'⎕R('"projectSpace": "',name,'"')⊣config
       (⊂config)⎕NPUT filename
     ∇

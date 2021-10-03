@@ -48,7 +48,7 @@ However, note that under Linux and Mac-OS no such folder will be created, althou
 
 #### Parameter
 
-Accepts one optional parameter which may be one of:
+Accepts an optional parameter that must be one of:
 
 * A folder that hosts a file `cider.config`
 * An alias that points to such a folder
@@ -65,13 +65,13 @@ Once a folder is established that holds a Cider config file the user command per
 1. Brings all code and variables into the project space
 1. Loads all Tatin packages if specified in the file `cider.config`
 1. Injects a namespace `CiderConfig` into the project space and...
-  * populates it with the contents of the configuration file as APL arrays
-  * adds a variable HOME that remembers the path the project was loaded from
+   * populates it with the contents of the configuration file as APL arrays
+   * adds a variable `HOME` that remembers the path the project was loaded from
 
 Notes:
 
 * The project space is defined in the Cider config file, but this can be overwritten with the `-target=` option
-* In case the `tatinLoad` parameter specified just one or more folders then those references pointing to the Tatin packages are all established in `projectSpace`
+* In case the `tatinLoad` parameter specified just one or multiple folders then those references pointing to the Tatin packages are all established in `projectSpace`
 
   However, this can be overwritten by specifying a different target space by adding 
 
@@ -81,13 +81,17 @@ Notes:
 
   after the folder
 
+  Example:
 
+  ```
+
+  ```
 
 ### CloseProject
 
 Takes a folder or an alias and breaks the Link between the namespace and its folder.
 
-You may specify the `-all` flag to close all project in `#`.
+You may specify the `-all` flag to close all projects in `#`.
 
 
 ### CreateProject
@@ -100,15 +104,15 @@ Creates a file `cider.config` in that folder.
  
 ### ListOpenProjects
 
-This command lists the project spaces of all currently linked projects.
+Lists the project spaces of all currently linked projects.
 
 
 
 ### ListAliases
 
-This command lists all Cider aliase together with their folders.
+Lists all Cider aliases together with their folders.
 
 
 ### Version
 
-Returns a three-item-vector with "Name", "Version number" and "Version date" regarding "Cider".
+Returns a three-item-vector with "Name", "Version number" and "Version date".

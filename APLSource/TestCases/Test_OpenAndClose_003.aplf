@@ -1,5 +1,5 @@
  R←Test_OpenAndClose_003(stopFlag batchFlag);⎕TRAP;tempDir;list;res
-⍝ Creates a project and then attempts to close a non-existing one (was once a bug)
+⍝ Open a (new) project and then attempt to close a non-existing one (was once a bug)
 ⍝ The bug: closed ALL projects rather than none
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
 

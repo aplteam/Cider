@@ -1,5 +1,5 @@
  R←Test_Open_002(stopFlag batchFlag);⎕TRAP;parms;folder;r;res
-⍝ Load simple project but specify a different parent space including a sub namespace with positional parms
+⍝ Open a simple project but specify a different parent space including a sub namespace with positional parms
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

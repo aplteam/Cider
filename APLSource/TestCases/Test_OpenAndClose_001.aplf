@@ -1,5 +1,5 @@
  R←Test_OpenAndClose_001(stopFlag batchFlag);⎕TRAP;tempDir;list;sourceFolder1;projectFolder1;projectFolder2;sourceFolder2;aliase
-⍝ Creates and opens two projects and then closes both of them, one by alias and one by path. Uses `DropAlias`.
+⍝ Open two (new) projects and then close both of them, one by alias and one by path. Uses `DropAlias`.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
 
  R←T._Failed

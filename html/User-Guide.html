@@ -71,6 +71,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Note that from now on we will refer to:</p>
 <p><code>{parent}.{projectSpace}</code> as <em>the root of a project</em>.</p>
 <p>In order to achieve this Cider uses Link[<a href="#fnref2" class="footnote_link"><sup>2</sup></a>].</p>
+<p>By default a link is established between the root of the project and the folder. When your intention is to work on the project (read: change the code) then this is the obvious thing to do.</p>
+<p>However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the <code>-import</code> flag.</p>
 <div class="h_tag">
 <a href="#4-Loading-Tatin-packages" id="4-Loading-Tatin-packages" class="autoheader_anchor">
 <h4 data-id="4-Loading-Tatin-packages">4. Loading Tatin packages (optional)</h4>

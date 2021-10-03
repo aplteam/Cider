@@ -7,11 +7,13 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.2.0+89' '2021-09-23'
-      ⍝ * 0.2.0 ⋄ 2021-09-23
-      ⍝   * `CreateProject` now creates the folder if it does not already exists (confirmation permitted)
+      r←'Cider' '0.2.0+95' '2021-10-03'
+      ⍝ * 0.2.0 ⋄ 2021-10-03
+      ⍝   * `-import- flag added to `CreateProject`
+      ⍝   * `CreateProject` now creates the folder if it does not already exist (confirmation permitted)
       ⍝   * `CreateProject` throws an error if an invalid path is provided
-      ⍝   * `CreateProject` injects the last part of the path into the config file as "projectSpace"
+      ⍝   * `CreateProject` injects the last part of the path into the config file as "projectSpace" if that is not set
+      ⍝   * `CreateOpenParms` now creates the parametetr space where it was called from.
       ⍝ * 0.1.2 ⋄ 2021-09-23
       ⍝   * When an unknown project name was passed to `CloseProject` then ALL projects were closed rather than none.
       ⍝   * Reporting to the session improved
@@ -40,6 +42,7 @@
     ⍝   5. Flags
     ⍝      1. quietFlag
     ⍝      2. suppressLX
+    ⍝      3. importFlag
       :Access Public Shared
       successFlag←failure
       parms←CreateOpenParms ⍬
@@ -48,13 +51,13 @@
       :Else
           'At least two parameters must be specified: "folder" and "projectSpace"'Assert 2≤≢y
           'folder' 'projectSpace' 'parent' 'alias'parms.{⍎⍺,'←''',⍵,''''}¨4↑(⊆y),(≢⊆y)↓⍬'' '#' ''
-          'quietFlag' 'suppressLX'parms.{⍎⍺,'←',⍕⍵}¨2↑IntToBits 5⊃(⊆y),(≢⊆y)↓⍬'' '#' 0 0
+          'quietFlag' 'suppressLX' 'importFlag'parms.{⍎⍺,'←',⍕⍵}¨3↑IntToBits 5⊃(⊆y),(≢⊆y)↓⍬'' '#' 0 0
       :EndIf
       '"folder" must be specified'Assert 0<≢parms.folder
       parms←GetFromAlias parms
       ('Folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
       :If ~parms.quietFlag
-          ⎕←' Loading project from ',parms.folder
+          ⎕←' ',((1+parms.importFlag)⊃'Loading' 'Importing'),' project from ',parms.folder
       :EndIf
       parms.projectSpace←⍕parms.projectSpace
       :If 0<≢parms.parent
@@ -79,35 +82,42 @@
       :If 0=≢parms.parent                                                               ⍝ Was it specified as argument?
           parms.parent←config.CIDER.parent                                              ⍝ Nope, so the config file rules
       :EndIf
-      source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source  ⍝ For linking we are only interested in the code folder
+      source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source              ⍝ For linking we are only interested in the code folder
       ('Source folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
       projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                            ⍝ Create project space from "parent" to avoid problems
       'Project space is not empty'Assert 0=≢projectSpace_.⎕NL⍳16
       projectSpace_.(⎕IO ⎕ML ⎕WX)←config.CIDER.(io ml wx)                               ⍝ For inheritance we specify the system vars early
       linkOptions←ExtractLinkOptions config                                             ⍝ Merge the default options with Cider's options
       p'Bringing in the source code...'
-      res←linkOptions ⎕SE.Link.Create projectSpace_ source                              ⍝ Get the code into the WS
-      dmx←⎕DMX
-      ('Link failed to load the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
+      :If parms.importFlag
+          res←linkOptions ⎕SE.Link.Import projectSpace_ source                          ⍝ Get the code into the WS
+          dmx←⎕DMX
+          ('LINK failed to import the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
+      :Else
+          res←linkOptions ⎕SE.Link.Create projectSpace_ source                          ⍝ Get the code into the WS
+          dmx←⎕DMX
+          ('LINK failed to load the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
+      :EndIf
       p'  Code established'
       LoadTatinPackages config parms.folder projectSpace_
       InjectConfigDataIntoProject config projectSpace_ parms.folder
       {}ExecProjectFunction⍣(~parms.suppressLX)⊣config projectSpace_
       ExecUserFunction config
-      p'*** Project successfully opened and established in ',parms.projectSpace
+      p'*** Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,'.',parms.projectSpace,'"'
       successFlag←success
       ⍝Done
     ∇
 
     ∇ parms←CreateOpenParms dummy
       :Access Public Shared
-      parms←⎕NS''
+      parms←(1⊃1↓⎕RSI).⎕NS''    ⍝ Create namespace where we got called from
       parms.folder←''
       parms.projectSpace←''
       parms.quietFlag←0
       parms.alias←''
       parms.parent←'#'
       parms.suppressLX←0
+      parms.importFlag←0
     ∇
 
     ∇ r←GetValidLinkParams
@@ -208,25 +218,33 @@
       :EndIf
     ∇
 
-    ∇ {r}←ExecProjectFunction(config projectSpace);fns
+    ∇ {r}←ExecProjectFunction(config projectSpace);fns;msg
       r←0
       :If 0<≢config.CIDER.lx
-          :If 3=projectSpace.⎕NC config.CIDER.lx
-              p'Executing project initialising function "',config.CIDER.lx,'"...'
-              :Select 1 2⊃projectSpace.⎕AT config.CIDER.lx
-              :Case 0
-                  projectSpace.⍎config.CIDER.lx
-                  r←1
-              :CaseList 1 ¯2
-                  fns←projectSpace.⍎config.CIDER.lx
-                  fns config
-                  r←1
-              :Else
-                  p'  Invalid function valence: is ambivalent'
-              :EndSelect
+          :If '⋄'∊config.CIDER.lx
+              msg←(⊂projectSpace config)ExecProjectFunction_¨'⋄'(≠⊆⊢)config.CIDER.lx
           :Else
-              ⎕←'Could not execute "',config.CIDER.lx,'"; function not found'
+              msg←(projectSpace config)ExecProjectFunction_ config.CIDER.lx
           :EndIf
+          p msg
+      :EndIf
+    ∇
+
+    ∇ msg←x ExecProjectFunction_ lx;fns;config;projectSpace
+      (projectSpace config)←x
+      :If 3=projectSpace.⎕NC lx
+          msg←⊂'Executing project initialising function "',(lx~' '),'"...'
+          :Select 1 2⊃projectSpace.⎕AT lx
+          :Case 0
+              projectSpace.⍎lx
+          :CaseList 1 ¯2
+              fns←projectSpace.⍎lx
+              fns config
+          :Else
+              msg,←⊂'  Invalid function valence: is ambivalent'
+          :EndSelect
+      :Else
+          msg←'Could not execute "',lx,'"; function not found'
       :EndIf
     ∇
 
@@ -326,7 +344,7 @@
           :If (⊂project)∊list[;1]
               {}⎕SE.Link.Break project
               r←1
-          :Elseif 0=≢⍕y
+          :ElseIf 0=≢⍕y
               {}{⎕SE.Link.Break ⍵}¨list
               r←≢list
           :EndIf
