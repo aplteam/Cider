@@ -7,9 +7,10 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.2.0+95' '2021-10-03'
+      r←'Cider' '0.2.0+98' '2021-10-05'
       ⍝ * 0.2.0 ⋄ 2021-10-03
-      ⍝   * `-import- flag added to `CreateProject`
+      ⍝   * `-noPkgLoad` flag added to `OpenProject`
+      ⍝   * `-import` flag added to `CreateProject`
       ⍝   * `CreateProject` now creates the folder if it does not already exist (confirmation permitted)
       ⍝   * `CreateProject` throws an error if an invalid path is provided
       ⍝   * `CreateProject` injects the last part of the path into the config file as "projectSpace" if that is not set
@@ -51,7 +52,7 @@
       :Else
           'At least two parameters must be specified: "folder" and "projectSpace"'Assert 2≤≢y
           'folder' 'projectSpace' 'parent' 'alias'parms.{⍎⍺,'←''',⍵,''''}¨4↑(⊆y),(≢⊆y)↓⍬'' '#' ''
-          'quietFlag' 'suppressLX' 'importFlag'parms.{⍎⍺,'←',⍕⍵}¨3↑IntToBits 5⊃(⊆y),(≢⊆y)↓⍬'' '#' 0 0
+          'quietFlag' 'suppressLX' 'importFlag' 'noPkgLoad'parms.{⍎⍺,'←',⍕⍵}¨4↑IntToBits 5⊃(⊆y),(≢⊆y)↓⍬'' '#' 0 0 
       :EndIf
       '"folder" must be specified'Assert 0<≢parms.folder
       parms←GetFromAlias parms
@@ -99,7 +100,7 @@
           ('LINK failed to load the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
       :EndIf
       p'  Code established'
-      LoadTatinPackages config parms.folder projectSpace_
+      {}LoadTatinPackages⍣(⊃~parms.noPkgLoad)⊣config parms.folder projectSpace_
       InjectConfigDataIntoProject config projectSpace_ parms.folder
       {}ExecProjectFunction⍣(~parms.suppressLX)⊣config projectSpace_
       ExecUserFunction config
@@ -118,6 +119,7 @@
       parms.parent←'#'
       parms.suppressLX←0
       parms.importFlag←0
+      parms.noPkgLoad←0
     ∇
 
     ∇ r←GetValidLinkParams

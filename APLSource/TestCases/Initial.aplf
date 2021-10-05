@@ -1,2 +1,4 @@
-Initial
-##.SyncCiderScripts 1
+ Initial
+ ##.SyncCiderScripts 1
+ 'Cider''s version number in # and ⎕SE diverge'Assert ⎕SE.Cider.Version≡#.Cider.Cider.Version
+⍝Done

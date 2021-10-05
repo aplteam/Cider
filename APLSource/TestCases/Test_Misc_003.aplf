@@ -9,7 +9,7 @@
 
  folder←∆GetTestPath⊃⎕SI
 
- filename←⎕SE.Cider.GetCiderConfigFilename
+ filename←##.Cider.GetCiderConfigFilename
  cfg←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
 
  #.TEMP2.⎕FX'ExecuteAfterProjectOpen config' '∆FLAG←1'
@@ -24,14 +24,14 @@
  parms,←⊂''
  parms,←⊂''
  parms,←⊂1
- res←⎕SE.Cider.OpenProject parms
+ res←##.Cider.OpenProject parms
  →T.GoToTidyUp~res
-→T.GoToTidyUp 1≠#.TEMP2.∆FLAG
+ →T.GoToTidyUp 1≠#.TEMP2.∆FLAG
 
  R←T._OK
 
 ∆TidyUp:
-cfg.ExecuteAfterProjectOpen←was
+ cfg.ExecuteAfterProjectOpen←was
  (⊂⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣cfg)⎕NPUT filename 1
  res←∆LINK'Break' '#.TEMP'
  Assert res ∆StartsWith'Unlinked:'

@@ -4,18 +4,16 @@
 
  R←T._Failed
  tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
- ⍝(tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
  sourceFolder←tempDir,'/APLSource'
  'Create!'FilesAndDirs.CheckPath sourceFolder
  (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
 
-⍝ {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig'
  {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit'
  list←FilesAndDirs.ListFiles tempDir
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
  config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET tempDir,'/cider.config'
- →T.GoToTidyUp 'config.CIDER.projectSpace'≡config.CIDER.projectSpace
+ →T.GoToTidyUp'config.CIDER.projectSpace'≡config.CIDER.projectSpace
 
  R←T._OK
 

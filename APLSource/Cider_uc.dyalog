@@ -16,7 +16,7 @@
           c.Name←'OpenProject'
           c.Desc←'Load all source files into the WS and keep it linked by default'
           c.Group←'Cider'
-          c.Parse←'1s -target= -parent= -alias= -suppressLX -quiet -import'
+          c.Parse←'1s -target= -parent= -alias= -suppressLX -quiet -import -noPkgLoad'
           r,←c
      
           c←⎕NS''
@@ -74,7 +74,7 @@
       :EndIf
       :Select ⎕C Cmd
       :Case ⎕C'OpenProject'
-          Args.target←''Args.Switch Args.target
+          Args.target←{(,0)≡,⍵:'' ⋄ ⍵}Args.target
           :If 0≡Args._1
               path←⊃1 ⎕NPARTS''
               :If ⎕NEXISTS path,'cider.config'
@@ -93,9 +93,9 @@
               :EndIf
           :EndIf
           path←⎕C⍣(∧/'[]'∊path)⊣path
-          Args.parent←'#'Args.Switch Args.parent
+          Args.parent←{(,0)≡,⍵:'#' ⋄ ⍵}Args.parent
           Args.alias←⎕C''Args.Switch'alias'
-          flags←BitsToInt Args.(quiet suppressLX import)
+          flags←BitsToInt Args.(quiet suppressLX import noPkgLoad)
           {}P.OpenProject(⊂path),Args.(target parent alias),flags
       :Case ⎕C'ListOpenProjects'
           r←P.ListOpenProjects Args.verbose
@@ -147,21 +147,22 @@
           r,←⊂'The config file must specify all variables required by Cider, including "source".'
           r,←⊂'The contents of "source" is then linked to "ProjectSpace" by default.'
           r,←⊂''
-          r,←⊂'The user command prints messages to the session unless -quiet is specified.'
-          r,←⊂''
-          r,←⊂'The project is loaded into Cider.(parent.projectSpace) unless this is (usually temporarily)'
-          r,←⊂'overwritten by setting the -target= and/or the -parent= options.'
-          r,←⊂''
           r,←⊂'If no folder is specified Cider looks for a file "',configFilename,'" in the'
           r,←⊂'current directory. If no such file is found then...'
-          r,←⊂'* under Windows a dialog box is opened that allows you to navigate to the right folder'
-          r,←⊂'* an error is thrown on non-Windows platforms'
+          r,←⊂' * under Windows a dialog box is opened that allows you to navigate to the right folder'
+          r,←⊂' * an error is thrown on non-Windows platforms'
           r,←⊂''
-          r,←⊂'By default the files on disk are Linked to a namespace. By specifying the -import flag this'          
-          r,←⊂'can be avoided: the code is then loaded into the workspace with the Link.Import method.' 
+          r,←⊂'-quiet:     The user command prints messages to the session unless -quiet is specified.'
+          r,←⊂'-parent:    The project is loaded into Cider.(parent.projectSpace) unless this is (usually'
+          r,←⊂'            temporarily) overwritten by setting the -target= and/or the -parent= options.'
+          r,←⊂'-import:    By default the files on disk are Linked to a namespace. By specifying the -import'
+          r,←⊂'            flag this can be avoided: the code is then loaded into the workspace with the'
+          r,←⊂'            Link.Import method.'
+          r,←⊂'-alias:     In case you are going to work on a project frequently you may specify'
+          r,←⊂'            -alias=name'
+          r,←⊂'-noPkgLoad: By default the Tatin packages from the installation folder(s) defined in the'
+          r,←⊂'            config will be loaded. If you don''t want this specify -noPkgLoad'
           r,←⊂''
-          r,←⊂'In case you are going to work on a project frequently you may specify'
-          r,←⊂'-alias=name'
           r,←⊂'Later on you may open the project with:'
           r,←⊂']Cider.OpenProject [name]'
           r,←⊂'You can also ask Cider for a list of all known aliases with:'
@@ -169,10 +170,10 @@
       :Case ⎕C'ListOpenProjects'
           r,←⊂'Print a list with the namespaces of all currently opened projects.'
           r,←⊂'Add the -verbose flag for more information. Then a matrix is returned with these columns:'
-          r,←⊂'[;1] Namespace name'
-          r,←⊂'[;2] Path'
-          r,←⊂'[;3] Number of objects in the project'
-          r,←⊂'[;4] Alias name (if any)'
+          r,←⊂' [;1] Namespace name'
+          r,←⊂' [;2] Path'
+          r,←⊂' [;3] Number of objects in the project'
+          r,←⊂' [;4] Alias name (if any)'
       :Case ⎕C'ListAliases'
           r,←⊂'Print all defined aliases together with their folders.'
           r,←⊂''
@@ -189,22 +190,20 @@
           r,←⊂'One might also specify a namespace. Then the namespace is Linked to "source",'
           r,←⊂'and a namespace CiderConfig is injected into the namespace, holding configuration data.'
           r,←⊂''
-          r,←⊂'* Creates a file "',configFilename,'" in that folder'
-          r,←⊂'* Lets the user edit that file and makes sure that all mandatory settings are done and'
-          r,←⊂'  also that those are correct'
-          r,←⊂'* In case an alias is specified the alias is saved'
+          r,←⊂' * Creates a file "',configFilename,'" in that folder'
+          r,←⊂' * Lets the user edit that file and makes sure that all mandatory settings are done and'
+          r,←⊂'   also that those are correct'
+          r,←⊂' * In case an alias is specified the alias is saved'
           r,←⊂''
           r,←⊂'If no path is specified it acts on the current directory, but in that case the user'
           r,←⊂'is prompted for confirmation to avoid mishaps.'
           r,←⊂''
-          r,←⊂'By default a file cider.config is created, and an error is thrown in case it already'
-          r,←⊂'exists. You can use -acceptConfig to overwrite this and force CreateProject to accept'
-          r,←⊂'an already existing config file.'
-          r,←⊂''
-          r,←⊂'With -noEdit you can prevent the user from being asked to edit the config file.'
-          r,←⊂''
-          r,←⊂'In case you are going to work on that project frequently you may specify'
-          r,←⊂'-alias=name'
+          r,←⊂'-acceptConfig: By default a file cider.config is created, and an error is thrown in'
+          r,←⊂'               case it already exists. You can use -acceptConfig to overwrite this and'
+          r,←⊂'               force CreateProject to accept an already existing config file.'
+          r,←⊂'-noEdit:       With -noEdit you can prevent the user from being asked to edit the config file.'
+          r,←⊂'-alias:        In case you are going to work on that project frequently you may specify'
+          r,←⊂'               -alias=name'
           r,←⊂'Note that the alias is not case sensitive'
       :Case ⎕C'CloseProject'
           r,←⊂'Breaks the Link between the project and the files on disk.'

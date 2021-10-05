@@ -1,0 +1,19 @@
+ R←Test_Open_020(stopFlag batchFlag);⎕TRAP;parms;r
+⍝ Open a project and specify parent via parameter
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←∆GetTestPath⊃⎕SI
+ parms.parent←'#.TEMP'
+ parms.import←1
+ parms.quietFlag←1
+ →T.PassesIf ##.Cider.OpenProject parms
+
+ →T.PassesIf'World'≡#.TEMP.Foo.Hello
+
+ R←T._OK
+
+⍝Done

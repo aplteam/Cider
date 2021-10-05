@@ -13,7 +13,7 @@
  parms,←⊂''
  parms,←⊂''
  parms,←⊂1
- res←⎕SE.Cider.OpenProject parms
+ res←##.Cider.OpenProject parms
 
  →T.GoToTidyUp~res
  →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3

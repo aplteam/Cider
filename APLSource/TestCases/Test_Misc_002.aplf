@@ -13,7 +13,7 @@
  parms,←⊂''
  parms,←⊂''
  parms,←⊂1
- res←⎕SE.Cider.OpenProject parms
+ res←##.Cider.OpenProject parms
  →T.GoToTidyUp~res
  →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3
  →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP.⎕NL(⍳16)~3)~⊂'CiderConfig'
@@ -24,12 +24,12 @@
  parms,←⊂''
  parms,←⊂''
  parms,←⊂1
- res←⎕SE.Cider.OpenProject parms
+ res←##.Cider.OpenProject parms
  →T.GoToTidyUp~res
  →T.GoToTidyUp 1≠≢#.TEMP2.⎕NL 3
  →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP2.⎕NL(⍳16)~3)~⊂'CiderConfig'
 
- list←⎕SE.Cider.ListOpenProjects 0
+ list←##.Cider.ListOpenProjects 0
  →T.GoToTidyUp 2≠2⊃⍴list   ⍝ Namespace, folder
  →T.GoToTidyUp 2>≢list
  →T.GoToTidyUp 2≠+/((-1+≢'Project1')↑¨list[;2])∊'/Project1' '/Project2' '\Project1' '\Project2'

@@ -12,7 +12,7 @@
  parms,←⊂'#.TEMP'                   ⍝ parent
  parms,←⊂''                         ⍝ alias (tested separately)
  parms,←⊂1                          ⍝ quietFlag
- →T.GoToTidyUp~⎕SE.Cider.OpenProject parms
+ →T.GoToTidyUp~##.Cider.OpenProject parms
 
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello
  →T.GoToTidyUp 2≠#.TEMP.Foo.⎕NC'∆GLOBAL_TestOpen_005'

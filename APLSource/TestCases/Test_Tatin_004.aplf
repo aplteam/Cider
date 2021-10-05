@@ -14,7 +14,7 @@
  parms,←⊂1
 
  :Trap 0
-     res←⎕SE.Cider.OpenProject parms
+     res←##.Cider.OpenProject parms
      →T.GoToTidyUp 1
  :Else
      dmx←⎕DMX

@@ -1,0 +1,15 @@
+ R←Test_Open_030(stopFlag batchFlag);⎕TRAP;r;res;folder
+⍝ Open a project and specify -parent=
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+
+ folder←∆GetTestPath⊃⎕SI
+ res←⎕SE.UCMD'Cider.OpenProject ',folder,' -parent=#.TEMP -import -quiet'
+ →T.PassesIf 0=≢res
+
+ →T.PassesIf'World'≡#.TEMP.Foo.Hello
+
+ R←T._OK
+⍝Done

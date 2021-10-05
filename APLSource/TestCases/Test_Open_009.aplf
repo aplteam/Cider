@@ -1,0 +1,16 @@
+ R←Test_Open_009(stopFlag batchFlag);⎕TRAP;r;res;folder
+⍝ Open a project without loading any packages (user command with -noPkgLoad flag)
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+
+ folder←∆GetTestPath⊃⎕SI
+ res←⎕SE.UCMD'Cider.OpenProject ',folder,' -noPkgLoad -import'
+ →T.PassesIf 0=≢res
+
+ →T.PassesIf'World'≡#.TEMP.Hello
+ →T.PassesIf 2=≢#.TEMP.⎕NL⍳16                 ⍝ We must not find any packages, just the function and CiderConfig
+
+ R←T._OK
+⍝Done
