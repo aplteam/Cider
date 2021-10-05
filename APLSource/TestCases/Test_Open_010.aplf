@@ -12,7 +12,7 @@
  parms,←⊂''                         ⍝ Project space
  parms,←⊂'#.TEMP'                   ⍝ parent
  parms,←⊂''                         ⍝ alias (tested separately)
- parms,←⊂4                          ⍝ import flag
+ parms,←⊂5                          ⍝ import flag + quiet flag
  →T.GoToTidyUp~##.Cider.OpenProject parms
 
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello

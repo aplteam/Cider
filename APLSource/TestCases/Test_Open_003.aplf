@@ -13,8 +13,8 @@
  parms,←⊂'___Zoo___'
  parms,←⊂'⎕SE'                      ⍝ parent
  parms,←⊂''                         ⍝ alias (tested separately)
- →T.GoToTidyUp 1≠##.Cider.OpenProject parms
  parms,←⊂1                          ⍝ quietFlag
+ →T.GoToTidyUp 1≠##.Cider.OpenProject parms
 
  →T.GoToTidyUp 0≠≢#.TEMP.⎕NL⍳16
  →T.GoToTidyUp 9≠⎕SE.⎕NC'___Zoo___'

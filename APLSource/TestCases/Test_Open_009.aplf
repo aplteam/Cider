@@ -6,7 +6,7 @@
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
 
  folder←∆GetTestPath⊃⎕SI
- res←⎕SE.UCMD'Cider.OpenProject ',folder,' -noPkgLoad -import'
+ res←⎕SE.UCMD'Cider.OpenProject ',folder,' -noPkgLoad -import -quiet'
  →T.PassesIf 0=≢res
 
  →T.PassesIf'World'≡#.TEMP.Hello

@@ -1,4 +1,4 @@
- R←Test_OpenAndClose_003(stopFlag batchFlag);⎕TRAP;tempDir;list;res
+ R←Test_OpenAndClose_003(stopFlag batchFlag);⎕TRAP;tempDir;list;res;parms
 ⍝ Open a (new) project and then attempt to close a non-existing one (was once a bug)
 ⍝ The bug: closed ALL projects rather than none
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
@@ -8,7 +8,11 @@
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig'
- res←##.Cider.OpenProject tempDir
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←tempDir
+ parms.quietFlag←1
+ res←##.Cider.OpenProject parms
 
  list←##.Cider.ListOpenProjects 0
  →T.GoToTidyUp 0≠##.Cider.CloseProject'DoesNotExist'

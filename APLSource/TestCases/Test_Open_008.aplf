@@ -9,6 +9,7 @@
  parms.folder←∆GetTestPath⊃⎕SI
  parms.noPkgLoad←1
  parms.import←1
+ parms.quietFlag←1
  →T.PassesIf ##.Cider.OpenProject parms
 
  →T.PassesIf'World'≡#.TEMP.Hello

@@ -295,7 +295,7 @@
       P←⍎P,'.Cider'
     ∇
 
-    ∇ r←{namespace}CreateProject(folder acceptFlag noEditFlag);filename;success;config;projectFolder
+    ∇ r←{namespace}CreateProject(folder acceptFlag noEditFlag);filename;success;config;projectFolder;parms
       :Access Public Shared
       namespace←{0<⎕NC ⍵:⍎⍵ ⋄ ⍬}'namespace'
       r←''
@@ -327,7 +327,12 @@
           :If namespace≢⍬
               projectFolder←1⊃⎕NPARTS filename
               (⍎namespace).{⎕EX ⎕NL⍳16}⍬
-          :AndIf P.OpenProject(⊂projectFolder),config.CIDER.(projectSpace parent)
+              parms←P.CreateOpenParms ⍬
+              parms.folder←projectFolder
+              parms.projectSpace←config.CIDER.projectSpace
+              parms.parent←config.CIDER.parent
+              parms.quietFlag←1
+          :AndIf P.OpenProject parms
               r←'Project created and opened'
           :Else
               r←'Project created'
