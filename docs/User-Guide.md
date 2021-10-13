@@ -38,11 +38,16 @@ The `parent` must exist while the `parentspace` may or may not exist. If it does
 
 #### 2. Setting system variables
 
-In the next step Cider is going to set three system variables defined in the config file: `⎕IO`, `⎕ML` and `⎕WX`.
-
-If you need other system variables to carry specific values then you are advised to set and possibly distribute those in your own initialisation function; see there.
+In the next step Cider is going to set three system variables defined in the config file in the `SYSVARS` section: `⎕IO`, `⎕ML` and `⎕WX`.
 
 It is important to set these three variables before code is brought into the workspace because bringing class scripts or namespace scripts into the workspace implies the execution of some code, and that code might well rely on the correct setting of those three system variables.
+
+If you need other system variables to carry specific values then you may add them to the `SYSVARS` section. 
+
+Note that the names are not case sensitive: wether the value for `⎕FR` is specified as  "fr" or "FR" or "Fr" or "fR" does not matter.
+
+In case a setting in `SYSVARS` cannot be used for assigning a system variable a warning message will be printed to the session.
+
 
 #### 3. Bringing in the code
 
@@ -104,7 +109,7 @@ Note that you can access the configuration data of the project from within your 
 
 ### 7. Executing user-specific code
 
-Last not least you might want to execute some general code (as opposed to project-specific code) after a project was loaded. An example is a function that would check whether the project is managed by Git, and if so reports what the current branch is as well as the status of that branch.
+Last not least you might want to execute some general code (as opposed to project-specific code) after a project was loaded.
 
 This can be achieved by specifying the fully qualified name of a function that must be monadic, most likely in `⎕SE`. A namespace with the configuration data of the project is passed as right argument.
 
@@ -112,7 +117,7 @@ The function may or may not return a result, but when it does the result will be
 
 The fully qualified name of that function must go into the file that is returned by the function `GetCiderConfigFilename` which is available only via the API, not as a user command.
 
-That file already contains a definition of the keyword `ExecuteAfterProjectOpen` but it is empty:
+That file already contains a definition of the keyword `ExecuteAfterProjectOpen`, but it is empty:
 
 ```
 {

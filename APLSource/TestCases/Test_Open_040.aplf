@@ -1,0 +1,22 @@
+ R←Test_Open_040(stopFlag batchFlag);⎕TRAP;parms
+⍝ Open a project with additional and in one case invalid system variables (SYSVARS)
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ 'TEMP'#.⎕NS''
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←∆GetTestPath⊃⎕SI
+ parms.parent←'#.TEMP'
+ Assert ##.Cider.OpenProject parms
+
+ →T.GoToTidyUp 101≠#.TEMP.Foo.⎕PW
+ →T.GoToTidyUp 10≠#.TEMP.Foo.⎕PP
+ →T.GoToTidyUp 1287≠#.TEMP.Foo.⎕FR
+
+ R←T._OK
+
+∆TidyUp:
+ ⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ #.⎕EX'TEMP'
+⍝Done

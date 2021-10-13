@@ -7,7 +7,12 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.3.0+101' '2021-10-05'
+      r←'Cider' '0.4.0+109' '2021-10-13'
+      ⍝ * 0.4.0 ⋄ 2021-10-13
+      ⍝   * Section "SYSVARS" added to Cider's config file. Populated with "io", "ml" and "wx".
+      ⍝     Other system vars may be added.
+      ⍝     Files with old format are converted automatically (confirmation permitted).
+      ⍝   * Check added to `ListOpenProjects` regarding ⍵ (must be Boolean)
       ⍝ * 0.3.0 ⋄ 2021-10-05
       ⍝   * `-noPkgLoad` flag added to `OpenProject`
       ⍝ * 0.2.0 ⋄ 2021-10-03
@@ -15,7 +20,7 @@
       ⍝   * `CreateProject` now creates the folder if it does not already exist (confirmation permitted)
       ⍝   * `CreateProject` throws an error if an invalid path is provided
       ⍝   * `CreateProject` injects the last part of the path into the config file as "projectSpace" if that is not set
-      ⍝   * `CreateOpenParms` now creates the parametetr space where it was called from.
+      ⍝   * `CreateOpenParms` now creates the parameter space where it was called from.
       ⍝ * 0.1.2 ⋄ 2021-09-23
       ⍝   * When an unknown project name was passed to `CloseProject` then ALL projects were closed rather than none.
       ⍝   * Reporting to the session improved
@@ -77,18 +82,18 @@
       configFilename←parms.folder,'/cider.config'
       ('No file "cider.config" found in ',parms.folder)Assert ⎕NEXISTS configFilename
       config←Get_JSON5 configFilename
-      CheckParameters config
       :If 0=≢parms.projectSpace                                                         ⍝ Was it specified as argument?
           parms.projectSpace←config.CIDER.projectSpace                                  ⍝ Nope, so the config file rules
       :EndIf
       :If 0=≢parms.parent                                                               ⍝ Was it specified as argument?
           parms.parent←config.CIDER.parent                                              ⍝ Nope, so the config file rules
       :EndIf
+      projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                            ⍝ Create project space from "parent" to avoid problems
+      configFilename HandleSysVars config
+      CheckParameters config
       source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source              ⍝ For linking we are only interested in the code folder
       ('Source folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
-      projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                            ⍝ Create project space from "parent" to avoid problems
       'Project space is not empty'Assert 0=≢projectSpace_.⎕NL⍳16
-      projectSpace_.(⎕IO ⎕ML ⎕WX)←config.CIDER.(io ml wx)                               ⍝ For inheritance we specify the system vars early
       linkOptions←ExtractLinkOptions config                                             ⍝ Merge the default options with Cider's options
       p'Bringing in the source code...'
       :If parms.importFlag
@@ -142,13 +147,10 @@
     ∇ r←GetValidCiderParams
       r←⍬
       r,←⊂'source'
-      r,←⊂'io'
       r,←⊂'lx'
-      r,←⊂'ml'
       r,←⊂'parent'
       r,←⊂'projectSpace'
       r,←⊂'tatinFolder'
-      r,←⊂'wx'
       r,←⊂'info_url'
     ∇
 
@@ -187,6 +189,30 @@
       bool←GetValidCiderParams∊list2
       ('Missing Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams)Assert∧/bool
       p'  All fine'
+    ∇
+
+    ∇ {r}←configFilename HandleSysVars config;json;name;name_
+    ⍝ For inheritance we specify the system vars early
+      r←⍬
+      :If 9=config.⎕NC'SYSVARS'     ⍝ Was introduced in version 0.4.0
+          :For name :In ' '~⍨¨↓config.SYSVARS.⎕NL 2
+              name_←1 ⎕C name
+              :Trap 0
+                  projectSpace_.⍎'⎕',name_,'←',⍕⍎'config.SYSVARS.',name
+              :Else
+                  ⎕←'>>> Assigning system variable "',name,'" failed'
+              :EndTrap
+          :EndFor
+      :Else                         ⍝ SysVars prior to version 0.3.0
+          projectSpace_.(⎕IO ⎕ML ⎕WX)←config.CIDER.(io ml wx)
+          :If 1 YesOrNo'Convert old system vars definition to new one?'
+              'SYSVARS'config.⎕NS''
+              config.SYSVARS.(io ml wx)←config.CIDER.(io ml wx)
+              config.CIDER.⎕EX¨'io' 'ml' 'wx'
+              json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config
+              (⊂json)⎕NPUT configFilename 1
+          :EndIf
+      :EndIf
     ∇
 
     ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_
@@ -270,6 +296,7 @@
 
     ∇ r←ListOpenProjects verboseFlag;res;aliases;ind
       :Access Public Shared
+      '⍵ must be a Boolean'Assert(⊂verboseFlag)∊0 1
       r←(0(2+2×verboseFlag))⍴''
       res←⎕SE.Link.Status''
       :If 'No active links'≢res

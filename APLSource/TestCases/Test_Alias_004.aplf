@@ -1,5 +1,5 @@
  R←Test_Alias_004(stopFlag batchFlag);⎕TRAP;mat2;mat1
-⍝ Exercise the useer command ListAlias with -prune
+⍝ Exercise `DropAlias
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

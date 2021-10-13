@@ -22,36 +22,25 @@
 
     ∇ r←Version
       :Access Public shared
-      r←'Tester2' '3.2.0-beta-1+100' '2021-09-09'
+      r←'Tester2' '3.2.0+103' '2021-10-06'
     ∇
 
     ∇ History
       :Access Public shared
-      ⍝ * 3.2.0 ⋄ 2021-09-09
-      ⍝   * The beta version uses the name "Proma" which is subject to change: we can only publish Tester2 to [tatin]
-      ⍝     once the final name is settled.
-      ⍝   * `Tester2` now tells `Link` in case an APL object was changed under the condition that it is at least
-      ⍝     Link 3.0 that is managing the code
-      ⍝   * New constant `NoPromaTests` introduced
+      ⍝ * 3.2.0 ⋄ 2021-10-01
+      ⍝   * `Tester2` now informs `Link` in case an APL object was changed (`RenameTestFnsTo`) under the condition 
+      ⍝     that it is at least Link 3.0 that is managing the code.
+      ⍝   * New constant `NoCiderTests` introduced.
       ⍝   * The test case that is executed next is now printed to the session BEFORE its execution. Same for the GUI.
       ⍝     As a consequence the order of the items of a single test call needed to change, but the same information
       ⍝     is provided as before anyway.
-      ⍝   * `Tester2` now attempts to inform Link in case any Linked stuff got changed by `Tester2`.
       ⍝   * Bug fixes
       ⍝     * The flagging of test cases that are inactive for one reason or another was inconsistant. Those are
       ⍝       now always flagged with a lamp symbol (⍝).
       ⍝     * `ListTestFunctions` does not show the lamp symbol anymore.
       ⍝     * `RenameTestFnsTo` printed to the session rather than returning the messages as result.
-      ⍝ * 3.1.3 ⋄ 2021-04-02
-      ⍝   * Bug fixes
-      ⍝     * In case an `Initial` function returned a 0 this causes a VALUE ERROR later
-      ⍝     * When an `Initial` function returned a 0 no `Cleanup` function was executed, neither the general nor
-      ⍝       any group specific one.
-      ⍝ * 3.1.2 ⋄ 2021-03-08
-      ⍝   * Bug fix: in case a test suite was quit by sending `QuitEvent`, a generic `Cleanup` function was executed
-      ⍝     but on group-specific one, if there is any due.
-      ⍝ * 3.1.1 ⋄ 2021-03-01
-      ⍝   * Package config corrected
+      ⍝     * `CodeCoverage.Finalyze` (which has been marked as deprecated for quite a while) got replaced by 
+      ⍝       `CodeCoverage.Finalise`, finally fixing the typo.
       ⍝\\
       ⍝ For a full history (including older versions) see <https://github.com/aplteam/Tester2/releases>
     ∇
@@ -67,7 +56,7 @@
     :Field Public Instance Readonly _LinuxOrWindowsOnly←¯16
     :Field Public Instance Readonly _MacOrWindowsOnly←¯17
     :Field Public Instance Readonly _NoAcreTests←¯18
-    :Field Public Instance Readonly _NoPromaTests←¯19
+    :Field Public Instance Readonly _NoCiderTests←¯19
     :Field Public Instance Readonly _NotApplicable←¯20
     :Field Public Instance Readonly _NotImplemented←¯21
     :Field Public Instance Readonly _IncompatibleVersion←¯22
@@ -261,10 +250,10 @@
       _codeCoverage←''
       :If 0<≢parent←'AcreConfig'{⍵∊# ⎕SE:'' ⋄ 0<⍵.⎕NC ⍺:⍵ ⋄ ⍺ ∇ ⍵.##}_ref
           _IniFolder←parent.AcreConfig.ProjectFolder
-      :ElseIf 9=_ref.⎕NC'PromaConfig'
-          _IniFolder←_ref.PromaConfig.HOME
-      :ElseIf 9=_ref.##.⎕NC'PromaConfig'
-          _IniFolder←_ref.##.PromaConfig.HOME
+      :ElseIf 9=_ref.⎕NC'CiderConfig'
+          _IniFolder←_ref.CiderConfig.HOME
+      :ElseIf 9=_ref.##.⎕NC'CiderConfig'
+          _IniFolder←_ref.##.CiderConfig.HOME
       :Else
           _IniFolder←''
       :EndIf
@@ -485,7 +474,7 @@
       :EndIf
       {}ExecuteCleanup _ref ps
       :If 0<≢_codeCoverage
-          :If 0=≢res←_codeCoverage.Finalyze 1
+          :If 0=≢res←_codeCoverage.Finalise 1
               ⎕←'Coverage report: nothing to report'
           :Else
               ShowLog'Coverage report: ',res
@@ -843,8 +832,8 @@
           :If _NoAcreTests∊ps.returnCodes
               log,←⊂'  ',(⍕_NoAcreTests+.=ps.returnCodes),' test cases not executed because they are acre-related (flagged with "⍝")'
           :EndIf
-          :If _NoPromaTests∊ps.returnCodes
-              log,←⊂'  ',(⍕_NoPromaTests+.=ps.returnCodes),' test cases not executed because they are Proma-related (flagged with "⍝")'
+          :If _NoCiderTests∊ps.returnCodes
+              log,←⊂'  ',(⍕_NoCiderTests+.=ps.returnCodes),' test cases not executed because they are Cider-related (flagged with "⍝")'
           :EndIf
           :If _NotApplicable∊ps.returnCodes
               log,←⊂'  ',(⍕_NotApplicable+.=ps.returnCodes),' test cases not executed because they were not applicable (flagged with "⍝")'
@@ -1641,31 +1630,28 @@
 
     ∇ {r}←NotifyAcreAndLinkAndDeleteOldVersion(oldName newName);delFilanme;rc
       r←⍬
-      :If 'No active links in'{⍺≡(≢⍺)↑⍵}⎕SE.Link.Status _ref
-          :If 0=⎕SE.⎕NC'acre'
-              _ref.⎕EX oldName
+      :If 0<⎕SE.⎕NC'acre'
+          :Trap 22
+              rc←⎕SE.acre.SetChanged newName
           :Else
-              (oldName newName)←{(⍕_ref),'.',⍵}¨oldName newName
-              :If 3=⎕SE.acre.⎕NC'Version'
-                  delFilanme←((-≢'.change')↓⊃⎕SE.acre.Changefile newName),'.delete'
-                  :Trap 22
-                      rc←⎕SE.acre.SetChanged newName
-                  :Else
-                      :Return ⍝ Not an acre project
-                  :EndTrap
-                  rc←⎕SE.acre.Erase oldName
-                  :If ⎕NEXISTS delFilanme
-                      ⎕NDELETE delFilanme
-                  :EndIf
+              ∘∘∘ ⍝ Huh?! What's up?
+          :EndTrap
+          :If 0<≢rc
+              ⎕SE.acre.Erase oldName
+              :Return
+          :EndIf
+      :EndIf
+      :If 3≤{⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'.'}⎕SE.Link.Version
+          rc←⎕SE.Link.Add(⍕_ref),'.',newName
+          →('Not in a linked namespace: '{⍺≡(≢⍺)↑⍵}rc)/0
+          :If 'Added: '{⍺≡(≢⍺)↑⍵}rc
+              rc←⎕SE.Link.Expunge(⍕_ref),'.',oldName
+              :If ~rc
+                  ∘∘∘ ⍝ Huh?! What's up?
               :EndIf
           :EndIf
       :Else
-          :If 3≤{⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'.'}⎕SE.Link.Version
-              {}⎕SE.Link.Add(⍕_ref),'.',newName
-              {}⎕SE.Link.Expunge(⍕_ref),'.',oldName
-          :Else
-              ⎕←'Incompatible version of Link detected; we need 3.0.0 or better'
-          :EndIf
+          ⎕←'Incompatible version of Link detected; we need 3.0.0 or better'
       :EndIf
     ∇
 
