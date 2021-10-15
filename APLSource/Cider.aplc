@@ -7,7 +7,10 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.4.0+109' '2021-10-13'
+      r←'Cider' '0.4.1+111' '2021-10-15'
+      ⍝ * 0.4.1 ⋄ 2021-10-15
+      ⍝   * Bug fixes
+      ⍝     * In case Expose->Root properties is not ticked some Cider commands crashed.
       ⍝ * 0.4.0 ⋄ 2021-10-13
       ⍝   * Section "SYSVARS" added to Cider's config file. Populated with "io", "ml" and "wx".
       ⍝     Other system vars may be added.
@@ -472,7 +475,7 @@
     ∇ filename←GetCiderAliasFilename;folder
       :Access Public Shared
       filename←''
-      :If 'W'=⊃1⊃#.APLVersion
+      :If 'W'=⊃1⊃'.'⎕WG'aplversion'
           :If 0=≢folder←⊃⎕SH'echo %APPDATA%'
               '%APPDATA% is undefined'⎕SIGNAL 11
           :Else
@@ -490,7 +493,7 @@
     ⍝ As a side effect it creates the file with defaults if it does not yet exist.
       :Access Public Shared
       filename←''
-      :If 'W'=⊃1⊃#.APLVersion
+      :If 'W'=⊃1⊃'.'⎕WG'aplversion'
           :If 0=≢folder←⊃⎕SH'echo %APPDATA%'
               '%APPDATA% is undefined'⎕SIGNAL 11
           :Else

@@ -1,4 +1,4 @@
-﻿:Class Cider_uc
+:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger ⋄ APL Team Ltd
 
@@ -68,7 +68,7 @@
       r←0 0⍴''
       ('Cider needs at least version ',MinimumVersionOfDyalog,' of Dyalog APL')Assert AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
       P←LoadCiderCode ⍬
-      :If 18={⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'.'}aplVersion←2⊃#.APLVersion
+      :If 18={⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'.'}aplVersion←2⊃'.' ⎕wg 'aplversion'
       :AndIf 44280>⊃(//)⎕VFI 3⊃'.'(≠⊆⊢)aplVersion  ⍝ 44280 has essential ⎕FIX fix for Link to work
           'Version 18 must be at least on build number 44280, otherwise Link won''t work as expected'⎕SIGNAL 11
       :EndIf
@@ -254,7 +254,7 @@
       ⍝ `1 1 1 0 ←→ AtLeastVersion¨16 17 17.1 18`\\
       ⍝ You may specify a version different from the currently running one via `⍺`:\\
       ⍝ `1 1 0 0 ←→ 17 AtLeastVersion¨16 17 17.1 18`
-      currentVersion←{⊃⊃(//)⎕VFI ⍵/⍨2>+\⍵='.'}2⊃'#'⎕WG'APLVersion'
+      currentVersion←{⊃⊃(//)⎕VFI ⍵/⍨2>+\⍵='.'}2⊃'.' ⎕wg 'aplversion'
       'Right argument must be length 1'⎕SIGNAL 11/⍨1≠≢min
       r←⊃min≤currentVersion
     ∇
