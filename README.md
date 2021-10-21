@@ -33,11 +33,18 @@ For details refer to the user command help. Regarding the API details are availa
 
 ## Installation
 
-The contents of the ZIP file needs to go in any of the folders that Dyalog APL scans for user commands.
+The ZIP file contains a folder `Cider/`. That folder needs to go into any of the folders that Dyalog APL scans for user commands.
 
-For example, under Windows a folder `MyUCMDs` will be created in `%USERPROFILE%\Documents` when Dyalog is installed, and that is a good place for putting the `Cider\` folder.
+For example, a folder `MyUCMDs` will be scanned for user commands. The location Dyalog is looking for such a folder depends on the operating system:
 
-However, note that under Linux and Mac-OS no such folder will be created, although it will be scanned for user commands in case it exists.
+```
+⍝ Windows:
+(2 ⎕NQ'.' 'GetEnvironment' 'USERPROFILE'),'/Documents\MyUCMDs'
+⍝ Non-Windows platforms:
+(2 ⎕NQ'.' 'GetEnvironment' 'Home'),'/MyUCMDs'
+```
+
+Note that under Windows the folder `MyUCMDs` will be created as part of the installation process, but not under Linux and Mac-OS, although it will be scanned for user commands in case it exists.
 
 
 ## Methods

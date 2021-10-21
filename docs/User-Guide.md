@@ -34,11 +34,11 @@ Note that the  contents of the file `cider.config` directs what exactly Cider is
 
 The first step is to create a namespace with the name `projectSpace` as a child of `parent`, when `parent` defaults to `#` but may be something like `⎕SE` or `#.Foo.Goo`. 
 
-The `parent` must exist while the `parentspace` may or may not exist. If it does not, it is created. If it already exists it must not contain a namespace `Cider.Config`.
+The `parent` must exist while the `parentspace` may or may not exist. If it does not, it is created. If it already exists it must not contain a namespace `CiderConfig`.
 
 #### 2. Setting system variables
 
-In the next step Cider is going to set three system variables defined in the config file in the `SYSVARS` section: `⎕IO`, `⎕ML` and `⎕WX`.
+In the next step Cider is going to set at least three system variables defined in the config file in the `SYSVARS` section: `⎕IO`, `⎕ML` and `⎕WX`.
 
 It is important to set these three variables before code is brought into the workspace because bringing class scripts or namespace scripts into the workspace implies the execution of some code, and that code might well rely on the correct setting of those three system variables.
 
