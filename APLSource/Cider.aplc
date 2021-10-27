@@ -7,7 +7,15 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.4.2+113' '2021-10-21'
+      r←'Cider' '0.4.3+124' '2021-10-27'
+      ⍝ * 0.4.3 ⋄ 2021-10-27
+      ⍝   * Bug fixes
+      ⍝     * ListAliases did not sort the result by alias
+      ⍝     * OpenProject [?] did not sort by alias
+      ⍝     * When another alias is assigned the first one should be deleted
+      ⍝     * Help regarding CloseProject did not mention aliases
+      ⍝     * Handling of aliases was not perfect
+      ⍝     * Sometimes an alias was not lowercased before saving it
       ⍝ * 0.4.2 ⋄ 2021-10-21
       ⍝   * Installation fixed (folder Cider\ was missing)
       ⍝ * 0.4.1 ⋄ 2021-10-15
@@ -66,7 +74,8 @@
           'quietFlag' 'suppressLX' 'importFlag' 'noPkgLoad'parms.{⍎⍺,'←',⍕⍵}¨4↑IntToBits 5⊃(⊆y),(≢⊆y)↓⍬'' '#' 0 0
       :EndIf
       '"folder" must be specified'Assert 0<≢parms.folder
-      parms←GetFromAlias parms
+      p←(~parms.quietFlag)∘ToQSE                                                        ⍝ Function for printing to the session
+      parms←(p ManageAliase)parms
       ('Folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
       :If ~parms.quietFlag
           ⎕←' ',((1+parms.importFlag)⊃'Loading' 'Importing'),' project from ',parms.folder
@@ -81,9 +90,13 @@
           ('"projectSpace" must not carry a "." (see "parent"')Assert 0='.'+.=parms.projectSpace
           'Project space is not a valid APL name'Assert{0::0 ⋄ 0=(⎕NS'').⎕NC ⍵}⍕parms.projectSpace
       :EndIf
-      msg←SaveAlias parms.folder parms.alias
-      msg Assert 0=≢msg
-      p←(~parms.quietFlag)∘ToQSE                                                        ⍝ Function for printing to the session
+      parms.alias←⎕C parms.alias
+      (successFlag msg)←AddAlias parms.folder parms.alias
+      msg Assert successFlag
+      :If successFlag
+      :AndIf 0<≢msg
+          p msg
+      :EndIf
       configFilename←parms.folder,'/cider.config'
       ('No file "cider.config" found in ',parms.folder)Assert ⎕NEXISTS configFilename
       config←Get_JSON5 configFilename
@@ -353,6 +366,7 @@
           r[;1]←⎕C¨r[;1]
           r[;2]←{'/'@(⍸'\'=⍵)⊣⍵}¨r[;2]
           r[;2]←{⍵↓⍨¯1×(¯1↑⍵)∊'/\'}¨r[;2]
+          r←r[⍋r[;1];]
       :EndIf
     ∇
 
@@ -439,37 +453,53 @@
       :Until isOkay
     ∇
 
-    ∇ {r}←SaveAlias(folder alias);ciderAliasFilename;data
+    ∇ {(successFlag msg)}←AddAlias(folder alias);ciderAliasFilename;data
       :Access Public Shared
       ciderAliasFilename←GetCiderAliasFilename
-      r←''
+      successFlag←0 ⋄ msg←''
       :If 0≠≢alias
       :AndIf 0<≢ciderAliasFilename
           :If ⎕NEXISTS ciderAliasFilename
               data←⊃⎕NGET ciderAliasFilename 1
               :If ~⎕NEXISTS folder
-                  r←'Could not find "',folder,'"'
+                  msg←'Could not find "',folder,'"'
               :ElseIf 0=+/(alias,'=')∘{⍺≡(≢⍺)↑⍵}¨data
-                  (⊂data,⊂alias,'=',folder)⎕NPUT ciderAliasFilename 1
+                  :If (⊂folder)∊{⍵↓⍨⍵⍳'='}¨data
+                      msg←'Path has already an alias assigned to it - second alias not assigned'
+                      successFlag←1 ⍝ Is only a warning
+                  :Else
+                      (⊂data,⊂alias,'=',folder)⎕NPUT ciderAliasFilename 1
+                      successFlag←1 ⍝ Is only a warning
+                  :EndIf
               :Else
-                  r←'Alias "',alias,'" is already in use'
+                  data←↑{'='(≠⊆⊢)⍵}¨data
+                  :If (⊂alias)∊data[;1]
+                      msg←'Alias "',alias,'" is already in use - alias not assigned'
+                      successFlag←1
+                  :EndIf
               :EndIf
           :Else
               (⊂alias,'=',folder)⎕NPUT ciderAliasFilename
+              successFlag←1
           :EndIf
+      :Else
+          successFlag←1
       :EndIf
     ∇
 
-    ∇ {r}←DropAlias alias;ciderAliasFilename;data
+    ∇ {successFlag}←DropAlias alias;ciderAliasFilename;data;noOf
       :Access Public Shared
       ciderAliasFilename←GetCiderAliasFilename
-      r←⍬
+      successFlag←0
       :If 0≠≢alias
       :AndIf 0<≢ciderAliasFilename
           :If ⎕NEXISTS ciderAliasFilename
-              data←⊃⎕NGET ciderAliasFilename 1
+              noOf←≢data←⊃⎕NGET ciderAliasFilename 1
               data←((⊆alias),¨'='){⍵/⍨~((⍵↑⍨¨⍵⍳¨'='))∊⍺}data
-              (⊂data)⎕NPUT ciderAliasFilename 1
+              :If noOf>≢data
+                  (⊂data)⎕NPUT ciderAliasFilename 1
+                  successFlag←1
+              :EndIf
           :EndIf
       :EndIf
     ∇
@@ -511,7 +541,9 @@
       :EndIf
     ∇
 
-    ∇ parms←GetFromAlias parms;data;filename
+    ∇ parms←(fns ManageAliase)parms;data;filename;alias;successFlag;msg
+    ⍝ 1. Translates the alias in "folder" (if any) into a path
+    ⍝ 2. If an alias is defined it is saved, possibly by overwriting the old one
       :If ∧/'[]'∊parms.folder
           filename←GetCiderAliasFilename
           :If ⎕NEXISTS filename
@@ -519,8 +551,19 @@
                   ('Alias ',parms.folder,' not found')⎕SIGNAL 6
               :EndIf
               data←↑{'='(≠⊆⊢)⍵}¨data
-              :If (⊂⎕C parms.folder~'[]')∊data[;1]
-                  parms.folder←2⊃data[data[;1]⍳⊂⎕C parms.folder~'[]';]
+              alias←⎕C parms.folder~'[]'
+              :If (⊂alias)∊data[;1]
+                  parms.folder←2⊃data[data[;1]⍳⊂alias;]
+                  :If 0<≢parms.alias
+                  :AndIf alias≢⎕C parms.alias
+                      ⍝ A new alias, so we drop the old one and save the new one
+                      (successFlag msg)←AddAlias parms.(folder alias)
+                      :If successFlag
+                          DropAlias alias
+                      :Else
+                          fns msg
+                      :EndIf
+                  :EndIf
               :ElseIf (⎕NS'').{0≠⎕NC ⍵}⎕C parms.folder~'[]'
                   (parms.folder,' is not a valid alias')⎕SIGNAL 11
               :Else

@@ -1,0 +1,32 @@
+ R←Test_Alias_007(stopFlag batchFlag);⎕TRAP;aliase;folder;rc;msg;res
+⍝ Open a project and assign an alias, close it, open again but assign another alias.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+
+ folder←##.CiderConfig.HOME,'/Tests/TestAlias2/Project1'
+ (rc msg res)←∆UCMD'OpenProject ',folder,' -parent=#.TEMP -alias=Firlefanz1 -quiet'
+ msg Assert 0=rc
+
+ (rc msg res)←∆UCMD'CloseProject [firlefanz1]'
+ msg Assert 0=rc
+ #.⎕EX'TEMP' ⋄ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+
+ (rc msg res)←∆UCMD'OpenProject [firlefanz1] -parent=#.TEMP -alias=Firlefanz2 -quiet'
+ msg Assert 0=rc
+
+ aliase←⎕SE.Cider.GetAliasFileContent
+
+ (rc msg res)←∆UCMD'CloseProject [firlefanz1]'
+ msg Assert 0=rc
+
+ →T.GoToTidyUp(⊂'firlefanz1')∊aliase[;1]
+ →T.GoToTidyUp~(⊂'firlefanz2')∊aliase[;1]
+
+ R←T._OK
+
+∆TidyUp:
+ {}∆UCMD'CloseProject [firlefanz2]'
+ Assert ⎕SE.Cider.DropAlias'firlefanz2'
+⍝Done

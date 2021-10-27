@@ -68,7 +68,7 @@
       r←0 0⍴''
       ('Cider needs at least version ',MinimumVersionOfDyalog,' of Dyalog APL')Assert AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
       P←LoadCiderCode ⍬
-      :If 18={⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'.'}aplVersion←2⊃'.' ⎕wg 'aplversion'
+      :If 18={⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'.'}aplVersion←2⊃'.'⎕WG'aplversion'
       :AndIf 44280>⊃(//)⎕VFI 3⊃'.'(≠⊆⊢)aplVersion  ⍝ 44280 has essential ⎕FIX fix for Link to work
           'Version 18 must be at least on build number 44280, otherwise Link won''t work as expected'⎕SIGNAL 11
       :EndIf
@@ -122,7 +122,7 @@
               r←Args._2 CreateProject folder(Args.acceptConfig)(Args.noEdit)
           :EndIf
           :If 0≢Args.alias
-              :If 0<≢msg←P.SaveAlias folder Args.alias
+              :If 0<≢msg←P.AddAlias folder Args.alias
                   r,←(⎕UCS 13)msg
               :EndIf
           :EndIf
@@ -165,7 +165,7 @@
               r,←⊂'Returns name, version number and version date as a three-element vector'
               r,←⊂']Cider.Version'
           :EndSelect
-          :If ~(⊂⎕C Cmd)∊⎕C 'Version' 'Help'
+          :If ~(⊂⎕C Cmd)∊⎕C'Version' 'Help'
               r,←''(']Cider.',Cmd,' -?? ⍝ Enter this for more information ')
           :EndIf
       :Case 1
@@ -242,8 +242,8 @@
               r,←⊂'Cider comes with two HTML files with documentation. This user command offers to put'
               r,←⊂'one or both of them on display in the default browser.'
           :EndSelect
-      :Case 2    
-              r,←⊂'There is no additional help available'
+      :Case 2
+          r,←⊂'There is no additional help available'
       :EndSelect
     ∇
 
@@ -254,7 +254,7 @@
       ⍝ `1 1 1 0 ←→ AtLeastVersion¨16 17 17.1 18`\\
       ⍝ You may specify a version different from the currently running one via `⍺`:\\
       ⍝ `1 1 0 0 ←→ 17 AtLeastVersion¨16 17 17.1 18`
-      currentVersion←{⊃⊃(//)⎕VFI ⍵/⍨2>+\⍵='.'}2⊃'.' ⎕wg 'aplversion'
+      currentVersion←{⊃⊃(//)⎕VFI ⍵/⍨2>+\⍵='.'}2⊃'.'⎕WG'aplversion'
       'Right argument must be length 1'⎕SIGNAL 11/⍨1≠≢min
       r←⊃min≤currentVersion
     ∇
@@ -508,45 +508,55 @@
       rc←0≠≢msg
     ∇
 
-    ∇ {r}←EditAliasFile dummy;filename;data_;Local;aliases;aliases_;b;report;buff;b2;b3;flag;b4;b5
+    ∇ {r}←EditAliasFile dummy;filename;data_;Local;aliases;b;report;buff;b2;b3;flag;b4;b5;aliases_;b6
       r←⍬
       filename←P.GetCiderAliasFilename
       :If ~⎕NEXISTS filename
           3 ⎕MKDIR 1⊃⎕NPARTS filename
           (⊂'')⎕NPUT filename
       :EndIf
-      aliases←⊃⎕NGET filename 1
-      aliases_←aliases←(0<≢¨aliases)⌿aliases
+      aliases_←P.GetAliasFileContent
+      aliases←⍕aliases_
+      aliases_←⊃¨{⍺,'=',⍵}/¨↓aliases_
       :Repeat
           ⎕ED'aliases'
-          aliases←{'⍝'∊⍵:⍵↑⍨¯2+⍵⍳'⍝' ⋄ ⍵}¨aliases
-          aliases←{⍵↓⍨-+/∧\' '=⌽⍵}¨aliases
-          aliases←(0<≢¨aliases)/aliases
+          aliases←{'⍝'∊⍵:⍵↑⍨¯1+⍵⍳'⍝' ⋄ ⍵}¨↓aliases   ⍝ Cider might inject comments to highlight problems, see below.
+          aliases←(aliases∨.≠¨' ')⌿aliases
+          aliases←{b←' '=⍵ ⋄ ⍵/⍨~(∧\b)∨(⌽∧\⌽b)∨'  '⍷⍵}¨aliases
+          aliases←{' '(≠⊆⊢)⍵}¨aliases
+          aliases←⊃¨{⍺,'=',⍵}/¨aliases
           flag←0
           :If aliases≢aliases_
               aliases_/⍨←({⍵↑⍨¨⍵⍳¨'='}aliases_)∊{⍵↑⍨¨⍵⍳¨'='}aliases   ⍝ Get rid of deleted ones
-              report←(≢aliases_)⍴⊂''
-              :If ∨/~b←~1=aliases+.=¨'='
+              report←(≢aliases)⍴⊂''
+              :If ∨/b←~1=aliases+.=¨'='
                   (b/report)←⊂' ⍝ Does not carry exactly one "="'
               :EndIf
               buff←↑{'='(≠⊆⊢)⍵}¨(~b)/aliases
-              :If ∨/~b2←~{∧/⍵∊⎕A,(⎕C ⎕A),⎕D,'-'}¨buff[;1]
+              :If ∨/b2←~{∧/⍵∊⎕A,(⎕C ⎕A),⎕D,'-'}¨buff[;1]
                   b3←(~b)\b2
                   (b3/report){'⍝'∊⍺:⍺,'; ',⍵ ⋄ ⍺,' ⍝ ',⍵}←⊂'An alias must consist of nothing but A-Z, a-z, 0-9 and a hyphen'
               :EndIf
-              :If ∨/~b2←~⎕NEXISTS buff[;2]
+              :If ∨/b2←~⎕NEXISTS buff[;2]
                   b3←(~b)\b2
                   (b3/report){'⍝'∊⍺:⍺,'; ',⍵ ⋄ ⍺,' ⍝ ',⍵}←⊂'Folder does not exist'
               :EndIf
-              :If ∨/~b4←(~b2)\~⎕NEXISTS(~b2)/buff[;2],¨⊂'/cider.config'
+              :If ∨/b4←(~b2)\~⎕NEXISTS(~b2)/buff[;2],¨⊂'/cider.config'
                   b5←(~b)\b4
                   (b5/report){'⍝'∊⍺:⍺,'; ',⍵ ⋄ ⍺,' ⍝ ',⍵}←⊂'Folder does not contain a Cider config file'
+              :EndIf
+              :If {(≢⍵)>≢∪⍵}buff←{⍵↓⍨⍵⍳'='}¨aliases
+                  b6←~{(⍳≢⍵)=⍵⍳⍵}buff
+                  (b6/report)←⊂'⍝ Path has already an alias'
               :EndIf
               :If 0=≢∊report
                   flag←1
               :Else
                   aliases←(1+⌈/≢¨aliases)↑¨aliases
                   aliases←aliases{0=≢⍵:⍺ ⋄ ⍺,'⍝ ',⍵}¨report
+              :EndIf
+              :If ~flag
+                  aliases←⍕↑{'='(≠⊆⊢)⍵}¨aliases
               :EndIf
           :Else
               flag←1

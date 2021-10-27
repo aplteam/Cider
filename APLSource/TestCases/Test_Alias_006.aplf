@@ -1,0 +1,32 @@
+ R←Test_Alias_006(stopFlag batchFlag);⎕TRAP;parms;aliase
+⍝ Open a project and assign an alias, close it, open again but assign another alias.
+⍝ The user should be prompted for deleting the first alias.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+
+ parms←⎕SE.Cider.CreateOpenParms ⍬
+ parms.folder←##.CiderConfig.HOME,'/Tests/TestAlias2/Project1'
+ parms.parent←'#.TEMP'
+ parms.alias←'Firlefanz1'
+ parms.quietFlag←1
+ Assert ⎕SE.Cider.OpenProject parms
+
+ Assert ⎕SE.Cider.CloseProject'[Firlefanz1]'
+ #.⎕EX'TEMP' ⋄ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+
+ parms.alias←'Firlefanz2'
+ parms.folder←'[Firlefanz1]'
+ Assert ⎕SE.Cider.OpenProject parms
+ Assert ⎕SE.Cider.CloseProject'[Firlefanz2]'
+
+ aliase←⎕SE.Cider.GetAliasFileContent
+ →T.GoToTidyUp(⊂'firlefanz1')∊aliase[;1]
+ →T.GoToTidyUp~(⊂'firlefanz2')∊aliase[;1]
+
+ R←T._OK
+
+∆TidyUp:
+ Assert ⎕SE.Cider.DropAlias'firlefanz2'
+⍝Done

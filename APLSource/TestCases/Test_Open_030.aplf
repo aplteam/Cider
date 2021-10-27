@@ -14,6 +14,6 @@
  R←T._OK
 
 ∆TidyUp:
- ⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
  #.⎕EX'TEMP'
 ⍝Done
