@@ -7,7 +7,13 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.4.3+124' '2021-10-27'
+      r←'Cider' '0.5.0+131' '2021-11-15'
+      ⍝ * 0.5.0 ⋄ 2021-10-15
+      ⍝   * If a project has Tatin packages, the user might want Cider to check for later versions of those.
+      ⍝     If there are any then the user might want to re-install the packges.
+      ⍝   * ]Cider.OpenProject now offers a list with aliases even when just a `[` is passed, or `[?`.
+      ⍝   * Readme.md improved
+      ⍝   * An opening [ is enough for recognizing an alias
       ⍝ * 0.4.3 ⋄ 2021-10-27
       ⍝   * Bug fixes
       ⍝     * ListAliases did not sort the result by alias
@@ -50,7 +56,7 @@
 
     Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⎕ML←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),11}
 
-    ∇ successFlag←OpenProject y;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;msg;parms;fn
+    ∇ successFlag←OpenProject y;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;msg;parms;fn;noOfBits
     ⍝ Open a Cider project.\\
     ⍝ `y` must be one of:\\
     ⍝ * A namespace holding all the required parameters. Such a namespace can be created by calling `CreateOpenParms`
@@ -60,9 +66,10 @@
     ⍝   3. parent
     ⍝   4. alias
     ⍝   5. Flags
-    ⍝      1. quietFlag
-    ⍝      2. suppressLX
-    ⍝      3. importFlag
+    ⍝      1. quietFlag (1)
+    ⍝      2. suppressLX (2)
+    ⍝      3. importFlag (4)
+    ⍝      4. checkBetterVersions (8)
       :Access Public Shared
       successFlag←failure
       parms←CreateOpenParms ⍬
@@ -71,7 +78,8 @@
       :Else
           'At least two parameters must be specified: "folder" and "projectSpace"'Assert 2≤≢y
           'folder' 'projectSpace' 'parent' 'alias'parms.{⍎⍺,'←''',⍵,''''}¨4↑(⊆y),(≢⊆y)↓⍬'' '#' ''
-          'quietFlag' 'suppressLX' 'importFlag' 'noPkgLoad'parms.{⍎⍺,'←',⍕⍵}¨4↑IntToBits 5⊃(⊆y),(≢⊆y)↓⍬'' '#' 0 0
+          noOfBits←4
+          'quietFlag' 'suppressLX' 'importFlag' 'noPkgLoad'parms.{⍎⍺,'←',⍕⍵}¨noOfBits↑IntToBits 5⊃(⊆y),(≢⊆y)↓⍬'' '#' 0 0
       :EndIf
       '"folder" must be specified'Assert 0<≢parms.folder
       p←(~parms.quietFlag)∘ToQSE                                                        ⍝ Function for printing to the session
@@ -124,7 +132,10 @@
           ('LINK failed to load the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
       :EndIf
       p'  Code established'
-      {}LoadTatinPackages⍣(⊃~parms.noPkgLoad)⊣config parms.folder projectSpace_
+      :If 0=parms.noPkgLoad
+          CheckPackagesStatus config parms
+          {}LoadTatinPackages config parms.folder projectSpace_
+      :EndIf
       InjectConfigDataIntoProject config projectSpace_ parms.folder
       {}ExecProjectFunction⍣(~parms.suppressLX)⊣config projectSpace_
       ExecUserFunction config
@@ -135,7 +146,7 @@
 
     ∇ parms←CreateOpenParms dummy
       :Access Public Shared
-      parms←(1⊃1↓⎕RSI).⎕NS''    ⍝ Create namespace where we got called from
+      parms←(1⊃1↓⎕RSI).⎕NS''        ⍝ Create namespace where we got called from
       parms.folder←''
       parms.projectSpace←''
       parms.quietFlag←0
@@ -144,6 +155,7 @@
       parms.suppressLX←0
       parms.importFlag←0
       parms.noPkgLoad←0
+      parms.checkPackageVersions←⍬    ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
     ∇
 
     ∇ r←GetValidLinkParams
@@ -233,6 +245,68 @@
       :EndIf
     ∇
 
+    ∇ {r}←CheckPackagesStatus(config parms);checkFlag;folder;folders;folder_;updateFlag;updateParms;report
+    ⍝ Check whether Tatin packages should be updated.
+    ⍝ This is ruled by parms.checkPackageVersions:
+    ⍝ ⍬ means the user will be asked for both checking and updating
+    ⍝ 0 means don't update
+    ⍝ 1 means yes, check, but ask before updating
+    ⍝ 2 means update without further ado
+      r←⍬
+      :If 0<≢config.CIDER.tatinFolder
+          :If 0≢parms.checkPackageVersions
+              :If (⊂parms.checkPackageVersions)∊⍬ 1
+              :AndIf ~parms.quietFlag
+                  checkFlag←YesOrNo'Check Tatin packages for later versions?'
+              :Else
+                  checkFlag←2≡parms.checkPackageVersions
+              :EndIf
+          :EndIf
+          :If checkFlag
+              report←⍬
+              folders←','(≠⊆⊢)config.CIDER.tatinFolder
+              report(CheckTatinFolders)←folders
+              report←{⍵[;4]⌿⍵}¨report
+              :If 0=+/≢¨report
+                  ⎕←'   No later versions found'
+              :Else
+                  UpdatePackages folders report parms
+              :EndIf
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ report←report CheckTatinFolders folders;folder;folder_
+    ⍝ Loop through all Tatin install folders
+      :For folder :In folders
+          folder_←⊃'='(≠⊆⊢)folder
+          p'  Checking Tatin packages in <',(AddSlash folder_),'> ...'
+          folder_←parms.folder,'/',folder_
+          report,←⊂⎕SE.Tatin.CheckForLaterVersion folder_
+      :EndFor
+    ∇
+
+    ∇ {r}←UpdatePackages(folders report parms);i;folder;updateFlag
+    ⍝ Update Tatin install folders by running ReInstallDependencies with the updateFlag set
+    ⍝ Returns the number of install folders updated.
+      r←0
+      updateParms←⎕SE.Tatin.CreateReInstallParms
+      updateParms.update←1
+      :For i :In ⍳≢report
+          folder←{⍵↑⍨¯1+⍵⍳'='}i⊃folders
+          ⎕←'   Later versions in <',(AddSlash folder),'> :'
+          ⎕←' ',' ',' ',⎕FMT↑{(1⊃⍵),' ==> ',(2⊃⍵)}¨↓i⊃report
+          :If ~updateFlag←2≡parms.checkPackageVersions
+              updateFlag←1 YesOrNo'Re-install latest versions in <',(AddSlash folder),'> ?'
+          :EndIf
+          :If updateFlag
+              p'  Re-installing all packages in <',(AddSlash folder),'> ...'
+              updateParms ⎕SE.Tatin.ReInstallDependencies parms.folder,'/',folder
+              r+←1
+          :EndIf
+      :EndFor
+    ∇
+
     ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_
       r←failure
       :If 0<≢config.CIDER.tatinFolder
@@ -249,7 +323,7 @@
               :Else
                   target←projectSpace
                   pkgFolder_←pkgFolder
-              :EndIf⍝
+              :EndIf
               p'Attempting to load Tatin packages from ',pkgFolder_,' into ',target,'...'
               folder2←folder,'/',pkgFolder_
               'Tatin installation folder does not exist'Assert ⎕NEXISTS folder2
@@ -280,7 +354,7 @@
     ∇ msg←x ExecProjectFunction_ lx;fns;config;projectSpace
       (projectSpace config)←x
       :If 3=projectSpace.⎕NC lx
-          msg←⊂'Executing project initialising function "',(lx~' '),'"...'
+          msg←⊂'Executing the project''s initialising function "',(lx~' '),'"...'
           :Select 1 2⊃projectSpace.⎕AT lx
           :Case 0
               projectSpace.⍎lx
@@ -544,7 +618,7 @@
     ∇ parms←(fns ManageAliase)parms;data;filename;alias;successFlag;msg
     ⍝ 1. Translates the alias in "folder" (if any) into a path
     ⍝ 2. If an alias is defined it is saved, possibly by overwriting the old one
-      :If ∧/'[]'∊parms.folder
+      :If '['∊parms.folder
           filename←GetCiderAliasFilename
           :If ⎕NEXISTS filename
               :If 0=≢data←⊃⎕NGET filename 1
@@ -606,5 +680,7 @@
           :EndIf
       :EndIf
     ∇
+
+    AddSlash ←{⍵,(~(¯1↑⍵)∊'/\')/'/'}
 
 :EndClass

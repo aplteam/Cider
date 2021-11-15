@@ -1,4 +1,5 @@
-[parm]:title = 'Cider User Guide'
+[parm]:title             = 'Cider User Guide'
+[parm]:leanpubExtensions = 1
 
 
 
@@ -10,7 +11,7 @@ In this document we use the word "project" for an application or a tool that con
 
 While Link is perfect for bringing stuff into the workspace, putting together an environment in which development can take place requires more than just getting the code into the workspace.
 
-Note that in this document names stemming from the Cider configuration file are shown `like this`.
+I> Note that in this document names stemming from the Cider configuration file are shown `like this`.
 
 ## The solution
 
@@ -20,7 +21,7 @@ The two most important commands of the Cider user command group are `CreateProje
 
 ### CreateProject
 
-With the user command `]Cider.CreateProject` any folder that does not yet host a file `cider.config` can be transformed into a Cider project. 
+With the user command `]Cider.CreateProject` any folder that does not yet host a file `cider.config` can be transformed into a Cider project. (You may specify the `-acceptConfig` flag to override this default behaviour and make Cider accept an already existing file `cider.config`)
 
 If the folder does not yet exist it will be created. In any case the folder will be populated with a file `cider.config`.
 
@@ -48,6 +49,12 @@ Note that the names are not case sensitive: wether the value for `⎕FR` is spec
 
 In case a setting in `SYSVARS` cannot be used for assigning a system variable a warning message will be printed to the session.
 
+A> ### System variables
+A>
+A> Feel free to save system variables in files like `⎕IO.apla` in you source folder. 
+A>
+A> That's another way to make sure that system variables are set as early as possible because Link will establish the values of system variables defined in files before it attempts to bring in code, which is important because that code might rely on a certain setting of, say, `⎕IO`.
+
 
 #### 3. Bringing in the code
 
@@ -64,7 +71,14 @@ By default a link is established between the root of the project and the folder.
 However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the `-import` flag.
 
 
-#### 4. Loading Tatin packages (optional)
+#### 4. Check for later versions regarding Tatin packages
+
+In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the princiapl packages.
+
+If Cider discoveres later packages it will ask the user whether packages shall be re-installed with the `-update` flag set independently for each installation folder.
+
+
+#### 5. Loading Tatin packages (optional)
  
 Your application or tool might depend on one or more Tatin[^tatin] packages. By assigning `tatinFolder` one or more comma-separated folders hosting installed Tatin packages you can make sure that Cider will load[^load_tatin_pkgs] those installed packages into the root of your project.
 
@@ -84,7 +98,7 @@ Notes:
 * A namespace, if assigned to a folder, must be specified relative to the root of the project
 
 
-#### 5. Injecting a namespace `CiderConfig`
+#### 6. Injecting a namespace `CiderConfig`
 
 In this step Cider injects a namespace `CiderConfig` into the project space and...
 
@@ -92,7 +106,7 @@ In this step Cider injects a namespace `CiderConfig` into the project space and.
 * adds a variable `HOME` that remembers the path the project was loaded from
 
 
-#### 6. Initialising a project (optional)
+#### 7. Initialising a project (optional)
 
 Now there might well be demand for executing some code in order to initialise your project.
 
@@ -107,7 +121,7 @@ Notes:
 
 Note that you can access the configuration data of the project from within your initialisation function by questioning the `CiderConfig` namespace.
 
-### 7. Executing user-specific code
+### 8. Executing user-specific code
 
 Last not least you might want to execute some general code (as opposed to project-specific code) after a project was loaded.
 

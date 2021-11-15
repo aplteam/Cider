@@ -1,4 +1,4 @@
-:Class Cider_uc
+﻿:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger ⋄ APL Team Ltd
 
@@ -87,12 +87,12 @@
           :Else
               path←Args._1
           :EndIf
-          :If '[?]'≡path
+          :If (⊂,path)∊,¨'[' '[?' '[?]'
               :If 0=≢path←SelectFromAliases ⍬
                   :Return
               :EndIf
           :EndIf
-          path←⎕C⍣(∧/'[]'∊path)⊣path
+          path←⎕C⍣('['∊path)⊣path
           Args.parent←{(,0)≡,⍵:'#' ⋄ ⍵}Args.parent
           Args.alias←⎕C''Args.Switch'alias'
           flags←BitsToInt Args.(quiet suppressLX import noPkgLoad)

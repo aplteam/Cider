@@ -22,6 +22,7 @@ Currently these commands are available:
 * `]Cider.CloseProject`
 * `]Cider.ListOpenProjects`
 * `]Cider.ListAliases`
+* `]Cider.Help`
 * `]Cider.Version`
 
 In this document only `OpenProject` is discussed in detail because that is the principal command.
@@ -65,7 +66,7 @@ If no such parameter is specified then the current directory is searched for a f
 
 #### Actions 
 
-Once a folder is established that holds a Cider config file the user command performs the following actions:
+Once a folder is established that holds a Cider config file, the user command performs the following actions:
 
 1. Creates the project space (namespace); if it already exists it must be empty
 1. Sets the system variables `⎕IO`, `⎕ML` and `⎕WX` in the project space
@@ -73,26 +74,28 @@ Once a folder is established that holds a Cider config file the user command per
 1. Loads all Tatin packages if specified in the file `cider.config`
 1. Injects a namespace `CiderConfig` into the project space and...
    * populates it with the contents of the configuration file as APL arrays
-   * adds a variable `HOME` that remembers the path the project was loaded from
+   * adds a variable `HOME` that remembers the path the project was loaded from   
 
 Notes:
 
 * The project space is defined in the Cider config file, but this can be overwritten with the `-target=` option
-* In case the `tatinLoad` parameter specified just one or multiple folders then those references pointing to the Tatin packages are all established in `projectSpace`
+* In case the `tatinFolder` parameter specified one or more folders then the references pointing to the Tatin packages are all established in `projectSpace`
 
   However, this can be overwritten by specifying a different target space by adding 
 
-  ```
-  =#.TargetSpace.SubNamespace
-  ```
+  `=#.TargetSpace.SubNamespace`
 
   after the folder
 
   Example:
 
   ```
-
+  tatinFolder: "packages,packages_dev=TestCases",:"packages_dev=TestCases",
   ```
+
+  References for all principal packages found in `packages/` are established in the project space because that is the default, and  the default was not overwritten.
+
+  References for all principal packages found in `packages_dev/` are established in the `TestCases` sub namespace within the project space because the default was overwritten.
 
 ### CloseProject
 

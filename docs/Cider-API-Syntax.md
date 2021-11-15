@@ -146,7 +146,7 @@ Currently there are only two flags recognized by `OpenProject`, but that might w
 ### Parameter namespace 
 A namespace carrying appropriately named variables, typically created by calling `CreateOpenParms`.
 
-  Such a namespace must carry the following variables:
+The first two in the following list are mandatory, the remaining ones have appropriate defaults and are sorted alphabetically.
 
 #### folder (mandatory)
 
@@ -161,13 +161,22 @@ Note that this must _not_ be empty.
 
 The name of the namespace the project is injected into.
 
-#### parent
-
-Defaults to `#` but might as be something like `⎕SE` or `#.Foo.Goo.Boo`. However, all namespaces listed must exist.
-
 #### alias
 
 The alias under which you might want to access the project in the future.
+
+#### checkPackageVersions
+
+This is ignored in case the project does not sport any Tatin installation folder.
+
+By default this is an empty numeric vector (`⍬`), meaning that the user will be asked whether she wants Cider to check all principal packages for later versions, and if there are any found, whether she wants to update those packages. If the project carries more than one package folder the second question is asked independently for each Tatin installation folder.
+
+Instead one can set this parameter to these values:
+
+
+| 0 | Do not check at all
+| 1 | Check and report findings but prompt for updating
+| 2 | Check and update without consulting the user
 
 #### Flags
 
@@ -182,6 +191,17 @@ Defaults to 0, meaning that the projects initialisation function (if any) is aut
 There might well be situations when you don't want this, therefore you may suppress the execution by setting this to 1.
 
 An example might be an automated build process: that might need to open the project but without actually initialising it.
+
+#### importFlag
+
+Defaults to 0 meaning that the code is not imported but linked. 
+
+Set this to 1 for Link importing the code without establishing a Link.
+
+#### parent
+
+Defaults to `#` but might as be something like `⎕SE` or `#.Foo.Goo.Boo`. However, all namespaces listed must exist.
+
 
 ## ProcessAlias
 

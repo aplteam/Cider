@@ -1,0 +1,29 @@
+ r←Test_Misc_005(stopFlag batchFlag);⎕TRAP;dir;res;parms
+⍝ Exercise updating outdated Tatin packages
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ dir←FilesAndDirs.GetTempPath,'Cider/',⊃⎕SI
+ FilesAndDirs.RmDir dir                         ⍝ Paranoia...
+ 3 ⎕MKDIR dir
+ dir ⎕NCOPY⍠'Wildcard' 1⊣(∆GetTestPath⊃⎕SI),'/Project_Foo/*'
+ Assert FilesAndDirs.IsDir dir,'/packages/aplteam-MarkAPL-11.0.0'
+ Assert FilesAndDirs.IsDir dir,'/packages_dev/aplteam-Tester2-3.1.1'
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←dir
+ parms.projectSpace←'TEMP'
+ parms.checkPackageVersions←2
+ res←##.Cider.OpenProject parms
+
+ →T.PassesIf 0=FilesAndDirs.IsDir dir,'/packages/aplteam-MarkAPL-11.0.0'
+ →T.PassesIf 1=≢⊃FilesAndDirs.Dir dir,'/packages/aplteam-MarkAPL-11*'
+ →T.PassesIf 0=FilesAndDirs.IsDir dir,'/packages_dev/aplteam-Tester2-3.1.1'
+ →T.PassesIf 1=≢⊃FilesAndDirs.Dir dir,'/packages_dev/aplteam-Tester2-3.*'
+
+ r←T._OK
+
+∆TidyUp:
+ FilesAndDirs.RmDir dir

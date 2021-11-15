@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta charset="utf-8">
-<title>Cider User Guide</title>
+<title>Cider Reference</title>
 <style media="screen">
 html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}body{margin:0;}article,aside,footer,header,nav,section{display:block;}h1{font-size:2em;margin:0.67em 0;}figcaption,figure,main{display:block;}figure{margin:1em 40px;}hr{box-sizing:content-box;height:0;overflow:visible;}pre{font-family:monospace, monospace;font-size:1em;}a{background-color:transparent;-webkit-text-decoration-skip:objects;}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted;}b,strong{font-weight:inherit;}b,strong{font-weight:bolder;}code,kbd,samp{font-family:monospace, monospace;font-size:1em;}dfn{font-style:italic;}mark{background-color:#ff0;color:#000;}small{font-size:0.8em;}sub,sup{font-size:0.75em;line-height:0;position:relative;vertical-align:baseline;}sub{bottom:-0.25em;}sup{top:-0.5em;}audio,video{display:inline-block;}audio:not([controls]){display:none;height:0;}img{border-style:none;}svg:not(:root){overflow:hidden;}button,input,optgroup,select,textarea{font-family:sans-serif;font-size:1em;line-height:1.15;margin:0;}button,input{overflow:visible;}button,select{text-transform:none;}button,html [type="button"], [type="reset"],[type="submit"]{-webkit-appearance:button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner{border-style:none;padding:0;}button:-moz-focusring,[type="button"]:-moz-focusring,[type="reset"]:-moz-focusring,[type="submit"]:-moz-focusring{outline:1px dotted ButtonText;}fieldset{padding:0.35em 0.75em 0.625em;}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal;}progress{display:inline-block;vertical-align:baseline;}textarea{overflow:auto;}[type="checkbox"],[type="radio"]{box-sizing:border-box;padding:0;}[type="number"]::-webkit-inner-spin-button,[type="number"]::-webkit-outer-spin-button{height:auto;}[type="search"]{-webkit-appearance:textfield;outline-offset:-2px;}[type="search"]::-webkit-search-cancel-button,[type="search"]::-webkit-search-decoration{-webkit-appearance:none;}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit;}details, menu{display:block;}summary{display:list-item;}canvas{display:inline-block;}template{display:none;}[hidden]{display:none;}body{margin:0;font-family:"Bookman Old Style", "Callisto MT", Bookman, "Goudy Old Style", Garamond, serif;background-color:#fdfdfd;font-size:18px;line-height:1.4;max-width:900px;padding:0.83em;color:#292929;word-wrap:break-word;overflow-wrap:break-word;}h1, h2, h3, h4, h5, h6{color:#404040;font-weight:800;padding-left:0;}h1, h2, h3, h4, h5, h6{font-family:"Century Gothic", Verdana, "Sans";}h1, h2, h3, h4, p{margin-bottom:0.88em;}h1{font-size:1.8em;margin:0.27em 0 1.11em 0;}h1 > code, h2 > code, h3 > code, h4 > code, h5 > code, h6 > code{font-size:1em;background-color:inherit;}h2{font-size:1.44em;margin:0.55em 0 0.55em 0;padding-top:0.55em;border-bottom:1px solid Silver;}h3{margin:0;margin-top:0.55em;font-size:1.22em;}nav h3{font-size:0.88em;margin-left:0.83em;margin-bottom:0.27em;}h4{font-size:1em;margin:0;margin-top:0.55em;}h5{font-size:0.94em;margin:0;margin-top:0.66em;padding:0;}h6{font-size:0.88em;margin:0;margin-top:0.66em;padding:0;}a{color:#0099ff;margin:0;padding:0;vertical-align:baseline;}a:visited{color:purple;}a.autoheader_anchor{text-decoration:none;}ul{list-style-type:disc;}ul, ol{padding:0;margin:0;}dd{padding-top:0.25em;}p.first_dd{padding-top:0.25em;}li > ul, ol{padding-bottom:0;}li{line-height:1.3;margin-left:1.38em;margin-bottom:0.55em;}ul > li{margin-left:2.5em;}ol > li{margin-left:2.5em;}li ul{margin-left:0.55em;}li ul{margin-left:0.27em;}li p{padding:1px 0 0 0;margin:0.55em 0 0.27em 0;line-height:1.3;}ul, ol{line-height:1.3;padding:0.33em 0 0 0;margin:0.5em;}p{line-height:1.2;padding:0.40em 0 0 0;margin:0;}pre{overflow:scroll;padding:0.55em 0.27em;margin:0.55em 0 0.55em 0 !important;background-color:#faebd7;color:#3e3e3e;border:1px Silver dashed;display:block;font-family:APLFont, monospace;font-weight:normal;white-space:pre-wrap;}pre > code{line-height:1.2;border:0;padding:0;margin:0;background-color:inherit;color:inherit;font-weight:inherit;white-space:pre-wrap;}td code{padding:0;}a code{padding:0;font-size:1em;}nav code{background-color:inherit;font-weight:400;color:inherit;}code{font-family:APLFont, monospace;color:Black;font-weight:800;line-height:1.2;font-size:0.88em;margin:0;color:#950000;padding:0 0.16em;}tbody tr:nth-child(even){background-color:#F0F0F0;}th{background-color:#E6E6E6;color:black;}th, td{padding:0.16em 0.55em;vertical-align:top;}table td + td{border-left:1px solid gray;}table th + th{border-left:1px solid gray;}table{border-color:Black;margin:1.5em 0;border:2px black;border-collapse:collapse;font-family:APLFont;font-size:0.88em;line-height:1.2;border:1px solid Gray;}li > table{margin:0.55em 0 0.55em 0;}tr{margin:1.11em;}th{font-weight:bold;}tfoot td{font-weight:bold;}blockquote{border-left:0.27em solid silver;padding-left:0.27em;margin:0.83em 0.27em 0.83em 0.55em;}blockquote ul li{margin-left:1.38em;}blockquote ol li{margin-left:1.38em;}li > blockquote{margin-left:0;}nav{background-color:#f5f5f5;border:1px solid Black;padding:0.55em;margin:0.55em;margin-right:0;box-shadow:0.27em 0.27em 0.27em Gray;overflow:hidden;clear:both;}nav#main_nav{position:fixed;top:0;right:0.55em;float:none;width:auto;}nav#main_nav_no_collapse li{font-size:0.77rem;}nav#main_nav_no_collapse li{line-height:1.5;}nav ul{list-style-type:none;margin:0 0 0.11em 0;padding:0;}nav a:visited{color:black;}nav ul li{margin-bottom:0.16em;}nav li p{margin:0;padding:0;line-height:1;margin:0;padding:0;}nav li{font-size:0.75rem;line-height:1.3;padding:0;margin-top:0;margin-bottom:0;margin-left:0.83em;}nav p{font-weight:bold;font-size:0.75rem;padding-top:0;}dl{margin-top:0.1em;margin-bottom:0.1em;}dt{margin-top:0.75em;margin-bottom:0.1em;font-weight:800;}label#hide_toc_label{font-size:0.8em;}.toc-container{position:relative;height:auto;}div.toc-container h1{font-size:0.88em;margin:0.27em 0 0.27em 0;}[type="checkbox"]{position:absolute;left:-9999px;}label{display:block;width:100%;height:1.1em;cursor:pointer;top:0;padding-left:1.1em;}label:before{content:'Table of contents \25BC';font-weight:bold;font-size:90%;padding-bottom:0;}[type="checkbox"] ~ div{display:none;}[type="checkbox"]:checked ~ div{display:block;margin-top:1.1em;}[type="checkbox"]:checked + label{top:100%;}[type="checkbox"]:checked + label:before{content:'Table of contents ▲';}div#footnotes_div p{line-height:1;padding-bottom:0;padding-top:0;}div#footnotes_div ol{padding-top:0;}@font-face{font-family:"APLFont";src:local("APL385 Unicode"), url("https://misc.aplteam.com/apl385.ttf") format("truetype");}.no_display{display:none;}.red{color:red;}.center{text-align:center;margin-left:auto;margin-right:auto;}.left{text-align:left;margin-right:0 auto;}.right{text-align:right;margin-left:0 auto;}img{margin-top:0.55em;margin-bottom:0.27em;}div.leanpub{padding:0.83em 0.55em 1.11em 0;margin:0.55em 0 0 0.27em;overflow:auto;}div.leanpub_A{border:1px solid black;background-color:#f1f1f1;padding:0.55em;margin:1.11em 0 0.83em 0;}div.leanpub h3, div.leanpub_A h3{font-size:1.2em;padding:0;margin:0;}div.leanpub h4, div.leanpub_A h4{font-size:1.1em;padding:0.27em 0 0 0;margin:0;}div.leanpub h5, div.leanpub h5{font-size:1.0em;padding:0.27em 0 0 0;margin:0;}div.leanpub_A h5, div.leanpub_A h5{font-size:1.0em;padding:0.27em 0 0 0;margin:0;}div.leanpub img{padding:0;margin:0 1.11em 0.27em 0;}div.leanpub_A > p:first-child{padding-top:0;margin-top:0;}div.leanpub img{float:left;padding:0;margin:0.55em 1.11em 0 0;clear:both;}div.leanpub tbody *{background-color:transparent;}div.leanpub p{padding:0.17em 0 0 0;margin:0;}span.leanpub_code{color:Red;}div.leanpub p{display:block;padding:0.44em 0 0 0;}div.leanpub > div{margin-left:2.27em;}.print_only{display:none;}
 </style>
@@ -14,148 +14,266 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </head>
 <body>
 <div class="h_tag">
-<a href="#Cider-User-Guide" id="Cider-User-Guide" class="autoheader_anchor">
-<h1 data-id="Cider-User-Guide">Cider User Guide</h1>
+<a href="#Ciders-API-----Syntax-Reference" id="Ciders-API-----Syntax-Reference" class="autoheader_anchor">
+<h1 data-id="Ciders-API-----Syntax-Reference">Cider's API — Syntax Reference</h1>
 </a>
 </div>
+<p>Although the API functions are similar to their user command equivalents, they are not identical. Also, the API offers more functions, and for two user commands there are no corresponding functions in the API (<code>CreateProject</code> and <code>CloseProject</code>).</p>
+<p>While for the user commands the help provided by the <code>-?</code> syntax is sufficient, this document deals with the API.</p>
+<p>The following list is ordered alphabetically.</p>
 <div class="h_tag">
-<a href="#What-is-Cider-for" id="What-is-Cider-for" class="autoheader_anchor">
-<h2 data-id="What-is-Cider-for">What is Cider for?</h2>
+<a href="#CloseProject" id="CloseProject" class="autoheader_anchor">
+<h2 data-id="CloseProject">CloseProject</h2>
 </a>
 </div>
-<p>In this document we use the word “project” for an application or a tool that consists not only of what is finally delivered, like an Installer EXE under Windows or a Tatin package or a workspace or whatnot, but also of stuff that is required only during development, like test cases and test data, tools, helpers and similar stuff.</p>
-<p>While Link is perfect for bringing stuff into the workspace, putting together an environment in which development can take place requires more than just getting the code into the workspace.</p>
-<div class="leanpub">
-<img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information">
-<div>
-<p>Note that in this document names stemming from the Cider configuration file are shown <code>like this</code>.</p>
-</div>
-</div>
-
+<p>There is no API equivalent for the user command <code>]Cider.CloseProject</code>. Use <code>⎕SE.Link.Break</code> instead.</p>
 <div class="h_tag">
-<a href="#The-solution" id="The-solution" class="autoheader_anchor">
-<h2 data-id="The-solution">The solution</h2>
+<a href="#CreateOpenParms" id="CreateOpenParms" class="autoheader_anchor">
+<h2 data-id="CreateOpenParms">CreateOpenParms</h2>
 </a>
 </div>
-<p>Cider attempts to fill that gap. A Cider project requires a configuration file named <code>cider.config</code>.</p>
-<p>The two most important commands of the Cider user command group are <code>CreateProject</code> and <code>OpenProject</code>.</p>
+<p>A monadic function that returns a namespace with default parameters required by the <code>OpenProject</code> function. The right argument is ignored.</p>
+<pre><code> alias         ''
+ folder        ''
+ parent        '#'
+ projectSpace  ''
+ quietFlag     0
+ suppressLX    0</code></pre>
+<p>This is useful for creating a namespace with the defaults, set required parameters (at least <code>folder</code> and <code>projectSpace</code>), make amendments and pass the namespace as argument to <code>OpenProject</code>.</p>
 <div class="h_tag">
 <a href="#CreateProject" id="CreateProject" class="autoheader_anchor">
-<h3 data-id="CreateProject">CreateProject</h3>
+<h2 data-id="CreateProject">CreateProject</h2>
 </a>
 </div>
-<p>With the user command <code>]Cider.CreateProject</code> any folder that does not yet host a file <code>cider.config</code> can be transformed into a Cider project. (You may specify the <code>-acceptConfig</code> flag to override this default behaviour and make Cider accept an already existing file <code>cider.config</code>)</p>
-<p>If the folder does not yet exist it will be created. In any case the folder will be populated with a file <code>cider.config</code>.</p>
+<p>There is no API equivalent for the user command <code>]Cider.CreateProject</code>.</p>
+<div class="h_tag">
+<a href="#DropAlias" id="DropAlias" class="autoheader_anchor">
+<h2 data-id="DropAlias">DropAlias</h2>
+</a>
+</div>
+<p>Takes an alias and removes it.</p>
+<div class="h_tag">
+<a href="#GetAliasFileContent" id="GetAliasFileContent" class="autoheader_anchor">
+<h2 data-id="GetAliasFileContent">GetAliasFileContent</h2>
+</a>
+</div>
+<p>Niladic function that returns the contents of the file returned by the <code>GetCiderAliasFilename</code> function as an APL array:</p>
+<pre><code>      ⎕SE.Cider.GetAliasFileContent
+ cider  C:/T/Projects/Dyalog/Cider</code></pre>
+<p>Every record of that file contains two pieces of information: an alias and its associated path. The file might be empty.</p>
+<div class="h_tag">
+<a href="#GetAliasFilename" id="GetAliasFilename" class="autoheader_anchor">
+<h2 data-id="GetAliasFilename">GetAliasFilename</h2>
+</a>
+</div>
+<p>Niladic function that returns the path to the file that is used by Cider to manage alias names and their paths.</p>
+<div class="h_tag">
+<a href="#GetMyUCMDsFolder" id="GetMyUCMDsFolder" class="autoheader_anchor">
+<h2 data-id="GetMyUCMDsFolder">GetMyUCMDsFolder</h2>
+</a>
+</div>
+<p>Niladic function that returns the path to the <code>MyUCMDs/</code> folder.</p>
+<p>Note that this folder is created under Windows by the Dyalog installation routine, but not on other platforms.</p>
+<div class="h_tag">
+<a href="#GetCidersConfigFileContent" id="GetCidersConfigFileContent" class="autoheader_anchor">
+<h2 data-id="GetCidersConfigFileContent">GetCidersConfigFileContent</h2>
+</a>
+</div>
+<p>Niladic function that returns the contents of the file returned by the <code>GetCidersConfigFilename</code> function as a vector of text vectors:</p>
+<pre><code>       ⍪ ⎕se.Cider.GetCidersConfigFileContent
+ {
+     ExecuteAfterProjectOpen: "",
+ }</code></pre>
+<div class="h_tag">
+<a href="#GetCidersConfigFilename" id="GetCidersConfigFilename" class="autoheader_anchor">
+<h2 data-id="GetCidersConfigFilename">GetCidersConfigFilename</h2>
+</a>
+</div>
+<p>Niladic function that returns the path to the file with Cider's own configuration file.</p>
+<pre><code>      ⎕se.Cider.GetCiderConfigFilename
+C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
+<div class="h_tag">
+<a href="#ListOpenProjects" id="ListOpenProjects" class="autoheader_anchor">
+<h2 data-id="ListOpenProjects">ListOpenProjects</h2>
+</a>
+</div>
+<p>Requires a Boolean as right argument (“verbose”).</p>
+<p>With 0 it returns a matrix with two columns:</p>
+<pre><code>      ⎕SE.Cider.ListOpenProjects 0
+ #.Cider  /path/to/Cider</code></pre>
+<p>With the verbose flag set it returns 4 columns:</p>
+<pre><code>      ⎕SE.Cider.ListOpenProjects 1
+ #.Cider  /path/to/Cider  32  cider</code></pre>
+<table>
+<tbody>
+<tr>
+<td><code>[;1]</code></td>
+<td>Fully qualified project space</td>
+</tr>
+<tr>
+<td><code>[;2]</code></td>
+<td>Path the project was loaded from</td>
+</tr>
+<tr>
+<td><code>[;3]</code></td>
+<td>Number of objects belonging to the project</td>
+</tr>
+<tr>
+<td><code>[;4]</code></td>
+<td>Alias (if any)</td>
+</tr>
+</tbody>
+</table>
 <div class="h_tag">
 <a href="#OpenProject" id="OpenProject" class="autoheader_anchor">
-<h3 data-id="OpenProject">OpenProject</h3>
+<h2 data-id="OpenProject">OpenProject</h2>
 </a>
 </div>
-<p>Naturally <code>OpenProject</code> is the most important command the Cider user comman group offers. We discuss all its actions in detail.</p>
-<p>Note that the contents of the file <code>cider.config</code> directs what exactly Cider is going to do when its principal method, <code>OpenProject</code>, is executed.</p>
-<div class="h_tag">
-<a href="#1-Creating-a-project-space" id="1-Creating-a-project-space" class="autoheader_anchor">
-<h4 data-id="1-Creating-a-project-space">1. Creating a project space</h4>
-</a>
-</div>
-<p>The first step is to create a namespace with the name <code>projectSpace</code> as a child of <code>parent</code>, when <code>parent</code> defaults to <code>#</code> but may be something like <code>⎕SE</code> or <code>#.Foo.Goo</code>.</p>
-<p>The <code>parent</code> must exist while the <code>parentspace</code> may or may not exist. If it does not, it is created. If it already exists it must not contain a namespace <code>CiderConfig</code>.</p>
-<div class="h_tag">
-<a href="#2-Setting-system-variables" id="2-Setting-system-variables" class="autoheader_anchor">
-<h4 data-id="2-Setting-system-variables">2. Setting system variables</h4>
-</a>
-</div>
-<p>In the next step Cider is going to set at least three system variables defined in the config file in the <code>SYSVARS</code> section: <code>⎕IO</code>, <code>⎕ML</code> and <code>⎕WX</code>.</p>
-<p>It is important to set these three variables before code is brought into the workspace because bringing class scripts or namespace scripts into the workspace implies the execution of some code, and that code might well rely on the correct setting of those three system variables.</p>
-<p>If you need other system variables to carry specific values then you may add them to the <code>SYSVARS</code> section.</p>
-<p>Note that the names are not case sensitive: wether the value for <code>⎕FR</code> is specified as “fr” or “FR” or “Fr” or “fR” does not matter.</p>
-<p>In case a setting in <code>SYSVARS</code> cannot be used for assigning a system variable a warning message will be printed to the session.</p>
-<div class="leanpub_A">
-<h3>System variables</h3>
-<p>Feel free to save system variables in files like <code>⎕IO.apla</code> in you source folder.</p>
-<p>That's another way to make sure that system variables are set as early as possible because Link will establish the values of system variables defined in files before it attempts to bring in code, which is important because that code might rely on a certain setting of, say, <code>⎕IO</code>.</p>
-</div>
-
-<div class="h_tag">
-<a href="#3-Bringing-in-the-code" id="3-Bringing-in-the-code" class="autoheader_anchor">
-<h4 data-id="3-Bringing-in-the-code">3. Bringing in the code</h4>
-</a>
-</div>
-<p>In this step all files with supported file extensions[<a href="#fnref4" class="footnote_link"><sup>4</sup></a>] found in <code>source</code> or any sub folder are established in the workspace in <code>{parent}.{projectSpace}</code>.</p>
-<p>Note that from now on we will refer to:</p>
-<p><code>{parent}.{projectSpace}</code> as <em>the root of a project</em>.</p>
-<p>In order to achieve this Cider uses Link[<a href="#fnref2" class="footnote_link"><sup>2</sup></a>].</p>
-<p>By default a link is established between the root of the project and the folder. When your intention is to work on the project (read: change the code) then this is the obvious thing to do.</p>
-<p>However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the <code>-import</code> flag.</p>
-<div class="h_tag">
-<a href="#4-Check-for-later-versions-regarding-Tatin-packages" id="4-Check-for-later-versions-regarding-Tatin-packages" class="autoheader_anchor">
-<h4 data-id="4-Check-for-later-versions-regarding-Tatin-packages">4. Check for later versions regarding Tatin packages</h4>
-</a>
-</div>
-<p>In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the princiapl packages.</p>
-<p>If Cider discoveres later packages it will ask the user whether packages shall be re-installed with the <code>-update</code> flag set independently for each installation folder.</p>
-<div class="h_tag">
-<a href="#5-Loading-Tatin-packages" id="5-Loading-Tatin-packages" class="autoheader_anchor">
-<h4 data-id="5-Loading-Tatin-packages">5. Loading Tatin packages (optional)</h4>
-</a>
-</div>
-<p>Your application or tool might depend on one or more Tatin[<a href="#fnref1" class="footnote_link"><sup>1</sup></a>] packages. By assigning <code>tatinFolder</code> one or more comma-separated folders hosting installed Tatin packages you can make sure that Cider will load[<a href="#fnref3" class="footnote_link"><sup>3</sup></a>] those installed packages into the root of your project.</p>
-<p>In particular when you specify more than a single folder you are likely to want some packages to be loaded into a sub namespace of the root of your project.</p>
-<p>For example, let's assume you want all packages installed in the folder <code>packages/</code> to be loaded into the root of your project. Let's also assume that you want to load all packages from a folder <code>packages_development/</code> into a namespace <code>TestCases</code> in the root of your project.</p>
-<p>This will do the trick:</p>
-<pre><code>"tatinFolder": "packages,packages_development=TestCases",
-</code></pre>
-<p>Notes:</p>
-<ul>
-<li>For the first folder, <code>packages/</code>, no target namespace is specified, therefore the packages are loaded into the root of the project</li>
-<li>A namespace, if assigned to a folder, must be specified relative to the root of the project</li>
-</ul>
-<div class="h_tag">
-<a href="#6-Injecting-a-namespace-CiderConfig" id="6-Injecting-a-namespace-CiderConfig" class="autoheader_anchor">
-<h4 data-id="6-Injecting-a-namespace-CiderConfig">6. Injecting a namespace <code>CiderConfig</code></h4>
-</a>
-</div>
-<p>In this step Cider injects a namespace <code>CiderConfig</code> into the project space and…</p>
-<ul>
-<li>populates it with the contents of the configuration file as an APL array</li>
-<li>adds a variable <code>HOME</code> that remembers the path the project was loaded from</li>
-</ul>
-<div class="h_tag">
-<a href="#7-Initialising-a-project" id="7-Initialising-a-project" class="autoheader_anchor">
-<h4 data-id="7-Initialising-a-project">7. Initialising a project (optional)</h4>
-</a>
-</div>
-<p>Now there might well be demand for executing some code in order to initialise your project.</p>
-<p>This can be achieved by assigning the name of a function to <code>lx</code>. This must again be relative to the root of your project.</p>
-<p>Notes:</p>
-<ul>
-<li>The function should not return a result. If it does anyway it should be shy. Any result would be ignored.</li>
-<li>The function must be either monadic or niladic. If it is monadic then <code>⍬</code> is passed as right argument.
-<p>What is passed as right argument might well change in a future release.</p></li>
-</ul>
-<p>Note that you can access the configuration data of the project from within your initialisation function by questioning the <code>CiderConfig</code> namespace.</p>
-<div class="h_tag">
-<a href="#8-Executing-user-specific-code" id="8-Executing-user-specific-code" class="autoheader_anchor">
-<h3 data-id="8-Executing-user-specific-code">8. Executing user-specific code</h3>
-</a>
-</div>
-<p>Last not least you might want to execute some general code (as opposed to project-specific code) after a project was loaded.</p>
-<p>This can be achieved by specifying the fully qualified name of a function that must be monadic, most likely in <code>⎕SE</code>. A namespace with the configuration data of the project is passed as right argument.</p>
-<p>The function may or may not return a result, but when it does the result will be discarded.</p>
-<p>The fully qualified name of that function must go into the file that is returned by the function <code>GetCiderConfigFilename</code> which is available only via the API, not as a user command.</p>
-<p>That file already contains a definition of the keyword <code>ExecuteAfterProjectOpen</code>, but it is empty:</p>
-<pre><code>{
-    ExecuteAfterProjectOpen: "",
-}</code></pre>
-<div id="footnotes_div">
-<hr>
-<p><strong>Footnotes</strong></p>
-<ol>
-<li id="fnref1"><p><em>Tatin</em> is a Dyalog APL package manager: <a href="https://github.com/aplteam/Tatin" class="external_link">https://github.com/aplteam/Tatin</a></p><a href="#fnref1" class="footnote_anchor"></a>
-<li id="fnref2"><p><em>Link</em> is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from: <a href="https://github.com/dyalog/Link" class="external_link">https://github.com/dyalog/Link</a></p><a href="#fnref2" class="footnote_anchor"></a>
-<li id="fnref3"><p>Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either <code>#._tatin</code> or <code>⎕SE._tatin</code></p><a href="#fnref3" class="footnote_anchor"></a>
-<li id="fnref4"><p>Supported extensions are: <code>.aplf</code>, <code>.aplo</code>, <code>.aplc</code>, <code>.apln</code>, <code>.apli</code>, <code>.apla</code>, <code>.dyalog</code></p><a href="#fnref4" class="footnote_anchor"></a>
+<p>Opening a project means carrying out the following actions:</p>
+<ol start="1">
+<li>Creating the <code>projectSpace</code> (namespace) in <code>parent</code>; if it already exists it must be empty
+<p>From here on we refer to this as the <em>root of the project</em>.</p></li>
+<li>Setting the system variables <code>⎕IO</code>, <code>⎕ML</code> and <code>⎕WX</code> in the root of the project</li>
+<li>Bringing all code and variables into the root of the project</li>
+<li>Loading all Tatin packages from the Tatin installation folders defined on <code>tatinFolders</code></li>
+<li>Injecting a namespace <code>CiderConfig</code> into the root of the project and populating it with the contents of the configuration file as an APL array</li>
+<li>Addng a variable <code>HOME</code> to <code>CiderConfig</code> that carries a path to where the project was loaded from</li>
+<li>Executing the project-specific function noted on <code>lx</code>, ususally to initialize the project.</li>
+<li>Executing a non-project-specific function defined in Cider's own configuration file.</li>
 </ol>
+<p><code>OpenProject</code> requires parameters expected to be passed via the right argument. The parameters can be provided in two different ways:</p>
+<div class="h_tag">
+<a href="#Positional-parameters" id="Positional-parameters" class="autoheader_anchor">
+<h3 data-id="Positional-parameters">Positional parameters</h3>
+</a>
 </div>
+<p>As a vector with up to 5 parameters:</p>
+<ol start="1">
+<li>folder (mandatory)</li>
+<li>projectSpace</li>
+<li>parent</li>
+<li>alias</li>
+<li>Flags
+<ol start="1">
+<li>quietFlag</li>
+<li>suppressLX</li>
+</ol></li>
+</ol>
+<p>Note that the flags must be specified as a single integer according to this table:</p>
+<pre><code>0 0 ←→ 0
+1 0 ←→ 1
+0 1 ←→ 2
+1 1 ←→ 3</code></pre>
+<p>Currently there are only two flags recognized by <code>OpenProject</code>, but that might well change in a future release.</p>
+<div class="h_tag">
+<a href="#Parameter-namespace" id="Parameter-namespace" class="autoheader_anchor">
+<h3 data-id="Parameter-namespace">Parameter namespace</h3>
+</a>
+</div>
+<p>A namespace carrying appropriately named variables, typically created by calling <code>CreateOpenParms</code>.</p>
+<p>The first two in the following list are mandatory, the remaining ones have appropriate defaults and are sorted alphabetically.</p>
+<div class="h_tag">
+<a href="#folder" id="folder" class="autoheader_anchor">
+<h4 data-id="folder">folder (mandatory)</h4>
+</a>
+</div>
+<p>This must be one of:</p>
+<ul>
+<li>A path pointing to a folder that carries a file <code>cider.config</code></li>
+<li>An alias like <code>[aliasname]</code></li>
+</ul>
+<p>Note that this must <em>not</em> be empty.</p>
+<div class="h_tag">
+<a href="#projectSpace" id="projectSpace" class="autoheader_anchor">
+<h4 data-id="projectSpace">projectSpace (mandatory)</h4>
+</a>
+</div>
+<p>The name of the namespace the project is injected into.</p>
+<div class="h_tag">
+<a href="#alias" id="alias" class="autoheader_anchor">
+<h4 data-id="alias">alias</h4>
+</a>
+</div>
+<p>The alias under which you might want to access the project in the future.</p>
+<div class="h_tag">
+<a href="#checkPackageVersions" id="checkPackageVersions" class="autoheader_anchor">
+<h4 data-id="checkPackageVersions">checkPackageVersions</h4>
+</a>
+</div>
+<p>This is ignored in case the project does not sport any Tatin installation folder.</p>
+<p>By default this is an empty numeric vector (<code>⍬</code>), meaning that the user will be asked whether she wants Cider to check all principal packages for later versions, and if there are any found, whether she wants to update those packages. If the project carries more than one package folder the second question is asked independently for each Tatin installation folder.</p>
+<p>Instead one can set this parameter to these values:</p>
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td>Do not check at all</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td>Check and report findings but prompt for updating</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>Check and update without consulting the user</td>
+</tr>
+</tbody>
+</table>
+<div class="h_tag">
+<a href="#Flags" id="Flags" class="autoheader_anchor">
+<h4 data-id="Flags">Flags</h4>
+</a>
+</div>
+<div class="h_tag">
+<a href="#quietFlag" id="quietFlag" class="autoheader_anchor">
+<h5 data-id="quietFlag">quietFlag</h5>
+</a>
+</div>
+<p>Defaults to 1, meaning that the function prints messages to the session.</p>
+<div class="h_tag">
+<a href="#suppressLX" id="suppressLX" class="autoheader_anchor">
+<h5 data-id="suppressLX">suppressLX</h5>
+</a>
+</div>
+<p>Defaults to 0, meaning that the projects initialisation function (if any) is automatically executed.</p>
+<p>There might well be situations when you don't want this, therefore you may suppress the execution by setting this to 1.</p>
+<p>An example might be an automated build process: that might need to open the project but without actually initialising it.</p>
+<div class="h_tag">
+<a href="#importFlag" id="importFlag" class="autoheader_anchor">
+<h4 data-id="importFlag">importFlag</h4>
+</a>
+</div>
+<p>Defaults to 0 meaning that the code is not imported but linked.</p>
+<p>Set this to 1 for Link importing the code without establishing a Link.</p>
+<div class="h_tag">
+<a href="#parent" id="parent" class="autoheader_anchor">
+<h4 data-id="parent">parent</h4>
+</a>
+</div>
+<p>Defaults to <code>#</code> but might as be something like <code>⎕SE</code> or <code>#.Foo.Goo.Boo</code>. However, all namespaces listed must exist.</p>
+<div class="h_tag">
+<a href="#ProcessAlias" id="ProcessAlias" class="autoheader_anchor">
+<h2 data-id="ProcessAlias">ProcessAlias</h2>
+</a>
+</div>
+<p>Takes two parameters via the right argument:</p>
+<ol start="1">
+<li>Fully qualified folder hosting a project</li>
+<li>Alias name</li>
+</ol>
+<p>If the alias is not already in use and the folder exists the function adds the definition to the file returned by <code>GetAliasFilename</code>.</p>
+<p>Returns an empty vector in case of success and an error message otherwise.</p>
+<div class="h_tag">
+<a href="#Version" id="Version" class="autoheader_anchor">
+<h2 data-id="Version">Version</h2>
+</a>
+</div>
+<p><code>Version</code> returns a three-element vector with these pieces of information:</p>
+<ol start="1">
+<li>The name, “Cider”</li>
+<li>The version number
+<p>This can be just <code>1.2.3</code>,  but it may be something like <code>1.2.3-beta-1+113</code></p></li>
+<li>The version date in international date format: YYYY-MM-DD</li>
+</ol>
 </body>
 </html>
