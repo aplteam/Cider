@@ -1,0 +1,17 @@
+ r←Test_Misc_010(stopFlag batchFlag);⎕TRAP;buff;filename
+⍝ Exercise EditConfig
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ :If batchFlag
+     r←T._NoBatchTest
+     :Return
+ :EndIf
+ r←T._Failed
+
+ 0 0⍴⍞,0/⎕←'This test needs you: simply close the editor window after pressing <enter>; don''t make any changes!'
+
+ filename←##.CiderConfig.HOME,'/cider.config'
+ buff←⊃⎕NGET filename
+ ##.Cider.ViewConfig ##.CiderConfig.HOME
+ (⊂buff)⎕NPUT filename 1 ⍝ Paranoia
+
+ r←T._OK

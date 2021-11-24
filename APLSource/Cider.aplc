@@ -7,7 +7,14 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.5.0+131' '2021-11-15'
+      r←'Cider' '0.6.0+142' '2021-11-24'
+      ⍝ * 0.6.0 ⋄ 2021-11-24
+      ⍝   * A user command and an API fn added: ]Cider.ViewConfig and ⎕SE.Cider.ViewConfig respectively
+      ⍝   * Bug fixes
+      ⍝     * Checking Tatin packages for updates: suppressing via parms did not work.
+      ⍝     * Removing header line from result of Link.Status did not always work
+      ⍝     * `ListOpenProjects` did not react appropriately when Link demands a Resync
+      ⍝     * In `CreateOpenParms` the `parent` was set to `#`, making it impossible to honour the config file.
       ⍝ * 0.5.0 ⋄ 2021-10-15
       ⍝   * If a project has Tatin packages, the user might want Cider to check for later versions of those.
       ⍝     If there are any then the user might want to re-install the packges.
@@ -66,7 +73,7 @@
     ⍝   3. parent
     ⍝   4. alias
     ⍝   5. Flags
-    ⍝      1. quietFlag (1)
+    ⍝      1. quietFlag  (1)
     ⍝      2. suppressLX (2)
     ⍝      3. importFlag (4)
     ⍝      4. checkBetterVersions (8)
@@ -119,7 +126,7 @@
       CheckParameters config
       source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source              ⍝ For linking we are only interested in the code folder
       ('Source folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
-      'Project space is not empty'Assert 0=≢projectSpace_.⎕NL⍳16
+      ⍝'Project space is not empty'Assert 0=≢projectSpace_.⎕NL⍳16                       ⍝ Why?!
       linkOptions←ExtractLinkOptions config                                             ⍝ Merge the default options with Cider's options
       p'Bringing in the source code...'
       :If parms.importFlag
@@ -151,7 +158,7 @@
       parms.projectSpace←''
       parms.quietFlag←0
       parms.alias←''
-      parms.parent←'#'
+      parms.parent←''
       parms.suppressLX←0
       parms.importFlag←0
       parms.noPkgLoad←0
@@ -257,10 +264,12 @@
           :If 0≢parms.checkPackageVersions
               :If (⊂parms.checkPackageVersions)∊⍬ 1
               :AndIf ~parms.quietFlag
-                  checkFlag←YesOrNo'Check Tatin packages for later versions?'
+                  checkFlag←0 YesOrNo'Check Tatin packages for later versions?'
               :Else
                   checkFlag←2≡parms.checkPackageVersions
               :EndIf
+          :Else
+              checkFlag←0
           :EndIf
           :If checkFlag
               report←⍬
@@ -294,8 +303,8 @@
       updateParms.update←1
       :For i :In ⍳≢report
           folder←{⍵↑⍨¯1+⍵⍳'='}i⊃folders
-          ⎕←'   Later versions in <',(AddSlash folder),'> :'
-          ⎕←' ',' ',' ',⎕FMT↑{(1⊃⍵),' ==> ',(2⊃⍵)}¨↓i⊃report
+          p'   Later versions in <',(AddSlash folder),'> :'
+          p' ',' ',' ',⎕FMT↑{(1⊃⍵),' ==> ',(2⊃⍵)}¨↓i⊃report
           :If ~updateFlag←2≡parms.checkPackageVersions
               updateFlag←1 YesOrNo'Re-install latest versions in <',(AddSlash folder),'> ?'
           :EndIf
@@ -386,13 +395,50 @@
       projectSpace_.CiderConfig.HOME←folder
     ∇
 
+    ∇ {r}←{editFlag}ViewConfig path;filename;ns;orig;flag
+    ⍝ By default the contents of the file cider.config in "path" is put into the editor in read-only mode.
+    ⍝ The user may edit the contents if ⍺ is 1 rather than anything else or undefined.
+    ⍝ Returns 1 in case the file was modified and 0 otherwise.
+      :Access Public Shared
+      editFlag←{0=⎕NC ⍵:0 ⋄ ⍎⍵}'editFlag'
+      :If 'cider.config'{⍺≡⎕C(-≢⍺)↑⍵}path
+      :AndIf (¯1↑(-≢'cider.config')↓path)∊'/\'
+          filename←path
+      :Else
+          filename←path,'/cider.config'
+      :EndIf
+      ('Does not exist: "',filename,'"')Assert ⎕NEXISTS
+      ns←⎕NS''
+      r←orig←ns.cider_config←⊃⎕NGET filename 1
+      flag←0
+      :Repeat
+          ns.⎕ED⍠('ReadOnly'(~(⊂,1)≡⊂,editFlag))⊣'cider_config'
+          :If orig≢ns.cider_config
+          :AndIf editFlag
+          :AndIf 0<≢(∊ns.cider_config)~' '
+              :If CheckJsonSyntax ns.cider_config
+                  (⊂ns.cider_config)⎕NPUT filename 1
+                  r←ns.cider_config
+                  flag←1
+              :Else
+                  :If ~1 YesOrNo'Syntax check failed. Try again? (no=changes are lost)'
+                      flag←1
+                  :EndIf
+              :EndIf
+          :Else
+              flag←1
+          :EndIf
+      :Until flag
+    ∇
+
     ∇ r←ListOpenProjects verboseFlag;res;aliases;ind
       :Access Public Shared
       '⍵ must be a Boolean'Assert(⊂verboseFlag)∊0 1
       r←(0(2+2×verboseFlag))⍴''
       res←⎕SE.Link.Status''
       :If 'No active links'≢res
-          :If 0<≢res←('Namespace' 'Directory' 'Files'≡res[1;])↓res   ⍝ Will become superfluous with a proper Link API but don't do damage
+          :If 0<≢res←(∧/'Namespace' 'Directory' 'Files'∊res[1;])↓res   ⍝ Will become superfluous with a proper Link API but don't do damage
+              'Link demands a Resync!'Assert~∨/'Link.Resync required'⍷∊res
           :AndIf 0<≢res←({⊃9=⍵.⎕NC'CiderConfig'}∘⍎¨res[;1])⌿res
               r←res[;,1],({6::'' ⋄ ⍎⍵,'.CiderConfig.HOME'}¨res[;1])
               :If verboseFlag
@@ -679,6 +725,15 @@
               :Return
           :EndIf
       :EndIf
+    ∇
+
+    ∇ flag←CheckJsonSyntax json
+      :Trap 0
+          {}⎕JSON json
+          flag←1
+      :Else
+          flag←0
+      :EndTrap
     ∇
 
     AddSlash ←{⍵,(~(¯1↑⍵)∊'/\')/'/'}

@@ -16,6 +16,7 @@
  parms.folder←dir
  parms.projectSpace←'TEMP'
  parms.checkPackageVersions←2
+ parms.quietFlag←1
  res←##.Cider.OpenProject parms
 
  →T.PassesIf 0=FilesAndDirs.IsDir dir,'/packages/aplteam-MarkAPL-11.0.0'
@@ -26,4 +27,5 @@
  r←T._OK
 
 ∆TidyUp:
+ {}⎕SE.Link.Break #.TEMP
  FilesAndDirs.RmDir dir

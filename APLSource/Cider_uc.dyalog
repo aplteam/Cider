@@ -55,6 +55,13 @@
           r,←c
      
           c←⎕NS''
+          c.Name←'ViewConfig'
+          c.Desc←'Puts the config file of a project on display'
+          c.Group←'Cider'
+          c.Parse←'1s -edit'
+          r,←c
+     
+          c←⎕NS''
           c.Name←'Version'
           c.Desc←'Returns name, version number and version date as a three-element vector'
           c.Group←'Cider'
@@ -63,7 +70,7 @@
       :EndIf
     ∇
 
-    ∇ r←Run(Cmd Args);folder;res;P;path;aplVersion;parent;flags;ns;msg
+    ∇ r←Run(Cmd Args);folder;P
       :Access Shared Public
       r←0 0⍴''
       ('Cider needs at least version ',MinimumVersionOfDyalog,' of Dyalog APL')Assert AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
@@ -74,60 +81,17 @@
       :EndIf
       :Select ⎕C Cmd
       :Case ⎕C'OpenProject'
-          Args.target←{(,0)≡,⍵:'' ⋄ ⍵}Args.target
-          :If 0≡Args._1
-              path←⊃1 ⎕NPARTS''
-              :If ⎕NEXISTS path,'cider.config'
-                  :If ~1 YesOrNo'Sure that you want to open ',path,'?'
-                      :Return
-                  :EndIf
-              :ElseIf 0=≢path←OpenFileDialogBox'Open cider.config'
-                  :Return
-              :EndIf
-          :Else
-              path←Args._1
-          :EndIf
-          :If (⊂,path)∊,¨'[' '[?' '[?]'
-              :If 0=≢path←SelectFromAliases ⍬
-                  :Return
-              :EndIf
-          :EndIf
-          path←⎕C⍣('['∊path)⊣path
-          Args.parent←{(,0)≡,⍵:'#' ⋄ ⍵}Args.parent
-          Args.alias←⎕C''Args.Switch'alias'
-          flags←BitsToInt Args.(quiet suppressLX import noPkgLoad)
-          {}P.OpenProject(⊂path),Args.(target parent alias),flags
+          r←OpenProject Args
       :Case ⎕C'ListOpenProjects'
-          r←P.ListOpenProjects Args.verbose
-          :If Args.verbose
-              r(AddTitles)←'Namespace name' 'Path' 'No. of objects' 'Alias'
-          :EndIf
+          r←ListOpenProjects Args
       :Case ⎕C'ListAliases'
-          :If Args.edit
-              EditAliasFile ⍬
-              r←ProcessAliases 0 0 0
-          :Else
-              r←ProcessAliases Args.(prune edit quiet)
-          :EndIf
+          r←ListAliase Args
       :Case ⎕C'CreateProject'
-          :If 0=≢Args._1
-              folder←''
-          :Else
-              folder←Args._1
-          :EndIf
-          :If 0=≢Args._2
-          :OrIf 0≡Args._2
-              r←CreateProject folder(Args.acceptConfig)(Args.noEdit)
-          :Else
-              r←Args._2 CreateProject folder(Args.acceptConfig)(Args.noEdit)
-          :EndIf
-          :If 0≢Args.alias
-              :If 0<≢msg←P.AddAlias folder Args.alias
-                  r,←(⎕UCS 13)msg
-              :EndIf
-          :EndIf
+          r←CreateProject Args
       :Case ⎕C'CloseProject'
-          r←CloseProject Args.(_1 all)
+          r←CloseProject Args
+      :Case ⎕C'ViewConfig'
+          r←ViewConfig Args
       :Case ⎕C'Version'
           r←P.Version ⍬
       :Case ⎕C'Help'
@@ -135,6 +99,94 @@
       :Else
           ∘∘∘ ⍝ Huh?!
       :EndSelect
+    ∇
+
+    ∇ r←ViewConfig Args;list;path;index
+      :If 0≡Args._1
+          list←⎕SE.Cider.ListOpenProjects 0
+          :Select ≢list
+          :Case 0
+              :Return
+          :Case 1
+              path←⊃list[1;2]
+          :Else
+              :If 0=≢index←'Select a Cider project:'Select↓⎕FMT list
+                  :Return
+              :EndIf
+              path←2⊃list[index;]
+          :EndSelect
+      :Else
+          path←Args._1
+      :EndIf
+      :If Args.edit ⎕SE.Cider.ViewConfig path
+          r←'Changed: ',path,'/dicer.config'
+      :Else
+          r←''
+      :EndIf
+    ∇
+
+    ∇ r←CreateProject Args;folder;msg
+      :If 0=≢Args._1
+          folder←''
+      :Else
+          folder←Args._1
+      :EndIf
+      :If 0=≢Args._2
+      :OrIf 0≡Args._2
+          r←CreateProject_ folder(Args.acceptConfig)(Args.noEdit)
+      :Else
+          r←Args._2 CreateProject_ folder(Args.acceptConfig)(Args.noEdit)
+      :EndIf
+      :If 0≢Args.alias
+          :If 0<≢msg←P.AddAlias folder Args.alias
+              r,←(⎕UCS 13)msg
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ r←ListAliase Args
+      :If Args.edit
+          EditAliasFile ⍬
+          r←ProcessAliases 0 0 0
+      :Else
+          r←ProcessAliases Args.(prune edit quiet)
+      :EndIf
+    ∇
+
+    ∇ r←ListOpenProjects Args
+      r←P.ListOpenProjects Args.verbose
+      :If Args.verbose
+          r(AddTitles)←'Namespace name' 'Path' 'No. of objects' 'Alias'
+      :EndIf
+    ∇
+
+    ∇ r←OpenProject Args;path;flags
+      r←0 0⍴''
+      Args.target←{(,0)≡,⍵:'' ⋄ ⍵}Args.target
+      :If 0≡Args._1
+          path←⊃1 ⎕NPARTS''
+          :If ⎕NEXISTS path,'cider.config'
+              :If ~1 YesOrNo'Sure that you want to open ',path,'?'
+                  :Return
+              :EndIf
+          :ElseIf 0=≢path←OpenFileDialogBox'Open cider.config'
+              :Return
+          :EndIf
+      :Else
+          path←Args._1
+      :EndIf
+      :If (⊂,path)∊,¨'[' '[?' '[?]'
+          :If 0=≢path←SelectFromAliases ⍬
+              :Return
+          :EndIf
+      :EndIf
+      path←⎕C⍣('['∊path)⊣path
+      Args.parent←{(,0)≡,⍵:'#' ⋄ ⍵}Args.parent
+      Args.alias←⎕C''Args.Switch'alias'
+      flags←BitsToInt Args.(quiet suppressLX import noPkgLoad)
+      :If ~P.OpenProject(⊂path),Args.(target parent alias),flags
+          r←'Attempt to open the project failed'
+      :EndIf
     ∇
 
     ∇ r←level Help Cmd;ref
@@ -161,6 +213,9 @@
           :Case ⎕C'Help'
               r,←⊂'Offers to put the HTML files on display'
               r,←⊂']Cider.Help'
+          :Case ⎕C'ViewConfig'
+              r,←⊂'Puts the config file of a project on display'
+              r,←⊂']Cider.ViewConfig [path] -edit'
           :Case ⎕C'Version'
               r,←⊂'Returns name, version number and version date as a three-element vector'
               r,←⊂']Cider.Version'
@@ -238,6 +293,13 @@
               r,←⊂'Breaks the Link between the project and the files on disk.'
               r,←⊂'You may specify a particular project (namespace name) or the -all flag.'
               r,←⊂'In the latter case all projects in # are closed.'
+          :Case ⎕C'ViewConfig'
+              r,←⊂'Puts the config file of a project on display.'
+              r,←⊂'By specifying the -edit flag the user might edit the file rather then just viewing it.'
+              r,←⊂''
+              r,←⊂'The optional parameter must be the path to a folder holding a cider.config file (a project).'
+              r,←⊂'In case no path is provided Cider will present all currently opened projects to the user for'
+              r,←⊂'selecting one, except when there is only one project open anyway.'
           :Case ⎕C'Help'
               r,←⊂'Cider comes with two HTML files with documentation. This user command offers to put'
               r,←⊂'one or both of them on display in the default browser.'
@@ -327,7 +389,7 @@
       P←⍎P,'.Cider'
     ∇
 
-    ∇ r←{namespace}CreateProject(folder acceptFlag noEditFlag);filename;success;config;projectFolder;parms
+    ∇ r←{namespace}CreateProject_(folder acceptFlag noEditFlag);filename;success;config;projectFolder;parms
       :Access Public Shared
       namespace←{0<⎕NC ⍵:⍎⍵ ⋄ ⍬}'namespace'
       r←''
@@ -347,10 +409,16 @@
                   ⎕MKDIR folder
               :EndIf
           :EndIf
-          CreateConfigFile filename
+          CreateConfigFile filename namespace
       :EndIf
       :If ~noEditFlag
-          (success config)←EditCiderConfig filename
+          config←1 P.ViewConfig filename
+          :If success←0<≢(∊config)~' '
+              config←⎕JSON⍠('Dialect' 'JSON5')⊣¯1↓∊config,¨⎕UCS 10
+          :Else
+              ⎕NDELETE filename
+              :Return
+          :EndIf
       :Else
           success←1
           config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
@@ -358,7 +426,11 @@
       :If success
           :If namespace≢⍬
               projectFolder←1⊃⎕NPARTS filename
-              (⍎namespace).{⎕EX ⎕NL⍳16}⍬
+              :If 0=(⍎config.CIDER.parent).⎕NC'config.CIDER.projectSpace'
+                  config.CIDER.projectSpace(⍎config.CIDER.parent).⎕NS''
+              :Else
+                  (⍎namespace).{⎕EX ⎕NL⍳16}⍬
+              :EndIf
               parms←P.CreateOpenParms ⍬
               parms.folder←projectFolder
               parms.projectSpace←config.CIDER.projectSpace
@@ -375,11 +447,13 @@
       :EndIf
     ∇
 
-    ∇ {name}←CreateConfigFile filename;config
+    ∇ {name}←CreateConfigFile(filename name);config
     ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"
       ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
       config←⊃⎕NGET(⊃⎕NPARTS ##.SourceFile),configFilename,'.RemoveMe'
-      name←2⊃⎕NPARTS ¯1↓1⊃⎕NPARTS filename
+      :If (⊃name)∊'#⎕'
+          name←{⍵↓⍨⍵⍳'.'}name
+      :EndIf
       ((~name∊⎕D,⎕A,'_∆⍙',⎕C ⎕A)/name)←'_'
       config←'"projectSpace": "\?\?"'⎕R('"projectSpace": "',name,'"')⊣config
       (⊂config)⎕NPUT filename
@@ -399,16 +473,28 @@
       :EndIf
     ∇
 
-    ∇ r←CloseProject(arg all);list
+    ∇ r←CloseProject Args;list;name;bool;row
       r←''
-      :If 0≡arg
-          :If all
+      :If 0≡Args._1
+          :If Args.all
               r←P.CloseProject ⍬
           :Else
-              'Neither a project nor -all was specified'⎕SIGNAL 11
+              'Is not a project, and -all was not specified'⎕SIGNAL 11
           :EndIf
       :Else
-          r←P.CloseProject arg
+          name←Args._1
+          :If ~(⊃Args._1)∊'#⎕'
+              list←P.ListOpenProjects 0
+              :If 0<≢list
+                  :If 1=+/bool←name∘≡¨{⍵↓⍨⍵⍳'.'}¨list[;1]
+                      name←⊃bool⌿list[;1]
+                  :ElseIf 1<+/bool
+                      row←'Which project shall be closed?'Select bool⌿list[;1]
+                      name←row⊃bool⌿list[;1]
+                  :EndIf
+              :EndIf
+          :EndIf
+          r←P.CloseProject name
       :EndIf
     ∇
 
@@ -440,45 +526,6 @@
                   flag←1
               :EndIf
           :Until flag
-      :EndIf
-    ∇
-
-    ∇ {(isOkay json)}←EditCiderConfig filename;config;dmx;config;rc;msg;flag
-    ⍝ Allows the user to edit the contents of the file in Dyalog's editor and checks the changes afterwards.
-    ⍝ Returns a 1 in case the contents of the file os valid and 0 otherwise
-      isOkay←0
-      config←''
-      ('File "',filename,'" does not exist')Assert ⎕NEXISTS filename
-      config←⊃⎕NGET filename
-      flag←0
-      :Repeat
-          ⎕ED'config'
-          :If 0=≢config
-              :If YesOrNo'Sure you want to quit without creating the file cider.config?'
-                  ⎕NDELETE filename
-                  :Return
-              :Else
-                  json←⊃⎕NGET filename
-                  :Continue
-              :EndIf
-          :EndIf
-          :Trap 0
-              json←⎕JSON⍠('Dialect' 'JSON5')⊣config
-          :Else
-              dmx←⎕DMX
-              ⎕←'*** Error - could not convert JSON into a namespace: ',dmx.Message
-              :Continue
-          :EndTrap
-          (rc msg)←CheckConfig json
-          :If 0=rc
-              flag←isOkay←1
-          :Else
-              ⎕←msg
-              flag←0=1 YesOrNo'Would you like to correct the error? ("n"= save as is)'
-          :EndIf
-      :Until flag
-      :If isOkay
-          (⊂config)⎕NPUT filename 1
       :EndIf
     ∇
 
@@ -665,5 +712,55 @@
 
     BitsToInt←{(32⍴2)⊥⌽32↑⍵}
     IntToBits←{⌽(32⍴2)⊤⍵}
+
+    ∇ index←{x}Select options;flag;answer;question;value;bool;⎕ML;⎕IO;manyFlag;mustFlag;caption
+    ⍝ Presents `options` as a numbered list and allows the user to select either exactly one or multiple ones.\\
+    ⍝ One is the default.\\
+    ⍝ The optional left argument allows you to specify more options:
+    ⍝ * `manyFlag` defaults to 0 (meaning just one item might be selected) or 1, in which case multiple items can be specified.
+    ⍝ * `mustFlag` forces the user to select at least one  option.
+    ⍝ * `caption` is shown above the options.
+    ⍝ `options` must not have more than 999 items.
+    ⍝ If the user aborts by entering nothing or a "q" (for "quit") `index will be `⍬`.
+      x←{0<⎕NC ⍵:⊆⍎⍵ ⋄ ''}'x'
+      (caption manyFlag mustFlag)←x,(⍴,x)↓'' 0 0
+      ⎕IO←1 ⋄ ⎕ML←1
+      manyFlag←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'manyFlag'
+      'Invalid right argument; must be a vector of text vectors.'⎕SIGNAL 98/⍨2≠≡options
+      'Right argument has more than 999 items'⎕SIGNAL 98/⍨999<≢options
+      flag←0
+      :Repeat
+          ⎕←{⍵↑'--- ',caption,((0≠≢caption)/' '),⍵⍴'-'}⎕PW-1
+          ⎕←⍪{((⊂'. '),¨⍨(⊂3 0)⍕¨⍳⍴⍵),¨⍵}options
+          ⎕←''
+          question←'Select one ',(manyFlag/'or more '),'item',((manyFlag)/'s'),' '
+          question,←((manyFlag∨~mustFlag)/'('),((~mustFlag)/'q=quit'),((manyFlag∧~mustFlag)/', '),(manyFlag/'a=all'),((manyFlag∨~mustFlag)/')'),' :'
+          :If 0<≢answer←⍞,0/⍞←question
+              answer←(⍴question)↓answer
+              :If 1=≢answer
+              :AndIf answer∊'Qq',manyFlag/'Aa'
+                  :If answer∊'Qq'
+                      :If 0=mustFlag
+                          index←⍬
+                          flag←1
+                      :EndIf
+                  :Else
+                      index←⍳≢options
+                      flag←1
+                  :EndIf
+              :Else
+                  (bool value)←⎕VFI answer
+                  :If ∧/bool
+                  :AndIf manyFlag∨1=+/bool
+                      value←bool/value
+                  :AndIf ∧/value∊⍳⍴options
+                      index←value
+                      flag←0≠≢index
+                  :EndIf
+              :EndIf
+          :EndIf
+      :Until flag
+      index←{1<≢⍵:⍵ ⋄ ⊃⍵}⍣(⍬≢index)⊣index
+    ∇
 
 :EndClass

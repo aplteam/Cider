@@ -1,0 +1,27 @@
+ r←Test_UC_001(stopFlag batchFlag);⎕TRAP;tempDir;parms;res;list;rc;msg;result
+⍝ Exercise the user command on "CloseProject" with a not fully qualified name
+⍝ Should work anyway if there is just one project with that name
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
+
+ {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig'
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←tempDir
+ parms.quietFlag←1
+ res←##.Cider.OpenProject parms
+
+ →T.GoToTidyUp 0=≢list←##.Cider.ListOpenProjects 0
+ (rc msg result)←∆UCMD'CloseProject Foo'          ⍝ Without "#." - the user command must be smart
+ Assert 0=rc
+ →T.GoToTidyUp(≢list)≢1+≢##.Cider.ListOpenProjects 0
+
+ R←T._OK
+
+∆TidyUp:
+ FilesAndDirs.RmDir tempDir
+ #.⎕EX'Foo'
+⍝Done
