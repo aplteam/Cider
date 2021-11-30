@@ -1,17 +1,18 @@
- R←Test_Open_020(stopFlag batchFlag);⎕TRAP;parms;r
-⍝ Open a project and specify "parent" via parameter
+ R←Test_Open_021(stopFlag batchFlag);⎕TRAP;parms;r
+⍝ Open a project and specify "parent" and "projectSpace" via parameter
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- 'TEMP'#.⎕NS''
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP.Goo'#.⎕NS''
 
  parms←##.Cider.CreateOpenParms ⍬
  parms.folder←∆GetTestPath⊃⎕SI
  parms.parent←'#.TEMP'
  parms.importFlag←1
  parms.quietFlag←1
+ parms.projectSpace←'Goo'                   ⍝ Overwrites the config file
  →T.GoToTidyUp~##.Cider.OpenProject parms
- →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello
+ →T.GoToTidyUp'World'≢#.TEMP.Goo.Hello
 
  R←T._OK
 

@@ -1,0 +1,4 @@
+ Cleanup
+ ⎕SE.Link.NOTIFY←∆LINK_NOTIFY_WAS
+ ⎕EX'∆LINK_NOTIFY_WAS'
+ ⍝Done

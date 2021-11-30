@@ -1,4 +1,4 @@
-﻿:Class Cider_uc
+:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger ⋄ APL Team Ltd
 
@@ -16,7 +16,7 @@
           c.Name←'OpenProject'
           c.Desc←'Load all source files into the WS and keep it linked by default'
           c.Group←'Cider'
-          c.Parse←'1s -target= -parent= -alias= -suppressLX -quiet -import -noPkgLoad'
+          c.Parse←'1s -projectSpace= -parent= -alias= -suppressLX -quiet -import -noPkgLoad'
           r,←c
      
           c←⎕NS''
@@ -138,7 +138,7 @@
           r←Args._2 CreateProject_ folder(Args.acceptConfig)(Args.noEdit)
       :EndIf
       :If 0≢Args.alias
-          :If 0<≢msg←P.AddAlias folder Args.alias
+          :If 0<≢msg←P.ProcessAlias folder Args.alias
               r,←(⎕UCS 13)msg
           :EndIf
       :EndIf
@@ -162,7 +162,7 @@
 
     ∇ r←OpenProject Args;path;flags
       r←0 0⍴''
-      Args.target←{(,0)≡,⍵:'' ⋄ ⍵}Args.target
+      Args.projectSpace←{(,0)≡,⍵:'' ⋄ ⍵}Args.projectSpace
       :If 0≡Args._1
           path←⊃1 ⎕NPARTS''
           :If ⎕NEXISTS path,'cider.config'
@@ -184,7 +184,7 @@
       Args.parent←{(,0)≡,⍵:'#' ⋄ ⍵}Args.parent
       Args.alias←⎕C''Args.Switch'alias'
       flags←BitsToInt Args.(quiet suppressLX import noPkgLoad)
-      :If ~P.OpenProject(⊂path),Args.(target parent alias),flags
+      :If ~P.OpenProject(⊂path),Args.(projectSpace parent alias),flags
           r←'Attempt to open the project failed'
       :EndIf
     ∇
@@ -197,7 +197,7 @@
           :Select ⎕C Cmd
           :Case ⎕C'OpenProject'
               r,←⊂'Load all source files into the WS and keep it linked by default'
-              r,←⊂']Cider.OpenProject [folder] [-target=] [-parent=] [-alias=] [-suppressLX] [-quiet] [-import] [-noPkgLoad]'
+              r,←⊂']Cider.OpenProject [folder] [-projectSpace=] [-parent=] [-alias=] [-suppressLX] [-quiet] [-import] [-noPkgLoad]'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'List all currently open projects'
               r,←⊂']Cider.ListOpenProjects [-verbose]'
@@ -236,21 +236,23 @@
               r,←⊂' * under Windows a dialog box is opened that allows you to navigate to the right folder'
               r,←⊂' * an error is thrown on non-Windows platforms'
               r,←⊂''
-              r,←⊂'-quiet:     The user command prints messages to the session unless -quiet is specified.'
-              r,←⊂'-parent:    The project is loaded into Cider.(parent.projectSpace) unless this is (usually'
-              r,←⊂'            temporarily) overwritten by setting the -target= and/or the -parent= options.'
-              r,←⊂'-import:    By default the files on disk are Linked to a namespace. By specifying the -import'
-              r,←⊂'            flag this can be avoided: the code is then loaded into the workspace with the'
-              r,←⊂'            Link.Import method.'
-              r,←⊂'-alias:     In case you are going to work on a project frequently you may specify'
-              r,←⊂'            -alias=name'
-              r,←⊂'-noPkgLoad: By default the Tatin packages from the installation folder(s) defined in the'
-              r,←⊂'            config will be loaded. If you don''t want this specify -noPkgLoad'
+              r,←⊂'-quiet:       The user command prints messages to the session unless -quiet is specified.'
+              r,←⊂'-parent:      The project is loaded into Cider.(parent.projectSpace) unless this is (usually'
+              r,←⊂'              temporarily) overwritten by setting the -projectSpace= and/or the -parent= options.'
+              r,←⊂'-projectSpace By default this is takne from the config file but you may (usually temporarily)'
+              r,←⊂'              overwrite this with -projectSpace='
+              r,←⊂'-import:      By default the files on disk are Linked to a namespace. By specifying the -import'
+              r,←⊂'              flag this can be avoided: the code is then loaded into the workspace with the'
+              r,←⊂'              Link.Import method.'
+              r,←⊂'-alias:       In case you are going to work on a project frequently you may specify'
+              r,←⊂'              -alias=name'
+              r,←⊂'              Later on you may open the project with:'
+              r,←⊂'              ]Cider.OpenProject [name]'
+              r,←⊂'              You can also ask Cider for a list of all known aliases with:'
+              r,←⊂'              ]Cider.OpenProject [?]'
+              r,←⊂'-noPkgLoad:   By default the Tatin packages from the installation folder(s) defined in the'
+              r,←⊂'              config will be loaded. If you don''t want this specify -noPkgLoad'
               r,←⊂''
-              r,←⊂'Later on you may open the project with:'
-              r,←⊂']Cider.OpenProject [name]'
-              r,←⊂'You can also ask Cider for a list of all known aliases with:'
-              r,←⊂']Cider.OpenProject [?]'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'Print a list with the namespaces of all currently opened projects.'
               r,←⊂'Add the -verbose flag for more information. Then a matrix is returned with these columns:'
