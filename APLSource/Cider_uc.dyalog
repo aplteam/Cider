@@ -229,7 +229,7 @@
               r,←⊂'Takes a path to a folder that must contain a file "',configFilename,'" (JSON5).'
               r,←⊂''
               r,←⊂'The config file must specify all variables required by Cider, including "source".'
-              r,←⊂'The contents of "source" is then linked to "ProjectSpace" by default.'
+              r,←⊂'The contents of "source" is then linked to "parent.projectSpace" by default.'
               r,←⊂''
               r,←⊂'If no folder is specified Cider looks for a file "',configFilename,'" in the'
               r,←⊂'current directory. If no such file is found then...'

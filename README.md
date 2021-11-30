@@ -8,7 +8,7 @@ Cider offers some User commands that are useful to manage projects. An API is al
 Cider requires 
 
 * Dyalog 18.0 Unicode or better 
-* Link 3.0.0 or better
+* Link 3.0.8 or better
 
 If Tatin packages are part of a project then Tatin is required as well.
 
@@ -61,7 +61,12 @@ Accepts an optional parameter that must be one of:
 * A folder that hosts a file `cider.config`
 * An alias that points to such a folder
 
-If no such parameter is specified then the current directory is searched for a file `cider.config`. If no such file exists then under Windows a dialog box is opened that allows the user to navigate to a Cider project. On non-Windows platforms an error is thrown.
+If no such parameter is specified then the current directory is searched for a file `cider.config`. 
+
+* If such a file exists the user is asked whether she really wants to open that project.
+* If no such file exists then under Windows a dialog box is opened that allows the user to navigate to a Cider project. 
+
+  On non-Windows platforms an error is thrown.
 
 
 #### Actions 
@@ -71,15 +76,16 @@ Once a folder is established that holds a Cider config file, the user command pe
 1. Creates the project space (namespace); if it already exists it must be empty
 1. Sets the system variables `⎕IO`, `⎕ML` and `⎕WX` in the project space
 1. Brings all code and variables into the project space
-1. Loads all Tatin packages if specified in the file `cider.config`
+1. Asks the user weather Cider should check all Tatin packages for later versions (if there are any)
+1. Loads all Tatin packages specified in the file `cider.config`, if any
 1. Injects a namespace `CiderConfig` into the project space and...
    * populates it with the contents of the configuration file as APL arrays
    * adds a variable `HOME` that remembers the path the project was loaded from   
 
 Notes:
 
-* The project space is defined in the Cider config file, but this can be overwritten with the `-target=` option
-* In case the `tatinFolder` parameter specified one or more folders then the references pointing to the Tatin packages are all established in `projectSpace`
+* The name of the project space is defined in the Cider config file, but this can be overwritten with the `-projectSpace=` option
+* In case the `tatinFolder` parameter specifies one or more folders then the references pointing to the Tatin packages are all established in `projectSpace`
 
   However, this can be overwritten by specifying a different target space by adding 
 
@@ -106,16 +112,14 @@ You may specify the `-all` flag to close all projects in `#`.
 
 ### CreateProject
 
-Requires one mandatory parameter: a folder to what is going to be a project. 
+Requires one mandatory parameter: a folder that is going to be a project. 
 
 Creates a file `cider.config` in that folder.
-
 
  
 ### ListOpenProjects
 
-Lists the project spaces of all currently linked projects.
-
+Lists the project spaces of all currently linked projects together with the fully qualified names of the namespace holding the project's code.
 
 
 ### ListAliases
