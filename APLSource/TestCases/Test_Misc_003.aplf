@@ -18,12 +18,9 @@
  cfg.ExecuteAfterProjectOpen←'#.TEMP2.ExecuteAfterProjectOpen'
  (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣cfg)⎕NPUT filename 1
 
- parms←''
- parms,←⊂folder,'/Project1'
- parms,←⊂''
- parms,←⊂''
- parms,←⊂''
- parms,←⊂1
+ parms←⎕NS''
+ parms.folder←folder,'/Project1'
+ parms.quietFlag←1
  res←##.Cider.OpenProject parms
  →T.GoToTidyUp~res
  →T.GoToTidyUp 1≠#.TEMP2.∆FLAG

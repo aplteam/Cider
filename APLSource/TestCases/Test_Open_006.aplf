@@ -1,17 +1,17 @@
  R←Test_Open_006(stopFlag batchFlag);⎕TRAP;parms;folder;r;res
-⍝ Open a project but suppress execution of the init function with positional parms
+⍝ Open a project but suppress execution of the init function
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  'TEMP'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI
 
- parms←''
- parms,←⊂folder
- parms,←⊂''                         ⍝ Project space
- parms,←⊂'#.TEMP'                   ⍝ parent
- parms,←⊂''                         ⍝ alias (tested separately)
- parms,←⊂3                          ⍝ quietFlag + read-only
+ parms←⎕NS''
+ parms.folder←folder
+ parms.projectSpace←''
+ parms.parent←'#.TEMP'
+ parms.quietFlag←1
+ parms.suppressLX←1
  →T.GoToTidyUp~##.Cider.OpenProject parms
 
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello

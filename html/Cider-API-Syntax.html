@@ -23,13 +23,13 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>The following list is ordered alphabetically.</p>
 <div class="h_tag">
 <a href="#CloseProject" id="CloseProject" class="autoheader_anchor">
-<h2 data-id="CloseProject">CloseProject</h2>
+<h2 data-id="CloseProject">1. CloseProject</h2>
 </a>
 </div>
 <p>There is no API equivalent for the user command <code>]Cider.CloseProject</code>. Use <code>⎕SE.Link.Break</code> instead.</p>
 <div class="h_tag">
 <a href="#CreateOpenParms" id="CreateOpenParms" class="autoheader_anchor">
-<h2 data-id="CreateOpenParms">CreateOpenParms</h2>
+<h2 data-id="CreateOpenParms">2. CreateOpenParms</h2>
 </a>
 </div>
 <p>A monadic function that returns a namespace with default parameters required by the <code>OpenProject</code> function. The right argument is ignored.</p>
@@ -42,19 +42,19 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>This is useful for creating a namespace with the defaults, set required parameters (at least <code>folder</code> and <code>projectSpace</code>), make amendments and pass the namespace as argument to <code>OpenProject</code>.</p>
 <div class="h_tag">
 <a href="#CreateProject" id="CreateProject" class="autoheader_anchor">
-<h2 data-id="CreateProject">CreateProject</h2>
+<h2 data-id="CreateProject">3. CreateProject</h2>
 </a>
 </div>
 <p>There is no API equivalent for the user command <code>]Cider.CreateProject</code>.</p>
 <div class="h_tag">
 <a href="#DropAlias" id="DropAlias" class="autoheader_anchor">
-<h2 data-id="DropAlias">DropAlias</h2>
+<h2 data-id="DropAlias">4. DropAlias</h2>
 </a>
 </div>
 <p>Takes an alias and removes it.</p>
 <div class="h_tag">
 <a href="#GetAliasFileContent" id="GetAliasFileContent" class="autoheader_anchor">
-<h2 data-id="GetAliasFileContent">GetAliasFileContent</h2>
+<h2 data-id="GetAliasFileContent">5. GetAliasFileContent</h2>
 </a>
 </div>
 <p>Niladic function that returns the contents of the file returned by the <code>GetCiderAliasFilename</code> function as an APL array:</p>
@@ -63,20 +63,20 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Every record of that file contains two pieces of information: an alias and its associated path. The file might be empty.</p>
 <div class="h_tag">
 <a href="#GetAliasFilename" id="GetAliasFilename" class="autoheader_anchor">
-<h2 data-id="GetAliasFilename">GetAliasFilename</h2>
+<h2 data-id="GetAliasFilename">6. GetAliasFilename</h2>
 </a>
 </div>
 <p>Niladic function that returns the path to the file that is used by Cider to manage alias names and their paths.</p>
 <div class="h_tag">
 <a href="#GetMyUCMDsFolder" id="GetMyUCMDsFolder" class="autoheader_anchor">
-<h2 data-id="GetMyUCMDsFolder">GetMyUCMDsFolder</h2>
+<h2 data-id="GetMyUCMDsFolder">7. GetMyUCMDsFolder</h2>
 </a>
 </div>
 <p>Niladic function that returns the path to the <code>MyUCMDs/</code> folder.</p>
 <p>Note that this folder is created under Windows by the Dyalog installation routine, but not on other platforms.</p>
 <div class="h_tag">
 <a href="#GetCidersConfigFileContent" id="GetCidersConfigFileContent" class="autoheader_anchor">
-<h2 data-id="GetCidersConfigFileContent">GetCidersConfigFileContent</h2>
+<h2 data-id="GetCidersConfigFileContent">8. GetCidersConfigFileContent</h2>
 </a>
 </div>
 <p>Niladic function that returns the contents of the file returned by the <code>GetCidersConfigFilename</code> function as a vector of text vectors:</p>
@@ -86,7 +86,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
  }</code></pre>
 <div class="h_tag">
 <a href="#GetCidersConfigFilename" id="GetCidersConfigFilename" class="autoheader_anchor">
-<h2 data-id="GetCidersConfigFilename">GetCidersConfigFilename</h2>
+<h2 data-id="GetCidersConfigFilename">9. GetCidersConfigFilename</h2>
 </a>
 </div>
 <p>Niladic function that returns the path to the file with Cider's own configuration file.</p>
@@ -94,7 +94,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <div class="h_tag">
 <a href="#ListOpenProjects" id="ListOpenProjects" class="autoheader_anchor">
-<h2 data-id="ListOpenProjects">ListOpenProjects</h2>
+<h2 data-id="ListOpenProjects">10. ListOpenProjects</h2>
 </a>
 </div>
 <p>Requires a Boolean as right argument (“verbose”).</p>
@@ -126,7 +126,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 </table>
 <div class="h_tag">
 <a href="#OpenProject" id="OpenProject" class="autoheader_anchor">
-<h2 data-id="OpenProject">OpenProject</h2>
+<h2 data-id="OpenProject">11. OpenProject</h2>
 </a>
 </div>
 <p>Opening a project means carrying out the following actions:</p>
@@ -141,40 +141,11 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <li>Executing the project-specific function noted on <code>lx</code>, ususally to initialize the project.</li>
 <li>Executing a non-project-specific function defined in Cider's own configuration file.</li>
 </ol>
-<p><code>OpenProject</code> requires parameters expected to be passed via the right argument. The parameters can be provided in two different ways:</p>
-<div class="h_tag">
-<a href="#Positional-parameters" id="Positional-parameters" class="autoheader_anchor">
-<h3 data-id="Positional-parameters">Positional parameters</h3>
-</a>
-</div>
-<p>As a vector with up to 5 parameters:</p>
-<ol start="1">
-<li>folder (mandatory)</li>
-<li>projectSpace</li>
-<li>parent</li>
-<li>alias</li>
-<li>Flags
-<ol start="1">
-<li>quietFlag</li>
-<li>suppressLX</li>
-</ol></li>
-</ol>
-<p>Note that the flags must be specified as a single integer according to this table:</p>
-<pre><code>0 0 ←→ 0
-1 0 ←→ 1
-0 1 ←→ 2
-1 1 ←→ 3</code></pre>
-<p>Currently there are only two flags recognized by <code>OpenProject</code>, but that might well change in a future release.</p>
-<div class="h_tag">
-<a href="#Parameter-namespace" id="Parameter-namespace" class="autoheader_anchor">
-<h3 data-id="Parameter-namespace">Parameter namespace</h3>
-</a>
-</div>
-<p>A namespace carrying appropriately named variables, typically created by calling <code>CreateOpenParms</code>.</p>
+<p><code>OpenProject</code> requires parameters expected to be passed via the right argument as a parameter space. This is namespace carrying appropriately named variables, typically created by calling <code>CreateOpenParms</code>.</p>
 <p>The first two in the following list are mandatory, the remaining ones have appropriate defaults and are sorted alphabetically.</p>
 <div class="h_tag">
 <a href="#folder" id="folder" class="autoheader_anchor">
-<h4 data-id="folder">folder (mandatory)</h4>
+<h3 data-id="folder">11.1. folder (mandatory)</h3>
 </a>
 </div>
 <p>This must be one of:</p>
@@ -185,22 +156,26 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <p>Note that this must <em>not</em> be empty.</p>
 <div class="h_tag">
 <a href="#projectSpace" id="projectSpace" class="autoheader_anchor">
-<h4 data-id="projectSpace">projectSpace (mandatory)</h4>
+<h3 data-id="projectSpace">11.2. projectSpace (mandatory)</h3>
 </a>
 </div>
-<p>The name of the namespace the project is injected into.</p>
+<p>The name of the namespace the project is injected into. If this is empty it is going to be <code>#</code> (or <code>⎕SE</code>).</p>
 <div class="h_tag">
 <a href="#alias" id="alias" class="autoheader_anchor">
-<h4 data-id="alias">alias</h4>
+<h3 data-id="alias">11.3. alias</h3>
 </a>
 </div>
 <p>The alias under which you might want to access the project in the future.</p>
 <div class="h_tag">
 <a href="#checkPackageVersions" id="checkPackageVersions" class="autoheader_anchor">
-<h4 data-id="checkPackageVersions">checkPackageVersions</h4>
+<h3 data-id="checkPackageVersions">11.4. checkPackageVersions</h3>
 </a>
 </div>
-<p>This is ignored in case the project does not sport any Tatin installation folder.</p>
+<p>This is ignored in case…</p>
+<ul>
+<li>the project does not sport any Tatin installation folder</li>
+<li><a href="#importFlag" style="color: red;" class="bookmark_link"><code>importFlag</code></a> is 1; no check will take place then anyway</li>
+</ul>
 <p>By default this is an empty numeric vector (<code>⍬</code>), meaning that the user will be asked whether she wants Cider to check all principal packages for later versions, and if there are any found, whether she wants to update those packages. If the project carries more than one package folder the second question is asked independently for each Tatin installation folder.</p>
 <p>Instead one can set this parameter to these values:</p>
 <table>
@@ -220,40 +195,59 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 </tbody>
 </table>
 <div class="h_tag">
-<a href="#Flags" id="Flags" class="autoheader_anchor">
-<h4 data-id="Flags">Flags</h4>
+<a href="#importFlag" id="importFlag" class="autoheader_anchor">
+<h3 data-id="importFlag">11.5. importFlag</h3>
 </a>
 </div>
+<p>Defaults to 0 meaning that the code is not imported but linked.</p>
+<p>Set this to 1 for Link importing the code without establishing a Link.</p>
+<p>Note that this</p>
+<div class="h_tag">
+<a href="#noPkgLoad" id="noPkgLoad" class="autoheader_anchor">
+<h3 data-id="noPkgLoad">11.6. noPkgLoad</h3>
+</a>
+</div>
+<p>Defaults to 0, meaning that Cider will load Tatin packages by honoring the config file's <code>tatinFolder</code> parameter. However, there might be circumstances when you do not want packages to be loaded. This can be achieved by setting the <code>noPkgLoad</code> flag to 1.</p>
+<div class="h_tag">
+<a href="#parent" id="parent" class="autoheader_anchor">
+<h3 data-id="parent">11.7. parent</h3>
+</a>
+</div>
+<p>Defaults to <code>#</code> but might as be something like <code>⎕SE</code> or <code>#.Foo.Goo.Boo</code>. However, all namespaces listed must exist.</p>
 <div class="h_tag">
 <a href="#quietFlag" id="quietFlag" class="autoheader_anchor">
-<h5 data-id="quietFlag">quietFlag</h5>
+<h3 data-id="quietFlag">11.8. quietFlag</h3>
 </a>
 </div>
 <p>Defaults to 1, meaning that the function prints messages to the session.</p>
 <div class="h_tag">
 <a href="#suppressLX" id="suppressLX" class="autoheader_anchor">
-<h5 data-id="suppressLX">suppressLX</h5>
+<h3 data-id="suppressLX">11.9. suppressLX</h3>
 </a>
 </div>
 <p>Defaults to 0, meaning that the projects initialisation function (if any) is automatically executed.</p>
 <p>There might well be situations when you don't want this, therefore you may suppress the execution by setting this to 1.</p>
 <p>An example might be an automated build process: that might need to open the project but without actually initialising it.</p>
 <div class="h_tag">
-<a href="#importFlag" id="importFlag" class="autoheader_anchor">
-<h4 data-id="importFlag">importFlag</h4>
+<a href="#watch" id="watch" class="autoheader_anchor">
+<h3 data-id="watch">11.10. watch</h3>
 </a>
 </div>
-<p>Defaults to 0 meaning that the code is not imported but linked.</p>
-<p>Set this to 1 for Link importing the code without establishing a Link.</p>
-<div class="h_tag">
-<a href="#parent" id="parent" class="autoheader_anchor">
-<h4 data-id="parent">parent</h4>
-</a>
+<p>Defaults to “ns”, meaning that changing any APL objects in the workspaces will result in Link updating the correcponding file on disk while any changed on disk will <em>not</em> be reflected by changing the workspace.</p>
+<p>You may instead set this to “dir”, which bascially reverts the way Link works.</p>
+<p>You may also set this to “both”, when changes in the workspace <em>and</em> and file will result in updates.</p>
+<p>Note that “dir” and “both” come with certain dangers you should be aware of.</p>
+<p>Other settings of <code>watch</code> will result in an error.</p>
+<div class="leanpub_A">
+<h3><code>watch←'both'|'dir'</code></h3>
+<p>In order to detect changes on the file system Link uses a File System Watcher, something that is available only under Windows. Link uses APL threads for this.</p>
+<p>When you trace through your code, or set a stop vector, and have “Pause on Error” in the session's “Threads” menu ticked, any handler associated with those threads will also stop.</p>
+<p>This iomposes a danger because those handlers set a Hold under some circumstances, and depending on your actions this might result in a DEADLOCK: Dyalog would appear to hang until you issue a strong interrupt via the session's system menu item.</p>
 </div>
-<p>Defaults to <code>#</code> but might as be something like <code>⎕SE</code> or <code>#.Foo.Goo.Boo</code>. However, all namespaces listed must exist.</p>
+
 <div class="h_tag">
 <a href="#ProcessAlias" id="ProcessAlias" class="autoheader_anchor">
-<h2 data-id="ProcessAlias">ProcessAlias</h2>
+<h2 data-id="ProcessAlias">12. ProcessAlias</h2>
 </a>
 </div>
 <p>Takes two parameters via the right argument:</p>
@@ -265,7 +259,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <p>Returns an empty vector in case of success and an error message otherwise.</p>
 <div class="h_tag">
 <a href="#Version" id="Version" class="autoheader_anchor">
-<h2 data-id="Version">Version</h2>
+<h2 data-id="Version">13. Version</h2>
 </a>
 </div>
 <p><code>Version</code> returns a three-element vector with these pieces of information:</p>

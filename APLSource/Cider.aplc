@@ -5,13 +5,18 @@
     L←⎕SE.Link
     CR←⎕UCS 13
 
-
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.7.1+151' '2021-12-??'
-      ⍝ * 0.7.1 ⋄ 2021-12-??
-      ⍝   * Readme.md polished
-      ⍝ * 0.7.0 ⋄ 2021-11-30
+      r←'Cider' '0.8.0+162' '2021-12-14'
+      ⍝ * 0.8.0 ⋄ 2021-12-14
+      ⍝   * BREAKING CHANGE: `OpenProject` accepts no positional parameters anymore, must be a parameter space.
+      ⍝     Positional parameters are just not flexible enough.
+      ⍝   * `OpenProject` now accepts an additional parameter `watch` (both API and user command)
+      ⍝   * Default for `watch` changed from "both" to "ns"
+      ⍝   * Bug fixes:
+      ⍝     * Cider could not deal with a root project `parent=#|⎕SE` and `projectSpace=''`
+      ⍝     * Cider should NOT worry about updating Tatin packages when `importFlag` is 1.
+      ⍝ * 0.7.0 ⋄ 2021-11-29
       ⍝   * BREAKING CHANGE: The option -target in OpenProject was renamed to -projectSpace in order to bring it
       ⍝     in line with the name used for the same thing in the parameter namepsace usually created by `CreateOpenParms`
       ⍝   * Handling improved when an alias is assigned again. So far re-defining an alias was refused, making
@@ -71,38 +76,20 @@
 
     Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⎕ML←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),11}
 
-    ∇ successFlag←OpenProject y;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;noOfBits
+    ∇ successFlag←OpenProject parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn
     ⍝ Open a Cider project.\\
-    ⍝ `y` must be one of:\\
-    ⍝ * A namespace holding all the required parameters. Such a namespace can be created by calling `CreateOpenParms`
-    ⍝ * A vector with up to 6 positional parameters:
-    ⍝   1. folder
-    ⍝   2. projectSpace
-    ⍝   3. parent
-    ⍝   4. alias
-    ⍝   5. Flags
-    ⍝      1. quietFlag  (1)
-    ⍝      2. suppressLX (2)
-    ⍝      3. importFlag (4)
-    ⍝      4. checkBetterVersions (8)
+    ⍝ `parms` must be a namespace holding all the required parameters. Such a namespace can be created by calling `CreateOpenParms`
       :Access Public Shared
       successFlag←failure
-      parms←CreateOpenParms ⍬
-      :If 9=⎕NC'y'
-          'parms'⎕NS y
-      :Else
-          'At least two parameters must be specified: "folder" and "projectSpace"'Assert 2≤≢y
-          'folder' 'projectSpace' 'parent' 'alias'parms.{⍎⍺,'←''',⍵,''''}¨4↑(⊆y),(≢⊆y)↓⍬'' '#' ''
-          noOfBits←4
-          'quietFlag' 'suppressLX' 'importFlag' 'noPkgLoad'parms.{⍎⍺,'←',⍕⍵}¨noOfBits↑IntToBits 5⊃(⊆y),(≢⊆y)↓⍬'' '#' 0 0
-      :EndIf
+      parms←CreateOpenParms parms
+      '"folder" must be specified'Assert 0<parms.⎕NC'folder'
       '"folder" must be specified'Assert 0<≢parms.folder
+      '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
+      '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both'
       p←(~parms.quietFlag)∘ToQSE                                                        ⍝ Function for printing to the session
-      parms←(p ProcessAliasInFolder)parms
+      parms←(p TranslateAlias2Folder)parms
       ('Folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
-      :If ~parms.quietFlag
-          ⎕←' ',((1+parms.importFlag)⊃'Loading' 'Importing'),' project from ',parms.folder
-      :EndIf
+      p((1+parms.importFlag)⊃'Loading' 'Importing'),' project from ',parms.folder
       parms.projectSpace←⍕parms.projectSpace
       :If 0<≢parms.parent
           parms.parent←,parms.parent
@@ -124,12 +111,15 @@
       :If 0=≢parms.parent                                                               ⍝ Was it specified as argument?
           parms.parent←config.CIDER.parent                                              ⍝ Nope, so the config file rules
       :EndIf
-      projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                            ⍝ Create project space from "parent" to avoid problems
-      configFilename HandleSysVars config
+      :If 0=≢parms.projectSpace
+          projectSpace_←⍎parms.parent                                                   ⍝ Is either # or ⎕SE
+      :Else
+          projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                        ⍝ Create project space from "parent" to avoid problems
+      :EndIf
       CheckParameters config
+      configFilename HandleSysVars config
       source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source              ⍝ For linking we are only interested in the code folder
       ('Source folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
-      ⍝'Project space is not empty'Assert 0=≢projectSpace_.⎕NL⍳16                       ⍝ Why?!
       linkOptions←ExtractLinkOptions config                                             ⍝ Merge the default options with Cider's options
       p'Bringing in the source code...'
       :If parms.importFlag
@@ -154,7 +144,9 @@
       ⍝Done
     ∇
 
-    ∇ parms←CreateOpenParms dummy
+    ∇ parms←CreateOpenParms y;list
+    ⍝ Creates a namespace with all parameters one might pass to `OpenProject`.\\
+    ⍝ `y` might be an empty vector or a namespace with some such parameters.
       :Access Public Shared
       parms←(1⊃1↓⎕RSI).⎕NS''        ⍝ Create namespace where we got called from
       parms.folder←''
@@ -165,7 +157,13 @@
       parms.suppressLX←0
       parms.importFlag←0
       parms.noPkgLoad←0
-      parms.checkPackageVersions←⍬    ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
+      parms.watch←'ns'
+      parms.checkPackageVersions←⍬   ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
+      :If ~(⊂y)∊''⍬
+      :AndIf 9=⎕NC'y'
+      :AndIf 0<≡list←' '~⍨¨↓y.⎕NL 2
+          parms⍎¨list{' '=1↑0⍴⍵:⍺,'←''',⍵,'''' ⋄ ⍵≡⍬:⍺,'←⍬' ⋄ ⍺,'←',⍕⍵}¨y.{⍎⍵}¨list
+      :EndIf
     ∇
 
     ∇ r←GetValidLinkParams
@@ -240,7 +238,7 @@
               :Trap 0
                   projectSpace_.⍎'⎕',name_,'←',⍕⍎'config.SYSVARS.',name
               :Else
-                  ⎕←'>>> Assigning system variable "',name,'" failed'
+                  p'>>> Assigning system variable "',name,'" failed'
               :EndTrap
           :EndFor
       :Else                         ⍝ SysVars prior to version 0.3.0
@@ -256,18 +254,19 @@
     ∇
 
     ∇ {r}←CheckPackagesStatus(config parms);checkFlag;folder;folders;folder_;updateFlag;updateParms;report
-    ⍝ Check whether Tatin packages should be updated.
-    ⍝ This is ruled by parms.checkPackageVersions:
+    ⍝ Check whether Tatin packages should be updated in case parms.importFlag is not 1.
+    ⍝ This is ruled by parms.checkPackageVersions
     ⍝ ⍬ means the user will be asked for both checking and updating
     ⍝ 0 means don't update
     ⍝ 1 means yes, check, but ask before updating
     ⍝ 2 means update without further ado
       r←⍬
       :If 0<≢config.CIDER.tatinFolder
+      :AndIf 0=parms.importFlag
           :If 0≢parms.checkPackageVersions
               :If (⊂parms.checkPackageVersions)∊⍬ 1
               :AndIf ~parms.quietFlag
-                  checkFlag←0 YesOrNo'Check Tatin packages for later versions?'
+                  checkFlag←0 YesOrNo' Check Tatin packages for later versions?'
               :Else
                   checkFlag←2≡parms.checkPackageVersions
               :EndIf
@@ -280,7 +279,7 @@
               report(CheckTatinFolders)←folders
               report←{⍵[;4]⌿⍵}¨report
               :If 0=+/≢¨report
-                  ⎕←'   No later versions found'
+                  p'   No later versions found '
               :Else
                   UpdatePackages folders report parms
               :EndIf
@@ -320,6 +319,7 @@
     ∇
 
     ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_
+    ⍝ Load all installed packaged (if any) into their designates host namespaces.
       r←failure
       :If 0<≢config.CIDER.tatinFolder
           pkgFolders←⊆','(≠⊆⊢)config.CIDER.tatinFolder
@@ -354,6 +354,7 @@
     ∇
 
     ∇ {r}←ExecProjectFunction(config projectSpace);fns;msg
+    ⍝ Check whether a function "lx" is specified in the configuration and if so execute it.
       r←0
       :If 0<≢config.CIDER.lx
           :If '⋄'∊config.CIDER.lx
@@ -384,6 +385,7 @@
     ∇
 
     ∇ ExecUserFunction config;fn
+    ⍝ Check whether the config parameter "ExecuteAfterProjectOpen" is set and execute it if it's a function.
       :If 0<≢fn←GetFunctionNameFromCiderConfigFile ⍬
           :If 1=1 1⊃⎕AT fn
               ⍎'{}',fn,' config'
@@ -690,7 +692,7 @@
       :EndIf
     ∇
 
-    ∇ parms←(fns ProcessAliasInFolder)parms;data;alias;msg;alias_;folder
+    ∇ parms←(fns TranslateAlias2Folder)parms;data;alias;msg;alias_;folder
     ⍝ Translates the alias in "folder" (if any) into a path from a parameter namespace.\\
     ⍝ If an alias is defined it is saved, possibly by overwriting the old one.
       :If '['∊parms.folder

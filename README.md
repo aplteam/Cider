@@ -1,6 +1,6 @@
 # Cider Project Manager
 
-Cider offers some User commands that are useful to manage projects. An API is also available.
+Cider offers some User commands that are useful to manage projects. It comes as a set of Dyalog user commands, but an API is also available.
 
 
 ## Requirements
@@ -24,6 +24,7 @@ Currently these commands are available:
 * `]Cider.ListAliases`
 * `]Cider.Help`
 * `]Cider.Version`
+* `]Cider.ViewConfig`
 
 In this document only `OpenProject` is discussed in detail because that is the principal command.
 
@@ -36,7 +37,7 @@ For details refer to the user command help. Regarding the API details are availa
 
 The ZIP file contains a folder `Cider/`. That folder needs to go into any of the folders that Dyalog APL scans for user commands.
 
-For example, a folder `MyUCMDs` will be scanned for user commands. The location Dyalog is looking for such a folder depends on the operating system:
+For example, a folder `MyUCMDs` will be scanned for user commands. The location where Dyalog tries to find such a folder depends on the operating system:
 
 ```
 ⍝ Windows:
@@ -130,3 +131,10 @@ Lists all Cider aliases together with their folders.
 ### Version
 
 Returns a three-item-vector with "Name", "Version number" and "Version date".
+
+
+### ViewConfig
+
+Puts the config file of a project on display. 
+
+By specifying the `-edit` flag the user might edit the file rather then just viewing it.

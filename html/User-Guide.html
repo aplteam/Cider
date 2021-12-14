@@ -20,11 +20,11 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </div>
 <div class="h_tag">
 <a href="#What-is-Cider-for" id="What-is-Cider-for" class="autoheader_anchor">
-<h2 data-id="What-is-Cider-for">What is Cider for?</h2>
+<h2 data-id="What-is-Cider-for">1. What is Cider for?</h2>
 </a>
 </div>
 <p>In this document we use the word “project” for an application or a tool that consists not only of what is finally delivered, like an Installer EXE under Windows or a Tatin package or a workspace or whatnot, but also of stuff that is required only during development, like test cases and test data, tools, helpers and similar stuff.</p>
-<p>While Link is perfect for bringing stuff into the workspace, putting together an environment in which development can take place requires more than just getting the code into the workspace.</p>
+<p>While Link is perfect for bringing stuff into the workspace, putting together an environment in which development can take place requires more than just that.</p>
 <div class="leanpub">
 <img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information">
 <div>
@@ -34,38 +34,38 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 
 <div class="h_tag">
 <a href="#The-solution" id="The-solution" class="autoheader_anchor">
-<h2 data-id="The-solution">The solution</h2>
+<h2 data-id="The-solution">2. The solution</h2>
 </a>
 </div>
 <p>Cider attempts to fill that gap. A Cider project requires a configuration file named <code>cider.config</code>.</p>
 <p>The two most important commands of the Cider user command group are <code>CreateProject</code> and <code>OpenProject</code>.</p>
 <div class="h_tag">
 <a href="#CreateProject" id="CreateProject" class="autoheader_anchor">
-<h3 data-id="CreateProject">CreateProject</h3>
+<h3 data-id="CreateProject">2.1. CreateProject</h3>
 </a>
 </div>
 <p>With the user command <code>]Cider.CreateProject</code> any folder that does not yet host a file <code>cider.config</code> can be transformed into a Cider project. (You may specify the <code>-acceptConfig</code> flag to override this default behaviour and make Cider accept an already existing file <code>cider.config</code>)</p>
 <p>If the folder does not yet exist it will be created. In any case the folder will be populated with a file <code>cider.config</code>.</p>
 <div class="h_tag">
 <a href="#OpenProject" id="OpenProject" class="autoheader_anchor">
-<h3 data-id="OpenProject">OpenProject</h3>
+<h3 data-id="OpenProject">2.2. OpenProject</h3>
 </a>
 </div>
 <p>Naturally <code>OpenProject</code> is the most important command the Cider user comman group offers. We discuss all its actions in detail.</p>
 <p>Note that the contents of the file <code>cider.config</code> directs what exactly Cider is going to do when its principal method, <code>OpenProject</code>, is executed.</p>
 <div class="h_tag">
 <a href="#1-Creating-a-project-space" id="1-Creating-a-project-space" class="autoheader_anchor">
-<h4 data-id="1-Creating-a-project-space">1. Creating a project space</h4>
+<h4 data-id="1-Creating-a-project-space">2.2.1. 1. Creating a project space</h4>
 </a>
 </div>
-<p>The first step is to create a namespace with the name <code>projectSpace</code> as a child of <code>parent</code>, when <code>parent</code> defaults to <code>#</code> but may be something like <code>⎕SE</code> or <code>#.Foo.Goo</code>.</p>
+<p>The first step carried out by <code>]Cider.OpenProject</code> is to create a namespace with the name <code>projectSpace</code> as a child of <code>parent</code>, when <code>parent</code> defaults to <code>#</code> but may be something like <code>⎕SE</code> or <code>#.Foo.Goo</code>.</p>
 <p>The <code>parent</code> must exist while the <code>parentspace</code> may or may not exist. If it does not, it is created. If it already exists it must not contain a namespace <code>CiderConfig</code>.</p>
 <div class="h_tag">
 <a href="#2-Setting-system-variables" id="2-Setting-system-variables" class="autoheader_anchor">
-<h4 data-id="2-Setting-system-variables">2. Setting system variables</h4>
+<h4 data-id="2-Setting-system-variables">2.2.2. 2. Setting system variables</h4>
 </a>
 </div>
-<p>In the next step Cider is going to set at least three system variables defined in the config file in the <code>SYSVARS</code> section: <code>⎕IO</code>, <code>⎕ML</code> and <code>⎕WX</code>.</p>
+<p>In the next step <code>]Cider.OpenProject</code> is going to set at least three system variables defined in the config file in the <code>SYSVARS</code> section: <code>⎕IO</code>, <code>⎕ML</code> and <code>⎕WX</code>.</p>
 <p>It is important to set these three variables before code is brought into the workspace because bringing class scripts or namespace scripts into the workspace implies the execution of some code, and that code might well rely on the correct setting of those three system variables.</p>
 <p>If you need other system variables to carry specific values then you may add them to the <code>SYSVARS</code> section.</p>
 <p>Note that the names are not case sensitive: wether the value for <code>⎕FR</code> is specified as “fr” or “FR” or “Fr” or “fR” does not matter.</p>
@@ -73,30 +73,35 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <div class="leanpub_A">
 <h3>System variables</h3>
 <p>Feel free to save system variables in files like <code>⎕IO.apla</code> in you source folder.</p>
-<p>That's another way to make sure that system variables are set as early as possible because Link will establish the values of system variables defined in files before it attempts to bring in code, which is important because that code might rely on a certain setting of, say, <code>⎕IO</code>.</p>
+<p>That's another way to make sure that system variables are set as early as possible because Link will establish the values of system variables defined in files before it attempts to bring in code.</p>
 </div>
 
 <div class="h_tag">
 <a href="#3-Bringing-in-the-code" id="3-Bringing-in-the-code" class="autoheader_anchor">
-<h4 data-id="3-Bringing-in-the-code">3. Bringing in the code</h4>
+<h4 data-id="3-Bringing-in-the-code">2.2.3. 3. Bringing in the code</h4>
 </a>
 </div>
-<p>In this step all files with supported file extensions[<a href="#fnref4" class="footnote_link"><sup>4</sup></a>] found in <code>source</code> or any sub folder are established in the workspace in <code>{parent}.{projectSpace}</code>.</p>
+<p>In this step all files with supported file extensions[<a href="#fnref4" class="footnote_link"><sup>4</sup></a>] found in <code>source</code> and any sub folder are established in the workspace in <code>{parent}.{projectSpace}</code>.</p>
 <p>Note that from now on we will refer to:</p>
 <p><code>{parent}.{projectSpace}</code> as <em>the root of a project</em>.</p>
 <p>In order to achieve this Cider uses Link[<a href="#fnref2" class="footnote_link"><sup>2</sup></a>].</p>
 <p>By default a link is established between the root of the project and the folder. When your intention is to work on the project (read: change the code) then this is the obvious thing to do.</p>
+<div class="leanpub_A">
+<h3>Link's <code>watch</code> parameter</h3>
+<p>By default Cider sets the <code>watch</code> parameter to “ns”, meaning that changes in the workspace via the editor are saved to disk. You may instead set <code>watch</code> to “dir” or “both”. Refere to the Link documentation for details.</p>
+</div>
+
 <p>However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the <code>-import</code> flag.</p>
 <div class="h_tag">
 <a href="#4-Check-for-later-versions-regarding-Tatin-packages" id="4-Check-for-later-versions-regarding-Tatin-packages" class="autoheader_anchor">
-<h4 data-id="4-Check-for-later-versions-regarding-Tatin-packages">4. Check for later versions regarding Tatin packages</h4>
+<h4 data-id="4-Check-for-later-versions-regarding-Tatin-packages">2.2.4. 4. Check for later versions regarding Tatin packages</h4>
 </a>
 </div>
-<p>In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the princiapl packages.</p>
-<p>If Cider discoveres later packages it will ask the user whether packages shall be re-installed with the <code>-update</code> flag set independently for each installation folder.</p>
+<p>In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will not happen in case <code>importFlag</code> is 1.</p>
+<p>If <code>]Cider.OpenProject</code> discoveres later packages it will ask the user whether packages shall be re-installed with the <code>-update</code> flag set independently for each installation folder.</p>
 <div class="h_tag">
 <a href="#5-Loading-Tatin-packages" id="5-Loading-Tatin-packages" class="autoheader_anchor">
-<h4 data-id="5-Loading-Tatin-packages">5. Loading Tatin packages (optional)</h4>
+<h4 data-id="5-Loading-Tatin-packages">2.2.5. 5. Loading Tatin packages (optional)</h4>
 </a>
 </div>
 <p>Your application or tool might depend on one or more Tatin[<a href="#fnref1" class="footnote_link"><sup>1</sup></a>] packages. By assigning <code>tatinFolder</code> one or more comma-separated folders hosting installed Tatin packages you can make sure that Cider will load[<a href="#fnref3" class="footnote_link"><sup>3</sup></a>] those installed packages into the root of your project.</p>
@@ -112,17 +117,17 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </ul>
 <div class="h_tag">
 <a href="#6-Injecting-a-namespace-CiderConfig" id="6-Injecting-a-namespace-CiderConfig" class="autoheader_anchor">
-<h4 data-id="6-Injecting-a-namespace-CiderConfig">6. Injecting a namespace <code>CiderConfig</code></h4>
+<h4 data-id="6-Injecting-a-namespace-CiderConfig">2.2.6. 6. Injecting a namespace <code>CiderConfig</code></h4>
 </a>
 </div>
-<p>In this step Cider injects a namespace <code>CiderConfig</code> into the project space and…</p>
+<p>In this step <code>]Cider.OpenProject</code> injects a namespace <code>CiderConfig</code> into the project space and…</p>
 <ul>
 <li>populates it with the contents of the configuration file as an APL array</li>
 <li>adds a variable <code>HOME</code> that remembers the path the project was loaded from</li>
 </ul>
 <div class="h_tag">
 <a href="#7-Initialising-a-project" id="7-Initialising-a-project" class="autoheader_anchor">
-<h4 data-id="7-Initialising-a-project">7. Initialising a project (optional)</h4>
+<h4 data-id="7-Initialising-a-project">2.2.7. 7. Initialising a project (optional)</h4>
 </a>
 </div>
 <p>Now there might well be demand for executing some code in order to initialise your project.</p>
@@ -136,7 +141,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Note that you can access the configuration data of the project from within your initialisation function by questioning the <code>CiderConfig</code> namespace.</p>
 <div class="h_tag">
 <a href="#8-Executing-user-specific-code" id="8-Executing-user-specific-code" class="autoheader_anchor">
-<h3 data-id="8-Executing-user-specific-code">8. Executing user-specific code</h3>
+<h3 data-id="8-Executing-user-specific-code">2.3. 8. Executing user-specific code</h3>
 </a>
 </div>
 <p>Last not least you might want to execute some general code (as opposed to project-specific code) after a project was loaded.</p>

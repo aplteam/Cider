@@ -6,12 +6,10 @@
  'TEMP'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI
 
- parms←''
- parms,←⊂folder
- parms,←⊂''
- parms,←⊂''
- parms,←⊂''
- parms,←⊂1
+ parms←⎕NS''
+ parms.folder←folder
+ parms.quietFlag←1
+ parms.checkPackageVersions←0
  res←##.Cider.OpenProject parms
 
  →T.GoToTidyUp~res

@@ -19,10 +19,10 @@
  parms.quietFlag←1
  res←##.Cider.OpenProject parms
 
- →T.PassesIf 0=FilesAndDirs.IsDir dir,'/packages/aplteam-MarkAPL-11.0.0'
- →T.PassesIf 1=≢⊃FilesAndDirs.Dir dir,'/packages/aplteam-MarkAPL-11*'
- →T.PassesIf 0=FilesAndDirs.IsDir dir,'/packages_dev/aplteam-Tester2-3.1.1'
- →T.PassesIf 1=≢⊃FilesAndDirs.Dir dir,'/packages_dev/aplteam-Tester2-3.*'
+ →T.GoToTidyUp 0≠FilesAndDirs.IsDir dir,'/packages/aplteam-MarkAPL-11.0.0'
+ →T.GoToTidyUp 1≠≢⊃FilesAndDirs.Dir dir,'/packages/aplteam-MarkAPL-11*'
+ →T.GoToTidyUp 0≠FilesAndDirs.IsDir dir,'/packages_dev/aplteam-Tester2-3.1.1'
+ →T.GoToTidyUp 1≠≢⊃FilesAndDirs.Dir dir,'/packages_dev/aplteam-Tester2-3.*'
 
  r←T._OK
 

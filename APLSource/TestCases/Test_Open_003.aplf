@@ -1,19 +1,18 @@
  R←Test_Open_003(stopFlag batchFlag);⎕TRAP;parms;folder;r;res
-⍝ Open a simple project but specify a different parent space and a different project space name with positional parms
+⍝ Open a simple project but specify a different parent space and a different project space name
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  #.⎕SHADOW'TEMP'
  'TEMP'#.⎕NS''
- 'Goo'⎕SE.⎕NS''  ⍝ Defined in the config file but overwritten by the argument
+ 'Goo'⎕SE.⎕NS''                   ⍝ Defined in the config file but overwritten by the argument
  folder←∆GetTestPath⊃⎕SI
 
- parms←''
- parms,←⊂folder
- parms,←⊂'___Zoo___'
- parms,←⊂'⎕SE'                      ⍝ parent
- parms,←⊂''                         ⍝ alias (tested separately)
- parms,←⊂1                          ⍝ quietFlag
+ parms←⎕NS''
+ parms.folder←folder
+ parms.projectSpace←'___Zoo___'
+ parms.parent←'⎕SE'
+ parms.quietFlag←1
  →T.GoToTidyUp 1≠##.Cider.OpenProject parms
 
  →T.GoToTidyUp 0≠≢#.TEMP.⎕NL⍳16

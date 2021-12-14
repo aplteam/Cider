@@ -1,5 +1,7 @@
 [parm]:title             = 'Cider User Guide'
 [parm]:leanpubExtensions = 1
+[parm]:numberHeaders     = 2 3 4 5 6
+
 
 
 
@@ -9,7 +11,7 @@
 
 In this document we use the word "project" for an application or a tool that consists not only of what is  finally delivered, like an Installer EXE under Windows or a Tatin package or a workspace or whatnot, but also of stuff that is required only during development, like test cases and test data, tools, helpers and similar stuff.
 
-While Link is perfect for bringing stuff into the workspace, putting together an environment in which development can take place requires more than just getting the code into the workspace.
+While Link is perfect for bringing stuff into the workspace, putting together an environment in which development can take place requires more than just that.
 
 I> Note that in this document names stemming from the Cider configuration file are shown `like this`.
 
@@ -33,13 +35,13 @@ Note that the  contents of the file `cider.config` directs what exactly Cider is
 
 #### 1. Creating a project space
 
-The first step is to create a namespace with the name `projectSpace` as a child of `parent`, when `parent` defaults to `#` but may be something like `⎕SE` or `#.Foo.Goo`. 
+The first step carried out by `]Cider.OpenProject` is to create a namespace with the name `projectSpace` as a child of `parent`, when `parent` defaults to `#` but may be something like `⎕SE` or `#.Foo.Goo`. 
 
 The `parent` must exist while the `parentspace` may or may not exist. If it does not, it is created. If it already exists it must not contain a namespace `CiderConfig`.
 
 #### 2. Setting system variables
 
-In the next step Cider is going to set at least three system variables defined in the config file in the `SYSVARS` section: `⎕IO`, `⎕ML` and `⎕WX`.
+In the next step `]Cider.OpenProject` is going to set at least three system variables defined in the config file in the `SYSVARS` section: `⎕IO`, `⎕ML` and `⎕WX`.
 
 It is important to set these three variables before code is brought into the workspace because bringing class scripts or namespace scripts into the workspace implies the execution of some code, and that code might well rely on the correct setting of those three system variables.
 
@@ -53,12 +55,12 @@ A> ### System variables
 A>
 A> Feel free to save system variables in files like `⎕IO.apla` in you source folder. 
 A>
-A> That's another way to make sure that system variables are set as early as possible because Link will establish the values of system variables defined in files before it attempts to bring in code, which is important because that code might rely on a certain setting of, say, `⎕IO`.
+A> That's another way to make sure that system variables are set as early as possible because Link will establish the values of system variables defined in files before it attempts to bring in code.
 
 
 #### 3. Bringing in the code
 
-In this step all files with supported file extensions[^extensions] found in `source` or any sub folder are established in the workspace in `{parent}.{projectSpace}`.
+In this step all files with supported file extensions[^extensions] found in `source` and any sub folder are established in the workspace in `{parent}.{projectSpace}`.
 
 Note that from now on we will refer to:
 
@@ -68,14 +70,19 @@ In order to achieve this Cider uses Link[^link].
 
 By default a link is established between the root of the project and the folder. When your intention is to work on the project (read: change the code) then this is the obvious thing to do.
 
+A> ### Link's `watch` parameter
+A>
+A> By default Cider sets the `watch` parameter to "ns", meaning that changes in the workspace via the editor are saved to disk. You may instead set `watch` to "dir" or "both". Refere to the Link documentation for details.
+
+
 However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the `-import` flag.
 
 
 #### 4. Check for later versions regarding Tatin packages
 
-In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the princiapl packages.
+In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will not happen in case `importFlag` is 1.
 
-If Cider discoveres later packages it will ask the user whether packages shall be re-installed with the `-update` flag set independently for each installation folder.
+If `]Cider.OpenProject` discoveres later packages it will ask the user whether packages shall be re-installed with the `-update` flag set independently for each installation folder.
 
 
 #### 5. Loading Tatin packages (optional)
@@ -100,7 +107,7 @@ Notes:
 
 #### 6. Injecting a namespace `CiderConfig`
 
-In this step Cider injects a namespace `CiderConfig` into the project space and...
+In this step `]Cider.OpenProject` injects a namespace `CiderConfig` into the project space and...
 
 * populates it with the contents of the configuration file as an APL array
 * adds a variable `HOME` that remembers the path the project was loaded from

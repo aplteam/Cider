@@ -1,4 +1,4 @@
-:Class Cider_uc
+﻿:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger ⋄ APL Team Ltd
 
@@ -16,7 +16,7 @@
           c.Name←'OpenProject'
           c.Desc←'Load all source files into the WS and keep it linked by default'
           c.Group←'Cider'
-          c.Parse←'1s -projectSpace= -parent= -alias= -suppressLX -quiet -import -noPkgLoad'
+          c.Parse←'1s -projectSpace= -parent= -alias= -suppressLX -quiet -import -noPkgLoad -watch=ns dir both'
           r,←c
      
           c←⎕NS''
@@ -160,7 +160,7 @@
       :EndIf
     ∇
 
-    ∇ r←OpenProject Args;path;flags
+    ∇ r←OpenProject Args;path;parms
       r←0 0⍴''
       Args.projectSpace←{(,0)≡,⍵:'' ⋄ ⍵}Args.projectSpace
       :If 0≡Args._1
@@ -181,10 +181,17 @@
           :EndIf
       :EndIf
       path←⎕C⍣('['∊path)⊣path
-      Args.parent←{(,0)≡,⍵:'#' ⋄ ⍵}Args.parent
-      Args.alias←⎕C''Args.Switch'alias'
-      flags←BitsToInt Args.(quiet suppressLX import noPkgLoad)
-      :If ~P.OpenProject(⊂path),Args.(projectSpace parent alias),flags
+      parms←P.CreateOpenParms''
+      parms.folder←path
+      parms.projectSpace←Args.projectSpace
+      parms.parent←{(,0)≡,⍵:'#' ⋄ ⍵}Args.parent
+      parms.alias←⎕C''Args.Switch'alias'
+      parms.watch←⎕C'ns'Args.Switch'watch'
+      parms.quietFlag←Args.quiet
+      parms.suppressLX←Args.suppressLX
+      parms.importFlag←Args.import
+      parms.noPkgLoad←Args.noPkgLoad
+      :If ~P.OpenProject parms
           r←'Attempt to open the project failed'
       :EndIf
     ∇
@@ -197,7 +204,7 @@
           :Select ⎕C Cmd
           :Case ⎕C'OpenProject'
               r,←⊂'Load all source files into the WS and keep it linked by default'
-              r,←⊂']Cider.OpenProject [folder] [-projectSpace=] [-parent=] [-alias=] [-suppressLX] [-quiet] [-import] [-noPkgLoad]'
+              r,←⊂']Cider.OpenProject [folder] [-projectSpace=] [-parent=] [-alias=] [-suppressLX] [-quiet] [-import] [-noPkgLoad] [-watch=ns|dir|both]'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'List all currently open projects'
               r,←⊂']Cider.ListOpenProjects [-verbose]'
@@ -233,26 +240,31 @@
               r,←⊂''
               r,←⊂'If no folder is specified Cider looks for a file "',configFilename,'" in the'
               r,←⊂'current directory. If no such file is found then...'
-              r,←⊂' * under Windows a dialog box is opened that allows you to navigate to the right folder'
+              r,←⊂' * under Windows a dialog box is opened that allows you to navigate to the intended folder'
               r,←⊂' * an error is thrown on non-Windows platforms'
               r,←⊂''
               r,←⊂'-quiet:       The user command prints messages to the session unless -quiet is specified.'
-              r,←⊂'-parent:      The project is loaded into Cider.(parent.projectSpace) unless this is (usually'
-              r,←⊂'              temporarily) overwritten by setting the -projectSpace= and/or the -parent= options.'
-              r,←⊂'-projectSpace By default this is takne from the config file but you may (usually temporarily)'
-              r,←⊂'              overwrite this with -projectSpace='
-              r,←⊂'-import:      By default the files on disk are Linked to a namespace. By specifying the -import'
+              r,←⊂'-parent:      The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
+              r,←⊂'              overwritten by setting the -projectSpace= and/or the -parent= option(s).'
+              r,←⊂'-projectSpace By default this is taken from the config file but you may (temporarily) overwrite'
+              r,←⊂'              this with -projectSpace='
+              r,←⊂'-import:      By default the namespace is linked to folder. By specifying the -import'
               r,←⊂'              flag this can be avoided: the code is then loaded into the workspace with the'
-              r,←⊂'              Link.Import method.'
+              r,←⊂'              Link.Import method, meaning that changes are not tracked.'
               r,←⊂'-alias:       In case you are going to work on a project frequently you may specify'
               r,←⊂'              -alias=name'
               r,←⊂'              Later on you may open the project with:'
               r,←⊂'              ]Cider.OpenProject [name]'
               r,←⊂'              You can also ask Cider for a list of all known aliases with:'
               r,←⊂'              ]Cider.OpenProject [?]'
+              r,←⊂'              Cider will then allow you to select one of the projects.'
               r,←⊂'-noPkgLoad:   By default the Tatin packages from the installation folder(s) defined in the'
               r,←⊂'              config will be loaded. If you don''t want this specify -noPkgLoad'
-              r,←⊂''
+              r,←⊂'-watch        Defaults to "ns" but may be "dir" or "both" instead.'
+              r,←⊂'              * "ns" means that changes in the workpace are saved on disk'
+              r,←⊂'              * "dir" means that any changes on disk are brought into the WS'
+              r,←⊂'              * "both" means that any changes in either "ns" or "dir" are reflected accordingly'
+              r,←⊂'              You are adviced to study the Link documentation on this for details.'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'Print a list with the namespaces of all currently opened projects.'
               r,←⊂'Add the -verbose flag for more information. Then a matrix is returned with these columns:'
@@ -414,7 +426,8 @@
           CreateConfigFile filename namespace
       :EndIf
       :If ~noEditFlag
-          config←1 P.ViewConfig filename
+          1 P.ViewConfig filename
+          config←⊃⎕NGET filename 1
           :If success←0<≢(∊config)~' '
               config←⎕JSON⍠('Dialect' 'JSON5')⊣¯1↓∊config,¨⎕UCS 10
           :Else
@@ -452,12 +465,13 @@
     ∇ {name}←CreateConfigFile(filename name);config
     ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"
       ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
-      config←⊃⎕NGET(⊃⎕NPARTS ##.SourceFile),configFilename,'.RemoveMe'
+      config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET(⊃⎕NPARTS ##.SourceFile),configFilename,'.RemoveMe'
       :If (⊃name)∊'#⎕'
           name←{⍵↓⍨⍵⍳'.'}name
       :EndIf
       ((~name∊⎕D,⎕A,'_∆⍙',⎕C ⎕A)/name)←'_'
-      config←'"projectSpace": "\?\?"'⎕R('"projectSpace": "',name,'"')⊣config
+      config.CIDER.projectSpace←name
+      config←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config
       (⊂config)⎕NPUT filename
     ∇
 
@@ -711,9 +725,6 @@
       :Until flag
       index←{1<≢⍵:⍵ ⋄ ⊃⍵}index
     ∇
-
-    BitsToInt←{(32⍴2)⊥⌽32↑⍵}
-    IntToBits←{⌽(32⍴2)⊤⍵}
 
     ∇ index←{x}Select options;flag;answer;question;value;bool;⎕ML;⎕IO;manyFlag;mustFlag;caption
     ⍝ Presents `options` as a numbered list and allows the user to select either exactly one or multiple ones.\\
