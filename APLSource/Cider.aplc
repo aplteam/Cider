@@ -7,7 +7,10 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.8.0+162' '2021-12-14'
+      r←'Cider' '0.8.1+163' '2021-12-15'
+      ⍝   * Bug fixes:
+      ⍝     * Checking Tatin install folders for better versions was buggy.
+      ⍝     * A function noted on "lx" was not executed under :Trap but should.
       ⍝ * 0.8.0 ⋄ 2021-12-14
       ⍝   * BREAKING CHANGE: `OpenProject` accepts no positional parameters anymore, must be a parameter space.
       ⍝     Positional parameters are just not flexible enough.
@@ -138,7 +141,7 @@
       :EndIf
       InjectConfigDataIntoProject config projectSpace_ parms.folder
       {}ExecProjectFunction⍣(~parms.suppressLX)⊣config projectSpace_
-      ExecUserFunction config
+      p ExecUserFunction config
       p'*** Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,'.',parms.projectSpace,'"'
       successFlag←success
       ⍝Done
@@ -297,23 +300,26 @@
       :EndFor
     ∇
 
-    ∇ {r}←UpdatePackages(folders report parms);i;folder;updateFlag
+    ∇ {r}←UpdatePackages(folders reports parms);i;folder;updateFlag;report
     ⍝ Update Tatin install folders by running ReInstallDependencies with the updateFlag set
     ⍝ Returns the number of install folders updated.
       r←0
       updateParms←⎕SE.Tatin.CreateReInstallParms
       updateParms.update←1
-      :For i :In ⍳≢report
-          folder←{⍵↑⍨¯1+⍵⍳'='}i⊃folders
-          p'   Later versions in <',(AddSlash folder),'> :'
-          p' ',' ',' ',⎕FMT↑{(1⊃⍵),' ==> ',(2⊃⍵)}¨↓i⊃report
-          :If ~updateFlag←2≡parms.checkPackageVersions
-              updateFlag←1 YesOrNo'Re-install latest versions in <',(AddSlash folder),'> ?'
-          :EndIf
-          :If updateFlag
-              p'  Re-installing all packages in <',(AddSlash folder),'> ...'
-              updateParms ⎕SE.Tatin.ReInstallDependencies parms.folder,'/',folder
-              r+←1
+      :For i :In ⍳≢reports
+          report←i⊃reports
+          :If 0<≢report
+              folder←{⍵↑⍨¯1+⍵⍳'='}i⊃folders
+              p'   Later versions in <',(AddSlash folder),'> :'
+              p' ',' ',' ',⎕FMT↑{(1⊃⍵),' ==> ',(2⊃⍵)}¨↓report
+              :If ~updateFlag←2≡parms.checkPackageVersions
+                  updateFlag←1 YesOrNo'Re-install latest versions in <',(AddSlash folder),'> ?'
+              :EndIf
+              :If updateFlag
+                  p'  Re-installing all packages in <',(AddSlash folder),'> ...'
+                  updateParms ⎕SE.Tatin.ReInstallDependencies parms.folder,'/',folder
+                  r+←1
+              :EndIf
           :EndIf
       :EndFor
     ∇
@@ -366,16 +372,26 @@
       :EndIf
     ∇
 
-    ∇ msg←x ExecProjectFunction_ lx;fns;config;projectSpace
+    ∇ msg←x ExecProjectFunction_ lx;fns;config;projectSpace;qdmx
       (projectSpace config)←x
       :If 3=projectSpace.⎕NC lx
           msg←⊂'Executing the project''s initialising function "',(lx~' '),'"...'
           :Select 1 2⊃projectSpace.⎕AT lx
           :Case 0
-              projectSpace.⍎lx
+              :Trap 0
+                  projectSpace.⍎lx
+              :Else
+                  qdmx←⎕DMX
+                  msg←'*** Executing "lx" crashed: ',qdmx.EM
+              :EndTrap
           :CaseList 1 ¯2
               fns←projectSpace.⍎lx
-              fns config
+              :Trap 0
+                  fns config
+              :Else
+                  qdmx←⎕DMX
+                  msg←'*** Executing "lx" crashed: ',qdmx.EM
+              :EndTrap
           :Else
               msg,←⊂'  Invalid function valence: is ambivalent'
           :EndSelect
@@ -384,13 +400,24 @@
       :EndIf
     ∇
 
-    ∇ ExecUserFunction config;fn
+    ∇ {msg}←ExecUserFunction config;fn;qdmx
     ⍝ Check whether the config parameter "ExecuteAfterProjectOpen" is set and execute it if it's a function.
+      msg←''
       :If 0<≢fn←GetFunctionNameFromCiderConfigFile ⍬
           :If 1=1 1⊃⎕AT fn
-              ⍎'{}',fn,' config'
+              :Trap 0
+                  ⍎'{}',fn,' config'
+              :Else
+                  qdmx←⎕DMX
+                  msg←'*** Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
+              :EndTrap
           :Else
-              ⍎fn,' config'
+              :Trap 0
+                  ⍎fn,' config'
+              :Else
+                  qdmx←⎕DMX
+                  msg←'*** Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
+              :EndTrap
           :EndIf
       :EndIf
     ∇
