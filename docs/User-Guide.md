@@ -29,21 +29,21 @@ If the folder does not yet exist it will be created. In any case the folder will
 
 ### OpenProject
 
-Naturally `OpenProject` is the most important command the Cider user comman group offers. We discuss all its actions in detail.
+Naturally `OpenProject` is the most important command the Cider user command group offers. We discuss all its actions in detail.
 
 Note that the  contents of the file `cider.config` directs what exactly Cider is going to do when its principal method, `OpenProject`, is executed.
 
 #### 1. Creating a project space
 
-The first step carried out by `]Cider.OpenProject` is to create a namespace with the name `projectSpace` as a child of `parent`, when `parent` defaults to `#` but may be something like `⎕SE` or `#.Foo.Goo`. 
+The first step carried out by `]Cider.OpenProject` is to create a namespace with the name `projectSpace` as a child of `parent`, when `parent` defaults to `#` but may be something like `⎕SE` or `#.Foo.Goo` etc.
 
 The `parent` must exist while the `parentspace` may or may not exist. If it does not, it is created. If it already exists it must not contain a namespace `CiderConfig`.
 
 #### 2. Setting system variables
 
-In the next step `]Cider.OpenProject` is going to set at least three system variables defined in the config file in the `SYSVARS` section: `⎕IO`, `⎕ML` and `⎕WX`.
+In the next step `]Cider.OpenProject` is going to set at least two system variables defined in the config file in the `SYSVARS` section: `⎕IO` and `⎕ML`.
 
-It is important to set these three variables before code is brought into the workspace because bringing class scripts or namespace scripts into the workspace implies the execution of some code, and that code might well rely on the correct setting of those three system variables.
+It is important to set these variables before code is brought into the workspace because bringing class scripts or namespace scripts into the workspace implies the execution of some code, and that code might well rely on the correct setting of those system variables.
 
 If you need other system variables to carry specific values then you may add them to the `SYSVARS` section. 
 
@@ -53,7 +53,7 @@ In case a setting in `SYSVARS` cannot be used for assigning a system variable a 
 
 A> ### System variables
 A>
-A> Feel free to save system variables in files like `⎕IO.apla` in you source folder. 
+A> Feel free to save system variables in files like `⎕IO.apla` in your source folder. 
 A>
 A> That's another way to make sure that system variables are set as early as possible because Link will establish the values of system variables defined in files before it attempts to bring in code.
 
@@ -72,7 +72,7 @@ By default a link is established between the root of the project and the folder.
 
 A> ### Link's `watch` parameter
 A>
-A> By default Cider sets the `watch` parameter to "ns", meaning that changes in the workspace via the editor are saved to disk. You may instead set `watch` to "dir" or "both". Refere to the Link documentation for details.
+A> By default Cider sets the `watch` parameter to "ns", meaning that changes in the workspace via the editor are saved to disk. You may instead set `watch` to "dir" or "both". Refer to the Link documentation for details.
 
 
 However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the `-import` flag.
@@ -80,7 +80,7 @@ However, if you want to bring in the code as part of, say, an automated build pr
 
 #### 4. Check for later versions regarding Tatin packages
 
-In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will not happen in case `importFlag` is 1.
+In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will only happen in case `importFlag` is 0.
 
 If `]Cider.OpenProject` discoveres later packages it will ask the user whether packages shall be re-installed with the `-update` flag set independently for each installation folder.
 
@@ -130,13 +130,13 @@ Note that you can access the configuration data of the project from within your 
 
 ### 8. Executing user-specific code
 
-Last not least you might want to execute some general code (as opposed to project-specific code) after a project was loaded.
+Finally you might want to execute some general code (as opposed to project-specific code) after a project was loaded.
 
 This can be achieved by specifying the fully qualified name of a function that must be monadic, most likely in `⎕SE`. A namespace with the configuration data of the project is passed as right argument.
 
 The function may or may not return a result, but when it does the result will be discarded.
 
-The fully qualified name of that function must go into the file that is returned by the function `GetCiderConfigFilename` which is available only via the API, not as a user command.
+The fully qualified name of the function must go into the file that is returned by the function `GetCiderConfigFilename` which is available only via the API, not as a user command.
 
 That file already contains a definition of the keyword `ExecuteAfterProjectOpen`, but it is empty:
 

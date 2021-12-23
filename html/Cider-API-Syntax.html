@@ -133,15 +133,15 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <ol start="1">
 <li>Creating the <code>projectSpace</code> (namespace) in <code>parent</code>; if it already exists it must be empty
 <p>From here on we refer to this as the <em>root of the project</em>.</p></li>
-<li>Setting the system variables <code>⎕IO</code>, <code>⎕ML</code> and <code>⎕WX</code> in the root of the project</li>
+<li>Setting the system variables <code>⎕IO</code> and <code>⎕ML</code> in the root of the project</li>
 <li>Bringing all code and variables into the root of the project</li>
 <li>Loading all Tatin packages from the Tatin installation folders defined on <code>tatinFolders</code></li>
 <li>Injecting a namespace <code>CiderConfig</code> into the root of the project and populating it with the contents of the configuration file as an APL array</li>
-<li>Addng a variable <code>HOME</code> to <code>CiderConfig</code> that carries a path to where the project was loaded from</li>
-<li>Executing the project-specific function noted on <code>lx</code>, ususally to initialize the project.</li>
-<li>Executing a non-project-specific function defined in Cider's own configuration file.</li>
+<li>Adding a variable <code>HOME</code> to <code>CiderConfig</code> that carries a path to where the project was loaded from</li>
+<li>Executing the project-specific function noted on <code>lx</code>, ususally to initialize the project</li>
+<li>Executing a non-project-specific function defined in Cider's own configuration file</li>
 </ol>
-<p><code>OpenProject</code> requires parameters expected to be passed via the right argument as a parameter space. This is namespace carrying appropriately named variables, typically created by calling <code>CreateOpenParms</code>.</p>
+<p><code>OpenProject</code> requires parameters expected to be passed via the right argument as a parameter space. This is a namespace carrying appropriately named variables, typically created by calling <code>CreateOpenParms</code>.</p>
 <p>The first two in the following list are mandatory, the remaining ones have appropriate defaults and are sorted alphabetically.</p>
 <div class="h_tag">
 <a href="#folder" id="folder" class="autoheader_anchor">
@@ -201,7 +201,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 </div>
 <p>Defaults to 0 meaning that the code is not imported but linked.</p>
 <p>Set this to 1 for Link importing the code without establishing a Link.</p>
-<p>Note that this</p>
+<p>Note that this has implications on how Cider deals with Tatin packages, see there.</p>
 <div class="h_tag">
 <a href="#noPkgLoad" id="noPkgLoad" class="autoheader_anchor">
 <h3 data-id="noPkgLoad">11.6. noPkgLoad</h3>
@@ -219,13 +219,13 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <h3 data-id="quietFlag">11.8. quietFlag</h3>
 </a>
 </div>
-<p>Defaults to 1, meaning that the function prints messages to the session.</p>
+<p>Defaults to 0, meaning that the function prints messages to the session.</p>
 <div class="h_tag">
 <a href="#suppressLX" id="suppressLX" class="autoheader_anchor">
 <h3 data-id="suppressLX">11.9. suppressLX</h3>
 </a>
 </div>
-<p>Defaults to 0, meaning that the projects initialisation function (if any) is automatically executed.</p>
+<p>Defaults to 0, meaning that the projects initialisation function (if any) will be executed.</p>
 <p>There might well be situations when you don't want this, therefore you may suppress the execution by setting this to 1.</p>
 <p>An example might be an automated build process: that might need to open the project but without actually initialising it.</p>
 <div class="h_tag">
@@ -233,7 +233,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <h3 data-id="watch">11.10. watch</h3>
 </a>
 </div>
-<p>Defaults to “ns”, meaning that changing any APL objects in the workspaces will result in Link updating the correcponding file on disk while any changed on disk will <em>not</em> be reflected by changing the workspace.</p>
+<p>Defaults to “ns”, meaning that changing any APL objects in the workspaces will result in Link updating the correcponding file on disk while any change on disk will <em>not</em> be reflected by changing the workspace.</p>
 <p>You may instead set this to “dir”, which bascially reverts the way Link works.</p>
 <p>You may also set this to “both”, when changes in the workspace <em>and</em> and file will result in updates.</p>
 <p>Note that “dir” and “both” come with certain dangers you should be aware of.</p>
@@ -242,7 +242,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <h3><code>watch←'both'|'dir'</code></h3>
 <p>In order to detect changes on the file system Link uses a File System Watcher, something that is available only under Windows. Link uses APL threads for this.</p>
 <p>When you trace through your code, or set a stop vector, and have “Pause on Error” in the session's “Threads” menu ticked, any handler associated with those threads will also stop.</p>
-<p>This iomposes a danger because those handlers set a Hold under some circumstances, and depending on your actions this might result in a DEADLOCK: Dyalog would appear to hang until you issue a strong interrupt via the session's system menu item.</p>
+<p>This imposes a danger because those handlers set a Hold under some circumstances, and depending on your actions this might result in a DEADLOCK: Dyalog would appear to hang until you issue a strong interrupt via the session's system menu item.</p>
 </div>
 
 <div class="h_tag">

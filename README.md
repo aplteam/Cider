@@ -75,7 +75,7 @@ If no such parameter is specified then the current directory is searched for a f
 Once a folder is established that holds a Cider config file, the user command performs the following actions:
 
 1. Creates the project space (namespace); if it already exists it must be empty
-1. Sets the system variables `⎕IO`, `⎕ML` and `⎕WX` in the project space
+1. Sets the system variables `⎕IO` and `⎕ML` in the project space
 1. Brings all code and variables into the project space
 1. Asks the user weather Cider should check all Tatin packages for later versions (if there are any)
 1. Loads all Tatin packages specified in the file `cider.config`, if any

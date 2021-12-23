@@ -1,4 +1,4 @@
-﻿:Class Cider_uc
+:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger ⋄ APL Team Ltd
 

@@ -7,7 +7,10 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.8.1+163' '2021-12-15'
+      r←'Cider' '0.8.2+166' '2021-12-23'
+      ⍝   * wx removed as a system variable.
+      ⍝   * Documentation improved.
+      ⍝ * 0.8.1 ⋄ 2021-12-15
       ⍝   * Bug fixes:
       ⍝     * Checking Tatin install folders for better versions was buggy.
       ⍝     * A function noted on "lx" was not executed under :Trap but should.
@@ -245,10 +248,10 @@
               :EndTrap
           :EndFor
       :Else                         ⍝ SysVars prior to version 0.3.0
-          projectSpace_.(⎕IO ⎕ML ⎕WX)←config.CIDER.(io ml wx)
+          projectSpace_.(⎕IO ⎕ML)←config.CIDER.(io ml)
           :If 1 YesOrNo'Convert old system vars definition to new one?'
               'SYSVARS'config.⎕NS''
-              config.SYSVARS.(io ml wx)←config.CIDER.(io ml wx)
+              config.SYSVARS.(io ml )←config.CIDER.(io ml)
               config.CIDER.⎕EX¨'io' 'ml' 'wx'
               json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config
               (⊂json)⎕NPUT configFilename 1
@@ -269,7 +272,7 @@
           :If 0≢parms.checkPackageVersions
               :If (⊂parms.checkPackageVersions)∊⍬ 1
               :AndIf ~parms.quietFlag
-                  checkFlag←0 YesOrNo' Check Tatin packages for later versions?'
+                  checkFlag←0 YesOrNo' Check Tatin packages for later versions (does only report) ?'
               :Else
                   checkFlag←2≡parms.checkPackageVersions
               :EndIf

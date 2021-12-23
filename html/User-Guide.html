@@ -51,28 +51,28 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h3 data-id="OpenProject">2.2. OpenProject</h3>
 </a>
 </div>
-<p>Naturally <code>OpenProject</code> is the most important command the Cider user comman group offers. We discuss all its actions in detail.</p>
+<p>Naturally <code>OpenProject</code> is the most important command the Cider user command group offers. We discuss all its actions in detail.</p>
 <p>Note that the contents of the file <code>cider.config</code> directs what exactly Cider is going to do when its principal method, <code>OpenProject</code>, is executed.</p>
 <div class="h_tag">
 <a href="#1-Creating-a-project-space" id="1-Creating-a-project-space" class="autoheader_anchor">
 <h4 data-id="1-Creating-a-project-space">2.2.1. 1. Creating a project space</h4>
 </a>
 </div>
-<p>The first step carried out by <code>]Cider.OpenProject</code> is to create a namespace with the name <code>projectSpace</code> as a child of <code>parent</code>, when <code>parent</code> defaults to <code>#</code> but may be something like <code>⎕SE</code> or <code>#.Foo.Goo</code>.</p>
+<p>The first step carried out by <code>]Cider.OpenProject</code> is to create a namespace with the name <code>projectSpace</code> as a child of <code>parent</code>, when <code>parent</code> defaults to <code>#</code> but may be something like <code>⎕SE</code> or <code>#.Foo.Goo</code> etc.</p>
 <p>The <code>parent</code> must exist while the <code>parentspace</code> may or may not exist. If it does not, it is created. If it already exists it must not contain a namespace <code>CiderConfig</code>.</p>
 <div class="h_tag">
 <a href="#2-Setting-system-variables" id="2-Setting-system-variables" class="autoheader_anchor">
 <h4 data-id="2-Setting-system-variables">2.2.2. 2. Setting system variables</h4>
 </a>
 </div>
-<p>In the next step <code>]Cider.OpenProject</code> is going to set at least three system variables defined in the config file in the <code>SYSVARS</code> section: <code>⎕IO</code>, <code>⎕ML</code> and <code>⎕WX</code>.</p>
-<p>It is important to set these three variables before code is brought into the workspace because bringing class scripts or namespace scripts into the workspace implies the execution of some code, and that code might well rely on the correct setting of those three system variables.</p>
+<p>In the next step <code>]Cider.OpenProject</code> is going to set at least two system variables defined in the config file in the <code>SYSVARS</code> section: <code>⎕IO</code> and <code>⎕ML</code>.</p>
+<p>It is important to set these variables before code is brought into the workspace because bringing class scripts or namespace scripts into the workspace implies the execution of some code, and that code might well rely on the correct setting of those system variables.</p>
 <p>If you need other system variables to carry specific values then you may add them to the <code>SYSVARS</code> section.</p>
 <p>Note that the names are not case sensitive: wether the value for <code>⎕FR</code> is specified as “fr” or “FR” or “Fr” or “fR” does not matter.</p>
 <p>In case a setting in <code>SYSVARS</code> cannot be used for assigning a system variable a warning message will be printed to the session.</p>
 <div class="leanpub_A">
 <h3>System variables</h3>
-<p>Feel free to save system variables in files like <code>⎕IO.apla</code> in you source folder.</p>
+<p>Feel free to save system variables in files like <code>⎕IO.apla</code> in your source folder.</p>
 <p>That's another way to make sure that system variables are set as early as possible because Link will establish the values of system variables defined in files before it attempts to bring in code.</p>
 </div>
 
@@ -88,7 +88,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>By default a link is established between the root of the project and the folder. When your intention is to work on the project (read: change the code) then this is the obvious thing to do.</p>
 <div class="leanpub_A">
 <h3>Link's <code>watch</code> parameter</h3>
-<p>By default Cider sets the <code>watch</code> parameter to “ns”, meaning that changes in the workspace via the editor are saved to disk. You may instead set <code>watch</code> to “dir” or “both”. Refere to the Link documentation for details.</p>
+<p>By default Cider sets the <code>watch</code> parameter to “ns”, meaning that changes in the workspace via the editor are saved to disk. You may instead set <code>watch</code> to “dir” or “both”. Refer to the Link documentation for details.</p>
 </div>
 
 <p>However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the <code>-import</code> flag.</p>
@@ -97,7 +97,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h4 data-id="4-Check-for-later-versions-regarding-Tatin-packages">2.2.4. 4. Check for later versions regarding Tatin packages</h4>
 </a>
 </div>
-<p>In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will not happen in case <code>importFlag</code> is 1.</p>
+<p>In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will only happen in case <code>importFlag</code> is 0.</p>
 <p>If <code>]Cider.OpenProject</code> discoveres later packages it will ask the user whether packages shall be re-installed with the <code>-update</code> flag set independently for each installation folder.</p>
 <div class="h_tag">
 <a href="#5-Loading-Tatin-packages" id="5-Loading-Tatin-packages" class="autoheader_anchor">
@@ -144,10 +144,10 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h3 data-id="8-Executing-user-specific-code">2.3. 8. Executing user-specific code</h3>
 </a>
 </div>
-<p>Last not least you might want to execute some general code (as opposed to project-specific code) after a project was loaded.</p>
+<p>Finally you might want to execute some general code (as opposed to project-specific code) after a project was loaded.</p>
 <p>This can be achieved by specifying the fully qualified name of a function that must be monadic, most likely in <code>⎕SE</code>. A namespace with the configuration data of the project is passed as right argument.</p>
 <p>The function may or may not return a result, but when it does the result will be discarded.</p>
-<p>The fully qualified name of that function must go into the file that is returned by the function <code>GetCiderConfigFilename</code> which is available only via the API, not as a user command.</p>
+<p>The fully qualified name of the function must go into the file that is returned by the function <code>GetCiderConfigFilename</code> which is available only via the API, not as a user command.</p>
 <p>That file already contains a definition of the keyword <code>ExecuteAfterProjectOpen</code>, but it is empty:</p>
 <pre><code>{
     ExecuteAfterProjectOpen: "",

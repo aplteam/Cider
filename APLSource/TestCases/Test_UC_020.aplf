@@ -1,4 +1,4 @@
- r←Test_UC_020(stopFlag batchFlag);⎕TRAP;cmd;rc;msg;result
+ r←Test_UC_020(stopFlag batchFlag);⎕TRAP;cmd;rc;msg;result;stop
 ⍝ Exercise OpenProject with all possible settings of -watch
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
@@ -6,20 +6,21 @@
  'TEMP'#.⎕NS''
  cmd←'OpenProject "',(∆GetTestPath⊃⎕SI),'" -quiet -parent=#.TEMP'
 
- (rc msg result)←∆UCMD cmd,' -watch=ns'
+ stop←0
+ (rc msg result)←stop ∆UCMD cmd,' -watch=ns'
  Assert rc=0
  {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
  #.⎕EX'TEMP' ⋄ 'TEMP'#.⎕NS''
- (rc msg result)←∆UCMD cmd,' -watch=dir'
+ (rc msg result)←stop ∆UCMD cmd,' -watch=dir'
  Assert rc=0
  {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
  #.⎕EX'TEMP' ⋄ 'TEMP'#.⎕NS''
- (rc msg result)←∆UCMD cmd,' -watch=both'
+ (rc msg result)←stop ∆UCMD cmd,' -watch=both'
  Assert rc=0
  {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
 
- (rc msg result)←∆UCMD cmd,' -watch=firlefanz'
- →T.GoToTidyUp'* Command Execution Failed: invalid value for modifier <watch> (must be ONE of "ns dir both")'≢msg
+ (rc msg result)←stop ∆UCMD cmd,' -watch=firlefanz'
+ →T.GoToTidyUp ~∨/'invalid value for modifier <watch> (must be ONE of "ns dir both")'⍷msg
 
  r←T._OK
 

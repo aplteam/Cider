@@ -113,16 +113,16 @@ Opening a project means carrying out the following actions:
 1. Creating the `projectSpace` (namespace) in `parent`; if it already exists it must be empty
 
    From here on we refer to this as the _root of the project_.
-2. Setting the system variables `⎕IO`, `⎕ML` and `⎕WX` in the root of the project
+2. Setting the system variables `⎕IO` and `⎕ML` in the root of the project
 3. Bringing all code and variables into the root of the project
 4. Loading all Tatin packages from the Tatin installation folders defined on `tatinFolders`
 5. Injecting a namespace `CiderConfig` into the root of the project and populating it with the contents of the configuration file as an APL array
-6. Addng a variable `HOME` to `CiderConfig` that carries a path to where the project was loaded from
-7. Executing the project-specific function noted on `lx`, ususally to initialize the project. 
-8. Executing a non-project-specific function defined in Cider's own configuration file.
+6. Adding a variable `HOME` to `CiderConfig` that carries a path to where the project was loaded from
+7. Executing the project-specific function noted on `lx`, ususally to initialize the project
+8. Executing a non-project-specific function defined in Cider's own configuration file
 
 `OpenProject` requires parameters expected to be passed via the right argument as a parameter space.
-This is namespace carrying appropriately named variables, typically created by calling `CreateOpenParms`.
+This is a namespace carrying appropriately named variables, typically created by calling `CreateOpenParms`.
 
 ⍝  1. folder (mandatory)
 ⍝  2. projectSpace
@@ -177,7 +177,7 @@ Defaults to 0 meaning that the code is not imported but linked.
 
 Set this to 1 for Link importing the code without establishing a Link.
 
-Note that this
+Note that this has implications on how Cider deals with Tatin packages, see there.
 
 
 ### noPkgLoad
@@ -191,12 +191,12 @@ Defaults to `#` but might as be something like `⎕SE` or `#.Foo.Goo.Boo`. Howev
 
 ### quietFlag
 
-Defaults to 1, meaning that the function prints messages to the session.
+Defaults to 0, meaning that the function prints messages to the session.
 
 
 ### suppressLX
 
-Defaults to 0, meaning that the projects initialisation function (if any) is automatically executed.
+Defaults to 0, meaning that the projects initialisation function (if any) will be executed.
 
 There might well be situations when you don't want this, therefore you may suppress the execution by setting this to 1.
 
@@ -204,7 +204,7 @@ An example might be an automated build process: that might need to open the proj
 
 ### watch
 
-Defaults to "ns", meaning that changing any APL objects in the workspaces will result in Link updating the correcponding file on disk while any changed on disk will _not_ be reflected by changing the workspace.
+Defaults to "ns", meaning that changing any APL objects in the workspaces will result in Link updating the correcponding file on disk while any change on disk will _not_ be reflected by changing the workspace.
 
 You may instead set this to "dir", which bascially reverts the way Link works.
 
@@ -221,7 +221,7 @@ A> Link uses APL threads for this.
 A>
 A> When you trace through your code, or set a stop vector, and have "Pause on Error" in the session's "Threads" menu ticked, any handler associated with those threads will also stop.
 A>
-A> This iomposes a danger because those handlers set a Hold under some circumstances, and depending on your actions this might result in a DEADLOCK: Dyalog would appear to hang until you issue a strong interrupt via the session's system menu item.
+A> This imposes a danger because those handlers set a Hold under some circumstances, and depending on your actions this might result in a DEADLOCK: Dyalog would appear to hang until you issue a strong interrupt via the session's system menu item.
 
 ## ProcessAlias
 
