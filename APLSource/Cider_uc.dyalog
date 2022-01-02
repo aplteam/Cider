@@ -155,9 +155,7 @@
 
     ∇ r←ListOpenProjects Args
       r←P.ListOpenProjects Args.verbose
-      :If Args.verbose
-          r(AddTitles)←'Namespace name' 'Path' 'No. of objects' 'Alias'
-      :EndIf
+      r(AddTitles)←'Namespace name' 'Path',Args.verbose/'No. of objects' 'Alias'
     ∇
 
     ∇ r←OpenProject Args;path;parms
@@ -169,8 +167,15 @@
               :If ~1 YesOrNo'Sure that you want to open ',path,'?'
                   :Return
               :EndIf
-          :ElseIf 0=≢path←OpenFileDialogBox'Open cider.config'
-              :Return
+          :Else
+              (opCode path)←OpenFileDialogBox'Open cider.config'
+              :If opCode=¯1
+                  r←'Cancelled by user'
+                  :Return
+              :ElseIf 0=opCode
+                  r←'Cider config file not found'
+                  :Return
+              :EndIf
           :EndIf
       :Else
           path←Args._1
@@ -475,7 +480,12 @@
       (⊂config)⎕NPUT filename
     ∇
 
-    ∇ path←OpenFileDialogBox caption;ref;res;filename
+    ∇ (opCode path)←OpenFileDialogBox caption;ref;res;filename
+    ⍝ opCodes:
+    ⍝ ¯1 = Cancelled by user
+    ⍝  1 = File found
+    ⍝  0 = File not found
+      opCode←¯1
       path←''
       ref←⎕NEW⊂'FileBox'
       ref.Caption←caption
@@ -483,11 +493,16 @@
       ref.File←'cider.config'
       res←ref.Wait
       :If 'FileBoxOK'≡2⊃res
+          opCode←1
       :AndIf 0<≢ref.File
-      :AndIf ⎕NEXISTS filename←⊃,/ref.(Directory File)
-          path←⊃1 ⎕NPARTS filename
+          :If ⎕NEXISTS filename←⊃,/ref.(Directory File)
+              path←⊃1 ⎕NPARTS filename
+          :Else
+              opCode←0
+          :EndIf
       :EndIf
     ∇
+
 
     ∇ r←CloseProject Args;list;name;bool;row
       r←''

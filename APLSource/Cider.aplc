@@ -7,7 +7,12 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.8.2+166' '2021-12-23'
+      r←'Cider' '0.8.3+170' '2022-01-02'
+      ⍝   * Question regarding the checking for later Tatin packages improved.
+      ⍝   * Bug fixes:
+      ⍝     * ListOpenProjects only beautified the result with -verbose
+      ⍝     * ]Cider.OpenProject without argument provided no feedback at all when no Cider.config file was detected.
+      ⍝ * 0.8.2+166 ⋄ 2021-12-23
       ⍝   * wx removed as a system variable.
       ⍝   * Documentation improved.
       ⍝ * 0.8.1 ⋄ 2021-12-15
@@ -77,8 +82,8 @@
       ⍝   * Initial version
     ∇
 
-    :Field Private Shared ReadOnly    failure←0
-    :Field Private Shared ReadOnly    success←1
+    :Field Private Shared ReadOnly    _failure←0
+    :Field Private Shared ReadOnly    _success←1
 
     Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⎕ML←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),11}
 
@@ -86,7 +91,7 @@
     ⍝ Open a Cider project.\\
     ⍝ `parms` must be a namespace holding all the required parameters. Such a namespace can be created by calling `CreateOpenParms`
       :Access Public Shared
-      successFlag←failure
+      successFlag←_failure
       parms←CreateOpenParms parms
       '"folder" must be specified'Assert 0<parms.⎕NC'folder'
       '"folder" must be specified'Assert 0<≢parms.folder
@@ -137,7 +142,7 @@
           dmx←⎕DMX
           ('LINK failed to load the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
       :EndIf
-      p'  Code established'
+      p'  Code established, "watch" is "',parms.watch,'"'
       :If 0=parms.noPkgLoad
           CheckPackagesStatus config parms
           {}LoadTatinPackages config parms.folder projectSpace_
@@ -145,8 +150,9 @@
       InjectConfigDataIntoProject config projectSpace_ parms.folder
       {}ExecProjectFunction⍣(~parms.suppressLX)⊣config projectSpace_
       p ExecUserFunction config
+      CheckForGit parms.folder config
       p'*** Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,'.',parms.projectSpace,'"'
-      successFlag←success
+      successFlag←_success
       ⍝Done
     ∇
 
@@ -235,6 +241,28 @@
       p'  All fine'
     ∇
 
+    ∇ {r}←CheckForGit(path config);status
+    ⍝ Checks whether the project is managed by Git, and if so offers some help
+      r←⍬
+      :If ⎕NEXISTS(AddSlash path),'.git'
+          ⎕←'Project is managed by Git'
+          :If 9=⎕SE.⎕NC'_Git'
+              status←⎕SE.Git.Status path
+              :If 10>≢status
+                  ⎕←'Git status report:'
+                  ⎕←' ',' ',' ',↑status
+              :Else
+                  {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'ed'}ed←⍵)}status
+              :EndIf
+          :Else
+              ⎕←'Missing user command ]Git (required for further information)'
+          :EndIf
+      :Else
+          ⎕←'Project is not managed by Git'
+     
+      :EndIf
+    ∇
+
     ∇ {r}←configFilename HandleSysVars config;json;name;name_
     ⍝ For inheritance we specify the system vars early
       r←⍬
@@ -251,7 +279,7 @@
           projectSpace_.(⎕IO ⎕ML)←config.CIDER.(io ml)
           :If 1 YesOrNo'Convert old system vars definition to new one?'
               'SYSVARS'config.⎕NS''
-              config.SYSVARS.(io ml )←config.CIDER.(io ml)
+              config.SYSVARS.(io ml)←config.CIDER.(io ml)
               config.CIDER.⎕EX¨'io' 'ml' 'wx'
               json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config
               (⊂json)⎕NPUT configFilename 1
@@ -272,7 +300,7 @@
           :If 0≢parms.checkPackageVersions
               :If (⊂parms.checkPackageVersions)∊⍬ 1
               :AndIf ~parms.quietFlag
-                  checkFlag←0 YesOrNo' Check Tatin packages for later versions (does only report) ?'
+                  checkFlag←0 YesOrNo' Report availability of later versions of installed Tatin packages?'
               :Else
                   checkFlag←2≡parms.checkPackageVersions
               :EndIf
@@ -329,7 +357,7 @@
 
     ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_
     ⍝ Load all installed packaged (if any) into their designates host namespaces.
-      r←failure
+      r←_failure
       :If 0<≢config.CIDER.tatinFolder
           pkgFolders←⊆','(≠⊆⊢)config.CIDER.tatinFolder
           :For pkgFolder :In pkgFolders
@@ -349,7 +377,7 @@
               folder2←folder,'/',pkgFolder_
               'Tatin installation folder does not exist'Assert ⎕NEXISTS folder2
               p'   '∘,¨⍕¨⎕SE.Tatin.LoadDependencies folder2 target
-              r←success
+              r←_success
           :EndFor
       :EndIf
     ∇
