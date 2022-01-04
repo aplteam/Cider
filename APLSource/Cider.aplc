@@ -7,10 +7,10 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.8.3+175' '2022-01-04'
+      r←'Cider' '0.8.3+176' '2022-01-04'
       ⍝   * Question regarding the checking for later Tatin packages improved
-      ⍝   * Git status is only checked in case quietFlag is 0
-      ⍝   * Tatin package statuses are checked only in case importFlag is 0
+      ⍝   * Git status is only checked in case `quietFlag` and `importFlag` are both 0
+      ⍝   * Tatin package statuses are checked only in case `importFlag` is 0
       ⍝   * Bug fixes:
       ⍝     * ListOpenProjects only beautified the result with -verbose
       ⍝     * ]Cider.OpenProject without argument provided no feedback at all when no Cider.config file was detected
@@ -155,6 +155,7 @@
       {}ExecProjectFunction⍣(~parms.suppressLX)⊣config projectSpace_
       p ExecUserFunction config
       :If 0=parms.quietFlag
+      :AndIf 0=parms.importFlag
           CheckForGit parms.folder config
       :EndIf
       p'*** Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,'.',parms.projectSpace,'"'
