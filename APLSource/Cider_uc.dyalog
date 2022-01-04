@@ -1,4 +1,4 @@
-:Class Cider_uc
+﻿:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger ⋄ APL Team Ltd
 
@@ -256,6 +256,8 @@
               r,←⊂'-import:      By default the namespace is linked to folder. By specifying the -import'
               r,←⊂'              flag this can be avoided: the code is then loaded into the workspace with the'
               r,←⊂'              Link.Import method, meaning that changes are not tracked.'
+              r,←⊂'              This flag has also side effects: neither that status of any installed Tatin'
+              r,←⊂'              packages is checked nor the Git status of the project.'
               r,←⊂'-alias:       In case you are going to work on a project frequently you may specify'
               r,←⊂'              -alias=name'
               r,←⊂'              Later on you may open the project with:'
@@ -397,7 +399,7 @@
               msg←⎕SE.Link.Create P folder
               'Could not Link the Cider application code'Assert∨/'Linked:'⍷msg
           :Else
-              folder←(1⊃⎕NPARTS ##.SourceFile),'\Cider.aplc'
+              folder←(1⊃⎕NPARTS ##.SourceFile),'/Cider.aplc'
               res←({⍵.overwrite←1 ⋄ ⍵}⎕NS'')⎕SE.Link.Import P folder
               'Could not import the Cider application code'Assert∨/'Imported:'⍷res
           :EndIf

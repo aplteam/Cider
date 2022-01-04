@@ -7,11 +7,13 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.8.3+170' '2022-01-02'
-      ⍝   * Question regarding the checking for later Tatin packages improved.
+      r←'Cider' '0.8.3+175' '2022-01-04'
+      ⍝   * Question regarding the checking for later Tatin packages improved
+      ⍝   * Git status is only checked in case quietFlag is 0
+      ⍝   * Tatin package statuses are checked only in case importFlag is 0
       ⍝   * Bug fixes:
       ⍝     * ListOpenProjects only beautified the result with -verbose
-      ⍝     * ]Cider.OpenProject without argument provided no feedback at all when no Cider.config file was detected.
+      ⍝     * ]Cider.OpenProject without argument provided no feedback at all when no Cider.config file was detected
       ⍝ * 0.8.2+166 ⋄ 2021-12-23
       ⍝   * wx removed as a system variable.
       ⍝   * Documentation improved.
@@ -144,13 +146,17 @@
       :EndIf
       p'  Code established, "watch" is "',parms.watch,'"'
       :If 0=parms.noPkgLoad
-          CheckPackagesStatus config parms
+          :If 0=parms.importFlag
+              CheckPackagesStatus config parms
+          :EndIf
           {}LoadTatinPackages config parms.folder projectSpace_
       :EndIf
       InjectConfigDataIntoProject config projectSpace_ parms.folder
       {}ExecProjectFunction⍣(~parms.suppressLX)⊣config projectSpace_
       p ExecUserFunction config
-      CheckForGit parms.folder config
+      :If 0=parms.quietFlag
+          CheckForGit parms.folder config
+      :EndIf
       p'*** Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,'.',parms.projectSpace,'"'
       successFlag←_success
       ⍝Done
@@ -170,7 +176,7 @@
       parms.importFlag←0
       parms.noPkgLoad←0
       parms.watch←'ns'
-      parms.checkPackageVersions←⍬   ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
+      parms.checkPackageVersions←⍬  ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
       :If ~(⊂y)∊''⍬
       :AndIf 9=⎕NC'y'
       :AndIf 0<≡list←' '~⍨¨↓y.⎕NL 2
@@ -245,21 +251,20 @@
     ⍝ Checks whether the project is managed by Git, and if so offers some help
       r←⍬
       :If ⎕NEXISTS(AddSlash path),'.git'
-          ⎕←'Project is managed by Git'
+          p'Project is managed by Git'
           :If 9=⎕SE.⎕NC'_Git'
               status←⎕SE.Git.Status path
               :If 10>≢status
-                  ⎕←'Git status report:'
-                  ⎕←' ',' ',' ',↑status
+                  p'Git status report:'
+                  p' ',' ',' ',↑status
               :Else
                   {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'ed'}ed←⍵)}status
               :EndIf
           :Else
-              ⎕←'Missing user command ]Git (required for further information)'
+              p'Missing user command ]Git (required for further information)'
           :EndIf
       :Else
-          ⎕←'Project is not managed by Git'
-     
+          p'Project is not managed by Git'
       :EndIf
     ∇
 
@@ -296,7 +301,6 @@
     ⍝ 2 means update without further ado
       r←⍬
       :If 0<≢config.CIDER.tatinFolder
-      :AndIf 0=parms.importFlag
           :If 0≢parms.checkPackageVersions
               :If (⊂parms.checkPackageVersions)∊⍬ 1
               :AndIf ~parms.quietFlag
