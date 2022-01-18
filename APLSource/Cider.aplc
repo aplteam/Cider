@@ -9,6 +9,7 @@
       :Access Public Shared
       r←'Cider' '0.8.4+176' '2022-01-??'
       ⍝   * Minor internal improvements
+      ⍝   * LF is now enforced for text files via .gitattributes
       ⍝ * 0.8.3+176 ⋄ 2022-01-04
       ⍝   * Question regarding the checking for later Tatin packages improved
       ⍝   * Git status is only checked in case `quietFlag` and `importFlag` are both 0
