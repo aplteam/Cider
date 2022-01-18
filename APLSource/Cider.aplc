@@ -7,7 +7,9 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.8.3+176' '2022-01-04'
+      r←'Cider' '0.8.4+176' '2022-01-??'
+      ⍝   * Minor internal improvements
+      ⍝ * 0.8.3+176 ⋄ 2022-01-04
       ⍝   * Question regarding the checking for later Tatin packages improved
       ⍝   * Git status is only checked in case `quietFlag` and `importFlag` are both 0
       ⍝   * Tatin package statuses are checked only in case `importFlag` is 0
@@ -543,7 +545,7 @@
     ⍝ Under Windows typically:\\
     ⍝ `C:\Users\{⎕AN}\Documents\MyUCMDs\'  ←→ GetMyUCMDsFolder
       :If IsWindows
-          r←(2 ⎕NQ'.' 'GetEnvironment' 'USERPROFILE'),'/Documents\MyUCMDs'
+          r←(2 ⎕NQ'.' 'GetEnvironment' 'USERPROFILE'),'\Documents\MyUCMDs'
       :Else
           r←(2 ⎕NQ'.' 'GetEnvironment' 'Home'),'/MyUCMDs'
       :EndIf

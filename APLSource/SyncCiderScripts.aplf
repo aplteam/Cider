@@ -1,10 +1,10 @@
  {r}←SyncCiderScripts reportFlag;folder1;folder2;filenames;filename;F;path2;path1
-⍝ Attempts to sync the Cider user command and the Cider class between the MyUCMDs folder and the project.
+⍝ Attempts to sync the Cider user command script and the Cider class between the MyUCMDs folder and the project.
 ⍝ Does not do anything if...
 ⍝ * The Cider user command cannot be found in MyUCMDs
 ⍝ * The two versions are not different
 ⍝ Otherwise the younger (later) version is copied over.
-⍝ Returns the number of copied files (0, 1 or 2)
+⍝ Returns the number of copied files (0, 1 or 2).
  r←0
  F←TestCases.FilesAndDirs
  folder1←Cider.GetMyUCMDsFolder,'/Cider/'
