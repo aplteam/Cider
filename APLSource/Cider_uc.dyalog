@@ -253,6 +253,7 @@
               r,←⊂'              overwritten by setting the -projectSpace= and/or the -parent= option(s).'
               r,←⊂'-projectSpace By default this is taken from the config file but you may (temporarily) overwrite'
               r,←⊂'              this with -projectSpace='
+              r,←⊂'              Nore that you may assign -projectSpace='''''
               r,←⊂'-import:      By default the namespace is linked to folder. By specifying the -import'
               r,←⊂'              flag this can be avoided: the code is then loaded into the workspace with the'
               r,←⊂'              Link.Import method, meaning that changes are not tracked.'

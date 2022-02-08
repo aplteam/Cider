@@ -11,7 +11,7 @@
 
 In this document we use the word "project" for an application or a tool that consists not only of what is  finally delivered, like an Installer EXE under Windows or a Tatin package or a workspace or whatnot, but also of stuff that is required only during development, like test cases and test data, tools, helpers and similar stuff.
 
-While Link is perfect for bringing stuff into the workspace, putting together an environment in which development can take place requires more than just that.
+While Link is perfect for bringing stuff into the workspace, putting together an environment in which development can take place requires more than just that. There is something missing...
 
 I> Note that in this document names stemming from the Cider configuration file are shown `like this`.
 

@@ -168,9 +168,10 @@
 
     ∇ parms←CreateOpenParms y;list
     ⍝ Creates a namespace with all parameters one might pass to `OpenProject`.\\
-    ⍝ `y` might be an empty vector or a namespace with some such parameters.
+    ⍝ `y` might be an empty vector or a namespace with some such parameters. 
+    ⍝ Any paremeters passed this way overwrite defaults.
       :Access Public Shared
-      parms←(1⊃1↓⎕RSI).⎕NS''        ⍝ Create namespace where we got called from
+      parms←(1⊃1↓⎕RSI,⎕THIS).⎕NS''        ⍝ Create namespace where we got called from
       parms.folder←''
       parms.projectSpace←''
       parms.quietFlag←0
