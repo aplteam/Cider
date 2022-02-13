@@ -77,7 +77,7 @@ Once a folder is established that holds a Cider config file, the user command pe
 1. Creates the project space (namespace); if it already exists it must be empty
 1. Sets the system variables `⎕IO` and `⎕ML` in the project space
 1. Brings all code and variables into the project space
-1. Asks the user weather Cider should check all Tatin packages for later versions (if there are any)
+1. Asks the user weather Cider should check all Tatin packages (if there are any) for later versions 
 1. Loads all Tatin packages specified in the file `cider.config`, if any
 1. Injects a namespace `CiderConfig` into the project space and...
    * populates it with the contents of the configuration file as APL arrays
@@ -86,7 +86,7 @@ Once a folder is established that holds a Cider config file, the user command pe
 Notes:
 
 * The name of the project space is defined in the Cider config file, but this can be overwritten with the `-projectSpace=` option
-* In case the `tatinFolder` parameter specifies one or more folders then the references pointing to the Tatin packages are all established in `projectSpace`
+* In case the `tatinFolder` parameter specifies one or more packages then the references pointing to those Tatin packages are all established in `projectSpace` by default.
 
   However, this can be overwritten by specifying a different target space by adding 
 
@@ -97,7 +97,7 @@ Notes:
   Example:
 
   ```
-  tatinFolder: "packages,packages_dev=TestCases",:"packages_dev=TestCases",
+  tatinFolder: "packages,packages_dev=TestCases"
   ```
 
   References for all principal packages found in `packages/` are established in the project space because that is the default, and  the default was not overwritten.
