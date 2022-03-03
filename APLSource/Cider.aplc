@@ -7,7 +7,10 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.8.4+176' '2022-01-??'
+      r←'Cider' '0.8.5+178' '2022-03-03'
+      ⍝   * Bug fixes:
+      ⍝     * Alias names should NOT be case-sensitive.
+      ⍝ * 0.8.4+176 ⋄ 2022-02-27
       ⍝   * Minor internal improvements
       ⍝   * LF is now enforced for text files via .gitattributes
       ⍝ * 0.8.3+176 ⋄ 2022-01-04
@@ -661,7 +664,7 @@
       :Access Public Shared
       ciderAliasFilename←GetCiderAliasFilename
       msg←''
-      alias~←'[]'
+      alias←⎕C alias~'[]'
       :If 0≠≢alias
       :AndIf 0<≢ciderAliasFilename
           :If ⎕NEXISTS ciderAliasFilename
@@ -713,7 +716,7 @@
       :AndIf 0<≢ciderAliasFilename
           :If ⎕NEXISTS ciderAliasFilename
               noOf←≢data←⊃⎕NGET ciderAliasFilename 1
-              data←((⊆alias),¨'='){⍵/⍨~((⍵↑⍨¨⍵⍳¨'='))∊⍺}data
+              data←((⊆⎕C alias),¨'='){⍵/⍨~((⍵↑⍨¨⍵⍳¨'='))∊⍺}data
               :If noOf>≢data
                   (⊂data)⎕NPUT ciderAliasFilename 1
                   successFlag←1
