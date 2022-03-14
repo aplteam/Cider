@@ -18,19 +18,19 @@
           c.Group←'Cider'
           c.Parse←'1s -projectSpace= -parent= -alias= -suppressLX -quiet -import -noPkgLoad -watch=ns dir both'
           r,←c
-     
+          
           c←⎕NS''
           c.Name←'ListOpenProjects'
           c.Desc←'List all currently open projects'
           c.Group←'Cider'
-          c.Parse←'-verbose'
+          c.Parse←'0 -verbose'
           r,←c
      
           c←⎕NS''
           c.Name←'ListAliases'
           c.Desc←'List all defined aliases with their folders'
           c.Group←'Cider'
-          c.Parse←'-prune -edit -quiet'
+          c.Parse←'0 -prune -edit -quiet'
           r,←c
      
           c←⎕NS''
@@ -51,7 +51,7 @@
           c.Name←'Help'
           c.Desc←'Offers to put the HTML files on display'
           c.Group←'Cider'
-          c.Parse←''
+          c.Parse←'0'
           r,←c
      
           c←⎕NS''
@@ -65,7 +65,7 @@
           c.Name←'Version'
           c.Desc←'Returns name, version number and version date as a three-element vector'
           c.Group←'Cider'
-          c.Parse←''
+          c.Parse←'0'
           r,←c
       :EndIf
     ∇

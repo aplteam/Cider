@@ -7,7 +7,7 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.8.5+180' '2022-03-14'
+      r←'Cider' '0.8.5+181' '2022-03-14'
       ⍝   * The file cider.config.RemoveMe got renamed to cider.config.template
       ⍝   * When a tatin installation folder does not exist or is empty no error is generated anymore
       ⍝   * Bug fixes:
