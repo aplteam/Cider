@@ -7,7 +7,8 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.8.5+178' '2022-03-03'
+      r←'Cider' '0.8.5+178' '2022-03-14'
+      ⍝   * The file cider.config.RemoveMe got renamed to cider.config.template
       ⍝   * Bug fixes:
       ⍝     * Alias names should NOT be case-sensitive.
       ⍝ * 0.8.4+176 ⋄ 2022-02-27
