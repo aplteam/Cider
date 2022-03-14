@@ -1,6 +1,6 @@
 # Cider Project Manager
 
-Cider offers some User commands that are useful to manage projects. It comes as a set of Dyalog user commands, but an API is also available.
+Cider offers some User commands that are useful to manage projects. Although it comes as a set of Dyalog user commands there is also an API available.
 
 
 ## Requirements
