@@ -9,6 +9,7 @@
       :Access Public Shared
       r←'Cider' '0.8.5+178' '2022-03-14'
       ⍝   * The file cider.config.RemoveMe got renamed to cider.config.template
+      ⍝   * When a tatin installation folder does not exist or is empty no error is generated anymore
       ⍝   * Bug fixes:
       ⍝     * Alias names should NOT be case-sensitive.
       ⍝ * 0.8.4+176 ⋄ 2022-02-27
@@ -369,7 +370,7 @@
     ∇
 
     ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_
-    ⍝ Load all installed packaged (if any) into their designates host namespaces.
+    ⍝ Load all installed packaged (if any) into their designated host namespaces.
       r←_failure
       :If 0<≢config.CIDER.tatinFolder
           pkgFolders←⊆','(≠⊆⊢)config.CIDER.tatinFolder
@@ -388,8 +389,11 @@
               :EndIf
               p'Attempting to load Tatin packages from ',pkgFolder_,' into ',target,'...'
               folder2←folder,'/',pkgFolder_
-              'Tatin installation folder does not exist'Assert ⎕NEXISTS folder2
-              p'   '∘,¨⍕¨⎕SE.Tatin.LoadDependencies folder2 target
+              :If ⎕NEXISTS folder2
+                  p'   '∘,¨⍕¨⎕SE.Tatin.LoadDependencies folder2 target
+              :Else
+                  p'Tatin installation folder "',folder2,'" does not exists, therefore no packages loaded'
+              :EndIf
               r←_success
           :EndFor
       :EndIf

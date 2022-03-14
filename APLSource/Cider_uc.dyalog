@@ -413,7 +413,7 @@
 
     ∇ r←{namespace}CreateProject_(folder acceptFlag noEditFlag);filename;success;config;projectFolder;parms
       :Access Public Shared
-      namespace←{0<⎕NC ⍵:⍎⍵ ⋄ ⍬}'namespace'
+      namespace←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'namespace'
       r←''
       :If 0≡folder
           folder←⊃1 ⎕NPARTS''
@@ -473,12 +473,12 @@
     ∇ {name}←CreateConfigFile(filename name);config
     ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"
       ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
-      config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET(⊃⎕NPARTS ##.SourceFile),configFilename,'.RemoveMe'
+      config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET(⊃⎕NPARTS ##.SourceFile),configFilename,'.template'
       :If (⊃name)∊'#⎕'
           name←{⍵↓⍨⍵⍳'.'}name
       :EndIf
       ((~name∊⎕D,⎕A,'_∆⍙',⎕C ⎕A)/name)←'_'
-      config.CIDER.projectSpace←name
+      config.CIDER.projectSpace←⍕name
       config←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config
       (⊂config)⎕NPUT filename
     ∇
