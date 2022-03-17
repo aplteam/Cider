@@ -3,6 +3,10 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
 
+ :If ~batchFlag
+     ⎕←'Sorry, but this will take a while...'
+ :EndIf
+
  dir←FilesAndDirs.GetTempPath,'Cider/',⊃⎕SI
  FilesAndDirs.RmDir dir                         ⍝ Paranoia...
  3 ⎕MKDIR dir
@@ -27,5 +31,5 @@
  r←T._OK
 
 ∆TidyUp:
- {}⎕SE.Link.Break #.TEMP
+ ∆LINK'Break'#.TEMP
  FilesAndDirs.RmDir dir

@@ -1,6 +1,6 @@
 ﻿:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
-⍝ Kai Jaeger ⋄ APL Team Ltd
+⍝ Kai Jaeger
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
@@ -18,7 +18,7 @@
           c.Group←'Cider'
           c.Parse←'1s -projectSpace= -parent= -alias= -suppressLX -quiet -import -noPkgLoad -watch=ns dir both'
           r,←c
-          
+     
           c←⎕NS''
           c.Name←'ListOpenProjects'
           c.Desc←'List all currently open projects'
@@ -37,7 +37,7 @@
           c.Name←'CreateProject'
           c.Desc←'Makes the given folder a project folder'
           c.Group←'Cider'
-          c.Parse←'2s -alias= -acceptConfig -noEdit'
+          c.Parse←'2s -alias= -acceptConfig -noEdit -quiet'
           r,←c
      
           c←⎕NS''
@@ -133,9 +133,9 @@
       :EndIf
       :If 0=≢Args._2
       :OrIf 0≡Args._2
-          r←CreateProject_ folder(Args.acceptConfig)(Args.noEdit)
+          r←CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.quiet)
       :Else
-          r←Args._2 CreateProject_ folder(Args.acceptConfig)(Args.noEdit)
+          r←Args._2 CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.quiet)
       :EndIf
       :If 0≢Args.alias
           :If 0<≢msg←P.ProcessAlias folder Args.alias
@@ -158,7 +158,7 @@
       r(AddTitles)←'Namespace name' 'Path',Args.verbose/'No. of objects' 'Alias'
     ∇
 
-    ∇ r←OpenProject Args;path;parms
+    ∇ r←OpenProject Args;path;parms;aliasDefs;bool;info;opCode;alias
       r←0 0⍴''
       Args.projectSpace←{(,0)≡,⍵:'' ⋄ ⍵}Args.projectSpace
       :If 0≡Args._1
@@ -180,10 +180,28 @@
       :Else
           path←Args._1
       :EndIf
+      aliasDefs←P.GetAliasFileContent
       :If (⊂,path)∊,¨'[' '[?' '[?]'
-          :If 0=≢path←SelectFromAliases ⍬
+          :If 0=≢path←SelectFromAliases aliasDefs
               :Return
           :EndIf
+      :ElseIf '['=1⍴path
+      :AndIf '*'=¯1↑path~'[]'
+          bool←(¯1↓path~'[]'){(⎕C(≢⍺)↑[2]⍵)∧.=⎕C ⍺}↑aliasDefs[;1]
+          :Select +/bool
+          :Case 0
+              :Return
+          :Case 1
+              (alias path)←aliasDefs[bool⍳1;]
+              :If 0=1 YesOrNo'Sure you want to open "',path,'" ?'
+                  :Return
+              :EndIf
+          :Else
+              info←'(',((⍕+/bool),' of ',(⍕≢aliasDefs)),')'
+              :If 0=≢path←info SelectFromAliases bool⌿aliasDefs
+                  :Return
+              :EndIf
+          :EndSelect
       :EndIf
       path←⎕C⍣('['∊path)⊣path
       parms←P.CreateOpenParms''
@@ -218,7 +236,7 @@
               r,←⊂']Cider.ListAliases [-prune] [-edit] [-quiet]'
           :Case ⎕C'CreateProject'
               r,←⊂'Makes the given folder a project folder'
-              r,←⊂']Cider.CreateProject <folder> [<project-namespace>] [-alias=] [-acceptConfig] [-noEdit]'
+              r,←⊂']Cider.CreateProject <folder> [<project-namespace>] [-alias=] [-acceptConfig] [-noEdit] [-quiet]'
           :Case ⎕C'CloseProject'
               r,←⊂'Breaks the Link between the project space and the files on disk'
               r,←⊂']Cider.CloseProject [<project-namespace>] [-all]'
@@ -300,6 +318,7 @@
               r,←⊂' * Lets the user edit that file and makes sure that all mandatory settings are done and'
               r,←⊂'   also that those are correct'
               r,←⊂' * In case an alias is specified the alias is saved'
+              r,←⊂' * Finally it attempts to open the new project'
               r,←⊂''
               r,←⊂'If no path is specified it acts on the current directory, but in that case the user'
               r,←⊂'is prompted for confirmation to avoid mishaps.'
@@ -310,6 +329,9 @@
               r,←⊂'-noEdit:       With -noEdit you can prevent the user from being asked to edit the config file.'
               r,←⊂'-alias:        In case you are going to work on that project frequently you may specify'
               r,←⊂'               -alias=name'
+              r,←⊂'-quiet         After a project has been created successfully, the user will be asked whether'
+              r,←⊂'               she wants to open the project as well. You can enforce that without the user'
+              r,←⊂'               being interrogated by setting the -quiet flag. Mainly useful for test cases.'
               r,←⊂'Note that the alias is not case sensitive'
           :Case ⎕C'CloseProject'
               r,←⊂'Breaks the Link between the project and the files on disk.'
@@ -411,9 +433,9 @@
       P←⍎P,'.Cider'
     ∇
 
-    ∇ r←{namespace}CreateProject_(folder acceptFlag noEditFlag);filename;success;config;projectFolder;parms
+    ∇ r←{namespace}CreateProject_(folder acceptFlag noEditFlag quietFlag);filename;success;config;projectFolder;parms
       :Access Public Shared
-      namespace←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'namespace'
+      namespace←folder{0<⎕NC ⍵:⍎⍵ ⋄ ⊃¯1↑{⍵/⍨0<≢¨⍵}(~⍺∊'/\')⊆⍺}'namespace'
       r←''
       :If 0≡folder
           folder←⊃1 ⎕NPARTS''
@@ -459,6 +481,7 @@
               parms.projectSpace←config.CIDER.projectSpace
               parms.parent←config.CIDER.parent
               parms.quietFlag←1
+          :AndIf {⍵:1 ⋄ 1 YesOrNo'Project successfully created; open as well?' ⋄ 1}quietFlag
           :AndIf P.OpenProject parms
               r←'Project created and opened'
           :Else
@@ -518,6 +541,7 @@
       :Else
           name←Args._1
           :If ~(⊃Args._1)∊'#⎕'
+              'Not a valid APL name'Assert(⎕NS'').{0=⎕NC ⍵}name~'[]'
               list←P.ListOpenProjects 0
               :If 0<≢list
                   :If 1=+/bool←name∘≡¨{⍵↓⍨⍵⍳'.'}¨list[;1]
@@ -698,10 +722,15 @@
       :Until isOkay
     ∇
 
-    ∇ r←SelectFromAliases dummy;data;row
+    ∇ r←{caption}SelectFromAliases data;row
       r←⍬
-      :If 0<≢data←P.GetAliasFileContent
+      caption←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'caption'
+      :If 0=≢data
+          data←P.GetAliasFileContent
+      :EndIf
+      :If 0<≢data
           data[;1]←{'[',⍵,']'}¨data[;1]
+          caption←'Select project to be opened',({0=≢⍵:⍵ ⋄ ' ',⍵,' '}caption),':'
       :AndIf ⍬≢row←'Select project to be opened:'SelectOneItem↓⎕FMT data
           r←row⊃data[;2]
       :EndIf

@@ -7,11 +7,18 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.8.5+181' '2022-03-14'
+      r←'Cider' '0.9.0+193' '2022-03-17'
+      ⍝   * The alias syntax got enhanced; accepts now a wildcard like ]Cider.OpenProject [co*]
+      ⍝   * ]Cider.CreateProject now asks the user whether the project should also be opened.
+      ⍝     It did so in the past but silently, leaving some room for doubt.
+      ⍝   * Mainly for tests the ]Cider.CreateProject command now has a -quiet flag.
+      ⍝   * When no namespace is passed to ]Cider.CreateProject the last part of the path is taken as name
       ⍝   * The file cider.config.RemoveMe got renamed to cider.config.template
       ⍝   * When a tatin installation folder does not exist or is empty no error is generated anymore
       ⍝   * Bug fixes:
       ⍝     * Alias names should NOT be case-sensitive.
+      ⍝     * Some user commands accepted an argument when they shouldn't.
+      ⍝     * Erratic RANK ERROR on OpenProject fixed
       ⍝ * 0.8.4+176 ⋄ 2022-02-27
       ⍝   * Minor internal improvements
       ⍝   * LF is now enforced for text files via .gitattributes
@@ -137,6 +144,7 @@
       :Else
           projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                        ⍝ Create project space from "parent" to avoid problems
       :EndIf
+      'Already opened?!'Assert~CheckForAlreadyOpened projectSpace_
       CheckParameters config
       configFilename HandleSysVars config
       source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source              ⍝ For linking we are only interested in the code folder
@@ -881,6 +889,15 @@
     ∇ path←EnforceSlashInPath path;b
       :If 0<+/b←'\'=path
           (b/path)←'/'
+      :EndIf
+    ∇
+
+    ∇ flag←CheckForAlreadyOpened projectSpace;activeLinks
+    ⍝ Returns a 1 in case projectSpace is already opened, otherwise 0
+      flag←0
+      :If 2=⍴⍴activeLinks←⎕SE.Link.Status''
+      :AndIf 0<≢activeLinks                                          ⍝ Maybe one day when Link has a real API...
+          flag←(⊂⍕projectSpace)∊activeLinks[;1]
       :EndIf
     ∇
 

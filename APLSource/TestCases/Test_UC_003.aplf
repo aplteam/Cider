@@ -1,0 +1,28 @@
+ r←Test_UC_003(stopFlag batchFlag);⎕TRAP;tempDir;config;res
+⍝ Exercise the user command "CreateProject" with just a path but without the -quiet flag
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ :If batchFlag
+     r←T._NoBatchTest
+     :Return
+ :EndIf
+ 0 0⍴⍞,0/⎕←'This test needs you: press <enter> when interrogated'
+
+ tempDir←FilesAndDirs.GetTempSubDir(⊃⎕SI),'_1'
+ (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
+
+ config←∆GetJSON5 tempDir,'/cider.config'
+ (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
+ res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig'
+
+ 'You did not just press <enter>!'Assert'Project created and opened'≡res
+ →T.GoToTidyUp~(⊂'#.Foo')∊{⍵[;1]}##.Cider.ListOpenProjects 0
+
+ r←T._OK
+
+∆TidyUp:
+ ∆LINK'Break' 'Foo'
+ FilesAndDirs.RmDir tempDir
+ #.⎕EX'Foo'
+⍝Done

@@ -1,16 +1,15 @@
  R←Test_OpenAndClose_001(stopFlag batchFlag);⎕TRAP;tempDir;list;sourceFolder1;projectFolder1;projectFolder2;sourceFolder2;aliase
 ⍝ Open two (new) projects and then close both of them, one by alias and one by path. Uses `DropAlias`.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
-
  R←T._Failed
- tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
 
+ tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
  projectFolder1←tempDir,'/Foo'
  sourceFolder1←projectFolder1,'/APLSource'
  'Create!'FilesAndDirs.CheckPath sourceFolder1
  (projectFolder1,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
  'Foo'#.⎕NS''
- {}⎕SE.UCMD'Cider.CreateProject "',projectFolder1,'" #.Foo -alias=test-case-alias-Foo -noEdit -acceptConfig'
+ {}⎕SE.UCMD'Cider.CreateProject "',projectFolder1,'" #.Foo -alias=test-case-alias-Foo -noEdit -acceptConfig -quiet'
  #.Foo.⎕FX'r←Hello' 'r←''World'''
  {}⎕SE.Link.Add'#.Foo.Hello'
  list←FilesAndDirs.ListFiles projectFolder1
@@ -25,7 +24,7 @@
  (projectFolder2,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Goo')
  'Goo'#.⎕NS''
  #.Goo.⎕FX'r←Hello' 'r←''Galaxy'''
- {}⎕SE.UCMD'Cider.CreateProject "',projectFolder2,'" #.Goo -alias=test-case-alias-Goo -noEdit -acceptConfig'
+ {}⎕SE.UCMD'Cider.CreateProject "',projectFolder2,'" #.Goo -alias=test-case-alias-Goo -noEdit -acceptConfig -quiet'
  list←FilesAndDirs.ListFiles projectFolder2
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
@@ -39,8 +38,8 @@
  R←T._OK
 
 ∆TidyUp:
- {}⎕SE.Link.Break'#.Foo'
- {}⎕SE.Link.Break'#.Goo'
+ ∆LINK'Break' '#.Foo'
+ ∆LINK'Break' '#.Goo'
  {}FilesAndDirs.RmDir tempDir
  #.⎕EX¨'Foo' 'Goo'
  ⎕SE.Cider.DropAlias'test-case-alias-Foo' 'test-case-alias-Goo'

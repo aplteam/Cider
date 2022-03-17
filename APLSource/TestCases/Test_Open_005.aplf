@@ -1,4 +1,4 @@
- R←Test_Open_005(stopFlag batchFlag);⎕TRAP;parms;folder;r;res
+ R←Test_Open_005(stopFlag batchFlag);⎕TRAP;parms;folder;r
 ⍝ Open a project with an initialisation function
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -19,7 +19,6 @@
  R←T._OK
 
 ∆TidyUp:
- res←⎕SE.Link.Break'#.TEMP.Foo'
- Assert res ∆StartsWith'Unlinked:'
+ ∆LINK'Break' '#.TEMP.Foo'
  #.⎕EX'TEMP'
 ⍝Done
