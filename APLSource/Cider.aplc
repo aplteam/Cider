@@ -7,7 +7,9 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.9.0+193' '2022-03-17'
+      r←'Cider' '0.9.0+194' '2022-03-17'
+      ⍝   * bug fix: \ was used no matter which OS      
+      ⍝ * 0.9.0+193 ⋄ 2022-03-17
       ⍝   * The alias syntax got enhanced; accepts now a wildcard like ]Cider.OpenProject [co*]
       ⍝   * ]Cider.CreateProject now asks the user whether the project should also be opened.
       ⍝     It did so in the past but silently, leaving some room for doubt.
@@ -188,7 +190,7 @@
           folders←','(≠⊆⊢)config.CIDER.tatinFolder
           folders←{'='∊⍵:⍵↑⍨¯1+⍵⍳'=' ⋄ ⍵}¨folders
       :AndIf 0<≢folders←(0<≢¨folders)/folders
-      :AndIf 0<≢folders←(⎕NEXISTS(⊂path,'\'),¨folders)/folders
+      :AndIf 0<≢folders←(⎕NEXISTS(⊂path,'/'),¨folders)/folders
           flag←0<+/{≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣⍵}¨(⊂path,'/'),¨folders,¨⊂'/*'
       :EndIf
     ∇
@@ -564,7 +566,7 @@
               :EndIf
               r←(0<≢¨r[;2])⌿r
               r[;2]←DropTrailingSlash¨r[;2]
-              r[;2]←{'/'@(⍸'\'=⍵)⊣⍵}¨r[;2]
+              r[;2]←EnforceSlashInPath¨r[;2]
               :If verboseFlag
                   :If 0<≢aliases←GetAliasFileContent
                       aliases[;2]←DropTrailingSlash¨aliases[;2]
@@ -602,7 +604,7 @@
       :AndIf 0<≢buff←(0<≢¨buff)/buff
           r←↑{'='(≠⊆⊢)⍵}¨buff
           r[;1]←⎕C¨r[;1]
-          r[;2]←{'/'@(⍸'\'=⍵)⊣⍵}¨r[;2]
+          r[;2]←EnforceSlashInPath¨r[;2]
           r[;2]←{⍵↓⍨¯1×(¯1↑⍵)∊'/\'}¨r[;2]
           r←r[⍋r[;1];]
       :EndIf
