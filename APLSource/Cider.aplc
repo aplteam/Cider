@@ -7,8 +7,8 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.9.1+194' '2022-04-13'
-      ⍝   * bug fix: \ was used no matter which OS      
+      r←'Cider' '0.9.1+197' '2022-04-15'
+      ⍝   * Bug fix: "\" was used no matter which OS      
       ⍝ * 0.9.0+193 ⋄ 2022-03-17
       ⍝   * The alias syntax got enhanced; accepts now a wildcard like ]Cider.OpenProject [co*]
       ⍝   * ]Cider.CreateProject now asks the user whether the project should also be opened.
