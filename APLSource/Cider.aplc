@@ -7,8 +7,12 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.9.1+197' '2022-04-15'
-      ⍝   * Bug fix: "\" was used no matter which OS      
+      r←'Cider' '10.0.0+198' '2022-04-24'
+      ⍝   * Bug fixes
+      ⍝     * An invalid namespace name assgined to the `tatinFolder` parameter was not checked.
+      ⍝     * JSON checking when editing a config file was less than perfect.
+      ⍝ * 0.9.1+197 ⋄ 2022-04-15
+      ⍝   * Bug fix: "\" was used no matter which OS
       ⍝ * 0.9.0+193 ⋄ 2022-03-17
       ⍝   * The alias syntax got enhanced; accepts now a wildcard like ]Cider.OpenProject [co*]
       ⍝   * ]Cider.CreateProject now asks the user whether the project should also be opened.
@@ -46,59 +50,6 @@
       ⍝   * Bug fixes:
       ⍝     * Cider could not deal with a root project `parent=#|⎕SE` and `projectSpace=''`
       ⍝     * Cider should NOT worry about updating Tatin packages when `importFlag` is 1.
-      ⍝ * 0.7.0 ⋄ 2021-11-29
-      ⍝   * BREAKING CHANGE: The option -target in OpenProject was renamed to -projectSpace in order to bring it
-      ⍝     in line with the name used for the same thing in the parameter namepsace usually created by `CreateOpenParms`
-      ⍝   * Handling improved when an alias is assigned again. So far re-defining an alias was refused, making
-      ⍝     it impossible to change the path of a project that had already an alias.
-      ⍝ * 0.6.0 ⋄ 2021-11-24
-      ⍝   * A user command and an API fn added: ]Cider.ViewConfig and ⎕SE.Cider.ViewConfig respectively
-      ⍝   * Bug fixes
-      ⍝     * Checking Tatin packages for updates: suppressing via parms did not work.
-      ⍝     * Removing header line from result of Link.Status did not always work
-      ⍝     * `ListOpenProjects` did not react appropriately when Link demands a Resync
-      ⍝     * In `CreateOpenParms` the `parent` was set to `#`, making it impossible to honour the config file.
-      ⍝ * 0.5.0 ⋄ 2021-10-15
-      ⍝   * If a project has Tatin packages, the user might want Cider to check for later versions of those.
-      ⍝     If there are any then the user might want to re-install the packges.
-      ⍝   * ]Cider.OpenProject now offers a list with aliases even when just a `[` is passed, or `[?`.
-      ⍝   * Readme.md improved
-      ⍝   * An opening [ is enough for recognizing an alias
-      ⍝ * 0.4.3 ⋄ 2021-10-27
-      ⍝   * Bug fixes
-      ⍝     * ListAliases did not sort the result by alias
-      ⍝     * OpenProject [?] did not sort by alias
-      ⍝     * When another alias is assigned the first one should be deleted
-      ⍝     * Help regarding CloseProject did not mention aliases
-      ⍝     * Handling of aliases was not perfect
-      ⍝     * Sometimes an alias was not lowercased before saving it
-      ⍝ * 0.4.2 ⋄ 2021-10-21
-      ⍝   * Installation fixed (folder Cider\ was missing)
-      ⍝ * 0.4.1 ⋄ 2021-10-15
-      ⍝   * Bug fixes
-      ⍝     * In case Expose->Root properties is not ticked some Cider commands crashed.
-      ⍝ * 0.4.0 ⋄ 2021-10-13
-      ⍝   * Section "SYSVARS" added to Cider's config file. Populated with "io", "ml" and "wx".
-      ⍝     Other system vars may be added.
-      ⍝     Files with old format are converted automatically (confirmation permitted).
-      ⍝   * Check added to `ListOpenProjects` regarding ⍵ (must be Boolean)
-      ⍝ * 0.3.0 ⋄ 2021-10-05
-      ⍝   * `-noPkgLoad` flag added to `OpenProject`
-      ⍝ * 0.2.0 ⋄ 2021-10-03
-      ⍝   * `-import` flag added to `CreateProject`
-      ⍝   * `CreateProject` now creates the folder if it does not already exist (confirmation permitted)
-      ⍝   * `CreateProject` throws an error if an invalid path is provided
-      ⍝   * `CreateProject` injects the last part of the path into the config file as "projectSpace" if not set
-      ⍝   * `CreateOpenParms` now creates the parameter space where it was called from.
-      ⍝ * 0.1.2 ⋄ 2021-09-23
-      ⍝   * When an unknown project name was passed to `CloseProject` then ALL projects were closed rather than none
-      ⍝   * Reporting to the session improved
-      ⍝ * 0.1.1 ⋄ 2021-09-22
-      ⍝   * `json.Cider` should have been `json.CIDER`
-      ⍝   * When `CreateProject` did not create a project because of an invalid config file it did not tell
-      ⍝   * When `CreateProject` did not create a project it still created an (invalid) file `cider.config`
-      ⍝ * 0.1.0 ⋄ 2021-09-21
-      ⍝   * Initial version
     ∇
 
     :Field Private Shared ReadOnly    _failure←0
@@ -538,6 +489,7 @@
           :AndIf editFlag
           :AndIf 0<≢(∊ns.cider_config)~' '
               :If CheckJsonSyntax ns.cider_config
+              :AndIf PerformConfigChecks ⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
                   (⊂ns.cider_config)⎕NPUT filename 1
                   r←flag←1
               :Else
@@ -873,7 +825,7 @@
 
     ∇ flag←CheckJsonSyntax json
       :Trap 0
-          {}⎕JSON json
+          {}⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆json
           flag←1
       :Else
           flag←0
@@ -900,6 +852,19 @@
       :If 2=⍴⍴activeLinks←⎕SE.Link.Status''
       :AndIf 0<≢activeLinks                                          ⍝ Maybe one day when Link has a real API...
           flag←(⊂⍕projectSpace)∊activeLinks[;1]
+      :EndIf
+    ∇
+
+    ∇ successFlag←PerformConfigChecks config;buff;namespace;path
+      successFlag←0
+      :If 0<≢buff←config.CIDER.tatinFolder
+      :AndIf '='∊buff
+          :If 1<'='+.=buff
+              successFlag←1
+          :Else
+              (path namespace)←'='(≠⊆⊢)buff
+              successFlag←0=(⎕NS'').{⎕NC ⍵}namespace
+          :EndIf
       :EndIf
     ∇
 

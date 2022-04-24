@@ -470,6 +470,7 @@
       :Else
           success←1
           config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
+          PerformConfigChecks config
       :EndIf
       :If success
           :If namespace≢⍬
@@ -824,6 +825,17 @@
           :EndIf
       :Until flag
       index←{1<≢⍵:⍵ ⋄ ⊃⍵}⍣(⍬≢index)⊣index
+    ∇
+
+    ∇ {r}←PerformConfigChecks config;buff;namespace;path
+      r←0
+      :If 0<≢buff←config.CIDER.tatinFolder
+          :If '='∊buff
+              'Invalid config parm ("tatinFolder" has more than one "=")'Assert 1='='+.=buff
+              (path namespace)←'='(≠⊆⊢)buff
+              'Invalid config parm (namespace name)'Assert 0=(⎕NS'').{⎕NC ⍵}namespace
+          :EndIf
+      :EndIf
     ∇
 
 :EndClass
