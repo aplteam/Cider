@@ -7,7 +7,7 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '10.0.0+198' '2022-04-24'
+      r←'Cider' '0.10.0+198' '2022-04-24'
       ⍝   * Bug fixes
       ⍝     * An invalid namespace name assgined to the `tatinFolder` parameter was not checked.
       ⍝     * JSON checking when editing a config file was less than perfect.
