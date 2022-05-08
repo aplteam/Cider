@@ -7,13 +7,17 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.10.0+200' '2022-04-24'
+      r←'Cider' '0.10.1+208' '2022-05-08'
+      ⍝ * 0.10.1 ⋄ 2022-05-08
+      ⍝   * Bug fixes
+      ⍝     * When a folder .git was found but Git was not installed then a confusing message was provided.
+      ⍝ * 0.10.0 ⋄ 2022-04-23
       ⍝   * Bug fixes
       ⍝     * An invalid namespace name assgined to the `tatinFolder` parameter was not checked.
       ⍝     * JSON checking when editing a config file was less than perfect.
-      ⍝ * 0.9.1+197 ⋄ 2022-04-15
+      ⍝ * 0.9.1 ⋄ 2022-04-15
       ⍝   * Bug fix: "\" was used no matter which OS
-      ⍝ * 0.9.0+193 ⋄ 2022-03-17
+      ⍝ * 0.9.0 ⋄ 2022-03-17
       ⍝   * The alias syntax got enhanced; accepts now a wildcard like ]Cider.OpenProject [co*]
       ⍝   * ]Cider.CreateProject now asks the user whether the project should also be opened.
       ⍝     It did so in the past but silently, leaving some room for doubt.
@@ -25,17 +29,17 @@
       ⍝     * Alias names should NOT be case-sensitive.
       ⍝     * Some user commands accepted an argument when they shouldn't.
       ⍝     * Erratic RANK ERROR on OpenProject fixed
-      ⍝ * 0.8.4+176 ⋄ 2022-02-27
+      ⍝ * 0.8.4 ⋄ 2022-02-27
       ⍝   * Minor internal improvements
       ⍝   * LF is now enforced for text files via .gitattributes
-      ⍝ * 0.8.3+176 ⋄ 2022-01-04
+      ⍝ * 0.8.3 ⋄ 2022-01-04
       ⍝   * Question regarding the checking for later Tatin packages improved
       ⍝   * Git status is only checked in case `quietFlag` and `importFlag` are both 0
       ⍝   * Tatin package statuses are checked only in case `importFlag` is 0
       ⍝   * Bug fixes:
       ⍝     * ListOpenProjects only beautified the result with -verbose
       ⍝     * ]Cider.OpenProject without argument provided no feedback at all when no Cider.config file was detected
-      ⍝ * 0.8.2+166 ⋄ 2021-12-23
+      ⍝ * 0.8.2 ⋄ 2021-12-23
       ⍝   * wx removed as a system variable.
       ⍝   * Documentation improved.
       ⍝ * 0.8.1 ⋄ 2021-12-15
@@ -125,12 +129,12 @@
       InjectConfigDataIntoProject config projectSpace_ parms.folder
       {}ExecProjectFunction⍣(~parms.suppressLX)⊣config projectSpace_
       p ExecUserFunction config
+      successFlag←_success
       :If 0=parms.quietFlag
       :AndIf 0=parms.importFlag
+          p'*** Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,'.',parms.projectSpace,'"'
           CheckForGit parms.folder config
       :EndIf
-      p'*** Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,'.',parms.projectSpace,'"'
-      successFlag←_success
       ⍝Done
     ∇
 
@@ -146,12 +150,22 @@
       :EndIf
     ∇
 
+    ∇ ok←CheckTargetNamespace projectSpace
+      :If 0=⎕NC⍕projectSpace
+          ok←1
+      :ElseIf 0=≢projectSpace.⎕NL 2 3 4 9
+          ok←1
+      :Else
+          ok←0
+      :EndIf
+    ∇
+
     ∇ parms←CreateOpenParms y;list
     ⍝ Creates a namespace with all parameters one might pass to `OpenProject`.\\
     ⍝ `y` might be an empty vector or a namespace with some such parameters.
-    ⍝ Any paremeters passed this way overwrite defaults.
+    ⍝ Any parameters passed this way overwrite defaults.
       :Access Public Shared
-      parms←(1⊃1↓⎕RSI,⎕THIS).⎕NS''        ⍝ Create namespace where we got called from
+      parms←(1⊃1↓⎕RSI,⎕THIS).⎕NS''      ⍝ Create namespace where we got called from
       parms.folder←''
       parms.projectSpace←''
       parms.quietFlag←0
@@ -161,7 +175,7 @@
       parms.importFlag←0
       parms.noPkgLoad←0
       parms.watch←'ns'
-      parms.checkPackageVersions←⍬  ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
+      parms.checkPackageVersions←⍬      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
       :If ~(⊂y)∊''⍬
       :AndIf 9=⎕NC'y'
       :AndIf 0<≡list←' '~⍨¨↓y.⎕NL 2
@@ -232,13 +246,23 @@
       p'  All fine'
     ∇
 
-    ∇ {r}←CheckForGit(path config);status
+    ∇ {r}←CheckForGit(path config);status;dmx
     ⍝ Checks whether the project is managed by Git, and if so offers some help
       r←⍬
       :If ⎕NEXISTS(AddSlash path),'.git'
-          p'Project is managed by Git'
+          p'Project appears to be managed by Git...'
           :If 9=⎕SE.⎕NC'_Git'
-              status←⎕SE.Git.Status path
+              :Trap 0
+                  status←⎕SE.Git.Status path
+              :Else
+                  dmx←⎕DMX
+                  :If 127=dmx.EN
+                      p'...but apparently Git is not installed'
+                      :Return
+                  :Else
+                      dmx.Message ⎕SIGNAL dmx.EN
+                  :EndIf
+              :EndTrap
               :If 10>≢status
                   p'Git status report:'
                   p' ',' ',' ',↑status
@@ -246,7 +270,7 @@
                   {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'ed'}ed←⍵)}status
               :EndIf
           :Else
-              p'Missing user command ]Git (required for further information)'
+              p'Missing user command ]Git as well as it''s API, therefore no information can be provided regarding Git'
           :EndIf
       :Else
           p'Project is not managed by Git'

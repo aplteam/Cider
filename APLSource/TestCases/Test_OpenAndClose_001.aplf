@@ -8,7 +8,7 @@
  sourceFolder1←projectFolder1,'/APLSource'
  'Create!'FilesAndDirs.CheckPath sourceFolder1
  (projectFolder1,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
- 'Foo'#.⎕NS''
+ #.⎕EX'Foo' ⋄ 'Foo'#.⎕NS''
  {}⎕SE.UCMD'Cider.CreateProject "',projectFolder1,'" #.Foo -alias=test-case-alias-Foo -noEdit -acceptConfig -quiet'
  #.Foo.⎕FX'r←Hello' 'r←''World'''
  {}⎕SE.Link.Add'#.Foo.Hello'
@@ -22,7 +22,7 @@
  sourceFolder2←projectFolder2,'/APLSource'
  'Create!'FilesAndDirs.CheckPath sourceFolder2
  (projectFolder2,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Goo')
- 'Goo'#.⎕NS''
+ #.⎕EX'Goo' ⋄ 'Goo'#.⎕NS''
  #.Goo.⎕FX'r←Hello' 'r←''Galaxy'''
  {}⎕SE.UCMD'Cider.CreateProject "',projectFolder2,'" #.Goo -alias=test-case-alias-Goo -noEdit -acceptConfig -quiet'
  list←FilesAndDirs.ListFiles projectFolder2

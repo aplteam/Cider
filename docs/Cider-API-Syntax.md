@@ -148,7 +148,7 @@ Note that this must _not_ be empty.
 
 ### projectSpace (mandatory)
 
-The name of the namespace the project is injected into. If this is empty it is going to be `#` (or `⎕SE`).
+The name of the namespace the project is injected into. If this is empty it is going to be `#` or `⎕SE`, depending from where the function was called from.
 
 ### alias
 
