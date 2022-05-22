@@ -7,7 +7,11 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.10.1+208' '2022-05-08'
+      r←'Cider' '0.10.2+210' '2022-05-22'
+      ⍝ * 0.10.2 ⋄ 2022-05-21
+      ⍝   * HOME is now *always* an absolute path. (It being relative was actually a bug)
+      ⍝   * ReadMe updated.
+      ⍝   * Internal change: `ToQSE` is now `PrintToSession`
       ⍝ * 0.10.1 ⋄ 2022-05-08
       ⍝   * Bug fixes
       ⍝     * When a folder .git was found but Git was not installed then a confusing message was provided.
@@ -71,7 +75,7 @@
       '"folder" must be specified'Assert 0<≢parms.folder
       '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
       '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both'
-      p←(~parms.quietFlag)∘ToQSE                                                        ⍝ Function for printing to the session
+      p←(~parms.quietFlag)∘PrintToSession
       parms←(p TranslateAlias2Folder)parms
       ('Folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
       p((1+parms.importFlag)⊃'Loading' 'Importing'),' project from ',parms.folder
@@ -408,7 +412,7 @@
       :EndIf
     ∇
 
-    ∇ {r}←flag ToQSE msg
+    ∇ {r}←flag PrintToSession msg
       r←0 0⍴⍬
       :If flag
       :AndIf 0<≢msg
@@ -483,7 +487,7 @@
     ⍝ Create a namespace "CiderConfig" inside projectSpace and populate it with the configuration data
       r←⍬
       'CiderConfig'projectSpace_.⎕NS config
-      projectSpace_.CiderConfig.HOME←folder
+      projectSpace_.CiderConfig.HOME←⊃,/1 ⎕nparts folder
     ∇
 
     ∇ {r}←{editFlag}ViewConfig path;filename;ns;orig;flag

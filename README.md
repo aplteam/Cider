@@ -82,6 +82,8 @@ Once a folder is established that holds a Cider config file, the user command pe
 1. Injects a namespace `CiderConfig` into the project space and...
    * populates it with the contents of the configuration file as APL arrays
    * adds a variable `HOME` that remembers the path the project was loaded from   
+1. Checks whether the project's config file does carry a non-empty value for `lx`. If that's the case it must be a function that is then called by Cider, typically for initializingt the project
+1. If the project is managed by Git and the user command `]Git` is around and the git bash is installed then Cider executes the `git status` command on the project folder and puts the result on view
 
 Notes:
 
