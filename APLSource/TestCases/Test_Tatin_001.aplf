@@ -1,4 +1,4 @@
- R←Test_Tatin_001(stopFlag batchFlag);⎕TRAP;res;folder;parms
+ R←Test_Tatin_001(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc
 ⍝ Load project with tatin packages. No parent for the packages is specified.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -20,6 +20,6 @@
 
 ∆TidyUp:
  res←∆LINK'Break' '#.TEMP'
- Assert res ∆StartsWith'Unlinked:'
+Assert res ∆StartsWith'Unlinked:'
  #.⎕EX'TEMP'
 ⍝Done

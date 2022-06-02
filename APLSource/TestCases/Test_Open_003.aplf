@@ -1,4 +1,4 @@
- R←Test_Open_003(stopFlag batchFlag);⎕TRAP;parms;folder;r;res
+ R←Test_Open_003(stopFlag batchFlag);⎕TRAP;parms;folder;r;res;rc
 ⍝ Open a simple project but specify a different parent space and a different project space name
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed

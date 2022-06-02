@@ -1,0 +1,25 @@
+ R←Test_Open_061(stopFlag batchFlag);⎕TRAP;parms;defs
+⍝ Open a project with alias='Foo'
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ 'TEMP'#.⎕NS''
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←∆GetTestPath⊃⎕SI
+ parms.parent←'#.TEMP'
+ parms.quietFlag←1
+ parms.alias←'Foo'
+
+ Assert ##.Cider.OpenProject parms
+ defs←##.Cider.GetAliasFileContent
+ →T.GoToTidyUp~(⊂'foo')∊defs[;1]
+
+ R←T._OK
+
+∆TidyUp:
+ {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ #.⎕EX'TEMP'
+ defs←(defs[;1]≢¨⊂'foo')⌿defs
+ (⊂⊃¨{⍺,'=',⍵}/¨↓defs)⎕NPUT ##.Cider.GetCiderAliasFilename 1
+⍝Done

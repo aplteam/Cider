@@ -1,4 +1,4 @@
- R←Test_Misc_002(stopFlag batchFlag);⎕TRAP;res;folder;parms;list
+ R←Test_Misc_002(stopFlag batchFlag);⎕TRAP;res;folder;parms;list;parms2;rc
 ⍝ Exercise the ListOpenProjects function
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -7,7 +7,7 @@
  'TEMP2'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI
 
- parms←⎕ns''
+ parms←⎕NS''
  parms.folder←folder,'/Project1'
  parms.quietFlag←1
  res←##.Cider.OpenProject parms
@@ -15,10 +15,10 @@
  →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3
  →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP.⎕NL(⍳16)~3)~⊂'CiderConfig'
 
- parms←⎕ns''
- parms.folder←folder,'/Project2'
- parms.quietFlag←1
- res←##.Cider.OpenProject parms
+ parms2←⎕NS''
+ parms2.folder←folder,'/Project2'
+ parms2.quietFlag←1
+ res←##.Cider.OpenProject parms2
  →T.GoToTidyUp~res
  →T.GoToTidyUp 1≠≢#.TEMP2.⎕NL 3
  →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP2.⎕NL(⍳16)~3)~⊂'CiderConfig'

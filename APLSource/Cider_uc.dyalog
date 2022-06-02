@@ -1,4 +1,4 @@
-:Class Cider_uc
+﻿:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
 
@@ -44,7 +44,7 @@
           c.Name←'CloseProject'
           c.Desc←'Breaks the Link between the workspace and the files on disk'
           c.Group←'Cider'
-          c.Parse←'1s -all'
+          c.Parse←'-all'
           r,←c
      
           c←⎕NS''
@@ -102,10 +102,12 @@
     ∇
 
     ∇ r←ViewConfig Args;list;path;index
+      r←''
       :If 0≡Args._1
           list←⎕SE.Cider.ListOpenProjects 0
           :Select ≢list
           :Case 0
+              ⎕←'No open Cider project found'
               :Return
           :Case 1
               path←⊃list[1;2]
@@ -120,8 +122,6 @@
       :EndIf
       :If Args.edit ⎕SE.Cider.ViewConfig path
           r←'Changed: ',path,'/dicer.config'
-      :Else
-          r←''
       :EndIf
     ∇
 
@@ -238,7 +238,7 @@
               r,←⊂'Makes the given folder a project folder'
               r,←⊂']Cider.CreateProject <folder> [<project-namespace>] [-alias=] [-acceptConfig] [-noEdit] [-quiet]'
           :Case ⎕C'CloseProject'
-              r,←⊂'Breaks the Link between the project space and the files on disk'
+              r,←⊂'Breaks the Link between one or more project spaces and their associated files on disk'
               r,←⊂']Cider.CloseProject [<namespace-name>|alias-name] [-all]'
           :Case ⎕C'Help'
               r,←⊂'Offers to put the HTML files on display'
@@ -334,12 +334,15 @@
               r,←⊂'               being interrogated by setting the -quiet flag. Mainly useful for test cases.'
               r,←⊂'Note that the alias is not case sensitive'
           :Case ⎕C'CloseProject'
-              r,←⊂'Breaks the Link between a project and its files on disk.'
+              r,←⊂'Breaks the Link between one or more projects and their assoicated files on disk.'
               r,←⊂''
               r,←⊂'You may specify one of:'
-              r,←⊂' * A particular project via a namespace name'
-              r,←⊂' * A particular project via an [alias]'
-              r,←⊂' * The -all flag, which closes all projects'
+              r,←⊂' * One or more projects via a fully qualified namespace name'
+              r,←⊂' * One or more projects via an [alias]'
+              r,←⊂' * A mixture of the two'
+              r,←⊂' * Nothing; equivalent to -all but the user will be asked for confirmation'
+              r,←⊂' * The -all flag, which closes all projects without further ado'
+              r,←⊂' '
           :Case ⎕C'ViewConfig'
               r,←⊂'Puts the config file of a project on display.'
               r,←⊂'By specifying the -edit flag the user might edit the file rather then just viewing it.'
@@ -438,7 +441,6 @@
 
     ∇ r←{namespace}CreateProject_(folder acceptFlag noEditFlag quietFlag);filename;success;config;projectFolder;parms
       :Access Public Shared
-      namespace←folder{0<⎕NC ⍵:⍎⍵ ⋄ ⊃¯1↑{⍵/⍨0<≢¨⍵}(~⍺∊'/\')⊆⍺}'namespace'
       r←''
       :If 0≡folder
           folder←⊃1 ⎕NPARTS''
@@ -446,12 +448,20 @@
               :Return
           :EndIf
       :EndIf
+      :If (⊂,folder)∊,¨'.' './'
+          folder←⊃1 ⎕NPARTS folder
+      :EndIf
       filename←(AddSlash folder),configFilename
+      :If 0=⎕NC'namespace'
+      :OrIf 0=≢namespace
+          namespace←{{⍵↑⍨1+-⌊/(⌽⍵)⍳'/\'}¯1↓⍵}1⊃1 ⎕NPARTS filename
+      :EndIf
       :If acceptFlag
-          ('The -accepConfig flag was set but no file "',configFilename,'" was found')Assert ⎕NEXISTS filename
+          ('The -acceptConfig flag was set but no file "',configFilename,'" was found')Assert ⎕NEXISTS filename
       :Else
           :If ~⎕NEXISTS folder
-              'Invalid path'Assert ⎕NEXISTS 1⊃⎕NPARTS{⍵↓⍨-(¯1↑⍵)∊'/\'}folder
+              'Invalid path'Assert{0=≢⍵:1 ⋄ ⎕NEXISTS ⍵}1⊃⎕NPARTS{⍵↓⍨-(¯1↑⍵)∊'/\'}folder  ⍝ Parent folder must exist
+              folder←∊1 ⎕NPARTS folder
               :If 1 YesOrNo'"',folder,'" does not exist yet - create?'
                   ⎕MKDIR folder
               :EndIf
@@ -484,7 +494,8 @@
               parms.folder←projectFolder
               parms.projectSpace←config.CIDER.projectSpace
               parms.parent←config.CIDER.parent
-              parms.quietFlag←1
+              parms.alias←{0≡⍵:'' ⋄ ⍵}Args.alias
+              parms.quietFlag←quietFlag
           :AndIf {⍵:1 ⋄ 1 YesOrNo'Project successfully created; open as well?' ⋄ 1}quietFlag
           :AndIf P.OpenProject parms
               r←'Project created and opened'
@@ -534,29 +545,36 @@
     ∇
 
 
-    ∇ r←CloseProject Args;list;name;bool;row
+    ∇ r←CloseProject Args;list;names;bool;row;invalid;q;noop
       r←''
-      :If 0≡Args._1
-          :If Args.all
-              r←P.CloseProject ⍬
+      :If 0=≢Args.Arguments
+          :If 0=noop←≢⎕SE.Cider.ListOpenProjects 0   ⍝ noop ←→ NoOf Open Projects
+              ⎕←'There are no open Cider projects that could be closed'
+              :Return
           :Else
-              'Is not a project, and -all was not specified'⎕SIGNAL 11
-          :EndIf
-      :Else
-          name←Args._1
-          :If ~(⊃Args._1)∊'#⎕'
-              'Not a valid APL name'Assert(⎕NS'').{0=⎕NC ⍵}name~'[]'
-              list←P.ListOpenProjects 0
-              :If 0<≢list
-                  :If 1=+/bool←name∘≡¨{⍵↓⍨⍵⍳'.'}¨list[;1]
-                      name←⊃bool⌿list[;1]
-                  :ElseIf 1<+/bool
-                      row←'Which project shall be closed?'Select bool⌿list[;1]
-                      name←row⊃bool⌿list[;1]
+              :If 1=noop
+                  :If 1 YesOrNo'Sure you want close the project?'
+                      r←P.CloseProject ⍬
                   :EndIf
+              :ElseIf Args.all
+                  q←'Currently there ',((1+1<noop)⊃'is one'('are ',⍕noop)),' project',((1<noop)/'s'),' opened - wanna close ',(1+1<noop)⊃'it?' 'all of them?'
+              :OrIf YesOrNo q
+                  r←P.CloseProject ⍬
               :EndIf
           :EndIf
-          r←P.CloseProject name
+      :Else
+          names←⊆Args.Arguments
+          :If 1∊invalid←~{(⊃⍵)∊'#⎕['}¨names
+              11 ⎕SIGNAL⍨'Project name(s) must be fully qualified but are not: ',⊃{⍺,',',⍵}/invalid/names
+          :EndIf
+          :If 1∊invalid←~{(⎕NS'').{0=⎕NC ⍵}⍵~'[]'}¨names
+              11 ⎕SIGNAL⍨'Invalid project name(s): ',⊃{⍺,',',⍵}/invalid/names
+          :EndIf
+          list←P.ListOpenProjects 0
+          r←+/P.CloseProject¨names
+      :EndIf
+      :If 0<≢r
+          r←'Number of project closed: ',⍕r
       :EndIf
     ∇
 
@@ -833,7 +851,7 @@
           :If '='∊buff
               'Invalid config parm ("tatinFolder" has more than one "=")'Assert 1='='+.=buff
               (path namespace)←'='(≠⊆⊢)buff
-              'Invalid config parm (namespace name)'Assert 0=(⎕NS'').{⎕NC ⍵}namespace
+              'Invalid config parm (Tatin folder)'Assert 0=(⎕NS'').{⎕NC ⍵}namespace
           :EndIf
       :EndIf
     ∇

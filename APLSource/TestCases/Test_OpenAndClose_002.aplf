@@ -1,4 +1,4 @@
- R←Test_OpenAndClose_002(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list
+ R←Test_OpenAndClose_002(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;res;rc
 ⍝ Open a (new) project and then close it by path
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -17,6 +17,8 @@
  R←T._OK
 
 ∆TidyUp:
- ∆LINK'Break' '#.Foo'
- FilesAndDirs.RmDir tempDir
+ res←∆LINK'Break' '#.Foo'
+ Assert res ∆StartsWith'Unlinked:'
+ rc←FilesAndDirs.RmDir tempDir
+ Assert 0=+/∊rc
 ⍝Done

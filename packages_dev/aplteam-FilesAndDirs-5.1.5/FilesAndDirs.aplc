@@ -38,12 +38,15 @@
 
     ∇ r←Version
       :Access Public shared
-      r←'FilesAndDirs' '5.1.4+111' '2021-11-10'
+      r←'FilesAndDirs' '5.1.5+113' '2022-05-15'
     ∇
 
 
     ∇ History
-      :Access Public shared 
+      :Access Public shared
+      ⍝ * 5.1.5 ⋄ 2022-05-15
+      ⍝   * Under rare circumstances `GetTempFilename`, `GetTempFilename2`, `GetTempSubDir` and `GetTempPath` 
+      ⍝     managed to run into a problem on very fast machines.
       ⍝ * 5.1.4 ⋄ 2021-11-10
       ⍝   * Strangely `GetTempSubDir` fails (very rearely) for no apparent reason, but repeating it works.
       ⍝     Hopefully now more robust: it increases the wait time after every 5 failing tries, and it also
@@ -626,8 +629,7 @@
       :If 0=rc←'Create!'CheckPath path
           11 ⎕SIGNAL⍨'Error during "Create <',path,'>"; rc=',⍕GetLastError
       :Else
-          start←no←⍎{(,'ZI2,ZI2,ZI2'⎕FMT 3↑⍵),⍕3↓⍵}3↓⎕TS  ⍝ Expensive but successful very soon
-          ⍝ no←100⊥3↓⎕TS ⍝ Not reliable: can take a large number of tries before successful
+          start←no←⍎ProduceRandomName
           :Repeat
               filename←path,prefixString,(⎕AN,'_',⍕no),'.tmp'
               :Trap 22
@@ -637,7 +639,7 @@
                   fno←0
               :EndTrap
               no+←10
-          :Until (fno≠0)∨no>start+1000×10  ⍝ max 1000 tries
+          :Until (fno≠0)∨no>start+30×10  ⍝ max 30 tries
           'Unable to create temporay file'⎕SIGNAL 11/⍨fno=0
       :EndIf
       filename←NormalizePath filename
@@ -658,8 +660,7 @@
           prefixString←⎕AN
       :EndIf
       path←GetTempPath
-      start←no←⍎{(,'ZI2,ZI2,ZI2'⎕FMT 3↑⍵),⍕3↓⍵}3↓⎕TS  ⍝ Expensive but successful very soon
-      ⍝ no←100⊥3↓⎕TS ⍝ Not reliable: can take a large number of tries before successful
+      start←no←⍎ProduceRandomName
       :Repeat
           filename←path,(prefixString,'_',⍕no),{0=≢⍵:⍵ ⋄ '.',⍵}extension
           :Trap 22
@@ -669,7 +670,7 @@
               fno←0
           :EndTrap
           no+←10
-      :Until (fno≠0)∨no>start+1000×10  ⍝ max 1000 tries
+      :Until (fno≠0)∨no>start+30×10  ⍝ max 30 tries
       'Unable to create temporay file'⎕SIGNAL 11/⍨fno=0
       filename←NormalizePath filename
     ∇
@@ -684,14 +685,13 @@
           prefixString←⎕AN
       :EndIf
       path←GetTempPath
-      no←⍎{(,'ZI2,ZI2,ZI2'⎕FMT 3↑⍵),⍕3↓⍵}3↓⎕TS  ⍝ Expensive but successful very soon
+      no←⍎ProduceRandomName
       i←0
-      ⍝ no←100⊥3↓⎕TS ⍝ Not reliable: can take a large number of tries before successful
       success←flag←0
       :Repeat
           dirname←path,(({⍵↓⍨-(¯1↑⍵)∊'/\'}prefixString),'_',(⍕no),'_',(⍕i))
           :Trap 22
-              2 ⎕MKDIR dirname 
+              2 ⎕MKDIR dirname
               flag←success←1
           :Else
               ⎕DL 0.01+0.01×0=5|5
@@ -975,6 +975,11 @@
           :EndFor
       :EndIf
       r←¯2↓r
+    ∇
+
+    ∇ r←ProduceRandomName
+      ⍝ Expensive but successful very soon
+      r←{(,'ZI2,ZI2,ZI2'⎕FMT 3↑⍵),⍕3↓⍵}3↓⎕TS  ⍝ Expensive but successful very soon
     ∇
 
 :EndClass

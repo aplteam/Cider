@@ -1,4 +1,4 @@
- R←Test_OpenAndClose_003(stopFlag batchFlag);⎕TRAP;tempDir;list;res
+ R←Test_OpenAndClose_003(stopFlag batchFlag);⎕TRAP;tempDir;list;res;rc
 ⍝ Open a (new) project and then attempt to close a non-existing one (was once a bug)
 ⍝ The bug: closed ALL projects rather than none
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
@@ -18,7 +18,8 @@
  R←T._OK
 
 ∆TidyUp:
- res←∆LINK'Break' 'Foo'
- FilesAndDirs.RmDir tempDir
+ ∆LINK'Break' '#.Foo'  ⍝ We DO NOT check here because when everything is working fine then it's not linked anymore.
+ rc←FilesAndDirs.RmDir tempDir
+ Assert 0=+/∊rc
  #.⎕EX'Foo'
 ⍝Done

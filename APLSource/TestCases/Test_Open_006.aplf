@@ -1,4 +1,4 @@
- R←Test_Open_006(stopFlag batchFlag);⎕TRAP;parms;folder;r;res
+ R←Test_Open_006(stopFlag batchFlag);⎕TRAP;parms;folder;r;res;rc
 ⍝ Open a project but suppress execution of the init function
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -21,6 +21,6 @@
 
 ∆TidyUp:
  res←∆LINK'Break' '#.TEMP.Foo'
- Assert res ∆StartsWith'Unlinked:'
+Assert res ∆StartsWith'Unlinked:'
  #.⎕EX'TEMP'
 ⍝Done

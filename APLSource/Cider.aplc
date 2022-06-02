@@ -7,9 +7,22 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.10.2+210' '2022-05-22'
+      r←'Cider' '0.11.0+226' '2022-06-02'
+      ⍝ * 0.11.0 ⋄ 2022-06-02
+      ⍝   * `OpenProject` and (implicitly) also `CreateProject` accept -alias=. which means that the last
+      ⍝     part of the project path becomes the alias in lowercase.
+      ⍝   * When no target namespace is specified for `CreateProject` then the last part of the folder
+      ⍝     is taken as name of the namespace.
+      ⍝   * Bug fixes
+      ⍝     * `CreateProject` did not ask for checking packages when called from `CreateProject`
+      ⍝     * The default for `tatinFolder` had a trailing slash that did not hurt but was not required
+      ⍝     * `tatinFolder` was not allowed to be empty
+      ⍝     * `PerformConfigChecks` was buggy
+      ⍝     * Syntax Error causing typo fixed in `InjectConfigDataIntoProject`
       ⍝ * 0.10.2 ⋄ 2022-05-21
       ⍝   * HOME is now *always* an absolute path. (It being relative was actually a bug)
+      ⍝   * `CreateProject` did ask whether to also open the project but did not ask whether it
+      ⍝     should check any installed packages. It now does.
       ⍝   * ReadMe updated.
       ⍝   * Internal change: `ToQSE` is now `PrintToSession`
       ⍝ * 0.10.1 ⋄ 2022-05-08
@@ -65,11 +78,11 @@
 
     Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⎕ML←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),11}
 
-    ∇ successFlag←OpenProject parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn
+    ∇ success←OpenProject parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn
     ⍝ Open a Cider project.\\
     ⍝ `parms` must be a namespace holding all the required parameters. Such a namespace can be created by calling `CreateOpenParms`
       :Access Public Shared
-      successFlag←_failure
+      success←_failure
       parms←CreateOpenParms parms
       '"folder" must be specified'Assert 0<parms.⎕NC'folder'
       '"folder" must be specified'Assert 0<≢parms.folder
@@ -90,6 +103,9 @@
           'Project space is not a valid APL name'Assert{0::0 ⋄ 0=(⎕NS'').⎕NC ⍵}⍕parms.projectSpace
       :EndIf
       parms.alias←⎕C parms.alias
+      :If parms.alias≡'.'
+          parms.alias←⎕C 2⊃{1 ⎕NPARTS(-(¯1↑⍵)∊'/\')↓⍵}parms.folder
+      :EndIf
       p ProcessAlias parms.folder parms.alias
       configFilename←parms.folder,'/cider.config'
       ('No file "cider.config" found in ',parms.folder)Assert ⎕NEXISTS configFilename
@@ -133,7 +149,7 @@
       InjectConfigDataIntoProject config projectSpace_ parms.folder
       {}ExecProjectFunction⍣(~parms.suppressLX)⊣config projectSpace_
       p ExecUserFunction config
-      successFlag←_success
+      success←_success
       :If 0=parms.quietFlag
       :AndIf 0=parms.importFlag
           p'*** Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,'.',parms.projectSpace,'"'
@@ -360,6 +376,7 @@
       r←0
       updateParms←⎕SE.Tatin.CreateReInstallParms
       updateParms.update←1
+      updateParms.quiet←parms.quietFlag
       :For i :In ⍳≢reports
           report←i⊃reports
           :If 0<≢report
@@ -487,10 +504,10 @@
     ⍝ Create a namespace "CiderConfig" inside projectSpace and populate it with the configuration data
       r←⍬
       'CiderConfig'projectSpace_.⎕NS config
-      projectSpace_.CiderConfig.HOME←⊃,/1 ⎕nparts folder
+      projectSpace_.CiderConfig.HOME←⊃,/1 ⎕NPARTS folder
     ∇
 
-    ∇ {r}←{editFlag}ViewConfig path;filename;ns;orig;flag
+    ∇ {r}←{editFlag}ViewConfig path;filename;ns;orig;flag;edit
     ⍝ By default the contents of the file cider.config in "path" is put into the editor in read-only mode.
     ⍝ The user may edit the contents if ⍺ is 1 rather than anything else or undefined.
     ⍝ Returns 1 in case the file was modified and 0 otherwise.
@@ -508,7 +525,7 @@
           filename←path,'/cider.config'
       :EndIf
       ('Does not exist: "',filename,'"')Assert ⎕NEXISTS filename
-      ns←⎕NS''
+      ns←⍎'edit'⎕NS''  ⍝ Unnamed namespace causes a warning issued by ⎕SE.Link.OnAfterFix - kai; Well, so does this code!
       orig←ns.cider_config←⊃⎕NGET filename 1
       flag←0
       :Repeat
@@ -591,7 +608,7 @@
     ∇
 
     ∇ r←CloseProject y;list;project;bool
-    ⍝ Simply breaks the Link between a project and its folder in disk.
+    ⍝ Simply breaks the Link between a project and its folder on disk.
     ⍝ In case ⍵ is empty ALL projects are closed.
     ⍝ `y` may be one of:
     ⍝ * Empty vector (=close all)
@@ -727,10 +744,10 @@
       :EndIf
     ∇
 
-    ∇ {successFlag}←DropAlias alias;ciderAliasFilename;data;noOf
+    ∇ {success}←DropAlias alias;ciderAliasFilename;data;noOf
       :Access Public Shared
       ciderAliasFilename←GetCiderAliasFilename
-      successFlag←0
+      success←0
       :If 0≠≢alias
       :AndIf 0<≢ciderAliasFilename
           :If ⎕NEXISTS ciderAliasFilename
@@ -738,7 +755,7 @@
               data←((⊆⎕C alias),¨'='){⍵/⍨~((⍵↑⍨¨⍵⍳¨'='))∊⍺}data
               :If noOf>≢data
                   (⊂data)⎕NPUT ciderAliasFilename 1
-                  successFlag←1
+                  success←1
               :EndIf
           :EndIf
       :EndIf
@@ -883,16 +900,21 @@
       :EndIf
     ∇
 
-    ∇ successFlag←PerformConfigChecks config;buff;namespace;path
-      successFlag←0
-      :If 0<≢buff←config.CIDER.tatinFolder
-      :AndIf '='∊buff
+    ∇ success←PerformConfigChecks config;buff;namespace;path
+      success←0
+      :If 0=≢buff←config.CIDER.tatinFolder
+          success←1
+      :ElseIf '='∊buff
           :If 1<'='+.=buff
-              successFlag←1
+              success←1
           :Else
               (path namespace)←'='(≠⊆⊢)buff
-              successFlag←0=(⎕NS'').{⎕NC ⍵}namespace
+              success←0=(⎕NS'').{⎕NC ⍵}namespace
           :EndIf
+      :ElseIf ~','∊buff
+          success←1
+      :Else
+          ⍝ More than one but nothing assigned, that's invalid
       :EndIf
     ∇
 

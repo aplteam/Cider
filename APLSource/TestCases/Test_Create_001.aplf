@@ -1,4 +1,4 @@
- R←Test_Create_001(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;config
+ R←Test_Create_001(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;config;res;rc
 ⍝ Create a project from a folder without Linking a namespace; project space name defaults
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -18,6 +18,8 @@
  R←T._OK
 
 ∆TidyUp:
- ∆LINK'Break'(#.⊃{⍺,'.',⍵}/config.CIDER.(parent projectSpace))
- FilesAndDirs.RmDir tempDir
+ res←∆LINK'Break'(#.⊃{⍺,'.',⍵}/config.CIDER.(parent projectSpace))
+ Assert res ∆StartsWith'Unlinked:'
+ rc←FilesAndDirs.RmDir tempDir
+ Assert 0=+/∊rc
 ⍝Done

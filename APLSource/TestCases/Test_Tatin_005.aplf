@@ -1,4 +1,4 @@
- R←Test_Tatin_005(stopFlag batchFlag);⎕TRAP;res;folder;parms;dmx
+ R←Test_Tatin_005(stopFlag batchFlag);⎕TRAP;res;folder;parms;dmx;rc
 ⍝ Attempt to load a project with Tatin packages via an absolute path (invalid)
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -22,9 +22,8 @@
  R←T._OK
 
 ∆TidyUp:
-
  res←∆LINK'Break' '#.TEMP'
- Assert res ∆StartsWith'Unlinked:'
+Assert res ∆StartsWith'Unlinked:'
  #.⎕EX'TEMP'
  #.⎕EX'FOO'
 ⍝Done

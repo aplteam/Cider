@@ -1,4 +1,4 @@
- R←Test_OpenAndClose_001(stopFlag batchFlag);⎕TRAP;tempDir;list;sourceFolder1;projectFolder1;projectFolder2;sourceFolder2;aliase
+ R←Test_OpenAndClose_001(stopFlag batchFlag);⎕TRAP;tempDir;list;sourceFolder1;projectFolder1;projectFolder2;sourceFolder2;aliase;rc;res
 ⍝ Open two (new) projects and then close both of them, one by alias and one by path. Uses `DropAlias`.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -38,9 +38,10 @@
  R←T._OK
 
 ∆TidyUp:
- ∆LINK'Break' '#.Foo'
- ∆LINK'Break' '#.Goo'
- {}FilesAndDirs.RmDir tempDir
+ ∆LINK'Break' '#.Foo'  ⍝ We DO NOT check here because when everything is working fine...
+ ∆LINK'Break' '#.Goo'  ⍝ ... then it's not linked anymore.
+ rc←FilesAndDirs.RmDir tempDir
+ Assert 0=+/∊rc
  #.⎕EX¨'Foo' 'Goo'
  ⎕SE.Cider.DropAlias'test-case-alias-Foo' 'test-case-alias-Goo'
 ⍝Done

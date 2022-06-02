@@ -9,12 +9,12 @@
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -quiet'
  →T.GoToTidyUp 0=rc
- →T.GoToTidyUp 1≠+/'Invalid config parm (namespace name)'⍷msg
+ →T.GoToTidyUp 1≠+/'Invalid config parm (Tatin folder)'⍷msg
 
  R←T._OK
 
 ∆TidyUp:
- res←∆LINK'Break' 'Invalid2'
- FilesAndDirs.RmDir tempDir
+ rc←FilesAndDirs.RmDir tempDir
+ Assert 0=+/∊rc
  #.⎕EX'Invalid1'
 ⍝Done

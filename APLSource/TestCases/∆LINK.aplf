@@ -1,5 +1,5 @@
  {r}←∆LINK(cmd arg);ref
  ('There is no Link user command/API function ',cmd)⎕SIGNAL 6/⍨3≠⎕SE.Link.⎕NC cmd
  ref←⎕SE.Link.⍎cmd
- ⎕dl .2
  r←ref arg
+⍝Done

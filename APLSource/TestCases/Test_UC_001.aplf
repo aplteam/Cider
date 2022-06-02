@@ -1,4 +1,4 @@
- r←Test_UC_001(stopFlag batchFlag);⎕TRAP;tempDir;parms;res;list;rc;msg;result
+ r←Test_UC_001(stopFlag batchFlag);⎕TRAP;tempDir;parms;list;rc;msg;result
 ⍝ Exercise the user command on "CloseProject" with a not fully qualified name
 ⍝ Should work anyway if there is just one project with that name
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
@@ -9,7 +9,7 @@
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig -quiet'
- {}⎕SE.UCMD'Cider.CloseProject Foo'
+ {}⎕SE.UCMD'Cider.CloseProject #.Foo'
 
  parms←##.Cider.CreateOpenParms ⍬
  parms.folder←tempDir
@@ -17,14 +17,16 @@
  res←##.Cider.OpenProject parms
 
  →T.GoToTidyUp 0=≢list←##.Cider.ListOpenProjects 0
- (rc msg result)←∆UCMD'CloseProject Foo'          ⍝ Without "#." - the user command must be smart
- Assert 0=rc
- →T.GoToTidyUp(≢list)≢1+≢##.Cider.ListOpenProjects 0
+
+ (rc msg result)←∆UCMD'CloseProject Foo'
+ →T.GoToTidyUp~∨/'Project name(s) must be fully qualified but are not: Foo'⍷msg
 
  R←T._OK
 
 ∆TidyUp:
- res←∆LINK'Break' 'Foo'
- FilesAndDirs.RmDir tempDir
+ {}∆UCMD'CloseProject #.Foo'
+ ∆LINK'Break' '#.Foo'  ⍝ We DO NOT check here because when everything is working fine then it's not linked anymore.
+ rc←FilesAndDirs.RmDir tempDir
+ Assert 0=+/∊rc
  #.⎕EX'Foo'
 ⍝Done
