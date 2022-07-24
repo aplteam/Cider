@@ -1,0 +1,40 @@
+ Make flag;pathToAPLTreeSource;targetPath;M;A;name;F;myUCMDsFolder;caption1;caption2;projectPath;codePath;toFolder;version
+⍝ Version 2.0.0 from 2022-07-24
+ :If flag
+     projectPath←##.CiderConfig.HOME,'/'
+     codePath←##.CiderConfig.HOME,'/',##.CiderConfig.CIDER.source,'/'
+     targetPath←##.CiderConfig.HOME,'/Dist/'
+     M←⎕SE.MakeHelpers
+     myUCMDsFolder←M.GetMyUCMDsFolder''
+     name←'Cider'
+     ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
+     {}M.IncreaseBuildID'#.',name,'.',name,'.Version'
+     version←2⊃##.Cider.Version
+     ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
+     {}M.RecreateFolder targetPath
+     ⎕MKDIR targetPath,'Cider'
+     (caption1 caption2)←'MyUCMDs/Cider.aplc' 'Project folder'
+     :If ⎕NEXISTS myUCMDsFolder,'Cider\Cider.aplc'
+         M.CopyBetter(myUCMDsFolder,'Cider\Cider.aplc')('./APLSource/Cider.aplc')caption1 caption2
+     :EndIf
+     (caption1 caption2)←'MyUCMDs/Cider_uc.dyalog' 'Project folder'
+     :If ⎕NEXISTS myUCMDsFolder,'Cider\Cider_uc.dyalog'
+         M.CopyBetter(myUCMDsFolder,'Cider\Cider_uc.dyalog')('./APLSource/Cider_uc.dyalog')caption1 caption2
+     :EndIf
+     (codePath,name,'_uc.dyalog')M.CopyTo targetPath,'Cider/'
+     (codePath,name,'.aplc')M.CopyTo targetPath,'Cider/'
+     (projectPath,'.',name)M.CopyTo targetPath,'Cider/'
+     (projectPath,'cider.config.template')M.CopyTo targetPath,'Cider/'
+     (projectPath,'html/*.html')M.CopyTo targetPath,'Cider/'
+     {}M.CreateZipFile name targetPath version
+     :If 1 M.YesOrNo'Copy the Cider user command',myUCMDsFolder,'?'
+         toFolder←myUCMDsFolder,'/Cider'
+         {}M.RecreateFolder toFolder
+         toFolder ⎕NCOPY⍠('IfExists' 'Replace')⊣targetPath,'Cider/Cider.aplc'
+         toFolder ⎕NCOPY⍠('IfExists' 'Replace')⊣targetPath,'Cider/Cider_uc.dyalog'
+         toFolder ⎕NCOPY⍠('IfExists' 'Replace')⊣targetPath,'Cider/cider.config.template'
+         toFolder ⎕NCOPY⍠('IfExists' 'Replace')⊣targetPath,'Cider/.cider'
+         (projectPath,'html/*.html')M.CopyTo toFolder
+     :EndIf
+     ⎕←'*** Successfully build: ',name,' version ',version
+ :EndIf

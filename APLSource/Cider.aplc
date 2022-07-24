@@ -7,7 +7,18 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.11.0+226' '2022-06-02'
+      r←'Cider' '0.12.0+241' '2022-07-24'
+      ⍝ * 0.12.0 ⋄ 2022-07-24
+      ⍝   * `lx` renamed: `init`
+      ⍝   * New property "tests" added to the config file
+      ⍝   * New property "make" added to the config file
+      ⍝   * User command ]Cider.RunTests added
+      ⍝   * User command ]Cider.Make added
+      ⍝   * Parameter "watch" is "both" again
+      ⍝   * Uses the `MakeHelpers` package for its build process, and expects it in ⎕SE now.
+      ⍝   * Internal improvements
+      ⍝   * Bug fixes
+      ⍝     * `CheckPackagesStatus` did produce a DOMAIN ERROR under some circumstances.
       ⍝ * 0.11.0 ⋄ 2022-06-02
       ⍝   * `OpenProject` and (implicitly) also `CreateProject` accept -alias=. which means that the last
       ⍝     part of the project path becomes the alias in lowercase.
@@ -73,23 +84,23 @@
       ⍝     * Cider should NOT worry about updating Tatin packages when `importFlag` is 1.
     ∇
 
-    :Field Private Shared ReadOnly    _failure←0
-    :Field Private Shared ReadOnly    _success←1
+    :Field Private Shared ReadOnly    FAILURE←0
+    :Field Private Shared ReadOnly    SUCCESS←1
 
     Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⎕ML←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),11}
 
-    ∇ success←OpenProject parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn
+    ∇ successFlag←OpenProject parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn
     ⍝ Open a Cider project.\\
     ⍝ `parms` must be a namespace holding all the required parameters. Such a namespace can be created by calling `CreateOpenParms`
       :Access Public Shared
-      success←_failure
+      successFlag←FAILURE
       parms←CreateOpenParms parms
       '"folder" must be specified'Assert 0<parms.⎕NC'folder'
       '"folder" must be specified'Assert 0<≢parms.folder
       '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
       '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both'
       p←(~parms.quietFlag)∘PrintToSession
-      parms←(p TranslateAlias2Folder)parms
+      parms←(p GetFolderFromAlias2)parms
       ('Folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
       p((1+parms.importFlag)⊃'Loading' 'Importing'),' project from ',parms.folder
       parms.projectSpace←⍕parms.projectSpace
@@ -147,9 +158,9 @@
           :EndIf
       :EndIf
       InjectConfigDataIntoProject config projectSpace_ parms.folder
-      {}ExecProjectFunction⍣(~parms.suppressLX)⊣config projectSpace_
+      {}ExecProjectInitFunction⍣(~parms.suppressInit)⊣config projectSpace_
       p ExecUserFunction config
-      success←_success
+      successFlag←SUCCESS
       :If 0=parms.quietFlag
       :AndIf 0=parms.importFlag
           p'*** Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,'.',parms.projectSpace,'"'
@@ -191,10 +202,10 @@
       parms.quietFlag←0
       parms.alias←''
       parms.parent←''
-      parms.suppressLX←0
+      parms.suppressInit←0
       parms.importFlag←0
       parms.noPkgLoad←0
-      parms.watch←'ns'
+      parms.watch←'both'
       parms.checkPackageVersions←⍬      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
       :If ~(⊂y)∊''⍬
       :AndIf 9=⎕NC'y'
@@ -222,11 +233,13 @@
     ∇ r←GetValidCiderParams
       r←⍬
       r,←⊂'source'
-      r,←⊂'lx'
+      r,←⊂'init'
       r,←⊂'parent'
       r,←⊂'projectSpace'
       r,←⊂'tatinFolder'
       r,←⊂'info_url'
+      r,←⊂'tests'
+      r,←⊂'make'
     ∇
 
     ∇ options←ExtractLinkOptions config;C;overWrite
@@ -315,8 +328,7 @@
               'SYSVARS'config.⎕NS''
               config.SYSVARS.(io ml)←config.CIDER.(io ml)
               config.CIDER.⎕EX¨'io' 'ml' 'wx'
-              json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config
-              (⊂json)⎕NPUT configFilename 1
+              json←Put_JSON5 configFilename
           :EndIf
       :EndIf
     ∇
@@ -343,9 +355,9 @@
           :If checkFlag
               report←⍬
               folders←','(≠⊆⊢)config.CIDER.tatinFolder
-              report(CheckTatinFolders)←folders
-              report←{⍵[;4]⌿⍵}¨report
-              :If 0=+/≢¨report
+              :If 0<≢report←report CheckTatinFolders folders
+                  report←{⍵[;4]⌿⍵}¨report
+              :AndIf 0=+/≢¨report
                   p'   No later versions found '
               :Else
                   UpdatePackages folders report parms
@@ -397,7 +409,7 @@
 
     ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_
     ⍝ Load all installed packaged (if any) into their designated host namespaces.
-      r←_failure
+      r←FAILURE
       :If 0<≢config.CIDER.tatinFolder
           pkgFolders←⊆','(≠⊆⊢)config.CIDER.tatinFolder
           :For pkgFolder :In pkgFolders
@@ -424,7 +436,7 @@
               :Else
                   p'Tatin installation folder "',folder2,'" does not exists, therefore no packages loaded'
               :EndIf
-              r←_success
+              r←SUCCESS
           :EndFor
       :EndIf
     ∇
@@ -437,44 +449,44 @@
       :EndIf
     ∇
 
-    ∇ {r}←ExecProjectFunction(config projectSpace);fns;msg
+    ∇ {r}←ExecProjectInitFunction(config projectSpace);fns;msg
     ⍝ Check whether a function "lx" is specified in the configuration and if so execute it.
       r←0
-      :If 0<≢config.CIDER.lx
-          :If '⋄'∊config.CIDER.lx
-              msg←(⊂projectSpace config)ExecProjectFunction_¨'⋄'(≠⊆⊢)config.CIDER.lx
+      :If 0<≢config.CIDER.init
+          :If '⋄'∊config.CIDER.init
+              msg←(⊂projectSpace config)ExecProjectFunction_¨'⋄'(≠⊆⊢)config.CIDER.init
           :Else
-              msg←(projectSpace config)ExecProjectFunction_ config.CIDER.lx
+              msg←(projectSpace config)ExecProjectFunction_ config.CIDER.init
           :EndIf
           p msg
       :EndIf
     ∇
 
-    ∇ msg←x ExecProjectFunction_ lx;fns;config;projectSpace;qdmx
+    ∇ msg←x ExecProjectFunction_ init;fns;config;projectSpace;qdmx
       (projectSpace config)←x
-      :If 3=projectSpace.⎕NC lx
-          msg←⊂'Executing the project''s initialising function "',(lx~' '),'"...'
-          :Select 1 2⊃projectSpace.⎕AT lx
+      :If 3=projectSpace.⎕NC init
+          msg←⊂'Executing the project''s initialising function "',(init~' '),'"...'
+          :Select 1 2⊃projectSpace.⎕AT init
           :Case 0
               :Trap 0
-                  projectSpace.⍎lx
+                  projectSpace.⍎init
               :Else
                   qdmx←⎕DMX
-                  msg←'*** Executing "lx" crashed: ',qdmx.EM
+                  msg←'*** Executing "init" crashed: ',qdmx.EM
               :EndTrap
           :CaseList 1 ¯2
-              fns←projectSpace.⍎lx
+              fns←projectSpace.⍎init
               :Trap 0
                   fns config
               :Else
                   qdmx←⎕DMX
-                  msg←'*** Executing "lx" crashed: ',qdmx.EM
+                  msg←'*** Executing "init" crashed: ',qdmx.EM
               :EndTrap
           :Else
               msg,←⊂'  Invalid function valence: is ambivalent'
           :EndSelect
       :Else
-          msg←'Could not execute "',lx,'"; function not found'
+          msg←'Could not execute "',init,'"; function not found'
       :EndIf
     ∇
 
@@ -507,7 +519,7 @@
       projectSpace_.CiderConfig.HOME←⊃,/1 ⎕NPARTS folder
     ∇
 
-    ∇ {r}←{editFlag}ViewConfig path;filename;ns;orig;flag;edit
+    ∇ {r}←{editFlag}ViewConfig path;filename;ns;orig;flag;edit;data
     ⍝ By default the contents of the file cider.config in "path" is put into the editor in read-only mode.
     ⍝ The user may edit the contents if ⍺ is 1 rather than anything else or undefined.
     ⍝ Returns 1 in case the file was modified and 0 otherwise.
@@ -515,7 +527,7 @@
       r←0
       editFlag←{0=⎕NC ⍵:0 ⋄ ⍎⍵}'editFlag'
       :If '['∊path
-          path←TranslateAliasToFolder path
+          path←GetFolderFromAlias path
           ('Alias "',path,'" not found')Assert 0<≢path
       :EndIf
       :If 'cider.config'{⍺≡⎕C(-≢⍺)↑⍵}path
@@ -526,6 +538,7 @@
       :EndIf
       ('Does not exist: "',filename,'"')Assert ⎕NEXISTS filename
       ns←⍎'edit'⎕NS''  ⍝ Unnamed namespace causes a warning issued by ⎕SE.Link.OnAfterFix - kai; Well, so does this code!
+      MassageConfig filename
       orig←ns.cider_config←⊃⎕NGET filename 1
       flag←0
       :Repeat
@@ -534,7 +547,8 @@
           :AndIf editFlag
           :AndIf 0<≢(∊ns.cider_config)~' '
               :If CheckJsonSyntax ns.cider_config
-              :AndIf PerformConfigChecks ⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
+                  data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
+              :AndIf PerformConfigChecks data
                   (⊂ns.cider_config)⎕NPUT filename 1
                   r←flag←1
               :Else
@@ -744,10 +758,10 @@
       :EndIf
     ∇
 
-    ∇ {success}←DropAlias alias;ciderAliasFilename;data;noOf
+    ∇ {successFlag}←DropAlias alias;ciderAliasFilename;data;noOf
       :Access Public Shared
       ciderAliasFilename←GetCiderAliasFilename
-      success←0
+      successFlag←FAILURE
       :If 0≠≢alias
       :AndIf 0<≢ciderAliasFilename
           :If ⎕NEXISTS ciderAliasFilename
@@ -755,7 +769,7 @@
               data←((⊆⎕C alias),¨'='){⍵/⍨~((⍵↑⍨¨⍵⍳¨'='))∊⍺}data
               :If noOf>≢data
                   (⊂data)⎕NPUT ciderAliasFilename 1
-                  success←1
+                  successFlag←SUCCESS
               :EndIf
           :EndIf
       :EndIf
@@ -775,6 +789,47 @@
       :EndIf
       1 ⎕MKDIR folder
       filename←folder,'aliase.txt'
+    ∇
+
+    ∇ r←RunTests path;configFilename;config
+      :Access Public Shared
+      :If '['=1⍴path
+          path←GetFolderFromAlias path
+      :EndIf
+      configFilename←path,'/cider.config'
+      ('No file "cider.config" found in ',path)Assert ⎕NEXISTS configFilename
+      config←Get_JSON5 configFilename
+      :If 0<config.CIDER.⎕NC'tests'
+      :AndIf 0<≢config.CIDER.tests
+          :If (1⍴config.CIDER.tests~' ')∊'])'
+              r←config.CIDER.tests,' ⍝ Execute this for running the test suite'
+          :Else
+              r←(config.CIDER.parent),'.',config.CIDER.projectSpace,'.',config.CIDER.tests,' ⍝ Execute this for running the test suite'
+          :EndIf
+      :Else
+          ⎕←'>>> No exepression found for executing ',config.CIDER.projectSpace,'''s test suite'
+      :EndIf
+    ∇
+
+    ∇ r←RunMake path;configFilename;config
+      :Access Public Shared
+      r←''
+      :If '['=1⍴path
+          path←GetFolderFromAlias path
+      :EndIf
+      configFilename←path,'/cider.config'
+      ('No file "cider.config" found in ',path)Assert ⎕NEXISTS configFilename
+      config←Get_JSON5 configFilename
+      :If 0<config.CIDER.⎕NC'make'
+      :AndIf 0<≢config.CIDER.make
+          :If (1⍴config.CIDER.make~' ')∊'])'
+              r←config.CIDER.make,' ⍝ Execute this for create a new version'
+          :Else
+              r←(config.CIDER.parent),'.',config.CIDER.projectSpace,'.',config.CIDER.make,' ⍝ Execute this for create a new version'
+          :EndIf
+      :Else
+          ⎕←'>>> No exepression found for creating a new version of <',config.CIDER.projectSpace,'>'
+      :EndIf
     ∇
 
     ∇ filename←GetCiderConfigFilename;folder
@@ -798,12 +853,12 @@
       :EndIf
     ∇
 
-    ∇ parms←(fns TranslateAlias2Folder)parms;data;alias;msg;alias_;folder
+    ∇ parms←(fns GetFolderFromAlias2)parms;data;alias;msg;alias_;folder
     ⍝ Translates the alias in "folder" (if any) into a path from a parameter namespace.\\
     ⍝ If an alias is defined it is saved, possibly by overwriting the old one.
       :If '['∊parms.folder
           alias←parms.folder~'[]'
-          folder←TranslateAliasToFolder alias
+          folder←GetFolderFromAlias alias
           :If 0<≢folder
               parms.folder←folder
               :If 0=≢parms.alias
@@ -815,7 +870,7 @@
       :EndIf
     ∇
 
-    ∇ folder←TranslateAliasToFolder alias;filename;data
+    ∇ folder←GetFolderFromAlias alias;filename;data
     ⍝ Translates the alias in "folder" (if any) into a path.\\
     ⍝ In case the alias does not exist an empty vector is returned.\\
     ⍝ If an alias is defined it is saved, possibly by overwriting the old one.
@@ -838,10 +893,36 @@
       txt↓⍨←-'/\'∊⍨¯1↑txt
     ∇
 
-    ∇ json←Get_JSON5 filename
+    ∇ json←Get_JSON5 filename;config;flag
       :If 0<≢json←⊃⎕NGET filename
           json←⎕JSON⍠('Dialect' 'JSON5')⊣json
       :EndIf
+      :If 0<json.⎕NC'CIDER'
+          flag←0
+          :If 0<json.CIDER.⎕NC'lx'  ⍝ Renamed from `lx` to `init` in 2022-07
+              json.CIDER.init←json.CIDER.lx
+              json.CIDER.⎕EX'lx'
+              flag←1
+          :EndIf
+          :If 0=json.CIDER.⎕NC'tests'
+              json.CIDER.tests←''
+              flag←1
+          :EndIf
+          :If 0=json.CIDER.⎕NC'make'
+              json.CIDER.make←''
+              flag←1
+          :EndIf
+          :If flag
+              config←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣json
+              (⊂config)⎕NPUT filename 1
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ {r}←config Put_JSON5 filename;json
+      r←0
+      json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config
+      (⊂json)⎕NPUT filename 1
     ∇
 
     BitsToInt←{(32⍴2)⊥⌽32↑⍵}
@@ -900,21 +981,41 @@
       :EndIf
     ∇
 
-    ∇ success←PerformConfigChecks config;buff;namespace;path
-      success←0
+    ∇ successFlag←PerformConfigChecks config;buff;namespace;path
+      successFlag←FAILURE
       :If 0=≢buff←config.CIDER.tatinFolder
-          success←1
+          successFlag←SUCCESS
       :ElseIf '='∊buff
           :If 1<'='+.=buff
-              success←1
+              successFlag←SUCCESS
           :Else
               (path namespace)←'='(≠⊆⊢)buff
-              success←0=(⎕NS'').{⎕NC ⍵}namespace
+              successFlag←(1+0=(⎕NS'').{⎕NC ⍵}namespace)⊃FAILURE SUCCESS
           :EndIf
       :ElseIf ~','∊buff
-          success←1
+          successFlag←SUCCESS
       :Else
           ⍝ More than one but nothing assigned, that's invalid
+      :EndIf
+    ∇
+
+    ∇ {changeFlag}←MassageConfig filename;config
+    ⍝ Checks whether the config data comes with all expected antries.
+    ⍝ If anything is missing (late arrivals) those are added.
+    ⍝ Returns a 1 in case data was added, otherwise 0.
+      changeFlag←0
+      config←Get_JSON5 filename
+      :If 0=config.CIDER.⎕NC'tests'
+          config.CIDER.tests←''
+          changeFlag∨←1
+      :EndIf
+     
+      :If 0=config.CIDER.⎕NC'make'
+          config.CIDER.make←''
+          changeFlag∨←1
+      :EndIf
+      :If changeFlag
+          config Put_JSON5 filename
       :EndIf
     ∇
 

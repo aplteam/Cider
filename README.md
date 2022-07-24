@@ -1,6 +1,6 @@
 # Cider Project Manager
 
-Cider offers some User commands that are useful to manage projects. Although it comes as a set of Dyalog user commands there is also an API available.
+Cider offers some User commands that are useful to manage projects. In addition is also offers an API.
 
 
 ## Requirements
@@ -12,25 +12,33 @@ Cider requires
 
 If Tatin packages are part of a project then Tatin is required as well.
 
+Cider is capable of collaborating with the [Git package](https://github.com/aplteam/Git) but does not rely on it.
+
 
 ## Overview
 
-Currently these commands are available:
+These commands are available:
 
 * `]Cider.OpenProject`
 * `]Cider.CreateProject`
 * `]Cider.CloseProject`
+* `]Cider.Help`
 * `]Cider.ListOpenProjects`
 * `]Cider.ListAliases`
-* `]Cider.Help`
+* `]Cider.Make`
+* `]Cider.RunTests`
 * `]Cider.Version`
 * `]Cider.ViewConfig`
 
+## Documentation
+
 In this document only `OpenProject` is discussed in detail because that is the principal command.
 
-For all other commands only basic information is provided.
+For all other commands only basic information is provided, but there is a document "Cider-User-Guide.html" available that discusses all features in detail.
 
-For details refer to the user command help. Regarding the API details are available from the document "Cider-API-Syntax".
+The user command help is also pretty exhaustive.
+
+Regarding the API there is a document "Cider-API-Reference.html" available.
 
 
 ## Installation
@@ -55,7 +63,7 @@ Note that under Windows the folder `MyUCMDs` will be created as part of the inst
 ### OpenProject
 
 
-#### Parameter
+#### Paramete
 
 Accepts an optional parameter that must be one of:
 
@@ -64,8 +72,8 @@ Accepts an optional parameter that must be one of:
 
 If no such parameter is specified then the current directory is searched for a file `cider.config`. 
 
-* If such a file exists the user is asked whether she really wants to open that project.
-* If no such file exists then under Windows a dialog box is opened that allows the user to navigate to a Cider project. 
+* If such a file exists the user is asked whether she really wants to open that project
+* If no such file exists then under Windows a dialog box is opened that allows the user to navigate to a Cider project
 
   On non-Windows platforms an error is thrown.
 
@@ -82,7 +90,7 @@ Once a folder is established that holds a Cider config file, the user command pe
 1. Injects a namespace `CiderConfig` into the project space and...
    * populates it with the contents of the configuration file as APL arrays
    * adds a variable `HOME` that remembers the path the project was loaded from   
-1. Checks whether the project's config file does carry a non-empty value for `lx`. If that's the case it must be a function that is then called by Cider, typically for initializingt the project
+1. Checks whether the project's config file does carry a non-empty value for `init`. If that's the case it must be a function that is then called by Cider, typically for initializing the project
 1. If the project is managed by Git and the user command `]Git` is around and the git bash is installed then Cider executes the `git status` command on the project folder and puts the result on view
 
 Notes:
@@ -92,7 +100,7 @@ Notes:
 
   However, this can be overwritten by specifying a different target space by adding 
 
-  `=#.TargetSpace.SubNamespace`
+  `=SubNamespace`
 
   after the folder
 
@@ -102,9 +110,9 @@ Notes:
   tatinFolder: "packages,packages_dev=TestCases"
   ```
 
-  References for all principal packages found in `packages/` are established in the project space because that is the default, and  the default was not overwritten.
+  * All principal packages found in `packages/` within the project folder are loaded into the project space because that is the default, and  the default was not overwritten
 
-  References for all principal packages found in `packages_dev/` are established in the `TestCases` sub namespace within the project space because the default was overwritten.
+  * All principal packages found in `packages_dev/` within the project folder  are loaded into the project's sub namespace TestCases` within the project space because the default _was_ overwritten
 
 ### CloseProject
 
@@ -120,6 +128,10 @@ Requires one mandatory parameter: a folder that is going to be a project.
 Creates a file `cider.config` in that folder.
 
  
+### Help
+
+Offers the user to view selected or all HTML documents with her standard browser.
+
 ### ListOpenProjects
 
 Lists the project spaces of all currently linked projects together with the fully qualified names of the namespace holding the project's code.
@@ -128,6 +140,16 @@ Lists the project spaces of all currently linked projects together with the full
 ### ListAliases
 
 Lists all Cider aliases together with their folders.
+
+
+### Make
+
+Prints an APL statement to the session which, when executed, will build a new version of the project.
+
+
+### RunTests
+
+Prints an APL statement to the session which, when executed, runs the project's test suite.
 
 
 ### Version
@@ -139,4 +161,4 @@ Returns a three-item-vector with "Name", "Version number" and "Version date".
 
 Puts the config file of a project on display. 
 
-By specifying the `-edit` flag the user might edit the file rather then just viewing it.
+By specifying the `-edit` flag the user might edit the file rather than just viewing it.

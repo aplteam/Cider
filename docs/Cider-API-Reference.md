@@ -27,7 +27,7 @@ A monadic function that returns a namespace with default parameters required by 
  parent        '#' 
  projectSpace  ''  
  quietFlag     0 
- suppressLX    0 
+ suppressInit    0 
 ```
 
 This is useful for creating a namespace with the defaults, set required parameters (at least `folder` and `projectSpace`), make amendments and pass the namespace as argument to `OpenProject`.
@@ -118,22 +118,11 @@ Opening a project means carrying out the following actions:
 4. Loading all Tatin packages from the Tatin installation folders defined on `tatinFolders`
 5. Injecting a namespace `CiderConfig` into the root of the project and populating it with the contents of the configuration file as an APL array
 6. Adding a variable `HOME` to `CiderConfig` that carries a path to where the project was loaded from
-7. Executing the project-specific function noted on `lx`, ususally to initialize the project
+7. Executing the project-specific function noted on `init`, usually to initialize the project
 8. Executing a non-project-specific function defined in Cider's own configuration file
 
 `OpenProject` requires parameters expected to be passed via the right argument as a parameter space.
 This is a namespace carrying appropriately named variables, typically created by calling `CreateOpenParms`.
-
-⍝  1. folder (mandatory)
-⍝  2. projectSpace
-⍝  3. parent
-⍝  4. alias
-⍝  5. Flags
-⍝     1. quietFlag
-⍝     2. suppressLX
-⍝     3. importFlag
-⍝     4. noPkgLoad
-
 
 The first two in the following list are mandatory, the remaining ones have appropriate defaults and are sorted alphabetically.
 
@@ -171,7 +160,15 @@ Instead one can set this parameter to these values:
 | 2 | Check and update without consulting the user
 
 
-### importFlag
+### parent
+
+Defaults to `#` but might as be something like `⎕SE` or `#.Foo.Goo.Boo`. However, all namespaces listed must exist.
+
+
+### Flags
+
+
+#### importFlag
 
 Defaults to 0 meaning that the code is not imported but linked. 
 
@@ -180,21 +177,17 @@ Set this to 1 for Link importing the code without establishing a Link.
 Note that this has implications on how Cider deals with Tatin packages, see there.
 
 
-### noPkgLoad
+#### noPkgLoad
 
 Defaults to 0, meaning that Cider will load Tatin packages by honoring the config file's `tatinFolder` parameter. However, there might be circumstances when you do not want packages to be loaded. This can be achieved by setting the `noPkgLoad` flag to 1.
 
-### parent
 
-Defaults to `#` but might as be something like `⎕SE` or `#.Foo.Goo.Boo`. However, all namespaces listed must exist.
-
-
-### quietFlag
+#### quietFlag
 
 Defaults to 0, meaning that the function prints messages to the session.
 
 
-### suppressLX
+#### suppressLX
 
 Defaults to 0, meaning that the projects initialisation function (if any) will be executed.
 
@@ -204,13 +197,11 @@ An example might be an automated build process: that might need to open the proj
 
 ### watch
 
-Defaults to "ns", meaning that changing any APL objects in the workspaces will result in Link updating the correcponding file on disk while any change on disk will _not_ be reflected by changing the workspace.
+Defaults to "both", meaning that changing any APL objects in the workspaces will result in Link updating the corresponding file on disk, and any change on disk will be reflected by changing the workspace.
 
-You may instead set this to "dir", which bascially reverts the way Link works.
+You may instead set this to "ns", which forces Link to write changes in the WS to disk but ignore changes on the file system.
 
-You may also set this to "both", when changes in the workspace _and_ and file will result in updates.
-
-Note that "dir" and "both" come with certain dangers you should be aware of.
+You may also set this to "dir", when changes on the file system will be brought into the WS while changes in the WS are _not_ saved to disk.
 
 Other settings of `watch` will result in an error.
 

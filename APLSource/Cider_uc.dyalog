@@ -11,12 +11,12 @@
       :Access Shared Public
       r←⍬
       :If AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
-          c←⎕NS''
      
+          c←⎕NS''
           c.Name←'OpenProject'
           c.Desc←'Load all source files into the WS and keep it linked by default'
           c.Group←'Cider'
-          c.Parse←'1s -projectSpace= -parent= -alias= -suppressLX -quiet -import -noPkgLoad -watch=ns dir both'
+          c.Parse←'1s -projectSpace= -parent= -alias= -suppressInit -quiet -import -noPkgLoad -watch=ns dir both'
           r,←c
      
           c←⎕NS''
@@ -45,6 +45,20 @@
           c.Desc←'Breaks the Link between the workspace and the files on disk'
           c.Group←'Cider'
           c.Parse←'-all'
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'RunTests'
+          c.Desc←'Executes the project''s test suite (if any)'
+          c.Group←'Cider'
+          c.Parse←'1s'
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'Make'
+          c.Desc←'Build a new version of the project'
+          c.Group←'Cider'
+          c.Parse←'1s'
           r,←c
      
           c←⎕NS''
@@ -92,6 +106,10 @@
           r←CloseProject Args
       :Case ⎕C'ViewConfig'
           r←ViewConfig Args
+      :Case ⎕C'RunTests'
+          r←RunTests Args
+      :Case ⎕C'Make'
+          r←Make Args
       :Case ⎕C'Version'
           r←P.Version ⍬
       :Case ⎕C'Help'
@@ -101,27 +119,32 @@
       :EndSelect
     ∇
 
+    ∇ r←RunTests Args;config;path;list;index
+      r←''
+      :If 0=≢path←GetProjectPath Args
+          →0,≢⎕←'Cancelled by user'
+      :Else
+          r←⎕SE.Cider.RunTests path
+      :EndIf
+    ∇
+
+    ∇ r←Make Args;config;path;list;index
+      r←''
+      :If 0=≢path←GetProjectPath Args
+          →0,≢⎕←'Cancelled by user'
+      :Else
+          r←⎕SE.Cider.RunMake path
+      :EndIf
+    ∇
+
     ∇ r←ViewConfig Args;list;path;index
       r←''
-      :If 0≡Args._1
-          list←⎕SE.Cider.ListOpenProjects 0
-          :Select ≢list
-          :Case 0
-              ⎕←'No open Cider project found'
-              :Return
-          :Case 1
-              path←⊃list[1;2]
-          :Else
-              :If 0=≢index←'Select a Cider project:'Select↓⎕FMT list
-                  :Return
-              :EndIf
-              path←2⊃list[index;]
-          :EndSelect
+      :If 0=≢path←GetProjectPath Args
+          →0,≢⎕←'Cancelled by user'
       :Else
-          path←Args._1
-      :EndIf
-      :If Args.edit ⎕SE.Cider.ViewConfig path
-          r←'Changed: ',path,'/dicer.config'
+          :If Args.edit ⎕SE.Cider.ViewConfig path
+              r←'Changed: ',path,'/dicer.config'
+          :EndIf
       :EndIf
     ∇
 
@@ -211,7 +234,7 @@
       parms.alias←⎕C''Args.Switch'alias'
       parms.watch←⎕C'ns'Args.Switch'watch'
       parms.quietFlag←Args.quiet
-      parms.suppressLX←Args.suppressLX
+      parms.suppressInit←Args.suppressInit
       parms.importFlag←Args.import
       parms.noPkgLoad←Args.noPkgLoad
       :If ~P.OpenProject parms
@@ -227,7 +250,7 @@
           :Select ⎕C Cmd
           :Case ⎕C'OpenProject'
               r,←⊂'Load all source files into the WS and keep it linked by default'
-              r,←⊂']Cider.OpenProject [folder] [-projectSpace=] [-parent=] [-alias=] [-suppressLX] [-quiet] [-import] [-noPkgLoad] [-watch=ns|dir|both]'
+              r,←⊂']Cider.OpenProject [folder] [-projectSpace=] [-parent=] [-alias=] [-suppressInit] [-quiet] [-import] [-noPkgLoad] [-watch=ns|dir|both]'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'List all currently open projects'
               r,←⊂']Cider.ListOpenProjects [-verbose]'
@@ -246,6 +269,10 @@
           :Case ⎕C'ViewConfig'
               r,←⊂'Puts the config file of a project on display'
               r,←⊂']Cider.ViewConfig [path] -edit'
+          :Case ⎕C'RunTests'
+              r,←⊂'Prints the project''s specific statements to the session that will run the test suite'
+          :Case ⎕C'Make'
+              r,←⊂'Prints the project''s specific statements to the session that will create a new version ("Make")'
           :Case ⎕C'Version'
               r,←⊂'Returns name, version number and version date as a three-element vector'
               r,←⊂']Cider.Version'
@@ -286,10 +313,12 @@
               r,←⊂'              Cider will then allow you to select one of the projects.'
               r,←⊂'-noPkgLoad:   By default the Tatin packages from the installation folder(s) defined in the'
               r,←⊂'              config will be loaded. If you don''t want this specify -noPkgLoad'
-              r,←⊂'-watch        Defaults to "ns" but may be "dir" or "both" instead.'
-              r,←⊂'              * "ns" means that changes in the workpace are saved on disk'
-              r,←⊂'              * "dir" means that any changes on disk are brought into the WS'
-              r,←⊂'              * "both" means that any changes in either "ns" or "dir" are reflected accordingly'
+              r,←⊂'-watch        Defaults to "both" but may be "ns" or "dir" instead.'
+              r,←⊂'               * "ns" means that changes in the workpace are saved on disk'
+              r,←⊂'               * "dir" means that any changes on disk are brought into the WS'
+              r,←⊂'               * "both" means that any changes in either "ns" or "dir" are reflected accordingly'
+              r,←⊂'                 However, note that currently this works only under Windows. On other platforms'
+              r,←⊂'                 "both" is identical with "ns" for the time being.'
               r,←⊂'              You are adviced to study the Link documentation on this for details.'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'Print a list with the namespaces of all currently opened projects.'
@@ -350,6 +379,10 @@
               r,←⊂'The optional parameter must be the path to a folder holding a cider.config file (a project).'
               r,←⊂'In case no path is provided Cider will present all currently opened projects to the user for'
               r,←⊂'selecting one, except when there is only one project open anyway.'
+          :Case ⎕C'RunTests'
+              r,←⊂'Prints the statement to the session that is designed to run the project''s test cases, if any.'
+          :Case ⎕C'Make'
+              r,←⊂'Prints the statement to the session that is designed to run the project''s "make" function, if any.'
           :Case ⎕C'Help'
               r,←⊂'Cider comes with two HTML files with documentation. This user command offers to put'
               r,←⊂'one or both of them on display in the default browser.'
@@ -548,12 +581,12 @@
     ∇ r←CloseProject Args;list;names;bool;row;invalid;q;noop
       r←''
       :If 0=≢Args.Arguments
-          :If 0=noop←≢⎕SE.Cider.ListOpenProjects 0   ⍝ noop ←→ NoOf Open Projects
+          :If 0=noop←≢list←⎕SE.Cider.ListOpenProjects 0   ⍝ noop ←→ NoOf Open Projects
               ⎕←'There are no open Cider projects that could be closed'
               :Return
           :Else
               :If 1=noop
-                  :If 1 YesOrNo'Sure you want close the project?'
+                  :If 1 YesOrNo'Sure you want close the project <',(⊃list[1;]),'>?'
                       r←P.CloseProject ⍬
                   :EndIf
               :ElseIf Args.all
@@ -592,7 +625,7 @@
               ⎕←' ',' ',↑(⍳≢list){(⍕⍺),'.',' ',⍵}¨2⊃∘⎕NPARTS¨list
               ⎕←''
               answer←⊃¯1↑⍞,0/⍞←'Enter a single number or "a" for all or "q" for quit: '
-              :If answer∊'12aAqQ'
+              :If answer∊'aAqQ',∊⍕¨⍳≢list
                   :Select answer
                   :Case '1'
                       ⎕SE.UCMD'Open ',folder,1⊃list
@@ -852,6 +885,50 @@
               'Invalid config parm ("tatinFolder" has more than one "=")'Assert 1='='+.=buff
               (path namespace)←'='(≠⊆⊢)buff
               'Invalid config parm (Tatin folder)'Assert 0=(⎕NS'').{⎕NC ⍵}namespace
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ path←GetProjectPath Args;list;index;aliasDefs;bool;alias;info
+      path←''
+      :If 0≡Args._1
+          list←⎕SE.Cider.ListOpenProjects 0
+          :Select ≢list
+          :Case 0
+              ⎕←'No open Cider project found'
+              :Return
+          :Case 1
+              path←⊃list[1;2]
+          :Else
+              :If 0=≢index←'Select a Cider project:'Select↓⎕FMT list
+                  :Return
+              :EndIf
+              path←2⊃list[index;]
+          :EndSelect
+      :Else
+          aliasDefs←P.GetAliasFileContent
+          path←Args._1
+          :If (⊂,path)∊,¨'[' '[?' '[?]'
+              :If 0=≢path←SelectFromAliases aliasDefs
+                  :Return
+              :EndIf
+          :ElseIf '['=1⍴path
+          :AndIf '*'=¯1↑path~'[]'
+              bool←(¯1↓path~'[]'){(⎕C(≢⍺)↑[2]⍵)∧.=⎕C ⍺}↑aliasDefs[;1]
+              :Select +/bool
+              :Case 0
+                  :Return
+              :Case 1
+                  (alias path)←aliasDefs[bool⍳1;]
+                  :If 0=1 YesOrNo'Sure you want to open "',path,'" ?'
+                      :Return
+                  :EndIf
+              :Else
+                  info←'(',((⍕+/bool),' of ',(⍕≢aliasDefs)),')'
+                  :If 0=≢path←info SelectFromAliases bool⌿aliasDefs
+                      :Return
+                  :EndIf
+              :EndSelect
           :EndIf
       :EndIf
     ∇

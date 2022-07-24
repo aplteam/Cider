@@ -41,13 +41,13 @@ The `parent` must exist while the `parentspace` may or may not exist. If it does
 
 #### 2. Setting system variables
 
-In the next step `]Cider.OpenProject` is going to set at least two system variables defined in the config file in the `SYSVARS` section: `⎕IO` and `⎕ML`.
+In the next step `]Cider.OpenProject` is going to set at least two system variables defined in the config file in the `SYSVARS` section of the INI file: `⎕IO` and `⎕ML`.
 
 It is important to set these variables before code is brought into the workspace because bringing class scripts or namespace scripts into the workspace implies the execution of some code, and that code might well rely on the correct setting of those system variables.
 
 If you need other system variables to carry specific values then you may add them to the `SYSVARS` section. 
 
-Note that the names are not case sensitive: wether the value for `⎕FR` is specified as  "fr" or "FR" or "Fr" or "fR" does not matter.
+Note that the names are not case sensitive: whether the value for `⎕FR` is specified as  "fr" or "FR" or "Fr" or "fR" does not matter.
 
 In case a setting in `SYSVARS` cannot be used for assigning a system variable a warning message will be printed to the session.
 
@@ -55,12 +55,12 @@ A> ### System variables
 A>
 A> Feel free to save system variables in files like `⎕IO.apla` in your source folder. 
 A>
-A> That's another way to make sure that system variables are set as early as possible because Link will establish the values of system variables defined in files before it attempts to bring in code.
+A> That's another way to make sure that system variables are set as early as possible because Link will establish the values of system variables defined in files before it attempts to bring code into the workspace.
 
 
 #### 3. Bringing in the code
 
-In this step all files with supported file extensions[^extensions] found in `source` and any sub folder are established in the workspace in `{parent}.{projectSpace}`.
+In this step all files with supported file extensions (See Link's documentation for details) found in `source` and any sub folder are established in the workspace in `{parent}.{projectSpace}`.
 
 Note that from now on we will refer to:
 
@@ -72,7 +72,7 @@ By default a link is established between the root of the project and the folder.
 
 A> ### Link's `watch` parameter
 A>
-A> By default Cider sets the `watch` parameter to "ns", meaning that changes in the workspace via the editor are saved to disk. You may instead set `watch` to "dir" or "both". Refer to the Link documentation for details.
+A> By default Cider sets the `watch` parameter to "both", meaning that changes in the workspace via the editor are saved to disk, and any changes on disk are brought into the workspace[^winonly]. You may instead set `watch` to "ns" or "dir". Refer to the Link documentation for details.
 
 
 However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the `-import` flag.
@@ -82,7 +82,9 @@ However, if you want to bring in the code as part of, say, an automated build pr
 
 In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will only happen in case `importFlag` is 0.
 
-If `]Cider.OpenProject` discoveres later packages it will ask the user whether packages shall be re-installed with the `-update` flag set independently for each installation folder.
+However, note that this is only true if you've loaded the package(s) from a Registry that is in your config file _and_ has a priority greater than 0. Refer to the Tatin documentation for details.
+
+If `]Cider.OpenProject` discovers later packages it will ask the user whether packages shall be re-installed with the `-update` flag set. This will happen independently for each package installation folder.
 
 
 #### 5. Loading Tatin packages (optional)
@@ -91,7 +93,7 @@ Your application or tool might depend on one or more Tatin[^tatin] packages. By 
 
 In particular when you specify more than a single folder you are likely to want some packages to be loaded into a sub namespace of the root of your project.
 
-For example, let's assume you want all packages installed in the folder `packages/` to be loaded into the root of your project. Let's also assume that you want to load all packages from a folder `packages_development/` into a namespace `TestCases` in the root of your project.
+For example, let's assume you want all packages installed in the folder `packages/` to be loaded into the root of your project. Let's also assume that you want to load all packages from a folder `packages_dev/` (for "development") into a namespace `TestCases` in the root of your project.
 
 This will do the trick:
 
@@ -117,7 +119,7 @@ In this step `]Cider.OpenProject` injects a namespace `CiderConfig` into the pro
 
 Now there might well be demand for executing some code in order to initialise your project.
 
-This can be achieved by assigning the name of a function to `lx`. This must again be relative to the root of your project.
+This can be achieved by assigning the name of a function to `init`. This must again be relative to the root of your project.
 
 Notes:
 
@@ -130,7 +132,7 @@ Note that you can access the configuration data of the project from within your 
 
 ### 8. Executing user-specific code
 
-Finally you might want to execute some general code (as opposed to project-specific code) after a project was loaded.
+Finally you might want to execute some general code (as opposed to project-specific code) after a project was loaded. "General" means that this code is executed whenever a project (any project!) is opened. 
 
 This can be achieved by specifying the fully qualified name of a function that must be monadic, most likely in `⎕SE`. A namespace with the configuration data of the project is passed as right argument.
 
@@ -146,10 +148,14 @@ That file already contains a definition of the keyword `ExecuteAfterProjectOpen`
 }
 ```
 
+What is this good for you may ask? Well, let's assume that you are not using Git but a different version Control Software. With Git, Cider would execute the "status" command and print the result to the session window. With your Version Control Software it can't do something similar.
+
+You can easily achieve that by yourself: just add the required code to a function you load early into `⎕SE`, and then make sure that `ExecuteAfterProjectOpen` is pointing to that function and you are done.
+
 [^tatin]: _Tatin_ is a Dyalog APL package manager: <https://github.com/aplteam/Tatin>
 
 [^link]: _Link_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from: <https://github.com/dyalog/Link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
 
-[^extensions]: Supported extensions are: `.aplf`, `.aplo`, `.aplc`, `.apln`, `.apli`, `.apla`, `.dyalog` 
+[^winonly]: At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature on all platform.
