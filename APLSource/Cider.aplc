@@ -7,7 +7,9 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.12.0+241' '2022-07-24'
+      r←'Cider' '0.13.0+249' '2022-08-01'
+      ⍝ * 0.13.0 ⋄ 2022-08-01
+      ⍝   * Now cooperates with `APLGit2` rather than `Git`: see <https://github.com/aplteam/APLGit2>
       ⍝ * 0.12.0 ⋄ 2022-07-24
       ⍝   * `lx` renamed: `init`
       ⍝   * New property "tests" added to the config file
@@ -284,9 +286,9 @@
       r←⍬
       :If ⎕NEXISTS(AddSlash path),'.git'
           p'Project appears to be managed by Git...'
-          :If 9=⎕SE.⎕NC'_Git'
+          :If 9=⎕SE.⎕NC'_APLGit2'
               :Trap 0
-                  status←⎕SE.Git.Status path
+                  status←⎕SE.APLGit2.Status path
               :Else
                   dmx←⎕DMX
                   :If 127=dmx.EN
@@ -303,7 +305,7 @@
                   {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'ed'}ed←⍵)}status
               :EndIf
           :Else
-              p'Missing user command ]Git as well as it''s API, therefore no information can be provided regarding Git'
+              p'Missing user command ]APLGit2 as well as it''s API, therefore no information can be provided regarding Git'
           :EndIf
       :Else
           p'Project is not managed by Git'
@@ -366,7 +368,7 @@
       :EndIf
     ∇
 
-    ∇ report←report CheckTatinFolders folders;folder;folder_
+    ∇ report←report CheckTatinFolders folders;folder;folder_;qdmx
     ⍝ Loop through all Tatin install folders
       :For folder :In folders
           folder_←⊃'='(≠⊆⊢)folder
@@ -374,7 +376,17 @@
               p'  Checking Tatin packages in <',(AddSlash folder_),'> ...'
               folder_←parms.folder,'/',folder_
               :If 0<≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣folder_,'/*'
-                  report,←⊂⎕SE.Tatin.CheckForLaterVersion folder_
+                  :Trap 998
+                      report,←⊂⎕SE.Tatin.CheckForLaterVersion folder_
+                  :Else
+                      qdmx←⎕DMX
+                      :If qdmx.EM≡'The build list carries entries that are not on the Tatin Registry search path'
+                          p'   >>> Checking for later versions of Tatin packages failed:'
+                          p'   ',qdmx.EM
+                      :Else
+                          qdmx.EM ⎕SIGNAL 998
+                      :EndIf
+                  :EndTrap
               :Else
                   p'     Folder is empty'
               :EndIf
@@ -793,6 +805,7 @@
 
     ∇ r←RunTests path;configFilename;config
       :Access Public Shared
+      r←''
       :If '['=1⍴path
           path←GetFolderFromAlias path
       :EndIf
@@ -806,8 +819,6 @@
           :Else
               r←(config.CIDER.parent),'.',config.CIDER.projectSpace,'.',config.CIDER.tests,' ⍝ Execute this for running the test suite'
           :EndIf
-      :Else
-          ⎕←'>>> No exepression found for executing ',config.CIDER.projectSpace,'''s test suite'
       :EndIf
     ∇
 
@@ -828,7 +839,7 @@
               r←(config.CIDER.parent),'.',config.CIDER.projectSpace,'.',config.CIDER.make,' ⍝ Execute this for create a new version'
           :EndIf
       :Else
-          ⎕←'>>> No exepression found for creating a new version of <',config.CIDER.projectSpace,'>'
+          ⎕←'>>> No expression found for creating a new version of <',config.CIDER.projectSpace,'>'
       :EndIf
     ∇
 

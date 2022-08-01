@@ -1,0 +1,1 @@
+{  api: "HttpCommand",  assets: "",  date: 20220509.133806,  description: "Utility to execute HTTP requests",  group: "dyalog",  info_url: "https://dyalog.github.io/HttpCommand",  io: 1,  lx: "",  ml: 1,  name: "HttpCommand",  source: "source/HttpCommand.dyalog",  tags: "mac-os,windows,linux,http,dyalog",  uri: "https://test.tatin.dev/",  version: "4.0.24",}

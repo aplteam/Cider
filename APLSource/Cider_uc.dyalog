@@ -1,4 +1,4 @@
-﻿:Class Cider_uc
+:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
 
@@ -124,7 +124,9 @@
       :If 0=≢path←GetProjectPath Args
           →0,≢⎕←'Cancelled by user'
       :Else
-          r←⎕SE.Cider.RunTests path
+          :If 0=≢r←⎕SE.Cider.RunTests path
+              ⎕←'>>> No expression found for executing ',path,'''s test suite'
+          :EndIf
       :EndIf
     ∇
 
@@ -311,6 +313,7 @@
               r,←⊂'              You can also ask Cider for a list of all known aliases with:'
               r,←⊂'              ]Cider.OpenProject [?]'
               r,←⊂'              Cider will then allow you to select one of the projects.'
+              r,←⊂'              (In order to remove an alias use ]Cider.ListAliases -edit)'
               r,←⊂'-noPkgLoad:   By default the Tatin packages from the installation folder(s) defined in the'
               r,←⊂'              config will be loaded. If you don''t want this specify -noPkgLoad'
               r,←⊂'-watch        Defaults to "both" but may be "ns" or "dir" instead.'
