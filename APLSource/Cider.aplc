@@ -7,7 +7,11 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.13.0+249' '2022-08-01'
+      r←'Cider' '0.13.1+249' '2022-08-??'
+      ⍝ * 0.13.1 ⋄ 2022-08-??
+      ⍝   * Bug fixes
+      ⍝     * The `ViewConfig` function sometimes caused Link to provide a not useful warning message in case
+      ⍝       the config file was edited; it appears that this problem is now fixed.
       ⍝ * 0.13.0 ⋄ 2022-08-01
       ⍝   * Now cooperates with `APLGit2` rather than `Git`: see <https://github.com/aplteam/APLGit2>
       ⍝ * 0.12.0 ⋄ 2022-07-24
@@ -549,7 +553,7 @@
           filename←path,'/cider.config'
       :EndIf
       ('Does not exist: "',filename,'"')Assert ⎕NEXISTS filename
-      ns←⍎'edit'⎕NS''  ⍝ Unnamed namespace causes a warning issued by ⎕SE.Link.OnAfterFix - kai; Well, so does this code!
+      ns←⍎'edit'(⍎(1+'⎕'=⊃⊃⎕XSI)⊃'#' '⎕SE').⎕NS''
       MassageConfig filename
       orig←ns.cider_config←⊃⎕NGET filename 1
       flag←0
