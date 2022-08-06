@@ -1,4 +1,4 @@
- r←Test_UC_001(stopFlag batchFlag);⎕TRAP;tempDir;parms;list;rc;msg;result
+ r←Test_UC_001(stopFlag batchFlag);⎕TRAP;tempDir;parms;list;rc;msg;result;res
 ⍝ Exercise the user command on "CloseProject" with a not fully qualified name
 ⍝ Should work anyway if there is just one project with that name
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
@@ -21,7 +21,7 @@
  (rc msg result)←∆UCMD'CloseProject Foo'
  →T.GoToTidyUp~∨/'Project name(s) must be fully qualified but are not: Foo'⍷msg
 
- R←T._OK
+ r←T._OK
 
 ∆TidyUp:
  {}∆UCMD'CloseProject #.Foo'

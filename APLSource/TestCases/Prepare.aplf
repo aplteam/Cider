@@ -1,5 +1,6 @@
  Prepare;testFilename;ask;answer
  T←⎕NEW Tester2 ⎕THIS
+T.exec_after_each_test←'#.Cider.TestCases.Kai'
  testFilename←FilesAndDirs.GetTempPath,'CiderTestCoverage.dcf'
  :If ⎕NEXISTS testFilename
      ask←{⎕←⍵,'; 1=append, 2=replace' ⋄ a←⎕ ⋄ ~(⊂a)∊1 2:∇ ⍵ ⋄ ⊃a}

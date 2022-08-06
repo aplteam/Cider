@@ -1,4 +1,4 @@
- R←Test_Open_031(stopFlag batchFlag);⎕TRAP;r;res;folder
+ R←Test_UC_022(stopFlag batchFlag);⎕TRAP;r;res;folder
 ⍝ Open a project and specify -projectSpace=
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed

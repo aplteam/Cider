@@ -1,16 +1,22 @@
- R←Test_Open_009(stopFlag batchFlag);⎕TRAP;r;res;folder
-⍝ Open a project without loading any packages (user command with -noPkgLoad flag)
+ R←Test_Open_009(stopFlag batchFlag);⎕TRAP;parms;folder;r;rc
+⍝ Open a simple project with a parent passed as a reference (converted to a name)
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
-
  folder←∆GetTestPath⊃⎕SI
- res←⎕SE.UCMD'Cider.OpenProject ',folder,' -noPkgLoad -import -quiet'
- →T.PassesIf 0=≢res
 
- →T.PassesIf'World'≡#.TEMP.Hello
- →T.PassesIf 2=≢#.TEMP.⎕NL⍳16                 ⍝ We must not find any packages, just the function and CiderConfig
+ parms←⎕NS''
+ parms.folder←folder
+ parms.parent←⎕THIS
+ parms.projectSpace←'TEMP'
+ parms.quietFlag←1
+ →T.GoToTidyUp~##.Cider.OpenProject parms
+
+ →T.GoToTidyUp(≢⍕⎕THIS)≠≢parms.parent
 
  R←T._OK
+
+∆TidyUp:
+ {}##.Cider.CloseProject(⍕⎕THIS),'.TEMP'
+ ⎕EX'TEMP'
 ⍝Done

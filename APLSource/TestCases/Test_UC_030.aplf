@@ -1,4 +1,4 @@
- R←Test_Alias_005(stopFlag batchFlag);⎕TRAP;res;mat2;mat1
+ R←Test_UC_030(stopFlag batchFlag);⎕TRAP;res;mat2;mat1
 ⍝ Exercise the user command `ListAlias` with -prune
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed

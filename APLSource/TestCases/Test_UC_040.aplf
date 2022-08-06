@@ -1,4 +1,4 @@
- R←Test_Create_001(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;config;res;rc
+ R←Test_UC_040(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;config;res;rc
 ⍝ Create a project from a folder without Linking a namespace; project space name defaults
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed

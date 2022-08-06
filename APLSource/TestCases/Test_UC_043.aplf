@@ -1,4 +1,4 @@
- R←Test_Create_004(stopFlag batchFlag);⎕TRAP;tempDir;list;res;rc;row
+ R←Test_UC_043(stopFlag batchFlag);⎕TRAP;tempDir;list;res;rc;row
 ⍝ Create a project with two folders on `tatinFolder` of which one does not exist. Was once a bug.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed

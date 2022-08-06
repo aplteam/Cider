@@ -1,0 +1,4 @@
+ Kai y;⎕TRAP
+ ⎕TRAP←0 'S'
+ {⍵:.}0<⎕nc'#.Cider.TestCases.Foo'
+ ⍝Done

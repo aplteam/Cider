@@ -1,4 +1,4 @@
-:Class Cider_uc
+﻿:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
 
@@ -384,8 +384,16 @@
               r,←⊂'selecting one, except when there is only one project open anyway.'
           :Case ⎕C'RunTests'
               r,←⊂'Prints the statement to the session that is designed to run the project''s test cases, if any.'
+              r,←⊂''
+              r,←⊂'The optional parameter must be the path to a folder holding a cider.config file (a project).'
+              r,←⊂'In case no path is provided Cider will present all currently opened projects to the user for'
+              r,←⊂'selecting one, except when there is only one project open anyway.'
           :Case ⎕C'Make'
               r,←⊂'Prints the statement to the session that is designed to run the project''s "make" function, if any.'
+              r,←⊂''
+              r,←⊂'The optional parameter must be the path to a folder holding a cider.config file (a project).'
+              r,←⊂'In case no path is provided Cider will present all currently opened projects to the user for'
+              r,←⊂'selecting one, except when there is only one project open anyway.'
           :Case ⎕C'Help'
               r,←⊂'Cider comes with two HTML files with documentation. This user command offers to put'
               r,←⊂'one or both of them on display in the default browser.'

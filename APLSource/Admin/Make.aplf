@@ -27,7 +27,7 @@
      (projectPath,'cider.config.template')M.CopyTo targetPath,'Cider/'
      (projectPath,'html/*.html')M.CopyTo targetPath,'Cider/'
      {}M.CreateZipFile name targetPath version
-     :If 1 M.YesOrNo'Copy the Cider user command',myUCMDsFolder,'?'
+     :If 1 M.YesOrNo'Copy the Cider user command ',myUCMDsFolder,' over?'
          toFolder←myUCMDsFolder,'/Cider'
          {}M.RecreateFolder toFolder
          toFolder ⎕NCOPY⍠('IfExists' 'Replace')⊣targetPath,'Cider/Cider.aplc'
