@@ -1,1 +1,20 @@
+# Auto detect text files
 * text=auto
+
+*.aplf linguist-language=apl
+*.aplo linguist-language=apl
+*.aplc linguist-language=apl
+*.apln linguist-language=apl
+*.apli linguist-language=apl
+*.dyapp linguist-language=apl
+*.dyalog linguist-language=apl
+*.dws linguist-language=apl
+
+# Exclude these:
+CSS/ linguist-vendored=true
+*.js linguist-vendored=true
+
+docs/ linguist-vendored=true
+html/ linguist-vendored=true
+*.html/ linguist-documentation=true
+*.md/ linguist-documentation=true
