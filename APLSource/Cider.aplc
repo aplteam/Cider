@@ -7,7 +7,11 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.14.0+261' '2022-08-06'
+      r←'Cider' '0.14.1-beta-1+262' '2022-08-07'
+      ⍝ * 0.14.1 ⋄ 2022-08-07
+      ⍝   * Bug fixes
+      ⍝     * Messages regarding the execution of an "Init" function were printed too late
+      ⍝     * No message was printed in case a user function was executed successfully
       ⍝ * 0.14.0 ⋄ 2022-08-06
       ⍝   * In case the target namespace is not empty (Link requirement) the user is now asked whether she
       ⍝     wants to delete the contents.
@@ -484,30 +488,30 @@
       :EndIf
     ∇
 
-    ∇ {r}←ExecProjectInitFunction(config projectSpace);fns;msg
+    ∇ {r}←ExecProjectInitFunction(config projectSpace);fns
     ⍝ Check whether a function "lx" is specified in the configuration and if so execute it.
       r←0
       :If 0<≢config.CIDER.init
           :If '⋄'∊config.CIDER.init
-              msg←(⊂projectSpace config)ExecProjectFunction_¨'⋄'(≠⊆⊢)config.CIDER.init
+              (⊂projectSpace config)ExecProjectFunction_¨'⋄'(≠⊆⊢)config.CIDER.init
           :Else
-              msg←(projectSpace config)ExecProjectFunction_ config.CIDER.init
+              (projectSpace config)ExecProjectFunction_ config.CIDER.init
           :EndIf
-          p msg
       :EndIf
     ∇
 
-    ∇ msg←x ExecProjectFunction_ init;fns;config;projectSpace;qdmx
+    ∇ {r}←x ExecProjectFunction_ init;fns;config;projectSpace;qdmx
+      r←⍬
       (projectSpace config)←x
       :If 3=projectSpace.⎕NC init
-          msg←⊂'Executing the project''s initialising function "',(init~' '),'"...'
+          p'Executing the project''s initialising function "',(init~' '),'"...'
           :Select 1 2⊃projectSpace.⎕AT init
           :Case 0
               :Trap 0
                   projectSpace.⍎init
               :Else
                   qdmx←⎕DMX
-                  msg←'*** Executing "init" crashed: ',qdmx.EM
+                  p'*** Executing "init" crashed: ',qdmx.EM
               :EndTrap
           :CaseList 1 ¯2
               fns←projectSpace.⍎init
@@ -515,13 +519,13 @@
                   fns config
               :Else
                   qdmx←⎕DMX
-                  msg←'*** Executing "init" crashed: ',qdmx.EM
+                  p'*** Executing "init" crashed: ',qdmx.EM
               :EndTrap
           :Else
-              msg,←⊂'  Invalid function valence: is ambivalent'
+              p'  Invalid function valence: is ambivalent'
           :EndSelect
       :Else
-          msg←'Could not execute "',init,'"; function not found'
+          p'Could not execute "',init,'"; function not found'
       :EndIf
     ∇
 
@@ -543,6 +547,9 @@
                   qdmx←⎕DMX
                   msg←'*** Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
               :EndTrap
+          :EndIf
+          :If 0=≢msg
+              msg←'User function successfully executed'
           :EndIf
       :EndIf
     ∇
