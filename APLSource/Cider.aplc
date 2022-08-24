@@ -7,7 +7,11 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.14.1+263' '2022-08-18'
+      r←'Cider' '0.14.2+265' '2022-08-24'
+      ⍝ * 0.14.2 ⋄ 2022-08-24
+      ⍝   * When a project was created and then, as part of the creation, opened the "watch" parameter was
+      ⍝     always "both" no matter what
+      ⍝   * User Guide improved
       ⍝ * 0.14.1 ⋄ 2022-08-18
       ⍝   * Bug fixes
       ⍝     * Messages regarding the execution of an "Init" function were printed too late

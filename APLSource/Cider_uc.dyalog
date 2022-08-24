@@ -145,7 +145,7 @@
           →0,≢⎕←'Cancelled by user'
       :Else
           :If Args.edit ⎕SE.Cider.ViewConfig path
-              r←'Changed: ',path,'/dicer.config'
+              r←'Changed: ',path,'/cider.config; changes are NOT reflected in the workspace!'
           :EndIf
       :EndIf
     ∇
@@ -540,6 +540,7 @@
               parms.parent←config.CIDER.parent
               parms.alias←{0≡⍵:'' ⋄ ⍵}Args.alias
               parms.quietFlag←quietFlag
+              parms.watch←config.LINK.watch
           :AndIf {⍵:1 ⋄ 1 YesOrNo'Project successfully created; open as well?' ⋄ 1}quietFlag
           :AndIf P.OpenProject parms
               r←'Project created and opened'
