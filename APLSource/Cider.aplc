@@ -7,7 +7,15 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.14.2+265' '2022-08-24'
+      r←'Cider' '0.15.0+272' '2022-09-11'
+      ⍝ * 0.15.0 ⋄ 2022-09-11
+      ⍝   * When a non-empty namespace is specified to CreateProject the user is asked whether the
+      ⍝     the contents should be deleted. In case of a "No" the contents is written to file
+      ⍝   * When opening a project the URLs packages were originally installed from are reported now
+      ⍝   * The question for checking for Tatin updates defaults now to "N"
+      ⍝   * Bug fixes
+      ⍝     * The function `Get_JSON5` did not trap any domain errors when importing a JSON file and
+      ⍝       therefore did not provide a helpful message on invalid files.
       ⍝ * 0.14.2 ⋄ 2022-08-24
       ⍝   * When a project was created and then, as part of the creation, opened the "watch" parameter was
       ⍝     always "both" no matter what
@@ -373,7 +381,7 @@
           :If 0≢parms.checkPackageVersions
               :If (⊂parms.checkPackageVersions)∊⍬ 1
               :AndIf ~parms.quietFlag
-                  checkFlag←YesOrNo' Report availability of later versions of installed Tatin packages?'
+                  checkFlag←0 YesOrNo' Report availability of later versions of installed Tatin packages?'
               :Else
                   checkFlag←2≡parms.checkPackageVersions
               :EndIf
@@ -456,13 +464,6 @@
               :If '='∊pkgFolder
                   (pkgFolder_ target)←'='(≠⊆⊢)pkgFolder
                   'Target namespace for Tatin packages is addressed with absolute path (invalid)'Assert~(⊃target)∊'#⎕'
- ⍝TODO⍝
-⍝                  :If (⊃config.CIDER.projectSpace)∊'#⎕'
-⍝                      target←config.CIDER.projectSpace,'.',target
-⍝                  :Else
-⍝                      target←'#.',config.CIDER.projectSpace,'.',target
-⍝                  :EndIf
- ⍝TODO⍝
                   target←projectSpace,'.',target
               :Else
                   target←projectSpace
@@ -472,6 +473,8 @@
               folder2←folder,'/',pkgFolder_
               :If ⎕NEXISTS folder2
                   :If 0<0<≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣folder2,'/*'
+                      p ReportPackageOrigins folder2
+                      p'List of packages loaded:'
                       p'   '∘,¨⍕¨⎕SE.Tatin.LoadDependencies folder2 target
                   :Else
                       p'Tatin installation folder "',folder2,'" is empty, therefore no packages loaded'
@@ -938,9 +941,14 @@
       txt↓⍨←-'/\'∊⍨¯1↑txt
     ∇
 
-    ∇ json←Get_JSON5 filename;config;flag
+    ∇ json←Get_JSON5 filename;config;flag;qdmx
       :If 0<≢json←⊃⎕NGET filename
-          json←⎕JSON⍠('Dialect' 'JSON5')⊣json
+          :Trap 11
+              json←⎕JSON⍠('Dialect' 'JSON5')⊣json
+          :Else
+              qdmx←⎕DMX
+              11 ⎕SIGNAL⍨'JSON import of <',filename,'> failed',{0=≢⍵:⍵⋄ ':'∊⍵:(¯1+⍵⍳':')↓⍵ ⋄ ': ',⍵} qdmx.Message
+          :EndTrap
       :EndIf
       :If 0<json.⎕NC'CIDER'
           flag←0
@@ -1064,20 +1072,21 @@
       :EndIf
     ∇
 
-    ∇ {r}←CheckTargetNamespaceForBeingEmpty(ref parms);msg
-    ⍝ In order to bring code into a nsmespace in any way with Link that namespace must be empty.
+    ∇ {r}←CheckTargetNamespaceForBeingEmpty(ref parms)
       r←0
       :If 0=parms.quietFlag
           :If 0<≢ref.⎕NL⍳16
-              msg←'Cannot ',((1+parms.importFlag)⊃'Link' 'Import'),' into non-empty namespace'
-     
-              :If YesOrNo'Target namespace "',(⍕ref),'" is not empty. Delete contents?'
-                  ref.⎕EX ref.⎕NL⍳16
-              :Else
-                  msg Assert 0
-              :EndIf
+          :AndIf YesOrNo'Target namespace "',(⍕ref),'" is not empty. Delete contents? (N = save contents to disk)'
+              ref.⎕EX ref.⎕NL⍳16
           :EndIf
       :EndIf
+    ∇
+    ∇ msg←ReportPackageOrigins folder;data
+    ⍝ Report where the package got installed from
+      msg←''
+      data←Get_JSON5 folder,'/apl-buildlist.json'
+      msg←⊂'Packages were originally installed from:'
+      msg,←'   '∘,¨∪data.url
     ∇
 
 :EndClass

@@ -7,7 +7,7 @@
      r←T._NoBatchTest
      :Return
  :EndIf
- {}⍞,0/⎕←'This test needs you: press <enter> when interrogated; this test reports to the session.'
+ {}⍞,0/⎕←'This test needs you! Press <enter> when questioned; this test reports to the session. Press <enter> to continue.'
 
  tempDir←FilesAndDirs.GetTempSubDir(⊃⎕SI),'_1'
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')

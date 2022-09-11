@@ -1,0 +1,18 @@
+ R←Test_Open_081(stopFlag batchFlag);⎕TRAP;parms;r;rc;qdmx
+⍝ Tries to open a project with a syntactically invalid config file
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ parms←⎕NS''
+ parms.folder←∆GetTestPath⊃⎕SI
+ :Trap 11
+     {}##.Cider.OpenProject parms
+     →T.FailsIf 1
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf'JSON import of'{⍺ ∆LazyMatch(≢⍺)↑⍵}qdmx.EM
+     →T.PassesIf∨/'failed'⍷qdmx.EM
+ :EndTrap
+
+ R←T._OK
+⍝Done

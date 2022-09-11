@@ -1,24 +1,21 @@
- r←Test_UC_004(stopFlag batchFlag);⎕TRAP;tempDir;config;res;rc
+ r←Test_UC_005(stopFlag batchFlag);⎕TRAP;tempDir;res;rc;config
 ⍝ Exercise the user command "CreateProject" with a path and a namespace name but without the -quiet flag
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
 
- :If batchFlag
-     r←T._NoBatchTest
-     :Return
- :EndIf
- 0 0⍴⍞,0/⎕←'This test needs you! Press <enter> when interrogated. Press <enter> to continue.'
-
  tempDir←FilesAndDirs.GetTempSubDir(⊃⎕SI),'_1'
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
+
  #.⎕SHADOW'Foo' ⋄ 'Foo'#.⎕NS''
+ #.Foo.⎕FX'r←TheAnswerIs' 'r←42'
 
  config←∆GetJSON5 tempDir,'/cider.config'
  (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
- res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig'
 
- 'You did not just press <enter>!'Assert'Project created and opened'≡res
- →T.GoToTidyUp~(⊂'#.Foo')∊{⍵[;1]}##.Cider.ListOpenProjects 0
+ res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -quiet'
+
+ →T.GoToTidyUp~∨/∨/¨'TheAnswerIs.aplf'∘⍷¨⊃('recursive' 1)FilesAndDirs.Dir tempDir,'/'
+ →T.GoToTidyUp 42≢#.Foo.TheAnswerIs
 
  r←T._OK
 

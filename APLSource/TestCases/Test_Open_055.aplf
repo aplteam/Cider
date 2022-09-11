@@ -1,0 +1,27 @@
+ R←Test_Open_055(stopFlag batchFlag);⎕TRAP;parms;qdmx
+⍝ Open a project with invalid setting of "watch"
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ 'TEMP'#.⎕NS''
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←∆GetTestPath⊃⎕SI
+ parms.parent←'#.TEMP'
+ parms.quietFlag←1
+ parms.watch←'firlefanz'
+
+ :Trap 11
+     Assert ##.Cider.OpenProject parms
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp'"watch" must be one of: ns|dir|both'≢qdmx.EM
+ :EndTrap
+
+ R←T._OK
+
+∆TidyUp:
+ {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ #.⎕EX'TEMP'
+⍝Done
