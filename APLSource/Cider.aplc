@@ -7,7 +7,11 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.15.0+272' '2022-09-11'
+      r←'Cider' '0.15.1+275' '2022-09-12'
+      ⍝ * 0.15.1 ⋄ 2022-09-12
+      ⍝   * Documentation for `OpenProject` improved and clarified. This regards both the API function
+      ⍝     and the user command.
+      ⍝   * Bug fix in `OpenProject` regarding `parentSpace`
       ⍝ * 0.15.0 ⋄ 2022-09-11
       ⍝   * When a non-empty namespace is specified to CreateProject the user is asked whether the
       ⍝     the contents should be deleted. In case of a "No" the contents is written to file
@@ -148,7 +152,8 @@
       ('No file "cider.config" found in ',parms.folder)Assert ⎕NEXISTS configFilename
       config←Get_JSON5 configFilename
       :If 0=≢parms.projectSpace                                                         ⍝ Was it specified as argument?
-          parms.projectSpace←config.CIDER.projectSpace                                  ⍝ Nope, so the config file rules
+      :AndIf 0=≢parms.projectSpace←config.CIDER.projectSpace                            ⍝ Nope, so the config file rules...
+          parms.projectSpace←'#'                                                        ⍝ ... but only is it is not empty
       :EndIf
       :If 0=≢parms.parent                                                               ⍝ Was it specified as argument?
           parms.parent←config.CIDER.parent                                              ⍝ Nope, so the config file rules
@@ -156,6 +161,9 @@
       :If 0=≢parms.projectSpace
           projectSpace_←⍎parms.parent                                                   ⍝ Is either # or ⎕SE
       :Else
+          :If ~(,⊂1 ⎕C parms.parent)∊,¨'#' '⎕SE'
+              ('Namespace <',parms.parent,' does not exist')Assert 9=⎕NC parms.parent
+          :EndIf
           projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                        ⍝ Create project space from "parent" to avoid problems
       :EndIf
       'Already opened?!'Assert~CheckForAlreadyOpened projectSpace_
@@ -947,7 +955,7 @@
               json←⎕JSON⍠('Dialect' 'JSON5')⊣json
           :Else
               qdmx←⎕DMX
-              11 ⎕SIGNAL⍨'JSON import of <',filename,'> failed',{0=≢⍵:⍵⋄ ':'∊⍵:(¯1+⍵⍳':')↓⍵ ⋄ ': ',⍵} qdmx.Message
+              11 ⎕SIGNAL⍨'JSON import of <',filename,'> failed',{0=≢⍵:⍵ ⋄ ':'∊⍵:(¯1+⍵⍳':')↓⍵ ⋄ ': ',⍵}qdmx.Message
           :EndTrap
       :EndIf
       :If 0<json.⎕NC'CIDER'

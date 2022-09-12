@@ -1,4 +1,4 @@
-﻿:Class Cider_uc
+:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
 
@@ -232,7 +232,7 @@
       parms←P.CreateOpenParms''
       parms.folder←path
       parms.projectSpace←Args.projectSpace
-      parms.parent←{(,0)≡,⍵:'#' ⋄ ⍵}Args.parent
+      parms.parent←{(,0)≡,⍵:'' ⋄ ⍵}Args.parent
       parms.alias←⎕C''Args.Switch'alias'
       parms.watch←⎕C'ns'Args.Switch'watch'
       parms.quietFlag←Args.quiet
@@ -297,10 +297,9 @@
               r,←⊂''
               r,←⊂'-quiet:       The user command prints messages to the session unless -quiet is specified.'
               r,←⊂'-parent:      The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
-              r,←⊂'              overwritten by setting the -projectSpace= and/or the -parent= option(s).'
-              r,←⊂'-projectSpace By default this is taken from the config file but you may (temporarily) overwrite'
-              r,←⊂'              this with -projectSpace='
-              r,←⊂'              Note that you may assign -projectSpace='''''
+              r,←⊂'              overwritten by setting the -parent= and/or the -projectSpace= option(s).'
+              r,←⊂'-projectSpace The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
+              r,←⊂'              overwritten by setting the -projectSpace= and/or the -parent= option(s).'             
               r,←⊂'-import:      By default the namespace is linked to folder. By specifying the -import'
               r,←⊂'              flag this can be avoided: the code is then loaded into the workspace with the'
               r,←⊂'              Link.Import method, meaning that changes are not tracked.'

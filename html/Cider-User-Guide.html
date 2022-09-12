@@ -71,14 +71,17 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </a>
 </div>
 <p>Defaults to <code>#</code> but can be something like <code>⎕SE</code> or <code>#.MyNamespace1.MyNamespace2</code>.</p>
-<p>Note that any sub-namespaces must already exist.</p>
+<p>Note that all namespaces specified as <code>parent</code> <em>must already exist</em>, otherwise an error is thrown.</p>
+<p>With the user command this can be overwritten temporarily with, say:</p>
+<pre><code>]Cider.OpenProject {path} -parent=#.MyProjects</code></pre>
 <div class="h_tag">
 <a href="#projectSpace" id="projectSpace" class="autoheader_anchor">
 <h6 data-id="projectSpace">2.1.1.1.2. projectSpace</h6>
 </a>
 </div>
-<p>The name of a namespace that will host the project. <em>Must</em> be set by the user.</p>
-<p>This can be overwritten temporarily with <code>]Cider.OpenProject {path} -target=#.foo</code></p>
+<p>The name of a namespace that will host the project. <em>Must</em> be set by the user in the config file.</p>
+<p>With the user command this can be overwritten temporarily with, say:</p>
+<pre><code>]Cider.OpenProject {path} -projectspace=Foo</code></pre>
 <div class="h_tag">
 <a href="#source" id="source" class="autoheader_anchor">
 <h6 data-id="source">2.1.1.1.3. source</h6>

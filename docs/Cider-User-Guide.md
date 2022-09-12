@@ -46,14 +46,23 @@ This section contains the Cider-specific parameters.
 
 Defaults to `#` but can be something like `⎕SE` or `#.MyNamespace1.MyNamespace2`. 
 
-Note that any sub-namespaces must already exist.
+Note that all namespaces specified as `parent` _must already exist_, otherwise an error is thrown.
+
+With the user command this can be overwritten temporarily with, say:
+
+```
+]Cider.OpenProject {path} -parent=#.MyProjects
+```
 
 ###### projectSpace
 
-The name of a namespace that will host the project. *Must* be set by the user.
+The name of a namespace that will host the project. *Must* be set by the user in the config file.
 
-This can be overwritten temporarily with  `]Cider.OpenProject {path} -target=#.foo`
-        
+With the user command this can be overwritten temporarily with, say:
+
+```
+]Cider.OpenProject {path} -projectspace=Foo
+```    
 
 ###### source
 
