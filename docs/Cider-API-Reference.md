@@ -110,7 +110,7 @@ With the verbose flag set it returns 4 columns:
 
 Opening a project means carrying out the following actions:
 
-1. Creating the `projectSpace` (namespace) in `parent`; if it already exists it must be empty
+1. Creating the `projectSpace` (namespace) in `parent` if it does not already exist
 
    From here on we refer to this as the _root of the project_.
 2. Setting the system variables `⎕IO` and `⎕ML` in the root of the project
@@ -121,10 +121,19 @@ Opening a project means carrying out the following actions:
 7. Executing the project-specific function noted on `init`, usually to initialize the project
 8. Executing a non-project-specific function defined in Cider's own configuration file
 
-`OpenProject` requires parameters expected to be passed via the right argument as a parameter space.
-This is a namespace carrying appropriately named variables, typically created by calling `CreateOpenParms`.
+   This can be used for carrying out the same user-specific actions after a project was opened.
 
-The first two in the following list are mandatory, the remaining ones have appropriate defaults and are sorted alphabetically.
+`OpenProject` requires on of the following two options as right argument:
+
+* A character vector with either a path pointing to a folder that holds a project config file (`folder`) or an alias defining a project.
+
+* A parameter space carrying appropriately named variables, typically created by calling `CreateOpenParms`
+
+  Must contain a variable `folder` that is not empty.
+
+All possible variables are discussed below, with `folder` being the first one because it is mandatory: without it Cider would not be able to locate a project config file. The remaining ones have appropriate defaults or are taken from the config file, and they are sorted alphabetically.
+
+What's defined in the parameter space overwrites the value in the config file, though only temporarily.
 
 ### folder (mandatory)
 
@@ -133,11 +142,7 @@ This must be one of:
 * A path pointing to a folder that carries a file `cider.config`
 * An alias like `[aliasname]`
 
-Note that this must _not_ be empty.
-
-### projectSpace (mandatory)
-
-The name of the namespace the project is injected into. If this is empty it is going to be `#` or `⎕SE`, depending from where the function was called from.
+Note that this must _not_ be empty but it _might_ be `./` representing the current directory.
 
 ### alias
 
@@ -163,6 +168,11 @@ Instead one can set this parameter to these values:
 ### parent
 
 Defaults to `#` but might as be something like `⎕SE` or `#.Foo.Goo.Boo`. However, all namespaces listed must exist.
+
+
+### projectSpace 
+
+The name of the namespace the project is injected into. If this is empty it is going to be `#` or `⎕SE`, depending from where the function was called from.
 
 
 ### Flags

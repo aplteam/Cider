@@ -1,5 +1,5 @@
- R←Test_Create_012(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc;qdmx
-⍝ Attempts to create and then open a project with a non-empty namespace and an empty folder
+ R←Test_Create_003(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc
+⍝ Attempts to create and then open a project with a non-empty namespace and a non-empty folder with -quiet
 ⍝ A config file is copied over in order to avoid user interaction
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -8,15 +8,14 @@
  3 ⎕MKDIR tempDir,'/APLSource'
  'Foo'#.⎕NS''
  #.Foo.⎕FX'r←TheAnswerIs' 'r←42'
+ (⊂⎕NR'#.Foo.TheAnswerIs')⎕NPUT tempDir,'/APLSource/TheAnswerIs.aplf'
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -quiet -noEdit'
- Assert 0=rc
- Assert 0=≢msg
 
- →T.GoToTidyUp 2≠≢#.Foo.⎕NL⍳16  ⍝ TheAnswerIs plus CiderConfig = 2
- →T.GoToTidyUp 1≠≢⊃FilesAndDirs.Dir tempDir,'/APLSource/'
+ →T.GoToTidyUp 0=rc
+ →T.GoToTidyUp~∨/'Both the target namespace and the source folder are not empty'⍷msg
 
  R←T._OK
 

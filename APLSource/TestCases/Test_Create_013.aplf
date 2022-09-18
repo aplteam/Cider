@@ -1,0 +1,33 @@
+ R←Test_Create_013(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc
+⍝ Attempts to create and then open a project with a non-empty namespace and a non-empty folder
+⍝ A config file is copied over in order to avoid user interaction
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If batchFlag
+     →0,R←T._NoBatchTest
+ :EndIf
+
+ 0 0⍴⍞,0/⎕←'This test needs you: when questioned (twice) enter "Y"; to continue press <enter>'
+
+ tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ 3 ⎕MKDIR tempDir,'/APLSource'
+ 'Foo'#.⎕NS''
+ #.Foo.⎕FX'r←TheAnswerIs' 'r←43'
+ (⊂'r←TheAnswerIs' 'r←42')⎕NPUT tempDir,'/APLSource/TheAnswerIs.aplf'
+ (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
+
+ stop←0
+ (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -noEdit'
+
+ →T.GoToTidyUp 0<rc
+ →T.GoToTidyUp #.Foo.TheAnswerIs≠42  ⍝ Original (43) overwritten by the version in the source folder
+
+ R←T._OK
+
+∆TidyUp:
+ {}⎕SE.Link.Break'#.Foo'
+ rc←⊃FilesAndDirs.RmDir tempDir
+ Assert rc∧.=0
+ #.⎕EX'Foo'
+⍝Done

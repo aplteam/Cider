@@ -46,6 +46,15 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </div>
 <p>With <code>]Cider.CreateProject</code> any folder that does not yet host a file <code>cider.config</code> can be transformed into a Cider project. (You may specify the <code>-acceptConfig</code> flag to override this default behaviour and make Cider accept an already existing file <code>cider.config</code>)</p>
 <p>If the folder does not yet exist it will be created. In any case the folder will be populated with a file <code>cider.config</code>.</p>
+<p>Note that <code>]Cider.CreateProject</code> deals differently with the possible combinations of namespace and source folder:</p>
+<ul>
+<li>The namespace and the source folder are both empty</li>
+<li>The namespace is empty and the source folder is not</li>
+<li>The source folder is empty and the namespace is not</li>
+</ul>
+<p>In all these cases it should be pretty obvious what <code>]Cider.CreateProject</code> will do.</p>
+<p>However, when both namespace and source folder are <em>not</em> empty then the user will be asked whether the contents of the namespace should be deleted, because that might well make sense.</p>
+<p>If the user answers this question with “No” then an error is thrown.</p>
 <div class="h_tag">
 <a href="#Configuration-parameters" id="Configuration-parameters" class="autoheader_anchor">
 <h4 data-id="Configuration-parameters">2.1.1. Configuration parameters</h4>

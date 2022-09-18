@@ -1,0 +1,22 @@
+ R←Test_Create_062(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc
+⍝ Attempts to create and then open a project with an already existing config file that carries watch←'ns'
+⍝ Was once a bug: in the opened project "watch" was then always the default rather than the setting.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.special-watch')
+ ⎕DL 0.5
+
+ stop←0
+ (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -quiet'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp'dir'≢#.SpecialWatch.CiderConfig.LINK.watch
+
+ R←T._OK
+
+∆TidyUp:
+ rc←FilesAndDirs.RmDir tempDir
+ Assert 0=+/∊rc
+ #.⎕EX'SpecialWatch'
+⍝Done

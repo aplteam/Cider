@@ -1,0 +1,22 @@
+ R←Test_Open_011(stopFlag batchFlag);⎕TRAP;res;folder;rc
+⍝ Open a simple project without providing any parameter but the mandatory folder as a char vector
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP'
+ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+
+ res←##.Cider.OpenProject folder
+
+ →T.GoToTidyUp~res
+ →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3
+ →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP.⎕NL(⍳16)~3)~⊂'CiderConfig'
+
+ R←T._OK
+
+∆TidyUp:
+ res←∆LINK'Break' '#.TEMP'
+ Assert res ∆StartsWith'Unlinked:'
+ #.⎕EX'TEMP'
+⍝Done

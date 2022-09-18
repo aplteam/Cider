@@ -7,7 +7,13 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.15.1+275' '2022-09-12'
+      r←'Cider' '0.16.0+281' '2022-09-18'
+      ⍝ * 0.16.0 ⋄ 2022-09-18
+      ⍝   * `CreateProject` now accepts all combinations of empty/non-empty namespaces and empty/non-empty
+      ⍝     folders and acts sensibly or asks the user what do to. If `quietFlag` is set and a combination
+      ⍝     makes no sense (read: both not empty) an error is thrown.
+      ⍝   * `OpenProject` now accepts not only a parameter space as `⍵` but also a character vector with
+      ⍝     a path pointing to a project folder that contains a project config file.
       ⍝ * 0.15.1 ⋄ 2022-09-12
       ⍝   * Documentation for `OpenProject` improved and clarified. This regards both the API function
       ⍝     and the user command.
@@ -119,12 +125,19 @@
 
     Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⎕ML←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),11}
 
-    ∇ successFlag←OpenProject parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn
+    ∇ successFlag←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn
     ⍝ Open a Cider project.\\
-    ⍝ `parms` must be a namespace holding all the required parameters. Such a namespace can be created by calling `CreateOpenParms`
+    ⍝ `y` must be one of:
+    ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
+    ⍝  * A character vector holding the full path to a project
       :Access Public Shared
       successFlag←FAILURE
-      parms←CreateOpenParms parms
+      :If 80=⎕DR y
+          parms←CreateOpenParms''
+          parms.folder←y
+      :Else
+          parms←CreateOpenParms y
+      :EndIf
       '"folder" must be specified'Assert 0<parms.⎕NC'folder'
       '"folder" must be specified'Assert 0<≢parms.folder
       '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
@@ -173,7 +186,7 @@
       ('Source folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
       linkOptions←ExtractLinkOptions config                                             ⍝ Merge the default options with Cider's options
       p'Bringing in the source code...'
-      CheckTargetNamespaceForBeingEmpty projectSpace_ parms
+      CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
       :If parms.importFlag
           res←linkOptions ⎕SE.Link.Import projectSpace_ source                          ⍝ Get the code into the WS
           dmx←⎕DMX
@@ -1080,15 +1093,38 @@
       :EndIf
     ∇
 
-    ∇ {r}←CheckTargetNamespaceForBeingEmpty(ref parms)
+    ∇ {r}←CheckTargetNamespaceAndLinkFolder(ref parms source);nsIsEmpty;folderIsEmpty
+    ⍝ 1. In case the namespace and the folder are both empty no action is taken
+    ⍝ 2. In case only the namespace is empty no action is taken
+    ⍝ 3. In case only the folder is empty no action is taken
+    ⍝ 4. In case neither the namespace nor the folder are empty the user is asked whether
+    ⍝    she wants the namespace to be emptied; if not an error is thrown.
+    ⍝ When `quietFlag` is set however then either the namepace or the folder or both must
+    ⍝ be empty, otherwise an error is thrown.
       r←0
-      :If 0=parms.quietFlag
-          :If 0<≢ref.⎕NL⍳16
-          :AndIf YesOrNo'Target namespace "',(⍕ref),'" is not empty. Delete contents? (N = save contents to disk)'
+      nsIsEmpty←0=≢(' '~¨⍨↓ref.⎕NL⍳16)~⊂'CiderConfig'
+      :If 0=⎕NEXISTS parms.folder,'/',source
+          folderIsEmpty←1
+      :Else
+          folderIsEmpty←0=≢⊃⎕NINFO⍠('Wildcard' 1)⊣parms.folder,'/',source,'/*'
+      :EndIf
+      :If nsIsEmpty∧~folderIsEmpty
+      :OrIf folderIsEmpty∧~nsIsEmpty
+      :OrIf folderIsEmpty∧nsIsEmpty
+          :Return
+      :EndIf
+      :If parms.quietFlag
+          ⍝ With quietFlag on there is nothing we can do but throw an error
+          'Both the target namespace and the source folder are not empty'Assert 0
+      :Else
+          :If YesOrNo'Target namespace "',(⍕ref),'" is not empty. Delete contents?'
               ref.⎕EX ref.⎕NL⍳16
+          :Else
+              'Both the target namespace and the source folder are not empty'Assert 0
           :EndIf
       :EndIf
     ∇
+
     ∇ msg←ReportPackageOrigins folder;data
     ⍝ Report where the package got installed from
       msg←''

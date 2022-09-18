@@ -1,20 +1,26 @@
  R←Test_Create_011(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc
-⍝ Attempts to create and then open a project with an invalid entry `tatinFolder` in config file
+⍝ Attempts to create and then open a project with an empty namespace and a non-empty folder
+⍝ A config file is copied over in order to avoid user interaction
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
- (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.invalid1')
+ 3 ⎕MKDIR tempDir,'/APLSource'
+ (⊂'r←TheAnswerIs' 'r←42')⎕NPUT(tempDir,'/APLSource/TheAnswerIs.aplf')1
+ (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  stop←0
- (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -quiet'
- →T.GoToTidyUp 0=rc
- →T.GoToTidyUp 1≠+/'Invalid config parm (Tatin folder)'⍷msg
+ (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -quiet -noEdit'
+ Assert 0=rc
+ Assert 0=≢msg
+ →T.GoToTidyUp 2≠≢#.Foo.⎕NL⍳16  ⍝ TheAnswerIs plus CiderConfig = 2
+ →T.GoToTidyUp 1≠≢⊃FilesAndDirs.Dir tempDir,'/APLSource/'
 
  R←T._OK
 
 ∆TidyUp:
- rc←FilesAndDirs.RmDir tempDir
- Assert 0=+/∊rc
- #.⎕EX'Invalid1'
+ {}⎕SE.Link.Break'#.Foo'
+ rc←⊃FilesAndDirs.RmDir tempDir
+ Assert rc∧.=0
+ #.⎕EX'Foo'
 ⍝Done

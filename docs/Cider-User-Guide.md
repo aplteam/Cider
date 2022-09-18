@@ -27,6 +27,18 @@ With `]Cider.CreateProject` any folder that does not yet host a file `cider.conf
 
 If the folder does not yet exist it will be created. In any case the folder will be populated with a file `cider.config`.
 
+Note that `]Cider.CreateProject` deals differently with the possible combinations of namespace and source folder:
+
+* The namespace and the source folder are both empty
+* The namespace is empty and the source folder is not
+* The source folder is empty and the namespace is not
+
+In all these cases it should be pretty obvious what `]Cider.CreateProject` will do.
+
+However, when both namespace and source folder are _not_ empty then the user will be asked whether the contents of the namespace should be deleted, because that might well make sense. 
+
+If the user answers this question with "No" then an error is thrown.
+
 #### Configuration parameters
 
 The Cider configuration file comes with four sections:
