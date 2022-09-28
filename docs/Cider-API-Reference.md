@@ -12,6 +12,22 @@ While for the user commands the help provided by the `-?` syntax is sufficient, 
 
 The following list is ordered alphabetically.
 
+## AddAlias
+
+Takes two parameters via the right argument:
+
+1. Fully qualified folder hosting a project
+2. Alias name
+
+Actions taken:
+
+* If the alias is not already in use and the folder exists the function adds the definition to the file returned by `GetAliasFilename`. 
+
+* If the alias is already in use and the folder exists the function asks for confirmation before overwriting the definition of that alias in the file returned by `GetAliasFilename`, effectively changing the alias.
+
+Returns an empty vector in case of success and an error message otherwise.
+
+
 ## CloseProject
 
 There is no API equivalent for the user command `]Cider.CloseProject`. Use `⎕SE.Link.Break` instead.
@@ -224,16 +240,6 @@ A> When you trace through your code, or set a stop vector, and have "Pause on Er
 A>
 A> This imposes a danger because those handlers set a Hold under some circumstances, and depending on your actions this might result in a DEADLOCK: Dyalog would appear to hang until you issue a strong interrupt via the session's system menu item.
 
-## ProcessAlias
-
-Takes two parameters via the right argument:
-
-1. Fully qualified folder hosting a project
-2. Alias name
-
-If the alias is not already in use and the folder exists the function adds the definition to the file returned by `GetAliasFilename`. 
-
-Returns an empty vector in case of success and an error message otherwise.
 
 ## Version
 

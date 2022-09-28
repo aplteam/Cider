@@ -24,8 +24,6 @@
                  {~⍵: ⋄ ⎕←'Copied: ',filename,' from ',folder2,' to ',folder1}reportFlag
                  r+←1
              :EndIf
-         :Else
-             {~⍵: ⋄ ⎕←filename,' matches in ',folder2,' and ',folder1}reportFlag
          :EndIf
      :EndFor
  :EndIf

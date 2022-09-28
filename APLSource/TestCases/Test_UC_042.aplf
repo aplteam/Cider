@@ -22,4 +22,5 @@
  Assert res ∆StartsWith'Unlinked:'
  rc←FilesAndDirs.RmDir tempDir,'/..'
  Assert 0=+/∊rc
+ #.⎕EX'HOO'
 ⍝Done

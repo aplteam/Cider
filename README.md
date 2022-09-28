@@ -63,7 +63,7 @@ Note that under Windows the folder `MyUCMDs` will be created as part of the inst
 ### OpenProject
 
 
-#### Paramete
+#### Parameters
 
 Accepts an optional parameter that must be one of:
 
@@ -82,16 +82,16 @@ If no such parameter is specified then the current directory is searched for a f
 
 Once a folder is established that holds a Cider config file, the user command performs the following actions:
 
-1. Creates the project space (namespace); if it already exists it must be empty
+1. Creates the project space (namespace)
 1. Sets the system variables `⎕IO` and `⎕ML` in the project space
 1. Brings all code and variables into the project space
 1. Asks the user weather Cider should check all Tatin packages (if there are any) for later versions 
-1. Loads all Tatin packages specified in the file `cider.config`, if any
+1. Loads all Tatin packages specified in the file `cider.config`, if any; see `tatinFolder`
 1. Injects a namespace `CiderConfig` into the project space and...
    * populates it with the contents of the configuration file as APL arrays
    * adds a variable `HOME` that remembers the path the project was loaded from   
 1. Checks whether the project's config file does carry a non-empty value for `init`. If that's the case it must be a function that is then called by Cider, typically for initializing the project
-1. If the project is managed by Git and the user command `]Git` is around and the git bash is installed then Cider executes the `git status` command on the project folder and puts the result on view
+1. If the project is managed by Git and the user command `]APLGit` is around and the git bash is installed then Cider executes the `git status` command on the project folder and puts the result on view
 
 Notes:
 
@@ -112,13 +112,13 @@ Notes:
 
   * All principal packages found in `packages/` within the project folder are loaded into the project space because that is the default, and  the default was not overwritten
 
-  * All principal packages found in `packages_dev/` within the project folder  are loaded into the project's sub namespace TestCases` within the project space because the default _was_ overwritten
+  * All principal packages found in `packages_dev/` within the project folder  are loaded into the project's sub namespace `TestCases` within the project space because the default _was_ overwritten
 
 ### CloseProject
 
 Takes a folder or an alias and breaks the Link between the namespace and its folder.
 
-You may specify the `-all` flag to close all projects in `#`.
+You may specify the `-all` flag to close all projects in `#`, but check the user command's detailed help (`-??`) for details.
 
 
 ### CreateProject
@@ -134,7 +134,7 @@ Offers the user to view selected or all HTML documents with her standard browser
 
 ### ListOpenProjects
 
-Lists the project spaces of all currently linked projects together with the fully qualified names of the namespace holding the project's code.
+Lists the project spaces of all currently linked projects together with the fully qualified paths of all projects currently open.
 
 
 ### ListAliases

@@ -1,13 +1,23 @@
 :Class Cider
 ⍝ Cider's application code.
 
-    ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
+    ⎕IO←1 ⋄ ⎕ML←1
     L←⎕SE.Link
     CR←⎕UCS 13
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.16.0+281' '2022-09-18'
+      r←'Cider' '0.17.0+296' '2022-09-28'
+      ⍝ * 0.17.0 ⋄ 2022-09-28
+      ⍝   * Breaking change: The API function `ProcessAlias` was renamed to `AddAlias`
+      ⍝   * In case loading Tatin packages crashes this is now trapped and the error message is reported,
+      ⍝     but then Cider carries on
+      ⍝   * Only the number of Tatin packages is reported now, not the full list of packages
+      ⍝   * Git's status (if any) is now always reported in a separate read-only edit window
+      ⍝   * Messages regarding Git streamlined
+      ⍝   * Bug fix: error message were not displayed whith quietFlag←1
+      ⍝   * README.md polished: contained some outdated pieces of information
+      ⍝   * Documentation polished
       ⍝ * 0.16.0 ⋄ 2022-09-18
       ⍝   * `CreateProject` now accepts all combinations of empty/non-empty namespaces and empty/non-empty
       ⍝     folders and acts sensibly or asks the user what do to. If `quietFlag` is set and a combination
@@ -125,7 +135,7 @@
 
     Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⎕ML←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),11}
 
-    ∇ successFlag←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn
+    ∇ successFlag←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx
     ⍝ Open a Cider project.\\
     ⍝ `y` must be one of:
     ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
@@ -142,7 +152,7 @@
       '"folder" must be specified'Assert 0<≢parms.folder
       '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
       '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both'
-      p←(~parms.quietFlag)∘PrintToSession
+      p←{⍺←~parms.quietFlag ⋄ ⍺ PrintToSession ⍵}
       parms←(p GetFolderFromAlias2)parms
       ('Folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
       p((1+parms.importFlag)⊃'Loading' 'Importing'),' project from ',parms.folder
@@ -160,7 +170,7 @@
       :If parms.alias≡'.'
           parms.alias←⎕C 2⊃{1 ⎕NPARTS(-(¯1↑⍵)∊'/\')↓⍵}parms.folder
       :EndIf
-      p ProcessAlias parms.folder parms.alias
+      p AddAlias parms.folder parms.alias
       configFilename←parms.folder,'/cider.config'
       ('No file "cider.config" found in ',parms.folder)Assert ⎕NEXISTS configFilename
       config←Get_JSON5 configFilename
@@ -202,7 +212,14 @@
               :If 0=parms.importFlag
                   CheckPackagesStatus config parms
               :EndIf
-              {}LoadTatinPackages config parms.folder(⍕projectSpace_)
+              :Trap 0
+                  {}LoadTatinPackages config parms.folder(⍕projectSpace_)
+              :Else
+                  qdmx←⎕DMX
+                  1 p'>>> ERROR: loading Tatin packages from'
+                  1 p'           ',(config.CIDER.tatinFolder),' in ',parms.folder
+                  1 p'           failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+              :EndTrap
           :EndIf
       :EndIf
       InjectConfigDataIntoProject config projectSpace_ parms.folder
@@ -340,30 +357,24 @@
     ⍝ Checks whether the project is managed by Git, and if so offers some help
       r←⍬
       :If ⎕NEXISTS(AddSlash path),'.git'
-          p'Project appears to be managed by Git...'
           :If 9=⎕SE.⎕NC'_APLGit2'
               :Trap 0
                   status←⎕SE.APLGit2.Status path
               :Else
                   dmx←⎕DMX
                   :If 127=dmx.EN
-                      p'...but apparently Git is not installed'
+                      p'The project appears to be managed by Git but Git is not installed?!'
                       :Return
                   :Else
                       dmx.Message ⎕SIGNAL dmx.EN
                   :EndIf
               :EndTrap
-              :If 10>≢status
-                  p'Git status report:'
-                  p' ',' ',' ',↑status
-              :Else
-                  {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'ed'}ed←⍵)}status
-              :EndIf
+              status←(↓(,[0.5]'Git status report')⍪'='),status
+              {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}status
           :Else
-              p'Missing user command ]APLGit2 as well as it''s API, therefore no information can be provided regarding Git'
+              p'The project appears to be managed by Git but the user command ]APLGit2 and'
+              p'it''s API are missing, therefore no information can be provided regarding Git'
           :EndIf
-      :Else
-          p'Project is not managed by Git'
       :EndIf
     ∇
 
@@ -376,7 +387,7 @@
               :Trap 0
                   projectSpace_.⍎'⎕',name_,'←',⍕⍎'config.SYSVARS.',name
               :Else
-                  p'>>> Assigning system variable "',name,'" failed'
+                  1 p'>>> Assigning system variable "',name,'" failed'
               :EndTrap
           :EndFor
       :Else                         ⍝ SysVars prior to version 0.3.0
@@ -438,8 +449,8 @@
                   :Else
                       qdmx←⎕DMX
                       :If qdmx.EM≡'The build list carries entries that are not on the Tatin Registry search path'
-                          p'   >>> Checking for later versions of Tatin packages failed:'
-                          p'   ',qdmx.EM
+                          1 p'>>> ERROR - checking for later versions of Tatin packages failed:'
+                          1 p'            ',qdmx.EM
                       :Else
                           qdmx.EM ⎕SIGNAL 998
                       :EndIf
@@ -476,7 +487,7 @@
       :EndFor
     ∇
 
-    ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_
+    ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_;noOf
     ⍝ Load all installed packaged (if any) into their designated host namespaces.
       r←FAILURE
       :If 0<≢config.CIDER.tatinFolder
@@ -495,8 +506,8 @@
               :If ⎕NEXISTS folder2
                   :If 0<0<≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣folder2,'/*'
                       p ReportPackageOrigins folder2
-                      p'List of packages loaded:'
-                      p'   '∘,¨⍕¨⎕SE.Tatin.LoadDependencies folder2 target
+                      noOf←≢⎕SE.Tatin.LoadDependencies folder2 target
+                      p(⍕noOf),' Tatin package',((1<noOf)/'s'),' loaded'
                   :Else
                       p'Tatin installation folder "',folder2,'" is empty, therefore no packages loaded'
                   :EndIf
@@ -774,10 +785,10 @@
       :Until isOkay
     ∇
 
-    ∇ {msg}←ProcessAlias(folder alias);ciderAliasFilename;data;q;path;folder_;row;path_;ind
+    ∇ {msg}←AddAlias(folder alias);ciderAliasFilename;data;q;path;folder_;row;path_;ind
     ⍝ Takes a folder and an alias.
     ⍝ If the folder does not exist `msg` carries a corresponding message.
-    ⍝ * If the alias is already defined with that folder no action is taken
+    ⍝ * If the alias is already associated with the folder no action is taken
     ⍝ * If the alias is already defined with a different folder the user is asked to confirm overwriting it
     ⍝ * If the alias is undefined yet it as added
     ⍝ * You cannot delete an alias with this function.
@@ -897,7 +908,7 @@
               r←(config.CIDER.parent),'.',config.CIDER.projectSpace,'.',config.CIDER.make,' ⍝ Execute this for creating a new version'
           :EndIf
       :Else
-          ⎕←'>>> No expression found for creating a new version of <',config.CIDER.projectSpace,'>'
+          1 p'>>> No expression found for creating a new version of <',config.CIDER.projectSpace,'>'
       :EndIf
     ∇
 
@@ -1102,7 +1113,7 @@
     ⍝ When `quietFlag` is set however then either the namepace or the folder or both must
     ⍝ be empty, otherwise an error is thrown.
       r←0
-      nsIsEmpty←0=≢(' '~¨⍨↓ref.⎕NL⍳16)~⊂'CiderConfig'
+      nsIsEmpty←0=≢' '~¨⍨↓ref.⎕NL⍳16
       :If 0=⎕NEXISTS parms.folder,'/',source
           folderIsEmpty←1
       :Else

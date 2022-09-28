@@ -78,7 +78,7 @@ With the user command this can be overwritten temporarily with, say:
 
 ###### source
 
-Defaults to `APLSource`: a sub folder that hosts the code. Thats where the code lives, relative to the project folder. 
+Defaults to `APLSource`: a sub folder that hosts the code. That's where the code lives, relative to the project folder. 
 
 This might be empty, for example when the project is bascially just a script (class or namespace).
 
@@ -104,12 +104,12 @@ This is interpreted as follows:
 
 If not empty this must be an expression that would call a function within the project. It must be defined relative to `projectSpace`.
 
-The expression will be executed when everything else is done. 
+The expression will be executed after a project was opened. 
 
 
 ###### info_url
 
-If not empty this is expected to be a URL pointing to, say, a GitHub project.
+If not empty this is expected to be a URL pointing to, say, a GitHub project. For information only.
 
 ###### make
 
@@ -211,7 +211,13 @@ Note that the  contents of the file `cider.config` directs what exactly Cider is
 
 The first step carried out by `]Cider.OpenProject` is to create a namespace with the name `projectSpace` as a child of `parent`, when `parent` defaults to `#` but may be something like `⎕SE` or `#.Foo.Goo` etc.
 
-The `parent` must exist while the `parentspace` may or may not exist. If it does not, it is created. If it already exists it must not contain a namespace `CiderConfig`.
+The `parent` must exist while the `parentSpace` may or may not exist. If it does not, it is created. If it does already exist then:
+
+* In case the namespace and the folder are both empty Cider carries on
+* In case only the namespace is empty Cider carries on
+* In case only the folder is empty Cider carries on
+* In case neither the namespace nor the folder are empty the user is asked whether she wants the namespace to be emptied; if not an error is thrown.
+
 
 #### 2. Setting system variables
 
@@ -236,11 +242,11 @@ A> That's another way to make sure that system variables are set as early as pos
 
 In this step all files with supported file extensions (See LINK's documentation for details) found in `source` and any sub folder are established in the workspace in `{parent}.{projectSpace}`.
 
+In order to achieve this Cider uses LINK[^link]. 
+
 Note that from now on we will refer to:
 
 `{parent}.{projectSpace}` as _the root of a project_.
-
-In order to achieve this Cider uses LINK[^link]. 
 
 By default a link is established between the root of the project and the folder. When your intention is to work on the project (read: change the code) then this is the obvious thing to do.
 
@@ -263,13 +269,13 @@ However, note that this is only true if you've loaded the package(s) from a Regi
 If `]Cider.OpenProject` discovers later packages it will ask the user whether packages shall be re-installed with the `-update` flag set. This will happen independently for each package installation folder.
 
 
-#### 5. Loading Tatin packages (optional)
+#### 5. Loading Tatin packages
  
 Your application or tool might depend on one or more Tatin[^tatin] packages. By assigning `tatinFolder` one or more comma-separated folders hosting installed Tatin packages you can make sure that Cider will load[^load_tatin_pkgs] those installed packages into the root of your project.
 
 In particular when you specify more than a single folder you are likely to want some packages to be loaded into a sub namespace of the root of your project.
 
-For example, let's assume you want all packages installed in the folder `packages/` to be loaded into the root of your project. Let's also assume that you want to load all packages from a folder `packages_dev/` (for "development") into a namespace `TestCases` in the root of your project.
+For example, let's assume you want all packages installed in the folder `packages/` to be loaded into the root of your project, and that you want to load all packages from a folder `packages_dev/` (for "development") into a namespace `TestCases` in the root of your project.
 
 This will do the trick:
 
@@ -324,7 +330,7 @@ That file already contains a definition of the keyword `ExecuteAfterProjectOpen`
 }
 ```
 
-What is this good for you may ask? Well, let's assume that you are not using Git but a different version Control Software. With Git, Cider would execute the "status" command and print the result to the session window. With your Version Control Software it can't do something similar.
+What is this good for you may ask? Well, let's assume that you are not using Git but a different version Control Software. With Git, Cider would execute the "status" command and show the result to the user. With your Version Control Software it can't do something similar.
 
 You can easily achieve that by yourself: just add the required code to a function you load early into `⎕SE`, and then make sure that `ExecuteAfterProjectOpen` is calling that function and you are done.
 

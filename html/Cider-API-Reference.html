@@ -22,14 +22,30 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>While for the user commands the help provided by the <code>-?</code> syntax is sufficient, this document deals with the API.</p>
 <p>The following list is ordered alphabetically.</p>
 <div class="h_tag">
+<a href="#AddAlias" id="AddAlias" class="autoheader_anchor">
+<h2 data-id="AddAlias">1. AddAlias</h2>
+</a>
+</div>
+<p>Takes two parameters via the right argument:</p>
+<ol start="1">
+<li>Fully qualified folder hosting a project</li>
+<li>Alias name</li>
+</ol>
+<p>Actions taken:</p>
+<ul>
+<li>If the alias is not already in use and the folder exists the function adds the definition to the file returned by <code>GetAliasFilename</code>.</li>
+<li>If the alias is already in use and the folder exists the function asks for confirmation before overwriting the definition of that alias in the file returned by <code>GetAliasFilename</code>, effectively changing the alias.</li>
+</ul>
+<p>Returns an empty vector in case of success and an error message otherwise.</p>
+<div class="h_tag">
 <a href="#CloseProject" id="CloseProject" class="autoheader_anchor">
-<h2 data-id="CloseProject">1. CloseProject</h2>
+<h2 data-id="CloseProject">2. CloseProject</h2>
 </a>
 </div>
 <p>There is no API equivalent for the user command <code>]Cider.CloseProject</code>. Use <code>⎕SE.Link.Break</code> instead.</p>
 <div class="h_tag">
 <a href="#CreateOpenParms" id="CreateOpenParms" class="autoheader_anchor">
-<h2 data-id="CreateOpenParms">2. CreateOpenParms</h2>
+<h2 data-id="CreateOpenParms">3. CreateOpenParms</h2>
 </a>
 </div>
 <p>A monadic function that returns a namespace with default parameters required by the <code>OpenProject</code> function. The right argument is ignored.</p>
@@ -42,19 +58,19 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>This is useful for creating a namespace with the defaults, set required parameters (at least <code>folder</code> and <code>projectSpace</code>), make amendments and pass the namespace as argument to <code>OpenProject</code>.</p>
 <div class="h_tag">
 <a href="#CreateProject" id="CreateProject" class="autoheader_anchor">
-<h2 data-id="CreateProject">3. CreateProject</h2>
+<h2 data-id="CreateProject">4. CreateProject</h2>
 </a>
 </div>
 <p>There is no API equivalent for the user command <code>]Cider.CreateProject</code>.</p>
 <div class="h_tag">
 <a href="#DropAlias" id="DropAlias" class="autoheader_anchor">
-<h2 data-id="DropAlias">4. DropAlias</h2>
+<h2 data-id="DropAlias">5. DropAlias</h2>
 </a>
 </div>
 <p>Takes an alias and removes it.</p>
 <div class="h_tag">
 <a href="#GetAliasFileContent" id="GetAliasFileContent" class="autoheader_anchor">
-<h2 data-id="GetAliasFileContent">5. GetAliasFileContent</h2>
+<h2 data-id="GetAliasFileContent">6. GetAliasFileContent</h2>
 </a>
 </div>
 <p>Niladic function that returns the contents of the file returned by the <code>GetCiderAliasFilename</code> function as an APL array:</p>
@@ -63,20 +79,20 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Every record of that file contains two pieces of information: an alias and its associated path. The file might be empty.</p>
 <div class="h_tag">
 <a href="#GetAliasFilename" id="GetAliasFilename" class="autoheader_anchor">
-<h2 data-id="GetAliasFilename">6. GetAliasFilename</h2>
+<h2 data-id="GetAliasFilename">7. GetAliasFilename</h2>
 </a>
 </div>
 <p>Niladic function that returns the path to the file that is used by Cider to manage alias names and their paths.</p>
 <div class="h_tag">
 <a href="#GetMyUCMDsFolder" id="GetMyUCMDsFolder" class="autoheader_anchor">
-<h2 data-id="GetMyUCMDsFolder">7. GetMyUCMDsFolder</h2>
+<h2 data-id="GetMyUCMDsFolder">8. GetMyUCMDsFolder</h2>
 </a>
 </div>
 <p>Niladic function that returns the path to the <code>MyUCMDs/</code> folder.</p>
 <p>Note that this folder is created under Windows by the Dyalog installation routine, but not on other platforms.</p>
 <div class="h_tag">
 <a href="#GetCidersConfigFileContent" id="GetCidersConfigFileContent" class="autoheader_anchor">
-<h2 data-id="GetCidersConfigFileContent">8. GetCidersConfigFileContent</h2>
+<h2 data-id="GetCidersConfigFileContent">9. GetCidersConfigFileContent</h2>
 </a>
 </div>
 <p>Niladic function that returns the contents of the file returned by the <code>GetCidersConfigFilename</code> function as a vector of text vectors:</p>
@@ -86,7 +102,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
  }</code></pre>
 <div class="h_tag">
 <a href="#GetCidersConfigFilename" id="GetCidersConfigFilename" class="autoheader_anchor">
-<h2 data-id="GetCidersConfigFilename">9. GetCidersConfigFilename</h2>
+<h2 data-id="GetCidersConfigFilename">10. GetCidersConfigFilename</h2>
 </a>
 </div>
 <p>Niladic function that returns the path to the file with Cider's own configuration file.</p>
@@ -94,7 +110,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <div class="h_tag">
 <a href="#ListOpenProjects" id="ListOpenProjects" class="autoheader_anchor">
-<h2 data-id="ListOpenProjects">10. ListOpenProjects</h2>
+<h2 data-id="ListOpenProjects">11. ListOpenProjects</h2>
 </a>
 </div>
 <p>Requires a Boolean as right argument (“verbose”).</p>
@@ -126,7 +142,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 </table>
 <div class="h_tag">
 <a href="#OpenProject" id="OpenProject" class="autoheader_anchor">
-<h2 data-id="OpenProject">11. OpenProject</h2>
+<h2 data-id="OpenProject">12. OpenProject</h2>
 </a>
 </div>
 <p>Opening a project means carrying out the following actions:</p>
@@ -152,7 +168,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <p>What's defined in the parameter space overwrites the value in the config file, though only temporarily.</p>
 <div class="h_tag">
 <a href="#folder" id="folder" class="autoheader_anchor">
-<h3 data-id="folder">11.1. folder (mandatory)</h3>
+<h3 data-id="folder">12.1. folder (mandatory)</h3>
 </a>
 </div>
 <p>This must be one of:</p>
@@ -163,13 +179,13 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <p>Note that this must <em>not</em> be empty but it <em>might</em> be <code>./</code> representing the current directory.</p>
 <div class="h_tag">
 <a href="#alias" id="alias" class="autoheader_anchor">
-<h3 data-id="alias">11.2. alias</h3>
+<h3 data-id="alias">12.2. alias</h3>
 </a>
 </div>
 <p>The alias under which you might want to access the project in the future.</p>
 <div class="h_tag">
 <a href="#checkPackageVersions" id="checkPackageVersions" class="autoheader_anchor">
-<h3 data-id="checkPackageVersions">11.3. checkPackageVersions</h3>
+<h3 data-id="checkPackageVersions">12.3. checkPackageVersions</h3>
 </a>
 </div>
 <p>This is ignored in case…</p>
@@ -197,24 +213,24 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 </table>
 <div class="h_tag">
 <a href="#parent" id="parent" class="autoheader_anchor">
-<h3 data-id="parent">11.4. parent</h3>
+<h3 data-id="parent">12.4. parent</h3>
 </a>
 </div>
 <p>Defaults to <code>#</code> but might as be something like <code>⎕SE</code> or <code>#.Foo.Goo.Boo</code>. However, all namespaces listed must exist.</p>
 <div class="h_tag">
 <a href="#projectSpace" id="projectSpace" class="autoheader_anchor">
-<h3 data-id="projectSpace">11.5. projectSpace</h3>
+<h3 data-id="projectSpace">12.5. projectSpace</h3>
 </a>
 </div>
 <p>The name of the namespace the project is injected into. If this is empty it is going to be <code>#</code> or <code>⎕SE</code>, depending from where the function was called from.</p>
 <div class="h_tag">
 <a href="#Flags" id="Flags" class="autoheader_anchor">
-<h3 data-id="Flags">11.6. Flags</h3>
+<h3 data-id="Flags">12.6. Flags</h3>
 </a>
 </div>
 <div class="h_tag">
 <a href="#importFlag" id="importFlag" class="autoheader_anchor">
-<h4 data-id="importFlag">11.6.1. importFlag</h4>
+<h4 data-id="importFlag">12.6.1. importFlag</h4>
 </a>
 </div>
 <p>Defaults to 0 meaning that the code is not imported but linked.</p>
@@ -222,19 +238,19 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <p>Note that this has implications on how Cider deals with Tatin packages, see there.</p>
 <div class="h_tag">
 <a href="#noPkgLoad" id="noPkgLoad" class="autoheader_anchor">
-<h4 data-id="noPkgLoad">11.6.2. noPkgLoad</h4>
+<h4 data-id="noPkgLoad">12.6.2. noPkgLoad</h4>
 </a>
 </div>
 <p>Defaults to 0, meaning that Cider will load Tatin packages by honoring the config file's <code>tatinFolder</code> parameter. However, there might be circumstances when you do not want packages to be loaded. This can be achieved by setting the <code>noPkgLoad</code> flag to 1.</p>
 <div class="h_tag">
 <a href="#quietFlag" id="quietFlag" class="autoheader_anchor">
-<h4 data-id="quietFlag">11.6.3. quietFlag</h4>
+<h4 data-id="quietFlag">12.6.3. quietFlag</h4>
 </a>
 </div>
 <p>Defaults to 0, meaning that the function prints messages to the session.</p>
 <div class="h_tag">
 <a href="#suppressLX" id="suppressLX" class="autoheader_anchor">
-<h4 data-id="suppressLX">11.6.4. suppressLX</h4>
+<h4 data-id="suppressLX">12.6.4. suppressLX</h4>
 </a>
 </div>
 <p>Defaults to 0, meaning that the projects initialisation function (if any) will be executed.</p>
@@ -242,7 +258,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <p>An example might be an automated build process: that might need to open the project but without actually initialising it.</p>
 <div class="h_tag">
 <a href="#watch" id="watch" class="autoheader_anchor">
-<h3 data-id="watch">11.7. watch</h3>
+<h3 data-id="watch">12.7. watch</h3>
 </a>
 </div>
 <p>Defaults to “both”, meaning that changing any APL objects in the workspaces will result in Link updating the corresponding file on disk, and any change on disk will be reflected by changing the workspace.</p>
@@ -256,18 +272,6 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <p>This imposes a danger because those handlers set a Hold under some circumstances, and depending on your actions this might result in a DEADLOCK: Dyalog would appear to hang until you issue a strong interrupt via the session's system menu item.</p>
 </div>
 
-<div class="h_tag">
-<a href="#ProcessAlias" id="ProcessAlias" class="autoheader_anchor">
-<h2 data-id="ProcessAlias">12. ProcessAlias</h2>
-</a>
-</div>
-<p>Takes two parameters via the right argument:</p>
-<ol start="1">
-<li>Fully qualified folder hosting a project</li>
-<li>Alias name</li>
-</ol>
-<p>If the alias is not already in use and the folder exists the function adds the definition to the file returned by <code>GetAliasFilename</code>.</p>
-<p>Returns an empty vector in case of success and an error message otherwise.</p>
 <div class="h_tag">
 <a href="#Version" id="Version" class="autoheader_anchor">
 <h2 data-id="Version">13. Version</h2>

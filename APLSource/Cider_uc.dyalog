@@ -1,4 +1,4 @@
-﻿:Class Cider_uc
+:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
 
@@ -163,7 +163,7 @@
           r←Args._2 CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.quiet)
       :EndIf
       :If 0≢Args.alias
-          :If 0<≢msg←P.ProcessAlias folder Args.alias
+          :If 0<≢msg←P.AddAlias folder Args.alias
               r,←(⎕UCS 13)msg
           :EndIf
       :EndIf

@@ -22,4 +22,5 @@
  (⎕PW ⎕PP ⎕FR)←PW PP FR
  {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
  #.⎕EX'TEMP'
+ #.⎕ex parms.folder
 ⍝Done
