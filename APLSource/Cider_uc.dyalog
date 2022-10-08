@@ -111,7 +111,7 @@
       :Case ⎕C'Make'
           r←Make Args
       :Case ⎕C'Version'
-          r←P.Version ⍬
+          r←P.Version
       :Case ⎕C'Help'
           r←ShowHelp ⍬
       :Else
@@ -299,7 +299,7 @@
               r,←⊂'-parent:      The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
               r,←⊂'              overwritten by setting the -parent= and/or the -projectSpace= option(s).'
               r,←⊂'-projectSpace The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
-              r,←⊂'              overwritten by setting the -projectSpace= and/or the -parent= option(s).'             
+              r,←⊂'              overwritten by setting the -projectSpace= and/or the -parent= option(s).'
               r,←⊂'-import:      By default the namespace is linked to folder. By specifying the -import'
               r,←⊂'              flag this can be avoided: the code is then loaded into the workspace with the'
               r,←⊂'              Link.Import method, meaning that changes are not tracked.'
@@ -737,11 +737,11 @@
     ∇
 
     ∇ yesOrNo←{default}YesOrNo question;isOkay;answer;add;dtb;answer2
-    ⍝ Ask a simple question and allows just "Yes" or "No" as answers.
+    ⍝ Asks a simple question and allows just "Yes" or "No" as answers.
     ⍝ You may specify a default via the optional left argument which when specified
     ⍝ rules what happens when the user just presses <enter>.
     ⍝ `default` must be either 1 (yes) or 0 (no).
-    ⍝ Note that this function does not work as expected when traced!
+    ⍝ Note that this function does NOT work as expected when traced!
       isOkay←0
       default←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'default'
       isOkay←0
@@ -766,14 +766,17 @@
           question←question,add
       :EndIf
       :Repeat
+          ⎕←''
           ⍞←question
           answer←⍞
-          :If answer≡question                        ⍝ Did...  (since version 18.0 trailing blanks are not removed anynmore)
-          :OrIf (≢answer)=¯1+≢question               ⍝ ..the ...
-          :OrIf 0=≢answer                            ⍝ ...user just...
+          :If answer≡question                        ⍝ Did ...  (since version 18.0 trailing blanks are not removed anymore)
+          :OrIf (≢answer)=¯1+≢question               ⍝ ... the ...
+          :OrIf 0=≢answer                            ⍝ ... user ...
+          :OrIf question≡(-≢question)↑answer         ⍝ ... just ...
               dtb←{⍵↓⍨-+/∧\' '=⌽⍵}
               answer2←dtb answer
-          :OrIf answer2≡((-≢answer2)↑(⎕UCS 10){~⍺∊⍵:⍵ ⋄ ' ',dtb ⍺{⌽⍵↑⍨1+⍵⍳⍺}⌽⍵}question)   ⍝ ...press <enter>?
+          :OrIf answer2≡((-≢answer2)↑(⎕UCS 10){~⍺∊⍵:⍵ ⋄ ' ',dtb ⍺{⌽⍵↑⍨1+⍵⍳⍺}⌽⍵}question)   ⍝ ... press ...
+          :OrIf answer≡{1↓⊃¯1↑(⍵∊⎕UCS 10 13)⊂⍵}(⎕UCS 10),question ⍝ ... <enter>?
               :If 0≠≢default
                   yesOrNo←default
                   isOkay←1
@@ -786,6 +789,7 @@
               :EndIf
           :EndIf
       :Until isOkay
+    ⍝Done
     ∇
 
     ∇ r←{caption}SelectFromAliases data;row

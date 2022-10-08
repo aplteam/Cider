@@ -7,7 +7,10 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.17.0+296' '2022-09-28'
+      r←'Cider' '0.18.0+301' '2022-10-08'
+      ⍝ * 0.18.0 ⋄ 2022-10-08
+      ⍝   * New `YesOrNo`
+      ⍝   * `Version` returned a two-item vector with the expected result being the first item
       ⍝ * 0.17.0 ⋄ 2022-09-28
       ⍝   * Breaking change: The API function `ProcessAlias` was renamed to `AddAlias`
       ⍝   * In case loading Tatin packages crashes this is now trapped and the error message is reported,
@@ -487,9 +490,10 @@
       :EndFor
     ∇
 
-    ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_;noOf
+    ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_;noOf;p
     ⍝ Load all installed packaged (if any) into their designated host namespaces.
       r←FAILURE
+      p←{⍺←~parms.quietFlag ⋄ ⍺ PrintToSession ⍵}
       :If 0<≢config.CIDER.tatinFolder
           pkgFolders←⊆','(≠⊆⊢)config.CIDER.tatinFolder
           :For pkgFolder :In pkgFolders
@@ -734,11 +738,11 @@
 
     ∇ yesOrNo←{default}YesOrNo question;isOkay;answer;add;dtb;answer2
       :Access Public Shared
-    ⍝ Ask a simple question and allows just "Yes" or "No" as answers.
+    ⍝ Asks a simple question and allows just "Yes" or "No" as answers.
     ⍝ You may specify a default via the optional left argument which when specified
     ⍝ rules what happens when the user just presses <enter>.
     ⍝ `default` must be either 1 (yes) or 0 (no).
-    ⍝ Note that this function does not work as expected when traced!
+    ⍝ Note that this function does NOT work as expected when traced!
       isOkay←0
       default←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'default'
       isOkay←0
@@ -763,14 +767,17 @@
           question←question,add
       :EndIf
       :Repeat
+          ⎕←''
           ⍞←question
           answer←⍞
-          :If answer≡question                        ⍝ Did...  (since version 18.0 trailing blanks are not removed anynmore)
-          :OrIf (≢answer)=¯1+≢question               ⍝ ..the ...
-          :OrIf 0=≢answer                            ⍝ ...user just...
+          :If answer≡question                        ⍝ Did ...  (since version 18.0 trailing blanks are not removed anymore)
+          :OrIf (≢answer)=¯1+≢question               ⍝ ... the ...
+          :OrIf 0=≢answer                            ⍝ ... user ...
+          :OrIf question≡(-≢question)↑answer         ⍝ ... just ...
               dtb←{⍵↓⍨-+/∧\' '=⌽⍵}
               answer2←dtb answer
-          :OrIf answer2≡((-≢answer2)↑(⎕UCS 10){~⍺∊⍵:⍵ ⋄ ' ',dtb ⍺{⌽⍵↑⍨1+⍵⍳⍺}⌽⍵}question)   ⍝ ...press <enter>?
+          :OrIf answer2≡((-≢answer2)↑(⎕UCS 10){~⍺∊⍵:⍵ ⋄ ' ',dtb ⍺{⌽⍵↑⍨1+⍵⍳⍺}⌽⍵}question)   ⍝ ... press ...
+          :OrIf answer≡{1↓⊃¯1↑(⍵∊⎕UCS 10 13)⊂⍵}(⎕UCS 10),question ⍝ ... <enter>?
               :If 0≠≢default
                   yesOrNo←default
                   isOkay←1
@@ -783,6 +790,7 @@
               :EndIf
           :EndIf
       :Until isOkay
+    ⍝Done
     ∇
 
     ∇ {msg}←AddAlias(folder alias);ciderAliasFilename;data;q;path;folder_;row;path_;ind
@@ -891,9 +899,10 @@
       :EndIf
     ∇
 
-    ∇ r←RunMake path;configFilename;config
+    ∇ r←RunMake path;configFilename;config;p
       :Access Public Shared
       r←''
+      p←{⍺←~parms.quietFlag ⋄ ⍺ PrintToSession ⍵}
       :If '['=1⍴path
           path←GetFolderFromAlias path
       :EndIf
