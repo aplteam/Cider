@@ -1,0 +1,14 @@
+ {r}←InjectGithubUsernameIntoCiderConfig paths;data;filename;json
+ r←⍬
+ :For filename :In paths
+     data←⊃⎕NGET filename
+     json←⎕JSON⍠('Dialect' 'JSON5')⊣data
+     :If 0=json.CIDER.⎕NC'githubUsername'
+         json.CIDER.githubUsername←'aplteam'
+         data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣json
+         (⊂data)⎕NPUT filename 1
+     :Else
+         ⎕←'Already done: ',filename
+     :EndIf
+ :EndFor
+⍝Done

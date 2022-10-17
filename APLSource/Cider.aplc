@@ -7,7 +7,13 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.18.0+301' '2022-10-08'
+      r←'Cider' '0.19.1+306' '2022-10-??'
+      ⍝ * 0.19.1 ⋄ 2022-10-??
+      ⍝   * Bug fixes
+      ⍝     * When ]Cider.Make and ]Cider.RunTests were called without any project being opened a message 
+      ⍝       "cancelled by user" was printed to the session
+      ⍝ * 0.19.0 ⋄ 2022-10-10
+      ⍝   * With the "?" and the "*" syntax Cider does not offer already opened projects anymore
       ⍝ * 0.18.0 ⋄ 2022-10-08
       ⍝   * New `YesOrNo`
       ⍝   * `Version` returned a two-item vector with the expected result being the first item
@@ -193,7 +199,7 @@
           projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                        ⍝ Create project space from "parent" to avoid problems
       :EndIf
       'Already opened?!'Assert~CheckForAlreadyOpened projectSpace_
-      CheckParameters config
+      config←CheckParameters config
       configFilename HandleSysVars config
       source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source              ⍝ For linking we are only interested in the code folder
       ('Source folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
@@ -275,6 +281,7 @@
       parms.noPkgLoad←0
       parms.watch←'both'
       parms.checkPackageVersions←⍬      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
+      parms.githubUsername←''
       :If ~(⊂y)∊''⍬
       :AndIf 9=⎕NC'y'
           :If 9=y.⎕NC'projectSpace'
@@ -287,6 +294,52 @@
           (b{0=+/b:'' ⋄ 'Invalid parameter: ',⊃{⍺,',',⍵}/⍺/⍵}l)Assert 0=+/b←~(l←' '~⍨¨↓y.⎕NL 2)∊' '~⍨¨↓parms.⎕NL 2
           :If 0<≢list←' '~⍨¨↓y.⎕NL 2
               parms⍎¨list{' '=1↑0⍴⍵:⍺,'←''',⍵,'''' ⋄ ⍵≡⍬:⍺,'←⍬' ⋄ ⍺,'←',⍕⍵}¨y.{⍎⍵}¨list
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ path←GetProjectPath project;list;index;aliasDefs;bool;alias;info
+      :Access Public Shared
+      path←''
+      :If 0≡project
+      :OrIf 0=≢project
+          list←ListOpenProjects 0
+          :Select ≢list
+          :Case 0
+              ⎕←'No open Cider project found'
+              :Return
+          :Case 1
+              path←⊃list[1;2]
+          :Else
+              :If 0=≢index←'Select a Cider project:'Select↓⎕FMT list
+                  :Return
+              :EndIf
+              path←2⊃list[index;]
+          :EndSelect
+      :Else
+          aliasDefs←P.GetAliasFileContent
+          path←Args._1
+          :If (⊂,path)∊,¨'[' '[?' '[?]'
+              :If 0=≢path←SelectFromAliases aliasDefs
+                  :Return
+              :EndIf
+          :ElseIf '['=1⍴path
+          :AndIf '*'=¯1↑path~'[]'
+              bool←(¯1↓path~'[]'){(⎕C(≢⍺)↑[2]⍵)∧.=⎕C ⍺}↑aliasDefs[;1]
+              :Select +/bool
+              :Case 0
+                  :Return
+              :Case 1
+                  (alias path)←aliasDefs[bool⍳1;]
+                  :If 0=1 YesOrNo'Sure you want to open "',path,'" ?'
+                      :Return
+                  :EndIf
+              :Else
+                  info←'(',((⍕+/bool),' of ',(⍕≢aliasDefs)),')'
+                  :If 0=≢path←info SelectFromAliases bool⌿aliasDefs
+                      :Return
+                  :EndIf
+              :EndSelect
           :EndIf
       :EndIf
     ∇
@@ -317,6 +370,7 @@
       r,←⊂'info_url'
       r,←⊂'tests'
       r,←⊂'make'
+      r,←⊂'githubUsername'
     ∇
 
     ∇ options←ExtractLinkOptions config;C;overWrite
@@ -338,9 +392,11 @@
       options.fastLoad←config.LINK.fastLoad
     ∇
 
-    ∇ {r}←CheckParameters config;list;bool;list2
+    ∇ {config}←CheckParameters config;list;bool;list2
     ⍝ Check the parameters for being complete and valid
-      r←⍬
+      :If 0=config.CIDER.⎕NC'githubUsername'
+          config.CIDER.githubUsername←''
+      :EndIf
       p'Checking parameters...'
       list←' '~⍨¨⊃,/↓¨config.(LINK CIDER).⎕NL 2
       list2←list~GetValidCiderParams
@@ -1151,6 +1207,57 @@
       data←Get_JSON5 folder,'/apl-buildlist.json'
       msg←⊂'Packages were originally installed from:'
       msg,←'   '∘,¨∪data.url
+    ∇
+
+
+    ∇ index←{x}Select options;flag;answer;question;value;bool;⎕ML;⎕IO;manyFlag;mustFlag;caption
+    ⍝ Presents `options` as a numbered list and allows the user to select either exactly one or multiple ones.\\
+    ⍝ One is the default.\\
+    ⍝ The optional left argument allows you to specify more options:
+    ⍝ * `manyFlag` defaults to 0 (meaning just one item might be selected) or 1, in which case multiple items can be specified.
+    ⍝ * `mustFlag` forces the user to select at least one  option.
+    ⍝ * `caption` is shown above the options.
+    ⍝ `options` must not have more than 999 items.
+    ⍝ If the user aborts by entering nothing or a "q" (for "quit") `index will be `⍬`.
+      x←{0<⎕NC ⍵:⊆⍎⍵ ⋄ ''}'x'
+      (caption manyFlag mustFlag)←x,(⍴,x)↓'' 0 0
+      ⎕IO←1 ⋄ ⎕ML←1
+      manyFlag←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'manyFlag'
+      'Invalid right argument; must be a vector of text vectors.'⎕SIGNAL 98/⍨2≠≡options
+      'Right argument has more than 999 items'⎕SIGNAL 98/⍨999<≢options
+      flag←0
+      :Repeat
+          ⎕←{⍵↑'--- ',caption,((0≠≢caption)/' '),⍵⍴'-'}⎕PW-1
+          ⎕←⍪{((⊂'. '),¨⍨(⊂3 0)⍕¨⍳⍴⍵),¨⍵}options
+          ⎕←''
+          question←'Select one ',(manyFlag/'or more '),'item',((manyFlag)/'s'),' '
+          question,←((manyFlag∨~mustFlag)/'('),((~mustFlag)/'q=quit'),((manyFlag∧~mustFlag)/', '),(manyFlag/'a=all'),((manyFlag∨~mustFlag)/')'),' :'
+          :If 0<≢answer←⍞,0/⍞←question
+              answer←(⍴question)↓answer
+              :If 1=≢answer
+              :AndIf answer∊'Qq',manyFlag/'Aa'
+                  :If answer∊'Qq'
+                      :If 0=mustFlag
+                          index←⍬
+                          flag←1
+                      :EndIf
+                  :Else
+                      index←⍳≢options
+                      flag←1
+                  :EndIf
+              :Else
+                  (bool value)←⎕VFI answer
+                  :If ∧/bool
+                  :AndIf manyFlag∨1=+/bool
+                      value←bool/value
+                  :AndIf ∧/value∊⍳⍴options
+                      index←value
+                      flag←0≠≢index
+                  :EndIf
+              :EndIf
+          :EndIf
+      :Until flag
+      index←{1<≢⍵:⍵ ⋄ ⊃⍵}⍣(⍬≢index)⊣index
     ∇
 
 :EndClass

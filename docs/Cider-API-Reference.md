@@ -10,7 +10,9 @@ Although the API functions are similar to their user command equivalents, they a
 
 While for the user commands the help provided by the `-?` syntax is sufficient, this document deals with the API.
 
-The following list is ordered alphabetically.
+Note that while `⎕SE._Cider` contains the Cider code , the API is available via `⎕SE.Cider`.
+
+The API functions are ordered alphabetically.
 
 ## AddAlias
 

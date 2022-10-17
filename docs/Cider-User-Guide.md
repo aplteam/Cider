@@ -138,6 +138,16 @@ The purpose is to tell anybody not familiar with the project how to execute the 
 ```
 However, if the first non-white space character of `tests` is a `]` (making it a user command rather than a function call) its definition would just be printed to `⎕SE` together with a comment.
 
+###### githubUsername
+
+This parameter was introduced with version 0.19.0 --- from this version onwards Cider will deal with a missing parameter of this name by establishing it as an empty character vector.
+
+By default the parameter is empty. This means that Cider commands that deal with GitHub cannot work of course.
+
+If a project is hosted on GitHub then you are advised to set it to the GitHub username --- that's the equivalent of "group" in Tatin speak.
+
+That allows commands like `]APLGit2.GetTagOfLatestRelease` to work without specifying `-username` when issues on a project that is managed by Cider.
+
 ##### LINK
 
 These are LINK parameters which are passed on to LINK when Cider brings the APL code into the WS with LINK.

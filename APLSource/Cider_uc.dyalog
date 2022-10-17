@@ -207,12 +207,14 @@
       :EndIf
       aliasDefs←P.GetAliasFileContent
       :If (⊂,path)∊,¨'[' '[?' '[?]'
-          :If 0=≢path←SelectFromAliases aliasDefs
+          bool←~aliasDefs[;2]∊{⍵[;2]}P.ListOpenProjects 0
+          :If 0=≢path←SelectFromAliases bool⌿aliasDefs
               :Return
           :EndIf
       :ElseIf '['=1⍴path
       :AndIf '*'=¯1↑path~'[]'
-          bool←(¯1↓path~'[]'){(⎕C(≢⍺)↑[2]⍵)∧.=⎕C ⍺}↑aliasDefs[;1]
+          bool←~aliasDefs[;2]∊{⍵[;2]}P.ListOpenProjects 0
+          bool←bool\(¯1↓path~'[]'){(⎕C(≢⍺)↑[2]⍵)∧.=⎕C ⍺}↑bool⌿aliasDefs[;1]
           :Select +/bool
           :Case 0
               :Return
@@ -910,8 +912,7 @@
           list←⎕SE.Cider.ListOpenProjects 0
           :Select ≢list
           :Case 0
-              ⎕←'No open Cider project found'
-              :Return
+              'No open projects found'Assert 0
           :Case 1
               path←⊃list[1;2]
           :Else

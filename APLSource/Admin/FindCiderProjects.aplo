@@ -1,0 +1,24 @@
+ r←{recursive}(f FindCiderProjects)startAt;F;list;this
+⍝ Takes a starting point like "C:\" or "C:\Project" or "/users/<user-name>/projects" etc. and scans them for
+⍝ Cider-managed projects. They are identified by hosting a file <cider.config> - if a folder host such a file
+⍝ it is assumed to be managed by cider. Sub-folders of such a folder will be ignored since Cider does not allows
+⍝ nested projects.
+⍝ You may specify a function that can then act on each of these folders. If you just want a list without a function
+⍝ doing anything useful, call it this way:
+⍝ ({⍵} FindCiderProjects <starting-point>
+ r←⍬
+ recursive←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'recursive'
+ F←⎕SE.FilesAndDirs
+ Assert ⎕NEXISTS startAt
+ list←F.ListDirs startAt
+ :For this :In list
+     :If ⎕NEXISTS this,'/cider.config'
+         r,←⊂this,'/cider.config'
+     :Else
+         r,←1(f FindCiderProjects)this
+     :EndIf
+ :EndFor
+ :If ~recursive
+     f r
+ :EndIf
+⍝Done

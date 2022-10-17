@@ -147,6 +147,15 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 #.Cider.TestCases.RunTests ⍝ Execute this for running the test suite</code></pre>
 <p>However, if the first non-white space character of <code>tests</code> is a <code>]</code> (making it a user command rather than a function call) its definition would just be printed to <code>⎕SE</code> together with a comment.</p>
 <div class="h_tag">
+<a href="#githubUsername" id="githubUsername" class="autoheader_anchor">
+<h6 data-id="githubUsername">2.1.1.1.9. githubUsername</h6>
+</a>
+</div>
+<p>This parameter was introduced with version 0.19.0 — from this version onwards Cider will deal with a missing parameter of this name by establishing it as an empty character vector.</p>
+<p>By default the parameter is empty. This means that Cider commands that deal with GitHub cannot work of course.</p>
+<p>If a project is hosted on GitHub then you are advised to set it to the GitHub username — that's the equivalent of “group” in Tatin speak.</p>
+<p>That allows commands like <code>]APLGit2.GetTagOfLatestRelease</code> to work without specifying <code>-username</code> when issues on a project that is managed by Cider.</p>
+<div class="h_tag">
 <a href="#LINK" id="LINK" class="autoheader_anchor">
 <h5 data-id="LINK">2.1.1.2. LINK</h5>
 </a>
