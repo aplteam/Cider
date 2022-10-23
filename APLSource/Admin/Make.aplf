@@ -1,5 +1,5 @@
  Make flag;pathToAPLTreeSource;targetPath;M;A;name;F;myUCMDsFolder;caption1;caption2;projectPath;codePath;toFolder;version
-⍝ Version 2.0.0 from 2022-07-24
+⍝ Version 2.0.1 from 2022-10-22
  :If flag
      projectPath←##.CiderConfig.HOME,'/'
      codePath←##.CiderConfig.HOME,'/',##.CiderConfig.CIDER.source,'/'
@@ -14,12 +14,12 @@
      {}M.RecreateFolder targetPath
      ⎕MKDIR targetPath,'Cider'
      (caption1 caption2)←'MyUCMDs/Cider.aplc' 'Project folder'
-     :If ⎕NEXISTS myUCMDsFolder,'Cider\Cider.aplc'
-         M.CopyBetter(myUCMDsFolder,'Cider\Cider.aplc')('./APLSource/Cider.aplc')caption1 caption2
+     :If ⎕NEXISTS myUCMDsFolder,'/Cider/Cider.aplc'
+         M.CopyBetter(myUCMDsFolder,'/Cider/Cider.aplc')(##.CiderConfig.HOME,'/APLSource/Cider.aplc')caption1 caption2
      :EndIf
      (caption1 caption2)←'MyUCMDs/Cider_uc.dyalog' 'Project folder'
-     :If ⎕NEXISTS myUCMDsFolder,'Cider\Cider_uc.dyalog'
-         M.CopyBetter(myUCMDsFolder,'Cider\Cider_uc.dyalog')('./APLSource/Cider_uc.dyalog')caption1 caption2
+     :If ⎕NEXISTS myUCMDsFolder,'/Cider/Cider_uc.dyalog'
+         M.CopyBetter(myUCMDsFolder,'/Cider/Cider_uc.dyalog')(##.CiderConfig.HOME,'/APLSource/Cider_uc.dyalog')caption1 caption2
      :EndIf
      (codePath,name,'_uc.dyalog')M.CopyTo targetPath,'Cider/'
      (codePath,name,'.aplc')M.CopyTo targetPath,'Cider/'

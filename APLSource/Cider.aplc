@@ -7,11 +7,15 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.19.1+306' '2022-10-??'
-      ⍝ * 0.19.1 ⋄ 2022-10-??
+      r←'Cider' '0.20.0+315' '2022-10-23'
+      ⍝ * 0.20.0 ⋄ 2022-10-23
+      ⍝   * New command `ListTatinPackages` added
+      ⍝   * When a project is loaded with packages that were not loaded from the principal Tatin Registry
+      ⍝     then those packages are explicitly reported because this might be okay or not
       ⍝   * Bug fixes
-      ⍝     * When ]Cider.Make and ]Cider.RunTests were called without any project being opened a message 
+      ⍝     * When ]Cider.Make and ]Cider.RunTests were called without any project being opened a message
       ⍝       "cancelled by user" was printed to the session
+      ⍝     * "Make" had a problem with selecting the latest script
       ⍝ * 0.19.0 ⋄ 2022-10-10
       ⍝   * With the "?" and the "*" syntax Cider does not offer already opened projects anymore
       ⍝ * 0.18.0 ⋄ 2022-10-08
@@ -244,7 +248,7 @@
     ∇
 
     ∇ flag←path CheckForTatinPackages config;folders
-    ⍝ Checks whether there one or more Tatin install folders are defined, exist and are not empty, in which case a 1 is returned.
+    ⍝ Checks whether at least one Tatin install folder is defined, does exist and is not empty, in which case a 1 is returned.
       flag←0
       :If 0<≢config.CIDER.tatinFolder
           folders←','(≠⊆⊢)config.CIDER.tatinFolder
@@ -460,7 +464,7 @@
       :EndIf
     ∇
 
-    ∇ {r}←CheckPackagesStatus(config parms);checkFlag;folder;folders;folder_;updateFlag;updateParms;report
+    ∇ {r}←CheckPackagesStatus(config parms);checkFlag;folder;folders;folder_;updateFlag;updateParms;report;buff
     ⍝ Check whether Tatin packages should be updated in case parms.importFlag is not 1.
     ⍝ This is ruled by parms.checkPackageVersions
     ⍝ ⍬ means the user will be asked for both checking and updating
@@ -483,11 +487,14 @@
               report←⍬
               folders←','(≠⊆⊢)config.CIDER.tatinFolder
               1 ⎕SE._Tatin.Client.EstablishRumbaClients ⍬
-              :If 0<≢report←report CheckTatinFolders folders
-                  report←{⍵[;4]⌿⍵}¨report
-              :AndIf 0=+/≢¨report
+              :If 0<≢report←report CheckTatinFoldersForLaterVersions folders
+              :AndIf 0=+/⊃,/4⌷[2]¨report
                   p'   No later versions found '
+                  :If 0<≢buff←(⊂'https://tatin.dev/')~⍨⊃,/3⌷[2]¨report
+                      p{'But note that ',(⍕≢⍵),' package',((1<≢buff)/'s'),' were loaded from ',⊃{⍺,',',⍵}/∪⍵}buff
+                  :EndIf
               :Else
+                  report←{⍵[;4]⌿⍵}¨report
                   UpdatePackages folders report parms
               :EndIf
               ⎕SE._Tatin.Client.CloseConnections 1
@@ -495,7 +502,7 @@
       :EndIf
     ∇
 
-    ∇ report←report CheckTatinFolders folders;folder;folder_;qdmx
+    ∇ report←report CheckTatinFoldersForLaterVersions folders;folder;folder_;qdmx
     ⍝ Loop through all Tatin install folders
       :For folder :In folders
           folder_←⊃'='(≠⊆⊢)folder
@@ -731,6 +738,33 @@
                   :EndIf
               :EndIf
           :EndIf
+      :EndIf
+    ∇
+
+    ∇ r←ListTatinPackages y;path;cfgFilename;json;cfg;tatinFolder;buildFilenames;buildLists
+      :Access Public Shared
+      :If '['=1⍴y
+          path←GetFolderFromAlias y
+      :Else
+          path←y
+      :EndIf
+      cfgFilename←path,'/cider.config'
+      'No Cider config file found'Assert ⎕NEXISTS cfgFilename
+      json←⊃⎕NGET cfgFilename
+      cfg←⎕JSON⍠('Dialect' 'JSON5')⊣json
+      tatinFolder←cfg.CIDER.tatinFolder
+      :If 0=≢tatinFolder
+          r←'This Cider project has no Tatin packages'
+      :Else
+          tatinFolder←','(≠⊆⊢)tatinFolder
+          tatinFolder←{⍵↑⍨¯1+⍵⍳'='}¨tatinFolder
+          buildFilenames←((⊂path,'/'),¨tatinFolder),¨⊂'/apl-buildlist.json'
+          'Build list not found?!'Assert∧/⎕NEXISTS¨buildFilenames
+          buildLists←{⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET ⍵}¨buildFilenames
+          r←⍉∘↑¨(⊂¨' ',¨¨buildLists.packageID),¨buildLists.(principal url)
+          r←(⊂' Package-ID' 'Principal' 'URL')⍪¨(⊂'' '' '')⍪¨r
+          (2⌷¨r)←(⊂' ' '' ''),¨¨({(¯1 0 0)+¨⊃¨((⌈⌿⍴¨,¨⍵))}¨r)⍴¨¨'-'
+          r←⊃⍪/((⊂¨'*** '∘,¨(⊂path,'/'),¨tatinFolder),¨⊂'' '')⍪¨r
       :EndIf
     ∇
 

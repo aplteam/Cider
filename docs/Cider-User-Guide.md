@@ -140,11 +140,11 @@ However, if the first non-white space character of `tests` is a `]` (making it a
 
 ###### githubUsername
 
-This parameter was introduced with version 0.19.0 --- from this version onwards Cider will deal with a missing parameter of this name by establishing it as an empty character vector.
+This parameter was introduced with version 0.19.0 --- from this version onwards Cider will deal with a missing parameter by this name: it will establish it as an empty character vector.
 
-By default the parameter is empty. This means that Cider commands that deal with GitHub cannot work of course.
+By default the parameter is empty. This means that any Cider command that deals with GitHub cannot work of course.
 
-If a project is hosted on GitHub then you are advised to set it to the GitHub username --- that's the equivalent of "group" in Tatin speak.
+If a project is hosted on GitHub then you are advised to set it to the GitHub username --- that's "group" in Tatin speak.
 
 That allows commands like `]APLGit2.GetTagOfLatestRelease` to work without specifying `-username` when issues on a project that is managed by Cider.
 
@@ -351,3 +351,42 @@ You can easily achieve that by yourself: just add the required code to a functio
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
 
 [^winonly]: At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature on all platform.
+
+## Misc
+
+Cider offers helpers that are useful in particular circumstances.
+
+### ListTatinPackage
+
+Checking dependencies before publishing to the principal Tatin Registry is a good idea, in particular when one uses a number of Tatin Registry like a personal one, a company Registry and https://tatin.dev
+
+In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev, but of course not with a release candidate!
+
+The function `ListTatinPackage` is helpful in putting all build lists from all Tatin install folders of a given project on display, making it easy to check.
+
+The following example was created in a workspace were the project `APLGit2` was opened. Because it is the only one Cider knows that it is supposed to deal with it.
+
+`APLGit2` has two Tatin installation folders, one for production (`packages/`) and one for development and testing (`packages_dev/`):
+
+```
+      ]listTatinPackages
+*** C:/.../APLGit2/packages:
+ Package-ID                                         Principal  URL                
+ ---------------------------                        ---------  ------------------ 
+ aplteam-OS-3.0.1                                           1  https://tatin.dev/ 
+ aplteam-GitHubAPIv3-0.7.0                                  1  https://tatin.dev/ 
+ aplteam-FilesAndDirs-5.1.5                                 1  https://tatin.dev/ 
+ aplteam-CommTools-1.0.1                                    1  https://tatin.dev/ 
+ aplteam-APLTreeUtils2-1.1.3                                1  https://tatin.dev/ 
+*** C:/.../APLGit2/packages_dev:
+ Package-ID                                         Principal  URL                
+ ---------------------------                        ---------  ------------------ 
+ aplteam-ZipArchive-1.0.0                                   1  https://tatin.dev/ 
+ aplteam-Tester2-3.2.7                                      1  https://tatin.dev/ 
+ aplteam-FilesAndDirs-5.1.5                                 1  https://tatin.dev/ 
+ aplteam-CodeCoverage-0.9.3                                 1  https://tatin.dev/ 
+ aplteam-APLTreeUtils2-1.1.3                                1  https://tatin.dev/ 
+ aplteam-OS-3.0.1                                           0  https://tatin.dev/ 
+ aplteam-IniFiles-5.0.3                                     0  https://tatin.dev/ 
+ aplteam-DotNetZip-2.0.2                                    0  https://tatin.dev/ 
+```

@@ -142,8 +142,20 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 </tbody>
 </table>
 <div class="h_tag">
+<a href="#ListTatinPackages" id="ListTatinPackages" class="autoheader_anchor">
+<h2 data-id="ListTatinPackages">12. ListTatinPackages</h2>
+</a>
+</div>
+<p>Lists all dependencies installed in the Tatin installation folders, if any.</p>
+<p>For every install folder these pieces of information are listed:</p>
+<ul>
+<li>The full package ID</li>
+<li>A Boolean indicating whether the package is a principal one or just a dependency</li>
+<li>A URL where the package was loaded from</li>
+</ul>
+<div class="h_tag">
 <a href="#OpenProject" id="OpenProject" class="autoheader_anchor">
-<h2 data-id="OpenProject">12. OpenProject</h2>
+<h2 data-id="OpenProject">13. OpenProject</h2>
 </a>
 </div>
 <p>Opening a project means carrying out the following actions:</p>
@@ -169,7 +181,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <p>What's defined in the parameter space overwrites the value in the config file, though only temporarily.</p>
 <div class="h_tag">
 <a href="#folder" id="folder" class="autoheader_anchor">
-<h3 data-id="folder">12.1. folder (mandatory)</h3>
+<h3 data-id="folder">13.1. folder (mandatory)</h3>
 </a>
 </div>
 <p>This must be one of:</p>
@@ -180,13 +192,13 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <p>Note that this must <em>not</em> be empty but it <em>might</em> be <code>./</code> representing the current directory.</p>
 <div class="h_tag">
 <a href="#alias" id="alias" class="autoheader_anchor">
-<h3 data-id="alias">12.2. alias</h3>
+<h3 data-id="alias">13.2. alias</h3>
 </a>
 </div>
 <p>The alias under which you might want to access the project in the future.</p>
 <div class="h_tag">
 <a href="#checkPackageVersions" id="checkPackageVersions" class="autoheader_anchor">
-<h3 data-id="checkPackageVersions">12.3. checkPackageVersions</h3>
+<h3 data-id="checkPackageVersions">13.3. checkPackageVersions</h3>
 </a>
 </div>
 <p>This is ignored in case…</p>
@@ -214,24 +226,24 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 </table>
 <div class="h_tag">
 <a href="#parent" id="parent" class="autoheader_anchor">
-<h3 data-id="parent">12.4. parent</h3>
+<h3 data-id="parent">13.4. parent</h3>
 </a>
 </div>
 <p>Defaults to <code>#</code> but might as be something like <code>⎕SE</code> or <code>#.Foo.Goo.Boo</code>. However, all namespaces listed must exist.</p>
 <div class="h_tag">
 <a href="#projectSpace" id="projectSpace" class="autoheader_anchor">
-<h3 data-id="projectSpace">12.5. projectSpace</h3>
+<h3 data-id="projectSpace">13.5. projectSpace</h3>
 </a>
 </div>
 <p>The name of the namespace the project is injected into. If this is empty it is going to be <code>#</code> or <code>⎕SE</code>, depending from where the function was called from.</p>
 <div class="h_tag">
 <a href="#Flags" id="Flags" class="autoheader_anchor">
-<h3 data-id="Flags">12.6. Flags</h3>
+<h3 data-id="Flags">13.6. Flags</h3>
 </a>
 </div>
 <div class="h_tag">
 <a href="#importFlag" id="importFlag" class="autoheader_anchor">
-<h4 data-id="importFlag">12.6.1. importFlag</h4>
+<h4 data-id="importFlag">13.6.1. importFlag</h4>
 </a>
 </div>
 <p>Defaults to 0 meaning that the code is not imported but linked.</p>
@@ -239,19 +251,19 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <p>Note that this has implications on how Cider deals with Tatin packages, see there.</p>
 <div class="h_tag">
 <a href="#noPkgLoad" id="noPkgLoad" class="autoheader_anchor">
-<h4 data-id="noPkgLoad">12.6.2. noPkgLoad</h4>
+<h4 data-id="noPkgLoad">13.6.2. noPkgLoad</h4>
 </a>
 </div>
 <p>Defaults to 0, meaning that Cider will load Tatin packages by honoring the config file's <code>tatinFolder</code> parameter. However, there might be circumstances when you do not want packages to be loaded. This can be achieved by setting the <code>noPkgLoad</code> flag to 1.</p>
 <div class="h_tag">
 <a href="#quietFlag" id="quietFlag" class="autoheader_anchor">
-<h4 data-id="quietFlag">12.6.3. quietFlag</h4>
+<h4 data-id="quietFlag">13.6.3. quietFlag</h4>
 </a>
 </div>
 <p>Defaults to 0, meaning that the function prints messages to the session.</p>
 <div class="h_tag">
 <a href="#suppressLX" id="suppressLX" class="autoheader_anchor">
-<h4 data-id="suppressLX">12.6.4. suppressLX</h4>
+<h4 data-id="suppressLX">13.6.4. suppressLX</h4>
 </a>
 </div>
 <p>Defaults to 0, meaning that the projects initialisation function (if any) will be executed.</p>
@@ -259,7 +271,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <p>An example might be an automated build process: that might need to open the project but without actually initialising it.</p>
 <div class="h_tag">
 <a href="#watch" id="watch" class="autoheader_anchor">
-<h3 data-id="watch">12.7. watch</h3>
+<h3 data-id="watch">13.7. watch</h3>
 </a>
 </div>
 <p>Defaults to “both”, meaning that changing any APL objects in the workspaces will result in Link updating the corresponding file on disk, and any change on disk will be reflected by changing the workspace.</p>
@@ -275,7 +287,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 
 <div class="h_tag">
 <a href="#Version" id="Version" class="autoheader_anchor">
-<h2 data-id="Version">13. Version</h2>
+<h2 data-id="Version">14. Version</h2>
 </a>
 </div>
 <p><code>Version</code> returns a three-element vector with these pieces of information:</p>

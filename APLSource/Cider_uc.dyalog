@@ -1,4 +1,4 @@
-:Class Cider_uc
+﻿:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
 
@@ -45,6 +45,13 @@
           c.Desc←'Breaks the Link between the workspace and the files on disk'
           c.Group←'Cider'
           c.Parse←'-all'
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'ListTatinPackages'
+          c.Desc←'Lists all Tatin packages in all install folder'
+          c.Group←'Cider'
+          c.Parse←'1s'
           r,←c
      
           c←⎕NS''
@@ -100,6 +107,8 @@
           r←ListOpenProjects Args
       :Case ⎕C'ListAliases'
           r←ListAliase Args
+      :Case ⎕C'ListTatinPackages'
+          r←ListTatinPackages Args
       :Case ⎕C'CreateProject'
           r←CreateProject Args
       :Case ⎕C'CloseProject'
@@ -177,6 +186,16 @@
           r←ProcessAliases Args.(prune edit quiet)
       :EndIf
     ∇
+
+    ∇ r←ListTatinPackages Args;path
+      r←''
+      :If 0=≢path←GetProjectPath Args
+          →0,≢⎕←'Cancelled by user'
+      :Else
+          r←P.ListTatinPackages path
+      :EndIf
+    ∇
+
 
     ∇ r←ListOpenProjects Args
       r←P.ListOpenProjects Args.verbose
@@ -261,6 +280,9 @@
           :Case ⎕C'ListAliases'
               r,←⊂'List all defined aliases with their folders'
               r,←⊂']Cider.ListAliases [-prune] [-edit] [-quiet]'
+          :Case ⎕C'ListTatinPackages'
+              r,←⊂'Lists all Tatin packages in all install folders'
+              r,←⊂']Cider.ListTatinPackages [folder]'
           :Case ⎕C'CreateProject'
               r,←⊂'Makes the given folder a project folder'
               r,←⊂']Cider.CreateProject <folder> [<project-namespace>] [-alias=] [-acceptConfig] [-noEdit] [-quiet]'
@@ -341,6 +363,17 @@
               r,←⊂'-quiet  When -prune is specified the user will be asked for confirmation in case there'
               r,←⊂'        is something to prune at all. You can specify -quiet in order to prevent this.'
               r,←⊂'        All reporting to the session will be suppressed as well.'
+          :Case ⎕C'ListTatinPackages'
+              r,←⊂'Lists all Tatin packages in all install folders.'
+              r,←⊂''
+              r,←⊂'If an argument is provided then it must be one of:'
+              r,←⊂' * folder of a Cider-managed project'
+              r,←⊂' * an alias of a Cider-managed porject'
+              r,←⊂''
+              r,←⊂'The package install folder(s) are established from Cider''s config file.'
+              r,←⊂''
+              r,←⊂'The purposes of this user command is to check whether the packages got installed from the'
+              r,←⊂'desired Tatin Registries.'
           :Case ⎕C'CreateProject'
               r,←⊂'Requires a path to a folder ("source") that is about to become a project.'
               r,←⊂''

@@ -124,6 +124,16 @@ With the verbose flag set it returns 4 columns:
 `[;3]` | Number of objects belonging to the project
 `[;4]` | Alias (if any)
 
+## ListTatinPackages
+
+Lists all dependencies installed in the Tatin installation folders, if any. 
+
+For every install folder these pieces of information are listed:
+
+* The full package ID
+* A Boolean indicating whether the package is a principal one or just a dependency
+* A URL where the package was loaded from
+
 ## OpenProject
 
 Opening a project means carrying out the following actions:
