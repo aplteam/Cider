@@ -7,7 +7,13 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.20.0+315' '2022-10-23'
+      r←'Cider' '0.20.1+318' '2022-11-01'
+      ⍝ * 0.20.1 ⋄ 2022-11-01
+      ⍝   * Bug fixes
+      ⍝     * In case the current branch (Git) is "main" or "master" the Git status was displayed as a 
+      ⍝       vector rather than a matrix.
+      ⍝     * When a folder was inspected for later versions but did not contain a build list Cider
+      ⍝       got confused; should carry on without checking
       ⍝ * 0.20.0 ⋄ 2022-10-23
       ⍝   * New command `ListTatinPackages` added
       ⍝   * When a project is loaded with packages that were not loaded from the principal Tatin Registry
@@ -223,7 +229,14 @@
       :If 0=parms.noPkgLoad
           :If parms.folder CheckForTatinPackages config
               :If 0=parms.importFlag
-                  CheckPackagesStatus config parms
+                  :Trap 0
+                      CheckPackagesStatus config parms
+                  :Else
+                      qdmx←⎕DMX
+                      1 p'>>> ERROR: Checking Tatin package status from'
+                      1 p'           ',(config.CIDER.tatinFolder),' in ',parms.folder
+                      1 p'           failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+                  :EndTrap
               :EndIf
               :Trap 0
                   {}LoadTatinPackages config parms.folder(⍕projectSpace_)
@@ -433,7 +446,7 @@
                   :EndIf
               :EndTrap
               status←(↓(,[0.5]'Git status report')⍪'='),status
-              {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}status
+              {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
           :Else
               p'The project appears to be managed by Git but the user command ]APLGit2 and'
               p'it''s API are missing, therefore no information can be provided regarding Git'

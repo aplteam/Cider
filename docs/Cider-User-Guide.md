@@ -142,11 +142,11 @@ However, if the first non-white space character of `tests` is a `]` (making it a
 
 This parameter was introduced with version 0.19.0 --- from this version onwards Cider will deal with a missing parameter by this name: it will establish it as an empty character vector.
 
-By default the parameter is empty. This means that any Cider command that deals with GitHub cannot work of course.
+By default the parameter is empty. If a project is hosted on GitHub then you are advised to set it to the GitHub username --- "group" in Tatin speak.
 
-If a project is hosted on GitHub then you are advised to set it to the GitHub username --- that's "group" in Tatin speak.
+That allows commands to be successfully issued towards GitHub when they require the username to be specified.
 
-That allows commands like `]APLGit2.GetTagOfLatestRelease` to work without specifying `-username` when issues on a project that is managed by Cider.
+An example would be `]APLGit2.GetTagOfLatestRelease`: you may specify `-user=` and it would work, but when issued on a Cider project there is no need for this since it would collect the required information from the project's Cider config file.
 
 ##### LINK
 
@@ -330,7 +330,7 @@ This can be achieved by specifying the fully qualified name of a function that m
 
 The function may or may not return a result, but when it does the result will be discarded.
 
-The fully qualified name of the function must go into the file that is returned by the function `GetCiderConfigFilename` which is available only via the API, not as a user command.
+The fully qualified name of the function must go into the file that is returned by the function `GetCiderConfigFilename` which is available only via the API, not as a user command. This is the Cider config file, not a Cider project config file.
 
 That file already contains a definition of the keyword `ExecuteAfterProjectOpen`, but it is empty:
 

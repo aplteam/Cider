@@ -49,7 +49,7 @@
      
           c←⎕NS''
           c.Name←'ListTatinPackages'
-          c.Desc←'Lists all Tatin packages in all install folder'
+          c.Desc←'Lists all Tatin packages in all install folders'
           c.Group←'Cider'
           c.Parse←'1s'
           r,←c
@@ -189,7 +189,7 @@
 
     ∇ r←ListTatinPackages Args;path
       r←''
-      :If 0=≢path←GetProjectPath Args
+      :If 0=≢path←'act on'GetProjectPath Args
           →0,≢⎕←'Cancelled by user'
       :Else
           r←P.ListTatinPackages path
@@ -939,8 +939,9 @@
       :EndIf
     ∇
 
-    ∇ path←GetProjectPath Args;list;index;aliasDefs;bool;alias;info
+    ∇ path←{verb}GetProjectPath Args;list;index;aliasDefs;bool;alias;info
       path←''
+      verb←{0<⎕NC ⍵:⍎⍵ ⋄ 'open'}'verb'
       :If 0≡Args._1
           list←⎕SE.Cider.ListOpenProjects 0
           :Select ≢list
@@ -969,7 +970,7 @@
                   :Return
               :Case 1
                   (alias path)←aliasDefs[bool⍳1;]
-                  :If 0=1 YesOrNo'Sure you want to open "',path,'" ?'
+                  :If 0=1 YesOrNo'Sure you want to ',verb,' "',path,'" ?'
                       :Return
                   :EndIf
               :Else

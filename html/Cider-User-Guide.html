@@ -152,9 +152,9 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </a>
 </div>
 <p>This parameter was introduced with version 0.19.0 — from this version onwards Cider will deal with a missing parameter by this name: it will establish it as an empty character vector.</p>
-<p>By default the parameter is empty. This means that any Cider command that deals with GitHub cannot work of course.</p>
-<p>If a project is hosted on GitHub then you are advised to set it to the GitHub username — that's “group” in Tatin speak.</p>
-<p>That allows commands like <code>]APLGit2.GetTagOfLatestRelease</code> to work without specifying <code>-username</code> when issues on a project that is managed by Cider.</p>
+<p>By default the parameter is empty. If a project is hosted on GitHub then you are advised to set it to the GitHub username — “group” in Tatin speak.</p>
+<p>That allows commands to be successfully issued towards GitHub when they require the username to be specified.</p>
+<p>An example would be <code>]APLGit2.GetTagOfLatestRelease</code>: you may specify <code>-user=</code> and it would work, but when issued on a Cider project there is no need for this since it would collect the required information from the project's Cider config file.</p>
 <div class="h_tag">
 <a href="#LINK" id="LINK" class="autoheader_anchor">
 <h5 data-id="LINK">2.1.1.2. LINK</h5>
@@ -330,7 +330,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Finally you might want to execute some general code (as opposed to project-specific code) after a project was loaded. “General” means that this code is executed whenever a project (any project!) is opened.</p>
 <p>This can be achieved by specifying the fully qualified name of a function that must be monadic, most likely in <code>⎕SE</code>. A namespace with the configuration data of the project is passed as right argument.</p>
 <p>The function may or may not return a result, but when it does the result will be discarded.</p>
-<p>The fully qualified name of the function must go into the file that is returned by the function <code>GetCiderConfigFilename</code> which is available only via the API, not as a user command.</p>
+<p>The fully qualified name of the function must go into the file that is returned by the function <code>GetCiderConfigFilename</code> which is available only via the API, not as a user command. This is the Cider config file, not a Cider project config file.</p>
 <p>That file already contains a definition of the keyword <code>ExecuteAfterProjectOpen</code>, but it is empty:</p>
 <pre><code>{
     ExecuteAfterProjectOpen: "",

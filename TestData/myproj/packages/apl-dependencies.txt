@@ -1,1 +1,2 @@
+https://test.tatin.dev/dyalog-HttpCommand-4.0.24
 dyalog-HttpCommand-4.0.24

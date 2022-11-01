@@ -20,7 +20,7 @@
  R←T._OK
 
 ∆TidyUp:
- {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ Assert ⎕SE.Cider.CloseProject'[foo]'
  #.⎕EX'TEMP'
  defs←(defs[;1]≢¨⊂'foo')⌿defs
  (⊂⊃¨{⍺,'=',⍵}/¨↓defs)⎕NPUT ##.Cider.GetCiderAliasFilename 1
