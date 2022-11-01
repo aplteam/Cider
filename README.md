@@ -12,7 +12,7 @@ Cider requires
 
 If Tatin packages are part of a project then Tatin is required as well.
 
-Cider is capable of collaborating with the [Git package](https://github.com/aplteam/Git) but does not rely on it.
+Cider is capable of collaborating with the [Git package](https://github.com/aplteam/APLGit2) but does not rely on it.
 
 
 ## Overview
