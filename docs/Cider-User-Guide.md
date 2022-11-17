@@ -54,6 +54,7 @@ We will discuss the settings in each section in detail.
 
 This section contains the Cider-specific parameters.
 
+
 ###### parent
 
 Defaults to `#` but can be something like `⎕SE` or `#.MyNamespace1.MyNamespace2`. 
@@ -270,7 +271,24 @@ A> You may set `watch` to "ns" or "dir" instead. Refer to the LINK documentation
 However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the `-import` flag.
 
 
-#### 4. Check for later versions regarding Tatin packages
+#### 4. Check for empty package folders
+
+Cider now checks whether any of the Tatin installation folders --- as noted on the `tatinFolder` property --- is empty apart from the dependency file and the build list.
+
+A> ### Why this may happen
+A>
+A> Since version 0.21.0 Cider itself has an enhanced `.gitignore` file: it defines that the contents of the Tatin installation folder but the two definition files shall be ignored. Only these two definition files are therefore uploaded to GitHub, but _none of the packages_.
+A>
+A> The effect of this is that when somebody downloads the Cider project now _the Tatin installation folder contains just those two definition files but no packages!_
+A>
+A> Note that this is in line with the vast majority of other package managers.
+
+In case that a Tatin installation folder defined in the Cider config file does not contain any packages but the two definition files, the user is asked whether she wants to re-install the packages. 
+
+If she answers "Y" she will also be asked whether she wants to update those packages in case a later version of one of the packages mentioned in the dependency file is now available.
+
+
+#### 5. Check for later packages versions
 
 In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will only happen in case `importFlag` is 0.
 
@@ -279,7 +297,7 @@ However, note that this is only true if you've loaded the package(s) from a Regi
 If `]Cider.OpenProject` discovers later packages it will ask the user whether packages shall be re-installed with the `-update` flag set. This will happen independently for each package installation folder.
 
 
-#### 5. Loading Tatin packages
+#### 6. Loading Tatin packages
  
 Your application or tool might depend on one or more Tatin[^tatin] packages. By assigning `tatinFolder` one or more comma-separated folders hosting installed Tatin packages you can make sure that Cider will load[^load_tatin_pkgs] those installed packages into the root of your project.
 
@@ -299,7 +317,7 @@ Notes:
 * A namespace, if assigned to a folder, must be specified relative to the root of the project
 
 
-#### 6. Injecting a namespace `CiderConfig`
+#### 7. Injecting a namespace `CiderConfig`
 
 In this step `]Cider.OpenProject` injects a namespace `CiderConfig` into the project space and...
 
@@ -307,7 +325,7 @@ In this step `]Cider.OpenProject` injects a namespace `CiderConfig` into the pro
 * adds a variable `HOME` that remembers the path the project was loaded from
 
 
-#### 7. Initialising a project (optional)
+#### 8. Initialising a project (optional)
 
 Now there might well be demand for executing some code in order to initialise your project.
 
@@ -322,7 +340,7 @@ Notes:
 
 Note that you can access the configuration data of the project from within your initialisation function by questioning the `CiderConfig` namespace.
 
-#### 8. Executing user-specific code
+#### 9. Executing user-specific code
 
 Finally you might want to execute some general code (as opposed to project-specific code) after a project was loaded. "General" means that this code is executed whenever a project (any project!) is opened. 
 

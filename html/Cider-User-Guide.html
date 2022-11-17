@@ -275,16 +275,31 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 
 <p>However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the <code>-import</code> flag.</p>
 <div class="h_tag">
-<a href="#4-Check-for-later-versions-regarding-Tatin-packages" id="4-Check-for-later-versions-regarding-Tatin-packages" class="autoheader_anchor">
-<h4 data-id="4-Check-for-later-versions-regarding-Tatin-packages">2.2.4. 4. Check for later versions regarding Tatin packages</h4>
+<a href="#4-Check-for-empty-package-folders" id="4-Check-for-empty-package-folders" class="autoheader_anchor">
+<h4 data-id="4-Check-for-empty-package-folders">2.2.4. 4. Check for empty package folders</h4>
+</a>
+</div>
+<p>Cider now checks whether any of the Tatin installation folders — as noted on the <code>tatinFolder</code> property — is empty apart from the dependency file and the build list.</p>
+<div class="leanpub_A">
+<h3>Why this may happen</h3>
+<p>Since version 0.21.0 Cider itself has an enhanced <code>.gitignore</code> file: it defines that the contents of the Tatin installation folder but the two definition files shall be ignored. Only these two definition files are therefore uploaded to GitHub, but <em>none of the packages</em>.</p>
+<p>The effect of this is that when somebody downloads the Cider project now <em>the Tatin installation folder contains just those two definition files but no packages!</em></p>
+<p>Note that this is in line with the vast majority of other package managers.</p>
+</div>
+
+<p>In case that a Tatin installation folder defined in the Cider config file does not contain any packages but the two definition files, the user is asked whether she wants to re-install the packages.</p>
+<p>If she answers “Y” she will also be asked whether she wants to update those packages in case a later version of one of the packages mentioned in the dependency file is now available.</p>
+<div class="h_tag">
+<a href="#5-Check-for-later-packages-versions" id="5-Check-for-later-packages-versions" class="autoheader_anchor">
+<h4 data-id="5-Check-for-later-packages-versions">2.2.5. 5. Check for later packages versions</h4>
 </a>
 </div>
 <p>In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will only happen in case <code>importFlag</code> is 0.</p>
 <p>However, note that this is only true if you've loaded the package(s) from a Registry that is in your config file <em>and</em> has a priority greater than 0. Refer to the Tatin documentation for details.</p>
 <p>If <code>]Cider.OpenProject</code> discovers later packages it will ask the user whether packages shall be re-installed with the <code>-update</code> flag set. This will happen independently for each package installation folder.</p>
 <div class="h_tag">
-<a href="#5-Loading-Tatin-packages" id="5-Loading-Tatin-packages" class="autoheader_anchor">
-<h4 data-id="5-Loading-Tatin-packages">2.2.5. 5. Loading Tatin packages</h4>
+<a href="#6-Loading-Tatin-packages" id="6-Loading-Tatin-packages" class="autoheader_anchor">
+<h4 data-id="6-Loading-Tatin-packages">2.2.6. 6. Loading Tatin packages</h4>
 </a>
 </div>
 <p>Your application or tool might depend on one or more Tatin[<a href="#fnref1" class="footnote_link"><sup>1</sup></a>] packages. By assigning <code>tatinFolder</code> one or more comma-separated folders hosting installed Tatin packages you can make sure that Cider will load[<a href="#fnref3" class="footnote_link"><sup>3</sup></a>] those installed packages into the root of your project.</p>
@@ -299,8 +314,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <li>A namespace, if assigned to a folder, must be specified relative to the root of the project</li>
 </ul>
 <div class="h_tag">
-<a href="#6-Injecting-a-namespace-CiderConfig" id="6-Injecting-a-namespace-CiderConfig" class="autoheader_anchor">
-<h4 data-id="6-Injecting-a-namespace-CiderConfig">2.2.6. 6. Injecting a namespace <code>CiderConfig</code></h4>
+<a href="#7-Injecting-a-namespace-CiderConfig" id="7-Injecting-a-namespace-CiderConfig" class="autoheader_anchor">
+<h4 data-id="7-Injecting-a-namespace-CiderConfig">2.2.7. 7. Injecting a namespace <code>CiderConfig</code></h4>
 </a>
 </div>
 <p>In this step <code>]Cider.OpenProject</code> injects a namespace <code>CiderConfig</code> into the project space and…</p>
@@ -309,8 +324,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <li>adds a variable <code>HOME</code> that remembers the path the project was loaded from</li>
 </ul>
 <div class="h_tag">
-<a href="#7-Initialising-a-project" id="7-Initialising-a-project" class="autoheader_anchor">
-<h4 data-id="7-Initialising-a-project">2.2.7. 7. Initialising a project (optional)</h4>
+<a href="#8-Initialising-a-project" id="8-Initialising-a-project" class="autoheader_anchor">
+<h4 data-id="8-Initialising-a-project">2.2.8. 8. Initialising a project (optional)</h4>
 </a>
 </div>
 <p>Now there might well be demand for executing some code in order to initialise your project.</p>
@@ -323,8 +338,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </ul>
 <p>Note that you can access the configuration data of the project from within your initialisation function by questioning the <code>CiderConfig</code> namespace.</p>
 <div class="h_tag">
-<a href="#8-Executing-user-specific-code" id="8-Executing-user-specific-code" class="autoheader_anchor">
-<h4 data-id="8-Executing-user-specific-code">2.2.8. 8. Executing user-specific code</h4>
+<a href="#9-Executing-user-specific-code" id="9-Executing-user-specific-code" class="autoheader_anchor">
+<h4 data-id="9-Executing-user-specific-code">2.2.9. 9. Executing user-specific code</h4>
 </a>
 </div>
 <p>Finally you might want to execute some general code (as opposed to project-specific code) after a project was loaded. “General” means that this code is executed whenever a project (any project!) is opened.</p>

@@ -1,5 +1,7 @@
 :Class Cider
-⍝ Cider's application code.
+⍝ This script contains Cider's application code.\\
+⍝ Cider is a project manager for Dyalog APL.\\
+⍝ For details see <https://github.com/aplteam/Cider>
 
     ⎕IO←1 ⋄ ⎕ML←1
     L←⎕SE.Link
@@ -7,10 +9,20 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.20.1+318' '2022-11-01'
+      r←'Cider' '0.21.0+326' '2022-11-17'
+      ⍝ * 0.21.0 ⋄ 2022-11-17
+      ⍝   * Cider now checks whether any Tatin installation folder does not actually has any packages
+      ⍝     installed but has packages defined in the dependency file. In such a case the user is asked
+      ⍝     whether she wants to re-install those packages.
+      ⍝   * Regarding the Git status a simplified one-line message is printed to the session in case the
+      ⍝     name of the current branch is neither "main" nor "master" and the working tree is clean.
+      ⍝   * Instead of throwing an error in case the Git "Status" command fails for some reason no error
+      ⍝     is thrown anymore, only a reasonable message is printed to the session.
+      ⍝   * Bug fixes
+      ⍝     * The Cider config file defined a function `Initial` that did not exist as "init" function.
       ⍝ * 0.20.1 ⋄ 2022-11-01
       ⍝   * Bug fixes
-      ⍝     * In case the current branch (Git) is "main" or "master" the Git status was displayed as a 
+      ⍝     * In case the current branch (Git) is "main" or "master" the Git status was displayed as a
       ⍝       vector rather than a matrix.
       ⍝     * When a folder was inspected for later versions but did not contain a build list Cider
       ⍝       got confused; should carry on without checking
@@ -27,126 +39,6 @@
       ⍝ * 0.18.0 ⋄ 2022-10-08
       ⍝   * New `YesOrNo`
       ⍝   * `Version` returned a two-item vector with the expected result being the first item
-      ⍝ * 0.17.0 ⋄ 2022-09-28
-      ⍝   * Breaking change: The API function `ProcessAlias` was renamed to `AddAlias`
-      ⍝   * In case loading Tatin packages crashes this is now trapped and the error message is reported,
-      ⍝     but then Cider carries on
-      ⍝   * Only the number of Tatin packages is reported now, not the full list of packages
-      ⍝   * Git's status (if any) is now always reported in a separate read-only edit window
-      ⍝   * Messages regarding Git streamlined
-      ⍝   * Bug fix: error message were not displayed whith quietFlag←1
-      ⍝   * README.md polished: contained some outdated pieces of information
-      ⍝   * Documentation polished
-      ⍝ * 0.16.0 ⋄ 2022-09-18
-      ⍝   * `CreateProject` now accepts all combinations of empty/non-empty namespaces and empty/non-empty
-      ⍝     folders and acts sensibly or asks the user what do to. If `quietFlag` is set and a combination
-      ⍝     makes no sense (read: both not empty) an error is thrown.
-      ⍝   * `OpenProject` now accepts not only a parameter space as `⍵` but also a character vector with
-      ⍝     a path pointing to a project folder that contains a project config file.
-      ⍝ * 0.15.1 ⋄ 2022-09-12
-      ⍝   * Documentation for `OpenProject` improved and clarified. This regards both the API function
-      ⍝     and the user command.
-      ⍝   * Bug fix in `OpenProject` regarding `parentSpace`
-      ⍝ * 0.15.0 ⋄ 2022-09-11
-      ⍝   * When a non-empty namespace is specified to CreateProject the user is asked whether the
-      ⍝     the contents should be deleted. In case of a "No" the contents is written to file
-      ⍝   * When opening a project the URLs packages were originally installed from are reported now
-      ⍝   * The question for checking for Tatin updates defaults now to "N"
-      ⍝   * Bug fixes
-      ⍝     * The function `Get_JSON5` did not trap any domain errors when importing a JSON file and
-      ⍝       therefore did not provide a helpful message on invalid files.
-      ⍝ * 0.14.2 ⋄ 2022-08-24
-      ⍝   * When a project was created and then, as part of the creation, opened the "watch" parameter was
-      ⍝     always "both" no matter what
-      ⍝   * User Guide improved
-      ⍝ * 0.14.1 ⋄ 2022-08-18
-      ⍝   * Bug fixes
-      ⍝     * Messages regarding the execution of an "Init" function were printed too late
-      ⍝     * No message was printed in case a user function was executed successfully
-      ⍝ * 0.14.0 ⋄ 2022-08-06
-      ⍝   * In case the target namespace is not empty (Link requirement) the user is now asked whether she
-      ⍝     wants to delete the contents.
-      ⍝   * The question for updating packages now requires confirmation (no default anymore)
-      ⍝   * Bug fixes
-      ⍝     * `CreateOpenParms`: refs were not converted to names
-      ⍝     * Help for `]Cider.Make` as well as `]Cider.RunTests` was insufficient
-      ⍝     * `OpenProject` did not check for valid parameters
-      ⍝ * 0.13.0 ⋄ 2022-08-01
-      ⍝   * Now cooperates with `APLGit2` rather than `Git`: see <https://github.com/aplteam/APLGit2>
-      ⍝ * 0.12.0 ⋄ 2022-07-24
-      ⍝   * `lx` renamed: `init`
-      ⍝   * New property "tests" added to the config file
-      ⍝   * New property "make" added to the config file
-      ⍝   * User command ]Cider.RunTests added
-      ⍝   * User command ]Cider.Make added
-      ⍝   * Parameter "watch" is "both" again
-      ⍝   * Uses the `MakeHelpers` package for its build process, and expects it in ⎕SE now.
-      ⍝   * Internal improvements
-      ⍝   * Bug fixes
-      ⍝     * `CheckPackagesStatus` did produce a DOMAIN ERROR under some circumstances.
-      ⍝ * 0.11.0 ⋄ 2022-06-02
-      ⍝   * `OpenProject` and (implicitly) also `CreateProject` accept -alias=. which means that the last
-      ⍝     part of the project path becomes the alias in lowercase.
-      ⍝   * When no target namespace is specified for `CreateProject` then the last part of the folder
-      ⍝     is taken as name of the namespace.
-      ⍝   * Bug fixes
-      ⍝     * `CreateProject` did not ask for checking packages when called from `CreateProject`
-      ⍝     * The default for `tatinFolder` had a trailing slash that did not hurt but was not required
-      ⍝     * `tatinFolder` was not allowed to be empty
-      ⍝     * `PerformConfigChecks` was buggy
-      ⍝     * Syntax Error causing typo fixed in `InjectConfigDataIntoProject`
-      ⍝ * 0.10.2 ⋄ 2022-05-21
-      ⍝   * HOME is now *always* an absolute path. (It being relative was actually a bug)
-      ⍝   * `CreateProject` did ask whether to also open the project but did not ask whether it
-      ⍝     should check any installed packages. It now does.
-      ⍝   * ReadMe updated.
-      ⍝   * Internal change: `ToQSE` is now `PrintToSession`
-      ⍝ * 0.10.1 ⋄ 2022-05-08
-      ⍝   * Bug fixes
-      ⍝     * When a folder .git was found but Git was not installed then a confusing message was provided.
-      ⍝ * 0.10.0 ⋄ 2022-04-23
-      ⍝   * Bug fixes
-      ⍝     * An invalid namespace name assgined to the `tatinFolder` parameter was not checked.
-      ⍝     * JSON checking when editing a config file was less than perfect.
-      ⍝ * 0.9.1 ⋄ 2022-04-15
-      ⍝   * Bug fix: "\" was used no matter which OS
-      ⍝ * 0.9.0 ⋄ 2022-03-17
-      ⍝   * The alias syntax got enhanced; accepts now a wildcard like ]Cider.OpenProject [co*]
-      ⍝   * ]Cider.CreateProject now asks the user whether the project should also be opened.
-      ⍝     It did so in the past but silently, leaving some room for doubt.
-      ⍝   * Mainly for tests the ]Cider.CreateProject command now has a -quiet flag.
-      ⍝   * When no namespace is passed to ]Cider.CreateProject the last part of the path is taken as name
-      ⍝   * The file cider.config.RemoveMe got renamed to cider.config.template
-      ⍝   * When a tatin installation folder does not exist or is empty no error is generated anymore
-      ⍝   * Bug fixes:
-      ⍝     * Alias names should NOT be case-sensitive.
-      ⍝     * Some user commands accepted an argument when they shouldn't.
-      ⍝     * Erratic RANK ERROR on OpenProject fixed
-      ⍝ * 0.8.4 ⋄ 2022-02-27
-      ⍝   * Minor internal improvements
-      ⍝   * LF is now enforced for text files via .gitattributes
-      ⍝ * 0.8.3 ⋄ 2022-01-04
-      ⍝   * Question regarding the checking for later Tatin packages improved
-      ⍝   * Git status is only checked in case `quietFlag` and `importFlag` are both 0
-      ⍝   * Tatin package statuses are checked only in case `importFlag` is 0
-      ⍝   * Bug fixes:
-      ⍝     * ListOpenProjects only beautified the result with -verbose
-      ⍝     * ]Cider.OpenProject without argument provided no feedback at all when no Cider.config file was detected
-      ⍝ * 0.8.2 ⋄ 2021-12-23
-      ⍝   * wx removed as a system variable.
-      ⍝   * Documentation improved.
-      ⍝ * 0.8.1 ⋄ 2021-12-15
-      ⍝   * Bug fixes:
-      ⍝     * Checking Tatin install folders for better versions was buggy.
-      ⍝     * A function noted on "lx" was not executed under :Trap but should.
-      ⍝ * 0.8.0 ⋄ 2021-12-14
-      ⍝   * BREAKING CHANGE: `OpenProject` accepts no positional parameters anymore, must be a parameter space.
-      ⍝     Positional parameters are just not flexible enough.
-      ⍝   * `OpenProject` now accepts an additional parameter `watch` (both API and user command)
-      ⍝   * Default for `watch` changed from "both" to "ns"
-      ⍝   * Bug fixes:
-      ⍝     * Cider could not deal with a root project `parent=#|⎕SE` and `projectSpace=''`
-      ⍝     * Cider should NOT worry about updating Tatin packages when `importFlag` is 1.
     ∇
 
     :Field Private Shared ReadOnly    FAILURE←0
@@ -154,7 +46,7 @@
 
     Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⎕ML←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),11}
 
-    ∇ successFlag←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx
+    ∇ successFlag←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus
     ⍝ Open a Cider project.\\
     ⍝ `y` must be one of:
     ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
@@ -227,10 +119,11 @@
       :EndIf
       p'  Code established, "watch" is "',parms.watch,'"'
       :If 0=parms.noPkgLoad
-          :If parms.folder CheckForTatinPackages config
+          pkgStatus←parms.folder CheckForTatinPackages config
+          :If 0<pkgStatus
               :If 0=parms.importFlag
                   :Trap 0
-                      CheckPackagesStatus config parms
+                      CheckPackagesStatus config parms pkgStatus
                   :Else
                       qdmx←⎕DMX
                       1 p'>>> ERROR: Checking Tatin package status from'
@@ -260,15 +153,30 @@
       ⍝Done
     ∇
 
-    ∇ flag←path CheckForTatinPackages config;folders
+    ∇ status←path CheckForTatinPackages config;folders;list;bool;report;this;parms
     ⍝ Checks whether at least one Tatin install folder is defined, does exist and is not empty, in which case a 1 is returned.
-      flag←0
+    ⍝ In case at least one install folder contains just a dependeny file and a build file but nothing else then...
+    ⍝ * when the user goes for re-installing the packages, a 2 is returned
+    ⍝ * when she does not a 3 is returned
+      status←0
       :If 0<≢config.CIDER.tatinFolder
           folders←','(≠⊆⊢)config.CIDER.tatinFolder
           folders←{'='∊⍵:⍵↑⍨¯1+⍵⍳'=' ⋄ ⍵}¨folders
       :AndIf 0<≢folders←(0<≢¨folders)/folders
       :AndIf 0<≢folders←(⎕NEXISTS(⊂path,'/'),¨folders)/folders
-          flag←0<+/{≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣⍵}¨(⊂path,'/'),¨folders,¨⊂'/*'
+          status←0<+/≢¨list←{⊃0 ⎕NINFO⍠('Wildcard' 1)⊣⍵}¨(⊂path,'/'),¨folders,¨⊂'/*'
+      :AndIf 1∊bool←0=≢¨ListDirs¨(⊂path,'/'),¨folders,¨'/'
+          :If YesOrNo'Tatin install folder(s) do no contain packages - do you want them re-installed?'
+              status←2
+              parms←⎕SE.Tatin.CreateReInstallParms
+              parms.update←YesOrNo'Would you like to install later version, if available?'
+              folders←bool/folders
+              :For this :In (⊂path,'/'),¨folders
+                  report←parms ⎕SE.Tatin.ReInstallDependencies this
+              :EndFor
+          :Else
+              status←3
+          :EndIf
       :EndIf
     ∇
 
@@ -441,12 +349,20 @@
                   :If 127=dmx.EN
                       p'The project appears to be managed by Git but Git is not installed?!'
                       :Return
+                  :ElseIf 0<≢dmx.Message
+                      ⎕←'The Git status of the project could not be determined due to an error:'
+                      ⎕←dmx.Message,'; rc=',⍕dmx.EN
                   :Else
-                      dmx.Message ⎕SIGNAL dmx.EN
+                      ⎕←'The Git status of the project could not be determined due to an error'
                   :EndIf
               :EndTrap
-              status←(↓(,[0.5]'Git status report')⍪'='),status
-              {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
+              :If ∧/∨/¨'nothing to commit' 'working tree clean'⍷¨⊂∊status
+              :AndIf ~(⊂{⍵↑⍨-¯1+' '⍳⍨⌽⍵}1⊃status)∊'main' 'master'
+                  ⎕←'Git: ',(1⊃status),', ',∊1↓status
+              :Else
+                  status←(↓(,[0.5]'Git status report')⍪'='),status
+                  {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
+              :EndIf
           :Else
               p'The project appears to be managed by Git but the user command ]APLGit2 and'
               p'it''s API are missing, therefore no information can be provided regarding Git'
@@ -477,9 +393,10 @@
       :EndIf
     ∇
 
-    ∇ {r}←CheckPackagesStatus(config parms);checkFlag;folder;folders;folder_;updateFlag;updateParms;report;buff
+    ∇ {r}←CheckPackagesStatus(config parms pkgStatus);checkFlag;folder;folders;folder_;updateFlag;updateParms;report;buff
     ⍝ Check whether Tatin packages should be updated in case parms.importFlag is not 1.
-    ⍝ This is ruled by parms.checkPackageVersions
+    ⍝ When pkgStatus is 2 it means that packages have just been re-installed, so no need to check for later versions.
+    ⍝ This is ruled by parms.checkPackageVersions:
     ⍝ ⍬ means the user will be asked for both checking and updating
     ⍝ 0 means don't update
     ⍝ 1 means yes, check, but ask before updating
@@ -487,6 +404,7 @@
       r←⍬
       :If 0<≢config.CIDER.tatinFolder
           :If 0≢parms.checkPackageVersions
+          :AndIf 2>pkgStatus
               :If (⊂parms.checkPackageVersions)∊⍬ 1
               :AndIf ~parms.quietFlag
                   checkFlag←0 YesOrNo' Report availability of later versions of installed Tatin packages?'
@@ -644,7 +562,7 @@
               p'  Invalid function valence: is ambivalent'
           :EndSelect
       :Else
-          p'Could not execute "',init,'"; function not found'
+          p'Could not execute "',init,'": function not found; check config file!'
       :EndIf
     ∇
 
@@ -682,7 +600,7 @@
 
     ∇ {r}←{editFlag}ViewConfig path;filename;ns;orig;flag;edit;data
     ⍝ By default the contents of the file cider.config in "path" is put into the editor in read-only mode.
-    ⍝ The user may edit the contents if ⍺ is 1 rather than anything else or undefined.
+    ⍝ The user may edit the contents if `⍺` is 1 rather than anything else or undefined.
     ⍝ Returns 1 in case the file was modified and 0 otherwise.
       :Access Public Shared
       r←0
@@ -786,7 +704,7 @@
     ⍝ Returns standard path for Dyalog's MyUCMDs folder.
     ⍝ Works on all platforms but returns different results.\\
     ⍝ Under Windows typically:\\
-    ⍝ `C:\Users\{⎕AN}\Documents\MyUCMDs\'  ←→ GetMyUCMDsFolder
+    ⍝ `'C:\Users\{⎕AN}\Documents\MyUCMDs\'  ←→ GetMyUCMDsFolder`
       :If IsWindows
           r←(2 ⎕NQ'.' 'GetEnvironment' 'USERPROFILE'),'\Documents\MyUCMDs'
       :Else
@@ -814,8 +732,8 @@
     ⍝ In case ⍵ is empty ALL projects are closed.
     ⍝ `y` may be one of:
     ⍝ * Empty vector (=close all)
-    ⍝ * A projectName like #.Foo
-    ⍝ * An alias like [my-alias]
+    ⍝ * A projectName like `#.Foo`
+    ⍝ * An alias like `[my-alias]`\\
     ⍝ Returns the number of projects closed.
       :Access Public Shared
       r←0
@@ -841,10 +759,10 @@
 
     ∇ yesOrNo←{default}YesOrNo question;isOkay;answer;add;dtb;answer2
       :Access Public Shared
-    ⍝ Asks a simple question and allows just "Yes" or "No" as answers.
+    ⍝ Asks a simple question and allows just "Y" or "N" as answers.\\
     ⍝ You may specify a default via the optional left argument which when specified
-    ⍝ rules what happens when the user just presses <enter>.
-    ⍝ `default` must be either 1 (yes) or 0 (no).
+    ⍝ rules what happens when the user just presses <enter>.\\
+    ⍝ `default` must be either 1 (yes) or 0 (no).\\
     ⍝ Note that this function does NOT work as expected when traced!
       isOkay←0
       default←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'default'
@@ -1305,6 +1223,11 @@
           :EndIf
       :Until flag
       index←{1<≢⍵:⍵ ⋄ ⊃⍵}⍣(⍬≢index)⊣index
+    ∇
+
+    ∇ r←ListDirs path;buff
+      buff←(0 1)⎕NINFO⍠('Wildcard' 1)⊣path,'*'
+      r←(1=2⊃buff)/1⊃buff
     ∇
 
 :EndClass

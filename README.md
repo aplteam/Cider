@@ -85,7 +85,10 @@ Once a folder is established that holds a Cider config file, the user command pe
 1. Creates the project space (namespace)
 1. Sets the system variables `⎕IO` and `⎕ML` in the project space
 1. Brings all code and variables into the project space
-1. Asks the user weather Cider should check all Tatin packages (if there are any) for later versions 
+1. Checks whether any Tatin install folders do not actually have any packages installed but have a non-empty dependency file.
+
+   This may happen in case the package install folders are not uploaded to, say, GitHub (`.gitignore`) and the project was just downloaded.
+1. Asks the user whether Cider should check all Tatin packages (if there are any) for later versions 
 1. Loads all Tatin packages specified in the file `cider.config`, if any; see `tatinFolder`
 1. Injects a namespace `CiderConfig` into the project space and...
    * populates it with the contents of the configuration file as APL arrays
