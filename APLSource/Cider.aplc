@@ -9,7 +9,11 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.21.0+326' '2022-11-17'
+      r←'Cider' '0.21.1+329' '2022-11-23'
+      ⍝ * 0.21.1 ⋄ 2022-11-23
+      ⍝   * Bug fixes
+      ⍝     * Specifying -watch= with OpenProject has no affect
+      ⍝     * Grammatical error fixed in a message regarding package updates
       ⍝ * 0.21.0 ⋄ 2022-11-17
       ⍝   * Cider now checks whether any Tatin installation folder does not actually has any packages
       ⍝     installed but has packages defined in the dependency file. In such a case the user is asked
@@ -62,7 +66,7 @@
       '"folder" must be specified'Assert 0<parms.⎕NC'folder'
       '"folder" must be specified'Assert 0<≢parms.folder
       '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
-      '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both'
+      '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both' 0
       p←{⍺←~parms.quietFlag ⋄ ⍺ PrintToSession ⍵}
       parms←(p GetFolderFromAlias2)parms
       ('Folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
@@ -106,6 +110,9 @@
       source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source              ⍝ For linking we are only interested in the code folder
       ('Source folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
       linkOptions←ExtractLinkOptions config                                             ⍝ Merge the default options with Cider's options
+      :If 0≢parms.watch
+          linkOptions.watch←parms.watch
+      :EndIf
       p'Bringing in the source code...'
       CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
       :If parms.importFlag
@@ -393,7 +400,7 @@
       :EndIf
     ∇
 
-    ∇ {r}←CheckPackagesStatus(config parms pkgStatus);checkFlag;folder;folders;folder_;updateFlag;updateParms;report;buff
+    ∇ {r}←CheckPackagesStatus(config parms pkgStatus);checkFlag;folder;folders;folder_;updateFlag;updateParms;report;buff;plural
     ⍝ Check whether Tatin packages should be updated in case parms.importFlag is not 1.
     ⍝ When pkgStatus is 2 it means that packages have just been re-installed, so no need to check for later versions.
     ⍝ This is ruled by parms.checkPackageVersions:
@@ -422,7 +429,8 @@
               :AndIf 0=+/⊃,/4⌷[2]¨report
                   p'   No later versions found '
                   :If 0<≢buff←(⊂'https://tatin.dev/')~⍨⊃,/3⌷[2]¨report
-                      p{'But note that ',(⍕≢⍵),' package',((1<≢buff)/'s'),' were loaded from ',⊃{⍺,',',⍵}/∪⍵}buff
+                      plural←1<≢buff
+                      p{'   *** But note that ',(⍕≢⍵),' package',(plural/'s'),((1+plural)⊃' was' ' were'),' loaded from ',⊃{⍺,',',⍵}/∪⍵}buff
                   :EndIf
               :Else
                   report←{⍵[;4]⌿⍵}¨report

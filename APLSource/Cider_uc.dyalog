@@ -255,7 +255,7 @@
       parms.projectSpace←Args.projectSpace
       parms.parent←{(,0)≡,⍵:'' ⋄ ⍵}Args.parent
       parms.alias←⎕C''Args.Switch'alias'
-      parms.watch←⎕C'ns'Args.Switch'watch'
+      parms.watch←⎕C Args.Switch'watch'
       parms.quietFlag←Args.quiet
       parms.suppressInit←Args.suppressInit
       parms.importFlag←Args.import
