@@ -1,4 +1,8 @@
-![Cider Logo](https://github.com/aplteam/cider/blob/main/Cider-Logo.png?raw=true)
+![Cider Logo](https://github.com/aplteam/cider/blob/main/Assets/Cider-Logo.png?raw=true)
+
+
+<image src="https://github.com/aplteam/cider/blob/main/Assets/Cider-Logo.png?raw-true" width="100" height="100">
+
 
 # Cider Project Manager
 
