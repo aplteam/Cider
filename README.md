@@ -1,3 +1,5 @@
+![Cider Logo](https://github.com/aplteam/cider/blob/main/Cider-Logo.png?raw=true)
+
 # Cider Project Manager
 
 Cider offers some User commands that are useful to manage projects. In addition is also offers an API.
