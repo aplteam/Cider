@@ -4,6 +4,12 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
+ :If batchFlag
+     →0,R←T._NoBatchTest
+ :EndIf
+
+ ⎕←'This test needs you, please enter "Y" when questioned; press <enter> to continue',0/⍞
+
  tempDir←(FilesAndDirs.GetTempSubDir⊃⎕SI),'/aaaa'
  3 ⎕MKDIR tempDir
  wasDir←FilesAndDirs.Cd tempDir

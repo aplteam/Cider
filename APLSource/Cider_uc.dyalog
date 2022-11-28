@@ -1,4 +1,4 @@
-﻿:Class Cider_uc
+:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
 
@@ -408,7 +408,10 @@
               r,←⊂' * A mixture of the two'
               r,←⊂' * Nothing; equivalent to -all but the user will be asked for confirmation'
               r,←⊂' * The -all flag, which closes all projects without further ado'
-              r,←⊂' '
+              r,←⊂''
+              r,←⊂'Result:'
+              r,←⊂' * In case a particular project was specified a Boolean is reported, 1 indicating success'
+              r,←⊂' * If all projects are closed all names and theirs paths are reported'
           :Case ⎕C'ViewConfig'
               r,←⊂'Puts the config file of a project on display.'
               r,←⊂'By specifying the -edit flag the user might edit the file rather then just viewing it.'
@@ -527,7 +530,10 @@
           :EndIf
       :EndIf
       :If (⊂,folder)∊,¨'.' './'
-          folder←⊃1 ⎕NPARTS folder
+          folder←⊃1 ⎕NPARTS'./'
+          :If ~YesOrNo'Sure you want to create the project in ',folder,' ?'
+              :Return
+          :EndIf
       :EndIf
       filename←(AddSlash folder),configFilename
       :If 0=⎕NC'namespace'
@@ -538,7 +544,7 @@
           ('The -acceptConfig flag was set but no file "',configFilename,'" was found')Assert ⎕NEXISTS filename
       :Else
           :If ~⎕NEXISTS folder
-              'Invalid path'Assert{0=≢⍵:1 ⋄ ⎕NEXISTS ⍵}1⊃⎕NPARTS{⍵↓⍨-(¯1↑⍵)∊'/\'}folder  ⍝ Parent folder must exist
+              'Invalid path: parent must exist'Assert{0=≢⍵:1 ⋄ ⎕NEXISTS ⍵}1⊃⎕NPARTS{⍵↓⍨-(¯1↑⍵)∊'/\'}folder  ⍝ Parent folder must exist
               folder←∊1 ⎕NPARTS folder
               :If 1 YesOrNo'"',folder,'" does not exist yet - create?'
                   ⎕MKDIR folder
@@ -639,6 +645,8 @@
                   q←'Currently there ',((1+1<noop)⊃'is one'('are ',⍕noop)),' project',((1<noop)/'s'),' opened - wanna close ',(1+1<noop)⊃'it?' 'all of them?'
               :OrIf YesOrNo q
                   r←P.CloseProject ⍬
+                  'Something went wrong'Assert r≡≢list
+                  r←1↓(⎕UCS 13),¨↓⎕FMT list
               :EndIf
           :EndIf
       :Else
