@@ -4,11 +4,17 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
+ :If batchFlag
+     →0,R←T._NoBatchTest
+ :EndIf
+
+ 0 0⍴⍞,0/⎕←'This test needs you, please enter "Y" when questioned; press <enter> to continue'
+
  tempDir←(FilesAndDirs.GetTempSubDir⊃⎕SI),'/aaaa'
  3 ⎕MKDIR tempDir
  wasDir←FilesAndDirs.Cd tempDir
 
- {}⎕SE.UCMD'Cider.CreateProject "./" -noEdit -quiet'
+ {}⎕SE.UCMD'Cider.CreateProject "." -noEdit -quiet'
  list←##.Cider.ListOpenProjects 0
  →T.GoToTidyUp~(⊂'#.aaaa')∊list[;1]
  row←list[;1]⍳⊂'#.aaaa'

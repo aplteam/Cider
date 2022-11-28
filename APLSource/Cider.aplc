@@ -9,7 +9,16 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.21.1+329' '2022-11-23'
+      r←'Cider' '0.21.2+333' '2022-11-28'
+      ⍝ * 0.21.2 ⋄ 2022-11-28
+      ⍝   * Packages updated
+      ⍝   * `CloseProject` now reported all names and theirs paths in case all project were closed
+      ⍝   * Bug fixes
+      ⍝     * `OpenProjects` reported "watch" as being 0 under some circumstances
+      ⍝     * When given . as argument `CreateProject` did not create the new project in the current
+      ⍝       directory but its parent
+      ⍝     * `CreateProject` should ask the user for permission when a new project should be created
+      ⍝       in the current directory
       ⍝ * 0.21.1 ⋄ 2022-11-23
       ⍝   * Bug fixes
       ⍝     * Specifying -watch= with OpenProject has no affect
@@ -124,7 +133,7 @@
           dmx←⎕DMX
           ('LINK failed to load the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
       :EndIf
-      p'  Code established, "watch" is "',parms.watch,'"'
+      p'  Code established, "watch" is "',linkOptions.watch,'"'
       :If 0=parms.noPkgLoad
           pkgStatus←parms.folder CheckForTatinPackages config
           :If 0<pkgStatus
