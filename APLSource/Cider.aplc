@@ -9,7 +9,7 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.21.2+344' '2022-12-15'
+      r←'Cider' '0.21.3+345' '2022-12-15'
       ⍝ * 0.21.3 ⋄ 2022-12-15
       ⍝   * `CiderConfig` is now created within the project, avoiding "Session namespace is referenced by #"
       ⍝   * `YesOrNo` and `Select` removed, `CommTools` is used instead
