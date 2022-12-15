@@ -1,6 +1,7 @@
-:Class Cider_uc
+﻿:Class Cider_uc
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
+⍝ 2022-12-13
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
@@ -343,8 +344,9 @@
               r,←⊂'               * "ns" means that changes in the workpace are saved on disk'
               r,←⊂'               * "dir" means that any changes on disk are brought into the WS'
               r,←⊂'               * "both" means that any changes in either "ns" or "dir" are reflected accordingly'
-              r,←⊂'                 However, note that currently this works only under Windows. On other platforms'
+              r,←⊂'                 However, note that currently "both" works only under Windows. On other platforms'
               r,←⊂'                 "both" is identical with "ns" for the time being.'
+              r,←⊂'                 Note also that this change is temporary: it does NOT change the config file on disk'
               r,←⊂'              You are adviced to study the Link documentation on this for details.'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'Print a list with the namespaces of all currently opened projects.'
@@ -513,6 +515,7 @@
               res←({⍵.overwrite←1 ⋄ ⍵}⎕NS'')⎕SE.Link.Import P folder
               'Could not import the Cider application code'Assert∨/'Imported:'⍷res
           :EndIf
+          {}⎕SE.Tatin.LoadDependencies((1⊃⎕NPARTS ##.SourceFile),'/packages/')'⎕SE._Cider'
           ⎕SE.Cider←⎕SE._Cider.Cider            ⍝ Establish the API
       :Else
           P←⍕⎕SE._Cider
@@ -630,8 +633,9 @@
     ∇
 
 
-    ∇ r←CloseProject Args;list;names;bool;row;invalid;q;noop
+    ∇ r←CloseProject Args;list;names;bool;row;invalid;q;noop;report
       r←''
+      report←1
       :If 0=≢Args.Arguments
           :If 0=noop←≢list←⎕SE.Cider.ListOpenProjects 0   ⍝ noop ←→ NoOf Open Projects
               ⎕←'There are no open Cider projects that could be closed'
@@ -646,7 +650,7 @@
               :OrIf YesOrNo q
                   r←P.CloseProject ⍬
                   'Something went wrong'Assert r≡≢list
-                  r←1↓(⎕UCS 13),¨↓⎕FMT list
+                  r←1↓∊(⎕UCS 13),¨↓⎕FMT list
               :EndIf
           :EndIf
       :Else
@@ -661,7 +665,36 @@
           r←+/P.CloseProject¨names
       :EndIf
       :If 0<≢r
-          r←'Number of project closed: ',⍕r
+          :If ' '=1↑0⍴∊r
+              r←'These projects were closed: ',(⎕UCS 13),r
+          :Else
+              r←'Number of projects closed: ',⍕r
+          :EndIf
+          report←0
+      :EndIf
+      :If 0=≢⎕SE.Cider.ListOpenProjects 0
+      :AndIf YesOrNo'Do you wish to )CLEAR the workspace?'
+          :If report
+              :If ' '=1↑0⍴∊r
+                  r←('These projects were closed:'),(⎕UCS 13),r,(⎕UCS 13),(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'
+              :Else
+                  r←('One project was closed.'),(⎕UCS 13),(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'
+              :EndIf
+          :Else
+              :If ' '=1↑0⍴∊r
+                  r,←(⎕UCS 13),(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'
+              :Else
+                  r,←(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'
+              :EndIf
+          :EndIf
+      :Else
+          :If report
+              :If ' '=1↑0⍴∊r
+                  r←('These projects were closed:'),(⎕UCS 13),r
+              :Else
+                  r←'One project was closed.'
+              :EndIf
+          :EndIf
       :EndIf
     ∇
 
@@ -779,61 +812,7 @@
       (⊂aliases)⎕NPUT filename 1
     ∇
 
-    ∇ yesOrNo←{default}YesOrNo question;isOkay;answer;add;dtb;answer2
-    ⍝ Asks a simple question and allows just "Yes" or "No" as answers.
-    ⍝ You may specify a default via the optional left argument which when specified
-    ⍝ rules what happens when the user just presses <enter>.
-    ⍝ `default` must be either 1 (yes) or 0 (no).
-    ⍝ Note that this function does NOT work as expected when traced!
-      isOkay←0
-      default←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'default'
-      isOkay←0
-      :If 0≠≢default
-          'Left argument must be a scalar'⎕SIGNAL 11/⍨1≠≢default
-      :AndIf ~default∊0 1
-          'The left argument. if specified, must be a Boolean or empty'⎕SIGNAL 11
-      :EndIf
-      :If 0=≢default
-          add←' (y/n) '
-      :Else
-          :If default
-              add←' (Y/n) '
-          :Else
-              add←' (y/N) '
-          :EndIf
-      :EndIf
-      :If 1<≡question
-          ((≢question)⊃question)←((≢question)⊃question),add
-          question←⍪question
-      :Else
-          question←question,add
-      :EndIf
-      :Repeat
-          ⎕←''
-          ⍞←question
-          answer←⍞
-          :If answer≡question                        ⍝ Did ...  (since version 18.0 trailing blanks are not removed anymore)
-          :OrIf (≢answer)=¯1+≢question               ⍝ ... the ...
-          :OrIf 0=≢answer                            ⍝ ... user ...
-          :OrIf question≡(-≢question)↑answer         ⍝ ... just ...
-              dtb←{⍵↓⍨-+/∧\' '=⌽⍵}
-              answer2←dtb answer
-          :OrIf answer2≡((-≢answer2)↑(⎕UCS 10){~⍺∊⍵:⍵ ⋄ ' ',dtb ⍺{⌽⍵↑⍨1+⍵⍳⍺}⌽⍵}question)   ⍝ ... press ...
-          :OrIf answer≡{1↓⊃¯1↑(⍵∊⎕UCS 10 13)⊂⍵}(⎕UCS 10),question ⍝ ... <enter>?
-              :If 0≠≢default
-                  yesOrNo←default
-                  isOkay←1
-              :EndIf
-          :Else
-              answer←¯1↑{⍵↓⍨-+/∧\' '=⌽⍵}answer
-              :If answer∊'YyNn'
-                  isOkay←1
-                  yesOrNo←answer∊'Yy'
-              :EndIf
-          :EndIf
-      :Until isOkay
-    ⍝Done
-    ∇
+    YesOrNo←{⍺←⊢ ⋄ ⍺ ⎕se._Cider.CommTools.YesOrNo ⍵}
 
     ∇ r←{caption}SelectFromAliases data;row
       r←⍬
@@ -886,55 +865,7 @@
       index←{1<≢⍵:⍵ ⋄ ⊃⍵}index
     ∇
 
-    ∇ index←{x}Select options;flag;answer;question;value;bool;⎕ML;⎕IO;manyFlag;mustFlag;caption
-    ⍝ Presents `options` as a numbered list and allows the user to select either exactly one or multiple ones.\\
-    ⍝ One is the default.\\
-    ⍝ The optional left argument allows you to specify more options:
-    ⍝ * `manyFlag` defaults to 0 (meaning just one item might be selected) or 1, in which case multiple items can be specified.
-    ⍝ * `mustFlag` forces the user to select at least one  option.
-    ⍝ * `caption` is shown above the options.
-    ⍝ `options` must not have more than 999 items.
-    ⍝ If the user aborts by entering nothing or a "q" (for "quit") `index will be `⍬`.
-      x←{0<⎕NC ⍵:⊆⍎⍵ ⋄ ''}'x'
-      (caption manyFlag mustFlag)←x,(⍴,x)↓'' 0 0
-      ⎕IO←1 ⋄ ⎕ML←1
-      manyFlag←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'manyFlag'
-      'Invalid right argument; must be a vector of text vectors.'⎕SIGNAL 98/⍨2≠≡options
-      'Right argument has more than 999 items'⎕SIGNAL 98/⍨999<≢options
-      flag←0
-      :Repeat
-          ⎕←{⍵↑'--- ',caption,((0≠≢caption)/' '),⍵⍴'-'}⎕PW-1
-          ⎕←⍪{((⊂'. '),¨⍨(⊂3 0)⍕¨⍳⍴⍵),¨⍵}options
-          ⎕←''
-          question←'Select one ',(manyFlag/'or more '),'item',((manyFlag)/'s'),' '
-          question,←((manyFlag∨~mustFlag)/'('),((~mustFlag)/'q=quit'),((manyFlag∧~mustFlag)/', '),(manyFlag/'a=all'),((manyFlag∨~mustFlag)/')'),' :'
-          :If 0<≢answer←⍞,0/⍞←question
-              answer←(⍴question)↓answer
-              :If 1=≢answer
-              :AndIf answer∊'Qq',manyFlag/'Aa'
-                  :If answer∊'Qq'
-                      :If 0=mustFlag
-                          index←⍬
-                          flag←1
-                      :EndIf
-                  :Else
-                      index←⍳≢options
-                      flag←1
-                  :EndIf
-              :Else
-                  (bool value)←⎕VFI answer
-                  :If ∧/bool
-                  :AndIf manyFlag∨1=+/bool
-                      value←bool/value
-                  :AndIf ∧/value∊⍳⍴options
-                      index←value
-                      flag←0≠≢index
-                  :EndIf
-              :EndIf
-          :EndIf
-      :Until flag
-      index←{1<≢⍵:⍵ ⋄ ⊃⍵}⍣(⍬≢index)⊣index
-    ∇
+    Select←{⍺←⊢ ⋄ ⍺ ⎕se._Cider.CommTools.Select ⍵}
 
     ∇ {r}←PerformConfigChecks config;buff;namespace;path
       r←0

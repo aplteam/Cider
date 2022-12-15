@@ -18,7 +18,7 @@
  parms.quietFlag←1
  res←##.Cider.OpenProject parms
 
- →T.GoToTidyUp 1≠##.Cider.YesOrNo'Did loading Tatin packages fail with error "Target namespace for Tatin packages is addressed with absolute path (invalid)"?'
+ →T.GoToTidyUp 1≠##.CommTools.YesOrNo'Did loading Tatin packages fail with error "Target namespace for Tatin packages is addressed with absolute path (invalid)"?'
 
  R←T._OK
 

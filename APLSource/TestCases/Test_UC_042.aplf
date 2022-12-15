@@ -4,16 +4,11 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If batchFlag
-     →0,R←T._NoBatchTest
- :EndIf
-
- ⎕←'This test needs you, please enter "Y" when questioned; press <enter> to continue',0/⍞
-
  tempDir←(FilesAndDirs.GetTempSubDir⊃⎕SI),'/aaaa'
  3 ⎕MKDIR tempDir
  wasDir←FilesAndDirs.Cd tempDir
 
+ ⎕SE._Cider.CommTools.YesOrNo_Answers←1 2⍴'Sure you want to create the project in' 'y'
  {}⎕SE.UCMD'Cider.CreateProject "./" #.HOO -noEdit -quiet'
  list←##.Cider.ListOpenProjects 0
  →T.GoToTidyUp~(⊂'#.HOO')∊list[;1]
@@ -23,6 +18,7 @@
  R←T._OK
 
 ∆TidyUp:
+ ⎕SE._Cider.CommTools.Cleanup
  {}FilesAndDirs.Cd wasDir
  res←∆LINK'Break' '#.HOO'
  Assert res ∆StartsWith'Unlinked:'

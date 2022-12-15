@@ -5,11 +5,20 @@
 
     ⎕IO←1 ⋄ ⎕ML←1
     L←⎕SE.Link
-    CR←⎕UCS 13
+    LF←⎕UCS 10
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.21.2+333' '2022-11-28'
+      r←'Cider' '0.21.2+344' '2022-12-15'
+      ⍝ * 0.21.3 ⋄ 2022-12-15
+      ⍝   * `CiderConfig` is now created within the project, avoiding "Session namespace is referenced by #"
+      ⍝   * `YesOrNo` and `Select` removed, `CommTools` is used instead
+      ⍝   * Cider depends on `FilesAndDirs` now, mainly for more resilient `NGET` and `NPUT`
+      ⍝   * Bug fixes
+      ⍝     * In case -watch= specified a value different from the config file this was not reflected by
+      ⍝       the variable CiderConfig.LINK.watch
+      ⍝     * ]Cider.OpenProject's documentation on "-watch=" did not mention that the change is temporary:
+      ⍝       The config file would not change.
       ⍝ * 0.21.2 ⋄ 2022-11-28
       ⍝   * Packages updated
       ⍝   * `CloseProject` now reported all names and theirs paths in case all project were closed
@@ -78,7 +87,7 @@
       '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both' 0
       p←{⍺←~parms.quietFlag ⋄ ⍺ PrintToSession ⍵}
       parms←(p GetFolderFromAlias2)parms
-      ('Folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
+      ('Folder does not exist: ',parms.folder)Assert ##.FilesAndDirs.Exists parms.folder
       p((1+parms.importFlag)⊃'Loading' 'Importing'),' project from ',parms.folder
       parms.projectSpace←⍕parms.projectSpace
       :If 0<≢parms.parent
@@ -96,7 +105,7 @@
       :EndIf
       p AddAlias parms.folder parms.alias
       configFilename←parms.folder,'/cider.config'
-      ('No file "cider.config" found in ',parms.folder)Assert ⎕NEXISTS configFilename
+      ('No file "cider.config" found in ',parms.folder)Assert ##.FilesAndDirs.Exists configFilename
       config←Get_JSON5 configFilename
       :If 0=≢parms.projectSpace                                                         ⍝ Was it specified as argument?
       :AndIf 0=≢parms.projectSpace←config.CIDER.projectSpace                            ⍝ Nope, so the config file rules...
@@ -113,14 +122,15 @@
           :EndIf
           projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                        ⍝ Create project space from "parent" to avoid problems
       :EndIf
+      config←projectSpace_.⎕NS config
       'Already opened?!'Assert~CheckForAlreadyOpened projectSpace_
       config←CheckParameters config
       configFilename HandleSysVars config
       source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source              ⍝ For linking we are only interested in the code folder
-      ('Source folder does not exist: ',parms.folder)Assert ⎕NEXISTS parms.folder
+      ('Source folder does not exist: ',parms.folder)Assert ##.FilesAndDirs.Exists parms.folder
       linkOptions←ExtractLinkOptions config                                             ⍝ Merge the default options with Cider's options
       :If 0≢parms.watch
-          linkOptions.watch←parms.watch
+          config.LINK.watch←linkOptions.watch←parms.watch
       :EndIf
       p'Bringing in the source code...'
       CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
@@ -179,7 +189,7 @@
           folders←','(≠⊆⊢)config.CIDER.tatinFolder
           folders←{'='∊⍵:⍵↑⍨¯1+⍵⍳'=' ⋄ ⍵}¨folders
       :AndIf 0<≢folders←(0<≢¨folders)/folders
-      :AndIf 0<≢folders←(⎕NEXISTS(⊂path,'/'),¨folders)/folders
+      :AndIf 0<≢folders←(##.FilesAndDirs.Exists(⊂path,'/'),¨folders)/folders
           status←0<+/≢¨list←{⊃0 ⎕NINFO⍠('Wildcard' 1)⊣⍵}¨(⊂path,'/'),¨folders,¨⊂'/*'
       :AndIf 1∊bool←0=≢¨ListDirs¨(⊂path,'/'),¨folders,¨'/'
           :If YesOrNo'Tatin install folder(s) do no contain packages - do you want them re-installed?'
@@ -356,7 +366,7 @@
     ∇ {r}←CheckForGit(path config);status;dmx
     ⍝ Checks whether the project is managed by Git, and if so offers some help
       r←⍬
-      :If ⎕NEXISTS(AddSlash path),'.git'
+      :If ##.FilesAndDirs.Exists(AddSlash path),'.git'
           :If 9=⎕SE.⎕NC'_APLGit2'
               :Trap 0
                   status←⎕SE.APLGit2.Status path
@@ -454,7 +464,7 @@
     ⍝ Loop through all Tatin install folders
       :For folder :In folders
           folder_←⊃'='(≠⊆⊢)folder
-          :If ⎕NEXISTS parms.folder,'/',folder_
+          :If ##.FilesAndDirs.Exists parms.folder,'/',folder_
               p'  Checking Tatin packages in <',(AddSlash folder_),'> ...'
               folder_←parms.folder,'/',folder_
               :If 0<≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣folder_,'/*'
@@ -518,7 +528,7 @@
               :EndIf
               p'Attempting to load Tatin packages from ',pkgFolder_,' into ',target,'...'
               folder2←folder,'/',pkgFolder_
-              :If ⎕NEXISTS folder2
+              :If ##.FilesAndDirs.Exists folder2
                   :If 0<0<≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣folder2,'/*'
                       p ReportPackageOrigins folder2
                       noOf←≢⎕SE.Tatin.LoadDependencies folder2 target
@@ -609,9 +619,14 @@
     ∇
 
     ∇ {r}←InjectConfigDataIntoProject(config projectSpace_ folder)
-    ⍝ Create a namespace "CiderConfig" inside projectSpace and populate it with the configuration data
+    ⍝ Create a namespace "CiderConfig" inside projectSpace and populate it with the configuration data.
+    ⍝ Main purpose is to avoid any "Session namespace is referenced by #" problems.
       r←⍬
       'CiderConfig'projectSpace_.⎕NS config
+      projectSpace_.CiderConfig.CIDER←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.CIDER
+      projectSpace_.CiderConfig.LINK←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.LINK
+      projectSpace_.CiderConfig.USER←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.USER
+      projectSpace_.CiderConfig.SYSVARS←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.SYSVARS
       projectSpace_.CiderConfig.HOME←⊃,/1 ⎕NPARTS folder
     ∇
 
@@ -632,10 +647,10 @@
       :Else
           filename←path,'/cider.config'
       :EndIf
-      ('Does not exist: "',filename,'"')Assert ⎕NEXISTS filename
+      ('Does not exist: "',filename,'"')Assert ##.FilesAndDirs.Exists filename
       ns←⍎'edit'(⍎(1+'⎕'=⊃⊃⎕XSI)⊃'#' '⎕SE').⎕NS''
       MassageConfig filename
-      orig←ns.cider_config←⊃⎕NGET filename 1
+      orig←ns.cider_config←⊃##.FilesAndDirs.NGET filename 1
       flag←0
       :Repeat
           ns.⎕ED⍠('ReadOnly'(~(⊂,1)≡⊂,editFlag))⊣'cider_config'
@@ -643,9 +658,9 @@
           :AndIf editFlag
           :AndIf 0<≢(∊ns.cider_config)~' '
               :If CheckJsonSyntax ns.cider_config
-                  data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
+                  data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊LF,¨⊆ns.cider_config
               :AndIf PerformConfigChecks data
-                  (⊂ns.cider_config)⎕NPUT filename 1
+                  (⊂ns.cider_config)##.FilesAndDirs.NPUT filename 1
                   r←flag←1
               :Else
                   :If ~1 YesOrNo'Syntax check failed. Try again? (no=changes are lost)'
@@ -697,8 +712,8 @@
           path←y
       :EndIf
       cfgFilename←path,'/cider.config'
-      'No Cider config file found'Assert ⎕NEXISTS cfgFilename
-      json←⊃⎕NGET cfgFilename
+      'No Cider config file found'Assert ##.FilesAndDirs.Exists cfgFilename
+      json←⊃##.FilesAndDirs.NGET cfgFilename
       cfg←⎕JSON⍠('Dialect' 'JSON5')⊣json
       tatinFolder←cfg.CIDER.tatinFolder
       :If 0=≢tatinFolder
@@ -707,8 +722,8 @@
           tatinFolder←','(≠⊆⊢)tatinFolder
           tatinFolder←{⍵↑⍨¯1+⍵⍳'='}¨tatinFolder
           buildFilenames←((⊂path,'/'),¨tatinFolder),¨⊂'/apl-buildlist.json'
-          'Build list not found?!'Assert∧/⎕NEXISTS¨buildFilenames
-          buildLists←{⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET ⍵}¨buildFilenames
+          'Build list not found?!'Assert∧/##.FilesAndDirs.Exists¨buildFilenames
+          buildLists←{⎕JSON⍠('Dialect' 'JSON5')⊣⊃##.FilesAndDirs.NGET ⍵}¨buildFilenames
           r←⍉∘↑¨(⊂¨' ',¨¨buildLists.packageID),¨buildLists.(principal url)
           r←(⊂' Package-ID' 'Principal' 'URL')⍪¨(⊂'' '' '')⍪¨r
           (2⌷¨r)←(⊂' ' '' ''),¨¨({(¯1 0 0)+¨⊃¨((⌈⌿⍴¨,¨⍵))}¨r)⍴¨¨'-'
@@ -733,8 +748,8 @@
       :Access Public Shared
       r←0 2⍴''
       filename←GetCiderAliasFilename
-      :If ⎕NEXISTS filename
-      :AndIf 0<≢buff←⊃⎕NGET filename 1
+      :If ##.FilesAndDirs.Exists filename
+      :AndIf 0<≢buff←⊃##.FilesAndDirs.NGET filename 1
       :AndIf 0<≢buff←(0<≢¨buff)/buff
           r←↑{'='(≠⊆⊢)⍵}¨buff
           r[;1]←⎕C¨r[;1]
@@ -774,62 +789,7 @@
       :EndIf
     ∇
 
-    ∇ yesOrNo←{default}YesOrNo question;isOkay;answer;add;dtb;answer2
-      :Access Public Shared
-    ⍝ Asks a simple question and allows just "Y" or "N" as answers.\\
-    ⍝ You may specify a default via the optional left argument which when specified
-    ⍝ rules what happens when the user just presses <enter>.\\
-    ⍝ `default` must be either 1 (yes) or 0 (no).\\
-    ⍝ Note that this function does NOT work as expected when traced!
-      isOkay←0
-      default←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'default'
-      isOkay←0
-      :If 0≠≢default
-          'Left argument must be a scalar'⎕SIGNAL 11/⍨1≠≢default
-      :AndIf ~default∊0 1
-          'The left argument. if specified, must be a Boolean or empty'⎕SIGNAL 11
-      :EndIf
-      :If 0=≢default
-          add←' (y/n) '
-      :Else
-          :If default
-              add←' (Y/n) '
-          :Else
-              add←' (y/N) '
-          :EndIf
-      :EndIf
-      :If 1<≡question
-          ((≢question)⊃question)←((≢question)⊃question),add
-          question←⍪question
-      :Else
-          question←question,add
-      :EndIf
-      :Repeat
-          ⎕←''
-          ⍞←question
-          answer←⍞
-          :If answer≡question                        ⍝ Did ...  (since version 18.0 trailing blanks are not removed anymore)
-          :OrIf (≢answer)=¯1+≢question               ⍝ ... the ...
-          :OrIf 0=≢answer                            ⍝ ... user ...
-          :OrIf question≡(-≢question)↑answer         ⍝ ... just ...
-              dtb←{⍵↓⍨-+/∧\' '=⌽⍵}
-              answer2←dtb answer
-          :OrIf answer2≡((-≢answer2)↑(⎕UCS 10){~⍺∊⍵:⍵ ⋄ ' ',dtb ⍺{⌽⍵↑⍨1+⍵⍳⍺}⌽⍵}question)   ⍝ ... press ...
-          :OrIf answer≡{1↓⊃¯1↑(⍵∊⎕UCS 10 13)⊂⍵}(⎕UCS 10),question ⍝ ... <enter>?
-              :If 0≠≢default
-                  yesOrNo←default
-                  isOkay←1
-              :EndIf
-          :Else
-              answer←¯1↑{⍵↓⍨-+/∧\' '=⌽⍵}answer
-              :If answer∊'YyNn'
-                  isOkay←1
-                  yesOrNo←answer∊'Yy'
-              :EndIf
-          :EndIf
-      :Until isOkay
-    ⍝Done
-    ∇
+    YesOrNo←{⍺←⊢ ⋄ ⍺ ⎕SE._Cider.CommTools.YesOrNo ⍵}
 
     ∇ {msg}←AddAlias(folder alias);ciderAliasFilename;data;q;path;folder_;row;path_;ind
     ⍝ Takes a folder and an alias.
@@ -844,17 +804,17 @@
       alias←⎕C alias~'[]'
       :If 0≠≢alias
       :AndIf 0<≢ciderAliasFilename
-          :If ⎕NEXISTS ciderAliasFilename
-              data←⊃⎕NGET ciderAliasFilename 1
-              :If ~⎕NEXISTS folder
+          :If ##.FilesAndDirs.Exists ciderAliasFilename
+              data←⊃##.FilesAndDirs.NGET ciderAliasFilename 1
+              :If ~##.FilesAndDirs.Exists folder
                   msg←'Could not find "',folder,'"'
               :ElseIf 0=+/(alias,'=')∘{⍺≡(≢⍺)↑⍵}¨data
                   ind←({⍵↓⍨⍵⍳'='}¨data)⍳⊂folder
                   :If ind≤≢data
                       DropAlias{⍵↑⍨¯1+⍵⍳'='}ind⊃data
-                      data←⊃⎕NGET ciderAliasFilename 1
+                      data←⊃##.FilesAndDirs.NGET ciderAliasFilename 1
                   :EndIf
-                  (⊂data,⊂(⎕C alias),'=',folder)⎕NPUT ciderAliasFilename 1
+                  (⊂data,⊂(⎕C alias),'=',folder)##.FilesAndDirs.NPUT ciderAliasFilename 1
               :Else
                   data←↑{'='(≠⊆⊢)⍵}¨data
                   :If (⊂alias)∊data[;1]
@@ -868,11 +828,11 @@
                       :EndIf
                       (path_ folder_)←{⍵↓⍨-'/'=¯1↑⍵}¨path_ folder_
                       :If ≢/path_ folder_
-                          q←'Alias [',alias,'] is already defined for:',CR,('   ',path),CR,'Overwrite?'
+                          q←'Alias [',alias,'] is already defined for:',LF,('   ',path),LF,'Overwrite?'
                           :If YesOrNo q
                               data[row;2]←⊂folder
                               data←⊃¨{⍺,'=',⍵}/¨↓data
-                              (⊂data)⎕NPUT ciderAliasFilename 1
+                              (⊂data)##.FilesAndDirs.NPUT ciderAliasFilename 1
                           :Else
                               msg←'*** Alias "',alias,'" is already in use with a different path - alias not assigned'
                           :EndIf
@@ -880,7 +840,7 @@
                   :EndIf
               :EndIf
           :Else
-              (⊂(⎕C alias),'=',folder)⎕NPUT ciderAliasFilename
+              (⊂(⎕C alias),'=',folder)##.FilesAndDirs.NPUT ciderAliasFilename
           :EndIf
       :EndIf
     ∇
@@ -891,11 +851,11 @@
       successFlag←FAILURE
       :If 0≠≢alias
       :AndIf 0<≢ciderAliasFilename
-          :If ⎕NEXISTS ciderAliasFilename
-              noOf←≢data←⊃⎕NGET ciderAliasFilename 1
+          :If ##.FilesAndDirs.Exists ciderAliasFilename
+              noOf←≢data←⊃##.FilesAndDirs.NGET ciderAliasFilename 1
               data←((⊆⎕C alias),¨'='){⍵/⍨~((⍵↑⍨¨⍵⍳¨'='))∊⍺}data
               :If noOf>≢data
-                  (⊂data)⎕NPUT ciderAliasFilename 1
+                  (⊂data)##.FilesAndDirs.NPUT ciderAliasFilename 1
                   successFlag←SUCCESS
               :EndIf
           :EndIf
@@ -925,7 +885,7 @@
           path←GetFolderFromAlias path
       :EndIf
       configFilename←path,'/cider.config'
-      ('No file "cider.config" found in ',path)Assert ⎕NEXISTS configFilename
+      ('No file "cider.config" found in ',path)Assert ##.FilesAndDirs.Exists configFilename
       config←Get_JSON5 configFilename
       :If 0<config.CIDER.⎕NC'tests'
       :AndIf 0<≢config.CIDER.tests
@@ -945,7 +905,7 @@
           path←GetFolderFromAlias path
       :EndIf
       configFilename←path,'/cider.config'
-      ('No file "cider.config" found in ',path)Assert ⎕NEXISTS configFilename
+      ('No file "cider.config" found in ',path)Assert ##.FilesAndDirs.Exists configFilename
       config←Get_JSON5 configFilename
       :If 0<config.CIDER.⎕NC'make'
       :AndIf 0<≢config.CIDER.make
@@ -975,7 +935,7 @@
       :EndIf
       1 ⎕MKDIR folder
       filename←folder,'config.json'
-      :If ~⎕NEXISTS filename
+      :If ~##.FilesAndDirs.Exists filename
           filename ⎕NCOPY GetMyUCMDsFolder,'/Cider/.cider/config.json'
       :EndIf
     ∇
@@ -1003,8 +963,8 @@
     ⍝ If an alias is defined it is saved, possibly by overwriting the old one.
       folder←''
       filename←GetCiderAliasFilename
-      :If ⎕NEXISTS filename
-          :If 0<≢data←⊃⎕NGET filename 1
+      :If ##.FilesAndDirs.Exists filename
+          :If 0<≢data←⊃##.FilesAndDirs.NGET filename 1
               data←↑{'='(≠⊆⊢)⍵}¨data
               alias←⎕C alias~'[]'
               :If (⊂alias)∊data[;1]
@@ -1021,7 +981,7 @@
     ∇
 
     ∇ json←Get_JSON5 filename;config;flag;qdmx
-      :If 0<≢json←⊃⎕NGET filename
+      :If 0<≢json←⊃##.FilesAndDirs.NGET filename
           :Trap 11
               json←⎕JSON⍠('Dialect' 'JSON5')⊣json
           :Else
@@ -1046,7 +1006,7 @@
           :EndIf
           :If flag
               config←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣json
-              (⊂config)⎕NPUT filename 1
+              (⊂config)##.FilesAndDirs.NPUT filename 1
           :EndIf
       :EndIf
     ∇
@@ -1054,7 +1014,7 @@
     ∇ {r}←config Put_JSON5 filename;json
       r←0
       json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config
-      (⊂json)⎕NPUT filename 1
+      (⊂json)##.FilesAndDirs.NPUT filename 1
     ∇
 
     BitsToInt←{(32⍴2)⊥⌽32↑⍵}
@@ -1063,7 +1023,7 @@
 
     ∇ functionName←GetFunctionNameFromCiderConfigFile dummy;filename;cfg
       functionName←''
-      :If ⎕NEXISTS filename←GetCiderConfigFilename
+      :If ##.FilesAndDirs.Exists filename←GetCiderConfigFilename
           cfg←Get_JSON5 filename
       :AndIf 0<≢cfg
       :AndIf 2=cfg.⎕NC'ExecuteAfterProjectOpen'
@@ -1083,7 +1043,7 @@
 
     ∇ flag←CheckJsonSyntax json
       :Trap 0
-          {}⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆json
+          {}⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊LF,¨⊆json
           flag←1
       :Else
           flag←0
@@ -1161,7 +1121,7 @@
     ⍝ be empty, otherwise an error is thrown.
       r←0
       nsIsEmpty←0=≢' '~¨⍨↓ref.⎕NL⍳16
-      :If 0=⎕NEXISTS parms.folder,'/',source
+      :If 0=##.FilesAndDirs.Exists parms.folder,'/',source
           folderIsEmpty←1
       :Else
           folderIsEmpty←0=≢⊃⎕NINFO⍠('Wildcard' 1)⊣parms.folder,'/',source,'/*'
@@ -1191,56 +1151,7 @@
       msg,←'   '∘,¨∪data.url
     ∇
 
-
-    ∇ index←{x}Select options;flag;answer;question;value;bool;⎕ML;⎕IO;manyFlag;mustFlag;caption
-    ⍝ Presents `options` as a numbered list and allows the user to select either exactly one or multiple ones.\\
-    ⍝ One is the default.\\
-    ⍝ The optional left argument allows you to specify more options:
-    ⍝ * `manyFlag` defaults to 0 (meaning just one item might be selected) or 1, in which case multiple items can be specified.
-    ⍝ * `mustFlag` forces the user to select at least one  option.
-    ⍝ * `caption` is shown above the options.
-    ⍝ `options` must not have more than 999 items.
-    ⍝ If the user aborts by entering nothing or a "q" (for "quit") `index will be `⍬`.
-      x←{0<⎕NC ⍵:⊆⍎⍵ ⋄ ''}'x'
-      (caption manyFlag mustFlag)←x,(⍴,x)↓'' 0 0
-      ⎕IO←1 ⋄ ⎕ML←1
-      manyFlag←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'manyFlag'
-      'Invalid right argument; must be a vector of text vectors.'⎕SIGNAL 98/⍨2≠≡options
-      'Right argument has more than 999 items'⎕SIGNAL 98/⍨999<≢options
-      flag←0
-      :Repeat
-          ⎕←{⍵↑'--- ',caption,((0≠≢caption)/' '),⍵⍴'-'}⎕PW-1
-          ⎕←⍪{((⊂'. '),¨⍨(⊂3 0)⍕¨⍳⍴⍵),¨⍵}options
-          ⎕←''
-          question←'Select one ',(manyFlag/'or more '),'item',((manyFlag)/'s'),' '
-          question,←((manyFlag∨~mustFlag)/'('),((~mustFlag)/'q=quit'),((manyFlag∧~mustFlag)/', '),(manyFlag/'a=all'),((manyFlag∨~mustFlag)/')'),' :'
-          :If 0<≢answer←⍞,0/⍞←question
-              answer←(⍴question)↓answer
-              :If 1=≢answer
-              :AndIf answer∊'Qq',manyFlag/'Aa'
-                  :If answer∊'Qq'
-                      :If 0=mustFlag
-                          index←⍬
-                          flag←1
-                      :EndIf
-                  :Else
-                      index←⍳≢options
-                      flag←1
-                  :EndIf
-              :Else
-                  (bool value)←⎕VFI answer
-                  :If ∧/bool
-                  :AndIf manyFlag∨1=+/bool
-                      value←bool/value
-                  :AndIf ∧/value∊⍳⍴options
-                      index←value
-                      flag←0≠≢index
-                  :EndIf
-              :EndIf
-          :EndIf
-      :Until flag
-      index←{1<≢⍵:⍵ ⋄ ⊃⍵}⍣(⍬≢index)⊣index
-    ∇
+    Select←{⍺←⊢ ⋄ ⍺ ⎕SE._Cider.CommTools.Select ⍵ }
 
     ∇ r←ListDirs path;buff
       buff←(0 1)⎕NINFO⍠('Wildcard' 1)⊣path,'*'

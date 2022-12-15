@@ -9,18 +9,23 @@
  stop←0
  (rc msg result)←stop ∆UCMD cmd,' -watch=ns'
  Assert rc=0
+ →T.GoToTidyUp'ns'≢#.TEMP.Foo.CiderConfig.LINK.watch
  {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+
  #.⎕EX'TEMP' ⋄ 'TEMP'#.⎕NS''
  (rc msg result)←stop ∆UCMD cmd,' -watch=dir'
  Assert rc=0
+ →T.GoToTidyUp'dir'≢#.TEMP.Foo.CiderConfig.LINK.watch
  {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+
  #.⎕EX'TEMP' ⋄ 'TEMP'#.⎕NS''
  (rc msg result)←stop ∆UCMD cmd,' -watch=both'
  Assert rc=0
+ →T.GoToTidyUp'both'≢#.TEMP.Foo.CiderConfig.LINK.watch
  {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
 
  (rc msg result)←stop ∆UCMD cmd,' -watch=firlefanz'
- →T.GoToTidyUp ~∨/'invalid value for modifier <watch> (must be ONE of "ns dir both")'⍷msg
+ →T.GoToTidyUp~∨/'invalid value for modifier <watch> (must be ONE of "ns dir both")'⍷msg
 
  r←T._OK
 

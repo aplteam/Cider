@@ -3,29 +3,24 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
 
- :If batchFlag
-     r←T._NoBatchTest
-     :Return
- :EndIf
- {}⍞,0/⎕←'This test needs you! Press <enter> when questioned; this test reports to the session. Press <enter> to continue.'
-
  tempDir←FilesAndDirs.GetTempSubDir(⊃⎕SI),'_1'
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  config←∆GetJSON5 tempDir,'/cider.config'
  (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
 
+ ⎕SE._Cider.CommTools.YesOrNo_Answers←1 2⍴'Project successfully created; open as well?' 'y'
  res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig'
 
- 'You did not just press <enter>!'Assert'Project created and opened'≡res
  →T.GoToTidyUp~(⊂'#.Foo')∊{⍵[;1]}##.Cider.ListOpenProjects 0
 
  r←T._OK
 
 ∆TidyUp:
+ ⎕SE._Cider.CommTools.Cleanup
  res←∆LINK'Break' '#.Foo'
-Assert res ∆StartsWith'Unlinked:'
+ #.⎕EX'Foo'
+ Assert res ∆StartsWith'Unlinked:'
  rc←FilesAndDirs.RmDir tempDir
  Assert 0=+/∊rc
- #.⎕EX'Foo'
 ⍝Done
