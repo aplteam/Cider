@@ -99,7 +99,9 @@ This is interpreted as follows:
 
 1. Load all Tatin packages that are installed in the project's sub folder "packages" into the namespace that hosts the project
 
-1. Load all Tatin packages that are installed in the project's sub folder "packages_dev" into the namespace `TestCases` which must be a child of the namespace that hosts the project
+1. Load all Tatin packages that are installed in the project's sub folder "packages_dev/" into the namespace `TestCases` which must be a child of the namespace that hosts the project
+
+You are advised to put the main package folder into the lead, since this is by some tools like [`MakeHelpers`](https://github.com/aplteam/MakeHelpers "Link to the MakeHelper project on GitHub") assumed,
 
 ###### init
 

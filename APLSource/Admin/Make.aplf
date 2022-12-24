@@ -1,5 +1,5 @@
- Make flag;pathToAPLTreeSource;targetPath;M;A;name;F;myUCMDsFolder;projectPath;codePath;toFolder;version;filename;filenames;LF
-⍝ Version 2.1.0 from 2022-12-13
+ Make flag;pathToAPLTreeSource;targetPath;M;A;name;F;myUCMDsFolder;projectPath;codePath;version;filename;filenames;LF
+⍝ Version 2.2.0 from 2022-12-21
  :If flag
      projectPath←##.CiderConfig.HOME,'/'
      codePath←##.CiderConfig.HOME,'/',##.CiderConfig.CIDER.source,'/'
@@ -29,16 +29,10 @@
      (projectPath,'html/*.html')M.CopyTo targetPath,'Cider/'
      (projectPath,'packages')M.CopyTo targetPath,'Cider/'
      {}M.CreateZipFile name targetPath version
-     :If 1 M.YesOrNo'Copy the Cider user command over to',myUCMDsFolder,' ?'
-         toFolder←myUCMDsFolder,'/Cider'
-         {}M.RecreateFolder toFolder
-         toFolder ⎕NCOPY⍠('IfExists' 'Replace')⊣targetPath,'Cider/Cider.aplc'
-         toFolder ⎕NCOPY⍠('IfExists' 'Replace')⊣targetPath,'Cider/Cider_uc.dyalog'
-         toFolder ⎕NCOPY⍠('IfExists' 'Replace')⊣targetPath,'Cider/cider.config.template'
-         toFolder ⎕NCOPY⍠('IfExists' 'Replace')⊣targetPath,'Cider/.cider'
-         {}##.FilesAndDirs.RmDirByForce toFolder,'/packages'
-         toFolder ⎕NCOPY targetPath,'Cider/packages'
-         (projectPath,'html/*.html')M.CopyTo toFolder
+     :If 1 M.YesOrNo'Copy the Cider user command over to ',myUCMDsFolder,' ?'
+         {}##.FilesAndDirs.RmDirByForce myUCMDsFolder,'/Cider'
+         ⎕DL 0.5
+         (targetPath,'Cider')M.CopyTo myUCMDsFolder
      :EndIf
      ⎕←'*** Successfully build: ',name,' version ',version
  :EndIf

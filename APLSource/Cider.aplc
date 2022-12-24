@@ -5,20 +5,24 @@
 
     ⎕IO←1 ⋄ ⎕ML←1
     L←⎕SE.Link
-    LF←⎕UCS 10
+    CR←⎕UCS 13
 
     ∇ r←Version
       :Access Public Shared
-      r←'Cider' '0.21.3+345' '2022-12-15'
+      r←'Cider' '0.22.0+349' '2022-12-24'
+      ⍝ * 0.22.0 ⋄ 2022-12-23
+      ⍝   * `info_url` renamed to `project_url` in the Cider config files. This brings Cider in line with
+      ⍝     Tatin version 0.82.0
+      ⍝   * Temporary API function `RenameInfo_Url` added to the Cider API. Goes through all folders in
+      ⍝     a given directory and searches for Cider config files, and renames info_url when found.
+      ⍝   * Bug fixes
+      ⍝     * ListTatinPackages threw an error when one or more `tatinFolder`s were missing. It should just
+      ⍝       report the missing ones to the session as long as at least one is actually found.
+      ⍝     * `LoadTatinPackages` crashed with an INDEX ERROR on an ill-defined "tatinFolder" parameter
       ⍝ * 0.21.3 ⋄ 2022-12-15
       ⍝   * `CiderConfig` is now created within the project, avoiding "Session namespace is referenced by #"
       ⍝   * `YesOrNo` and `Select` removed, `CommTools` is used instead
-      ⍝   * Cider depends on `FilesAndDirs` now, mainly for more resilient `NGET` and `NPUT`
-      ⍝   * Bug fixes
-      ⍝     * In case -watch= specified a value different from the config file this was not reflected by
-      ⍝       the variable CiderConfig.LINK.watch
-      ⍝     * ]Cider.OpenProject's documentation on "-watch=" did not mention that the change is temporary:
-      ⍝       The config file would not change.
+      ⍝   * Now dependent on `FilesAndDirs` for more resilient `NGET` and `NPUT` (mainly)
       ⍝ * 0.21.2 ⋄ 2022-11-28
       ⍝   * Packages updated
       ⍝   * `CloseProject` now reported all names and theirs paths in case all project were closed
@@ -249,6 +253,40 @@
       :EndIf
     ∇
 
+    ∇ report←RenameInfo_url folder
+    ⍝ With version 0.80.0 of Tatin the property "info_url" was renamed to "project_url".
+    ⍝ Cider was amended accordingly with version 0.22.0.
+    ⍝ This function takes a folder and searches for Cider config file in all sub folders.
+    ⍝ In every file found `info_url` is renamed to `project_url`.
+    ⍝ The names off all files that got changed are returned as a matrix.
+      :Access Public Shared
+      ('Is not a directory: ',folder)Assert ##.FilesAndDirs.IsDir folder
+      report←''
+      RenameInfo_url_ folder
+      report←⍪report
+      ⍝Done
+    ∇
+
+    ∇ RenameInfo_url_ folder;filename;json;list;ns;json2
+      filename←folder,'/cider.config'
+      :If ##.FilesAndDirs.IsFile filename
+          json←⊃##.FilesAndDirs.NGET filename
+          ns←⎕JSON⍠('Dialect' 'JSON5')⊢json
+          :If 0<ns.CIDER.⎕NC'info_url'
+              ns.CIDER.project_url←ns.CIDER.info_url
+              ns.CIDER.⎕EX'info_url'
+              json2←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊢ns
+              (⊂json2)##.FilesAndDirs.NPUT filename 1
+              report,←⊂filename
+          :EndIf
+      :EndIf
+      list←##.FilesAndDirs.ListDirs folder
+      :If 0<≢list
+          RenameInfo_url_¨list
+      :EndIf
+      ⍝Done
+    ∇
+
     ∇ path←GetProjectPath project;list;index;aliasDefs;bool;alias;info
       :Access Public Shared
       path←''
@@ -318,7 +356,7 @@
       r,←⊂'parent'
       r,←⊂'projectSpace'
       r,←⊂'tatinFolder'
-      r,←⊂'info_url'
+      r,←⊂'project_url'
       r,←⊂'tests'
       r,←⊂'make'
       r,←⊂'githubUsername'
@@ -449,7 +487,7 @@
                   p'   No later versions found '
                   :If 0<≢buff←(⊂'https://tatin.dev/')~⍨⊃,/3⌷[2]¨report
                       plural←1<≢buff
-                      p{'   *** But note that ',(⍕≢⍵),' package',(plural/'s'),((1+plural)⊃' was' ' were'),' loaded from ',⊃{⍺,',',⍵}/∪⍵}buff
+                      p{'   >>> But note that ',(⍕≢⍵),' package',(plural/'s'),((1+plural)⊃' was' ' were'),' loaded from ',⊃{⍺,',',⍵}/∪⍵}buff
                   :EndIf
               :Else
                   report←{⍵[;4]⌿⍵}¨report
@@ -512,14 +550,14 @@
     ∇
 
     ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_;noOf;p
-    ⍝ Load all installed packaged (if any) into their designated host namespaces.
+    ⍝ Load all installed packages (if any) into their designated host namespaces.
       r←FAILURE
       p←{⍺←~parms.quietFlag ⋄ ⍺ PrintToSession ⍵}
       :If 0<≢config.CIDER.tatinFolder
           pkgFolders←⊆','(≠⊆⊢)config.CIDER.tatinFolder
           :For pkgFolder :In pkgFolders
               :If '='∊pkgFolder
-                  (pkgFolder_ target)←'='(≠⊆⊢)pkgFolder
+                  (pkgFolder_ target)←SplitTatinFolders pkgFolder
                   'Target namespace for Tatin packages is addressed with absolute path (invalid)'Assert~(⊃target)∊'#⎕'
                   target←projectSpace,'.',target
               :Else
@@ -575,7 +613,7 @@
                   projectSpace.⍎init
               :Else
                   qdmx←⎕DMX
-                  p'*** Executing "init" crashed: ',qdmx.EM
+                  p'   >>> Executing "init" crashed: ',qdmx.EM
               :EndTrap
           :CaseList 1 ¯2
               fns←projectSpace.⍎init
@@ -583,13 +621,13 @@
                   fns config
               :Else
                   qdmx←⎕DMX
-                  p'*** Executing "init" crashed: ',qdmx.EM
+                  p'   >>> Executing "init" crashed: ',qdmx.EM
               :EndTrap
           :Else
-              p'  Invalid function valence: is ambivalent'
+              p'  >>> Invalid function valence: is ambivalent'
           :EndSelect
       :Else
-          p'Could not execute "',init,'": function not found; check config file!'
+          p'   >>> Could not execute "',init,'": function not found; check config file!'
       :EndIf
     ∇
 
@@ -602,14 +640,14 @@
                   ⍎'{}',fn,' config'
               :Else
                   qdmx←⎕DMX
-                  msg←'*** Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
+                  msg←'>>> Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
               :EndTrap
           :Else
               :Trap 0
                   ⍎fn,' config'
               :Else
                   qdmx←⎕DMX
-                  msg←'*** Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
+                  msg←'>>> Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
               :EndTrap
           :EndIf
           :If 0=≢msg
@@ -658,7 +696,7 @@
           :AndIf editFlag
           :AndIf 0<≢(∊ns.cider_config)~' '
               :If CheckJsonSyntax ns.cider_config
-                  data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊LF,¨⊆ns.cider_config
+                  data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
               :AndIf PerformConfigChecks data
                   (⊂ns.cider_config)##.FilesAndDirs.NPUT filename 1
                   r←flag←1
@@ -704,7 +742,7 @@
       :EndIf
     ∇
 
-    ∇ r←ListTatinPackages y;path;cfgFilename;json;cfg;tatinFolder;buildFilenames;buildLists
+    ∇ r←ListTatinPackages y;path;cfgFilename;json;cfg;tatinFolder;buildFilenames;buildLists;b
       :Access Public Shared
       :If '['=1⍴y
           path←GetFolderFromAlias y
@@ -722,7 +760,11 @@
           tatinFolder←','(≠⊆⊢)tatinFolder
           tatinFolder←{⍵↑⍨¯1+⍵⍳'='}¨tatinFolder
           buildFilenames←((⊂path,'/'),¨tatinFolder),¨⊂'/apl-buildlist.json'
-          'Build list not found?!'Assert∧/##.FilesAndDirs.Exists¨buildFilenames
+          :If 0∊b←##.FilesAndDirs.Exists¨buildFilenames
+              ⎕←'Folder(s) do not exit: ',⊃,/(⊂(⎕UCS 13),' '),¨(~b)/buildFilenames
+              buildFilenames←b/buildFilenames
+          :EndIf
+          'No directory noted on paramater "tatinFolder" found'Assert∨/b
           buildLists←{⎕JSON⍠('Dialect' 'JSON5')⊣⊃##.FilesAndDirs.NGET ⍵}¨buildFilenames
           r←⍉∘↑¨(⊂¨' ',¨¨buildLists.packageID),¨buildLists.(principal url)
           r←(⊂' Package-ID' 'Principal' 'URL')⍪¨(⊂'' '' '')⍪¨r
@@ -828,13 +870,13 @@
                       :EndIf
                       (path_ folder_)←{⍵↓⍨-'/'=¯1↑⍵}¨path_ folder_
                       :If ≢/path_ folder_
-                          q←'Alias [',alias,'] is already defined for:',LF,('   ',path),LF,'Overwrite?'
+                          q←'Alias [',alias,'] is already defined for:',CR,('   ',path),CR,'Overwrite?'
                           :If YesOrNo q
                               data[row;2]←⊂folder
                               data←⊃¨{⍺,'=',⍵}/¨↓data
                               (⊂data)##.FilesAndDirs.NPUT ciderAliasFilename 1
                           :Else
-                              msg←'*** Alias "',alias,'" is already in use with a different path - alias not assigned'
+                              msg←'>>> Alias "',alias,'" is already in use with a different path - alias not assigned'
                           :EndIf
                       :EndIf
                   :EndIf
@@ -1043,7 +1085,7 @@
 
     ∇ flag←CheckJsonSyntax json
       :Trap 0
-          {}⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊LF,¨⊆json
+          {}⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆json
           flag←1
       :Else
           flag←0
@@ -1156,6 +1198,16 @@
     ∇ r←ListDirs path;buff
       buff←(0 1)⎕NINFO⍠('Wildcard' 1)⊣path,'*'
       r←(1=2⊃buff)/1⊃buff
+    ∇
+
+    ∇ r←SplitTatinFolders pkgFolder;buff;msg
+      msg←'Something is wrong with the "tatinFolder" setting in Cider.config'
+      :Trap 0
+          r←'='(≠⊆⊢)pkgFolder
+      :Else
+          msg Assert 0
+      :EndTrap
+      msg Assert 2=≢r
     ∇
 
 :EndClass
