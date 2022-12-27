@@ -87,7 +87,7 @@ This might be empty, for example when the project is bascially just a script (cl
 
 Defaults to "packages".
 
-Defines the folder(s) with installed Tatin packages required by the project. Must be relative to the folder where the project lives.
+Defines the folder(s) with installed Tatin packages required by the project as well as resulting package or application. Must be relative to the folder where the project lives.
 
 Accepts also something like this:
 
@@ -101,7 +101,13 @@ This is interpreted as follows:
 
 1. Load all Tatin packages that are installed in the project's sub folder "packages_dev/" into the namespace `TestCases` which must be a child of the namespace that hosts the project
 
-You are advised to put the main package folder into the lead, since this is by some tools like [`MakeHelpers`](https://github.com/aplteam/MakeHelpers "Link to the MakeHelper project on GitHub") assumed,
+You are advised to put the main package folder first, since this is assumed by Tatin's `Pack` method in order to find --- and add --- dependencies.
+
+In the unlikely event that a project depends on packages only for development use a leading command to indicate this:
+
+```
+,packages_dev=TestCases
+```
 
 ###### init
 

@@ -104,7 +104,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </a>
 </div>
 <p>Defaults to “packages”.</p>
-<p>Defines the folder(s) with installed Tatin packages required by the project. Must be relative to the folder where the project lives.</p>
+<p>Defines the folder(s) with installed Tatin packages required by the project as well as resulting package or application. Must be relative to the folder where the project lives.</p>
 <p>Accepts also something like this:</p>
 <pre><code>packages,packages_dev=TestCases</code></pre>
 <p>This is interpreted as follows:</p>
@@ -112,7 +112,9 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <li>Load all Tatin packages that are installed in the project's sub folder “packages” into the namespace that hosts the project</li>
 <li>Load all Tatin packages that are installed in the project's sub folder “packages_dev/” into the namespace <code>TestCases</code> which must be a child of the namespace that hosts the project</li>
 </ol>
-<p>You are advised to put the main package folder into the lead, since this is by some tools like <a href="https://github.com/aplteam/MakeHelpers" class="external_link" title="Link to the MakeHelper project on GitHub"><code>MakeHelpers</code></a> assumed,</p>
+<p>You are advised to put the main package folder first, since this is assumed by Tatin's <code>Pack</code> method in order to find — and add — dependencies.</p>
+<p>In the unlikely event that a project depends on packages only for development use a leading command to indicate this:</p>
+<pre><code>,packages_dev=TestCases</code></pre>
 <div class="h_tag">
 <a href="#init" id="init" class="autoheader_anchor">
 <h6 data-id="init">2.1.1.1.5. init</h6>
