@@ -1,16 +1,17 @@
- R←Test_Open_008(stopFlag batchFlag);⎕TRAP;parms;r;res
+ R←Test_Open_008(stopFlag batchFlag);⎕TRAP;parms;r;res;success;log
 ⍝ Open a project without loading any packages (noPkgLoad)
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
 
- parms←##.Cider.CreateOpenParms ⍬
+ parms←##.Cider.Cider.CreateOpenParms ⍬
  parms.folder←∆GetTestPath⊃⎕SI
  parms.noPkgLoad←1
  parms.importFlag←1
  parms.quietFlag←1
- →T.PassesIf ##.Cider.OpenProject parms
+ (success log)←##.Cider.Cider.OpenProject parms
+ →T.PassesIf success
 
  →T.PassesIf'World'≡#.TEMP.Hello
  →T.PassesIf 2=≢#.TEMP.⎕NL⍳16                 ⍝ We must not find any packages, just the function and CiderConfig

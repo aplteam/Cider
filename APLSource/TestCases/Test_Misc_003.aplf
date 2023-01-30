@@ -1,4 +1,4 @@
- R←Test_Misc_003(stopFlag batchFlag);⎕TRAP;res;folder;parms;list;filename;cfg;was;rc
+ R←Test_Misc_003(stopFlag batchFlag);⎕TRAP;folder;parms;list;filename;cfg;was;rc;success;log;res
 ⍝ Exercise the ListOpenProjects function with ExecuteAfterProjectOpen set
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -9,7 +9,7 @@
 
  folder←∆GetTestPath⊃⎕SI
 
- filename←##.Cider.GetCiderConfigFilename
+ filename←##.Cider.Cider.GetCiderConfigFilename
  cfg←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
 
  #.TEMP2.⎕FX'ExecuteAfterProjectOpen config' '∆FLAG←1'
@@ -21,8 +21,8 @@
  parms←⎕NS''
  parms.folder←folder,'/Project1'
  parms.quietFlag←1
- res←##.Cider.OpenProject parms
- →T.GoToTidyUp~res
+ (success log)←##.Cider.Cider.OpenProject parms
+ →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠#.TEMP2.∆FLAG
 
  R←T._OK

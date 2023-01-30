@@ -1,4 +1,4 @@
- r←Test_UC_001(stopFlag batchFlag);⎕TRAP;tempDir;parms;list;rc;msg;result;res
+ r←Test_UC_001(stopFlag batchFlag);⎕TRAP;tempDir;parms;list;rc;msg;result;res;log
 ⍝ Exercise the user command on "CloseProject" with a not fully qualified name
 ⍝ Should work anyway if there is just one project with that name
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
@@ -11,12 +11,12 @@
  {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig -quiet'
  {}⎕SE.UCMD'Cider.CloseProject #.Foo'
 
- parms←##.Cider.CreateOpenParms ⍬
+ parms←##.Cider.Cider.CreateOpenParms ⍬
  parms.folder←tempDir
  parms.quietFlag←1
- res←##.Cider.OpenProject parms
+ (res log)←##.Cider.Cider.OpenProject parms
 
- →T.GoToTidyUp 0=≢list←##.Cider.ListOpenProjects 0
+ →T.GoToTidyUp 0=≢list←##.Cider.Cider.ListOpenProjects 0
 
  (rc msg result)←∆UCMD'CloseProject Foo'
  →T.GoToTidyUp~∨/'Project name(s) must be fully qualified but are not: Foo'⍷msg

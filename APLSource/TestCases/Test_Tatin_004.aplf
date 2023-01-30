@@ -1,4 +1,4 @@
- R←Test_Tatin_004(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc
+ R←Test_Tatin_004(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc;log
 ⍝ Attempt to load project with a path pointing to installed Tatin packages that is non-existent.
 ⍝ Will work from 0.9.0 onwards
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
@@ -11,12 +11,12 @@
  parms.folder←folder
  parms.quietFlag←1
 
- res←##.Cider.OpenProject parms
+ (res log)←##.Cider.Cider.OpenProject parms
 
  R←T._OK
 
 ∆TidyUp:
  res←∆LINK'Break' '#.TEMP'
-Assert res ∆StartsWith'Unlinked:'
+ Assert res ∆StartsWith'Unlinked:'
  #.⎕EX'TEMP'
 ⍝Done

@@ -5,6 +5,8 @@
 
 Cider offers some User commands that are useful to manage projects. In addition is also offers an API.
 
+It cooperates with [Tatin](https://github.com/aplteam.Cider "Link to Cider on GitHub") and [APLGit2](https://github.com/aplteam.APLGit2 "Link to APLGit2 on GitHub") if available.
+
 
 ## Requirements
 
@@ -14,8 +16,6 @@ Cider requires
 * Link 3.0.8 or better
 
 If Tatin packages are part of a project then Tatin is required as well.
-
-Cider is capable of collaborating with the [Git package](https://github.com/aplteam/APLGit2) but does not rely on it.
 
 
 ## Overview
@@ -46,19 +46,18 @@ Regarding the API there is a document "Cider-API-Reference.html" available.
 
 ## Installation
 
-The ZIP file contains a folder `Cider/`. That folder needs to go into any of the folders that Dyalog APL scans for user commands.
-
-For example, a folder `MyUCMDs` will be scanned for user commands. The location where Dyalog tries to find such a folder depends on the operating system:
+With version 0.23 Cider became a Tatin package. That simplifies the installation process: all you need to do is issue this command:
 
 ```
-⍝ Windows:
-(2 ⎕NQ'.' 'GetEnvironment' 'USERPROFILE'),'/Documents\MyUCMDs'
-⍝ Non-Windows platforms:
-(2 ⎕NQ'.' 'GetEnvironment' 'Home'),'/MyUCMDs'
+      ]Tatin.InstallPackages [tatin]Cider [MyUCMDs]
 ```
 
-Note that under Windows the folder `MyUCMDs` will be created as part of the installation process, but not under Linux and Mac-OS, although it will be scanned for user commands in case it exists.
+When a new instance of Dyalog is started `]Cider` will be available. For an instance that was already running when Cider was installed execute `]UReset`.
 
+### Details
+`[MyUCMDs]` is an internal alias that refers to a folder `MyUCMDs/` which is, among others, scanned by Dyalog for user commands when a new instance is fired up.
+
+If you are interested in details: <https://aplwiki.com/wiki/Dyalog_User_Commands>
 
 ## Methods
 
@@ -104,7 +103,7 @@ Notes:
 * The name of the project space is defined in the Cider config file, but this can be overwritten with the `-projectSpace=` option
 * In case the `tatinFolder` parameter specifies one or more packages then the references pointing to those Tatin packages are all established in `projectSpace` by default.
 
-  However, this can be overwritten by specifying a different target space by adding 
+  However, this can be overwritten by specifying a different target space by adding:
 
   `=SubNamespace`
 

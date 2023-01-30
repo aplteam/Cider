@@ -8,9 +8,9 @@
  3 ⎕MKDIR tempDir
  wasDir←FilesAndDirs.Cd tempDir
 
- ⎕SE._Cider.CommTools.YesOrNo_Answers←1 2⍴'Sure you want to create the project' 'Y'
+ ⎕SE.Cider.##.CommTools.YesOrNo_Answers←1 2⍴'Sure you want to create the project' 'Y'
  {}⎕SE.UCMD'Cider.CreateProject "." -noEdit -quiet'
- list←##.Cider.ListOpenProjects 0
+ list←##.Cider.Cider.ListOpenProjects 0
  →T.GoToTidyUp~(⊂'#.aaaa')∊list[;1]
  row←list[;1]⍳⊂'#.aaaa'
  →T.GoToTidyUp~{'/'=1⍴⍵:1 ⋄ ':'∊⍵}2⊃list[row;]
@@ -18,7 +18,7 @@
  R←T._OK
 
 ∆TidyUp:
- ⎕SE._Cider.CommTools.Cleanup
+ ⎕SE.Cider.##.CommTools.Cleanup
  {}FilesAndDirs.Cd wasDir
  res←∆LINK'Break' '#.aaaa'
  Assert res ∆StartsWith'Unlinked:'

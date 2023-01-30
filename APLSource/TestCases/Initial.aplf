@@ -1,6 +1,5 @@
  Initial
  ∆LINK_NOTIFY_WAS←⎕SE.Link.NOTIFY
  ⎕SE.Link.NOTIFY←0
- ##.SyncCiderScripts 1
- 'Cider''s version number in # and ⎕SE diverge'Assert ⎕SE.Cider.Version≡#.Cider.Cider.Version
+ 'Cider''s version number in # and ⎕SE diverge'Assert ⎕SE.Cider.Version≡##.Cider.Cider.Version
 ⍝Done

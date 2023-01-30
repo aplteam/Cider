@@ -1,4 +1,4 @@
- R←Test_Open_002(stopFlag batchFlag);⎕TRAP;parms;folder;r;res;rc
+ R←Test_Open_002(stopFlag batchFlag);⎕TRAP;parms;folder;r;res;rc;success;log
 ⍝ Open a simple project but specify a different parent space including a sub namespace
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -12,7 +12,8 @@
  parms.folder←folder
  parms.parent←'⎕SE.___Goo___'
  parms.quietFlag←1
- →T.GoToTidyUp~##.Cider.OpenProject parms
+ (success log)←##.Cider.Cider.OpenProject parms
+ →T.GoToTidyUp~success
 
  →T.GoToTidyUp 0≠≢#.TEMP.⎕NL⍳16
  →T.GoToTidyUp 9≠⎕SE.___Goo___.⎕NC'Foo'

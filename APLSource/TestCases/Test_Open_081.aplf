@@ -6,7 +6,7 @@
  parms←⎕NS''
  parms.folder←∆GetTestPath⊃⎕SI
  :Trap 11
-     {}##.Cider.OpenProject parms
+     {}##.Cider.Cider.OpenProject parms
      →T.FailsIf 1
  :Else
      qdmx←⎕DMX

@@ -1,4 +1,4 @@
- R←Test_Open_005(stopFlag batchFlag);⎕TRAP;parms;folder;r;res;rc
+ R←Test_Open_005(stopFlag batchFlag);⎕TRAP;parms;folder;r;res;rc;success;log
 ⍝ Open a project with an initialisation function
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -11,7 +11,8 @@
  parms.projectSpace←''
  parms.parent←'#.TEMP'
  parms.quietFlag←1
- →T.GoToTidyUp~##.Cider.OpenProject parms
+ (success log)←##.Cider.Cider.OpenProject parms
+ →T.GoToTidyUp~success
 
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello
  →T.GoToTidyUp 2≠#.TEMP.Foo.⎕NC'∆GLOBAL_TestOpen_005'
@@ -20,6 +21,6 @@
 
 ∆TidyUp:
  res←∆LINK'Break' '#.TEMP.Foo'
-Assert res ∆StartsWith'Unlinked:'
+ Assert res ∆StartsWith'Unlinked:'
  #.⎕EX'TEMP'
 ⍝Done

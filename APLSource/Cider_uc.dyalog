@@ -1,7 +1,7 @@
-﻿:Class Cider_uc
+:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2022-12-13
+⍝ 2023-01-30
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
@@ -96,7 +96,7 @@
       :Access Shared Public
       r←0 0⍴''
       ('Cider needs at least version ',MinimumVersionOfDyalog,' of Dyalog APL')Assert AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
-      P←LoadCiderCode ⍬
+      P←⎕SE.Cider
       :If 18={⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'.'}aplVersion←2⊃'.'⎕WG'aplversion'
       :AndIf 44280>⊃(//)⎕VFI 3⊃'.'(≠⊆⊢)aplVersion  ⍝ 44280 has essential ⎕FIX fix for Link to work
           'Version 18 must be at least on build number 44280, otherwise Link won''t work as expected'⎕SIGNAL 11
@@ -261,7 +261,7 @@
       parms.suppressInit←Args.suppressInit
       parms.importFlag←Args.import
       parms.noPkgLoad←Args.noPkgLoad
-      :If ~P.OpenProject parms
+      :If ~⊃P.OpenProject parms
           r←'Attempt to open the project failed'
       :EndIf
     ∇
@@ -392,10 +392,10 @@
               r,←⊂'is prompted for confirmation to avoid mishaps.'
               r,←⊂''
               r,←⊂'-acceptConfig: By default a file cider.config is created, and an error is thrown in'
-              r,←⊂'               case it already exists. You can use -acceptConfig to overwrite this and'
-              r,←⊂'               force CreateProject to accept an already existing config file.'
+              r,←⊂'               case it already exists. You can use -acceptConfig to force CreateProject'
+              r,←⊂'               to accept an already existing config file.'
               r,←⊂'-noEdit:       With -noEdit you can prevent the user from being asked to edit the config file.'
-              r,←⊂'-alias:        In case you are going to work on that project frequently you may specify'
+              r,←⊂'-alias:        In case you are going to work on the new project frequently you may specify'
               r,←⊂'               -alias=name'
               r,←⊂'-quiet         After a project has been created successfully, the user will be asked whether'
               r,←⊂'               she wants to open the project as well. You can enforce that without the user'
@@ -501,29 +501,7 @@
       :EndIf
     ∇
 
-    ∇ P←LoadCiderCode dummy;res;debugFlag;folder;msg
-      :If debugFlag←'Is ON'≡⎕SE.UCMD'UDEBUG'
-      :OrIf 0=⎕SE.⎕NC'_Cider'
-          P←'_Cider'⎕SE.⎕NS''
-          :If debugFlag
-              ⎕EX P
-              folder←¯1↓1⊃⎕NPARTS ##.SourceFile
-              msg←⎕SE.Link.Create P folder
-              'Could not Link the Cider application code'Assert∨/'Linked:'⍷msg
-          :Else
-              folder←(1⊃⎕NPARTS ##.SourceFile),'/Cider.aplc'
-              res←({⍵.overwrite←1 ⋄ ⍵}⎕NS'')⎕SE.Link.Import P folder
-              'Could not import the Cider application code'Assert∨/'Imported:'⍷res
-          :EndIf
-          {}⎕SE.Tatin.LoadDependencies((1⊃⎕NPARTS ##.SourceFile),'/packages/')'⎕SE._Cider'
-          ⎕SE.Cider←⎕SE._Cider.Cider            ⍝ Establish the API
-      :Else
-          P←⍕⎕SE._Cider
-      :EndIf
-      P←⍎P,'.Cider'
-    ∇
-
-    ∇ r←{namespace}CreateProject_(folder acceptFlag noEditFlag quietFlag);filename;success;config;projectFolder;parms
+    ∇ r←{namespace}CreateProject_(folder acceptFlag noEditFlag quietFlag);filename;success;config;projectFolder;parms;list
       :Access Public Shared
       r←''
       :If 0≡folder
@@ -572,10 +550,24 @@
       :If success
           :If namespace≢⍬
               projectFolder←1⊃⎕NPARTS filename
-              :If 0=(⍎config.CIDER.parent).⎕NC'config.CIDER.projectSpace'
+              :If 0=(⍎config.CIDER.parent).⎕NC config.CIDER.projectSpace
                   config.CIDER.projectSpace(⍎config.CIDER.parent).⎕NS''
               :Else
-                  (⍎namespace).{⎕EX ⎕NL⍳16}⍬
+                  :If 0<≢((⍎config.CIDER.parent)⍎config.CIDER.projectSpace).⎕NL⍳16
+                      :If 1<≢list←⊃P.##.FilesAndDirs.Dir projectFolder
+                      :OrIf 'cider.config'≢{1≠≢⍵:0 ⋄ ⊃,/1↓⎕NPARTS⊃⍵}list
+                          :If quietFlag
+                      ⍝ With quietFlag on there is nothing we can do but throw an error
+                              'Both the target namespace and the source folder are not empty'Assert 0
+                          :Else
+                              :If YesOrNo'Target namespace "',(config.CIDER.parent,'.',config.CIDER.projectSpace),'" is not empty. Delete contents?'
+                                  ((⍎config.CIDER.parent)⍎config.CIDER.projectSpace).{⎕EX ⎕NL⍳16}⍬
+                              :Else
+                                  'Both the target namespace and the source folder are not empty'Assert 0
+                              :EndIf
+                          :EndIf
+                      :EndIf
+                  :EndIf
               :EndIf
               parms←P.CreateOpenParms ⍬
               parms.folder←projectFolder
@@ -585,7 +577,7 @@
               parms.quietFlag←quietFlag
               parms.watch←config.LINK.watch
           :AndIf {⍵:1 ⋄ 1 YesOrNo'Project successfully created; open as well?' ⋄ 1}quietFlag
-          :AndIf P.OpenProject parms
+          :AndIf ⊃P.OpenProject parms
               r←'Project created and opened'
           :Else
               r←'Project created'
@@ -599,7 +591,7 @@
     ∇ {name}←CreateConfigFile(filename name);config
     ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"
       ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
-      config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET(⊃⎕NPARTS ##.SourceFile),configFilename,'.template'
+      config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET(P.##.TatinVars.HOME),'/',configFilename,'.template'
       :If (⊃name)∊'#⎕'
           name←{⍵↓⍨⍵⍳'.'}name
       :EndIf
@@ -701,6 +693,7 @@
     ∇ r←ShowHelp dummy;list;folder;flag;answer
       r←''
       folder←1⊃⎕NPARTS ##.SourceFile
+      folder,←'../../html/'
       :If 0=≢list←⊃⎕NINFO⍠('Wildcard' 1)⊣folder,'*.html'
           r←'No documentation found for Cider in ',folder
       :Else
@@ -812,7 +805,7 @@
       (⊂aliases)⎕NPUT filename 1
     ∇
 
-    YesOrNo←{⍺←⊢ ⋄ ⍺ ⎕se._Cider.CommTools.YesOrNo ⍵}
+    YesOrNo←{⍺←⊢ ⋄ ⍺ ⎕SE.Cider.##.CommTools.YesOrNo ⍵}
 
     ∇ r←{caption}SelectFromAliases data;row
       r←⍬
@@ -865,7 +858,7 @@
       index←{1<≢⍵:⍵ ⋄ ⊃⍵}index
     ∇
 
-    Select←{⍺←⊢ ⋄ ⍺ ⎕se._Cider.CommTools.Select ⍵}
+    Select←{⍺←⊢ ⋄ ⍺ ⎕SE.Cider.##.CommTools.Select ⍵}
 
     ∇ {r}←PerformConfigChecks config;buff;namespace;path
       r←0

@@ -9,11 +9,9 @@
 
 ## What is Cider for?
 
-In this document we use the word "project" for an application or a tool that consists not only of what is  finally delivered, like an Installer EXE under Windows or a Tatin package or a workspace or whatnot, but also of stuff that is required only during development, like test cases and test data, tools, helpers and similar stuff.
+In this document, we use the word "project" for an application or a tool that consists not only of what is finally delivered, like an Installer EXE under Windows or a Tatin package or a workspace or whatnot, but also of stuff that is required only during development, like test cases and test data, tools, helpers etc.
 
-While LINK is perfect for bringing stuff into the workspace, putting together an environment in which development can take place requires more than just that. There is something missing...
-
-I> Note that in this document names stemming from the Cider configuration file are shown `like this`.
+While LINK is perfect for bringing stuff into the workspace, putting together an environment in which development can take place requires more than just that. Something is missing...
 
 ## The solution
 
@@ -21,11 +19,13 @@ Cider attempts to fill that gap. A Cider project requires a configuration file n
 
 The two most important commands of Cider's user commands are `CreateProject` and `OpenProject`.
 
+I> Note that in this document names stemming from the Cider configuration file are shown `like this`.
+
 ### CreateProject
 
 With `]Cider.CreateProject` any folder that does not yet host a file `cider.config` can be transformed into a Cider project. (You may specify the `-acceptConfig` flag to override this default behaviour and make Cider accept an already existing file `cider.config`)
 
-If the folder does not yet exist it will be created. In any case the folder will be populated with a file `cider.config`.
+If the folder does not yet exist it will be created. In any case, the folder will be populated with a file `cider.config`.
 
 Note that `]Cider.CreateProject` deals differently with the possible combinations of namespace and source folder:
 
@@ -35,7 +35,7 @@ Note that `]Cider.CreateProject` deals differently with the possible combination
 
 In all these cases it should be pretty obvious what `]Cider.CreateProject` will do.
 
-However, when both namespace and source folder are _not_ empty then the user will be asked whether the contents of the namespace should be deleted, because that might well make sense. 
+However, when the namespace and source folder are _both not empty_ then the user will be asked whether the contents of the namespace should be deleted because that might well make sense. 
 
 If the user answers this question with "No" then an error is thrown.
 
@@ -61,7 +61,7 @@ Defaults to `#` but can be something like `⎕SE` or `#.MyNamespace1.MyNamespace
 
 Note that all namespaces specified as `parent` _must already exist_, otherwise an error is thrown.
 
-With the user command this can be overwritten temporarily with, say:
+With the user command, this can be overwritten temporarily with, say:
 
 ```
 ]Cider.OpenProject {path} -parent=#.MyProjects
@@ -71,7 +71,7 @@ With the user command this can be overwritten temporarily with, say:
 
 The name of a namespace that will host the project. *Must* be set by the user in the config file.
 
-With the user command this can be overwritten temporarily with, say:
+With the user command, this can be overwritten temporarily with, say:
 
 ```
 ]Cider.OpenProject {path} -projectspace=Foo
@@ -79,15 +79,15 @@ With the user command this can be overwritten temporarily with, say:
 
 ###### source
 
-Defaults to `APLSource`: a sub folder that hosts the code. That's where the code lives, relative to the project folder. 
+Defaults to `APLSource`: a subfolder that hosts the code. That's where the code lives, relative to the project folder. 
 
-This might be empty, for example when the project is bascially just a script (class or namespace).
+This might be empty, for example when the project is just a script (class or namespace).
 
 ###### tatinFolder
 
 Defaults to "packages".
 
-Defines the folder(s) with installed Tatin packages required by the project as well as resulting package or application. Must be relative to the folder where the project lives.
+Defines the folder(s) with installed Tatin packages required by the project as well as the resulting package or application. Must be relative to the folder where the project lives.
 
 Accepts also something like this:
 
@@ -97,17 +97,29 @@ packages,packages_dev=TestCases
 
 This is interpreted as follows:
 
-1. Load all Tatin packages that are installed in the project's sub folder "packages" into the namespace that hosts the project
+1. Load all Tatin packages that are installed in the project's subfolder "packages" into the namespace that hosts the project
 
-1. Load all Tatin packages that are installed in the project's sub folder "packages_dev/" into the namespace `TestCases` which must be a child of the namespace that hosts the project
+1. Load all Tatin packages that are installed in the project's subfolder "packages_dev/" into the namespace `TestCases` which must be a child of the namespace that hosts the project
 
-You are advised to put the main package folder first, since this is assumed by Tatin's `Pack` method in order to find --- and add --- dependencies.
-
-In the unlikely event that a project depends on packages only for development use a leading command to indicate this:
+W> You **must** put the main package folder first. `InstallPackages` will install all packages found in the first folder but nothing else.
+ 
+If a project has only dependencies for development purposes then specify a leading comma like this:
 
 ```
 ,packages_dev=TestCases
 ```
+
+This makes the first item an empty vector, and that tells Cider that there are no principal dependencies, just development dependencies.
+
+Although it is possible to define more than two folders on `tatinFolder`, it is hard to imagine a case when this 
+makes sense.
+
+Of course you may assign a namespace name to the principal package as well, like this:
+
+```
+packages=Foo,packages_dev=TestCases
+```
+
 
 ###### init
 
@@ -116,15 +128,11 @@ If not empty this must be an expression that would call a function within the pr
 The expression will be executed after a project was opened. 
 
 
-###### info_url
-
-If not empty this is expected to be a URL pointing to, say, a GitHub project. For information only.
-
 ###### make
 
-Empty or an expression that would create a new version of the project.
+Empty or an expression (relative to the project) that would create a new version of the project.
 
-The purpose is to tell anybody not familiar with the project how to create a new version by entering
+The purpose is to tell anybody not familiar with the project how to create a new version by entering:
 
 ```
       ]Cider.Make
@@ -133,19 +141,28 @@ The purpose is to tell anybody not familiar with the project how to create a new
 
 The output is compiled from the config parameter values `CIDER.parent`, `CIDER.projectSpace` and `CIDER.make` and the comment is then added.
 
-However, if the first non-white space character of `make` is a `]` its definition would just be printed to `⎕SE` together with a comment.
+However, if the first non-white space character of `make` is a `]` its definition would just be printed to the session together with a comment because then it's obviously a user command.
+
+
+###### project_url
+
+If not empty this is expected to be a URL pointing to, say, a GitHub project. For information only.
+
 
 ###### tests
 
-Empty or an expression that would executes the test cases of the project.
+Empty or an expression (relative to the project) that would execute the test cases of the project.
 
-The purpose is to tell anybody not familiar with the project how to execute the test cases by entering
+The purpose is to tell anybody not familiar with the project how to execute the test cases by entering:
 
 ```
       ]Cider.RunTests
 #.Cider.TestCases.RunTests ⍝ Execute this for running the test suite
 ```
-However, if the first non-white space character of `tests` is a `]` (making it a user command rather than a function call) its definition would just be printed to `⎕SE` together with a comment.
+
+The output is compiled from the config parameter values `CIDER.parent`, `CIDER.projectSpace` and `CIDER.tests`, and the comment is then added.
+
+However, if the first non-white space character of `tests` is a `]` (making it a user command rather than a function call) its definition would just be printed to the session together with a comment because then it's obviously a user command.
 
 ###### githubUsername
 
@@ -165,9 +182,9 @@ You may add other settings like `caseCode` as well; refer to LINKs documentation
 
 ###### arrays
 
-This is  a Boolean that defaults to 0.
+This is a Boolean that defaults to 0.
 
-A 1 means that all variables are watched, 0 means that Cider does not care unless a variable is already saved in an `.apla` file.
+A 1 means that all variables are watched, and 0 means that Cider/Link do not care unless a variable is already saved in an `.apla` file.
 
 ###### beforeRead
 
@@ -222,9 +239,9 @@ After opening the project into, say, `#.MyProject` the value is accessible via
 
 ### OpenProject
 
-Naturally `OpenProject` is the most important command Cider offers. We discuss all its actions in detail.
+Naturally, `OpenProject` is the most important command Cider offers. We discuss all its actions in detail.
 
-Note that the  contents of the file `cider.config` directs what exactly Cider is going to do when its principal method, `OpenProject`, is executed.
+Note that the contents of the file `cider.config` directs what exactly Cider is going to do when its principal method, `OpenProject`, is executed.
 
 #### 1. Creating a project space
 
@@ -235,7 +252,7 @@ The `parent` must exist while the `parentSpace` may or may not exist. If it does
 * In case the namespace and the folder are both empty Cider carries on
 * In case only the namespace is empty Cider carries on
 * In case only the folder is empty Cider carries on
-* In case neither the namespace nor the folder are empty the user is asked whether she wants the namespace to be emptied; if not an error is thrown.
+* In case neither the namespace nor the folder is empty the user is asked whether she wants the namespace to be emptied; if not an error is thrown.
 
 
 #### 2. Setting system variables
@@ -259,15 +276,15 @@ A> That's another way to make sure that system variables are set as early as pos
 
 #### 3. Bringing the code into the workspace
 
-In this step all files with supported file extensions (See LINK's documentation for details) found in `source` and any sub folder are established in the workspace in `{parent}.{projectSpace}`.
+In this step, all files with supported file extensions (See LINK's documentation for details) found in `source` and any subfolder are established in the workspace in `{parent}. {projectSpace}`.
 
-In order to achieve this Cider uses LINK[^link]. 
+To achieve this Cider uses LINK[^link]. 
 
 Note that from now on we will refer to:
 
 `{parent}.{projectSpace}` as _the root of a project_.
 
-By default a link is established between the root of the project and the folder. When your intention is to work on the project (read: change the code) then this is the obvious thing to do.
+By default, a link is established between the root of the project and the folder. When you intend to work on the project (read: change the code) then this is the obvious thing to do.
 
 A> ### LINK's `watch` parameter
 A>
@@ -285,13 +302,13 @@ Cider now checks whether any of the Tatin installation folders --- as noted on t
 
 A> ### Why this may happen
 A>
-A> Since version 0.21.0 Cider itself has an enhanced `.gitignore` file: it defines that the contents of the Tatin installation folder but the two definition files shall be ignored. Only these two definition files are therefore uploaded to GitHub, but _none of the packages_.
+A> Since version 0.21.0 Cider itself has an enhanced `.gitignore` file: it defines that the contents of the Tatin installation folder(s) but the two definition files shall be ignored. Only these two definition files are therefore uploaded to GitHub, but _none of the packages_.
 A>
 A> The effect of this is that when somebody downloads the Cider project now _the Tatin installation folder contains just those two definition files but no packages!_
 A>
 A> Note that this is in line with the vast majority of other package managers.
 
-In case that a Tatin installation folder defined in the Cider config file does not contain any packages but the two definition files, the user is asked whether she wants to re-install the packages. 
+In case a Tatin installation folder defined in the Cider config file does not contain any packages but the two definition files, the user will be asked whether she wants to re-install the packages. 
 
 If she answers "Y" she will also be asked whether she wants to update those packages in case a later version of one of the packages mentioned in the dependency file is now available.
 
@@ -300,7 +317,7 @@ If she answers "Y" she will also be asked whether she wants to update those pack
 
 In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will only happen in case `importFlag` is 0.
 
-However, note that this is only true if you've loaded the package(s) from a Registry that is in your config file _and_ has a priority greater than 0. Refer to the Tatin documentation for details.
+However, note that this is only true if you've loaded the package(s) from a Tatin Registry that is in your config file _and_ has a priority greater than 0. Refer to the Tatin documentation for details.
 
 If `]Cider.OpenProject` discovers later packages it will ask the user whether packages shall be re-installed with the `-update` flag set. This will happen independently for each package installation folder.
 
@@ -309,7 +326,7 @@ If `]Cider.OpenProject` discovers later packages it will ask the user whether pa
  
 Your application or tool might depend on one or more Tatin[^tatin] packages. By assigning `tatinFolder` one or more comma-separated folders hosting installed Tatin packages you can make sure that Cider will load[^load_tatin_pkgs] those installed packages into the root of your project.
 
-In particular when you specify more than a single folder you are likely to want some packages to be loaded into a sub namespace of the root of your project.
+In particular, when you specify more than a single folder you are likely to want some packages to be loaded into a sub-namespace of the root of your project.
 
 For example, let's assume you want all packages installed in the folder `packages/` to be loaded into the root of your project, and that you want to load all packages from a folder `packages_dev/` (for "development") into a namespace `TestCases` in the root of your project.
 
@@ -335,24 +352,24 @@ In this step `]Cider.OpenProject` injects a namespace `CiderConfig` into the pro
 
 #### 8. Initialising a project (optional)
 
-Now there might well be demand for executing some code in order to initialise your project.
+Now there might well be demand for executing some code to initialise your project.
 
 This can be achieved by assigning the name of a function to `init`. This must again be relative to the root of your project.
 
 Notes:
 
 * The function should not return a result. If it does anyway it should be shy. Any result would be ignored.
-* The function must be either monadic or niladic. If it is monadic then `⍬` is passed as right argument.
+* The function must be either monadic or niladic. If it is monadic then `⍬` is passed as the right argument.
 
-  What is passed as right argument might well change in a future release.
+  What is passed as the right argument might well change in a future release.
 
 Note that you can access the configuration data of the project from within your initialisation function by questioning the `CiderConfig` namespace.
 
 #### 9. Executing user-specific code
 
-Finally you might want to execute some general code (as opposed to project-specific code) after a project was loaded. "General" means that this code is executed whenever a project (any project!) is opened. 
+Finally, you might want to execute some general code (as opposed to project-specific code) after a project was loaded. "General" means that this code is executed whenever a project (any project!) is opened. 
 
-This can be achieved by specifying the fully qualified name of a function that must be monadic, most likely in `⎕SE`. A namespace with the configuration data of the project is passed as right argument.
+This can be achieved by specifying the fully qualified name of a function that must be monadic, most likely in `⎕SE`. A namespace with the configuration data of the project is passed as the right argument.
 
 The function may or may not return a result, but when it does the result will be discarded.
 
@@ -366,7 +383,7 @@ That file already contains a definition of the keyword `ExecuteAfterProjectOpen`
 }
 ```
 
-What is this good for you may ask? Well, let's assume that you are not using Git but a different version Control Software. With Git, Cider would execute the "status" command and show the result to the user. With your Version Control Software it can't do something similar.
+What is this good for you may ask? Well, let's assume that you are not using Git but a different version control Software. With Git, Cider would execute the "status" command and show the result to the user. With your version control software, it can't do something similar.
 
 You can easily achieve that by yourself: just add the required code to a function you load early into `⎕SE`, and then make sure that `ExecuteAfterProjectOpen` is calling that function and you are done.
 
@@ -376,7 +393,7 @@ You can easily achieve that by yourself: just add the required code to a functio
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
 
-[^winonly]: At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature on all platform.
+[^winonly]: At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature on all platforms.
 
 ## Misc
 
@@ -384,13 +401,13 @@ Cider offers helpers that are useful in particular circumstances.
 
 ### ListTatinPackage
 
-Checking dependencies before publishing to the principal Tatin Registry is a good idea, in particular when one uses a number of Tatin Registry like a personal one, a company Registry and https://tatin.dev
+Checking dependencies before publishing to the principal Tatin Registry is a good idea, in particular when one uses several Tatin Registries like a personal one, a company Registry and https://tatin.dev
 
 In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev, but of course not with a release candidate!
 
-The function `ListTatinPackage` is helpful in putting all build lists from all Tatin install folders of a given project on display, making it easy to check.
+The function `ListTatinPackage` helps put all build lists from all Tatin install folders of a given project on display, making it easy to check.
 
-The following example was created in a workspace were the project `APLGit2` was opened. Because it is the only one Cider knows that it is supposed to deal with it.
+The following example was created in a workspace where the project `APLGit2` was opened. Because it is the only one Cider knows that it is supposed to deal with it.
 
 `APLGit2` has two Tatin installation folders, one for production (`packages/`) and one for development and testing (`packages_dev/`):
 

@@ -9,11 +9,11 @@
 
  {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig -quiet'
 
- list←##.Cider.ListOpenProjects 0
- →T.GoToTidyUp 0≠##.Cider.CloseProject'DoesNotExist'
- →T.GoToTidyUp list≢##.Cider.ListOpenProjects 0
- →T.GoToTidyUp 1≠##.Cider.CloseProject'#.Foo'
- →T.GoToTidyUp(≢list)≢1+≢##.Cider.ListOpenProjects 0
+ list←##.Cider.Cider.ListOpenProjects 0
+ →T.GoToTidyUp 0≠##.Cider.Cider.CloseProject'DoesNotExist'
+ →T.GoToTidyUp list≢##.Cider.Cider.ListOpenProjects 0
+ →T.GoToTidyUp 1≠##.Cider.Cider.CloseProject'#.Foo'
+ →T.GoToTidyUp(≢list)≢1+≢##.Cider.Cider.ListOpenProjects 0
 
  R←T._OK
 

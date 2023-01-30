@@ -8,7 +8,8 @@
  'Create!'FilesAndDirs.CheckPath sourceFolder
  (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
 
- {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -quiet'
+ res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -quiet'
+
  list←FilesAndDirs.ListFiles tempDir
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list

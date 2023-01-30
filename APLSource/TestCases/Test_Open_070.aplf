@@ -1,4 +1,4 @@
- R←Test_Open_070(stopFlag batchFlag);⎕TRAP;parms;defs
+ R←Test_Open_070(stopFlag batchFlag);⎕TRAP;parms;defs;log;success
 ⍝ Open a project that has a package in the build list that is not on Tatin's search path.
 ⍝ Was once a bug and caused Cider to crash.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
@@ -6,15 +6,16 @@
 
  'TEMP'#.⎕NS''
 
- parms←##.Cider.CreateOpenParms ⍬
+ parms←##.Cider.Cider.CreateOpenParms ⍬
  parms.folder←##.CiderConfig.HOME,'/TestData/myproj'
  parms.parent←'#.TEMP'
  parms.quietFlag←1
  parms.alias←'Foo'
  parms.checkPackageVersions←2
 
- Assert ##.Cider.OpenProject parms
- defs←##.Cider.GetAliasFileContent
+ (success log)←##.Cider.Cider.OpenProject parms
+ Assert success
+ defs←##.Cider.Cider.GetAliasFileContent
  →T.GoToTidyUp~(⊂'foo')∊defs[;1]
 
  R←T._OK
@@ -23,5 +24,5 @@
  Assert ⎕SE.Cider.CloseProject'[foo]'
  #.⎕EX'TEMP'
  defs←(defs[;1]≢¨⊂'foo')⌿defs
- (⊂⊃¨{⍺,'=',⍵}/¨↓defs)⎕NPUT ##.Cider.GetCiderAliasFilename 1
+ (⊂⊃¨{⍺,'=',⍵}/¨↓defs)⎕NPUT ##.Cider.Cider.GetCiderAliasFilename 1
 ⍝Done

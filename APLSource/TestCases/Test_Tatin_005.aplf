@@ -1,24 +1,18 @@
- R←Test_Tatin_005(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc
+ R←Test_Tatin_005(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc;log
 ⍝ Attempt to load a project with Tatin packages via an absolute path (invalid)
 ⍝ Problem is reported but Cider carries on anyway
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If batchFlag
-     R←T._NoBatchTest
-     :Return
- :EndIf
-
- 'TEMP'#.⎕NS''
- 'FOO'#.⎕NS''
+ 'TEMP'#.⎕NS'' ⋄ 'FOO'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI
 
  parms←⎕NS''
  parms.folder←folder
  parms.quietFlag←1
- res←##.Cider.OpenProject parms
+ (res log)←##.Cider.Cider.OpenProject parms
 
- →T.GoToTidyUp 1≠##.CommTools.YesOrNo'Did loading Tatin packages fail with error "Target namespace for Tatin packages is addressed with absolute path (invalid)"?'
+ →T.GoToTidyUp~∨/'ERROR:'⍷∊log
 
  R←T._OK
 

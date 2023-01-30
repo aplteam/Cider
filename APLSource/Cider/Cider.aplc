@@ -7,14 +7,25 @@
     L←⎕SE.Link
     CR←⎕UCS 13
 
-    ∇ r←Version
+    ∇ r←Version;json;ns
       :Access Public Shared
-      r←'Cider' '0.23.0-beta-1+349' '2022-12-27'
-      ⍝ * 0.22.0 ⋄ 2022-12-27
-      ⍝   * Documentation regarding `tatinFolder` enhanced: leading comma
+      ⍝ See also `History`
+      :If 0<##.##.⎕NC'CiderConfig'
+          json←⊃⎕NGET ##.##.CiderConfig.HOME,'/apl-package.json'
+      :Else
+          json←⊃⎕NGET ##.TatinVars.HOME,'/apl-package.json'
+      :EndIf
+      ns←⎕JSON⍠('Dialect' 'JSON5')⊢json
+      r←ns.version
+      ⍝ * 0.23.0 ⋄ 2023-01-30
+      ⍝   * Can now be loaded as a Tatin package
+      ⍝   * BREAKING change: OpenProject returned a Boolean so far. Now it returns (Boolean Log) with Log
+      ⍝     being empty or a nested vector of char vectors with messages also printed to ⎕SE.
+      ⍝   * Requires now APLGit2 0.9.0 or better
       ⍝   * Test cases added for a leading comma on `tatinFolder`
       ⍝   * Bug fixes
       ⍝     * Help for `]CreateProject` corrected
+      ⍝     * When Link failed to import all objects its report was ignored
       ⍝ * 0.22.0 ⋄ 2022-12-23
       ⍝   * `info_url` renamed to `project_url` in the Cider config files. This brings Cider in line with
       ⍝     Tatin version 0.82.0
@@ -77,13 +88,13 @@
 
     Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⎕ML←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),11}
 
-    ∇ successFlag←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus
+    ∇ (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff
     ⍝ Open a Cider project.\\
     ⍝ `y` must be one of:
     ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
     ⍝  * A character vector holding the full path to a project
       :Access Public Shared
-      successFlag←FAILURE
+      successFlag←FAILURE ⋄ ∆LOG←''
       :If 80=⎕DR y
           parms←CreateOpenParms''
           parms.folder←y
@@ -112,7 +123,7 @@
       :If parms.alias≡'.'
           parms.alias←⎕C 2⊃{1 ⎕NPARTS(-(¯1↑⍵)∊'/\')↓⍵}parms.folder
       :EndIf
-      p AddAlias parms.folder parms.alias
+      AddAlias parms.folder parms.alias
       configFilename←parms.folder,'/cider.config'
       ('No file "cider.config" found in ',parms.folder)Assert ##.FilesAndDirs.Exists configFilename
       config←Get_JSON5 configFilename
@@ -150,7 +161,10 @@
       :Else
           res←linkOptions ⎕SE.Link.Create projectSpace_ source                          ⍝ Get the code into the WS
           dmx←⎕DMX
-          ('LINK failed to load the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
+          ('LINK failed to load the code (',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
+          :If ∨/'ERRORS ENCOUNTERED:'⍷res
+              1 p↓Box'⌹'⍪⍨'⌹'⍪'⌹','⌹',⍨↑CR(≠⊆⊢)res
+          :EndIf
       :EndIf
       p'  Code established, "watch" is "',linkOptions.watch,'"'
       :If 0=parms.noPkgLoad
@@ -161,24 +175,28 @@
                       CheckPackagesStatus config parms pkgStatus
                   :Else
                       qdmx←⎕DMX
-                      1 p'>>> ERROR: Checking Tatin package status from'
-                      1 p'           ',(config.CIDER.tatinFolder),' in ',parms.folder
-                      1 p'           failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+                      buff←''
+                      buff,←⊂'ERROR: Checking Tatin package status from'
+                      buff,←⊂'       ',(config.CIDER.tatinFolder),' in ',parms.folder
+                      buff,←⊂'       failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+                      1 p↓Box'⌹'⍪⍨'⌹'⍪'⌹','⌹',⍨↑buff
                   :EndTrap
               :EndIf
               :Trap 0
                   {}LoadTatinPackages config parms.folder(⍕projectSpace_)
               :Else
                   qdmx←⎕DMX
-                  1 p'>>> ERROR: loading Tatin packages from'
-                  1 p'           ',(config.CIDER.tatinFolder),' in ',parms.folder
-                  1 p'           failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+                  buff←''
+                  buff,←⊂'ERROR: loading Tatin packages from'
+                  buff,←⊂'       ',(config.CIDER.tatinFolder),' in ',parms.folder
+                  buff,←⊂'       failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+                  1 p↓Box'⌹'⍪⍨'⌹'⍪'⌹','⌹',⍨↑buff
               :EndTrap
           :EndIf
       :EndIf
       InjectConfigDataIntoProject config projectSpace_ parms.folder
       {}ExecProjectInitFunction⍣(~parms.suppressInit)⊣config projectSpace_
-      p ExecUserFunction config
+      ExecUserFunction config
       successFlag←SUCCESS
       :If 0=parms.quietFlag
       :AndIf 0=parms.importFlag
@@ -410,7 +428,7 @@
     ⍝ Checks whether the project is managed by Git, and if so offers some help
       r←⍬
       :If ##.FilesAndDirs.Exists(AddSlash path),'.git'
-          :If 9=⎕SE.⎕NC'_APLGit2'
+          :If 9=⎕SE.⎕NC'APLGit2'
               :Trap 0
                   status←⎕SE.APLGit2.Status path
               :Else
@@ -426,7 +444,7 @@
                   :EndIf
               :EndTrap
               :If ∧/∨/¨'nothing to commit' 'working tree clean'⍷¨⊂∊status
-              :AndIf ~(⊂{⍵↑⍨-¯1+' '⍳⍨⌽⍵}1⊃status)∊'main' 'master'
+              :AndIf ~∨/∨/¨'on branch main' 'on branch master'⍷¨⊂⎕C∊status
                   ⎕←'Git: ',(1⊃status),', ',∊1↓status
               :Else
                   status←(↓(,[0.5]'Git status report')⍪'='),status
@@ -448,7 +466,7 @@
               :Trap 0
                   projectSpace_.⍎'⎕',name_,'←',⍕⍎'config.SYSVARS.',name
               :Else
-                  1 p'>>> Assigning system variable "',name,'" failed'
+                  1 p Box'⌹'⍪(⍉⍪'⌹ Assigning system variable "',name,'" failed ⌹')⍪'⌹'
               :EndTrap
           :EndFor
       :Else                         ⍝ SysVars prior to version 0.3.0
@@ -492,7 +510,7 @@
                   p'   No later versions found '
                   :If 0<≢buff←(⊂'https://tatin.dev/')~⍨⊃,/3⌷[2]¨report
                       plural←1<≢buff
-                      p{'   >>> But note that ',(⍕≢⍵),' package',(plural/'s'),((1+plural)⊃' was' ' were'),' loaded from ',⊃{⍺,',',⍵}/∪⍵}buff
+                      1 p Box'⌹'⍪(⍉⍪{'⌹Note that ',(⍕≢⍵),' package',(plural/'s'),((1+plural)⊃' was' ' were'),' loaded from ',(⊃{⍺,',',⍵}/∪⍵}buff),'⌹')⍪'⌹'
                   :EndIf
               :Else
                   report←{⍵[;4]⌿⍵}¨report
@@ -503,7 +521,7 @@
       :EndIf
     ∇
 
-    ∇ report←report CheckTatinFoldersForLaterVersions folders;folder;folder_;qdmx
+    ∇ report←report CheckTatinFoldersForLaterVersions folders;folder;folder_;qdmx;msg
     ⍝ Loop through all Tatin install folders
       :For folder :In folders
           folder_←⊃'='(≠⊆⊢)folder
@@ -516,8 +534,10 @@
                   :Else
                       qdmx←⎕DMX
                       :If qdmx.EM≡'The build list carries entries that are not on the Tatin Registry search path'
-                          1 p'>>> ERROR - checking for later versions of Tatin packages failed:'
-                          1 p'            ',qdmx.EM
+                          msg←''
+                          msg,←⊂'ERROR: Checking for later versions of Tatin packages failed:'
+                          msg,←⊂'       ',qdmx.EM
+                          1 p Box'⌹'⍪('⌹',(↑msg),'⌹')⍪'⌹'
                       :Else
                           qdmx.EM ⎕SIGNAL 998
                       :EndIf
@@ -593,6 +613,7 @@
       :AndIf 0<≢msg
           ⎕←⍪⊆msg
       :EndIf
+      ∆LOG,←⊆msg
     ∇
 
     ∇ {r}←ExecProjectInitFunction(config projectSpace);fns
@@ -618,7 +639,7 @@
                   projectSpace.⍎init
               :Else
                   qdmx←⎕DMX
-                  p'   >>> Executing "init" crashed: ',qdmx.EM
+                  1 p Box'⌹'⍪(⍉⍪'⌹Executing "init" crashed: ',qdmx.EM,' ⌹')⍪'⌹'
               :EndTrap
           :CaseList 1 ¯2
               fns←projectSpace.⍎init
@@ -626,18 +647,19 @@
                   fns config
               :Else
                   qdmx←⎕DMX
-                  p'   >>> Executing "init" crashed: ',qdmx.EM
+                  1 p Box'⌹'⍪(⍉⍪'⌹Executing "init" crashed: ',qdmx.EM,' ⌹')⍪'⌹'
               :EndTrap
           :Else
-              p'  >>> Invalid function valence: is ambivalent'
+              1 p Box'⌹'⍪(⍉⍪'⌹Invalid function valence: is ambivalent⌹')⍪'⌹'
           :EndSelect
       :Else
-          p'   >>> Could not execute "',init,'": function not found; check config file!'
+          1 p Box'⌹'⍪(⍉⍪'⌹Could not execute "',init,'": function not found; check config file!⌹')⍪'⌹'
       :EndIf
     ∇
 
-    ∇ {msg}←ExecUserFunction config;fn;qdmx
+    ∇ {r}←ExecUserFunction config;fn;qdmx;msg
     ⍝ Check whether the config parameter "ExecuteAfterProjectOpen" is set and execute it if it's a function.
+      r←⍬
       msg←''
       :If 0<≢fn←GetFunctionNameFromCiderConfigFile ⍬
           :If 1=1 1⊃⎕AT fn
@@ -645,18 +667,20 @@
                   ⍎'{}',fn,' config'
               :Else
                   qdmx←⎕DMX
-                  msg←'>>> Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
+                  msg←'Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
               :EndTrap
           :Else
               :Trap 0
                   ⍎fn,' config'
               :Else
                   qdmx←⎕DMX
-                  msg←'>>> Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
+                  msg←'Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
               :EndTrap
           :EndIf
           :If 0=≢msg
-              msg←'User function successfully executed'
+              p'User function successfully executed'
+          :Else
+              1 p Box'⌹'⍪(⍉⍪'⌹',msg,'⌹')⍪'⌹'
           :EndIf
       :EndIf
     ∇
@@ -836,9 +860,9 @@
       :EndIf
     ∇
 
-    YesOrNo←{⍺←⊢ ⋄ ⍺ ⎕SE._Cider.CommTools.YesOrNo ⍵}
+    YesOrNo←{⍺←⊢ ⋄ ⍺ ⎕se._Tatin.Client.YesOrNo ⍵}
 
-    ∇ {msg}←AddAlias(folder alias);ciderAliasFilename;data;q;path;folder_;row;path_;ind
+    ∇ {r}←AddAlias(folder alias);ciderAliasFilename;data;q;path;folder_;row;path_;ind
     ⍝ Takes a folder and an alias.
     ⍝ If the folder does not exist `msg` carries a corresponding message.
     ⍝ * If the alias is already associated with the folder no action is taken
@@ -846,6 +870,7 @@
     ⍝ * If the alias is undefined yet it as added
     ⍝ * You cannot delete an alias with this function.
       :Access Public Shared
+      r←⍬
       ciderAliasFilename←GetCiderAliasFilename
       msg←''
       alias←⎕C alias~'[]'
@@ -854,7 +879,7 @@
           :If ##.FilesAndDirs.Exists ciderAliasFilename
               data←⊃##.FilesAndDirs.NGET ciderAliasFilename 1
               :If ~##.FilesAndDirs.Exists folder
-                  msg←'Could not find "',folder,'"'
+                  1 p Box'⌹'⍪(⍉⍪'⌹Could not find "',folder,'"⌹')⍪'⌹'
               :ElseIf 0=+/(alias,'=')∘{⍺≡(≢⍺)↑⍵}¨data
                   ind←({⍵↓⍨⍵⍳'='}¨data)⍳⊂folder
                   :If ind≤≢data
@@ -881,7 +906,7 @@
                               data←⊃¨{⍺,'=',⍵}/¨↓data
                               (⊂data)##.FilesAndDirs.NPUT ciderAliasFilename 1
                           :Else
-                              msg←'>>> Alias "',alias,'" is already in use with a different path - alias not assigned'
+                              1 p Box'⌹'⍪(⍉⍪'⌹Alias "',alias,'" is already in use with a different path - alias not assigned⌹')⍪'⌹'
                           :EndIf
                       :EndIf
                   :EndIf
@@ -962,7 +987,7 @@
               r←(config.CIDER.parent),'.',config.CIDER.projectSpace,'.',config.CIDER.make,' ⍝ Execute this for creating a new version'
           :EndIf
       :Else
-          1 p'>>> No expression found for creating a new version of <',config.CIDER.projectSpace,'>'
+          1 p Box'⌹'⍪(⍉⍪'⌹No expression found for creating a new version of <',config.CIDER.projectSpace,'>⌹')⍪'⌹'
       :EndIf
     ∇
 
@@ -1112,7 +1137,7 @@
     ∇
 
     ∇ flag←CheckForAlreadyOpened projectSpace;activeLinks
-    ⍝ Returns a 1 in case projectSpace is already opened, otherwise 0
+    ⍝ Returns a 1 in case projectSpace is already LINKed, otherwise 0
       flag←0
       :If 2=⍴⍴activeLinks←⎕SE.Link.Status''
       :AndIf 0<≢activeLinks                                          ⍝ Maybe one day when Link has a real API...
@@ -1198,7 +1223,7 @@
       msg,←'   '∘,¨∪data.url
     ∇
 
-    Select←{⍺←⊢ ⋄ ⍺ ⎕SE._Cider.CommTools.Select ⍵ }
+    Select←{⍺←⊢ ⋄ ⍺ ⎕se._Tatin.Client.Select ⍵ }
 
     ∇ r←ListDirs path;buff
       buff←(0 1)⎕NINFO⍠('Wildcard' 1)⊣path,'*'
@@ -1214,5 +1239,28 @@
       :EndTrap
       msg Assert 2=≢r
     ∇
+
+      Box←{⍺←⊢
+          r←⎕FMT↑⍵
+          b←r∊⍺⊣'⌹'
+          m←⍉4⊥⍉2⊥↑↑(3,/0,b,0)(3,⌿0⍪b⍪0)
+          c←'│  ─  ┌  │  │  └  ├  ─  ┐  ─  ┬  ┘  ┤  ┴  ┼ .'~' '
+          n←13 14 15 28 29 30 31 44 45 46 47 60 61 62 63
+          (⍴r)⍴(m∊n)⊖(2,⍴r)⍴r⍪(⊂n⍳m)⌷c
+⍝ box frame
+⍝ [⍺] char(s) to be replaced - dflt '⌹'
+⍝  ⍵  char array
+⍝  ←  array with ⍺ replaced by boxing chars
+⍝ ┌───┬───┬───┬───┬───┬───┬───┬───┐  ┌───┬───┬───┬───┬───┬───┬───┬───┐
+⍝ │   │ ∘ │   │ ∘ │   │ ∘ │   │ ∘ │  │   │ │ │   │ │ │   │ │ │   │ │ │
+⍝ │ ∘ │ ∘ │ ∘∘│ ∘∘│ ∘ │ ∘ │ ∘∘│ ∘∘│  │ ∘ │ │ │ ──│ └─│ │ │ │ │ ┌─│ ├─│
+⍝ │   │   │   │   │ ∘ │ ∘ │ ∘ │ ∘ │  │   │   │   │   │ │ │ │ │ │ │ │ │
+⍝ ├───┼───┼───┼───┼───┼───┼───┼───┤  ├───┼───┼───┼───┼───┼───┼───┼───┤
+⍝ │   │ ∘ │   │ ∘ │   │ ∘ │   │ ∘ │  │   │ │ │   │ │ │   │ │ │   │ │ │
+⍝ │∘∘ │∘∘ │∘∘∘│∘∘∘│∘∘ │∘∘ │∘∘∘│∘∘∘│  │── │─┘ │───│─┴─│─┐ │─┤ │─┬─│─┼─│
+⍝ │   │   │   │   │ ∘ │ ∘ │ ∘ │ ∘ │  │   │   │   │   │ │ │ │ │ │ │ │ │
+⍝ └───┴───┴───┴───┴───┴───┴───┴───┘  └───┴───┴───┴───┴───┴───┴───┴───┘
+⍝ Phil Last 2016-02-12
+      }
 
 :EndClass

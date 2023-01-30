@@ -4,8 +4,8 @@
 
  r←T._Failed
 
- buff←##.Cider.ListTatinPackages'[cider]'
-→T.PassesIf 2=⍴⍴buff
-→T.PassesIf 0<≢buff
+ buff←##.Cider.Cider.ListTatinPackages'[cider]'
+ →T.PassesIf 2=⍴⍴buff
+ →T.PassesIf 0<≢buff
 
  r←T._OK

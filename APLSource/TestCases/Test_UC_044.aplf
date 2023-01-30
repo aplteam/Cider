@@ -7,7 +7,7 @@
  (tempDir,'/')⎕NCOPY⍠('Wildcard' 1)⊣∆GetTestPath(⊃⎕SI),'/*'
 
  {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -quiet'
- list←##.Cider.ListOpenProjects 0
+ list←##.Cider.Cider.ListOpenProjects 0
  →T.GoToTidyUp~(⊂'#.Foo')∊list[;1]
  row←list[;1]⍳⊂'#.Foo'
  →T.GoToTidyUp~{'/'=1⍴⍵:1 ⋄ ':'∊⍵}2⊃list[row;]

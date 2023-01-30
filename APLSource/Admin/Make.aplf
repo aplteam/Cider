@@ -1,38 +1,18 @@
- Make flag;pathToAPLTreeSource;targetPath;M;A;name;F;myUCMDsFolder;projectPath;codePath;version;filename;filenames;LF
-⍝ Version 2.2.0 from 2022-12-21
+ Make flag;M;C;path;cfg;zipFilename;res
+⍝ Version 3.0.0 from 2023-01-25
  :If flag
-     projectPath←##.CiderConfig.HOME,'/'
-     codePath←##.CiderConfig.HOME,'/',##.CiderConfig.CIDER.source,'/'
-     targetPath←##.CiderConfig.HOME,'/Dist/'
      M←⎕SE.MakeHelpers
-     myUCMDsFolder←M.GetMyUCMDsFolder''
-     name←'Cider'
-     ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
-     {}M.IncreaseBuildID'#.',name,'.',name,'.Version'
-     version←2⊃##.Cider.Version
-     ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
-     {}M.RecreateFolder targetPath
-     ⎕MKDIR targetPath,'Cider'
-     filenames←'Cider.aplc' 'Cider_uc.dyalog'
-     LF←⎕UCS 10
-     :For filename :In filenames
-         :If ⎕NEXISTS myUCMDsFolder,'/Cider/',filename
-         :AndIf (myUCMDsFolder,'/Cider/',filename)##.FilesAndDirs.YoungerThan ##.CiderConfig.HOME,'/APLSource/',filename
-         :AndIf ##.CommTools.YesOrNo filename,' in:',LF,'  ',myUCMDsFolder,LF,'appears to be younger than in the project - copy it over?'
-             (##.CiderConfig.HOME,'/APLSource/',filename)⎕NCOPY⍠('IfExists' 'Replace')⊢myUCMDsFolder,'/Cider/',filename
-         :EndIf
-     :EndFor
-     (codePath,name,'_uc.dyalog')M.CopyTo targetPath,'Cider/'
-     (codePath,name,'.aplc')M.CopyTo targetPath,'Cider/'
-     (projectPath,'.',name)M.CopyTo targetPath,'Cider/'
-     (projectPath,'cider.config.template')M.CopyTo targetPath,'Cider/'
-     (projectPath,'html/*.html')M.CopyTo targetPath,'Cider/'
-     (projectPath,'packages')M.CopyTo targetPath,'Cider/'
-     {}M.CreateZipFile name targetPath version
-     :If 1 M.YesOrNo'Copy the Cider user command over to ',myUCMDsFolder,' ?'
-         {}##.FilesAndDirs.RmDirByForce myUCMDsFolder,'/Cider'
-         ⎕DL 0.5
-         (targetPath,'Cider')M.CopyTo myUCMDsFolder
+     C←##.CiderConfig
+     path←C.HOME,'/Dist/'
+     cfg←M.GetPackageCfg C.HOME
+     M.FetchLaterUserCommand'Cider_UC.dyalog'cfg C('[MyUCMDs]Cider')
+     M.RecreateFolder path
+     zipFilename←⎕SE.Tatin.BuildPackage C.HOME path''
+     ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
+     :If 1 M.YesOrNo'Install new version in MyUCMDs?'
+         {}##.Cider.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder'Cider'
+         res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
+         ⎕←'  New version installed as user command in MyUCMDs/: ',res
      :EndIf
-     ⎕←'*** Successfully build: ',name,' version ',version
  :EndIf
+ ⍝Done

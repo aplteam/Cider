@@ -1,4 +1,4 @@
- R←Test_Tatin_001(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc
+ R←Test_Tatin_001(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc;log
 ⍝ Load project with tatin packages. No parent for the packages is specified.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -10,7 +10,7 @@
  parms.folder←folder
  parms.quietFlag←1
  parms.noPkgLoad←0
- res←##.Cider.OpenProject parms
+ (res log)←##.Cider.Cider.OpenProject parms
 
  →T.GoToTidyUp~res
  →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3
@@ -20,6 +20,6 @@
 
 ∆TidyUp:
  res←∆LINK'Break' '#.TEMP'
-Assert res ∆StartsWith'Unlinked:'
+ Assert res ∆StartsWith'Unlinked:'
  #.⎕EX'TEMP'
 ⍝Done

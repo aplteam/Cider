@@ -1,20 +1,21 @@
- R←Test_Open_050(stopFlag batchFlag);⎕TRAP;parms;body1;body2;filename;body3
+ R←Test_Open_050(stopFlag batchFlag);⎕TRAP;parms;body1;body2;filename;body3;success;log
 ⍝ Open a project with watch=dir
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  'TEMP'#.⎕NS''
 
- parms←##.Cider.CreateOpenParms ⍬
+ parms←##.Cider.Cider.CreateOpenParms ⍬
  parms.folder←∆GetTestPath⊃⎕SI
  parms.parent←'#.TEMP'
  parms.quietFlag←1
  parms.watch←'dir'
 
-  filename←parms.folder,'/APLSource/Hello.aplf'
+ filename←parms.folder,'/APLSource/Hello.aplf'
  (⊂'r←Hello' 'r←''World''')⎕NPUT filename 1
 
- Assert ##.Cider.OpenProject parms
+ (success log)←##.Cider.Cider.OpenProject parms
+ Assert success
 
  body1←⊃⎕NGET filename
  {}'#.TEMP'⎕SE.Link.Fix'r←Hello' 'r←''World'''

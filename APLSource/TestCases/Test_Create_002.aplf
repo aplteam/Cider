@@ -5,7 +5,6 @@
  R←T._Failed
 
  tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
- 3 ⎕MKDIR tempDir,'/APLSource'
  'Foo'#.⎕NS''
  #.Foo.⎕FX'r←TheAnswerIs' 'r←42'
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')

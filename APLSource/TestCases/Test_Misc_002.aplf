@@ -1,4 +1,4 @@
- R←Test_Misc_002(stopFlag batchFlag);⎕TRAP;res;folder;parms;list;parms2;rc
+ R←Test_Misc_002(stopFlag batchFlag);⎕TRAP;folder;parms;list;parms2;rc;success;log;res
 ⍝ Exercise the ListOpenProjects function
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -10,20 +10,20 @@
  parms←⎕NS''
  parms.folder←folder,'/Project1'
  parms.quietFlag←1
- res←##.Cider.OpenProject parms
- →T.GoToTidyUp~res
+ (success log)←##.Cider.Cider.OpenProject parms
+ →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3
  →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP.⎕NL(⍳16)~3)~⊂'CiderConfig'
 
  parms2←⎕NS''
  parms2.folder←folder,'/Project2'
  parms2.quietFlag←1
- res←##.Cider.OpenProject parms2
- →T.GoToTidyUp~res
+ (success log)←##.Cider.Cider.OpenProject parms2
+ →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠≢#.TEMP2.⎕NL 3
  →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP2.⎕NL(⍳16)~3)~⊂'CiderConfig'
 
- list←##.Cider.ListOpenProjects 0
+ list←##.Cider.Cider.ListOpenProjects 0
  →T.GoToTidyUp 2≠2⊃⍴list   ⍝ Namespace, folder
  →T.GoToTidyUp 2>≢list
  →T.GoToTidyUp 2≠+/((-1+≢'Project1')↑¨list[;2])∊'/Project1' '/Project2' '\Project1' '\Project2'

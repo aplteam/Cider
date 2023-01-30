@@ -1,4 +1,4 @@
- R←Test_Open_006(stopFlag batchFlag);⎕TRAP;parms;folder;r;res;rc
+ R←Test_Open_006(stopFlag batchFlag);⎕TRAP;parms;folder;r;res;rc;success;log
 ⍝ Open a project but suppress execution of the init function
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -12,7 +12,8 @@
  parms.parent←'#.TEMP'
  parms.quietFlag←1
  parms.suppressInit←1
- →T.GoToTidyUp~##.Cider.OpenProject parms
+ (success log)←##.Cider.Cider.OpenProject parms
+ →T.GoToTidyUp~success
 
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello
  →T.GoToTidyUp 0≠#.TEMP.Foo.⎕NC'∆GLOBAL_TestOpen_006'
@@ -21,6 +22,6 @@
 
 ∆TidyUp:
  res←∆LINK'Break' '#.TEMP.Foo'
-Assert res ∆StartsWith'Unlinked:'
+ Assert res ∆StartsWith'Unlinked:'
  #.⎕EX'TEMP'
 ⍝Done

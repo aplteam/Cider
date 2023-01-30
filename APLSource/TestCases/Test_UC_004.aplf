@@ -10,15 +10,15 @@
  config←∆GetJSON5 tempDir,'/cider.config'
  (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
 
- ⎕SE._Cider.CommTools.YesOrNo_Answers←1 2⍴'Project successfully created; open as well?' ''
+ ⎕SE.Cider.##.CommTools.YesOrNo_Answers←1 2⍴'Project successfully created; open as well?' ''
  res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig'
  'You did not just press <enter>!'Assert'Project created and opened'≡res
- →T.GoToTidyUp~(⊂'#.Foo')∊{⍵[;1]}##.Cider.ListOpenProjects 0
+ →T.GoToTidyUp~(⊂'#.Foo')∊{⍵[;1]}##.Cider.Cider.ListOpenProjects 0
 
  r←T._OK
 
 ∆TidyUp:
- ⎕SE._Cider.CommTools.Cleanup
+ ⎕SE.Cider.##.CommTools.Cleanup
  res←∆LINK'Break' '#.Foo'
  Assert res ∆StartsWith'Unlinked:'
  rc←FilesAndDirs.RmDir tempDir

@@ -1,0 +1,23 @@
+ R←Test_Open_071(stopFlag batchFlag);⎕TRAP;parms;success;log
+⍝ Open a project that has a variable that is syntactially incorrect, causing a warning
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ 'TEMP'#.⎕NS''
+
+ parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms.folder←##.CiderConfig.HOME,'/TestData/Boo-Project'
+ parms.parent←'#.TEMP'
+ parms.quietFlag←1
+ parms.alias←'Boo'
+
+ (success log)←##.Cider.Cider.OpenProject parms
+ Assert success
+ →T.GoToTidyUp~∨/,'────────────────────'⍷↑log
+
+ R←T._OK
+
+∆TidyUp:
+ Assert ⎕SE.Cider.CloseProject'#.TEMP.myproj'
+ #.⎕EX'TEMP'
+⍝Done

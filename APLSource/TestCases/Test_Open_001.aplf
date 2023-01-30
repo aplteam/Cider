@@ -1,4 +1,4 @@
- R←Test_Open_001(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc
+R←Test_Open_001(stopFlag batchFlag);⎕TRAP;folder;parms;rc;success;log;res
 ⍝ Open a simple project without providing any parameter but the mandatory folder
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -10,9 +10,9 @@
  parms←⎕NS''
  parms.folder←folder
  parms.quietFlag←1
- res←##.Cider.OpenProject parms
+ (success log)←##.Cider.Cider.OpenProject parms
 
- →T.GoToTidyUp~res
+ →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3
  →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP.⎕NL(⍳16)~3)~⊂'CiderConfig'
 

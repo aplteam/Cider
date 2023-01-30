@@ -163,6 +163,11 @@ All possible variables are discussed below, with `folder` being the first one be
 
 What's defined in the parameter space overwrites the value in the config file, though only temporarily.
 
+The function returns a two-element vector:
+
+* A Boolean, 1 indicating success
+* A vector of character vectors with what got printed to the session as well
+
 ### folder (mandatory)
 
 This must be one of:
@@ -222,7 +227,7 @@ Defaults to 0, meaning that Cider will load Tatin packages by honoring the confi
 
 #### quietFlag
 
-Defaults to 0, meaning that the function prints messages to the session.
+Defaults to 0, meaning that the function prints messages to the session. If this is 1 then no messages are printed but what would have been printed is still returned as second element of the result of the function.
 
 
 #### suppressLX

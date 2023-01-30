@@ -1,4 +1,4 @@
- R←Test_Open_009(stopFlag batchFlag);⎕TRAP;parms;folder;r;rc
+ R←Test_Open_009(stopFlag batchFlag);⎕TRAP;parms;folder;r;rc;success;log
 ⍝ Open a simple project with a parent passed as a reference (converted to a name)
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -10,13 +10,14 @@
  parms.parent←⎕THIS
  parms.projectSpace←'TEMP'
  parms.quietFlag←1
- →T.GoToTidyUp~##.Cider.OpenProject parms
+ (success log)←##.Cider.Cider.OpenProject parms
+ →T.GoToTidyUp~success
 
  →T.GoToTidyUp(≢⍕⎕THIS)≠≢parms.parent
 
  R←T._OK
 
 ∆TidyUp:
- {}##.Cider.CloseProject(⍕⎕THIS),'.TEMP'
+ {}##.Cider.Cider.CloseProject(⍕⎕THIS),'.TEMP'
  ⎕EX'TEMP'
 ⍝Done

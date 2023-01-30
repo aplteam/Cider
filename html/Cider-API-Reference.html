@@ -179,6 +179,11 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 </ul>
 <p>All possible variables are discussed below, with <code>folder</code> being the first one because it is mandatory: without it Cider would not be able to locate a project config file. The remaining ones have appropriate defaults or are taken from the config file, and they are sorted alphabetically.</p>
 <p>What's defined in the parameter space overwrites the value in the config file, though only temporarily.</p>
+<p>The function returns a two-element vector:</p>
+<ul>
+<li>A Boolean, 1 indicating success</li>
+<li>A vector of character vectors with what got printed to the session as well</li>
+</ul>
 <div class="h_tag">
 <a href="#folder" id="folder" class="autoheader_anchor">
 <h3 data-id="folder">13.1. folder (mandatory)</h3>
@@ -260,7 +265,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <h4 data-id="quietFlag">13.6.3. quietFlag</h4>
 </a>
 </div>
-<p>Defaults to 0, meaning that the function prints messages to the session.</p>
+<p>Defaults to 0, meaning that the function prints messages to the session. If this is 1 then no messages are printed but what would have been printed is still returned as second element of the result of the function.</p>
 <div class="h_tag">
 <a href="#suppressLX" id="suppressLX" class="autoheader_anchor">
 <h4 data-id="suppressLX">13.6.4. suppressLX</h4>

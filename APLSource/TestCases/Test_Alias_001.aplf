@@ -1,4 +1,4 @@
- R←Test_Alias_001(stopFlag batchFlag);⎕TRAP;res;parms;list;rc;parms2
+ R←Test_Alias_001(stopFlag batchFlag);⎕TRAP;parms;list;rc;parms2;success;log;res
 ⍝ Exercise the ListOpenProjects function with -verbose (involves aliases)
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -10,21 +10,21 @@
  parms.folder←∆ALIAS_TEMP_FOLDER,'/Project1'
  parms.alias←'test-project-1'
  parms.quietFlag←⊂1
- res←##.Cider.OpenProject parms
- →T.PassesIf res
+ (success log)←##.Cider.Cider.OpenProject parms
+ →T.PassesIf success
  →T.PassesIf 1=≢#.TEMP.⎕NL 3
  →T.PassesIf 0=≢(' '~¨⍨↓#.TEMP.⎕NL(⍳16)~3)~⊂'CiderConfig'
 
- parms2←⎕ns''
+ parms2←⎕NS''
  parms2.folder←∆ALIAS_TEMP_FOLDER,'/Project2'
  parms2.alias←'test-project-2'
  parms2.quietFlag←1
- res←##.Cider.OpenProject parms2
- →T.GoToTidyUp~res
+ (success log)←##.Cider.Cider.OpenProject parms2
+ →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠≢#.TEMP2.⎕NL 3
  →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP2.⎕NL(⍳16)~3)~⊂'CiderConfig'
 
- list←##.Cider.ListOpenProjects 1
+ list←##.Cider.Cider.ListOpenProjects 1
  →T.GoToTidyUp 4≠2⊃⍴list   ⍝ Namespace, folder, object count, alias
  →T.GoToTidyUp 2>≢list
  →T.GoToTidyUp 2≠+/((-1+≢'Project1')↑¨list[;2])∊'/Project1' '/Project2' '\Project1' '\Project2'
