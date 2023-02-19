@@ -9,7 +9,11 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.23.1+367'
+      r←'0.23.2+367'
+      ⍝ * 0.23.2 ⋄ 2023-02-19
+      ⍝   * Bug fix in PrinToSession: needs to check whether ∆LOG does exist or not
+      ⍝   * In case of a Git problem a VALUE ERROR occured
+      ⍝   * Packages updated (CommTools brought wrongly Tester2 and CoderCoverage into Cider)
       ⍝ * 0.23.1 ⋄ 2023-02-11
       ⍝   * Bug fix in `CheckPackagesStatus`
       ⍝ * 0.23.0 ⋄ 2023-01-30
@@ -419,18 +423,19 @@
       p'  All fine'
     ∇
 
-    ∇ {r}←CheckForGit(path config);status;dmx
+    ∇ {r}←CheckForGit(path config);status;dmx;success
     ⍝ Checks whether the project is managed by Git, and if so offers some help
       r←⍬
+      success←0
       :If ##.FilesAndDirs.Exists(AddSlash path),'.git'
           :If 9=⎕SE.⎕NC'APLGit2'
               :Trap 0
                   status←⎕SE.APLGit2.Status path
+                  success←1
               :Else
                   dmx←⎕DMX
                   :If 127=dmx.EN
                       p'The project appears to be managed by Git but Git is not installed?!'
-                      :Return
                   :ElseIf 0<≢dmx.Message
                       ⎕←'The Git status of the project could not be determined due to an error:'
                       ⎕←dmx.Message,'; rc=',⍕dmx.EN
@@ -438,16 +443,18 @@
                       ⎕←'The Git status of the project could not be determined due to an error'
                   :EndIf
               :EndTrap
-              :If ∧/∨/¨'nothing to commit' 'working tree clean'⍷¨⊂∊status
-              :AndIf ~∨/∨/¨'on branch main' 'on branch master'⍷¨⊂⎕C∊status
-                  ⎕←'Git: ',(1⊃status),', ',∊1↓status
+              :If success
+                  :If ∧/∨/¨'nothing to commit' 'working tree clean'⍷¨⊂∊status
+                  :AndIf ~∨/∨/¨'on branch main' 'on branch master'⍷¨⊂⎕C∊status
+                      ⎕←'Git: ',(1⊃status),', ',∊1↓status
+                  :Else
+                      status←(↓(,[0.5]'Git status report')⍪'='),status
+                      {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
+                  :EndIf
               :Else
-                  status←(↓(,[0.5]'Git status report')⍪'='),status
-                  {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
+                  p'The project appears to be managed by Git but the user command ]APLGit2 and'
+                  p'it''s API are missing, therefore no information can be provided regarding Git'
               :EndIf
-          :Else
-              p'The project appears to be managed by Git but the user command ]APLGit2 and'
-              p'it''s API are missing, therefore no information can be provided regarding Git'
           :EndIf
       :EndIf
     ∇
@@ -608,7 +615,9 @@
       :AndIf 0<≢msg
           ⎕←⍪⊆msg
       :EndIf
-      ∆LOG,←⊆msg
+      :If 0<⎕NC'∆LOG'
+          ∆LOG,←⊆msg
+      :EndIf
     ∇
 
     ∇ {r}←ExecProjectInitFunction(config projectSpace);fns

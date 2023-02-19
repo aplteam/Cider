@@ -1,5 +1,5 @@
- Make flag;M;C;path;cfg;zipFilename;res
-⍝ Version 3.0.0 from 2023-01-25
+ Make flag;M;C;path;cfg;zipFilename;res;version
+⍝ Version 3.0.1 from 2023-02-19
  :If flag
      M←⎕SE.MakeHelpers
      C←##.CiderConfig
@@ -7,7 +7,8 @@
      cfg←M.GetPackageCfg C.HOME
      M.FetchLaterUserCommand'Cider_UC.dyalog'cfg C('[MyUCMDs]Cider')
      M.RecreateFolder path
-     zipFilename←⎕SE.Tatin.BuildPackage C.HOME path''
+     version←cfg M.CompileVersionNumberPattern C.HOME
+     zipFilename←⎕SE.Tatin.BuildPackage C.HOME path version
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
      :If 1 M.YesOrNo'Install new version in MyUCMDs?'
          {}##.Cider.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder'Cider'
