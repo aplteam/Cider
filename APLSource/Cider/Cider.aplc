@@ -9,7 +9,10 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.23.2+367'
+      r←'0.23.3+367'
+      ⍝ * 0.23.3 ⋄ 2023-03-03
+      ⍝   * Bug fix: Cider did not attempt to load its packages in case they are not found in ⎕SE in case
+      ⍝     a Cider user command is executed by the user.
       ⍝ * 0.23.2 ⋄ 2023-02-19
       ⍝   * Bug fix in PrinToSession: needs to check whether ∆LOG does exist or not
       ⍝   * In case of a Git problem a VALUE ERROR occured
@@ -61,25 +64,6 @@
       ⍝     is thrown anymore, only a reasonable message is printed to the session.
       ⍝   * Bug fixes
       ⍝     * The Cider config file defined a function `Initial` that did not exist as "init" function.
-      ⍝ * 0.20.1 ⋄ 2022-11-01
-      ⍝   * Bug fixes
-      ⍝     * In case the current branch (Git) is "main" or "master" the Git status was displayed as a
-      ⍝       vector rather than a matrix.
-      ⍝     * When a folder was inspected for later versions but did not contain a build list Cider
-      ⍝       got confused; should carry on without checking
-      ⍝ * 0.20.0 ⋄ 2022-10-23
-      ⍝   * New command `ListTatinPackages` added
-      ⍝   * When a project is loaded with packages that were not loaded from the principal Tatin Registry
-      ⍝     then those packages are explicitly reported because this might be okay or not
-      ⍝   * Bug fixes
-      ⍝     * When ]Cider.Make and ]Cider.RunTests were called without any project being opened a message
-      ⍝       "cancelled by user" was printed to the session
-      ⍝     * "Make" had a problem with selecting the latest script
-      ⍝ * 0.19.0 ⋄ 2022-10-10
-      ⍝   * With the "?" and the "*" syntax Cider does not offer already opened projects anymore
-      ⍝ * 0.18.0 ⋄ 2022-10-08
-      ⍝   * New `YesOrNo`
-      ⍝   * `Version` returned a two-item vector with the expected result being the first item
     ∇
 
     :Field Private Shared ReadOnly    FAILURE←0

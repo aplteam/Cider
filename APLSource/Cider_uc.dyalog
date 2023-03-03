@@ -1,7 +1,7 @@
-:Class Cider_UC
+﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-01-30
+⍝ 2023-03-03
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
@@ -92,10 +92,13 @@
       :EndIf
     ∇
 
-    ∇ r←Run(Cmd Args);folder;P
+    ∇ r←Run(Cmd Args);folder;P;⎕TRAP
       :Access Shared Public
       r←0 0⍴''
       ('Cider needs at least version ',MinimumVersionOfDyalog,' of Dyalog APL')Assert AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
+      :If 0=⎕SE.⎕NC'Cider'
+          {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)'⎕SE'
+      :EndIf
       P←⎕SE.Cider
       :If 18={⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'.'}aplVersion←2⊃'.'⎕WG'aplversion'
       :AndIf 44280>⊃(//)⎕VFI 3⊃'.'(≠⊆⊢)aplVersion  ⍝ 44280 has essential ⎕FIX fix for Link to work
