@@ -7,7 +7,7 @@
      cfg←M.GetPackageCfg C.HOME
      M.FetchLaterUserCommand'Cider_UC.dyalog'cfg C('[MyUCMDs]Cider')
      M.RecreateFolder path
-     version←cfg M.CompileVersionNumberPattern C.HOME
+     version←M.CompileVersionNumberPattern cfg
      zipFilename←⎕SE.Tatin.BuildPackage C.HOME path version
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
      :If 1 M.YesOrNo'Install new version in MyUCMDs?'

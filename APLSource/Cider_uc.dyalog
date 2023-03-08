@@ -1,7 +1,7 @@
-﻿:Class Cider_UC
+:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-03-03
+⍝ 2023-03-08
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
@@ -96,6 +96,13 @@
       :Access Shared Public
       r←0 0⍴''
       ('Cider needs at least version ',MinimumVersionOfDyalog,' of Dyalog APL')Assert AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
+      :If 0=⎕SE.⎕NC'Tatin'
+          :Trap 6
+              {}⎕SE.UCMD'Tatin.Version'
+          :Else
+              'Tatin is not available and cannot be loaded into ⎕SE, therefore Cider won''t work'Assert 0
+          :EndTrap
+      :EndIf
       :If 0=⎕SE.⎕NC'Cider'
           {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)'⎕SE'
       :EndIf

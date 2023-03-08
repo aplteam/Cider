@@ -21,6 +21,15 @@ The two most important commands of Cider's user commands are `CreateProject` and
 
 I> Note that in this document names stemming from the Cider configuration file are shown `like this`.
 
+### Requirements
+
+Cider relies on the [Tatin packet manager](https://github.com/aplteam/Tatin "Link to Tatin on GitHub") because it is a Tatin package. With version 19.0 and later Tatin will be available in `⎕SE` right from the start. With earlier versions (18.0 and 18.2) it's up to the user to take care of that.
+
+If Tatin is not in `⎕SE` but available in the `MyUCMDs/` folder then Cider will attempt to load it by executing the user command `]Tatin.Version which should implicitly load Tatin into `⎕SE`.
+
+I> Note that Tatin will check whether Cider is available, and if so cooperate with it. However, Cider is not a requirement for Tatin.
+
+
 ### CreateProject
 
 With `]Cider.CreateProject` any folder that does not yet host a file `cider.config` can be transformed into a Cider project. (You may specify the `-acceptConfig` flag to override this default behaviour and make Cider accept an already existing file `cider.config`)
