@@ -1,4 +1,4 @@
-:Class Cider_UC
+﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
 ⍝ 2023-03-08
@@ -700,32 +700,31 @@
       :EndIf
     ∇
 
-    ∇ r←ShowHelp dummy;list;folder;flag;answer
+    ∇ r←ShowHelp dummy;list;folder;flag;answer;msg
       r←''
       folder←1⊃⎕NPARTS ##.SourceFile
-      folder,←'../../html/'
+      list←⊃⎕NINFO⍠('Wildcard' 1)⊣folder,'*'
+      folder←⊃(∨/'aplteam-Cider'⍷↑list)/list
+      folder,←'/html/'
       :If 0=≢list←⊃⎕NINFO⍠('Wildcard' 1)⊣folder,'*.html'
           r←'No documentation found for Cider in ',folder
       :Else
           list←{⊃,/1↓⎕NPARTS ⍵}¨list
           flag←0
           :Repeat
-              ⎕←(⎕PW-1)↑'--- Cider help ',⎕PW⍴'-'
-              ⎕←'Which one would you like to view?'
-              ⎕←' ',' ',↑(⍳≢list){(⍕⍺),'.',' ',⍵}¨2⊃∘⎕NPARTS¨list
-              ⎕←''
-              answer←⊃¯1↑⍞,0/⍞←'Enter a single number or "a" for all or "q" for quit: '
-              :If answer∊'aAqQ',∊⍕¨⍳≢list
+              msg←'Select document to be viewed:'
+              answer←msg 1 Select 2⊃∘⎕NPARTS¨list
+              :If (⊂answer)∊1 2(1 2)
                   :Select answer
-                  :Case '1'
+                  :Case 1
                       ⎕SE.UCMD'Open ',folder,1⊃list
-                  :Case '2'
+                  :Case 2
                       ⎕SE.UCMD'Open ',folder,2⊃list
-                  :CaseList 'aA'
+                  :Case 1 2
                       {⎕SE.UCMD'Open ',⍵}¨folder∘,¨list
-                  :CaseList 'qQ'
-                      ⍝ Nothing to do
                   :EndSelect
+                  flag←1
+              :Else
                   flag←1
               :EndIf
           :Until flag

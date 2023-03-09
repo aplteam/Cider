@@ -1,0 +1,15 @@
+ r←Test_UC_011(stopFlag batchFlag);⎕TRAP;msg;rc;res;stop
+⍝ Exercise ]Cider.Help
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ stop←0
+ ⎕SE.Cider.##.CommTools.Select_Choices←1 2⍴'Select document to be viewed:' 'a'
+ (rc msg res)←stop ∆UCMD'Help'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp 0≠≢msg
+
+ r←T._OK
+
+∆TidyUp:
+ ⎕SE.Cider.##.CommTools.Cleanup
