@@ -1,7 +1,7 @@
 ﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-03-08
+⍝ 2023-03-15
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
@@ -646,6 +646,8 @@
               :If 1=noop
                   :If 1 YesOrNo'Sure you want close the project <',(⊃list[1;]),'>?'
                       r←P.CloseProject ⍬
+                  :Else
+                      r←'Cancelled by user' ⋄ →0
                   :EndIf
               :ElseIf Args.all
                   q←'Currently there ',((1+1<noop)⊃'is one'('are ',⍕noop)),' project',((1<noop)/'s'),' opened - wanna close ',(1+1<noop)⊃'it?' 'all of them?'

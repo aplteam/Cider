@@ -1,3 +1,0 @@
- Init
- ⎕EX'Cider_uc'  ⍝ Running as a user command, so we don't need the user command script
-⍝Done

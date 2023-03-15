@@ -9,7 +9,11 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.23.6+367'
+      r←'0.23.7+367'
+      ⍝ * 0.23.7 ⋄ 2023-03-15
+      ⍝   * Bug fixes
+      ⍝     * When the confirmation regarding closing a project is answered with a "no" Cider should have responed
+      ⍝       with "Cancelled by user" but did not.
       ⍝ * 0.23.6 ⋄ 2023-03-11
       ⍝   * Bug fix: "Open" messages were not appropriate for root projects
       ⍝ * 0.23.5 ⋄ 2023-03-09
