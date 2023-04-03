@@ -258,6 +258,20 @@ A>
 A> This imposes a danger because those handlers set a Hold under some circumstances, and depending on your actions this might result in a DEADLOCK: Dyalog would appear to hang until you issue a strong interrupt via the session's system menu item.
 
 
+## ReadProjectConfigFile
+
+This function takes a path to a Cider project as `⍵` and returns the contents of the config files as a namespace with variables.
+
+`path` may or may not come the actual filename `cider.config'
+
+
+## WriteProjectConfigFile
+
+This function takes a path to a Cider project as `⍵` and a namespace with Cider config variables as `⍺` and writes it the Cider config file.
+
+`path` may or may not come the actual filename `cider.config'
+
+
 ## Version
 
 `Version` returns a three-element vector with these pieces of information:

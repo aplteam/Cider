@@ -27,7 +27,7 @@ Cider relies on the [Tatin packet manager](https://github.com/aplteam/Tatin "Lin
 
 If Tatin is not in `⎕SE` but available in the `MyUCMDs/` folder then Cider will attempt to load it by executing the user command `]Tatin.Version` which should implicitly load Tatin into `⎕SE`.
 
-I> Note that Tatin will check whether Cider is available, and if so cooperate with it. However, Cider is not a requirement for Tatin.
+I> Note that Tatin will check whether Cider is available, and if so cooperate with it. However, Cider is not a requirement for using Tatin.
 
 
 ### CreateProject
@@ -90,7 +90,7 @@ With the user command, this can be overwritten temporarily with, say:
 
 Defaults to `APLSource`: a subfolder that hosts the code. That's where the code lives, relative to the project folder. 
 
-This might be empty, for example when the project is just a script (class or namespace).
+This might be empty, for example when the project is just a single script (class or namespace).
 
 ###### tatinFolder
 
@@ -157,6 +157,10 @@ However, if the first non-white space character of `make` is a `]` its definitio
 
 If not empty this is expected to be a URL pointing to, say, a GitHub project. For information only.
 
+Note that Cider cooperates with the package [`APLGit2`](https://github.com/aplteam/APLGit2 title="Link to APLGit2 on GitHub") if that is available in `⎕SE`. `APLGit2` is an interface between Dyalog and Git. However, some of its commands will only work when the project is hosted on GitHub.
+
+Some function of `APLGit2` must know the `owner` of a project on GitHub. Those functions will investigate project_url`: if that points to GitHub, the own is established from its contents.
+
 
 ###### tests
 
@@ -175,17 +179,17 @@ However, if the first non-white space character of `tests` is a `]` (making it a
 
 ###### githubUsername
 
-This parameter was introduced with version 0.19.0 --- from this version onwards Cider will deal with a missing parameter by this name: it will establish it as an empty character vector.
+This parameter was introduced with version 0.19.0 and removed with version 0.24.0 
 
-By default the parameter is empty. If a project is hosted on GitHub then you are advised to set it to the GitHub username --- "group" in Tatin speak.
+If for some reason the information this property was expected to hold is required then Cider will investigate the `project_url` property and establish it this way.
 
-That allows commands to be successfully issued towards GitHub when they require the username to be specified.
-
-An example would be `]APLGit2.GetTagOfLatestRelease`: you may specify `-user=` and it would work, but when issued on a Cider project there is no need for this since it would collect the required information from the project's Cider config file.
+If a config file still carries this property it is simply ignored.
 
 ##### LINK
 
 These are LINK parameters which are passed on to LINK when Cider brings the APL code into the WS with LINK.
+
+Note that this is a temporary solution: LINK should have its own config files for this, and will get them. Once they are available this section will be ignored in Cider config files, and should be removed.
 
 You may add other settings like `caseCode` as well; refer to LINKs documentation for details.
 
@@ -203,7 +207,7 @@ Empty or a *fully qualified* function name.
 
 Empty or a *fully qualified* function name.
 
-###### watch"
+###### watch
 
 Defaults to "both" but can be "ns" or "dir" as well. 
 
@@ -412,9 +416,9 @@ Cider offers helpers that are useful in particular circumstances.
 
 Checking dependencies before publishing to the principal Tatin Registry is a good idea, in particular when one uses several Tatin Registries like a personal one, a company Registry and https://tatin.dev
 
-In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev, but of course not with a release candidate!
+In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev. However, when eventually the packaged **is** published on tatin.dev then you most likely don't want it to depend on release candidates anymore.
 
-The function `ListTatinPackage` helps put all build lists from all Tatin install folders of a given project on display, making it easy to check.
+The function `ListTatinPackage` puts all build lists from all Tatin install folders of a given project on display, making it easy to check.
 
 The following example was created in a workspace where the project `APLGit2` was opened. Because it is the only one Cider knows that it is supposed to deal with it.
 

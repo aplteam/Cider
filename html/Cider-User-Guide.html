@@ -49,7 +49,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <div class="leanpub">
 <img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information">
 <div>
-<p>Note that Tatin will check whether Cider is available, and if so cooperate with it. However, Cider is not a requirement for Tatin.</p>
+<p>Note that Tatin will check whether Cider is available, and if so cooperate with it. However, Cider is not a requirement for using Tatin.</p>
 </div>
 </div>
 
@@ -111,7 +111,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </a>
 </div>
 <p>Defaults to <code>APLSource</code>: a subfolder that hosts the code. That's where the code lives, relative to the project folder.</p>
-<p>This might be empty, for example when the project is just a script (class or namespace).</p>
+<p>This might be empty, for example when the project is just a single script (class or namespace).</p>
 <div class="h_tag">
 <a href="#tatinFolder" id="tatinFolder" class="autoheader_anchor">
 <h6 data-id="tatinFolder">2.2.1.1.4. tatinFolder</h6>
@@ -163,6 +163,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </a>
 </div>
 <p>If not empty this is expected to be a URL pointing to, say, a GitHub project. For information only.</p>
+<p>Note that Cider cooperates with the package <a href="https://github.com/aplteam/APLGit2 title=" class="external_link" title="Link to APLGit2 on GitHub"><code>APLGit2</code></a> if that is available in <code>⎕SE</code>. <code>APLGit2</code> is an interface between Dyalog and Git. However, some of its commands will only work when the project is hosted on GitHub.</p>
+<p>Some function of <code>APLGit2</code> must know the <code>owner</code> of a project on GitHub. Those functions will investigate project_url`: if that points to GitHub, the own is established from its contents.</p>
 <div class="h_tag">
 <a href="#tests" id="tests" class="autoheader_anchor">
 <h6 data-id="tests">2.2.1.1.8. tests</h6>
@@ -179,16 +181,16 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h6 data-id="githubUsername">2.2.1.1.9. githubUsername</h6>
 </a>
 </div>
-<p>This parameter was introduced with version 0.19.0 — from this version onwards Cider will deal with a missing parameter by this name: it will establish it as an empty character vector.</p>
-<p>By default the parameter is empty. If a project is hosted on GitHub then you are advised to set it to the GitHub username — “group” in Tatin speak.</p>
-<p>That allows commands to be successfully issued towards GitHub when they require the username to be specified.</p>
-<p>An example would be <code>]APLGit2.GetTagOfLatestRelease</code>: you may specify <code>-user=</code> and it would work, but when issued on a Cider project there is no need for this since it would collect the required information from the project's Cider config file.</p>
+<p>This parameter was introduced with version 0.19.0 and removed with version 0.24.0</p>
+<p>If for some reason the information this property was expected to hold is required then Cider will investigate the <code>project_url</code> property and establish it this way.</p>
+<p>If a config file still carries this property it is simply ignored.</p>
 <div class="h_tag">
 <a href="#LINK" id="LINK" class="autoheader_anchor">
 <h5 data-id="LINK">2.2.1.2. LINK</h5>
 </a>
 </div>
 <p>These are LINK parameters which are passed on to LINK when Cider brings the APL code into the WS with LINK.</p>
+<p>Note that this is a temporary solution: LINK should have its own config files for this, and will get them. Once they are available this section will be ignored in Cider config files, and should be removed.</p>
 <p>You may add other settings like <code>caseCode</code> as well; refer to LINKs documentation for details.</p>
 <div class="h_tag">
 <a href="#arrays" id="arrays" class="autoheader_anchor">
@@ -211,7 +213,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Empty or a <em>fully qualified</em> function name.</p>
 <div class="h_tag">
 <a href="#watch" id="watch" class="autoheader_anchor">
-<h6 data-id="watch">2.2.1.2.4. watch"</h6>
+<h6 data-id="watch">2.2.1.2.4. watch</h6>
 </a>
 </div>
 <p>Defaults to “both” but can be “ns” or “dir” as well.</p>
@@ -392,8 +394,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </a>
 </div>
 <p>Checking dependencies before publishing to the principal Tatin Registry is a good idea, in particular when one uses several Tatin Registries like a personal one, a company Registry and https://tatin.dev</p>
-<p>In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev, but of course not with a release candidate!</p>
-<p>The function <code>ListTatinPackage</code> helps put all build lists from all Tatin install folders of a given project on display, making it easy to check.</p>
+<p>In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev. However, when eventually the packaged <strong>is</strong> published on tatin.dev then you most likely don't want it to depend on release candidates anymore.</p>
+<p>The function <code>ListTatinPackage</code> puts all build lists from all Tatin install folders of a given project on display, making it easy to check.</p>
 <p>The following example was created in a workspace where the project <code>APLGit2</code> was opened. Because it is the only one Cider knows that it is supposed to deal with it.</p>
 <p><code>APLGit2</code> has two Tatin installation folders, one for production (<code>packages/</code>) and one for development and testing (<code>packages_dev/</code>):</p>
 <pre><code>      ]listTatinPackages

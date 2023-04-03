@@ -9,11 +9,15 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.23.7+367'
-      ⍝ * 0.23.7 ⋄ 2023-03-15
+      r←'0.24.0+367'
+      ⍝ * 0.24.0 ⋄ 2023-04-03
+      ⍝   * Function `Remove_githubUsername` added
+      ⍝   * `githubUsername` removed from the Cider config template file
+      ⍝   * Two public shared functions added: `ReadProjectConfigFile` and `WriteProjectConfigFile`
       ⍝   * Bug fixes
-      ⍝     * When the confirmation regarding closing a project is answered with a "no" Cider should have responed
-      ⍝       with "Cancelled by user" but did not.
+      ⍝     * When the confirmation regarding closing a project is answered with a "no" Cider should have 
+      ⍝       responded with "Cancelled by user" but did not.
+      ⍝     * After the conversion into a package Cider would not find its config template file any more
       ⍝ * 0.23.6 ⋄ 2023-03-11
       ⍝   * Bug fix: "Open" messages were not appropriate for root projects
       ⍝ * 0.23.5 ⋄ 2023-03-09
@@ -285,16 +289,42 @@
       ⍝Done
     ∇
 
-    ∇ RenameInfo_url_ folder;filename;json;list;ns;json2
+    ∇ RenameInfo_url_ folder;filename;list;ns
       filename←folder,'/cider.config'
       :If ##.FilesAndDirs.IsFile filename
-          json←⊃##.FilesAndDirs.NGET filename
-          ns←⎕JSON⍠('Dialect' 'JSON5')⊢json
+          ns←ReadProjectConfigFile filename
           :If 0<ns.CIDER.⎕NC'info_url'
               ns.CIDER.project_url←ns.CIDER.info_url
               ns.CIDER.⎕EX'info_url'
-              json2←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊢ns
-              (⊂json2)##.FilesAndDirs.NPUT filename 1
+              ns WriteProjectConfigFile filename
+              report,←⊂filename
+          :EndIf
+      :EndIf
+      list←##.FilesAndDirs.ListDirs folder
+      :If 0<≢list
+          RenameInfo_url_¨list
+      :EndIf
+      ⍝Done
+    ∇
+
+    ∇ report←Remove_githubUsername folder
+    ⍝ With version 0.24.0 of Cider the property "githubUsername" was removed from the config file.
+    ⍝ Cider now establishes the "owner" of a project on GitHub by investigating `project_url`.
+      :Access Public Shared
+      ('Is not a directory: ',folder)Assert ##.FilesAndDirs.IsDir folder
+      report←''
+      Remove_githubUsername_ folder
+      report←⍪report
+      ⍝Done
+    ∇
+
+    ∇ Remove_githubUsername_ folder;filename;list;ns
+      filename←folder,'/cider.config'
+      :If ##.FilesAndDirs.IsFile filename
+          ns←ReadProjectConfigFile filename
+          :If 0<ns.CIDER.⎕NC'githubUsername'
+              ns.CIDER.⎕EX'githubUsername'
+              ns WriteProjectConfigFile filename
               report,←⊂filename
           :EndIf
       :EndIf
@@ -771,7 +801,7 @@
       :EndIf
     ∇
 
-    ∇ r←ListTatinPackages y;path;cfgFilename;json;cfg;tatinFolder;buildFilenames;buildLists;b
+    ∇ r←ListTatinPackages y;path;cfgFilename;cfg;tatinFolder;buildFilenames;buildLists;b
       :Access Public Shared
       :If '['=1⍴y
           path←GetFolderFromAlias y
@@ -780,8 +810,7 @@
       :EndIf
       cfgFilename←path,'/cider.config'
       'No Cider config file found'Assert ##.FilesAndDirs.Exists cfgFilename
-      json←⊃##.FilesAndDirs.NGET cfgFilename
-      cfg←⎕JSON⍠('Dialect' 'JSON5')⊣json
+      cfg←ReadProjectConfigFile cfgFilename
       tatinFolder←cfg.CIDER.tatinFolder
       :If 0=≢tatinFolder
           r←'This Cider project has no Tatin packages'
@@ -858,6 +887,22 @@
               r←≢list
           :EndIf
       :EndIf
+    ∇
+
+    ∇ r←ReadProjectConfigFile path;path2
+    ⍝ Reads a project config file and returns it as a namespace with variables.
+    ⍝ `path` may or may not carry the filename as such.
+      :Access Public Shared
+      path2←'cider.config'{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}path
+      r←Get_JSON5 path2
+    ∇
+
+    ∇ r←config WriteProjectConfigFile path;path2
+    ⍝ Writes project configuration "config" to file.\\
+    ⍝ `path` may or may not carry the filename as such.
+      :Access Public Shared
+      path2←'cider.config'{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}path
+      r←config Put_JSON5 path2
     ∇
 
     YesOrNo←{⍺←⊢ ⋄ ⍺ ##.CommTools.YesOrNo ⍵}

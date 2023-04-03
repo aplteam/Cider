@@ -32,6 +32,7 @@ These commands are available:
 * `]Cider.RunTests`
 * `]Cider.Version`
 * `]Cider.ViewConfig`
+* `]Cider.ListTatinPackages`
 
 ## Documentation
 
