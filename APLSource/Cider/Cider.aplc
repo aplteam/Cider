@@ -9,13 +9,15 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.24.0+367'
+      r←'0.24.1+367'
+      ⍝ * 0.24.1 ⋄ 2023-04-07
+      ⍝   * Bug fix: creating a new config file worked under Windows only (#23)
       ⍝ * 0.24.0 ⋄ 2023-04-03
       ⍝   * Function `Remove_githubUsername` added
       ⍝   * `githubUsername` removed from the Cider config template file
       ⍝   * Two public shared functions added: `ReadProjectConfigFile` and `WriteProjectConfigFile`
       ⍝   * Bug fixes
-      ⍝     * When the confirmation regarding closing a project is answered with a "no" Cider should have 
+      ⍝     * When the confirmation regarding closing a project is answered with a "no" Cider should have
       ⍝       responded with "Cancelled by user" but did not.
       ⍝     * After the conversion into a package Cider would not find its config template file any more
       ⍝ * 0.23.6 ⋄ 2023-03-11
@@ -1053,7 +1055,11 @@
       1 ⎕MKDIR folder
       filename←folder,'config.json'
       :If ~##.FilesAndDirs.Exists filename
-          filename ⎕NCOPY GetMyUCMDsFolder,'/Cider/.cider/config.json'
+          :If 0<##.⎕NC'TatinVars'
+              filename ⎕NCOPY ##.TatinVars.HOME,'/cider.config.template'
+          :Else
+              filename ⎕NCOPY CiderConfig.HOME,'/cider.config.template'
+          :EndIf
       :EndIf
     ∇
 
