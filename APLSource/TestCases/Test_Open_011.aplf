@@ -1,5 +1,6 @@
  R←Test_Open_011(stopFlag batchFlag);⎕TRAP;folder;rc;success;log;res
 ⍝ Open a simple project without providing any parameter but the mandatory folder as a char vector
+⍝ Without any parameter implies that this test case prints to the session
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

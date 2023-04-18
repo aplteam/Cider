@@ -1,8 +1,12 @@
  R←Test_Create_062(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc
-⍝ Attempts to create and then open a project with an already existing config file that carries watch←'ns'
+⍝ Attempts to create and then open a project with an already existing config file that carries watch←'dir'
 ⍝ Was once a bug: in the opened project "watch" was then always the default rather than the setting.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
+
+ :If 'win'≢⎕C APLTreeUtils2.GetOperatingSystem ⍬
+     R←T._WindowsOnly ⋄ →0
+ :EndIf
 
  tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.special-watch')
@@ -16,7 +20,8 @@
  R←T._OK
 
 ∆TidyUp:
- rc←FilesAndDirs.RmDir tempDir
- Assert 0=+/∊rc
+ {}⎕SE.Link.Break'#.SpecialWatch'
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
  #.⎕EX'SpecialWatch'
 ⍝Done

@@ -604,6 +604,9 @@
     ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"
       ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
       config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET(P.##.TatinVars.HOME),'/',configFilename,'.template'
+      :If ~⎕SE.Cider.HasDotNet
+          config.LINK.watch←'ns'
+      :EndIf
       :If (⊃name)∊'#⎕'
           name←{⍵↓⍨⍵⍳'.'}name
       :EndIf
@@ -721,11 +724,11 @@
               :If (⊂answer)∊1 2(1 2)
                   :Select answer
                   :Case 1
-                      ⎕SE.UCMD'Open ',folder,1⊃list
+                      {}⎕SE.UCMD'Open ',folder,1⊃list
                   :Case 2
-                      ⎕SE.UCMD'Open ',folder,2⊃list
+                      {}⎕SE.UCMD'Open ',folder,2⊃list
                   :Case 1 2
-                      {⎕SE.UCMD'Open ',⍵}¨folder∘,¨list
+                      {}{⎕SE.UCMD'Open ',⍵}¨folder∘,¨list
                   :EndSelect
                   flag←1
               :Else

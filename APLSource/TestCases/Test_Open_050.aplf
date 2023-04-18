@@ -3,6 +3,11 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
+ :If ~##.Cider.Cider.HasDotNet
+     R←T._NotApplicable ⋄ →0
+ :EndIf
+
+
  'TEMP'#.⎕NS''
 
  parms←##.Cider.Cider.CreateOpenParms ⍬

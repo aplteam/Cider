@@ -6,6 +6,7 @@
  parms←⎕NS''
  parms.folder←∆GetTestPath⊃⎕SI
  parms.watch←'ns'
+ parms.quietFlag←1
  :Trap 11
      {}##.Cider.Cider.OpenProject parms
      →T.FailsIf 1

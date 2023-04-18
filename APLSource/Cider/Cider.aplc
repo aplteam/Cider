@@ -11,7 +11,9 @@
       :Access Public Shared
       r←'0.24.1+367'
       ⍝ * 0.24.1 ⋄ 2023-04-18
-      ⍝   * Bug fix: creating a new config file worked under Windows only (#23)
+      ⍝   * Bug fixes
+      ⍝     * The absence of .NET/.NET Core is now honoured
+      ⍝     * Creating a new config file worked under Windows only (#23)
       ⍝ * 0.24.0 ⋄ 2023-04-03
       ⍝   * Function `Remove_githubUsername` added
       ⍝   * `githubUsername` removed from the Cider config template file
@@ -258,7 +260,7 @@
       parms.suppressInit←0
       parms.importFlag←0
       parms.noPkgLoad←0
-      parms.watch←'both'
+      parms.watch←(1+HasDotNet)⊃'ns' 'both'
       parms.checkPackageVersions←⍬      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
       parms.githubUsername←''
       :If ~(⊂y)∊''⍬
@@ -801,6 +803,13 @@
               :EndIf
           :EndIf
       :EndIf
+    ∇
+
+    ∇ r←HasDotNet;buff
+    ⍝ Returns a 1 if either .NET Core or .NET is available and the bridge DLL was successfully loaded
+      :Access Public Shared
+      buff←2250⌶0
+      r←(1 2∊⍨1⊃buff)∧2⊃buff
     ∇
 
     ∇ r←ListTatinPackages y;path;cfgFilename;cfg;tatinFolder;buildFilenames;buildLists;b
