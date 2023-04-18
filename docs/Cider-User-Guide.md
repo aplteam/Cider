@@ -132,9 +132,14 @@ packages=Foo,packages_dev=TestCases
 
 ###### init
 
-If not empty this must be an expression that would call a function within the project. It must be defined relative to `projectSpace`.
+If not empty this must be the name of a function within `projectSpace`. The function will be executed after a project was opened. 
 
-The expression will be executed after a project was opened. 
+Such a function should not return a result.
+
+Such a function may be niladic, monadic, ambivalent or dyadic:
+
+* A non-niladic function receives a namespace with the project configuration as right argument 
+* An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project
 
 
 ###### make
@@ -212,6 +217,8 @@ Empty or a *fully qualified* function name.
 Defaults to "both" but can be "ns" or "dir" as well. 
 
 Defines which source to track for changes, so the other can be synchronised.
+
+Note that for "both" and "dir" .NET or .NET Core is required. Under Windows this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not the default for "watch" will be "ns".
 
 ##### SYSVARS
 
@@ -369,14 +376,12 @@ Now there might well be demand for executing some code to initialise your projec
 
 This can be achieved by assigning the name of a function to `init`. This must again be relative to the root of your project.
 
-Notes:
+The function should not return a result. If it does anyway it should be shy. Any result would be ignored.
 
-* The function should not return a result. If it does anyway it should be shy. Any result would be ignored.
-* The function must be either monadic or niladic. If it is monadic then `⍬` is passed as the right argument.
+Such a function may be niladic, monadic, ambivalent or dyadic:
 
-  What is passed as the right argument might well change in a future release.
-
-Note that you can access the configuration data of the project from within your initialisation function by questioning the `CiderConfig` namespace.
+* A non-niladic function receives a namespace with the project configuration as right argument 
+* An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project
 
 #### 9. Executing user-specific code
 
@@ -396,17 +401,10 @@ That file already contains a definition of the keyword `ExecuteAfterProjectOpen`
 }
 ```
 
-What is this good for you may ask? Well, let's assume that you are not using Git but a different version control Software. With Git, Cider would execute the "status" command and show the result to the user. With your version control software, it can't do something similar.
+What is this good for you may ask? Well, let's assume that you are not using Git but a different version control software. With Git, Cider would execute the "status" command and show the result to the user. With your version control software, it can't do something similar.
 
 You can easily achieve that by yourself: just add the required code to a function you load early into `⎕SE`, and then make sure that `ExecuteAfterProjectOpen` is calling that function and you are done.
 
-[^tatin]: _Tatin_ is a Dyalog APL package manager: <https://github.com/aplteam/Tatin>
-
-[^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from: <https://github.com/dyalog/Link>
-
-[^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
-
-[^winonly]: At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature on all platforms.
 
 ## Misc
 
@@ -446,3 +444,12 @@ The following example was created in a workspace where the project `APLGit2` was
  aplteam-IniFiles-5.0.3                                     0  https://tatin.dev/ 
  aplteam-DotNetZip-2.0.2                                    0  https://tatin.dev/ 
 ```
+
+
+[^tatin]: _Tatin_ is a Dyalog APL package manager: <https://github.com/aplteam/Tatin>
+
+[^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from: <https://github.com/dyalog/Link>
+
+[^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
+[^winonly]: At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature (or something similar) on all platforms.

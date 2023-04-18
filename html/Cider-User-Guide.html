@@ -144,8 +144,13 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h6 data-id="init">2.2.1.1.5. init</h6>
 </a>
 </div>
-<p>If not empty this must be an expression that would call a function within the project. It must be defined relative to <code>projectSpace</code>.</p>
-<p>The expression will be executed after a project was opened.</p>
+<p>If not empty this must be the name of a function within <code>projectSpace</code>. The function will be executed after a project was opened.</p>
+<p>Such a function should not return a result.</p>
+<p>Such a function may be niladic, monadic, ambivalent or dyadic:</p>
+<ul>
+<li>A non-niladic function receives a namespace with the project configuration as right argument</li>
+<li>An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project</li>
+</ul>
 <div class="h_tag">
 <a href="#make" id="make" class="autoheader_anchor">
 <h6 data-id="make">2.2.1.1.6. make</h6>
@@ -218,6 +223,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </div>
 <p>Defaults to “both” but can be “ns” or “dir” as well.</p>
 <p>Defines which source to track for changes, so the other can be synchronised.</p>
+<p>Note that for “both” and “dir” .NET or .NET Core is required. Under Windows this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not the default for “watch” will be “ns”.</p>
 <div class="h_tag">
 <a href="#SYSVARS" id="SYSVARS" class="autoheader_anchor">
 <h5 data-id="SYSVARS">2.2.1.3. SYSVARS</h5>
@@ -360,13 +366,12 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </div>
 <p>Now there might well be demand for executing some code to initialise your project.</p>
 <p>This can be achieved by assigning the name of a function to <code>init</code>. This must again be relative to the root of your project.</p>
-<p>Notes:</p>
+<p>The function should not return a result. If it does anyway it should be shy. Any result would be ignored.</p>
+<p>Such a function may be niladic, monadic, ambivalent or dyadic:</p>
 <ul>
-<li>The function should not return a result. If it does anyway it should be shy. Any result would be ignored.</li>
-<li>The function must be either monadic or niladic. If it is monadic then <code>⍬</code> is passed as the right argument.
-<p>What is passed as the right argument might well change in a future release.</p></li>
+<li>A non-niladic function receives a namespace with the project configuration as right argument</li>
+<li>An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project</li>
 </ul>
-<p>Note that you can access the configuration data of the project from within your initialisation function by questioning the <code>CiderConfig</code> namespace.</p>
 <div class="h_tag">
 <a href="#9-Executing-user-specific-code" id="9-Executing-user-specific-code" class="autoheader_anchor">
 <h4 data-id="9-Executing-user-specific-code">2.3.9. 9. Executing user-specific code</h4>
@@ -380,7 +385,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <pre><code>{
     ExecuteAfterProjectOpen: "",
 }</code></pre>
-<p>What is this good for you may ask? Well, let's assume that you are not using Git but a different version control Software. With Git, Cider would execute the “status” command and show the result to the user. With your version control software, it can't do something similar.</p>
+<p>What is this good for you may ask? Well, let's assume that you are not using Git but a different version control software. With Git, Cider would execute the “status” command and show the result to the user. With your version control software, it can't do something similar.</p>
 <p>You can easily achieve that by yourself: just add the required code to a function you load early into <code>⎕SE</code>, and then make sure that <code>ExecuteAfterProjectOpen</code> is calling that function and you are done.</p>
 <div class="h_tag">
 <a href="#Misc" id="Misc" class="autoheader_anchor">
@@ -425,7 +430,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <li id="fnref1"><p><em>Tatin</em> is a Dyalog APL package manager: <a href="https://github.com/aplteam/Tatin" class="external_link">https://github.com/aplteam/Tatin</a></p><a href="#fnref1" class="footnote_anchor"></a>
 <li id="fnref2"><p><em>LINK</em> is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from: <a href="https://github.com/dyalog/Link" class="external_link">https://github.com/dyalog/Link</a></p><a href="#fnref2" class="footnote_anchor"></a>
 <li id="fnref3"><p>Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either <code>#._tatin</code> or <code>⎕SE._tatin</code></p><a href="#fnref3" class="footnote_anchor"></a>
-<li id="fnref4"><p>At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature on all platforms.</p><a href="#fnref4" class="footnote_anchor"></a>
+<li id="fnref4"><p>At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature (or something similar) on all platforms.</p><a href="#fnref4" class="footnote_anchor"></a>
 </ol>
 </div>
 </body>
