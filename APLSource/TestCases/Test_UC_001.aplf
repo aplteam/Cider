@@ -14,6 +14,7 @@
  parms←##.Cider.Cider.CreateOpenParms ⍬
  parms.folder←tempDir
  parms.quietFlag←1
+ parms.watch←'ns'
  (res log)←##.Cider.Cider.OpenProject parms
 
  →T.GoToTidyUp 0=≢list←##.Cider.Cider.ListOpenProjects 0

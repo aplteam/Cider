@@ -10,6 +10,7 @@
  parms.folder←∆ALIAS_TEMP_FOLDER,'/Project1'
  parms.alias←'test-project-1'
  parms.quietFlag←⊂1
+ parms.watch←'ns'
  (success log)←##.Cider.Cider.OpenProject parms
  →T.PassesIf success
  →T.PassesIf 1=≢#.TEMP.⎕NL 3
@@ -19,6 +20,7 @@
  parms2.folder←∆ALIAS_TEMP_FOLDER,'/Project2'
  parms2.alias←'test-project-2'
  parms2.quietFlag←1
+ parms2.watch←'ns'
  (success log)←##.Cider.Cider.OpenProject parms2
  →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠≢#.TEMP2.⎕NL 3

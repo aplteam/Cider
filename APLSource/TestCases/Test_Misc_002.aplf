@@ -10,6 +10,7 @@
  parms←⎕NS''
  parms.folder←folder,'/Project1'
  parms.quietFlag←1
+ parms.watch←'ns'
  (success log)←##.Cider.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3
@@ -18,6 +19,7 @@
  parms2←⎕NS''
  parms2.folder←folder,'/Project2'
  parms2.quietFlag←1
+ parms2.watch←'ns'
  (success log)←##.Cider.Cider.OpenProject parms2
  →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠≢#.TEMP2.⎕NL 3

@@ -12,10 +12,10 @@
  filename←##.Cider.Cider.GetCiderConfigFilename
  cfg←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
 
- #.TEMP2.⎕FX'ExecuteAfterProjectOpen config' '∆FLAG←1'
 
- was←cfg.ExecuteAfterProjectOpen
+ was←cfg.{0=⎕nc'ExecuteAfterProjectOpen':'' ⋄ ExecuteAfterProjectOpen}⍬
  cfg.ExecuteAfterProjectOpen←'#.TEMP2.ExecuteAfterProjectOpen'
+ #.TEMP2.⎕FX'ExecuteAfterProjectOpen config' '∆FLAG←1'
  (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣cfg)⎕NPUT filename 1
 
  parms←⎕NS''

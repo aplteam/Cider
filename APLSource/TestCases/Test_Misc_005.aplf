@@ -17,6 +17,7 @@
  parms.projectSpace←'TEMP'
  parms.checkPackageVersions←2
  parms.quietFlag←1
+ parms.watch←'ns'
  (success log)←##.Cider.Cider.OpenProject parms
  Assert success
 

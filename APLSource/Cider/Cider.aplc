@@ -10,7 +10,7 @@
     ∇ r←Version
       :Access Public Shared
       r←'0.24.1+367'
-      ⍝ * 0.24.1 ⋄ 2023-04-07
+      ⍝ * 0.24.1 ⋄ 2023-04-18
       ⍝   * Bug fix: creating a new config file worked under Windows only (#23)
       ⍝ * 0.24.0 ⋄ 2023-04-03
       ⍝   * Function `Remove_githubUsername` added

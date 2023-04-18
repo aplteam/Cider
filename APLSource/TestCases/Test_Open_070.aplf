@@ -12,7 +12,7 @@
  parms.quietFlag←1
  parms.alias←'Foo'
  parms.checkPackageVersions←2
-
+ parms.watch←'ns'
  (success log)←##.Cider.Cider.OpenProject parms
  Assert success
  defs←##.Cider.Cider.GetAliasFileContent

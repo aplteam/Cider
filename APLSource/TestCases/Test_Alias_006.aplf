@@ -11,6 +11,7 @@
  parms.parent←'#.TEMP'
  parms.alias←'Firlefanz1'
  parms.quietFlag←1
+ parms.watch←'ns'
  (success log)←⎕SE.Cider.OpenProject parms
  Assert success
 

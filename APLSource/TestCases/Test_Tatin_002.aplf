@@ -9,6 +9,7 @@
  parms←⎕NS''
  parms.folder←folder
  parms.quietFlag←1
+ parms.watch←'ns'
  (res log)←##.Cider.Cider.OpenProject parms
 
  →T.GoToTidyUp~res

@@ -10,7 +10,7 @@
  parms.parent←'#.TEMP'
  parms.quietFlag←1
  parms.alias←'Foo'
-
+ parms.watch←'ns'
  (success log)←##.Cider.Cider.OpenProject parms
  Assert success
  defs←##.Cider.Cider.GetAliasFileContent

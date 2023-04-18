@@ -6,7 +6,7 @@
  'TEMP'#.⎕NS''
 
  folder←∆GetTestPath⊃⎕SI
- res←⎕SE.UCMD'Cider.OpenProject ',folder,' -parent=#.TEMP -import -quiet'
+ res←⎕SE.UCMD'Cider.OpenProject ',folder,' -parent=#.TEMP -import -quiet -watch=ns'
  →T.GoToTidyUp 0≠≢res
 
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello

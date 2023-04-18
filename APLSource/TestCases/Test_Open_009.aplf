@@ -10,6 +10,7 @@
  parms.parent←⎕THIS
  parms.projectSpace←'TEMP'
  parms.quietFlag←1
+ parms.watch←'ns'
  (success log)←##.Cider.Cider.OpenProject parms
  →T.GoToTidyUp~success
 

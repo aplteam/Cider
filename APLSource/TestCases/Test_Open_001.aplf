@@ -1,4 +1,4 @@
-R←Test_Open_001(stopFlag batchFlag);⎕TRAP;folder;parms;rc;success;log;res
+ R←Test_Open_001(stopFlag batchFlag);⎕TRAP;folder;parms;rc;success;log;res
 ⍝ Open a simple project without providing any parameter but the mandatory folder
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -10,6 +10,7 @@ R←Test_Open_001(stopFlag batchFlag);⎕TRAP;folder;parms;rc;success;log;res
  parms←⎕NS''
  parms.folder←folder
  parms.quietFlag←1
+ parms.watch←'ns'
  (success log)←##.Cider.Cider.OpenProject parms
 
  →T.GoToTidyUp~success

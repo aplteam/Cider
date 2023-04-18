@@ -12,6 +12,7 @@
  parms.parent←'#.TEMP'
  parms.quietFlag←1
  parms.suppressInit←1
+ parms.watch←'ns'
  (success log)←##.Cider.Cider.OpenProject parms
  →T.GoToTidyUp~success
 

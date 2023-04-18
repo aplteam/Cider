@@ -6,14 +6,14 @@
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
 
  folder←##.CiderConfig.HOME,'/Tests/TestAlias2/Project1'
- (rc msg res)←∆UCMD'OpenProject ',folder,' -parent=#.TEMP -alias=Firlefanz1 -quiet'
+ (rc msg res)←∆UCMD'OpenProject ',folder,' -parent=#.TEMP -alias=Firlefanz1 -quiet -watch=ns'
  msg Assert 0=rc
 
  (rc msg res)←∆UCMD'CloseProject [firlefanz1]'
  msg Assert 0=rc
  #.⎕EX'TEMP' ⋄ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
 
- (rc msg res)←∆UCMD'OpenProject [firlefanz1] -parent=#.TEMP -alias=Firlefanz2 -quiet'
+ (rc msg res)←∆UCMD'OpenProject [firlefanz1] -parent=#.TEMP -alias=Firlefanz2 -quiet -watch=ns'
  msg Assert 0=rc
 
  aliase←⎕SE.Cider.GetAliasFileContent
