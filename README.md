@@ -92,7 +92,7 @@ Once a folder is established that holds a Cider config file, the user command pe
 
    This may happen in case the package install folders are not uploaded to, say, GitHub (`.gitignore`) and the project was just downloaded.
 1. Asks the user whether Cider should check all Tatin packages (if there are any) for later versions 
-1. Loads all Tatin packages specified in the file `cider.config`, if any; see `tatinFolder`
+1. Loads all Tatin packages specified in the file `cider.config`, if any; see `dependencies.tatin` and `dependencies_dev.tatin`
 1. Injects a namespace `CiderConfig` into the project space and...
    * populates it with the contents of the configuration file as APL arrays
    * adds a variable `HOME` that remembers the path the project was loaded from   
@@ -102,7 +102,7 @@ Once a folder is established that holds a Cider config file, the user command pe
 Notes:
 
 * The name of the project space is defined in the Cider config file, but this can be overwritten with the `-projectSpace=` option
-* In case the `tatinFolder` parameter specifies one or more packages then the references pointing to those Tatin packages are all established in `projectSpace` by default.
+* In case the `dependencies.tatin` and `dependencies_dev.tatin` parameter specifies one or more packages then the references pointing to those Tatin packages are all established in `projectSpace` by default.
 
   However, this can be overwritten by specifying a different target space by adding:
 
@@ -113,7 +113,12 @@ Notes:
   Example:
 
   ```
-  tatinFolder: "packages,packages_dev=TestCases"
+  dependencies {
+     tatin: "packages"
+  }
+  dependencies_dev {
+     tatin: "packages_dev=TestCases"
+  }
   ```
 
   * All principal packages found in `packages/` within the project folder are loaded into the project space because that is the default, and  the default was not overwritten
@@ -122,9 +127,11 @@ Notes:
 
 ### CloseProject
 
-Takes a folder or an alias and breaks the Link between the namespace and its folder.
+Takes one or more folders or a aliases and breaks the Link between the namespace and its folder for all of them.
 
-You may specify the `-all` flag to close all projects in `#`, but check the user command's detailed help (`-??`) for details.
+Separate projects with space or commas.
+
+You may specify the `-all` flag to close all projects in `#` (*not* `⎕SE`!), but check the user command's detailed help (`-??`) for details.
 
 
 ### CreateProject

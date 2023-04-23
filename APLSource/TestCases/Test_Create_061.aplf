@@ -9,7 +9,7 @@
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -quiet'
  →T.GoToTidyUp 0=rc
- →T.GoToTidyUp 1≠+/'Invalid config parm (Tatin folder)'⍷msg
+ →T.GoToTidyUp 1≠+/'Invalid config parameter ("dependencies.tatin")'⍷msg
 
  R←T._OK
 

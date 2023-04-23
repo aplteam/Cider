@@ -11,6 +11,7 @@
 
  (rc msg res)←∆UCMD'CloseProject [firlefanz1]'
  msg Assert 0=rc
+ →T.GoToTidyUp'Number of projects closed: 1'≢res
  #.⎕EX'TEMP' ⋄ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
 
  (rc msg res)←∆UCMD'OpenProject [firlefanz1] -parent=#.TEMP -alias=Firlefanz2 -quiet -watch=ns'
@@ -18,8 +19,9 @@
 
  aliase←⎕SE.Cider.GetAliasFileContent
 
- (rc msg res)←∆UCMD'CloseProject [firlefanz1]'
+ (rc msg res)←∆UCMD'CloseProject [firlefanz2]'
  msg Assert 0=rc
+ →T.GoToTidyUp'Number of projects closed: 1'≢res
 
  →T.GoToTidyUp(⊂'firlefanz1')∊aliase[;1]
  →T.GoToTidyUp~(⊂'firlefanz2')∊aliase[;1]

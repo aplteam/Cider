@@ -143,7 +143,7 @@ Opening a project means carrying out the following actions:
    From here on we refer to this as the _root of the project_.
 2. Setting the system variables `⎕IO` and `⎕ML` in the root of the project
 3. Bringing all code and variables into the root of the project
-4. Loading all Tatin packages from the Tatin installation folders defined by `tatinFolders`
+4. Loading all Tatin packages from the Tatin installation folders defined by `dependencies` and `dependencies_dev`
 5. Injecting a namespace `CiderConfig` into the root of the project and populating it with the contents of the configuration file as an APL array
 6. Adding a variable `HOME` to `CiderConfig` that carries a path to where the project was loaded from
 7. Executing the project-specific function noted on `init`, usually to initialize the project
@@ -222,7 +222,7 @@ Note that this has implications on how Cider deals with Tatin packages, see ther
 
 #### noPkgLoad
 
-Defaults to 0, meaning that Cider will load Tatin packages by honoring the config file's `tatinFolder` parameter. However, there might be circumstances when you do not want packages to be loaded. This can be achieved by setting the `noPkgLoad` flag to 1.
+Defaults to 0, meaning that Cider will load Tatin packages by honoring the config file's `dependencies` and `dependencies_dev` parameters. However, there might be circumstances when you do not want packages to be loaded. This can be achieved by setting the `noPkgLoad` flag to 1.
 
 
 #### quietFlag

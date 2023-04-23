@@ -1,7 +1,7 @@
 ﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-03-15
+⍝ 2023-03-23
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
@@ -236,12 +236,12 @@
           path←Args._1
       :EndIf
       aliasDefs←P.GetAliasFileContent
-      :If (⊂,path)∊,¨'[' '[?' '[?]'
+      :If path≡'[?]'
           bool←~aliasDefs[;2]∊{⍵[;2]}P.ListOpenProjects 0
           :If 0=≢path←SelectFromAliases bool⌿aliasDefs
               :Return
           :EndIf
-      :ElseIf '['=1⍴path
+      :ElseIf '[]'≡path[1,≢path]
       :AndIf '*'=¯1↑path~'[]'
           bool←~aliasDefs[;2]∊{⍵[;2]}P.ListOpenProjects 0
           bool←bool\(¯1↓path~'[]'){(⎕C(≢⍺)↑[2]⍵)∧.=⎕C ⍺}↑bool⌿aliasDefs[;1]
@@ -260,7 +260,7 @@
               :EndIf
           :EndSelect
       :EndIf
-      path←⎕C⍣('['∊path)⊣path
+      path←⎕C⍣('[]'≡path[1,≢path])⊣path
       parms←P.CreateOpenParms''
       parms.folder←path
       parms.projectSpace←Args.projectSpace
@@ -321,14 +321,18 @@
           :Select ⎕C Cmd
           :Case ⎕C'OpenProject'
               r,←⊂'Takes a path to a folder that must contain a file "',configFilename,'" (JSON5).'
-              r,←⊂''
               r,←⊂'The config file must specify all variables required by Cider, including "source".'
               r,←⊂'The contents of "source" is then linked to "parent.projectSpace" by default.'
-              r,←⊂''
               r,←⊂'If no folder is specified Cider looks for a file "',configFilename,'" in the'
               r,←⊂'current directory. If no such file is found then...'
               r,←⊂' * under Windows a dialog box is opened that allows you to navigate to the intended folder'
               r,←⊂' * an error is thrown on non-Windows platforms'
+              r,←⊂''
+              r,←⊂'You may use an alias rather than a path; see -alias= for how to define an alias.'
+              r,←⊂'An alias must be embraced by square brackets, for exampel:'
+              r,←⊂'    ]Cider.OpenProject [alias]'
+              r,←⊂'You can also ask Cider for a list of all known aliases with:'
+              r,←⊂'    ]Cider.OpenProject [?]'
               r,←⊂''
               r,←⊂'-quiet:       The user command prints messages to the session unless -quiet is specified.'
               r,←⊂'-parent:      The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
@@ -338,26 +342,19 @@
               r,←⊂'-import:      By default the namespace is linked to folder. By specifying the -import'
               r,←⊂'              flag this can be avoided: the code is then loaded into the workspace with the'
               r,←⊂'              Link.Import method, meaning that changes are not tracked.'
-              r,←⊂'              This flag has also side effects: neither that status of any installed Tatin'
-              r,←⊂'              packages is checked nor the Git status of the project.'
+              r,←⊂'              With -import the status of neither Git nor any installed Tatin packages is checked.'
               r,←⊂'-alias:       In case you are going to work on a project frequently you may specify'
               r,←⊂'              -alias=name'
-              r,←⊂'              Later on you may open the project with:'
-              r,←⊂'              ]Cider.OpenProject [name]'
-              r,←⊂'              You can also ask Cider for a list of all known aliases with:'
-              r,←⊂'              ]Cider.OpenProject [?]'
-              r,←⊂'              Cider will then allow you to select one of the projects.'
               r,←⊂'              (In order to remove an alias use ]Cider.ListAliases -edit)'
               r,←⊂'-noPkgLoad:   By default the Tatin packages from the installation folder(s) defined in the'
               r,←⊂'              config will be loaded. If you don''t want this specify -noPkgLoad'
-              r,←⊂'-watch        Defaults to "both" but may be "ns" or "dir" instead.'
+              r,←⊂'-watch        Defaults to "both" (if .NET is available) but may be "ns" or "dir" instead.'
               r,←⊂'               * "ns" means that changes in the workpace are saved on disk'
               r,←⊂'               * "dir" means that any changes on disk are brought into the WS'
               r,←⊂'               * "both" means that any changes in either "ns" or "dir" are reflected accordingly'
-              r,←⊂'                 However, note that currently "both" works only under Windows. On other platforms'
-              r,←⊂'                 "both" is identical with "ns" for the time being.'
-              r,←⊂'                 Note also that this change is temporary: it does NOT change the config file on disk'
-              r,←⊂'              You are adviced to study the Link documentation on this for details.'
+              r,←⊂'                 However, currently "both" works only under Windows.'
+              r,←⊂'                 Note that the flag does NOT change the config file on disk'
+              r,←⊂'              Refere to the Link documentation for details.'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'Print a list with the namespaces of all currently opened projects.'
               r,←⊂'Add the -verbose flag for more information. Then a matrix is returned with these columns:'
@@ -422,6 +419,8 @@
               r,←⊂' * A mixture of the two'
               r,←⊂' * Nothing; equivalent to -all but the user will be asked for confirmation'
               r,←⊂' * The -all flag, which closes all projects without further ado'
+              r,←⊂''
+              r,←⊂'Multiple projects must be separated by spaces or by commas.'
               r,←⊂''
               r,←⊂'Result:'
               r,←⊂' * In case a particular project was specified a Boolean is reported, 1 indicating success'
@@ -600,10 +599,14 @@
       :EndIf
     ∇
 
-    ∇ {name}←CreateConfigFile(filename name);config
+    ∇ {name}←CreateConfigFile(filename name);config;globalCiderConfigFilename
     ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"
       ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
-      config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET(P.##.TatinVars.HOME),'/',configFilename,'.template'
+      globalCiderConfigFilename←⎕SE.Cider.GetCiderConfigHomeFolder,'cider.config.template'
+      :If 0=⎕NEXISTS globalCiderConfigFilename
+          globalCiderConfigFilename(⎕NCOPY P.##.FilesAndDirs.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
+      :EndIf
+      config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃P.##.FilesAndDirs.NGET globalCiderConfigFilename
       :If ~⎕SE.Cider.HasDotNet
           config.LINK.watch←'ns'
       :EndIf
@@ -613,7 +616,26 @@
       ((~name∊⎕D,⎕A,'_∆⍙',⎕C ⎕A)/name)←'_'
       config.CIDER.projectSpace←⍕name
       config←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config
-      (⊂config)⎕NPUT filename
+      (⊂config)P.##.FilesAndDirs.NPUT filename
+    ∇
+
+    ∇ r←GetUserConfigFileTemplate;folder;filename
+    ⍝ Checks whether the user has already a personal config file template.
+    ⍝ If not the generic Cider config file template is copied into the user's Cider home folder,
+    ⍝ Eventually the template is returned.
+      folder←⎕SE.Cider.GetCiderConfigHomeFolder
+      filename←folder',/cider.config.template'
+      :If ~##.FilesAndDirs.Exists filename
+          :If 0<##.⎕NC'TatinVars'
+              filename ⎕NCOPY ##.TatinVars.HOME,'/cider.config.template'
+          :Else
+              filename ⎕NCOPY CiderConfig.HOME,'/cider.config.template'
+          :EndIf
+      :EndIf
+      :If
+     
+      :EndIf
+      r←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
     ∇
 
     ∇ (opCode path)←OpenFileDialogBox caption;ref;res;filename
@@ -640,7 +662,7 @@
     ∇
 
 
-    ∇ r←CloseProject Args;list;names;bool;row;invalid;q;noop;report
+    ∇ r←CloseProject Args;list;bool;row;invalid;q;noop;report;projectID;buff
       r←''
       report←1
       :If 0=≢Args.Arguments
@@ -649,29 +671,36 @@
               :Return
           :Else
               :If 1=noop
-                  :If 1 YesOrNo'Sure you want close the project <',(⊃list[1;]),'>?'
-                      r←P.CloseProject ⍬
+                  :If 1 YesOrNo'Sure you want to close the project <',(⊃list[1;]),'>?'
+                      r←buff←P.CloseProject ⍬
                   :Else
                       r←'Cancelled by user' ⋄ →0
                   :EndIf
               :ElseIf Args.all
                   q←'Currently there ',((1+1<noop)⊃'is one'('are ',⍕noop)),' project',((1<noop)/'s'),' opened - wanna close ',(1+1<noop)⊃'it?' 'all of them?'
               :OrIf YesOrNo q
-                  r←P.CloseProject ⍬
+                  r←+/P.CloseProject ⍬
                   'Something went wrong'Assert r≡≢list
                   r←1↓∊(⎕UCS 13),¨↓⎕FMT list
               :EndIf
           :EndIf
       :Else
-          names←⊆Args.Arguments
-          :If 1∊invalid←~{(⊃⍵)∊'#⎕['}¨names
-              11 ⎕SIGNAL⍨'Project name(s) must be fully qualified but are not: ',⊃{⍺,',',⍵}/invalid/names
+          projectID←⊃{⍺,' ',⍵}/Args.Arguments  ⍝ Can be a namespace, a path or an alias
+          ((projectID=',')/projectID)←' '
+          projectID←' '(≠⊆⊢)projectID
+          projectID←TranslateAlias¨projectID
+          :If 0∊invalid←(~∨/¨'/\'∘∊¨projectID)∧~({1 ⎕C ⍵↑⍨¯1+⍵⍳'.'}¨projectID)∊,¨'#' '⎕SE'
+              (invalid/projectID)←(⊂'#.'),¨invalid/projectID
           :EndIf
-          :If 1∊invalid←~{(⎕NS'').{0=⎕NC ⍵}⍵~'[]'}¨names
-              11 ⎕SIGNAL⍨'Invalid project name(s): ',⊃{⍺,',',⍵}/invalid/names
+          :If 1∊invalid←~{(⎕NS'').{0=⎕NC ⍵}⍵~'[]'}¨projectID
+              11 ⎕SIGNAL⍨'Invalid project name(s): ',⊃{⍺,',',⍵}/invalid/projectID
           :EndIf
           list←P.ListOpenProjects 0
-          r←+/P.CloseProject¨names
+          invalid←~((⎕C projectID)∊⎕C list[;1])∨(P.##.FilesAndDirs.NormalizePath projectID)∊P.##.FilesAndDirs.NormalizePath list[;2]
+          :If 1∊invalid
+              ('Not an open Cider project: ',⊃{⍺,',',⍵}/invalid/projectID)Assert∧/~invalid
+          :EndIf
+          r←+/list∘P.CloseProject¨projectID
       :EndIf
       :If 0<≢r
           :If ' '=1↑0⍴∊r
@@ -704,6 +733,17 @@
                   r←'One project was closed.'
               :EndIf
           :EndIf
+      :EndIf
+    ∇
+
+    ∇ r←TranslateAlias alias;aliase;row
+      :If '[]'≡alias[1,≢alias]
+          aliase←⎕SE.Cider.GetAliasFileContent
+          row←aliase[;1]⍳⊂alias~'[]'
+          ('Unknown alias: ',alias)Assert row≤≢aliase
+          r←2⊃aliase[row;]
+      :Else
+          r←alias
       :EndIf
     ∇
 
@@ -878,11 +918,18 @@
 
     ∇ {r}←PerformConfigChecks config;buff;namespace;path
       r←0
-      :If 0<≢buff←config.CIDER.tatinFolder
+      :If 0<≢buff←config.CIDER.dependencies.tatin
           :If '='∊buff
-              'Invalid config parm ("tatinFolder" has more than one "=")'Assert 1='='+.=buff
+              'Invalid config parameter ("dependencies.tatin" has more than one "=")'Assert 1='='+.=buff
               (path namespace)←'='(≠⊆⊢)buff
-              'Invalid config parm (Tatin folder)'Assert 0=(⎕NS'').{⎕NC ⍵}namespace
+              'Invalid config parameter ("dependencies.tatin")'Assert 0=(⎕NS'').{⎕NC ⍵}namespace
+          :EndIf
+      :EndIf
+      :If 0<≢buff←config.CIDER.dependencies_dev.tatin
+          :If '='∊buff
+              'Invalid config parameter ("dependencies_dev.tatin" has more than one "=")'Assert 1='='+.=buff
+              (path namespace)←'='(≠⊆⊢)buff
+              'Invalid config parameter ("dependencies_dev.tatin")'Assert 0=(⎕NS'').{⎕NC ⍵}namespace
           :EndIf
       :EndIf
     ∇

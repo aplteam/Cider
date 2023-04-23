@@ -36,6 +36,12 @@ With `]Cider.CreateProject` any folder that does not yet host a file `cider.conf
 
 If the folder does not yet exist it will be created. In any case, the folder will be populated with a file `cider.config`.
 
+I> The default config file that is copied into any new project stems from a folder `.cider/` in your home directory. 
+I>
+I> You may change this file and make amendments that suit your needs. 
+I>
+I> However, when a new version of Cider is installed the template config file *might* come with new or renamed or removed properties, and those would not make it into the template file in `.cider/cider.config` in your home directory: watch the release notes for this.
+
 Note that `]Cider.CreateProject` deals differently with the possible combinations of namespace and source folder:
 
 * The namespace and the source folder are both empty
@@ -92,43 +98,43 @@ Defaults to `APLSource`: a subfolder that hosts the code. That's where the code 
 
 This might be empty, for example when the project is just a single script (class or namespace).
 
-###### tatinFolder
+###### dependencies
 
-Defaults to "packages".
-
-Defines the folder(s) with installed Tatin packages required by the project as well as the resulting package or application. Must be relative to the folder where the project lives.
-
-Accepts also something like this:
+This carries one sub-key: "tatin". This is how the template config file looks like:
 
 ```
-packages,packages_dev=TestCases
+dependencies: {
+    tatin: "packages",
+    },
 ```
 
-This is interpreted as follows:
+The sub-key "tatin" defaults to "packages", which must be a folder in the root of the project the resulting package or application depends on. 
 
-1. Load all Tatin packages that are installed in the project's subfolder "packages" into the namespace that hosts the project
+This makes Cider load all Tatin packages that are installed in the project's subfolder "packages" into the namespace that hosts the project.
 
-1. Load all Tatin packages that are installed in the project's subfolder "packages_dev/" into the namespace `TestCases` which must be a child of the namespace that hosts the project
-
-W> You **must** put the main package folder first. `InstallPackages` will install all packages found in the first folder but nothing else.
- 
-If a project has only dependencies for development purposes then specify a leading comma like this:
+In case you don't want the packages to be loaded into the root of the project but a sub-namespace, say "Foo":
 
 ```
-,packages_dev=TestCases
+dependencies: {
+    tatin: "packages=Foo",
+    },
 ```
 
-This makes the first item an empty vector, and that tells Cider that there are no principal dependencies, just development dependencies.
+I> You may add your own sub-keys in addition to "tatin", but Cider will ignore them: you have to put them to good use yourself.
 
-Although it is possible to define more than two folders on `tatinFolder`, it is hard to imagine a case when this 
-makes sense.
+###### dependencies_dev
 
-Of course you may assign a namespace name to the principal package as well, like this:
+In principle this is the same as `dependencies`, but it regards dependencies that are only required for development and testing, not for producing the final result, be it a package or an application.
+
+For that reason those dependencies are more often than not expected to be loaded into a sub-namespace of the project:
 
 ```
-packages=Foo,packages_dev=TestCases
+dependencies_dev: {
+    tatin: "packages_dev=Testcases",
+    },
 ```
 
+All packages in the sub-folder packages_dev/ are loaded into the sub-namespace `Testcases`
 
 ###### init
 
@@ -318,7 +324,7 @@ However, if you want to bring in the code as part of, say, an automated build pr
 
 #### 4. Check for empty package folders
 
-Cider now checks whether any of the Tatin installation folders --- as noted on the `tatinFolder` property --- is empty apart from the dependency file and the build list.
+Cider now checks whether any of the Tatin installation folders --- as noted on the `dependencies` and `dependencies_dev` properties --- is empty apart from a dependency file and a build list.
 
 A> ### Why this may happen
 A>
@@ -339,28 +345,16 @@ In case the project has Tatin packages installed in one or more folders the user
 
 However, note that this is only true if you've loaded the package(s) from a Tatin Registry that is in your config file _and_ has a priority greater than 0. Refer to the Tatin documentation for details.
 
-If `]Cider.OpenProject` discovers later packages it will ask the user whether packages shall be re-installed with the `-update` flag set. This will happen independently for each package installation folder.
+If `]Cider.OpenProject` discovers later packages it will ask the user whether these packages shall be re-installed with the `-update` flag set. This will happen independently for each package installation folder.
 
 
 #### 6. Loading Tatin packages
  
-Your application or tool might depend on one or more Tatin[^tatin] packages. By assigning `tatinFolder` one or more comma-separated folders hosting installed Tatin packages you can make sure that Cider will load[^load_tatin_pkgs] those installed packages into the root of your project.
+Your application or tool might depend on one or more Tatin[^tatin] packages. By assigning one or more comma-separated folders hosting Tatin packages to the `tatin` sub-key in `dependencies` and potentially `dependencies_dev` you can make sure that Cider will load[^load_tatin_pkgs] those installed packages into the root of your project or the assigned sub-namespace.
 
-In particular, when you specify more than a single folder you are likely to want some packages to be loaded into a sub-namespace of the root of your project.
+In particular when you specify more than a single folder you are likely to want some packages to be loaded into a sub-namespace of the root of your project.
 
-For example, let's assume you want all packages installed in the folder `packages/` to be loaded into the root of your project, and that you want to load all packages from a folder `packages_dev/` (for "development") into a namespace `TestCases` in the root of your project.
-
-This will do the trick:
-
-```
-"tatinFolder": "packages,packages_development=TestCases",
-
-```
-
-Notes:
-* For the first folder, `packages/`, no target namespace is specified, therefore the packages are loaded into the root of the project
-* A namespace, if assigned to a folder, must be specified relative to the root of the project
-
+See the config properties `dependencies` and `dependencies_dev` for details on how to achieve this.
 
 #### 7. Injecting a namespace `CiderConfig`
 
@@ -405,6 +399,8 @@ What is this good for you may ask? Well, let's assume that you are not using Git
 
 You can easily achieve that by yourself: just add the required code to a function you load early into `⎕SE`, and then make sure that `ExecuteAfterProjectOpen` is calling that function and you are done.
 
+Another application could be to bring in non-Tatin dependencies defined in the `dependencies` and/or the `dependencies_dev` properties.
+
 
 ## Misc
 
@@ -418,7 +414,7 @@ In such a scenario you might well install release candidates into a project that
 
 The function `ListTatinPackage` puts all build lists from all Tatin install folders of a given project on display, making it easy to check.
 
-The following example was created in a workspace where the project `APLGit2` was opened. Because it is the only one Cider knows that it is supposed to deal with it.
+The following example was created in a workspace where the project `APLGit2` was opened. Because it is the only one Cider knows about it will act on it.
 
 `APLGit2` has two Tatin installation folders, one for production (`packages/`) and one for development and testing (`packages_dev/`):
 

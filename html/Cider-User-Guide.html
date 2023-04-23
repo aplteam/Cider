@@ -60,6 +60,15 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </div>
 <p>With <code>]Cider.CreateProject</code> any folder that does not yet host a file <code>cider.config</code> can be transformed into a Cider project. (You may specify the <code>-acceptConfig</code> flag to override this default behaviour and make Cider accept an already existing file <code>cider.config</code>)</p>
 <p>If the folder does not yet exist it will be created. In any case, the folder will be populated with a file <code>cider.config</code>.</p>
+<div class="leanpub">
+<img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information">
+<div>
+<p>The default config file that is copied into any new project stems from a folder <code>.cider/</code> in your home directory.</p>
+<p>You may change this file and make amendments that suit your needs.</p>
+<p>However, when a new version of Cider is installed the template config file <em>might</em> come with new or renamed or removed properties, and those would not make it into the template file in <code>.cider/cider.config</code> in your home directory: watch the release notes for this.</p>
+</div>
+</div>
+
 <p>Note that <code>]Cider.CreateProject</code> deals differently with the possible combinations of namespace and source folder:</p>
 <ul>
 <li>The namespace and the source folder are both empty</li>
@@ -113,35 +122,41 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Defaults to <code>APLSource</code>: a subfolder that hosts the code. That's where the code lives, relative to the project folder.</p>
 <p>This might be empty, for example when the project is just a single script (class or namespace).</p>
 <div class="h_tag">
-<a href="#tatinFolder" id="tatinFolder" class="autoheader_anchor">
-<h6 data-id="tatinFolder">2.2.1.1.4. tatinFolder</h6>
+<a href="#dependencies" id="dependencies" class="autoheader_anchor">
+<h6 data-id="dependencies">2.2.1.1.4. dependencies</h6>
 </a>
 </div>
-<p>Defaults to “packages”.</p>
-<p>Defines the folder(s) with installed Tatin packages required by the project as well as the resulting package or application. Must be relative to the folder where the project lives.</p>
-<p>Accepts also something like this:</p>
-<pre><code>packages,packages_dev=TestCases</code></pre>
-<p>This is interpreted as follows:</p>
-<ol start="1">
-<li>Load all Tatin packages that are installed in the project's subfolder “packages” into the namespace that hosts the project</li>
-<li>Load all Tatin packages that are installed in the project's subfolder “packages_dev/” into the namespace <code>TestCases</code> which must be a child of the namespace that hosts the project</li>
-</ol>
+<p>This carries one sub-key: “tatin”. This is how the template config file looks like:</p>
+<pre><code>dependencies: {
+    tatin: "packages",
+    },</code></pre>
+<p>The sub-key “tatin” defaults to “packages”, which must be a folder in the root of the project the resulting package or application depends on.</p>
+<p>This makes Cider load all Tatin packages that are installed in the project's subfolder “packages” into the namespace that hosts the project.</p>
+<p>In case you don't want the packages to be loaded into the root of the project but a sub-namespace, say “Foo”:</p>
+<pre><code>dependencies: {
+    tatin: "packages=Foo",
+    },</code></pre>
 <div class="leanpub">
-<img src="https://download.aplwiki.com/LeanPub/Images/warning.png" alt="Warning">
+<img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information">
 <div>
-<p>You <strong>must</strong> put the main package folder first. <code>InstallPackages</code> will install all packages found in the first folder but nothing else.</p>
+<p>You may add your own sub-keys in addition to “tatin”, but Cider will ignore them: you have to put them to good use yourself.</p>
 </div>
 </div>
 
-<p>If a project has only dependencies for development purposes then specify a leading comma like this:</p>
-<pre><code>,packages_dev=TestCases</code></pre>
-<p>This makes the first item an empty vector, and that tells Cider that there are no principal dependencies, just development dependencies.</p>
-<p>Although it is possible to define more than two folders on <code>tatinFolder</code>, it is hard to imagine a case when this makes sense.</p>
-<p>Of course you may assign a namespace name to the principal package as well, like this:</p>
-<pre><code>packages=Foo,packages_dev=TestCases</code></pre>
+<div class="h_tag">
+<a href="#dependencies_dev" id="dependencies_dev" class="autoheader_anchor">
+<h6 data-id="dependencies_dev">2.2.1.1.5. dependencies_dev</h6>
+</a>
+</div>
+<p>In principle this is the same as <code>dependencies</code>, but it regards dependencies that are only required for development and testing, not for producing the final result, be it a package or an application.</p>
+<p>For that reason those dependencies are more often than not expected to be loaded into a sub-namespace of the project:</p>
+<pre><code>dependencies_dev: {
+    tatin: "packages_dev=Testcases",
+    },</code></pre>
+<p>All packages in the sub-folder packages_dev/ are loaded into the sub-namespace <code>Testcases</code></p>
 <div class="h_tag">
 <a href="#init" id="init" class="autoheader_anchor">
-<h6 data-id="init">2.2.1.1.5. init</h6>
+<h6 data-id="init">2.2.1.1.6. init</h6>
 </a>
 </div>
 <p>If not empty this must be the name of a function within <code>projectSpace</code>. The function will be executed after a project was opened.</p>
@@ -153,7 +168,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </ul>
 <div class="h_tag">
 <a href="#make" id="make" class="autoheader_anchor">
-<h6 data-id="make">2.2.1.1.6. make</h6>
+<h6 data-id="make">2.2.1.1.7. make</h6>
 </a>
 </div>
 <p>Empty or an expression (relative to the project) that would create a new version of the project.</p>
@@ -164,7 +179,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>However, if the first non-white space character of <code>make</code> is a <code>]</code> its definition would just be printed to the session together with a comment because then it's obviously a user command.</p>
 <div class="h_tag">
 <a href="#project_url" id="project_url" class="autoheader_anchor">
-<h6 data-id="project_url">2.2.1.1.7. project_url</h6>
+<h6 data-id="project_url">2.2.1.1.8. project_url</h6>
 </a>
 </div>
 <p>If not empty this is expected to be a URL pointing to, say, a GitHub project. For information only.</p>
@@ -172,7 +187,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Some function of <code>APLGit2</code> must know the <code>owner</code> of a project on GitHub. Those functions will investigate project_url`: if that points to GitHub, the own is established from its contents.</p>
 <div class="h_tag">
 <a href="#tests" id="tests" class="autoheader_anchor">
-<h6 data-id="tests">2.2.1.1.8. tests</h6>
+<h6 data-id="tests">2.2.1.1.9. tests</h6>
 </a>
 </div>
 <p>Empty or an expression (relative to the project) that would execute the test cases of the project.</p>
@@ -183,7 +198,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>However, if the first non-white space character of <code>tests</code> is a <code>]</code> (making it a user command rather than a function call) its definition would just be printed to the session together with a comment because then it's obviously a user command.</p>
 <div class="h_tag">
 <a href="#githubUsername" id="githubUsername" class="autoheader_anchor">
-<h6 data-id="githubUsername">2.2.1.1.9. githubUsername</h6>
+<h6 data-id="githubUsername">2.2.1.1.10. githubUsername</h6>
 </a>
 </div>
 <p>This parameter was introduced with version 0.19.0 and removed with version 0.24.0</p>
@@ -315,7 +330,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h4 data-id="4-Check-for-empty-package-folders">2.3.4. 4. Check for empty package folders</h4>
 </a>
 </div>
-<p>Cider now checks whether any of the Tatin installation folders — as noted on the <code>tatinFolder</code> property — is empty apart from the dependency file and the build list.</p>
+<p>Cider now checks whether any of the Tatin installation folders — as noted on the <code>dependencies</code> and <code>dependencies_dev</code> properties — is empty apart from a dependency file and a build list.</p>
 <div class="leanpub_A">
 <h3>Why this may happen</h3>
 <p>Since version 0.21.0 Cider itself has an enhanced <code>.gitignore</code> file: it defines that the contents of the Tatin installation folder(s) but the two definition files shall be ignored. Only these two definition files are therefore uploaded to GitHub, but <em>none of the packages</em>.</p>
@@ -332,23 +347,15 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </div>
 <p>In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will only happen in case <code>importFlag</code> is 0.</p>
 <p>However, note that this is only true if you've loaded the package(s) from a Tatin Registry that is in your config file <em>and</em> has a priority greater than 0. Refer to the Tatin documentation for details.</p>
-<p>If <code>]Cider.OpenProject</code> discovers later packages it will ask the user whether packages shall be re-installed with the <code>-update</code> flag set. This will happen independently for each package installation folder.</p>
+<p>If <code>]Cider.OpenProject</code> discovers later packages it will ask the user whether these packages shall be re-installed with the <code>-update</code> flag set. This will happen independently for each package installation folder.</p>
 <div class="h_tag">
 <a href="#6-Loading-Tatin-packages" id="6-Loading-Tatin-packages" class="autoheader_anchor">
 <h4 data-id="6-Loading-Tatin-packages">2.3.6. 6. Loading Tatin packages</h4>
 </a>
 </div>
-<p>Your application or tool might depend on one or more Tatin[<a href="#fnref1" class="footnote_link"><sup>1</sup></a>] packages. By assigning <code>tatinFolder</code> one or more comma-separated folders hosting installed Tatin packages you can make sure that Cider will load[<a href="#fnref3" class="footnote_link"><sup>3</sup></a>] those installed packages into the root of your project.</p>
-<p>In particular, when you specify more than a single folder you are likely to want some packages to be loaded into a sub-namespace of the root of your project.</p>
-<p>For example, let's assume you want all packages installed in the folder <code>packages/</code> to be loaded into the root of your project, and that you want to load all packages from a folder <code>packages_dev/</code> (for “development”) into a namespace <code>TestCases</code> in the root of your project.</p>
-<p>This will do the trick:</p>
-<pre><code>"tatinFolder": "packages,packages_development=TestCases",
-</code></pre>
-<p>Notes:</p>
-<ul>
-<li>For the first folder, <code>packages/</code>, no target namespace is specified, therefore the packages are loaded into the root of the project</li>
-<li>A namespace, if assigned to a folder, must be specified relative to the root of the project</li>
-</ul>
+<p>Your application or tool might depend on one or more Tatin[<a href="#fnref1" class="footnote_link"><sup>1</sup></a>] packages. By assigning one or more comma-separated folders hosting Tatin packages to the <code>tatin</code> sub-key in <code>dependencies</code> and potentially <code>dependencies_dev</code> you can make sure that Cider will load[<a href="#fnref3" class="footnote_link"><sup>3</sup></a>] those installed packages into the root of your project or the assigned sub-namespace.</p>
+<p>In particular when you specify more than a single folder you are likely to want some packages to be loaded into a sub-namespace of the root of your project.</p>
+<p>See the config properties <code>dependencies</code> and <code>dependencies_dev</code> for details on how to achieve this.</p>
 <div class="h_tag">
 <a href="#7-Injecting-a-namespace-CiderConfig" id="7-Injecting-a-namespace-CiderConfig" class="autoheader_anchor">
 <h4 data-id="7-Injecting-a-namespace-CiderConfig">2.3.7. 7. Injecting a namespace <code>CiderConfig</code></h4>
@@ -387,6 +394,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 }</code></pre>
 <p>What is this good for you may ask? Well, let's assume that you are not using Git but a different version control software. With Git, Cider would execute the “status” command and show the result to the user. With your version control software, it can't do something similar.</p>
 <p>You can easily achieve that by yourself: just add the required code to a function you load early into <code>⎕SE</code>, and then make sure that <code>ExecuteAfterProjectOpen</code> is calling that function and you are done.</p>
+<p>Another application could be to bring in non-Tatin dependencies defined in the <code>dependencies</code> and/or the <code>dependencies_dev</code> properties.</p>
 <div class="h_tag">
 <a href="#Misc" id="Misc" class="autoheader_anchor">
 <h2 data-id="Misc">3. Misc</h2>
@@ -401,7 +409,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Checking dependencies before publishing to the principal Tatin Registry is a good idea, in particular when one uses several Tatin Registries like a personal one, a company Registry and https://tatin.dev</p>
 <p>In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev. However, when eventually the packaged <strong>is</strong> published on tatin.dev then you most likely don't want it to depend on release candidates anymore.</p>
 <p>The function <code>ListTatinPackage</code> puts all build lists from all Tatin install folders of a given project on display, making it easy to check.</p>
-<p>The following example was created in a workspace where the project <code>APLGit2</code> was opened. Because it is the only one Cider knows that it is supposed to deal with it.</p>
+<p>The following example was created in a workspace where the project <code>APLGit2</code> was opened. Because it is the only one Cider knows about it will act on it.</p>
 <p><code>APLGit2</code> has two Tatin installation folders, one for production (<code>packages/</code>) and one for development and testing (<code>packages_dev/</code>):</p>
 <pre><code>      ]listTatinPackages
 *** C:/.../APLGit2/packages:

@@ -164,7 +164,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <p>From here on we refer to this as the <em>root of the project</em>.</p></li>
 <li>Setting the system variables <code>⎕IO</code> and <code>⎕ML</code> in the root of the project</li>
 <li>Bringing all code and variables into the root of the project</li>
-<li>Loading all Tatin packages from the Tatin installation folders defined by <code>tatinFolders</code></li>
+<li>Loading all Tatin packages from the Tatin installation folders defined by <code>dependencies</code> and <code>dependencies_dev</code></li>
 <li>Injecting a namespace <code>CiderConfig</code> into the root of the project and populating it with the contents of the configuration file as an APL array</li>
 <li>Adding a variable <code>HOME</code> to <code>CiderConfig</code> that carries a path to where the project was loaded from</li>
 <li>Executing the project-specific function noted on <code>init</code>, usually to initialize the project</li>
@@ -259,7 +259,7 @@ C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
 <h4 data-id="noPkgLoad">13.6.2. noPkgLoad</h4>
 </a>
 </div>
-<p>Defaults to 0, meaning that Cider will load Tatin packages by honoring the config file's <code>tatinFolder</code> parameter. However, there might be circumstances when you do not want packages to be loaded. This can be achieved by setting the <code>noPkgLoad</code> flag to 1.</p>
+<p>Defaults to 0, meaning that Cider will load Tatin packages by honoring the config file's <code>dependencies</code> and <code>dependencies_dev</code> parameters. However, there might be circumstances when you do not want packages to be loaded. This can be achieved by setting the <code>noPkgLoad</code> flag to 1.</p>
 <div class="h_tag">
 <a href="#quietFlag" id="quietFlag" class="autoheader_anchor">
 <h4 data-id="quietFlag">13.6.3. quietFlag</h4>

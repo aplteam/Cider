@@ -1,10 +1,10 @@
  r←Test_UC_001(stopFlag batchFlag);⎕TRAP;tempDir;parms;list;rc;msg;result;res;log
-⍝ Exercise the user command on "CloseProject" with a not fully qualified name
+⍝ Exercise the user command on "CloseProject" on a project that was loaded into a non-default "parent"
 ⍝ Should work anyway if there is just one project with that name
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
 
- #.⎕EX'Foo'
+ #.⎕EX'Goo' ⋄ 'Goo'#.⎕NS''
  tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
@@ -15,19 +15,21 @@
  parms.folder←tempDir
  parms.quietFlag←1
  parms.watch←'ns'
+ parms.parent←'#.Goo'
  (res log)←##.Cider.Cider.OpenProject parms
 
  →T.GoToTidyUp 0=≢list←##.Cider.Cider.ListOpenProjects 0
 
- (rc msg result)←∆UCMD'CloseProject Foo'
- →T.GoToTidyUp~∨/'Project name(s) must be fully qualified but are not: Foo'⍷msg
+ (rc msg result)←∆UCMD'CloseProject #.Goo.Foo'
+ msg Assert rc=0
+ →T.GoToTidyUp'Number of projects closed: 1'≢result
 
  r←T._OK
 
 ∆TidyUp:
- {}∆UCMD'CloseProject #.Foo'
- ∆LINK'Break' '#.Foo'  ⍝ We DO NOT check here because when everything is working fine then it's not linked anymore.
+ {}∆UCMD'CloseProject #.Foo.Goo'
+ ∆LINK'Break' '#.Foo.Goo'  ⍝ We DO NOT check here because when everything is working fine then it's not linked anymore.
  rc←FilesAndDirs.RmDir tempDir
  Assert 0=+/∊rc
- #.⎕EX'Foo'
+ #.⎕EX'Goo'
 ⍝Done
