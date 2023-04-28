@@ -764,11 +764,11 @@
               :If (⊂answer)∊1 2(1 2)
                   :Select answer
                   :Case 1
-                      {}⎕SE.UCMD'Open ',folder,1⊃list
+                      {}⎕SE.UCMD'Open file://',folder,1⊃list
                   :Case 2
-                      {}⎕SE.UCMD'Open ',folder,2⊃list
+                      {}⎕SE.UCMD'Open file://',folder,2⊃list
                   :Case 1 2
-                      {}{⎕SE.UCMD'Open ',⍵}¨folder∘,¨list
+                      {}{⎕SE.UCMD'Open file://',⍵}¨folder∘,¨list
                   :EndSelect
                   flag←1
               :Else

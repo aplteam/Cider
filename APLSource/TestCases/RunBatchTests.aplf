@@ -1,3 +1,0 @@
- {(rc log)}←RunBatchTests;T
- T←⎕NEW Tester2 ⎕THIS
- (rc log)←T.RunBatchTests 0

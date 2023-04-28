@@ -9,12 +9,13 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.25.0-beta-6+367'
-      ⍝ * 0.25.0 ⋄ 2023-04-23
+      r←'0.25.0+410'
+      ⍝ * 0.25.0 ⋄ 2023-04-28
       ⍝   * The property "tatinFolder" is now "dependencies" & "dependencies_dev"
       ⍝     However, when Cider comes across the old name it offers an automatic conversion
-      ⍝   * The lazy syntax for aliases ([alias) has been removed: must be [alias] now for consistency
-      ⍝   * CloseProject allows now both space and comma as separator and got much faster
+      ⍝   * The lazy syntax for aliases (`[alias`) has been removed: must be `[alias]` now for consistency
+      ⍝   * The parent of Cider's .cider/ folder has changed under Windows: it's just the home directory
+      ⍝   * `CloseProject` allows now both space and comma as separator and got much faster
       ⍝ * 0.24.1 ⋄ 2023-04-18
       ⍝   * Bug fixes
       ⍝     * The absence of .NET/.NET Core is now honoured
@@ -52,7 +53,7 @@
       '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
       '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both' 0
       p←{⍺←~parms.quietFlag ⋄ ⍺ PrintToSession ⍵}
-      parms←(p GetFolderFromAlias2)parms
+      parms←(p GetFolderFromAlias)parms
       ('Folder does not exist: ',parms.folder)Assert ##.FilesAndDirs.Exists parms.folder
       p((1+parms.importFlag)⊃'Loading' 'Importing'),' project from ',parms.folder
       parms.projectSpace←⍕parms.projectSpace
@@ -155,7 +156,8 @@
     ⍝ Temporary solution: with version 0.25.0 Cider expects "dependencies" and/or "dependencies_dev" instead of "tatinFolder".
     ⍝ This function looks for "tatinFolder", and if it is found suggests an automated conversion.
     ⍝ It expects to find either a single comma or no comma at all in "tatinFolder", otherwise it throws an error.
-    ⍝ With the introduction of version 1.0 this function can be removed  ⍝TODO⍝
+    ⍝ As a side effect it also deletes `githubUsername` from the config file which is not used anymore.
+    ⍝ With the introduction of Cider version 1.0 this function can be removed  ⍝TODO⍝
       errorFlag←0
       errMsg←''
       :If 0<config.CIDER.⎕NC'tatinFolder'
@@ -167,7 +169,6 @@
               config.CIDER.(dependencies dependencies_dev).tatin←⊂''
               folders←config.CIDER.tatinFolder
               :If (noOfCommas←','+.=folders)∊0 1
-                  ⎕TRAP←0 'S'
                   :If ','=1⍴folders
                   ⍝ This project has only development dependencies
                       config.CIDER.dependencies_dev.tatin←' '~⍨1↓folders
@@ -185,6 +186,7 @@
                   errMsg,←⊂'It has ',(⍕noOfCommas),' commas: must be zero or one.'
               :EndIf
               config.CIDER.⎕EX'tatinFolder'
+              config.CIDER.⎕EX'githubUsername'
               config Put_JSON5(##.FilesAndDirs.AddTrailingSep projectHome),'cider.config'
               p'   Modified file "cider.config" saved in ',projectHome
           :Else
@@ -828,7 +830,7 @@
     ∇ r←ListTatinPackages y;path;cfgFilename;cfg;buildFilenames;buildLists;b;tatinFolders
       :Access Public Shared
       :If '['=1⍴y
-          path←GetFolderFromAlias y
+          path←GetFolderFromAlias2 y
       :Else
           path←y
       :EndIf
@@ -1064,27 +1066,32 @@
       filename←folder,'config.json'
     ∇
 
-    ∇ folder←GetCiderConfigHomeFolder
+    ∇ folder←GetCiderConfigHomeFolder;name;flag;oldFolder;res
+    ⍝ Return the full path to (and including) .cider in the user's home directory
     ⍝ Has a side effect: creates the hosting folder in case it does not yet exist
       :Access Public Shared
-      :If 'win'≡⎕C 3↑1⊃'.'⎕WG'aplversion'
-          :If 0=≢folder←⊃⎕SH'echo %APPDATA%'
-              '%APPDATA% is undefined'⎕SIGNAL 11
-          :Else
-              folder,←'/.cider/'
-          :EndIf
-      :Else
-          folder←(⊃⎕SH'echo $HOME'),'/.cider/'
-      :EndIf
+      name←(1+'win'≡⎕C 3↑1⊃'.'⎕WG'aplversion')⊃'HOME' 'USERPROFILE'
+      folder←(2 ⎕NQ #'GetEnvironment'name),'/.cider/'
       1 ⎕MKDIR folder
+      ⍝ The remaining code checks whether there is a .cider folder in a different location
+      ⍝ and if so copies the content over.
+      ⍝ This is a temporary measure since the parent for the .cider folder was changed on
+      ⍝ Windows from APPDATA\ to the user's home directory.
+      ⍝ Nothing changed on other platform
+      :If 'win'≡⎕C 3↑##.APLTreeUtils2.GetOperatingSystem ⍬
+      :AndIf ~⎕NEXISTS folder,'config.json'
+          oldFolder←(2 ⎕NQ #'GetEnvironment' 'APPDATA'),'/.cider/'
+          res←folder∘{⍺(⎕NMOVE⍠('IfExists' 'Skip')##.FilesAndDirs.ExecNfunction)⍵}¨##.FilesAndDirs.ListFiles oldFolder
+          ##.FilesAndDirs.RmDir oldFolder
+      :EndIf
     ∇
 
-    ∇ parms←(fns GetFolderFromAlias2)parms;data;alias;msg;alias_;folder
+    ∇ parms←(fns GetFolderFromAlias)parms;data;alias;msg;alias_;folder
     ⍝ Translates the alias in "folder" (if any) into a path from a parameter namespace.\\
     ⍝ If an alias is defined it is saved, possibly by overwriting the old one.
       :If '[]'≡parms.folder[1,≢parms.folder]
           alias←parms.folder~'[]'
-          folder←GetFolderFromAlias alias
+          folder←GetFolderFromAlias2 alias
           :If 0<≢folder
               parms.folder←folder
               :If 0=≢parms.alias
@@ -1096,7 +1103,7 @@
       :EndIf
     ∇
 
-    ∇ folder←GetFolderFromAlias alias;filename;data
+    ∇ folder←GetFolderFromAlias2 alias;filename;data
     ⍝ Translates the alias in "folder" (if any) into a path.\\
     ⍝ In case the alias does not exist an empty vector is returned.\\
     ⍝ If an alias is defined it is saved, possibly by overwriting the old one.
