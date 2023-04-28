@@ -3,6 +3,10 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
 
+ :If 3501⌶0
+     r←T._NotApplicable ⋄ →0  ⍝ Only suitable when not running in Ride (trouble with the Ride browser window)
+ :EndIf
+
  stop←0
  ⎕SE.Cider.##.CommTools.Select_Choices←1 2⍴'Select document to be viewed:' 'a'
  (rc msg res)←stop ∆UCMD'Help'
