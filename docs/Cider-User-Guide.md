@@ -30,6 +30,17 @@ If Tatin is not in `⎕SE` but available in the `MyUCMDs/` folder then Cider wil
 I> Note that Tatin will check whether Cider is available, and if so cooperate with it. However, Cider is not a requirement for using Tatin.
 
 
+### Configuration
+
+Every Cider project has a configuration file called `cider.config` that is saved in the root of the project's folder.
+
+Cider may also have a global configuration file that can be used to define settings that effect all projects. It's also named `cider.config` but referred to as the _global_ Cider config file.
+
+This file, if it exists, it situated in a folder `.cider` that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be C:\Users\JohnDoe\.cider, on Linux it would be /home/JohnDoe/.cider etc.
+
+This folder does not only host the global config file, it's also the place where the file with alias definitions (`aliase.txt`) is saved and the file `cider.config.template` that is used as a template when a new project is created.
+
+
 ### CreateProject
 
 With `]Cider.CreateProject` any folder that does not yet host a file `cider.config` can be transformed into a Cider project. (You may specify the `-acceptConfig` flag to override this default behaviour and make Cider accept an already existing file `cider.config`)
@@ -67,7 +78,14 @@ We will discuss the settings in each section in detail.
 
 ##### CIDER
 
-This section contains the Cider-specific parameters.
+This section discusses the Cider-specific parameters in alphabetical order.
+
+
+###### distributionFolder
+
+Has no default. If it is not empty it is supposed to be a folder, usually relative to the root of the project. Tatin's `BuildPackage` function would use this property in order to save the resulting ZIP file in this folder in case no specific target folder was specified.
+
+If you create all your package ZIP files always in the same sub-folder of any project then you can define this in Cider's project config template file in order to make sure that it will always default to that folder name: Tatin's `BuildPackage` function, when not provided with a target folder, would check whether the project is managed by Cider and has a non-empty property `distributionFolder` defined, and if so take that as the target folder.
 
 
 ###### parent

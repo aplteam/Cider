@@ -92,23 +92,28 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Niladic function that returns the path to the <code>MyUCMDs/</code> folder.</p>
 <p>Note that this folder is created under Windows by the Dyalog installation routine, but not on other platforms.</p>
 <div class="h_tag">
-<a href="#GetCidersConfigFileContent" id="GetCidersConfigFileContent" class="autoheader_anchor">
-<h2 data-id="GetCidersConfigFileContent">9. GetCidersConfigFileContent</h2>
+<a href="#GetCiderGlobalConfigFileContent" id="GetCiderGlobalConfigFileContent" class="autoheader_anchor">
+<h2 data-id="GetCiderGlobalConfigFileContent">9. GetCiderGlobalConfigFileContent</h2>
 </a>
 </div>
-<p>Niladic function that returns the contents of the file returned by the <code>GetCidersConfigFilename</code> function as a vector of text vectors:</p>
-<pre><code>       ⍪ ⎕se.Cider.GetCidersConfigFileContent
- {
-     ExecuteAfterProjectOpen: "",
- }</code></pre>
+<p>Niladic function that returns the contents of the file returned by the <code>GetCidersConfigFilename</code> function as a namespace with variables.</p>
+<p>The file might not exist, or be empty. In either case the function returns <code>⍬</code>.</p>
+<p>For the time being the file may define <code>ExecuteAfterProjectOpen</code>.</p>
 <div class="h_tag">
-<a href="#GetCidersConfigFilename" id="GetCidersConfigFilename" class="autoheader_anchor">
-<h2 data-id="GetCidersConfigFilename">10. GetCidersConfigFilename</h2>
+<a href="#ExecuteAfterProjectOpen" id="ExecuteAfterProjectOpen" class="autoheader_anchor">
+<h3 data-id="ExecuteAfterProjectOpen">9.1. ExecuteAfterProjectOpen</h3>
 </a>
 </div>
-<p>Niladic function that returns the path to the file with Cider's own configuration file.</p>
-<pre><code>      ⎕se.Cider.GetCiderConfigFilename
-C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json</code></pre>
+<p>The user may specify a fully qualified function name, usually situated in <code>⎕SE</code>. This function will then be called after a project was opened by Cider.</p>
+<p>This can be used to, say, check the status of the project on GitLab or a similar platform, since Cider considers only GitHub, and requires the package <a href="https://github.com/aplteam/APLGit2" class="external_link" title="Link to APLGit2 on GitHub">APLGit2</a> for this.</p>
+<p>This setting defines the same function for all your Cider projects which is why it is not part of the file <code>cider.config.template</code> but defined in Cider's global config file.</p>
+<div class="h_tag">
+<a href="#GetCiderGlobalConfigFilename" id="GetCiderGlobalConfigFilename" class="autoheader_anchor">
+<h2 data-id="GetCiderGlobalConfigFilename">10. GetCiderGlobalConfigFilename</h2>
+</a>
+</div>
+<p>Niladic function that returns the path to the file with Cider's global configuration file.</p>
+<p>It's expected to be a folder <code>.cider</code> in the user's home directory on all platforms.</p>
 <div class="h_tag">
 <a href="#ListOpenProjects" id="ListOpenProjects" class="autoheader_anchor">
 <h2 data-id="ListOpenProjects">11. ListOpenProjects</h2>

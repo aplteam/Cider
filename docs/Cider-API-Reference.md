@@ -82,25 +82,28 @@ Niladic function that returns the path to the `MyUCMDs/` folder.
 Note that this folder is created under Windows by the Dyalog installation routine, but not on other platforms.
 
 
-## GetCidersConfigFileContent
+## GetCiderGlobalConfigFileContent
 
-Niladic function that returns the contents of the file returned by the `GetCidersConfigFilename` function as a vector of text vectors:
+Niladic function that returns the contents of the file returned by the `GetCidersConfigFilename` function as a namespace with variables.
 
-```
-       ⍪ ⎕se.Cider.GetCidersConfigFileContent
- {                                
-     ExecuteAfterProjectOpen: "", 
- }                                
-```
+The file might not exist, or be empty. In either case the function returns `⍬`.
 
-## GetCidersConfigFilename
+For the time being the file may define `ExecuteAfterProjectOpen`.
 
-Niladic function that returns the path to the file with Cider's own configuration file.
 
-```
-      ⎕se.Cider.GetCiderConfigFilename
-C:\Users\{⎕AN}\AppData\Roaming/.cider/config.json
-```
+### ExecuteAfterProjectOpen
+
+The user may specify a fully qualified function name, usually situated in `⎕SE`. This function will then be called after a project was opened by Cider. 
+
+This can be used to, say, check the status of the project on GitLab or a similar platform, since Cider considers only GitHub, and requires the package [APLGit2](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub") for this.
+
+This setting defines the same function for all your Cider projects which is why it is not part of the file `cider.config.template` but defined in Cider's global config file.
+
+## GetCiderGlobalConfigFilename
+
+Niladic function that returns the path to the file with Cider's global configuration file.
+
+It's expected to be a folder `.cider` in the user's home directory on all platforms.
 
 ## ListOpenProjects
 

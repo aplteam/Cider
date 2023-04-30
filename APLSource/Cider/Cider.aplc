@@ -9,7 +9,11 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.25.0+410'
+      r←'0.26.0-alpha-1+410'
+      ⍝ * 0.26.0 ⋄ 2023-04-??
+      ⍝   * New project config parameter `distributionFolder` introduced
+      ⍝   * Shared public function `GetCiderGlobalConfigFileContent` introduced
+      ⍝   * Documentation corrected regarding the global Cider config file.
       ⍝ * 0.25.0 ⋄ 2023-04-28
       ⍝   * The property "tatinFolder" is now "dependencies" & "dependencies_dev"
       ⍝     However, when Cider comes across the old name it offers an automatic conversion
@@ -706,10 +710,11 @@
     ∇
 
     ∇ {r}←ExecUserFunction config;fn;qdmx;msg
-    ⍝ Check whether the config parameter "ExecuteAfterProjectOpen" is set and execute it if it's a function.
+    ⍝ Check whether the config parameter "ExecuteAfterProjectOpen" is defined in Cider's global config file
+    ⍝ and execute it if it's a function.
       r←⍬
       msg←''
-      :If 0<≢fn←GetFunctionNameFromCiderConfigFile config
+      :If 0<≢fn←GetFunctionNameFromCiderConfigFile ⍬
           :If 1=1 1⊃⎕AT fn
               :Trap 0
                   ⍎'{}',fn,' config'
@@ -1012,7 +1017,7 @@
     ∇ filename←GetCiderAliasFilename;folder
       :Access Public Shared
       filename←''
-      folder←GetCiderConfigHomeFolder
+      folder←GetCiderGlobalConfigHomeFolder
       filename←folder,'aliase.txt'
     ∇
 
@@ -1057,16 +1062,15 @@
       :EndIf
     ∇
 
-    ∇ filename←GetCiderConfigFilename;folder
+    ∇ filename←GetCiderGlobalConfigFilename;folder
     ⍝ Returns the name of the Cider config file.
     ⍝ As a side effect it creates the file with defaults if it does not yet exist.
       :Access Public Shared
-      filename←''
-      folder←GetCiderConfigHomeFolder
+      folder←GetCiderGlobalConfigHomeFolder
       filename←folder,'config.json'
     ∇
 
-    ∇ folder←GetCiderConfigHomeFolder;name;flag;oldFolder;res
+    ∇ folder←GetCiderGlobalConfigHomeFolder;name;flag;oldFolder;res
     ⍝ Return the full path to (and including) .cider in the user's home directory
     ⍝ Has a side effect: creates the hosting folder in case it does not yet exist
       :Access Public Shared
@@ -1078,11 +1082,24 @@
       ⍝ This is a temporary measure since the parent for the .cider folder was changed on
       ⍝ Windows from APPDATA\ to the user's home directory.
       ⍝ Nothing changed on other platform
-      :If 'win'≡⎕C 3↑##.APLTreeUtils2.GetOperatingSystem ⍬
+      :If 'Win'≡3↑##.APLTreeUtils2.GetOperatingSystem ⍬
       :AndIf ~⎕NEXISTS folder,'config.json'
           oldFolder←(2 ⎕NQ #'GetEnvironment' 'APPDATA'),'/.cider/'
           res←folder∘{⍺(⎕NMOVE⍠('IfExists' 'Skip')##.FilesAndDirs.ExecNfunction)⍵}¨##.FilesAndDirs.ListFiles oldFolder
           ##.FilesAndDirs.RmDir oldFolder
+      :EndIf
+    ∇
+
+    ∇ r←GetCiderGlobalConfigFileContent;filename;json
+    ⍝ Returns a namespace with all settings (if any) in the (optional) global Cider config file.
+    ⍝ Note that the file might not exist or be empty, in which case `⍬` is returned.
+      :Access Public Shared
+      r←⍬
+      filename←GetCiderGlobalConfigFilename
+      :If ##.FilesAndDirs.IsFile filename
+          json←##.FilesAndDirs.NGET filename
+      :AndIf 0<≢json
+          r←⎕JSON⍠('Dialect' 'JSON5')⊣⊃json
       :EndIf
     ∇
 
@@ -1166,12 +1183,9 @@
 
     IntToBits←{⌽(32⍴2)⊤⍵}
 
-    ∇ functionName←GetFunctionNameFromCiderConfigFile config;filename;globalUserConfig
+    ∇ functionName←GetFunctionNameFromCiderConfigFile dummy;globalUserConfig
       functionName←''
-      filename←GetCiderConfigFilename
-      :If ##.FilesAndDirs.Exists filename
-          globalUserConfig←⎕JSON⍠('Dialect' 'JSON5')⊣⊃##.FilesAndDirs.NGET filename
-      :AndIf 0<≢globalUserConfig
+      :If ⍬≢globalUserConfig←GetCiderGlobalConfigFileContent
       :AndIf 2=globalUserConfig.⎕NC'ExecuteAfterProjectOpen'
       :AndIf 0<≢functionName←globalUserConfig.ExecuteAfterProjectOpen
           :If 3=⎕NC functionName

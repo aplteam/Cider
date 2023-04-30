@@ -54,8 +54,17 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </div>
 
 <div class="h_tag">
+<a href="#Configuration" id="Configuration" class="autoheader_anchor">
+<h3 data-id="Configuration">2.2. Configuration</h3>
+</a>
+</div>
+<p>Every Cider project has a configuration file called <code>cider.config</code> that is saved in the root of the project's folder.</p>
+<p>Cider may also have a global configuration file that can be used to define settings that effect all projects. It's also named <code>cider.config</code> but referred to as the <em>global</em> Cider config file.</p>
+<p>This file, if it exists, it situated in a folder <code>.cider</code> that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be C:\Users\JohnDoe\.cider, on Linux it would be /home/JohnDoe/.cider etc.</p>
+<p>This folder does not only host the global config file, it's also the place where the file with alias definitions (<code>aliase.txt</code>) is saved and the file <code>cider.config.template</code> that is used as a template when a new project is created.</p>
+<div class="h_tag">
 <a href="#CreateProject" id="CreateProject" class="autoheader_anchor">
-<h3 data-id="CreateProject">2.2. CreateProject</h3>
+<h3 data-id="CreateProject">2.3. CreateProject</h3>
 </a>
 </div>
 <p>With <code>]Cider.CreateProject</code> any folder that does not yet host a file <code>cider.config</code> can be transformed into a Cider project. (You may specify the <code>-acceptConfig</code> flag to override this default behaviour and make Cider accept an already existing file <code>cider.config</code>)</p>
@@ -80,7 +89,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>If the user answers this question with “No” then an error is thrown.</p>
 <div class="h_tag">
 <a href="#Configuration-parameters" id="Configuration-parameters" class="autoheader_anchor">
-<h4 data-id="Configuration-parameters">2.2.1. Configuration parameters</h4>
+<h4 data-id="Configuration-parameters">2.3.1. Configuration parameters</h4>
 </a>
 </div>
 <p>The Cider configuration file comes with four sections:</p>
@@ -93,13 +102,20 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>We will discuss the settings in each section in detail.</p>
 <div class="h_tag">
 <a href="#CIDER" id="CIDER" class="autoheader_anchor">
-<h5 data-id="CIDER">2.2.1.1. CIDER</h5>
+<h5 data-id="CIDER">2.3.1.1. CIDER</h5>
 </a>
 </div>
-<p>This section contains the Cider-specific parameters.</p>
+<p>This section discusses the Cider-specific parameters in alphabetical order.</p>
+<div class="h_tag">
+<a href="#distributionFolder" id="distributionFolder" class="autoheader_anchor">
+<h6 data-id="distributionFolder">2.3.1.1.1. distributionFolder</h6>
+</a>
+</div>
+<p>Has no default. If it is not empty it is supposed to be a folder, usually relative to the root of the project. Tatin's <code>BuildPackage</code> function would use this property in order to save the resulting ZIP file in this folder in case no specific target folder was specified.</p>
+<p>If you create all your package ZIP files always in the same sub-folder of any project then you can define this in Cider's project config template file in order to make sure that it will always default to that folder name: Tatin's <code>BuildPackage</code> function, when not provided with a target folder, would check whether the project is managed by Cider and has a non-empty property <code>distributionFolder</code> defined, and if so take that as the target folder.</p>
 <div class="h_tag">
 <a href="#parent" id="parent" class="autoheader_anchor">
-<h6 data-id="parent">2.2.1.1.1. parent</h6>
+<h6 data-id="parent">2.3.1.1.2. parent</h6>
 </a>
 </div>
 <p>Defaults to <code>#</code> but can be something like <code>⎕SE</code> or <code>#.MyNamespace1.MyNamespace2</code>.</p>
@@ -108,7 +124,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <pre><code>]Cider.OpenProject {path} -parent=#.MyProjects</code></pre>
 <div class="h_tag">
 <a href="#projectSpace" id="projectSpace" class="autoheader_anchor">
-<h6 data-id="projectSpace">2.2.1.1.2. projectSpace</h6>
+<h6 data-id="projectSpace">2.3.1.1.3. projectSpace</h6>
 </a>
 </div>
 <p>The name of a namespace that will host the project. <em>Must</em> be set by the user in the config file.</p>
@@ -116,14 +132,14 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <pre><code>]Cider.OpenProject {path} -projectspace=Foo</code></pre>
 <div class="h_tag">
 <a href="#source" id="source" class="autoheader_anchor">
-<h6 data-id="source">2.2.1.1.3. source</h6>
+<h6 data-id="source">2.3.1.1.4. source</h6>
 </a>
 </div>
 <p>Defaults to <code>APLSource</code>: a subfolder that hosts the code. That's where the code lives, relative to the project folder.</p>
 <p>This might be empty, for example when the project is just a single script (class or namespace).</p>
 <div class="h_tag">
 <a href="#dependencies" id="dependencies" class="autoheader_anchor">
-<h6 data-id="dependencies">2.2.1.1.4. dependencies</h6>
+<h6 data-id="dependencies">2.3.1.1.5. dependencies</h6>
 </a>
 </div>
 <p>This carries one sub-key: “tatin”. This is how the template config file looks like:</p>
@@ -145,7 +161,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 
 <div class="h_tag">
 <a href="#dependencies_dev" id="dependencies_dev" class="autoheader_anchor">
-<h6 data-id="dependencies_dev">2.2.1.1.5. dependencies_dev</h6>
+<h6 data-id="dependencies_dev">2.3.1.1.6. dependencies_dev</h6>
 </a>
 </div>
 <p>In principle this is the same as <code>dependencies</code>, but it regards dependencies that are only required for development and testing, not for producing the final result, be it a package or an application.</p>
@@ -156,7 +172,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>All packages in the sub-folder packages_dev/ are loaded into the sub-namespace <code>Testcases</code></p>
 <div class="h_tag">
 <a href="#init" id="init" class="autoheader_anchor">
-<h6 data-id="init">2.2.1.1.6. init</h6>
+<h6 data-id="init">2.3.1.1.7. init</h6>
 </a>
 </div>
 <p>If not empty this must be the name of a function within <code>projectSpace</code>. The function will be executed after a project was opened.</p>
@@ -168,7 +184,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </ul>
 <div class="h_tag">
 <a href="#make" id="make" class="autoheader_anchor">
-<h6 data-id="make">2.2.1.1.7. make</h6>
+<h6 data-id="make">2.3.1.1.8. make</h6>
 </a>
 </div>
 <p>Empty or an expression (relative to the project) that would create a new version of the project.</p>
@@ -179,7 +195,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>However, if the first non-white space character of <code>make</code> is a <code>]</code> its definition would just be printed to the session together with a comment because then it's obviously a user command.</p>
 <div class="h_tag">
 <a href="#project_url" id="project_url" class="autoheader_anchor">
-<h6 data-id="project_url">2.2.1.1.8. project_url</h6>
+<h6 data-id="project_url">2.3.1.1.9. project_url</h6>
 </a>
 </div>
 <p>If not empty this is expected to be a URL pointing to, say, a GitHub project. For information only.</p>
@@ -187,7 +203,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Some function of <code>APLGit2</code> must know the <code>owner</code> of a project on GitHub. Those functions will investigate project_url`: if that points to GitHub, the own is established from its contents.</p>
 <div class="h_tag">
 <a href="#tests" id="tests" class="autoheader_anchor">
-<h6 data-id="tests">2.2.1.1.9. tests</h6>
+<h6 data-id="tests">2.3.1.1.10. tests</h6>
 </a>
 </div>
 <p>Empty or an expression (relative to the project) that would execute the test cases of the project.</p>
@@ -198,7 +214,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>However, if the first non-white space character of <code>tests</code> is a <code>]</code> (making it a user command rather than a function call) its definition would just be printed to the session together with a comment because then it's obviously a user command.</p>
 <div class="h_tag">
 <a href="#githubUsername" id="githubUsername" class="autoheader_anchor">
-<h6 data-id="githubUsername">2.2.1.1.10. githubUsername</h6>
+<h6 data-id="githubUsername">2.3.1.1.11. githubUsername</h6>
 </a>
 </div>
 <p>This parameter was introduced with version 0.19.0 and removed with version 0.24.0</p>
@@ -206,7 +222,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>If a config file still carries this property it is simply ignored.</p>
 <div class="h_tag">
 <a href="#LINK" id="LINK" class="autoheader_anchor">
-<h5 data-id="LINK">2.2.1.2. LINK</h5>
+<h5 data-id="LINK">2.3.1.2. LINK</h5>
 </a>
 </div>
 <p>These are LINK parameters which are passed on to LINK when Cider brings the APL code into the WS with LINK.</p>
@@ -214,26 +230,26 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>You may add other settings like <code>caseCode</code> as well; refer to LINKs documentation for details.</p>
 <div class="h_tag">
 <a href="#arrays" id="arrays" class="autoheader_anchor">
-<h6 data-id="arrays">2.2.1.2.1. arrays</h6>
+<h6 data-id="arrays">2.3.1.2.1. arrays</h6>
 </a>
 </div>
 <p>This is a Boolean that defaults to 0.</p>
 <p>A 1 means that all variables are watched, and 0 means that Cider/Link do not care unless a variable is already saved in an <code>.apla</code> file.</p>
 <div class="h_tag">
 <a href="#beforeRead" id="beforeRead" class="autoheader_anchor">
-<h6 data-id="beforeRead">2.2.1.2.2. beforeRead</h6>
+<h6 data-id="beforeRead">2.3.1.2.2. beforeRead</h6>
 </a>
 </div>
 <p>Empty or a <em>fully qualified</em> function name.</p>
 <div class="h_tag">
 <a href="#beforeWrite" id="beforeWrite" class="autoheader_anchor">
-<h6 data-id="beforeWrite">2.2.1.2.3. beforeWrite</h6>
+<h6 data-id="beforeWrite">2.3.1.2.3. beforeWrite</h6>
 </a>
 </div>
 <p>Empty or a <em>fully qualified</em> function name.</p>
 <div class="h_tag">
 <a href="#watch" id="watch" class="autoheader_anchor">
-<h6 data-id="watch">2.2.1.2.4. watch</h6>
+<h6 data-id="watch">2.3.1.2.4. watch</h6>
 </a>
 </div>
 <p>Defaults to “both” but can be “ns” or “dir” as well.</p>
@@ -241,26 +257,26 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Note that for “both” and “dir” .NET or .NET Core is required. Under Windows this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not the default for “watch” will be “ns”.</p>
 <div class="h_tag">
 <a href="#SYSVARS" id="SYSVARS" class="autoheader_anchor">
-<h5 data-id="SYSVARS">2.2.1.3. SYSVARS</h5>
+<h5 data-id="SYSVARS">2.3.1.3. SYSVARS</h5>
 </a>
 </div>
 <p>This section allows you to define system variables. <code>⎕IO</code> and <code>⎕ML</code> should always be defined here.</p>
 <p>You may add other <code>⎕</code>-variables here like, say, <code>⎕CT</code> as “ct” etc.</p>
 <div class="h_tag">
 <a href="#io" id="io" class="autoheader_anchor">
-<h6 data-id="io">2.2.1.3.1. io</h6>
+<h6 data-id="io">2.3.1.3.1. io</h6>
 </a>
 </div>
 <p>Defaults to 1.</p>
 <div class="h_tag">
 <a href="#ml" id="ml" class="autoheader_anchor">
-<h6 data-id="ml">2.2.1.3.2. ml</h6>
+<h6 data-id="ml">2.3.1.3.2. ml</h6>
 </a>
 </div>
 <p>Defaults to 1.</p>
 <div class="h_tag">
 <a href="#USER" id="USER" class="autoheader_anchor">
-<h5 data-id="USER">2.2.1.4. USER</h5>
+<h5 data-id="USER">2.3.1.4. USER</h5>
 </a>
 </div>
 <p>This section allows you to specify your own project-specific values; its contents (if any) is ignored by Cider.</p>
@@ -274,14 +290,14 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <pre><code>#.MyProject.CiderConfig.USER.Foo</code></pre>
 <div class="h_tag">
 <a href="#OpenProject" id="OpenProject" class="autoheader_anchor">
-<h3 data-id="OpenProject">2.3. OpenProject</h3>
+<h3 data-id="OpenProject">2.4. OpenProject</h3>
 </a>
 </div>
 <p>Naturally, <code>OpenProject</code> is the most important command Cider offers. We discuss all its actions in detail.</p>
 <p>Note that the contents of the file <code>cider.config</code> directs what exactly Cider is going to do when its principal method, <code>OpenProject</code>, is executed.</p>
 <div class="h_tag">
 <a href="#1-Creating-a-project-space" id="1-Creating-a-project-space" class="autoheader_anchor">
-<h4 data-id="1-Creating-a-project-space">2.3.1. 1. Creating a project space</h4>
+<h4 data-id="1-Creating-a-project-space">2.4.1. 1. Creating a project space</h4>
 </a>
 </div>
 <p>The first step carried out by <code>]Cider.OpenProject</code> is to create a namespace with the name <code>projectSpace</code> as a child of <code>parent</code>, when <code>parent</code> defaults to <code>#</code> but may be something like <code>⎕SE</code> or <code>#.Foo.Goo</code> etc.</p>
@@ -294,7 +310,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </ul>
 <div class="h_tag">
 <a href="#2-Setting-system-variables" id="2-Setting-system-variables" class="autoheader_anchor">
-<h4 data-id="2-Setting-system-variables">2.3.2. 2. Setting system variables</h4>
+<h4 data-id="2-Setting-system-variables">2.4.2. 2. Setting system variables</h4>
 </a>
 </div>
 <p>In the next step <code>]Cider.OpenProject</code> is going to set at least two system variables defined in the config file in the <code>SYSVARS</code> section of the INI file: <code>⎕IO</code> and <code>⎕ML</code>.</p>
@@ -310,7 +326,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 
 <div class="h_tag">
 <a href="#3-Bringing-the-code-into-the-workspace" id="3-Bringing-the-code-into-the-workspace" class="autoheader_anchor">
-<h4 data-id="3-Bringing-the-code-into-the-workspace">2.3.3. 3. Bringing the code into the workspace</h4>
+<h4 data-id="3-Bringing-the-code-into-the-workspace">2.4.3. 3. Bringing the code into the workspace</h4>
 </a>
 </div>
 <p>In this step, all files with supported file extensions (See LINK's documentation for details) found in <code>source</code> and any subfolder are established in the workspace in <code>{parent}. {projectSpace}</code>.</p>
@@ -327,7 +343,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the <code>-import</code> flag.</p>
 <div class="h_tag">
 <a href="#4-Check-for-empty-package-folders" id="4-Check-for-empty-package-folders" class="autoheader_anchor">
-<h4 data-id="4-Check-for-empty-package-folders">2.3.4. 4. Check for empty package folders</h4>
+<h4 data-id="4-Check-for-empty-package-folders">2.4.4. 4. Check for empty package folders</h4>
 </a>
 </div>
 <p>Cider now checks whether any of the Tatin installation folders — as noted on the <code>dependencies</code> and <code>dependencies_dev</code> properties — is empty apart from a dependency file and a build list.</p>
@@ -342,7 +358,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>If she answers “Y” she will also be asked whether she wants to update those packages in case a later version of one of the packages mentioned in the dependency file is now available.</p>
 <div class="h_tag">
 <a href="#5-Check-for-later-packages-versions" id="5-Check-for-later-packages-versions" class="autoheader_anchor">
-<h4 data-id="5-Check-for-later-packages-versions">2.3.5. 5. Check for later packages versions</h4>
+<h4 data-id="5-Check-for-later-packages-versions">2.4.5. 5. Check for later packages versions</h4>
 </a>
 </div>
 <p>In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will only happen in case <code>importFlag</code> is 0.</p>
@@ -350,7 +366,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>If <code>]Cider.OpenProject</code> discovers later packages it will ask the user whether these packages shall be re-installed with the <code>-update</code> flag set. This will happen independently for each package installation folder.</p>
 <div class="h_tag">
 <a href="#6-Loading-Tatin-packages" id="6-Loading-Tatin-packages" class="autoheader_anchor">
-<h4 data-id="6-Loading-Tatin-packages">2.3.6. 6. Loading Tatin packages</h4>
+<h4 data-id="6-Loading-Tatin-packages">2.4.6. 6. Loading Tatin packages</h4>
 </a>
 </div>
 <p>Your application or tool might depend on one or more Tatin[<a href="#fnref1" class="footnote_link"><sup>1</sup></a>] packages. By assigning one or more comma-separated folders hosting Tatin packages to the <code>tatin</code> sub-key in <code>dependencies</code> and potentially <code>dependencies_dev</code> you can make sure that Cider will load[<a href="#fnref3" class="footnote_link"><sup>3</sup></a>] those installed packages into the root of your project or the assigned sub-namespace.</p>
@@ -358,7 +374,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>See the config properties <code>dependencies</code> and <code>dependencies_dev</code> for details on how to achieve this.</p>
 <div class="h_tag">
 <a href="#7-Injecting-a-namespace-CiderConfig" id="7-Injecting-a-namespace-CiderConfig" class="autoheader_anchor">
-<h4 data-id="7-Injecting-a-namespace-CiderConfig">2.3.7. 7. Injecting a namespace <code>CiderConfig</code></h4>
+<h4 data-id="7-Injecting-a-namespace-CiderConfig">2.4.7. 7. Injecting a namespace <code>CiderConfig</code></h4>
 </a>
 </div>
 <p>In this step <code>]Cider.OpenProject</code> injects a namespace <code>CiderConfig</code> into the project space and…</p>
@@ -368,7 +384,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </ul>
 <div class="h_tag">
 <a href="#8-Initialising-a-project" id="8-Initialising-a-project" class="autoheader_anchor">
-<h4 data-id="8-Initialising-a-project">2.3.8. 8. Initialising a project (optional)</h4>
+<h4 data-id="8-Initialising-a-project">2.4.8. 8. Initialising a project (optional)</h4>
 </a>
 </div>
 <p>Now there might well be demand for executing some code to initialise your project.</p>
@@ -381,7 +397,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </ul>
 <div class="h_tag">
 <a href="#9-Executing-user-specific-code" id="9-Executing-user-specific-code" class="autoheader_anchor">
-<h4 data-id="9-Executing-user-specific-code">2.3.9. 9. Executing user-specific code</h4>
+<h4 data-id="9-Executing-user-specific-code">2.4.9. 9. Executing user-specific code</h4>
 </a>
 </div>
 <p>Finally, you might want to execute some general code (as opposed to project-specific code) after a project was loaded. “General” means that this code is executed whenever a project (any project!) is opened.</p>
