@@ -9,9 +9,13 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.26.0-alpha-1+410'
-      ⍝ * 0.26.0 ⋄ 2023-04-??
-      ⍝   * New project config parameter `distributionFolder` introduced
+      r←'0.26.0+410'
+      ⍝ * 0.26.0 ⋄ 2023-05-02
+      ⍝   * BREAKING CHANGE: `GetCiderConfigFilename` renamed to `GetCiderGlobalConfigFilename`
+      ⍝   * BREAKING CHANGE: `GetCiderConfigHomeFolder` renamed to `GetCiderGlobalConfigHomeFolder`
+      ⍝   * Cider injects now a namespace `TatinVars` into the root of any project becoming eventually a package
+      ⍝   * New project config parameter `distributionFolder` introduced which is automatically injected
+      ⍝     into any opened Cider project
       ⍝   * Shared public function `GetCiderGlobalConfigFileContent` introduced
       ⍝   * Documentation corrected regarding the global Cider config file.
       ⍝ * 0.25.0 ⋄ 2023-04-28
@@ -95,8 +99,8 @@
       :EndIf
       config←projectSpace_.⎕NS config
       'Already opened?!'Assert~CheckForAlreadyOpened projectSpace_
+      config←parms.folder PolishProperties config
       config←CheckParameters config
-      config←parms.folder CheckForTatinFolderProperty config
       configFilename HandleSysVars config
       source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source              ⍝ For linking we are only interested in the code folder
       ('Source folder does not exist: ',parms.folder)Assert ##.FilesAndDirs.Exists parms.folder
@@ -145,6 +149,7 @@
           :EndIf
       :EndIf
       InjectConfigDataIntoProject config projectSpace_ parms.folder
+      InjectTatinVars projectSpace_ parms.folder
       {}ExecProjectInitFunction⍣(~parms.suppressInit)⊣config projectSpace_
       ExecUserFunction config
       successFlag←SUCCESS
@@ -156,14 +161,36 @@
       ⍝Done
     ∇
 
-    ∇ config←projectHome CheckForTatinFolderProperty config;buff;noOfCommas;folders;question;errorFlag;errMsg
-    ⍝ Temporary solution: with version 0.25.0 Cider expects "dependencies" and/or "dependencies_dev" instead of "tatinFolder".
+    ∇ {r}←InjectTatinVars(projectRoot folder);cfg
+    ⍝ When a package is loaded a namespace `TatinVars` is injected into the root of the package by Tatin.
+    ⍝ In case `projectSpace` is a Tatin package Cider is injecting this into the root of the project in order
+    ⍝ to make it as simple as possible for the user.
+    ⍝ Whether the project is a going to be a package is determined by looking for a file ⎕se._Tatin.Registry.CFG_Name.
+    ⍝ In case `TatinVars` as injected a ` is returned, otherwise a 0.
+    ⍝ This allows a developer working on the project to acces `TatinVars` as if it were loaded as a package.
+      r←0
+      :If ⎕NEXISTS folder,'/',⎕SE._Tatin.Registry.CFG_Name
+          cfg←⎕SE._Tatin.Registry.ReadPackageConfigFile folder
+          ⎕SE._Tatin.Client.EstablishStuffInTatinVars projectRoot cfg folder
+          r←1
+      :EndIf
+    ∇
+
+    ∇ config←projectHome PolishProperties config;buff;noOfCommas;folders;question;errorFlag;errMsg;f1;f2;f3
+    ⍝ Temporary solution for several problems:
+    ⍝ I.
+    ⍝ With version 0.25.0 Cider expects "dependencies" and/or "dependencies_dev" instead of "tatinFolder".
     ⍝ This function looks for "tatinFolder", and if it is found suggests an automated conversion.
     ⍝ It expects to find either a single comma or no comma at all in "tatinFolder", otherwise it throws an error.
-    ⍝ As a side effect it also deletes `githubUsername` from the config file which is not used anymore.
-    ⍝ With the introduction of Cider version 1.0 this function can be removed  ⍝TODO⍝
+    ⍝ II.
+    ⍝ The property `githubUsername` is deleted from the config file because is not used anymore
+    ⍝ III.
+    ⍝ With version 0.26.0 the property `distributionFolder` was introduced.
+    ⍝ If not found it is injected as an empty character vector.
+    ⍝ Note that with the introduction of Cider version 1.0 this function can be removed  ⍝TODO⍝
       errorFlag←0
       errMsg←''
+      f1←f2←f3←0
       :If 0<config.CIDER.⎕NC'tatinFolder'
           question←''
           question,←⊂'This project carries the (now deprecated) property "tatinFolder".'
@@ -184,20 +211,30 @@
                       config.CIDER.(dependencies dependencies_dev).tatin←' '~¨⍨','(≠⊆⊢)folders
                       config.CIDER.⎕EX'tatinFolder'
                   :EndIf
+                  f1←1
               :Else
                   errorFlag←1
                   errMsg,←⊂'Project carries old (now deprecated) property "tatinfolder" but with an invalid syntax:'
                   errMsg,←⊂'It has ',(⍕noOfCommas),' commas: must be zero or one.'
               :EndIf
               config.CIDER.⎕EX'tatinFolder'
-              config.CIDER.⎕EX'githubUsername'
-              config Put_JSON5(##.FilesAndDirs.AddTrailingSep projectHome),'cider.config'
-              p'   Modified file "cider.config" saved in ',projectHome
           :Else
               errorFlag←1
               errMsg,←⊂'Project carries old (now deprecated) property "tatinfolder" but user refused to convert:'
               errMsg,←⊂'The project cannot be opened.'
           :EndIf
+      :EndIf
+      :If 0<config.CIDER.⎕NC'githubUsername'
+          config.CIDER.⎕EX'githubUsername'
+          f2←1
+      :EndIf
+      :If 0=config.CIDER.⎕NC'distributionFolder'
+          config.CIDER.distributionFolder←''
+          f3←1
+      :EndIf
+      :If f1∨f2∨f3
+          config Put_JSON5(##.FilesAndDirs.AddTrailingSep projectHome),'cider.config'
+          p'   Modified file "cider.config" saved in ',projectHome
       :EndIf
       :If errorFlag
           1 p↓Frame errMsg
@@ -426,10 +463,10 @@
       r,←⊂'projectSpace'
       r,←⊂'dependencies'
       r,←⊂'dependencies_dev'
+      r,←⊂'distributionFolder'
       r,←⊂'project_url'
       r,←⊂'tests'
       r,←⊂'make'
-      r,←⊂'githubUsername'
     ∇
 
     ∇ options←ExtractLinkOptions config;C;overWrite
@@ -466,8 +503,9 @@
       list2←list~GetValidLinkParams
       bool←(list~GetValidLinkParams)∊GetValidCiderParams
       ('Invalid Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool
- ⍝TODO⍝       bool←GetValidCiderParams∊list2
- ⍝TODO⍝       ('Missing Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams)Assert∧/bool
+      list←' '~⍨¨↓config.CIDER.⎕NL 2 9
+      bool←GetValidCiderParams∊list
+      ('Missing Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams)Assert∧/bool
       p'  All fine'
     ∇
 

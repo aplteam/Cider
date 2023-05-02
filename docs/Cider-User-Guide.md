@@ -381,8 +381,15 @@ In this step `]Cider.OpenProject` injects a namespace `CiderConfig` into the pro
 * populates it with the contents of the configuration file as an APL array
 * adds a variable `HOME` that remembers the path the project was loaded from
 
+#### 8. Injecting a namespace `TatinVars`
 
-#### 8. Initialising a project (optional)
+If the project becomes eventually a package Cider injects a namespace `TatinVars` which contains exactly the same stuff as if it were loaded as a package.
+
+This allows a developer to access `TatinVars` as if it was loaded as a package while working on the project.
+
+Whether the project ends up as a package is determined by the presencse of a file `apl-package.json` in the root of the project.
+
+#### 9. Initialising a project (optional)
 
 Now there might well be demand for executing some code to initialise your project.
 
@@ -395,7 +402,7 @@ Such a function may be niladic, monadic, ambivalent or dyadic:
 * A non-niladic function receives a namespace with the project configuration as right argument 
 * An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project
 
-#### 9. Executing user-specific code
+#### 10. Executing user-specific code
 
 Finally, you might want to execute some general code (as opposed to project-specific code) after a project was loaded. "General" means that this code is executed whenever a project (any project!) is opened. 
 

@@ -8,7 +8,7 @@
 
  folder←∆GetTestPath⊃⎕SI
 
- filename←##.Cider.Cider.GetCiderConfigFilename
+ filename←##.Cider.Cider.GetCiderGlobalConfigFilename
  cfg←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
 
  was←cfg.{0=⎕NC'ExecuteAfterProjectOpen':'' ⋄ ExecuteAfterProjectOpen}⍬

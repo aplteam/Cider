@@ -1,4 +1,4 @@
-﻿:Class Cider_UC
+:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
 ⍝ 2023-03-23
@@ -602,7 +602,7 @@
     ∇ {name}←CreateConfigFile(filename name);config;globalCiderConfigFilename
     ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"
       ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
-      globalCiderConfigFilename←⎕SE.Cider.GetCiderConfigHomeFolder,'cider.config.template'
+      globalCiderConfigFilename←⎕SE.Cider.GetCiderGlobalConfigHomeFolder,'cider.config.template'
       :If 0=⎕NEXISTS globalCiderConfigFilename
           globalCiderConfigFilename(⎕NCOPY P.##.FilesAndDirs.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
       :EndIf
@@ -623,7 +623,7 @@
     ⍝ Checks whether the user has already a personal config file template.
     ⍝ If not the generic Cider config file template is copied into the user's Cider home folder,
     ⍝ Eventually the template is returned.
-      folder←⎕SE.Cider.GetCiderConfigHomeFolder
+      folder←⎕SE.Cider.GetCiderGlobalConfigHomeFolder
       filename←folder',/cider.config.template'
       :If ~##.FilesAndDirs.Exists filename
           :If 0<##.⎕NC'TatinVars'

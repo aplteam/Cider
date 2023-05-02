@@ -18,6 +18,6 @@
  R←T._OK
 
 ∆TidyUp:
- Assert ⎕SE.Cider.CloseProject'#.TEMP.myproj'
+ Assert ⎕SE.Cider.CloseProject'#.TEMP.booproj'
  #.⎕EX'TEMP'
 ⍝Done

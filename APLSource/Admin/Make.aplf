@@ -7,6 +7,7 @@
      M.FetchLaterUserCommand'Cider_UC.dyalog'cfg C('[MyUCMDs]Cider')
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.version←M.CompileVersionNumberPattern cfg
+     parms.targetPath←C.CIDER.distributionFolder
      M.RecreateFolder C.HOME,'/',C.CIDER.distributionFolder
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename

@@ -383,8 +383,16 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <li>adds a variable <code>HOME</code> that remembers the path the project was loaded from</li>
 </ul>
 <div class="h_tag">
-<a href="#8-Initialising-a-project" id="8-Initialising-a-project" class="autoheader_anchor">
-<h4 data-id="8-Initialising-a-project">2.4.8. 8. Initialising a project (optional)</h4>
+<a href="#8-Injecting-a-namespace-TatinVars" id="8-Injecting-a-namespace-TatinVars" class="autoheader_anchor">
+<h4 data-id="8-Injecting-a-namespace-TatinVars">2.4.8. 8. Injecting a namespace <code>TatinVars</code></h4>
+</a>
+</div>
+<p>If the project becomes eventually a package Cider injects a namespace <code>TatinVars</code> which contains exactly the same stuff as if it were loaded as a package.</p>
+<p>This allows a developer to access <code>TatinVars</code> as if it was loaded as a package while working on the project.</p>
+<p>Whether the project ends up as a package is determined by the presencse of a file <code>apl-package.json</code> in the root of the project.</p>
+<div class="h_tag">
+<a href="#9-Initialising-a-project" id="9-Initialising-a-project" class="autoheader_anchor">
+<h4 data-id="9-Initialising-a-project">2.4.9. 9. Initialising a project (optional)</h4>
 </a>
 </div>
 <p>Now there might well be demand for executing some code to initialise your project.</p>
@@ -396,8 +404,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <li>An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project</li>
 </ul>
 <div class="h_tag">
-<a href="#9-Executing-user-specific-code" id="9-Executing-user-specific-code" class="autoheader_anchor">
-<h4 data-id="9-Executing-user-specific-code">2.4.9. 9. Executing user-specific code</h4>
+<a href="#10-Executing-user-specific-code" id="10-Executing-user-specific-code" class="autoheader_anchor">
+<h4 data-id="10-Executing-user-specific-code">2.4.10. 10. Executing user-specific code</h4>
 </a>
 </div>
 <p>Finally, you might want to execute some general code (as opposed to project-specific code) after a project was loaded. “General” means that this code is executed whenever a project (any project!) is opened.</p>

@@ -19,5 +19,5 @@
   source: "APLSource/Cider/",
   tags: "project-management",
   userCommandScript: "APLSource/Cider_UC.dyalog",
-  version: "0.26.0+422",
+  version: "0.26.0+431",
 }

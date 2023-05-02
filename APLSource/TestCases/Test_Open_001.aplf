@@ -1,4 +1,4 @@
- R←Test_Open_001(stopFlag batchFlag);⎕TRAP;folder;parms;rc;success;log;res
+ R←Test_Open_001(stopFlag batchFlag);⎕TRAP;folder;parms;rc;success;log;res;list;msg
 ⍝ Open a simple project without providing any parameter but the mandatory folder
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -15,7 +15,11 @@
 
  →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3
- →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP.⎕NL(⍳16)~3)~⊂'CiderConfig'
+ list←' '~¨⍨↓#.TEMP.⎕NL(⍳16)~3
+ →T.GoToTidyUp 0≠≢list~'CiderConfig' 'TatinVars'
+ →T.GoToTidyUp 9≠#.TEMP.⎕NC'CiderConfig'
+ →T.GoToTidyUp 9≠#.TEMP.⎕NC'TatinVars'
+ →T.GoToTidyUp≢/FilesAndDirs.EnforceSlash¨folder #.TEMP.TatinVars.HOME
 
  R←T._OK
 
