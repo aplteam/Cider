@@ -328,7 +328,7 @@
           '⍵ must not contain references'Assert 0=≢y.⎕NL 9
           (b{0=+/b:'' ⋄ 'Invalid parameter: ',⊃{⍺,',',⍵}/⍺/⍵}l)Assert 0=+/b←~(l←' '~⍨¨↓y.⎕NL 2)∊' '~⍨¨↓parms.⎕NL 2
           :If 0<≢list←' '~⍨¨↓y.⎕NL 2
-              parms⍎¨list{' '=1↑0⍴⍵:⍺,'←''',⍵,'''' ⋄ ⍵≡⍬:⍺,'←⍬' ⋄ ⍺,'←',⍕⍵}¨y.{⍎⍵}¨list
+              parms⍎¨list{' '=1↑0⍴⍵:⍺,'←,''',⍵,'''' ⋄ ⍵≡⍬:⍺,'←⍬' ⋄ ⍺,'←',⍕⍵}¨y.{⍎⍵}¨list
           :EndIf
       :EndIf
     ∇
