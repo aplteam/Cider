@@ -9,7 +9,9 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.26.0+410'
+      r←'0.26.1+410'         
+      ⍝ * 0.26.1 ⋄ 2023-05-??
+      ⍝   * Help page for CreateProject corrected and enhanced
       ⍝ * 0.26.0 ⋄ 2023-05-02
       ⍝   * BREAKING CHANGE: `GetCiderConfigFilename` renamed to `GetCiderGlobalConfigFilename`
       ⍝   * BREAKING CHANGE: `GetCiderConfigHomeFolder` renamed to `GetCiderGlobalConfigHomeFolder`
