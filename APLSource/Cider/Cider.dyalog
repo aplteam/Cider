@@ -9,8 +9,11 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.26.1+410'         
-      ⍝ * 0.26.1 ⋄ 2023-05-??
+      r←'0.26.2+410'
+      ⍝ * 0.26.2 ⋄ 2023-05-??
+      ⍝   * Internal fix in `CheckTatinFoldersForLaterVersions`
+      ⍝ * 0.26.1 ⋄ 2023-05-06
+      ⍝   * Bug fix regarding the handling of dependencies.tatin and dependencies_dev.tatin
       ⍝   * Help page for CreateProject corrected and enhanced
       ⍝ * 0.26.0 ⋄ 2023-05-02
       ⍝   * BREAKING CHANGE: `GetCiderConfigFilename` renamed to `GetCiderGlobalConfigFilename`
@@ -292,7 +295,7 @@
     ∇
 
     ∇ r←name GetDependencies config;ref
-    ⍝ Use this to return the content of "tatin" in either "dependencies" or "dependencies_dev" (defibed by "name")
+    ⍝ Use this to return the content of "tatin" in either "dependencies" or "dependencies_dev" (defined by "name")
     ⍝ but an empty vector in case the "tatin" sub-key does not exist
       :Access Public Shared
       r←''
@@ -595,7 +598,7 @@
           :If checkFlag
               report←⍬
               1 ⎕SE._Tatin.Client.EstablishRumbaClients ⍬
-              :If 0<≢report←report CheckTatinFoldersForLaterVersions folders
+              :If 0<≢report←report CheckTatinFoldersForLaterVersions parms folders
               :AndIf 0=+/⊃,/4⌷[2]¨report
                   p'   No later versions found '
                   :If 0<≢buff←(⊂'https://tatin.dev/')~⍨⊃,/3⌷[2]¨report
@@ -611,7 +614,7 @@
       :EndIf
     ∇
 
-    ∇ report←report CheckTatinFoldersForLaterVersions folders;folder;folder_;qdmx;msg
+    ∇ report←report CheckTatinFoldersForLaterVersions (parms folders);folder;folder_;qdmx;msg
     ⍝ Loop through all Tatin install folders
       :For folder :In folders
           folder_←⊃'='(≠⊆⊢)folder
@@ -820,7 +823,6 @@
               :If CheckJsonSyntax ns.cider_config
                   data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
               :AndIf PerformConfigChecks data
-                  ∘∘∘  ⍝TODO⍝  ↓↓↓↓ Wrong?! Must write "data"!
                   (⊂ns.cider_config)⎕NPUT⍠('NEOL' 2)⊣filename 1
                   r←flag←1
               :Else
@@ -1272,23 +1274,24 @@
       :EndIf
     ∇
 
-    ∇ successFlag←PerformConfigChecks config;namespace;path;tatinFolders
-      successFlag←FAILURE
-      tatinFolders←⊃{⍺,',',⍵}/'dependencies_dev' 'dependencies_dev'GetDependencies¨⊂config
-      :If 0=≢tatinFolders
-          successFlag←SUCCESS
-      :ElseIf '='∊tatinFolders
-          :If 1<'='+.=tatinFolders
-              successFlag←SUCCESS
+    ∇ successFlag←PerformConfigChecks config;namespace;path;tatinFolders;tatinFolder
+      successFlag←⍬
+      tatinFolders←('dependencies' 'dependencies_dev'GetDependencies¨⊂config)~⊂''
+      :For tatinFolder :In tatinFolders
+          :If '='∊tatinFolder
+              :If 1<'='+.=tatinFolder
+                  successFlag,←SUCCESS
+              :Else
+                  (path namespace)←'='(≠⊆⊢)tatinFolder
+                  successFlag,←(1+0=(⎕NS'').{⎕NC ⍵}namespace)⊃FAILURE SUCCESS
+              :EndIf
+          :ElseIf ~','∊tatinFolder
+              successFlag,←SUCCESS
           :Else
-              (path namespace)←'='(≠⊆⊢)tatinFolders
-              successFlag←(1+0=(⎕NS'').{⎕NC ⍵}namespace)⊃FAILURE SUCCESS
+              ⍝ More than one is invalid
           :EndIf
-      :ElseIf ~','∊tatinFolders
-          successFlag←SUCCESS
-      :Else
-          ⍝ More than one but nothing assigned, that's invalid
-      :EndIf
+      :EndFor
+      successFlag←∧/successFlag
     ∇
 
     ∇ {changeFlag}←MassageConfig filename;config

@@ -1,4 +1,4 @@
-:Class Cider_UC
+﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
 ⍝ 2023-03-23
@@ -388,12 +388,14 @@
           :Case ⎕C'CreateProject'
               r,←⊂'Requires a path to a folder ("source") that is about to become a project.'
               r,←⊂''
-              r,←⊂'One might also specify a namespace. Then the namespace is Linked to "source",'
-              r,←⊂'and a namespace CiderConfig is injected into the namespace, holding configuration data.'
+              r,←⊂'You might also specify a namespace. If no namespace is provided then the name of the namespace'
+              r,←⊂'is derived from the path. If the namespace does not yet exist it will be created.'
+              r,←⊂'The namespace will be LINKed to "source", and a namespace CiderConfig, holding the configuration'
+              r,←⊂'data, will be injected into the namespace.'
+              r,←⊂'For a root project (the whole of #, NOT recommended) you must specify # as 2nd argument.'
               r,←⊂''
               r,←⊂' * Creates a file "',configFilename,'" in that folder'
-              r,←⊂' * Lets the user edit that file and makes sure that all mandatory settings are done and'
-              r,←⊂'   also that those are correct'
+              r,←⊂' * Lets the user edit that file and makes sure that all mandatory settings are specified correctly'
               r,←⊂' * In case an alias is specified the alias is saved'
               r,←⊂' * Finally it attempts to open the new project'
               r,←⊂''
