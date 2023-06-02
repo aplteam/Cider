@@ -33,15 +33,19 @@ I> Note that Tatin will check whether Cider is available, and if so cooperate wi
 ### Installation
 To install Cider, issue this command:
 
-      ]Tatin.InstallPackages [tatin]Cider [MyUCMDs]
+```
+]Tatin.InstallPackages [tatin]Cider [MyUCMDs]
+```
 
 When a new instance of Dyalog is started ]Cider will be available. For an instance that was already running when Cider was installed execute ]UReset.
 
 #### Upgrading Cider
 You can upgrade Cider to the latest version by issuing the following command:
 
-      ]Tatin.ReInstallDependencies [MyUCMDs]/Cider
-
+```
+]Tatin.ReInstallDependencies [MyUCMDs]/Cider
+```
+    
 Either issue `]UReset` or restart Dyalog to start using the new version.
 
 ### Configuration
