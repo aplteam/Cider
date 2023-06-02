@@ -16,11 +16,11 @@
       ⍝     * An attempt to open a project "foo" when there is alreday a class "foo" was doomed.
       ⍝       Similarly, when an object "foo" already exists but is not a namespace, class or interface it failed.
       ⍝     * Documentation improved regarding installing and updating Cider
-      ⍝ * 0.27.0 ⋄ 2023-05-17
-      ⍝   * `]ListTatinPackages` now marks all URLs that do not point to https://tati.dev
+      ⍝ * 0.27.0 ⋄ 2023-05-17 (not published
+      ⍝   * `]ListTatinPackages` now marks all URLs that do not point to https://tatin.dev
       ⍝   * `]CIDER.CloseProject` now offers to delete project namespace(s) from the workspace in case not
       ⍝     all projects are closed.
-      ⍝   * Syntax change: an alias is only recognized with an openeing AND a closing square bracket as in [foo]
+      ⍝   * Syntax change: an alias is only recognized with an openeing AND a closing square bracket as in `[foo]`
       ⍝   * Internal fix in `CheckTatinFoldersForLaterVersions`
       ⍝ * 0.26.1 ⋄ 2023-05-06
       ⍝   * Bug fix regarding the handling of dependencies.tatin and dependencies_dev.tatin
