@@ -9,8 +9,18 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.26.2+410'
-      ⍝ * 0.26.2 ⋄ 2023-05-??
+      r←'0.27.1+410'
+      ⍝ * 0.27.1 ⋄ 2023-06-02
+      ⍝   * Bug fixes
+      ⍝     * `CloseProject` produced an error when the question "Do you wish to )CLEAR the workspace?" was negated
+      ⍝     * An attempt to open a project "foo" when there is alreday a class "foo" was doomed.
+      ⍝       Similarly, when an object "foo" already exists but is not a namespace, class or interface it failed.
+      ⍝     * Documentation improved regarding installing and updating Cider
+      ⍝ * 0.27.0 ⋄ 2023-05-17
+      ⍝   * `]ListTatinPackages` now marks all URLs that do not point to https://tati.dev
+      ⍝   * `]CIDER.CloseProject` now offers to delete project namespace(s) from the workspace in case not
+      ⍝     all projects are closed.
+      ⍝   * Syntax change: an alias is only recognized with an openeing AND a closing square bracket as in [foo]
       ⍝   * Internal fix in `CheckTatinFoldersForLaterVersions`
       ⍝ * 0.26.1 ⋄ 2023-05-06
       ⍝   * Bug fix regarding the handling of dependencies.tatin and dependencies_dev.tatin
@@ -114,7 +124,7 @@
           config.LINK.watch←linkOptions.watch←parms.watch
       :EndIf
       p'Bringing in the source code...'
-      CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
+      projectSpace_←CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
       :If parms.importFlag
           res←linkOptions ⎕SE.Link.Import projectSpace_ source                          ⍝ Get the code into the WS
           dmx←⎕DMX
@@ -419,7 +429,7 @@
       :Else
           aliasDefs←P.GetAliasFileContent
           path←Args._1
-          :If (⊂,path)∊,¨'[' '[?' '[?]'
+          :If path≡'[?]'
               :If 0=≢path←SelectFromAliases aliasDefs
                   :Return
               :EndIf
@@ -614,7 +624,7 @@
       :EndIf
     ∇
 
-    ∇ report←report CheckTatinFoldersForLaterVersions (parms folders);folder;folder_;qdmx;msg
+    ∇ report←report CheckTatinFoldersForLaterVersions(parms folders);folder;folder_;qdmx;msg
     ⍝ Loop through all Tatin install folders
       :For folder :In folders
           folder_←⊃'='(≠⊆⊢)folder
@@ -876,7 +886,7 @@
 
     ∇ r←ListTatinPackages y;path;cfgFilename;cfg;buildFilenames;buildLists;b;tatinFolders
       :Access Public Shared
-      :If '['=1⍴y
+      :If '[]'≡y[1,≢y]
           path←GetFolderFromAlias2 y
       :Else
           path←y
@@ -897,9 +907,11 @@
           'No directory noted on parameter "dependencies/dependencies_dev" found'Assert∨/b
           buildLists←{⎕JSON⍠('Dialect' 'JSON5')⊣⊃##.FilesAndDirs.NGET ⍵}¨buildFilenames
           r←⍉∘↑¨(⊂¨' ',¨¨buildLists.packageID),¨buildLists.(principal url)
-          r←(⊂' Package-ID' 'Principal' 'URL')⍪¨(⊂'' '' '')⍪¨r
-          (2⌷¨r)←(⊂' ' '' ''),¨¨({(¯1 0 0)+¨⊃¨((⌈⌿⍴¨,¨⍵))}¨r)⍴¨¨'-'
-          r←⊃⍪/((⊂¨'*** '∘,¨(⊂path,'/'),¨tatinFolders),¨⊂'' '')⍪¨r
+          r←{⍵,'? '[1+'https://tatin.dev/'∘≡¨⍵[;3]]}¨r
+          r←(⊂' Package-ID' 'Principal' 'URL' '')⍪¨(⊂'' '' '' '')⍪¨r
+          (2⌷¨r)←(⊂' ' '' '' ''),¨¨({(¯1 0 0 0)+¨⊃¨((⌈⌿⍴¨,¨⍵))}¨r)⍴¨¨'-'
+          r←{w←⍵ ⋄ w[2;4]←' ' ⋄ w}¨r
+          r←⊃⍪/((⊂¨'*** '∘,¨(⊂path,'/'),¨tatinFolders),¨⊂'' '' '')⍪¨r
       :EndIf
     ∇
 
@@ -1066,7 +1078,7 @@
     ∇ r←RunTests path;configFilename;config
       :Access Public Shared
       r←''
-      :If '['=1⍴path
+      :If '[]'≡path[1,≢path]
           path←GetFolderFromAlias path
       :EndIf
       configFilename←path,'/cider.config'
@@ -1086,7 +1098,7 @@
       :Access Public Shared
       r←''
       p←{⍺←~parms.quietFlag ⋄ ⍺ PrintToSession ⍵}
-      :If '['=1⍴path
+      :If '[]'≡path[1,≢path]
           path←GetFolderFromAlias path
       :EndIf
       configFilename←path,'/cider.config'
@@ -1314,35 +1326,40 @@
       :EndIf
     ∇
 
-    ∇ {r}←CheckTargetNamespaceAndLinkFolder(ref parms source);nsIsEmpty;folderIsEmpty
-    ⍝ 1. In case the namespace and the folder are both empty no action is taken
-    ⍝ 2. In case only the namespace is empty no action is taken
-    ⍝ 3. In case only the folder is empty no action is taken
-    ⍝ 4. In case neither the namespace nor the folder are empty the user is asked whether
-    ⍝    she wants the namespace to be emptied; if not an error is thrown.
+    ∇ ref←CheckTargetNamespaceAndLinkFolder(ref parms source);nsIsEmpty;folderIsEmpty
+    ⍝ 1. In case `ref` does not point to a namespace or a script but the name is already taken
+    ⍝ 2. In case the namespace `ref` and the folder are both empty no action is taken
+    ⍝ 3. In case only the namespace `ref` is empty no action is taken
+    ⍝ 4. In case only the folder is empty no action is taken
+    ⍝ 5. In case neither the namespace `ref` nor the folder are empty the user is asked
+    ⍝    whether she wants the namespace to be recreated; if not an error is thrown.
     ⍝ When `quietFlag` is set however then either the namepace or the folder or both must
     ⍝ be empty, otherwise an error is thrown.
-      r←0
-      nsIsEmpty←0=≢' '~¨⍨↓ref.⎕NL⍳16
-      :If 0=##.FilesAndDirs.Exists parms.folder,'/',source
-          folderIsEmpty←1
-      :Else
-          folderIsEmpty←0=≢⊃⎕NINFO⍠('Wildcard' 1)⊣parms.folder,'/',source,'/*'
-      :EndIf
-      :If nsIsEmpty∧~folderIsEmpty
-      :OrIf folderIsEmpty∧~nsIsEmpty
-      :OrIf folderIsEmpty∧nsIsEmpty
-          :Return
-      :EndIf
-      :If parms.quietFlag
-          ⍝ With quietFlag on there is nothing we can do but throw an error
-          'Both the target namespace and the source folder are not empty'Assert 0
-      :Else
-          :If YesOrNo'Target namespace "',(⍕ref),'" is not empty. Delete contents?'
-              ref.⎕EX ref.⎕NL⍳16
+      :If (⎕NC⊂⍕ref)∊9.1 9.4 9.5
+          nsIsEmpty←0=≢' '~¨⍨↓ref.⎕NL⍳16
+          :If 0=##.FilesAndDirs.Exists parms.folder,'/',source
+              folderIsEmpty←1
           :Else
-              'Both the target namespace and the source folder are not empty'Assert 0
+              folderIsEmpty←0=≢⊃⎕NINFO⍠('Wildcard' 1)⊣parms.folder,'/',source,'/*'
           :EndIf
+          :If nsIsEmpty∧~folderIsEmpty
+          :OrIf folderIsEmpty∧~nsIsEmpty
+          :OrIf folderIsEmpty∧nsIsEmpty
+              :Return
+          :EndIf
+          :If parms.quietFlag
+          ⍝ With quietFlag being true there is nothing we can do but throw an error
+              'Both the target and the source folder are not empty'Assert 0
+          :Else
+              :If YesOrNo'Target "',(⍕ref),'" is not empty - recreate?'
+                  ⎕EX⍕ref                                 ⍝ It might be a class, so we first delete it...
+                  ref←⍎(⍕ref)({⍎⍵↑⍨¯1+⍵⍳'.'}⍕ref).⎕NS''   ⍝ ... and then we re-create it
+              :Else
+                  'Both the target and the source folder are not empty'Assert 0
+              :EndIf
+          :EndIf
+      :Else
+          ('The name "',(⍕ref),'" is already in use')Assert 0
       :EndIf
     ∇
 
