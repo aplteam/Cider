@@ -30,6 +30,20 @@ If Tatin is not in `⎕SE` but available in the `MyUCMDs/` folder then Cider wil
 I> Note that Tatin will check whether Cider is available, and if so cooperate with it. However, Cider is not a requirement for using Tatin.
 
 
+### Installation
+To install Cider, issue this command:
+
+      ]Tatin.InstallPackages [tatin]Cider [MyUCMDs]
+
+When a new instance of Dyalog is started ]Cider will be available. For an instance that was already running when Cider was installed execute ]UReset.
+
+#### Upgrading Cider
+You can upgrade Cider to the latest version by issuing the following command:
+
+      ]Tatin.ReInstallDependencies [MyUCMDs]/Cider
+
+Either issue `]UReset` or restart Dyalog to start using the new version.
+
 ### Configuration
 
 Every Cider project has a configuration file called `cider.config` that is saved in the root of the project's folder.
