@@ -43,7 +43,11 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h2 data-id="CloseProject">2. CloseProject</h2>
 </a>
 </div>
-<p>There is no API equivalent for the user command <code>]Cider.CloseProject</code>. Use <code>⎕SE.Link.Break</code> instead.</p>
+<p>Takes one ore more projects and closes them (read: breaks the link).</p>
+<p>The right argument must be either a simple character vector or a nested vector of character vectors.</p>
+<p>The projects can be specified as fully qualified namespace names, as aliase or as project paths, or a mixture of those.</p>
+<p>The optional left argument is relevant only for test cases.</p>
+<p>Returns the number of projects closed.</p>
 <div class="h_tag">
 <a href="#CreateOpenParms" id="CreateOpenParms" class="autoheader_anchor">
 <h2 data-id="CreateOpenParms">3. CreateOpenParms</h2>

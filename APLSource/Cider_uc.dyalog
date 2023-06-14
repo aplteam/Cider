@@ -413,20 +413,21 @@
               r,←⊂'               being interrogated by setting the -quiet flag. Mainly useful for test cases.'
               r,←⊂'Note that the alias is not case sensitive'
           :Case ⎕C'CloseProject'
-              r,←⊂'Breaks the Link between one or more projects and their assoicated files on disk.'
+              r,←⊂'Breaks the Link between one or more projects and their associated files on disk.'
               r,←⊂''
               r,←⊂'You may specify one of:'
-              r,←⊂' * One or more projects via a fully qualified namespace name'
-              r,←⊂' * One or more projects via an [alias]'
-              r,←⊂' * A mixture of the two'
-              r,←⊂' * Nothing; equivalent to -all but the user will be asked for confirmation'
-              r,←⊂' * The -all flag, which closes all projects without further ado'
+              r,←⊂' 1. One or more projects via a fully qualified namespace name'
+              r,←⊂' 2. One or more projects via an [alias]'
+              r,←⊂' 3. One or more projects via project path(s)'
+              r,←⊂' 4. A mixture of 1, 2 and 3'
+              r,←⊂' 5. Nothing; if only one project is open it will be closed.'
+              r,←⊂'    If multiple projects are opened a list will be presented to the user'
+              r,←⊂' 6. The -all flag, which closes all projects without further ado'
               r,←⊂''
               r,←⊂'Multiple projects must be separated by spaces or by commas.'
               r,←⊂''
-              r,←⊂'Result:'
               r,←⊂' * In case a particular project was specified a Boolean is reported, 1 indicating success'
-              r,←⊂' * If all projects are closed all names and theirs paths are reported'
+              r,←⊂' * Otherwise the closed projects are reported in detail'
           :Case ⎕C'ViewConfig'
               r,←⊂'Puts the config file of a project on display.'
               r,←⊂'By specifying the -edit flag the user might edit the file rather then just viewing it.'
@@ -664,7 +665,7 @@
     ∇
 
 
-    ∇ r←CloseProject Args;list;bool;row;invalid;q;noop;report;projectID;buff
+    ∇ r←CloseProject Args;list;bool;row;invalid;noop;report;projectID;buff;ind
       r←''
       report←1
       :If 0=≢Args.Arguments
@@ -678,12 +679,12 @@
                   :Else
                       r←'Cancelled by user' ⋄ →0
                   :EndIf
-              :ElseIf Args.all
-                  q←'Currently there ',((1+1<noop)⊃'is one'('are ',⍕noop)),' project',((1<noop)/'s'),' opened - wanna close ',(1+1<noop)⊃'it?' 'all of them?'
-              :OrIf YesOrNo q
-                  r←+/P.CloseProject ⍬
-                  'Something went wrong'Assert r≡≢list
-                  r←1↓∊(⎕UCS 13),¨↓⎕FMT list
+              :Else
+                  :If 0<≢ind←'Select Cider project(s) to be closed' 1 Select list[;1]
+                      r←+/P.CloseProject list[ind;1]
+                      'Something went wrong'Assert r=≢ind
+                      r←1↓∊(⎕UCS 13),¨↓⎕FMT list[ind;]
+                  :EndIf
               :EndIf
           :EndIf
       :Else

@@ -9,18 +9,22 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.27.1+410'
+      r←'0.28.0+410'
+      ⍝ * 0.28.0 ⋄ 2023-06-14
+      ⍝   * `]CloseProjects` now presents a list of open projects if no argument is provided and there are 
+      ⍝     multiple projects currently open
+      ⍝   * `CloseProjects` now accepts multiple projects as argument
       ⍝ * 0.27.1 ⋄ 2023-06-02
       ⍝   * Bug fixes
       ⍝     * `CloseProject` produced an error when the question "Do you wish to )CLEAR the workspace?" was negated
       ⍝     * An attempt to open a project "foo" when there is alreday a class "foo" was doomed.
       ⍝       Similarly, when an object "foo" already exists but is not a namespace, class or interface it failed.
       ⍝     * Documentation improved regarding installing and updating Cider
-      ⍝ * 0.27.0 ⋄ 2023-05-17 (not published
-      ⍝   * `]ListTatinPackages` now marks all URLs that do not point to https://tatin.dev
+      ⍝ * 0.27.0 ⋄ 2023-05-17
+      ⍝   * `]ListTatinPackages` now marks all URLs that do not point to https://tati.dev
       ⍝   * `]CIDER.CloseProject` now offers to delete project namespace(s) from the workspace in case not
       ⍝     all projects are closed.
-      ⍝   * Syntax change: an alias is only recognized with an openeing AND a closing square bracket as in `[foo]`
+      ⍝   * Syntax change: an alias is only recognized with an openeing AND a closing square bracket as in [foo]
       ⍝   * Internal fix in `CheckTatinFoldersForLaterVersions`
       ⍝ * 0.26.1 ⋄ 2023-05-06
       ⍝   * Bug fix regarding the handling of dependencies.tatin and dependencies_dev.tatin
@@ -33,24 +37,6 @@
       ⍝     into any opened Cider project
       ⍝   * Shared public function `GetCiderGlobalConfigFileContent` introduced
       ⍝   * Documentation corrected regarding the global Cider config file.
-      ⍝ * 0.25.0 ⋄ 2023-04-28
-      ⍝   * The property "tatinFolder" is now "dependencies" & "dependencies_dev"
-      ⍝     However, when Cider comes across the old name it offers an automatic conversion
-      ⍝   * The lazy syntax for aliases (`[alias`) has been removed: must be `[alias]` now for consistency
-      ⍝   * The parent of Cider's .cider/ folder has changed under Windows: it's just the home directory
-      ⍝   * `CloseProject` allows now both space and comma as separator and got much faster
-      ⍝ * 0.24.1 ⋄ 2023-04-18
-      ⍝   * Bug fixes
-      ⍝     * The absence of .NET/.NET Core is now honoured
-      ⍝     * Creating a new config file worked under Windows only (#23)
-      ⍝ * 0.24.0 ⋄ 2023-04-03
-      ⍝   * Function `Remove_githubUsername` added
-      ⍝   * `githubUsername` removed from the Cider config template file
-      ⍝   * Two public shared functions added: `ReadProjectConfigFile` and `WriteProjectConfigFile`
-      ⍝   * Bug fixes
-      ⍝     * When the confirmation regarding closing a project is answered with a "no" Cider should have
-      ⍝       responded with "Cancelled by user" but did not.
-      ⍝     * After the conversion into a package Cider would not find its config template file any more
     ∇
 
     :Field Private Shared ReadOnly    FAILURE←0
@@ -943,37 +929,40 @@
       :EndIf
     ∇
 
-    ∇ r←{list}CloseProject y;list;project;bool;ind;res
+    ∇ r←{list}CloseProject projects;list;project;ind;res
     ⍝ Simply breaks the Link between a project and its folder on disk.
     ⍝ In case ⍵ is empty ALL projects are closed.
-    ⍝ `y` may be one of:
-    ⍝ * Empty vector (=close all)
-    ⍝ * A projectName like `#.Foo`
-    ⍝ * An alias like `[my-alias]`\\
+    ⍝ `projects` may be one of:
+    ⍝ 1. Empty vector (=close all)
+    ⍝ 2. One or more projectName like `#.Foo`
+    ⍝ 3. One or more alias names like `[my-alias]`
+    ⍝ 4. One or more paths of currently open projects
+    ⍝ 5. A mixture of 2, 3 and 4
     ⍝ Returns the number of projects closed.
       :Access Public Shared
       r←0
       list←{0=⎕NC ⍵:ListOpenProjects 1 ⋄ ⍎⍵}'list'
       :If 0<≢list
-          :If ∧/'[]'∊y
-              :If 0=+/bool←list[;4]≡¨⊂⎕C y~'[]'
-                  :Return
-              :Else
-                  project←⊃(list[;4]≡¨⊂⎕C y~'[]')⌿list[;1]
-              :EndIf
-          :Else
-              project←y
-          :EndIf
-          ind←(⎕C list[;1])⍳⊂⎕C project
-          :If ind>≢list
-              ind←(##.FilesAndDirs.NormalizePath list[;2])⍳⊂##.FilesAndDirs.NormalizePath project
-          :EndIf
-          :If (≢list)≥ind
-              res←⎕SE.Link.Break 1⊃list[ind;]
-              r←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
-          :ElseIf 0=≢⍕y
+          :If 0=≢projects
               res←{⎕SE.Link.Break ⍵}¨list
-              r←{'Unlinked: '{⍺≡(≢⍺)↑⍵}⍵}¨res[;1]
+              r←+/{'Unlinked: '{⍺≡(≢⍺)↑⍵}⍵}¨res[;1]
+          :Else
+              list[;2]←##.FilesAndDirs.NormalizePath list[;2]
+              projects←⊆projects
+              :For project :In projects
+                  :If ∧/'[]'∊project
+                      ind←list[;4]⍳⊂⎕C project~'[]'
+                  :Else
+                      ind←(⎕C list[;1])⍳⊂⎕C project
+                  :EndIf
+                  :If ind>≢list
+                      ind←list[;2]⍳⊂##.FilesAndDirs.NormalizePath project
+                  :EndIf
+                  :If (≢list)≥ind
+                      res←⎕SE.Link.Break 1⊃list[ind;]
+                      r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
+                  :EndIf
+              :EndFor
           :EndIf
       :EndIf
     ∇

@@ -32,7 +32,15 @@ Returns an empty vector in case of success and an error message otherwise.
 
 ## CloseProject
 
-There is no API equivalent for the user command `]Cider.CloseProject`. Use `⎕SE.Link.Break` instead.
+Takes one ore more projects and closes them (read: breaks the link).
+
+The right argument must be either a simple character vector or a nested vector of character vectors. 
+
+The projects can be specified as fully qualified namespace names, as aliase or as project paths, or a mixture of those.
+
+The optional left argument is relevant only for test cases.
+
+Returns the number of projects closed.
 
 ## CreateOpenParms
 

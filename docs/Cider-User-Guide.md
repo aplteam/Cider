@@ -23,21 +23,39 @@ I> Note that in this document names stemming from the Cider configuration file a
 
 ### Requirements
 
-Cider relies on the [Tatin packet manager](https://github.com/aplteam/Tatin "Link to Tatin on GitHub") because it is a Tatin package. With version 19.0 and later Tatin will be available in `⎕SE` right from the start. With earlier versions (18.0 and 18.2) it's up to the user to take care of that.
+#### APL Version
+
+The first version you can use Cider with is 18.0. This is because Cider is a Tatin package, and Tatin runs under 18.0 or later.
+
+#### Tatin
+
+Cider relies on the [Tatin package manager](https://github.com/aplteam/Tatin "Link to Tatin on GitHub") because it is a Tatin package. With version 19.0 and later Tatin will be available in `⎕SE` right from the start. With earlier versions (18.0 and 18.2) it's up to the user to take care of that.
 
 If Tatin is not in `⎕SE` but available in the `MyUCMDs/` folder then Cider will attempt to load it by executing the user command `]Tatin.Version` which should implicitly load Tatin into `⎕SE`.
 
 I> Note that Tatin will check whether Cider is available, and if so cooperate with it. However, Cider is not a requirement for using Tatin.
 
+#### APLGit2
+
+In case you use Git as a version control management tool you should install the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") as well as the user command [APLGit2](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub").
+
+When a project carries a directory `.git/` then Cider knows that the project is version controlled with Git. It also checks whether `⎕SE.APLGit2` is available: this is the API of the user command `]APLGit2`. Cider uses this to display the Git status report for a project in the later stages of opening a project.
+
+I> In order to install APLGit2 as a user command execute this statement:
+I>
+I> `]InstallPackages [tatin]aplteam-APLGit2 [MyUCMDs]`
 
 ### Installation
+
+With version 19.0 and later, Cider will be part of a default installation. In earlier versions you must install it yourself.
+
 To install Cider, issue this command:
 
 ```
 ]Tatin.InstallPackages [tatin]Cider [MyUCMDs]
 ```
 
-When a new instance of Dyalog is started ]Cider will be available. For an instance that was already running when Cider was installed execute ]UReset.
+When a new instance of Dyalog is started `]Cider` will be available. For an instance that was already running when Cider was installed execute `]UReset`.
 
 #### Upgrading Cider
 You can upgrade Cider to the latest version by issuing the following command:
@@ -56,7 +74,7 @@ Cider may also have a global configuration file that can be used to define setti
 
 This file, if it exists, it situated in a folder `.cider` that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be C:\Users\JohnDoe\.cider, on Linux it would be /home/JohnDoe/.cider etc.
 
-This folder does not only host the global config file, it's also the place where the file with alias definitions (`aliase.txt`) is saved and the file `cider.config.template` that is used as a template when a new project is created.
+This folder does not only host the global config file, it's also the place where the file with alias definitions (`aliase.txt`) is saved as well as the file `cider.config.template` that is used as a template when a new project is created.
 
 
 ### CreateProject
@@ -204,9 +222,9 @@ However, if the first non-white space character of `make` is a `]` its definitio
 
 If not empty this is expected to be a URL pointing to, say, a GitHub project. For information only.
 
-Note that Cider cooperates with the package [`APLGit2`](https://github.com/aplteam/APLGit2 title="Link to APLGit2 on GitHub") if that is available in `⎕SE`. `APLGit2` is an interface between Dyalog and Git. However, some of its commands will only work when the project is hosted on GitHub.
+Note that Cider cooperates with the package [`APLGit2`](https://github.com/aplteam/APLGit2 title="Link to APLGit2 on GitHub") if that is available in `⎕SE`. `APLGit2` is an interface between Dyalog and Git, although some of its commands will only work when the project is hosted on GitHub.
 
-Some function of `APLGit2` must know the `owner` of a project on GitHub. Those functions will investigate project_url`: if that points to GitHub, the own is established from its contents.
+Some function of `APLGit2` must know the `owner` of a project on GitHub. Those functions will investigate project_url`: if that points to GitHub, the owner is established from its contents.
 
 
 ###### tests
@@ -244,7 +262,7 @@ You may add other settings like `caseCode` as well; refer to LINKs documentation
 
 This is a Boolean that defaults to 0.
 
-A 1 means that all variables are watched, and 0 means that Cider/Link do not care unless a variable is already saved in an `.apla` file.
+A 1 means that all variables are watched, and 0 means that Cider/Link does not care unless a variable is already saved in an `.apla` file.
 
 ###### beforeRead
 
@@ -321,7 +339,7 @@ The `parent` must exist while the `parentSpace` may or may not exist. If it does
 
 In the next step `]Cider.OpenProject` is going to set at least two system variables defined in the config file in the `SYSVARS` section of the INI file: `⎕IO` and `⎕ML`.
 
-It is important to set these variables before code is brought into the workspace because bringing class scripts or namespace scripts into the workspace implies the execution of some code, and that code might well rely on the correct setting of those system variables.
+It is important to set these variables before code is brought into the workspace because bringing class scripts or namespace scripts into the workspace implies potentially the execution of code, and that code might well rely on the correct setting of those system variables.
 
 If you need other system variables to carry specific values then you may add them to the `SYSVARS` section. 
 
@@ -372,8 +390,6 @@ A> Note that this is in line with the vast majority of other package managers.
 
 In case a Tatin installation folder defined in the Cider config file does not contain any packages but the two definition files, the user will be asked whether she wants to re-install the packages. 
 
-If she answers "Y" she will also be asked whether she wants to update those packages in case a later version of one of the packages mentioned in the dependency file is now available.
-
 
 #### 5. Check for later packages versions
 
@@ -392,6 +408,7 @@ In particular when you specify more than a single folder you are likely to want 
 
 See the config properties `dependencies` and `dependencies_dev` for details on how to achieve this.
 
+
 #### 7. Injecting a namespace `CiderConfig`
 
 In this step `]Cider.OpenProject` injects a namespace `CiderConfig` into the project space and...
@@ -399,13 +416,15 @@ In this step `]Cider.OpenProject` injects a namespace `CiderConfig` into the pro
 * populates it with the contents of the configuration file as an APL array
 * adds a variable `HOME` that remembers the path the project was loaded from
 
+
 #### 8. Injecting a namespace `TatinVars`
 
-If the project becomes eventually a package Cider injects a namespace `TatinVars` which contains exactly the same stuff as if it were loaded as a package.
+If the project becomes eventually a package, Cider injects a namespace `TatinVars` which contains exactly the same stuff as if it were loaded as a package.
 
 This allows a developer to access `TatinVars` as if it was loaded as a package while working on the project.
 
 Whether the project ends up as a package is determined by the presencse of a file `apl-package.json` in the root of the project.
+
 
 #### 9. Initialising a project (optional)
 
@@ -419,6 +438,7 @@ Such a function may be niladic, monadic, ambivalent or dyadic:
 
 * A non-niladic function receives a namespace with the project configuration as right argument 
 * An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project
+
 
 #### 10. Executing user-specific code
 
@@ -457,7 +477,7 @@ In such a scenario you might well install release candidates into a project that
 
 The function `ListTatinPackage` puts all build lists from all Tatin install folders of a given project on display, making it easy to check.
 
-The following example was created in a workspace where the project `APLGit2` was opened. Because it is the only one Cider knows about it will act on it.
+The following example was created in a workspace where the project `APLGit2` was opened. Because it is the only one Cider knows about, it will act on it.
 
 `APLGit2` has two Tatin installation folders, one for production (`packages/`) and one for development and testing (`packages_dev/`):
 

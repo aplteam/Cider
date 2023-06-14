@@ -1,5 +1,5 @@
- R←Test_OpenAndClose_001(stopFlag batchFlag);⎕TRAP;tempDir;list;sourceFolder1;projectFolder1;projectFolder2;sourceFolder2;aliase;rc;res;buff;msg
-⍝ Opens two (new) projects and then close both of them, one by alias and one by path. Uses `DropAlias`.
+ R←Test_OpenAndClose_004(stopFlag batchFlag);⎕TRAP;tempDir;list;sourceFolder1;projectFolder1;projectFolder2;sourceFolder2;aliase;rc;res;buff;msg;projectFolder3;sourceFolder3
+⍝ Opens three (new) projects and then close both of them in one go, one by alias and one by path. Uses `DropAlias`.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -33,17 +33,28 @@
  aliase←##.Cider.Cider.GetAliasFileContent
  →T.GoToTidyUp~∧/(⎕C'test-case-alias-Foo' 'test-case-alias-Goo')∊aliase[;1]
 
- →T.GoToTidyUp 1≠##.Cider.Cider.CloseProject'#.Foo'
- →T.GoToTidyUp 1≠##.Cider.Cider.CloseProject'[test-case-alias-Goo]'
- →T.GoToTidyUp 0≠##.Cider.Cider.CloseProject'[Does not exist]'
+ projectFolder3←tempDir,'/Zoo'
+ 'create!'FilesAndDirs.CheckPath projectFolder3
+ sourceFolder3←projectFolder3,'/APLSource'
+ (projectFolder3,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Zoo')
+ #.⎕EX'Zoo' ⋄ 'Zoo'#.⎕NS''
+ #.Zoo.⎕FX'r←Hello' 'r←''Universe'''
+ (rc msg buff)←∆UCMD'CreateProject "',projectFolder3,'" #.Zoo -noEdit -acceptConfig -quiet'
+ Assert rc=0
+ list←FilesAndDirs.ListFiles projectFolder3
+ →T.GoToTidyUp 1≠≢list
+ →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
+
+ →T.GoToTidyUp 3≠##.Cider.Cider.CloseProject'#.Foo' '[test-case-alias-Goo]' '[Does not exist]'projectFolder3
 
  R←T._OK
 
 ∆TidyUp:
- ∆LINK'Break' '#.Foo'  ⍝ We DO NOT check here because when everything is working fine...
- ∆LINK'Break' '#.Goo'  ⍝ ... then it's not linked anymore.
+ ∆LINK'Break' '#.Foo'  ⍝ We DO NOT check here because...
+ ∆LINK'Break' '#.Goo'  ⍝ ... when everything is working fine...
+ ∆LINK'Break' '#.Zoo'  ⍝ ... then it's not linked anymore.
  rc←FilesAndDirs.RmDir tempDir
  Assert 0=+/∊rc
- #.⎕EX¨'Foo' 'Goo'
+ #.⎕EX¨'Foo' 'Goo' 'Zoo'
  ⎕SE.Cider.DropAlias'test-case-alias-Foo' 'test-case-alias-Goo'
 ⍝Done
