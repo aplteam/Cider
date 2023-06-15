@@ -9,9 +9,11 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.28.0+410'
+      r←'0.28.1+410'
+      ⍝ * 0.28.1 ⋄ 2023-06-15
+      ⍝   * Bug fix: Opening a project showed a mutilated question; introduced with 0.28.1
       ⍝ * 0.28.0 ⋄ 2023-06-14
-      ⍝   * `]CloseProjects` now presents a list of open projects if no argument is provided and there are 
+      ⍝   * `]CloseProjects` now presents a list of open projects if no argument is provided and there are
       ⍝     multiple projects currently open
       ⍝   * `CloseProjects` now accepts multiple projects as argument
       ⍝ * 0.27.1 ⋄ 2023-06-02
@@ -194,9 +196,9 @@
       f1←f2←f3←0
       :If 0<config.CIDER.⎕NC'tatinFolder'
           question←''
-          question,←⊂'This project carries the (now deprecated) property "tatinFolder".'
+          question,←⊂'AutoConversion@This project carries the (now deprecated) property "tatinFolder".'
           question,←⊂'Would you like to convert it automatically into the new format?'
-          :If 1 YesOrNo'AutoConversion@',question
+          :If 1 YesOrNo question
               'dependencies' 'dependencies_dev'config.CIDER.⎕NS¨⊂''
               config.CIDER.(dependencies dependencies_dev).tatin←⊂''
               folders←config.CIDER.tatinFolder
