@@ -1,5 +1,5 @@
  r←Test_Misc_010(stopFlag batchFlag);⎕TRAP;buff;filename
-⍝ Exercise EditConfig
+⍝ Exercise ProjectConfig
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  :If batchFlag
      r←T._NoBatchTest
@@ -11,7 +11,7 @@
 
  filename←##.CiderConfig.HOME,'/cider.config'
  buff←⊃⎕NGET filename
- 1 ##.Cider.Cider.ViewConfig ##.CiderConfig.HOME
+ 1 ##.Cider.Cider.ProjectConfig ##.CiderConfig.HOME
  (⊂buff)⎕NPUT filename 1 ⍝ Paranoia
 
  r←T._OK

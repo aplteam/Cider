@@ -1,7 +1,7 @@
 ﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-03-23
+⍝ 2023-06-18
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
@@ -77,7 +77,7 @@
           r,←c
      
           c←⎕NS''
-          c.Name←'ViewConfig'
+          c.Name←'ProjectConfig'
           c.Desc←'Puts the config file of a project on display'
           c.Group←'Cider'
           c.Parse←'1s -edit'
@@ -124,8 +124,8 @@
           r←CreateProject Args
       :Case ⎕C'CloseProject'
           r←CloseProject Args
-      :Case ⎕C'ViewConfig'
-          r←ViewConfig Args
+      :Case ⎕C'ProjectConfig'
+          r←ProjectConfig Args
       :Case ⎕C'RunTests'
           r←RunTests Args
       :Case ⎕C'Make'
@@ -159,12 +159,12 @@
       :EndIf
     ∇
 
-    ∇ r←ViewConfig Args;list;path;index
+    ∇ r←ProjectConfig Args;list;path;index
       r←''
       :If 0=≢path←GetProjectPath Args
           →0,≢⎕←'Cancelled by user'
       :Else
-          :If Args.edit ⎕SE.Cider.ViewConfig path
+          :If Args.edit ⎕SE.Cider.ProjectConfig path
               r←'Changed: ',path,'/cider.config; changes are NOT reflected in the workspace!'
           :EndIf
       :EndIf
@@ -303,9 +303,9 @@
           :Case ⎕C'Help'
               r,←⊂'Offers to put the HTML files on display'
               r,←⊂']Cider.Help'
-          :Case ⎕C'ViewConfig'
+          :Case ⎕C'ProjectConfig'
               r,←⊂'Puts the config file of a project on display'
-              r,←⊂']Cider.ViewConfig [path] -edit'
+              r,←⊂']Cider.ProjectConfig [path] -edit'
           :Case ⎕C'RunTests'
               r,←⊂'Prints the project''s specific statements to the session that will run the test suite'
           :Case ⎕C'Make'
@@ -428,7 +428,7 @@
               r,←⊂''
               r,←⊂' * In case a particular project was specified a Boolean is reported, 1 indicating success'
               r,←⊂' * Otherwise the closed projects are reported in detail'
-          :Case ⎕C'ViewConfig'
+          :Case ⎕C'ProjectConfig'
               r,←⊂'Puts the config file of a project on display.'
               r,←⊂'By specifying the -edit flag the user might edit the file rather then just viewing it.'
               r,←⊂''
@@ -548,7 +548,7 @@
           CreateConfigFile filename namespace
       :EndIf
       :If ~noEditFlag
-          1 P.ViewConfig filename
+          1 P.ProjectConfig filename
           config←⊃⎕NGET filename 1
           :If success←0<≢(∊config)~' '
               config←⎕JSON⍠('Dialect' 'JSON5')⊣¯1↓∊config,¨⎕UCS 10

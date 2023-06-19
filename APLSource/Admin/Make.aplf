@@ -1,18 +1,21 @@
- Make flag;M;C;cfg;zipFilename;res;parms
-⍝ Version 3.1.0 from 2023-04-30
+ Make flag;M;C;path;zipFilename;res;version;cfg;parms
+⍝ "Make" a new version of this project
  :If flag
      M←⎕SE.MakeHelpers
      C←##.CiderConfig
-     cfg←M.GetPackageCfg C.HOME
-     M.FetchLaterUserCommand'Cider_UC.dyalog'cfg C('[MyUCMDs]Cider')
+     path←C.HOME,'/',C.CIDER.distributionFolder
+     cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
+     M.FetchLaterUserCommand cfg C'[MyUCMDs]'
+     version←M.CompileVersionNumberPattern cfg
+     M.RecreateFolder path
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
-     parms.version←M.CompileVersionNumberPattern cfg
-     parms.targetPath←C.CIDER.distributionFolder
-     M.RecreateFolder C.HOME,'/',C.CIDER.distributionFolder
+     parms.targetPath←path
+     parms.version←version
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
-     :If 1 M.YesOrNo'Install new version in MyUCMDs?'
-         {}##.Cider.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder'Cider'
+     :If 0<≢cfg.userCommandScript
+     :AndIf 1 M.YesOrNo'Install new version in MyUCMDs?'
+         {}M.##.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder cfg.name
          res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
          ⎕←'  New version installed as user command in MyUCMDs/: ',res
      :EndIf

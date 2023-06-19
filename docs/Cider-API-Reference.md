@@ -6,7 +6,7 @@
 
 # Cider's API --- Syntax Reference
 
-Although the API functions are similar to their user command equivalents, they are not identical. Also, the API offers more functions, and for two user commands there are no corresponding functions in the API (`CreateProject` and `CloseProject`). 
+Although the API functions are similar to their user command equivalents, they are not identical. Also, the API offers more functions while there is no API equivalent for `]CreateProject`.
 
 While for the user commands the help provided by the `-?` syntax is sufficient, this document deals with the API.
 
@@ -36,7 +36,7 @@ Takes one ore more projects and closes them (read: breaks the link).
 
 The right argument must be either a simple character vector or a nested vector of character vectors. 
 
-The projects can be specified as fully qualified namespace names, as aliase or as project paths, or a mixture of those.
+The projects can be specified as fully qualified namespace names, as aliase or as project paths, or a mixture of them.
 
 The optional left argument is relevant only for test cases.
 
@@ -268,6 +268,14 @@ A> When you trace through your code, or set a stop vector, and have "Pause on Er
 A>
 A> This imposes a danger because those handlers set a Hold under some circumstances, and depending on your actions this might result in a DEADLOCK: Dyalog would appear to hang until you issue a strong interrupt via the session's system menu item.
 
+
+## ProjectConfig
+
+Takes a path as `⍵` and an optional Boolean edit flag as `⍺` that defaults to 0.
+
+Puts the config file found in `path` on display and allows the user to edit it if the left argument is 1.
+
+Performs checks before writing it back to file.
 
 ## ReadProjectConfigFile
 

@@ -9,9 +9,15 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'0.28.1+410'
-      ⍝ * 0.28.1 ⋄ 2023-06-15
-      ⍝   * Bug fix: Opening a project showed a mutilated question; introduced with 0.28.1
+      r←'0.29.0-beta-2+410'
+      ⍝ * 0.29.0 ⋄ 2023-06-18
+      ⍝   * BREAKING CHANGE: the user command and API function `ViewConfig` was renamed to `ProjectConfig` in order
+      ⍝     to bring it in line with Tatin which has ]PackageConfig
+      ⍝   * Problems when editing a project config file are now explained
+      ⍝   * Bug fixes
+      ⍝     * Opening a project showed a mutilated question; introduced with 0.28.1
+      ⍝     * The checks when editing the Cider project config file allowed `projectSpace` and `make` to be fully
+      ⍝       qualified. That's no longer possible, but `RunTests` and `RunMake` allow for that
       ⍝ * 0.28.0 ⋄ 2023-06-14
       ⍝   * `]CloseProjects` now presents a list of open projects if no argument is provided and there are
       ⍝     multiple projects currently open
@@ -791,7 +797,7 @@
       projectSpace_.CiderConfig.HOME←⊃,/1 ⎕NPARTS folder
     ∇
 
-    ∇ {r}←{editFlag}ViewConfig path;filename;ns;orig;flag;edit;data
+    ∇ {r}←{editFlag}ProjectConfig path;filename;ns;orig;flag;edit;data
     ⍝ By default the contents of the file cider.config in "path" is put into the editor in read-only mode.
     ⍝ The user may edit the contents if `⍺` is 1 rather than anything else or undefined.
     ⍝ Returns 1 in case the file was modified and 0 otherwise.
@@ -812,6 +818,10 @@
       ns←⍎'edit'(⍎(1+'⎕'=⊃⊃⎕XSI)⊃'#' '⎕SE').⎕NS''
       MassageConfig filename
       orig←ns.cider_config←⊃##.FilesAndDirs.NGET filename 1
+      :If ~CheckJsonSyntax ns.cider_config
+      :OrIf ~0 PerformConfigChecks ⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
+          orig←'' ⍝ This can happen in case the user edited the file with a externalm editor and introduced a mistake
+      :EndIf
       flag←0
       :Repeat
           ns.⎕ED⍠('ReadOnly'(~(⊂,1)≡⊂,editFlag))⊣'cider_config'
@@ -1079,8 +1089,10 @@
       :AndIf 0<≢config.CIDER.tests
           :If (1⍴config.CIDER.tests~' ')∊'])'
               r←config.CIDER.tests,' ⍝ Execute this for running the test suite'
+          :ElseIf (⊃config.CIDER.tests)∊'#⎕' ⍝ Was possible until 0.28.1
+              r←config.CIDER.tests,' ⍝ Execute this for running the test suite'
           :Else
-              r←(config.CIDER.parent),'.',config.CIDER.projectSpace,'.',config.CIDER.tests,' ⍝ Execute this for running the test suite'
+              r←(config.CIDER.parent),({0=≢⍵:⍵ ⋄ '.',⍵},config.CIDER.projectSpace),'.',config.CIDER.tests,' ⍝ Execute this for running the test suite'
           :EndIf
       :EndIf
     ∇
@@ -1098,6 +1110,8 @@
       :If 0<config.CIDER.⎕NC'make'
       :AndIf 0<≢config.CIDER.make
           :If (1⍴config.CIDER.make~' ')∊'])'
+              r←config.CIDER.make,' ⍝ Execute this for creating a new version'
+          :ElseIf (⊃config.CIDER.make)∊'#⎕'   ⍝ Was possible until 0.28.1
               r←config.CIDER.make,' ⍝ Execute this for creating a new version'
           :Else
               r←(config.CIDER.parent),({0=≢⍵:⍵ ⋄ '.',⍵},config.CIDER.projectSpace),'.',config.CIDER.make,' ⍝ Execute this for creating a new version'
@@ -1277,24 +1291,52 @@
       :EndIf
     ∇
 
-    ∇ successFlag←PerformConfigChecks config;namespace;path;tatinFolders;tatinFolder
+    ∇ successFlag←{reportFlag}PerformConfigChecks config;namespace;path;tatinFolders;tatinFolder;i;this;report
+      reportFlag←{0<⎕NC ⍵:⍎⍵ ⋄ 1}'reportFlag'
       successFlag←⍬
+      report←''
       tatinFolders←('dependencies' 'dependencies_dev'GetDependencies¨⊂config)~⊂''
-      :For tatinFolder :In tatinFolders
+      :For i :In ⍳≢tatinFolders
+          tatinFolder←i⊃tatinFolders
+          this←i⊃'dependencies' 'dependencies_dev'
           :If '='∊tatinFolder
               :If 1<'='+.=tatinFolder
                   successFlag,←SUCCESS
               :Else
                   (path namespace)←'='(≠⊆⊢)tatinFolder
                   successFlag,←(1+0=(⎕NS'').{⎕NC ⍵}namespace)⊃FAILURE SUCCESS
+                  :If 0=¯1↑successFlag
+                      report,←⊂Frame'Something is wrong with "',this,'"'
+                  :EndIf
               :EndIf
           :ElseIf ~','∊tatinFolder
               successFlag,←SUCCESS
           :Else
               ⍝ More than one is invalid
+              report,←⊂Frame'Something is wrong with "',this,'"'
           :EndIf
       :EndFor
+      :If (⊃config.CIDER.make)∊'#⎕'
+          successFlag,←FAILURE
+          report,←⊂Frame'"make" is defined with an absolute path; must be relative to the project'
+      :ElseIf 0<≢config.CIDER.make
+      :AndIf 3≠⎕NC{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.make
+          successFlag,←FAILURE
+          report,←⊂Frame config.CIDER.parent,'.',config.CIDER.make,' not found (check "make")'
+      :EndIf
+      :If (⊃config.CIDER.tests)∊'#⎕'
+          successFlag,←FAILURE
+          report,←⊂Frame'"tests" is defined with an absolute path; must be relative to the project (check "make")'
+      :ElseIf 0<≢config.CIDER.tests
+      :AndIf 3≠⎕NC{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.tests
+          successFlag,←FAILURE
+          report,←⊂Frame config.CIDER.parent,'.',config.CIDER.make,' not function (check "tests")'
+      :EndIf
       successFlag←∧/successFlag
+      :If reportFlag
+      :AndIf 0<≢report
+          ⎕←⍪report
+      :EndIf
     ∇
 
     ∇ {changeFlag}←MassageConfig filename;config
