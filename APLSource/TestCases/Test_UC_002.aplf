@@ -1,0 +1,34 @@
+ r←Test_UC_002(stopFlag batchFlag);⎕TRAP
+⍝ Exercise the user command "Config"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ #.⎕EX'Goo' ⋄ 'Goo'#.⎕NS''
+ tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
+
+ {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig -quiet'
+ {}⎕SE.UCMD'Cider.CloseProject #.Foo'
+
+ parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms.folder←tempDir
+ parms.quietFlag←1
+ parms.watch←'ns'
+ parms.parent←'#.Goo'
+ (res log)←##.Cider.Cider.OpenProject parms
+
+ →T.GoToTidyUp 0=≢list←##.Cider.Cider.ListOpenProjects 0
+
+ (rc msg result)←∆UCMD'CloseProject #.Goo.Foo'
+ msg Assert rc=0
+ →T.GoToTidyUp'Number of projects closed: 1'≢result
+
+ r←T._OK
+
+∆TidyUp:
+ {}∆UCMD'CloseProject #.Foo.Goo'
+ ∆LINK'Break' '#.Foo.Goo'  ⍝ We DO NOT check here because when everything is working fine then it's not linked anymore.
+ rc←FilesAndDirs.RmDir tempDir
+ Assert 0=+/∊rc
+ #.⎕EX'Goo'
+⍝Done

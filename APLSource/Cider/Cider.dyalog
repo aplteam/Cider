@@ -7,17 +7,18 @@
     L←⎕SE.Link
     CR←⎕UCS 13
 
-    ∇ r←Version
+    ∇ r←Version;fully
       :Access Public Shared
-      r←'0.29.0-beta-2+410'
-      ⍝ * 0.29.0 ⋄ 2023-06-18
+      r←'0.29.0+410'
+      ⍝ * 0.29.0 ⋄ 2023-06-23
       ⍝   * BREAKING CHANGE: the user command and API function `ViewConfig` was renamed to `ProjectConfig` in order
-      ⍝     to bring it in line with Tatin which has ]PackageConfig
-      ⍝   * Problems when editing a project config file are now explained
-      ⍝   * Bug fixes
-      ⍝     * Opening a project showed a mutilated question; introduced with 0.28.1
-      ⍝     * The checks when editing the Cider project config file allowed `projectSpace` and `make` to be fully
-      ⍝       qualified. That's no longer possible, but `RunTests` and `RunMake` allow for that
+      ⍝     to bring it in line with Tatin which has `]PackageConfig`
+      ⍝   * New user command `]Cider.Config` introduced
+      ⍝   * Syntax problems after editing a project config file are now explained
+      ⍝   * Bug fix: the checks when editing the Cider project config file allowed `projectSpace` and `make` to be 
+      ⍝     fully qualified; that's now rejected as invalid
+      ⍝ * 0.28.1 ⋄ 2023-06-02
+      ⍝   * Bug fix: opening a project showed a mutilated question; was introduced with 0.28.0
       ⍝ * 0.28.0 ⋄ 2023-06-14
       ⍝   * `]CloseProjects` now presents a list of open projects if no argument is provided and there are
       ⍝     multiple projects currently open
@@ -286,16 +287,6 @@
       r,←⊂'dependencies'GetDependencies config
       r,←⊂'dependencies_dev'GetDependencies config
       r~←⊂''
-    ∇
-
-    ∇ ok←CheckTargetNamespace projectSpace
-      :If 0=⎕NC⍕projectSpace
-          ok←1
-      :ElseIf 0=≢projectSpace.⎕NL 2 3 4 9
-          ok←1
-      :Else
-          ok←0
-      :EndIf
     ∇
 
     ∇ r←name GetDependencies config;ref
@@ -1291,7 +1282,7 @@
       :EndIf
     ∇
 
-    ∇ successFlag←{reportFlag}PerformConfigChecks config;namespace;path;tatinFolders;tatinFolder;i;this;report
+    ∇ successFlag←{reportFlag}PerformConfigChecks config;namespace;path;tatinFolders;tatinFolder;i;this;report;buff
       reportFlag←{0<⎕NC ⍵:⍎⍵ ⋄ 1}'reportFlag'
       successFlag←⍬
       report←''
@@ -1320,17 +1311,17 @@
           successFlag,←FAILURE
           report,←⊂Frame'"make" is defined with an absolute path; must be relative to the project'
       :ElseIf 0<≢config.CIDER.make
-      :AndIf 3≠⎕NC{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.make
+      :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.make
           successFlag,←FAILURE
-          report,←⊂Frame config.CIDER.parent,'.',config.CIDER.make,' not found (check "make")'
+          report,←⊂Frame buff,' not found (check "make")'
       :EndIf
       :If (⊃config.CIDER.tests)∊'#⎕'
           successFlag,←FAILURE
           report,←⊂Frame'"tests" is defined with an absolute path; must be relative to the project (check "make")'
       :ElseIf 0<≢config.CIDER.tests
-      :AndIf 3≠⎕NC{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.tests
+      :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.tests
           successFlag,←FAILURE
-          report,←⊂Frame config.CIDER.parent,'.',config.CIDER.make,' not function (check "tests")'
+          report,←⊂Frame buff,' not found (check "tests")'
       :EndIf
       successFlag←∧/successFlag
       :If reportFlag

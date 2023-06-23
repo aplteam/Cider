@@ -1,0 +1,14 @@
+ r←Test_Misc_007(stopFlag batchFlag);⎕TRAP;path
+⍝ Exercise GetMyUCMDsFolder
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ :If 'Win'≢APLTreeUtils2.GetOperatingSystem ⍬
+     r←T._WindowsOnly ⋄ →0
+ :EndIf
+
+ path←##.Cider.Cider.GetMyUCMDsFolder
+ →T.PassesIf path≡(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\MyUCMDs'
+
+ r←T._OK
+⍝Done

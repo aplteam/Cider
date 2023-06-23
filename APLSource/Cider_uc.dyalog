@@ -1,7 +1,7 @@
 ﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-06-18
+⍝ 2023-06-23
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
@@ -18,6 +18,13 @@
           c.Desc←'Load all source files into the WS and keep it linked by default'
           c.Group←'Cider'
           c.Parse←'1s -projectSpace= -parent= -alias= -suppressInit -quiet -import -noPkgLoad -watch=ns dir both'
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'Config'
+          c.Desc←'Allow the user to edit Cider''s config file'
+          c.Group←'Cider'
+          c.Parse←'-print'
           r,←c
      
           c←⎕NS''
@@ -130,6 +137,8 @@
           r←RunTests Args
       :Case ⎕C'Make'
           r←Make Args
+      :Case ⎕C'Config'
+          r←Config Args
       :Case ⎕C'Version'
           r←P.Version
       :Case ⎕C'Help'
@@ -156,6 +165,30 @@
           →0,≢⎕←'Cancelled by user'
       :Else
           r←⎕SE.Cider.RunMake path
+      :EndIf
+    ∇
+
+    ∇ r←Config Args;_Cider;filename;json
+      r←'No action taken'
+      filename←P.GetCiderGlobalConfigFilename
+      :If P.##.FilesAndDirs.IsFile filename
+          json←⊃P.##.FilesAndDirs.NGET filename
+          :If Args.Switch'print'
+              r←'--- Conder Config File: ',('expand'P.##.FilesAndDirs.NormalizePath filename),' ---',⎕UCS 10
+              r,←json
+          :Else
+              _Cider←⎕NS''
+              _Cider.config←json
+              _Cider.⎕ED'config'
+              :If 0<≢_Cider.config
+              :AndIf json≢_Cider.config
+              :AndIf YesOrNo'Would you like to save your changes on disk?'
+                  (⊂_Cider.config)P.##.FilesAndDirs.NPUT filename 1
+                  r←'File edited and changed saved to disk'
+              :EndIf
+          :EndIf
+      :Else
+          r←'File not found: ','expand'P.##.FilesAndDirs.NormalizePath filename
       :EndIf
     ∇
 
@@ -310,6 +343,9 @@
               r,←⊂'Prints the project''s specific statements to the session that will run the test suite'
           :Case ⎕C'Make'
               r,←⊂'Prints the project''s specific statements to the session that will create a new version ("Make")'
+          :Case ⎕C'Cider'
+              r,←⊂'Allows the user to edit one or both of Cider''s config files'
+              r,←⊂']Cider.Config -print'
           :Case ⎕C'Version'
               r,←⊂'Returns name, version number and version date as a three-element vector'
               r,←⊂']Cider.Version'
@@ -355,6 +391,12 @@
               r,←⊂'                 However, currently "both" works only under Windows.'
               r,←⊂'                 Note that the flag does NOT change the config file on disk'
               r,←⊂'              Refere to the Link documentation for details.'
+          :Case ⎕C'Config'
+              r,←⊂'Puts the content of Cider''s global config into the editor and allows the user to change it.'
+              r,←⊂'By specifying the -print flag you can force the user command to print the content of the file'
+              r,←⊂'to the session.'
+              r,←⊂''
+              r,←⊂'Note that changing the config file does not affect the currently running instance of Cider.'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'Print a list with the namespaces of all currently opened projects.'
               r,←⊂'Add the -verbose flag for more information. Then a matrix is returned with these columns:'
