@@ -9,13 +9,15 @@
 
     ∇ r←Version;fully
       :Access Public Shared
-      r←'0.29.0+410'
+      r←'0.29.1-beta-1+410'
+      ⍝ * 0.29.1 ⋄ 2023-07-02
+      ⍝   * Bug fix: Message printed to ⎕SE in case of an import was wrong
       ⍝ * 0.29.0 ⋄ 2023-06-23
       ⍝   * BREAKING CHANGE: the user command and API function `ViewConfig` was renamed to `ProjectConfig` in order
       ⍝     to bring it in line with Tatin which has `]PackageConfig`
       ⍝   * New user command `]Cider.Config` introduced
       ⍝   * Syntax problems after editing a project config file are now explained
-      ⍝   * Bug fix: the checks when editing the Cider project config file allowed `projectSpace` and `make` to be 
+      ⍝   * Bug fix: the checks when editing the Cider project config file allowed `projectSpace` and `make` to be
       ⍝     fully qualified; that's now rejected as invalid
       ⍝ * 0.28.1 ⋄ 2023-06-02
       ⍝   * Bug fix: opening a project showed a mutilated question; was introduced with 0.28.0
@@ -124,6 +126,7 @@
           res←linkOptions ⎕SE.Link.Import projectSpace_ source                          ⍝ Get the code into the WS
           dmx←⎕DMX
           ('LINK failed to import the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
+          p'  Code imported'
       :Else
           res←linkOptions ⎕SE.Link.Create projectSpace_ source                          ⍝ Get the code into the WS
           dmx←⎕DMX
@@ -131,8 +134,8 @@
           :If ∨/'ERRORS ENCOUNTERED:'⍷res
               1 p↓Frame CR(≠⊆⊢)res
           :EndIf
+          p'  Code established, "watch" is "',linkOptions.watch,'"'
       :EndIf
-      p'  Code established, "watch" is "',linkOptions.watch,'"'
       :If 0=parms.noPkgLoad
           pkgStatus←parms.folder CheckForTatinPackages config
           :If 0<pkgStatus
