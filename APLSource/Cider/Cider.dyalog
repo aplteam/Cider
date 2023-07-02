@@ -11,6 +11,7 @@
       :Access Public Shared
       r←'0.29.1-beta-1+410'
       ⍝ * 0.29.1 ⋄ 2023-07-02
+      ⍝   * The check for the config parameters "make" and "test" no result in a warning rather than rejection.
       ⍝   * Bug fix: Message printed to ⎕SE in case of an import was wrong
       ⍝ * 0.29.0 ⋄ 2023-06-23
       ⍝   * BREAKING CHANGE: the user command and API function `ViewConfig` was renamed to `ProjectConfig` in order
@@ -1315,16 +1316,14 @@
           report,←⊂Frame'"make" is defined with an absolute path; must be relative to the project'
       :ElseIf 0<≢config.CIDER.make
       :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.make
-          successFlag,←FAILURE
-          report,←⊂Frame buff,' not found (check "make")'
+          ⎕←'*** Warning: "make" does not point to a function!'
       :EndIf
       :If (⊃config.CIDER.tests)∊'#⎕'
           successFlag,←FAILURE
           report,←⊂Frame'"tests" is defined with an absolute path; must be relative to the project (check "make")'
       :ElseIf 0<≢config.CIDER.tests
       :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.tests
-          successFlag,←FAILURE
-          report,←⊂Frame buff,' not found (check "tests")'
+          ⎕←'*** Warning: "test" does not point to a function'
       :EndIf
       successFlag←∧/successFlag
       :If reportFlag
