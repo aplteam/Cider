@@ -731,7 +731,7 @@
                   qdmx←⎕DMX
                   1 p Frame'Executing "init" crashed: ',qdmx.EM
               :EndTrap
-          :CaseList 1 ¯2
+          :CaseList 1
               fns←projectSpace.⍎init
               :Trap 0
                   fns config
@@ -739,7 +739,7 @@
                   qdmx←⎕DMX
                   1 p Frame'Executing "init" crashed: ',qdmx.EM
               :EndTrap
-          :Case 2
+          :Case 2 ¯2
               fns←projectSpace.⍎init
               :Trap 0
                   projectSpace.CiderConfig.HOME fns config
