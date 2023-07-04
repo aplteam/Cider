@@ -1,7 +1,7 @@
 ﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-06-23
+⍝ 2023-07-04
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
@@ -246,7 +246,7 @@
       r(AddTitles)←'Namespace name' 'Path',Args.verbose/'No. of objects' 'Alias'
     ∇
 
-    ∇ r←OpenProject Args;path;parms;aliasDefs;bool;info;opCode;alias
+    ∇ r←OpenProject Args;path;parms;aliasDefs;bool;info;opCode;alias;log;success
       r←0 0⍴''
       Args.projectSpace←{(,0)≡,⍵:'' ⋄ ⍵}Args.projectSpace
       :If 0≡Args._1
@@ -304,7 +304,15 @@
       parms.suppressInit←Args.suppressInit
       parms.importFlag←Args.import
       parms.noPkgLoad←Args.noPkgLoad
-      :If ~⊃P.OpenProject parms
+      (success log)←P.OpenProject parms
+      :If Args.quiet
+          r←log
+          :If success
+              r,←⊂'Project successfully opened'
+          :EndIf
+      :ElseIf success
+          r←'Project successfully opened'
+      :else
           r←'Attempt to open the project failed'
       :EndIf
     ∇

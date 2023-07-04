@@ -9,10 +9,15 @@
 
     ∇ r←Version;fully
       :Access Public Shared
-      r←'0.29.1-beta-1+410'
-      ⍝ * 0.29.1 ⋄ 2023-07-02
+      r←'0.29.1+410'
+      ⍝ * 0.29.1 ⋄ 2023-07-04
       ⍝   * The check for the config parameters "make" and "test" no result in a warning rather than rejection.
-      ⍝   * Bug fix: Message printed to ⎕SE in case of an import was wrong
+      ⍝   * Bug fixes:
+      ⍝     * Asked for re-installing packages when there was no dependency file
+      ⍝     * Message printed to ⎕SE  was wrong in case of "Import"
+      ⍝     * Documentation corrected on the `init` function
+      ⍝     * Wrong message corrected in case an `init` function was dyadic but stated it being ambivalent
+      ⍝     * Handling of internal log was wrong with -quiet
       ⍝ * 0.29.0 ⋄ 2023-06-23
       ⍝   * BREAKING CHANGE: the user command and API function `ViewConfig` was renamed to `ProjectConfig` in order
       ⍝     to bring it in line with Tatin which has `]PackageConfig`
@@ -269,7 +274,8 @@
       :AndIf 0<≢folders←(##.FilesAndDirs.Exists(⊂path,'/'),¨folders)/folders
           status←0<+/≢¨list←{⊃0 ⎕NINFO⍠('Wildcard' 1)⊣⍵}¨(⊂path,'/'),¨folders,¨⊂'/*'
       :AndIf 1∊bool←0=≢¨ListDirs¨(⊂path,'/'),¨folders,¨'/'
-          :If YesOrNo'Tatin install folder(s) do no contain packages - do you want them re-installed?'
+      :AndIf 1∊bool←bool∧⎕NEXISTS(⊂path,'/'),¨folders,¨⊂'/apl-dependencies.txt'
+          :If YesOrNo'Tatin install folder',(()⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
               status←2
               parms←⎕SE.Tatin.CreateReInstallParms
               parms.update←YesOrNo'Would you like to install later version, if available?'
@@ -722,20 +728,21 @@
       :EndIf
     ∇
 
-    ∇ {r}←x ExecProjectFunction_ init;fns;config;projectSpace;qdmx
+    ∇ {r}←x ExecProjectFunction_ init;fns;config;projectSpace;qdmx;valence
       r←⍬
       (projectSpace config)←x
       :If 3=projectSpace.⎕NC init
           p'Executing the project''s initialising function "',(init~' '),'"...'
-          :Select 1 2⊃projectSpace.⎕AT init
-          :Case 0
+          valence←1 2⊃projectSpace.⎕AT init
+          :Select valence
+          :Case 0                   ⍝ Niladic
               :Trap 0
                   projectSpace.⍎init
               :Else
                   qdmx←⎕DMX
                   1 p Frame'Executing "init" crashed: ',qdmx.EM
               :EndTrap
-          :CaseList 1 ¯2
+          :CaseList 1 ¯2            ⍝ Monadic and ambivalent
               fns←projectSpace.⍎init
               :Trap 0
                   fns config
@@ -744,7 +751,7 @@
                   1 p Frame'Executing "init" crashed: ',qdmx.EM
               :EndTrap
           :Else
-              1 p Frame'Invalid function valence: is ambivalent'
+              1 p Frame'Invalid function valence: is dyadic'
           :EndSelect
       :Else
           1 p Frame'Could not execute "',init,'": function not found; check config file!'

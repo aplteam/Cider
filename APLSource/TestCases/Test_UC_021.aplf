@@ -7,7 +7,7 @@
 
  folder←∆GetTestPath⊃⎕SI
  res←⎕SE.UCMD'Cider.OpenProject ',folder,' -parent=#.TEMP -import -quiet -watch=ns'
- →T.GoToTidyUp 0≠≢res
+ →T.GoToTidyUp~∨/'Project successfully opened'⍷∊res
 
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello
 

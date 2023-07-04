@@ -194,12 +194,12 @@ All packages in the sub-folder packages_dev/ are loaded into the sub-namespace `
 
 If not empty this must be the name of a function within `projectSpace`. The function will be executed after a project was opened. 
 
-Such a function should not return a result.
+Such a function should not return a result; if it does anyway it should be shy.
 
-Such a function may be niladic, monadic, ambivalent or dyadic:
+Such a function may be niladic, monadic or ambivalent:
 
-* A non-niladic function receives a namespace with the project configuration as right argument 
-* An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project
+* A niladic function is just called
+* An ambivalent or monadic function receives a namespace with the project configuration as right argument 
 
 
 ###### make

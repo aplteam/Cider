@@ -7,7 +7,7 @@
 
  folder←∆GetTestPath⊃⎕SI
  res←⎕SE.UCMD'Cider.OpenProject ',folder,' -noPkgLoad -import -quiet -watch=ns'
- →T.PassesIf 0=≢res
+ →T.PassesIf∨/'Project successfully opened'⍷∊res
 
  →T.PassesIf'World'≡#.TEMP.Hello
  →T.PassesIf 2=≢#.TEMP.⎕NL⍳16                 ⍝ We must not find any packages, just the function and CiderConfig

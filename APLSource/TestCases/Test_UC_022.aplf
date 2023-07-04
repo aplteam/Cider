@@ -7,7 +7,7 @@
 
  folder←∆GetTestPath⊃⎕SI
  res←⎕SE.UCMD'Cider.OpenProject ',folder,' -projectSpace=TEMP -import -quiet -watch=ns'
- →T.PassesIf 0=≢res
+ →T.PassesIf∨/'Project successfully opened'⍷∊res
  →T.PassesIf'World'≡#.TEMP.Hello
 
  R←T._OK

@@ -1,0 +1,62 @@
+ R←Test_OpenAndClose_010(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;res;rc;cfg
+⍝ Open a (new) project with all sort of Init functions
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ sourceFolder←tempDir,'/APLSource'
+ 'Create!'FilesAndDirs.CheckPath sourceFolder
+ (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
+ cfg←∆GetJSON5 tempDir,'/cider.config'
+ cfg.CIDER.init←'Init'
+ (⊂⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣cfg)FilesAndDirs.NPUT(tempDir,'/cider.config')1
+ (⊂'Init' '∆INIT←1')FilesAndDirs.NPUT tempDir,'/APLSource/Init.aplf'
+ (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
+
+ res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" # -noEdit -acceptConfig -quiet'
+ Assert'Project created and opened'≡res
+ list←FilesAndDirs.ListFiles tempDir
+ →T.GoToTidyUp 1≠≢list
+ →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
+ →T.GoToTidyUp 1≠#.Foo.∆INIT
+ res←∆LINK'Break' '#.Foo'
+ Assert res ∆StartsWith'Unlinked:'
+ #.⎕EX'Foo'
+
+ (⊂'Init x' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
+ res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -quiet'
+ Assert∨/'Project successfully opened'⍷∊res
+ →T.GoToTidyUp 1≠#.Foo.∆INIT
+ res←∆LINK'Break' '#.Foo'
+ Assert res ∆StartsWith'Unlinked:'
+ #.⎕EX'Foo'
+
+ (⊂'{x} Init y' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
+ res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -quiet'
+ Assert∨/'Project successfully opened'⍷∊res
+ →T.GoToTidyUp 1≠#.Foo.∆INIT
+ res←∆LINK'Break' '#.Foo'
+ Assert res ∆StartsWith'Unlinked:'
+ #.⎕EX'Foo'
+
+ (⊂'{r}←Init y' 'r←∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
+ res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -quiet'
+ Assert∨/'Project successfully opened'⍷∊res
+ →T.GoToTidyUp 1≠#.Foo.∆INIT
+ res←∆LINK'Break' '#.Foo'
+ Assert res ∆StartsWith'Unlinked:'
+ #.⎕EX'Foo'
+
+ (⊂'x Init y' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
+ res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -quiet'
+ →T.GoToTidyUp~∨/'Invalid function valence: is dyadic'⍷∊res
+
+ R←T._OK
+
+∆TidyUp:
+ res←∆LINK'Break' '#.Foo'
+ Assert res ∆StartsWith'Unlinked:'
+ #.⎕EX'Foo'
+ rc←FilesAndDirs.RmDir tempDir
+ Assert 0=+/∊rc
+⍝Done

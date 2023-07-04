@@ -219,11 +219,11 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </a>
 </div>
 <p>If not empty this must be the name of a function within <code>projectSpace</code>. The function will be executed after a project was opened.</p>
-<p>Such a function should not return a result.</p>
-<p>Such a function may be niladic, monadic, ambivalent or dyadic:</p>
+<p>Such a function should not return a result; if it does anyway it should be shy.</p>
+<p>Such a function may be niladic, monadic or ambivalent:</p>
 <ul>
-<li>A non-niladic function receives a namespace with the project configuration as right argument</li>
-<li>An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project</li>
+<li>A niladic function is just called</li>
+<li>An ambivalent or monadic function receives a namespace with the project configuration as right argument</li>
 </ul>
 <div class="h_tag">
 <a href="#make" id="make" class="autoheader_anchor">
