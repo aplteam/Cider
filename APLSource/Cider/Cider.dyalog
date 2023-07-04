@@ -15,7 +15,7 @@
       ⍝     to bring it in line with Tatin which has `]PackageConfig`
       ⍝   * New user command `]Cider.Config` introduced
       ⍝   * Syntax problems after editing a project config file are now explained
-      ⍝   * Bug fix: the checks when editing the Cider project config file allowed `projectSpace` and `make` to be 
+      ⍝   * Bug fix: the checks when editing the Cider project config file allowed `projectSpace` and `make` to be
       ⍝     fully qualified; that's now rejected as invalid
       ⍝ * 0.28.1 ⋄ 2023-06-02
       ⍝   * Bug fix: opening a project showed a mutilated question; was introduced with 0.28.0
@@ -735,6 +735,14 @@
               fns←projectSpace.⍎init
               :Trap 0
                   fns config
+              :Else
+                  qdmx←⎕DMX
+                  1 p Frame'Executing "init" crashed: ',qdmx.EM
+              :EndTrap
+          :Case 2
+              fns←projectSpace.⍎init
+              :Trap 0
+                  projectSpace.CiderConfig.HOME fns config
               :Else
                   qdmx←⎕DMX
                   1 p Frame'Executing "init" crashed: ',qdmx.EM
