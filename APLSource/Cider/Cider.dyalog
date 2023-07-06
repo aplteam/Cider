@@ -9,8 +9,8 @@
 
     ∇ r←Version;fully
       :Access Public Shared
-      r←'0.29.1+410'
-      ⍝ * 0.29.1 ⋄ 2023-07-04
+      r←'0.30.0-beta-1+410'
+      ⍝ * 0.30.0 ⋄ 2023-07-04
       ⍝   * The check for the config parameters "make" and "test" no result in a warning rather than rejection.
       ⍝   * Bug fixes:
       ⍝     * Asked for re-installing packages when there was no dependency file

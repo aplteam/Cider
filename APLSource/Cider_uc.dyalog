@@ -1,7 +1,7 @@
 ﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-07-04
+⍝ 2023-07-06
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
@@ -124,7 +124,7 @@
       :Case ⎕C'ListOpenProjects'
           r←ListOpenProjects Args
       :Case ⎕C'ListAliases'
-          r←ListAliase Args
+          r←ListAliases Args
       :Case ⎕C'ListTatinPackages'
           r←ListTatinPackages Args
       :Case ⎕C'CreateProject'
@@ -222,7 +222,7 @@
       :EndIf
     ∇
 
-    ∇ r←ListAliase Args
+    ∇ r←ListAliases Args
       :If Args.edit
           EditAliasFile ⍬
           r←ProcessAliases 0 0 0
@@ -250,31 +250,15 @@
       r←0 0⍴''
       Args.projectSpace←{(,0)≡,⍵:'' ⋄ ⍵}Args.projectSpace
       :If 0≡Args._1
-          path←⊃1 ⎕NPARTS''
-          :If ⎕NEXISTS path,'cider.config'
-              :If ~1 YesOrNo'Sure that you want to open ',path,'?'
-                  :Return
-              :EndIf
-          :Else
-              (opCode path)←OpenFileDialogBox'Open cider.config'
-              :If opCode=¯1
-                  r←'Cancelled by user'
-                  :Return
-              :ElseIf 0=opCode
-                  r←'Cider config file not found'
-                  :Return
-              :EndIf
+      :OrIf Args._1≡'[?]'
+          aliasDefs←P.GetAliasFileContent
+          :If 0=≢path←SelectFromAliases aliasDefs
+              :Return
           :EndIf
       :Else
           path←Args._1
       :EndIf
-      aliasDefs←P.GetAliasFileContent
-      :If path≡'[?]'
-          bool←~aliasDefs[;2]∊{⍵[;2]}P.ListOpenProjects 0
-          :If 0=≢path←SelectFromAliases bool⌿aliasDefs
-              :Return
-          :EndIf
-      :ElseIf '[]'≡path[1,≢path]
+      :If '[]'≡path[1,≢path]
       :AndIf '*'=¯1↑path~'[]'
           bool←~aliasDefs[;2]∊{⍵[;2]}P.ListOpenProjects 0
           bool←bool\(¯1↓path~'[]'){(⎕C(≢⍺)↑[2]⍵)∧.=⎕C ⍺}↑bool⌿aliasDefs[;1]
@@ -312,7 +296,7 @@
           :EndIf
       :ElseIf success
           r←'Project successfully opened'
-      :else
+      :Else
           r←'Attempt to open the project failed'
       :EndIf
     ∇
@@ -324,23 +308,23 @@
       :Case 0
           :Select ⎕C Cmd
           :Case ⎕C'OpenProject'
-              r,←⊂'Load all source files into the WS and keep it linked by default'
-              r,←⊂']Cider.OpenProject [folder] [-projectSpace=] [-parent=] [-alias=] [-suppressInit] [-quiet] [-import] [-noPkgLoad] [-watch=ns|dir|both]'
+              r,←⊂'Load all source files into the WS and keep it linked by default plus many more actions...'
+              r,←⊂']Cider.OpenProject [folder|alias] -projectSpace= -parent= -alias= -suppressInit -quiet -import -noPkgLoad -watch=ns|dir|both'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'List all currently open projects'
-              r,←⊂']Cider.ListOpenProjects [-verbose]'
+              r,←⊂']Cider.ListOpenProjects -verbose'
           :Case ⎕C'ListAliases'
               r,←⊂'List all defined aliases with their folders'
-              r,←⊂']Cider.ListAliases [-prune] [-edit] [-quiet]'
+              r,←⊂']Cider.ListAliases -prune -edit -quiet'
           :Case ⎕C'ListTatinPackages'
               r,←⊂'Lists all Tatin packages in all install folders'
               r,←⊂']Cider.ListTatinPackages [folder]'
           :Case ⎕C'CreateProject'
               r,←⊂'Makes the given folder a project folder'
-              r,←⊂']Cider.CreateProject <folder> [<project-namespace>] [-alias=] [-acceptConfig] [-noEdit] [-quiet]'
+              r,←⊂']Cider.CreateProject <folder> [<project-namespace>] -alias= -acceptConfig -noEdit -quiet'
           :Case ⎕C'CloseProject'
               r,←⊂'Breaks the Link between one or more project spaces and their associated files on disk'
-              r,←⊂']Cider.CloseProject [<namespace-name>|alias-name] [-all]'
+              r,←⊂']Cider.CloseProject [<namespace-name>|alias-name] -all'
           :Case ⎕C'Help'
               r,←⊂'Offers to put the HTML files on display'
               r,←⊂']Cider.Help'
@@ -364,33 +348,30 @@
       :Case 1
           :Select ⎕C Cmd
           :Case ⎕C'OpenProject'
-              r,←⊂'Takes a path to a folder that must contain a file "',configFilename,'" (JSON5).'
+              r,←⊂'Takes path to folder that must host a file "',configFilename,'" or a pre-defined alias.'
               r,←⊂'The config file must specify all variables required by Cider, including "source".'
               r,←⊂'The contents of "source" is then linked to "parent.projectSpace" by default.'
-              r,←⊂'If no folder is specified Cider looks for a file "',configFilename,'" in the'
-              r,←⊂'current directory. If no such file is found then...'
-              r,←⊂' * under Windows a dialog box is opened that allows you to navigate to the intended folder'
-              r,←⊂' * an error is thrown on non-Windows platforms'
+              r,←⊂'If no folder or alias is specified, Cider will present a list with all defined aliases.'
               r,←⊂''
-              r,←⊂'You may use an alias rather than a path; see -alias= for how to define an alias.'
-              r,←⊂'An alias must be embraced by square brackets, for exampel:'
+              r,←⊂'An alias must be embraced by square brackets, for example:'
               r,←⊂'    ]Cider.OpenProject [alias]'
-              r,←⊂'You can also ask Cider for a list of all known aliases with:'
-              r,←⊂'    ]Cider.OpenProject [?]'
+              r,←⊂'The "*" wildcard is supported, but only at the end. The following statement will list all'
+              r,←⊂'projects that start their names with "A"'
+              r,←⊂'    ]Cider.OpenProject [A*]'
               r,←⊂''
-              r,←⊂'-quiet:       The user command prints messages to the session unless -quiet is specified.'
-              r,←⊂'-parent:      The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
+              r,←⊂'-quiet        The user command prints messages to the session unless -quiet is specified.'
+              r,←⊂'-parent       The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
               r,←⊂'              overwritten by setting the -parent= and/or the -projectSpace= option(s).'
               r,←⊂'-projectSpace The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
               r,←⊂'              overwritten by setting the -projectSpace= and/or the -parent= option(s).'
-              r,←⊂'-import:      By default the namespace is linked to folder. By specifying the -import'
+              r,←⊂'-import       By default the namespace is linked to folder. By specifying the -import'
               r,←⊂'              flag this can be avoided: the code is then loaded into the workspace with the'
               r,←⊂'              Link.Import method, meaning that changes are not tracked.'
               r,←⊂'              With -import the status of neither Git nor any installed Tatin packages is checked.'
-              r,←⊂'-alias:       In case you are going to work on a project frequently you may specify'
-              r,←⊂'              -alias=name'
+              r,←⊂'-alias=       In case you are going to work on a project frequently you may specify'
+              r,←⊂'              -alias=name for quicker access.'
               r,←⊂'              (In order to remove an alias use ]Cider.ListAliases -edit)'
-              r,←⊂'-noPkgLoad:   By default the Tatin packages from the installation folder(s) defined in the'
+              r,←⊂'-noPkgLoad    By default the Tatin packages from the installation folder(s) defined in the'
               r,←⊂'              config will be loaded. If you don''t want this specify -noPkgLoad'
               r,←⊂'-watch        Defaults to "both" (if .NET is available) but may be "ns" or "dir" instead.'
               r,←⊂'               * "ns" means that changes in the workpace are saved on disk'
@@ -398,7 +379,7 @@
               r,←⊂'               * "both" means that any changes in either "ns" or "dir" are reflected accordingly'
               r,←⊂'                 However, currently "both" works only under Windows.'
               r,←⊂'                 Note that the flag does NOT change the config file on disk'
-              r,←⊂'              Refere to the Link documentation for details.'
+              r,←⊂'              Refer to the Link documentation for details.'
           :Case ⎕C'Config'
               r,←⊂'Puts the content of Cider''s global config into the editor and allows the user to change it.'
               r,←⊂'By specifying the -print flag you can force the user command to print the content of the file'
