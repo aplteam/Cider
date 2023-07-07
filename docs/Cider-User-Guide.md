@@ -57,6 +57,11 @@ To install Cider, issue this command:
 
 When a new instance of Dyalog is started `]Cider` will be available. For an instance that was already running when Cider was installed execute `]UReset`.
 
+
+However, the API only becomes available after any Cider user command was executed. `]Cider.Version` is enough for that.
+
+If that is not good enough for you, this article explains how to load user commands into `⎕SE` at a very early stage: <https://aplwiki.com/wiki/Dyalog_User_Commands>
+
 #### Upgrading Cider
 You can upgrade Cider to the latest version by issuing the following command:
 

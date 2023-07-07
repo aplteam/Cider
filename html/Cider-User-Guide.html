@@ -88,6 +88,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>To install Cider, issue this command:</p>
 <pre><code>]Tatin.InstallPackages [tatin]Cider [MyUCMDs]</code></pre>
 <p>When a new instance of Dyalog is started <code>]Cider</code> will be available. For an instance that was already running when Cider was installed execute <code>]UReset</code>.</p>
+<p>However, the API only becomes available after any Cider user command was executed. <code>]Cider.Version</code> is enough for that.</p>
+<p>If that is not good enough for you, this article explains how to load user commands into <code>⎕SE</code> at a very early stage: <a href="https://aplwiki.com/wiki/Dyalog_User_Commands" class="external_link">https://aplwiki.com/wiki/Dyalog_User_Commands</a></p>
 <div class="h_tag">
 <a href="#Upgrading-Cider" id="Upgrading-Cider" class="autoheader_anchor">
 <h4 data-id="Upgrading-Cider">2.2.1. Upgrading Cider</h4>

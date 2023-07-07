@@ -1,4 +1,4 @@
-<image src="https://github.com/aplteam/cider/blob/main/Assets/Cider-Logo.png?raw-true" width="100" height="100">
+<img src="https://github.com/aplteam/cider/blob/main/Assets/Cider-Logo.png?raw=true" width="100" height="100">
 
 
 # Cider Project Manager
@@ -55,10 +55,13 @@ With version 0.23 Cider became a Tatin package. That simplifies the installation
 
 When a new instance of Dyalog is started `]Cider` will be available. For an instance that was already running when Cider was installed execute `]UReset`.
 
-### Details
-`[MyUCMDs]` is an internal alias that refers to a folder `MyUCMDs/` which is, among others, scanned by Dyalog for user commands when a new instance is fired up.
+However, the API only becomes available after any Cider user command was executed. `]Cider.Version` is enough for that.
 
-If you are interested in details: <https://aplwiki.com/wiki/Dyalog_User_Commands>
+If that is not good enough for you, this article explains how to load user commands into `⎕SE` at a very early stage: <https://aplwiki.com/wiki/Dyalog_User_Commands>
+
+### Details
+
+`[MyUCMDs]` is an internal alias that refers to a folder `MyUCMDs/` which is, among others, scanned by Dyalog for user commands when a new instance is fired up.
 
 ## Methods
 

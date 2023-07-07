@@ -9,10 +9,12 @@
 
     ∇ r←Version;fully
       :Access Public Shared
-      r←'0.30.0-beta-2+410'
+      r←'0.30.0+410'
       ⍝ * 0.30.0 ⋄ 2023-07-07
-      ⍝     * Bug fixes
-      ⍝       * New projects got a parameter `githubUsername` injected which is not used anymore
+      ⍝   * Without a parameter, OpenProject now offers all aliases for selection
+      ⍝   * When `make` and/or `test` point to an APL object no error is thrown anymore. Instead a warning
+      ⍝     is issued.
+      ⍝   * Bug fix: new projects got a parameter `githubUsername` injected which is not used anymore
       ⍝ * 0.29.1 ⋄ 2023-07-04
       ⍝   * The check for the config parameters "make" and "test" no result in a warning rather than rejection.
       ⍝   * Bug fixes:

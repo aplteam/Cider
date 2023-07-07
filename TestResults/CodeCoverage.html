@@ -127,7 +127,7 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr><th>Executed at</th><th>APLVersion</th><th>Memory (MB)</th></tr>
 </thead>
 <tbody>
-<tr><td>2023-07-04 16:12:59</td><td>Windows-64 ⋄ 18.2.46943.0 ⋄ W ⋄ Development ⋄ Unicode</td><td>51</td></tr>
+<tr><td>2023-07-07 19:57:18</td><td>Windows-64 ⋄ 18.2.47418.0 ⋄ W ⋄ Development ⋄ Unicode</td><td>51</td></tr>
 </tbody>
 </table>
 <p>Overall 70% of the testable code is covered.</p>
@@ -170,7 +170,7 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr><td><a href="#listing_29" title="Link to listing">#.Cider.Cider.Cider.LoadTatinPackages</a></td><td>23, 26</td><td>90</td><td>21</td></tr>
 <tr><td><a href="#listing_30" title="Link to listing">#.Cider.Cider.Cider.OpenProject</a></td><td>7←≢41,47,88-92</td><td>92</td><td>88</td></tr>
 <tr><td><a href="#listing_31" title="Link to listing">#.Cider.Cider.Cider.UpdatePackages</a></td><td>14</td><td>94</td><td>16</td></tr>
-<tr><td><a href="#listing_32" title="Link to listing">#.Cider.Cider.Cider.CreateOpenParms</a></td><td>20</td><td>95</td><td>22</td></tr>
+<tr><td><a href="#listing_32" title="Link to listing">#.Cider.Cider.Cider.CreateOpenParms</a></td><td>19</td><td>95</td><td>21</td></tr>
 <tr><td><a href="#listing_33" title="Link to listing">#.Cider.Cider.Cider.CheckPackagesStatus</a></td><td>15</td><td>95</td><td>22</td></tr>
 <tr><td><a href="#listing_34" title="Link to listing">#.Cider.Cider.Cider.ListOpenProjects</a></td><td>24</td><td>95</td><td>21</td></tr>
 <tr class="fullyCovered"><td><a href="#listing_35" title="Link to listing">#.Cider.Cider.Cider.Version</a></td><td></td><td>100</td><td>1</td></tr>
@@ -180,7 +180,7 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr class="fullyCovered"><td><a href="#listing_39" title="Link to listing">#.Cider.Cider.Cider.GetValidLinkParams</a></td><td></td><td>100</td><td>13</td></tr>
 <tr class="fullyCovered"><td><a href="#listing_40" title="Link to listing">#.Cider.Cider.Cider.GetValidCiderParams</a></td><td></td><td>100</td><td>11</td></tr>
 <tr class="fullyCovered"><td><a href="#listing_41" title="Link to listing">#.Cider.Cider.Cider.ExtractLinkOptions</a></td><td></td><td>100</td><td>16</td></tr>
-<tr class="fullyCovered"><td><a href="#listing_42" title="Link to listing">#.Cider.Cider.Cider.CheckParameters</a></td><td></td><td>100</td><td>16</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_42" title="Link to listing">#.Cider.Cider.Cider.CheckParameters</a></td><td></td><td>100</td><td>14</td></tr>
 <tr class="fullyCovered"><td><a href="#listing_43" title="Link to listing">#.Cider.Cider.Cider.PrintToSession</a></td><td></td><td>100</td><td>6</td></tr>
 <tr class="fullyCovered"><td><a href="#listing_44" title="Link to listing">#.Cider.Cider.Cider.ExecProjectInitFunction</a></td><td></td><td>100</td><td>5</td></tr>
 <tr class="fullyCovered"><td><a href="#listing_45" title="Link to listing">#.Cider.Cider.Cider.InjectConfigDataIntoProject</a></td><td></td><td>100</td><td>7</td></tr>
@@ -1259,21 +1259,20 @@ $(document).ready(function() {
 <code> [13]  parms.noPkgLoad←0</code>
 <code> [14]  parms.watch←(1+HasDotNet)⊃'ns' 'both'</code>
 <code> [15]  parms.checkPackageVersions←⍬      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update</code>
-<code> [16]  parms.githubUsername←''</code>
-<code> [17]  :If ~(⊂y)∊''⍬</code>
-<code> [18]  :AndIf 9=⎕NC'y'</code>
-<code> [19]      :If 9=y.⎕NC'projectSpace'</code>
-<code class="emphasize">→[20]          y.projectSpace←⍕y.projectSpace</code>
-<code> [21]      :EndIf</code>
-<code> [22]      :If 9=y.⎕NC'parent'</code>
-<code> [23]          y.parent←⍕y.parent</code>
-<code> [24]      :EndIf</code>
-<code> [25]      '⍵ must not contain references'Assert 0=≢y.⎕NL 9</code>
-<code> [26]      (b{0=+/b:'' ⋄ 'Invalid parameter: ',⊃{⍺,',',⍵}/⍺/⍵}l)Assert 0=+/b←~(l←' '~⍨¨↓y.⎕NL 2)∊' '~⍨¨↓parms.⎕NL 2</code>
-<code> [27]      :If 0&lt;≢list←' '~⍨¨↓y.⎕NL 2</code>
-<code> [28]          parms⍎¨list{' '=1↑0⍴⍵:⍺,'←''',⍵,'''' ⋄ ⍵≡⍬:⍺,'←⍬' ⋄ ⍺,'←',⍕⍵}¨y.{⍎⍵}¨list</code>
-<code> [29]      :EndIf</code>
-<code> [30]  :EndIf</code>
+<code> [16]  :If ~(⊂y)∊''⍬</code>
+<code> [17]  :AndIf 9=⎕NC'y'</code>
+<code> [18]      :If 9=y.⎕NC'projectSpace'</code>
+<code class="emphasize">→[19]          y.projectSpace←⍕y.projectSpace</code>
+<code> [20]      :EndIf</code>
+<code> [21]      :If 9=y.⎕NC'parent'</code>
+<code> [22]          y.parent←⍕y.parent</code>
+<code> [23]      :EndIf</code>
+<code> [24]      '⍵ must not contain references'Assert 0=≢y.⎕NL 9</code>
+<code> [25]      (b{0=+/b:'' ⋄ 'Invalid parameter: ',⊃{⍺,',',⍵}/⍺/⍵}l)Assert 0=+/b←~(l←' '~⍨¨↓y.⎕NL 2)∊' '~⍨¨↓parms.⎕NL 2</code>
+<code> [26]      :If 0&lt;≢list←' '~⍨¨↓y.⎕NL 2</code>
+<code> [27]          parms⍎¨list{' '=1↑0⍴⍵:⍺,'←''',⍵,'''' ⋄ ⍵≡⍬:⍺,'←⍬' ⋄ ⍺,'←',⍕⍵}¨y.{⍎⍵}¨list</code>
+<code> [28]      :EndIf</code>
+<code> [29]  :EndIf</code>
 </div>
 <code class="header" id="listing_33">#.Cider.Cider.Cider.CheckPackagesStatus &mdash; 95%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code>  {r}←CheckPackagesStatus(config parms pkgStatus)</code>
@@ -1350,51 +1349,56 @@ $(document).ready(function() {
 <code class="header" id="listing_35">#.Cider.Cider.Cider.Version &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code>  r←Version</code>
 <code> [1]   :Access Public Shared</code>
-<code> [2]   r←'0.29.1+410'</code>
-<code> [3]        ⍝ * 0.29.1 ⋄ 2023-07-04</code>
-<code> [4]        ⍝   * The check for the config parameters "make" and "test" no result in a warning rather than rejection.</code>
-<code> [5]        ⍝   * Bug fixes:</code>
-<code> [6]        ⍝     * Asked for re-installing packages when there was no dependency file</code>
-<code> [7]        ⍝     * Message printed to ⎕SE  was wrong in case of "Import"</code>
-<code> [8]        ⍝     * Documentation corrected on the `init` function</code>
-<code> [9]        ⍝     * Wrong message corrected in case an `init` function was dyadic but stated it being ambivalent</code>
-<code> [10]       ⍝     * Handling of internal log was wrong with -quiet</code>
-<code> [11]       ⍝ * 0.29.0 ⋄ 2023-06-23</code>
-<code> [12]       ⍝   * BREAKING CHANGE: the user command and API function `ViewConfig` was renamed to `ProjectConfig` in order</code>
-<code> [13]       ⍝     to bring it in line with Tatin which has `]PackageConfig`</code>
-<code> [14]       ⍝   * New user command `]Cider.Config` introduced</code>
-<code> [15]       ⍝   * Syntax problems after editing a project config file are now explained</code>
-<code> [16]       ⍝   * Bug fix: the checks when editing the Cider project config file allowed `projectSpace` and `make` to be</code>
-<code> [17]       ⍝     fully qualified; that's now rejected as invalid</code>
-<code> [18]       ⍝ * 0.28.1 ⋄ 2023-06-02</code>
-<code> [19]       ⍝   * Bug fix: opening a project showed a mutilated question; was introduced with 0.28.0</code>
-<code> [20]       ⍝ * 0.28.0 ⋄ 2023-06-14</code>
-<code> [21]       ⍝   * `]CloseProjects` now presents a list of open projects if no argument is provided and there are</code>
-<code> [22]       ⍝     multiple projects currently open</code>
-<code> [23]       ⍝   * `CloseProjects` now accepts multiple projects as argument</code>
-<code> [24]       ⍝ * 0.27.1 ⋄ 2023-06-02</code>
-<code> [25]       ⍝   * Bug fixes</code>
-<code> [26]       ⍝     * `CloseProject` produced an error when the question "Do you wish to )CLEAR the workspace?" was negated</code>
-<code> [27]       ⍝     * An attempt to open a project "foo" when there is alreday a class "foo" was doomed.</code>
-<code> [28]       ⍝       Similarly, when an object "foo" already exists but is not a namespace, class or interface it failed.</code>
-<code> [29]       ⍝     * Documentation improved regarding installing and updating Cider</code>
-<code> [30]       ⍝ * 0.27.0 ⋄ 2023-05-17</code>
-<code> [31]       ⍝   * `]ListTatinPackages` now marks all URLs that do not point to https://tati.dev</code>
-<code> [32]       ⍝   * `]CIDER.CloseProject` now offers to delete project namespace(s) from the workspace in case not</code>
-<code> [33]       ⍝     all projects are closed.</code>
-<code> [34]       ⍝   * Syntax change: an alias is only recognized with an openeing AND a closing square bracket as in [foo]</code>
-<code> [35]       ⍝   * Internal fix in `CheckTatinFoldersForLaterVersions`</code>
-<code> [36]       ⍝ * 0.26.1 ⋄ 2023-05-06</code>
-<code> [37]       ⍝   * Bug fix regarding the handling of dependencies.tatin and dependencies_dev.tatin</code>
-<code> [38]       ⍝   * Help page for CreateProject corrected and enhanced</code>
-<code> [39]       ⍝ * 0.26.0 ⋄ 2023-05-02</code>
-<code> [40]       ⍝   * BREAKING CHANGE: `GetCiderConfigFilename` renamed to `GetCiderGlobalConfigFilename`</code>
-<code> [41]       ⍝   * BREAKING CHANGE: `GetCiderConfigHomeFolder` renamed to `GetCiderGlobalConfigHomeFolder`</code>
-<code> [42]       ⍝   * Cider injects now a namespace `TatinVars` into the root of any project becoming eventually a package</code>
-<code> [43]       ⍝   * New project config parameter `distributionFolder` introduced which is automatically injected</code>
-<code> [44]       ⍝     into any opened Cider project</code>
-<code> [45]       ⍝   * Shared public function `GetCiderGlobalConfigFileContent` introduced</code>
-<code> [46]       ⍝   * Documentation corrected regarding the global Cider config file.</code>
+<code> [2]   r←'0.30.0+410'</code>
+<code> [3]        ⍝ * 0.30.0 ⋄ 2023-07-07</code>
+<code> [4]        ⍝   * Without a parameter, OpenProject now offers all aliases for selection</code>
+<code> [5]        ⍝   * When `make` and/or `test` point to an APL object no error is thrown anymore. Instead a warning</code>
+<code> [6]        ⍝     is issued.</code>
+<code> [7]        ⍝   * Bug fix: new projects got a parameter `githubUsername` injected which is not used anymore</code>
+<code> [8]        ⍝ * 0.29.1 ⋄ 2023-07-04</code>
+<code> [9]        ⍝   * The check for the config parameters "make" and "test" no result in a warning rather than rejection.</code>
+<code> [10]       ⍝   * Bug fixes:</code>
+<code> [11]       ⍝     * Asked for re-installing packages when there was no dependency file</code>
+<code> [12]       ⍝     * Message printed to `⎕SE`  was wrong in case of "Import"</code>
+<code> [13]       ⍝     * Documentation corrected on the `init` function</code>
+<code> [14]       ⍝     * Wrong message corrected in case an `init` function was dyadic but stated it being ambivalent</code>
+<code> [15]       ⍝     * Handling of internal log was wrong with `-quiet`</code>
+<code> [16]       ⍝ * 0.29.0 ⋄ 2023-06-23</code>
+<code> [17]       ⍝   * BREAKING CHANGE: the user command and API function `ViewConfig` was renamed to `ProjectConfig` in order</code>
+<code> [18]       ⍝     to bring it in line with Tatin which has `]PackageConfig`</code>
+<code> [19]       ⍝   * New user command `]Cider.Config` introduced</code>
+<code> [20]       ⍝   * Syntax problems after editing a project config file are now explained</code>
+<code> [21]       ⍝   * Bug fix: the checks when editing the Cider project config file allowed `projectSpace` and `make` to be</code>
+<code> [22]       ⍝     fully qualified; that's now rejected as invalid</code>
+<code> [23]       ⍝ * 0.28.1 ⋄ 2023-06-02</code>
+<code> [24]       ⍝   * Bug fix: opening a project showed a mutilated question; was introduced with 0.28.0</code>
+<code> [25]       ⍝ * 0.28.0 ⋄ 2023-06-14</code>
+<code> [26]       ⍝   * `]CloseProjects` now presents a list of open projects if no argument is provided and there are</code>
+<code> [27]       ⍝     multiple projects currently open</code>
+<code> [28]       ⍝   * `CloseProjects` now accepts multiple projects as argument</code>
+<code> [29]       ⍝ * 0.27.1 ⋄ 2023-06-02</code>
+<code> [30]       ⍝   * Bug fixes</code>
+<code> [31]       ⍝     * `CloseProject` produced an error when the question "Do you wish to )CLEAR the workspace?" was negated</code>
+<code> [32]       ⍝     * An attempt to open a project "foo" when there is alreday a class "foo" was doomed.</code>
+<code> [33]       ⍝       Similarly, when an object "foo" already exists but is not a namespace, class or interface it failed.</code>
+<code> [34]       ⍝     * Documentation improved regarding installing and updating Cider</code>
+<code> [35]       ⍝ * 0.27.0 ⋄ 2023-05-17</code>
+<code> [36]       ⍝   * `]ListTatinPackages` now marks all URLs that do not point to https://tati.dev</code>
+<code> [37]       ⍝   * `]CIDER.CloseProject` now offers to delete project namespace(s) from the workspace in case not</code>
+<code> [38]       ⍝     all projects are closed.</code>
+<code> [39]       ⍝   * Syntax change: an alias is only recognized with an openeing AND a closing square bracket as in [foo]</code>
+<code> [40]       ⍝   * Internal fix in `CheckTatinFoldersForLaterVersions`</code>
+<code> [41]       ⍝ * 0.26.1 ⋄ 2023-05-06</code>
+<code> [42]       ⍝   * Bug fix regarding the handling of dependencies.tatin and dependencies_dev.tatin</code>
+<code> [43]       ⍝   * Help page for CreateProject corrected and enhanced</code>
+<code> [44]       ⍝ * 0.26.0 ⋄ 2023-05-02</code>
+<code> [45]       ⍝   * BREAKING CHANGE: `GetCiderConfigFilename` renamed to `GetCiderGlobalConfigFilename`</code>
+<code> [46]       ⍝   * BREAKING CHANGE: `GetCiderConfigHomeFolder` renamed to `GetCiderGlobalConfigHomeFolder`</code>
+<code> [47]       ⍝   * Cider injects now a namespace `TatinVars` into the root of any project becoming eventually a package</code>
+<code> [48]       ⍝   * New project config parameter `distributionFolder` introduced which is automatically injected</code>
+<code> [49]       ⍝     into any opened Cider project</code>
+<code> [50]       ⍝   * Shared public function `GetCiderGlobalConfigFileContent` introduced</code>
+<code> [51]       ⍝   * Documentation corrected regarding the global Cider config file.</code>
 </div>
 <code class="header" id="listing_36">#.Cider.Cider.Cider.InjectTatinVars &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code>  {r}←InjectTatinVars(projectRoot folder)</code>
@@ -1484,23 +1488,20 @@ $(document).ready(function() {
 <code class="header" id="listing_42">#.Cider.Cider.Cider.CheckParameters &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code>  {config}←CheckParameters config</code>
 <code> [1]      ⍝ Check the parameters for being complete and valid</code>
-<code> [2]   :If 0=config.CIDER.⎕NC'githubUsername'</code>
-<code> [3]       config.CIDER.githubUsername←''</code>
-<code> [4]   :EndIf</code>
-<code> [5]   p'Checking parameters...'</code>
-<code> [6]   list←' '~⍨¨⊃,/↓¨config.(LINK CIDER).⎕NL 2 9</code>
-<code> [7]   list2←list~GetValidCiderParams</code>
-<code> [8]   bool←(list~GetValidCiderParams)∊GetValidLinkParams</code>
-<code> [9]   ('Invalid LINK parameter',((1&lt;+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool</code>
-<code> [10]  bool←GetValidLinkParams∊list2</code>
-<code> [11]  ('Missing LINK parameter',((1&lt;+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidLinkParams)Assert∧/bool</code>
-<code> [12]  list2←list~GetValidLinkParams</code>
-<code> [13]  bool←(list~GetValidLinkParams)∊GetValidCiderParams</code>
-<code> [14]  ('Invalid Cider parameter',((1&lt;+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool</code>
-<code> [15]  list←' '~⍨¨↓config.CIDER.⎕NL 2 9</code>
-<code> [16]  bool←GetValidCiderParams∊list</code>
-<code> [17]  ('Missing Cider parameter',((1&lt;+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams)Assert∧/bool</code>
-<code> [18]  p'  All fine'</code>
+<code> [2]   p'Checking parameters...'</code>
+<code> [3]   list←' '~⍨¨⊃,/↓¨config.(LINK CIDER).⎕NL 2 9</code>
+<code> [4]   list2←list~GetValidCiderParams</code>
+<code> [5]   bool←(list~GetValidCiderParams)∊GetValidLinkParams</code>
+<code> [6]   ('Invalid LINK parameter',((1&lt;+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool</code>
+<code> [7]   bool←GetValidLinkParams∊list2</code>
+<code> [8]   ('Missing LINK parameter',((1&lt;+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidLinkParams)Assert∧/bool</code>
+<code> [9]   list2←list~GetValidLinkParams</code>
+<code> [10]  bool←(list~GetValidLinkParams)∊GetValidCiderParams</code>
+<code> [11]  ('Invalid Cider parameter',((1&lt;+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool</code>
+<code> [12]  list←' '~⍨¨↓config.CIDER.⎕NL 2 9</code>
+<code> [13]  bool←GetValidCiderParams∊list</code>
+<code> [14]  ('Missing Cider parameter',((1&lt;+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams)Assert∧/bool</code>
+<code> [15]  p'  All fine'</code>
 </div>
 <code class="header" id="listing_43">#.Cider.Cider.Cider.PrintToSession &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code> {r}←flag PrintToSession msg</code>
