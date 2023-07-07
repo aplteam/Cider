@@ -9,15 +9,18 @@
 
     ∇ r←Version;fully
       :Access Public Shared
-      r←'0.30.0-beta-1+410'
-      ⍝ * 0.30.0 ⋄ 2023-07-04
+      r←'0.30.0-beta-2+410'
+      ⍝ * 0.30.0 ⋄ 2023-07-07
+      ⍝     * Bug fixes
+      ⍝       * New projects got a parameter `githubUsername` injected which is not used anymore
+      ⍝ * 0.29.1 ⋄ 2023-07-04
       ⍝   * The check for the config parameters "make" and "test" no result in a warning rather than rejection.
       ⍝   * Bug fixes:
       ⍝     * Asked for re-installing packages when there was no dependency file
-      ⍝     * Message printed to ⎕SE  was wrong in case of "Import"
+      ⍝     * Message printed to `⎕SE`  was wrong in case of "Import"
       ⍝     * Documentation corrected on the `init` function
       ⍝     * Wrong message corrected in case an `init` function was dyadic but stated it being ambivalent
-      ⍝     * Handling of internal log was wrong with -quiet
+      ⍝     * Handling of internal log was wrong with `-quiet`
       ⍝ * 0.29.0 ⋄ 2023-06-23
       ⍝   * BREAKING CHANGE: the user command and API function `ViewConfig` was renamed to `ProjectConfig` in order
       ⍝     to bring it in line with Tatin which has `]PackageConfig`
@@ -326,7 +329,6 @@
       parms.noPkgLoad←0
       parms.watch←(1+HasDotNet)⊃'ns' 'both'
       parms.checkPackageVersions←⍬      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
-      parms.githubUsername←''
       :If ~(⊂y)∊''⍬
       :AndIf 9=⎕NC'y'
           :If 9=y.⎕NC'projectSpace'
@@ -500,9 +502,6 @@
 
     ∇ {config}←CheckParameters config;list;bool;list2
     ⍝ Check the parameters for being complete and valid
-      :If 0=config.CIDER.⎕NC'githubUsername'
-          config.CIDER.githubUsername←''
-      :EndIf
       p'Checking parameters...'
       list←' '~⍨¨⊃,/↓¨config.(LINK CIDER).⎕NL 2 9
       list2←list~GetValidCiderParams

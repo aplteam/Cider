@@ -3,6 +3,8 @@
 ⍝ Kai Jaeger
 ⍝ 2023-07-06
 
+
+
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
     L←⎕SE.Link
@@ -249,9 +251,9 @@
     ∇ r←OpenProject Args;path;parms;aliasDefs;bool;info;opCode;alias;log;success
       r←0 0⍴''
       Args.projectSpace←{(,0)≡,⍵:'' ⋄ ⍵}Args.projectSpace
+      aliasDefs←P.GetAliasFileContent
       :If 0≡Args._1
       :OrIf Args._1≡'[?]'
-          aliasDefs←P.GetAliasFileContent
           :If 0=≢path←SelectFromAliases aliasDefs
               :Return
           :EndIf
