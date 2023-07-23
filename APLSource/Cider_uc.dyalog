@@ -576,6 +576,8 @@
               folder←∊1 ⎕NPARTS folder
               :If 1 YesOrNo'"',folder,'" does not exist yet - create?'
                   ⎕MKDIR folder
+              :Else
+                  r←'Cancelled by user' ⋄ →0
               :EndIf
           :EndIf
           CreateConfigFile filename namespace

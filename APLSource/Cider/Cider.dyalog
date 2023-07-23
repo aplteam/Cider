@@ -9,7 +9,9 @@
 
     ∇ r←Version;fully
       :Access Public Shared
-      r←'0.30.0+410'
+      r←'0.30.1+410'
+      ⍝ * 0.30.1 ⋄ 2023-07-23
+      ⍝   * Bug fix in `CheckForTatinPackages`
       ⍝ * 0.30.0 ⋄ 2023-07-07
       ⍝   * Without a parameter, OpenProject now offers all aliases for selection
       ⍝   * When `make` and/or `test` point to an APL object no error is thrown anymore. Instead a warning
@@ -266,7 +268,7 @@
       :EndIf
     ∇
 
-    ∇ status←path CheckForTatinPackages config;folders;list;bool;report;this;parms
+    ∇ status←path CheckForTatinPackages config;folders;list;bool;report;this;parms;q
     ⍝ Checks whether at least one Tatin install folder is defined, does exist and is not empty, in which case a 1 is returned.
     ⍝ In case at least one install folder contains just a dependency file and a build file but nothing else then...
     ⍝ * when the user goes for re-installing the packages, a 2 is returned
@@ -280,10 +282,13 @@
           status←0<+/≢¨list←{⊃0 ⎕NINFO⍠('Wildcard' 1)⊣⍵}¨(⊂path,'/'),¨folders,¨⊂'/*'
       :AndIf 1∊bool←0=≢¨ListDirs¨(⊂path,'/'),¨folders,¨'/'
       :AndIf 1∊bool←bool∧⎕NEXISTS(⊂path,'/'),¨folders,¨⊂'/apl-dependencies.txt'
-          :If YesOrNo'Tatin install folder',(()⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
+          q←'Tatin install folder',((1+1=+/bool)⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
+          q←'ReInstallMissingPkgs@',q
+          :If YesOrNo q
               status←2
               parms←⎕SE.Tatin.CreateReInstallParms
-              parms.update←YesOrNo'Would you like to install later version, if available?'
+              q←'LaterVersions@Would you like to install later version, if available?'
+              parms.update←YesOrNo q
               folders←bool/folders
               :For this :In (⊂path,'/'),¨folders
                   report←parms ⎕SE.Tatin.ReInstallDependencies this

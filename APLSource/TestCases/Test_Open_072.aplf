@@ -1,0 +1,25 @@
+ R←Test_Open_072(stopFlag batchFlag);⎕TRAP;parms;success;log
+⍝ Open a project that has a package folder that contains no packages
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ 'TEMP'#.⎕NS''
+
+ parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms.folder←##.CiderConfig.HOME,'/TestData/Foo2-Project'
+ parms.parent←'#.TEMP'
+ parms.quietFlag←1
+ parms.watch←'ns'
+ ##.Cider.CommTools.YesOrNo_Answers←1 2⍴'ReInstallMissingPkgs@' 'y'
+ ##.Cider.CommTools.YesOrNo_Answers⍪←'LaterVersions@' 'y'
+ (success log)←##.Cider.Cider.OpenProject parms
+ Assert success
+ →T.GoToTidyUp~(⊂'1 Tatin package loaded')∊log
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.CommTools.Cleanup
+ Assert ⎕SE.Cider.CloseProject'#.TEMP.fooproj'
+ #.⎕EX'TEMP'
+⍝Done
