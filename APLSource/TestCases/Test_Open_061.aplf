@@ -11,6 +11,7 @@
  parms.quietFlag←1
  parms.alias←'Foo'
  parms.watch←'ns'
+ parms.ignoreUserExec←1
  (success log)←##.Cider.Cider.OpenProject parms
  Assert success
  defs←##.Cider.Cider.GetAliasFileContent

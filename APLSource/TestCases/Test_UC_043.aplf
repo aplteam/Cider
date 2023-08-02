@@ -6,7 +6,7 @@
  tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
  (tempDir,'/')⎕NCOPY⍠('Wildcard' 1)⊣∆GetTestPath(⊃⎕SI),'/*'
 
- {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -quiet'
+ {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -quiet -ignoreUserExec'
  list←##.Cider.Cider.ListOpenProjects 0
  →T.GoToTidyUp~(⊂'#.Foo')∊list[;1]
  row←list[;1]⍳⊂'#.Foo'

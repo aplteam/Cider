@@ -13,7 +13,7 @@
  (⊂'Init' '∆INIT←1')FilesAndDirs.NPUT tempDir,'/APLSource/Init.aplf'
  (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
 
- res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" # -noEdit -acceptConfig -quiet'
+ res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" # -noEdit -acceptConfig -quiet -ignoreUserExec'
  Assert'Project created and opened'≡res
  list←FilesAndDirs.ListFiles tempDir
  →T.GoToTidyUp 1≠≢list
@@ -24,7 +24,7 @@
  #.⎕EX'Foo'
 
  (⊂'Init x' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
- res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -quiet'
+ res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -quiet -ignoreUserExec'
  Assert∨/'Project successfully opened'⍷∊res
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
@@ -32,7 +32,7 @@
  #.⎕EX'Foo'
 
  (⊂'{x} Init y' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
- res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -quiet'
+ res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -quiet -ignoreUserExec'
  Assert∨/'Project successfully opened'⍷∊res
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
@@ -40,7 +40,7 @@
  #.⎕EX'Foo'
 
  (⊂'{r}←Init y' 'r←∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
- res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -quiet'
+ res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -quiet -ignoreUserExec'
  Assert∨/'Project successfully opened'⍷∊res
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
@@ -48,7 +48,7 @@
  #.⎕EX'Foo'
 
  (⊂'x Init y' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
- res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -quiet'
+ res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -quiet -ignoreUserExec'
  →T.GoToTidyUp~∨/'Invalid function valence: is dyadic'⍷∊res
 
  R←T._OK

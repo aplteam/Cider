@@ -11,6 +11,7 @@
  parms.projectSpace←'TEMP'
  parms.quietFlag←1
  parms.watch←'ns'
+ parms.ignoreUserExec←1
  (success log)←##.Cider.Cider.OpenProject parms
  →T.GoToTidyUp~success
 

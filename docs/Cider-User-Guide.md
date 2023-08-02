@@ -1,7 +1,7 @@
 [parm]:title             = 'Cider User Guide'
 [parm]:leanpubExtensions = 1
 [parm]:numberHeaders     = 2 3 4 5 6
-
+[parm]:toc               = 2 3 4 5 6
 
 
 
@@ -37,11 +37,11 @@ I> Note that Tatin will check whether Cider is available, and if so cooperate wi
 
 #### APLGit2
 
-In case you use Git as a version control management tool you should install the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") as well as the user command [APLGit2](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub").
+In case you use Git as a version control management tool it is recommended that you install the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") as well as the user command [`APLGit2`](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub").
 
 When a project carries a directory `.git/` then Cider knows that the project is version controlled with Git. It also checks whether `⎕SE.APLGit2` is available: this is the API of the user command `]APLGit2`. Cider uses this to display the Git status report for a project in the later stages of opening a project.
 
-I> In order to install APLGit2 as a user command execute this statement:
+I> In order to install `APLGit2` as a user command execute this statement:
 I>
 I> `]InstallPackages [tatin]aplteam-APLGit2 [MyUCMDs]`
 
@@ -77,7 +77,7 @@ Every Cider project has a configuration file called `cider.config` that is saved
 
 Cider may also have a global configuration file that can be used to define settings that effect all projects. It's also named `cider.config` but referred to as the _global_ Cider config file.
 
-This file, if it exists, it situated in a folder `.cider` that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be C:\Users\JohnDoe\.cider, on Linux it would be /home/JohnDoe/.cider etc.
+This file, if it exists, it situated in a folder `.cider` that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be C:\Users\JohnDoe\.cider on Windows, on Linux it would be /home/JohnDoe/.cider etc.
 
 This folder does not only host the global config file, it's also the place where the file with alias definitions (`aliase.txt`) is saved as well as the file `cider.config.template` that is used as a template when a new project is created.
 
@@ -447,13 +447,13 @@ Such a function may be niladic, monadic, ambivalent or dyadic:
 
 #### 10. Executing user-specific code
 
-Finally, you might want to execute some general code (as opposed to project-specific code) after a project was loaded. "General" means that this code is executed whenever a project (any project!) is opened. 
+You might want to execute some general code (as opposed to project-specific code) after a project was loaded. "General" means that this code is executed whenever a project (any project!) is opened. 
 
 This can be achieved by specifying the fully qualified name of a function that must be monadic, most likely in `⎕SE`. A namespace with the configuration data of the project is passed as the right argument.
 
 The function may or may not return a result, but when it does the result will be discarded.
 
-The fully qualified name of the function must go into the file that is returned by the function `GetCiderConfigFilename` which is available only via the API, not as a user command. This is the Cider config file, not a Cider project config file.
+The fully qualified name of the function must go into the file that is returned by the function `GetCiderGlobalConfigFilename` which is available only via the API, not as a user command. This is the Cider config file, not a Cider project config file.
 
 That file already contains a definition of the keyword `ExecuteAfterProjectOpen`, but it is empty:
 
@@ -463,11 +463,19 @@ That file already contains a definition of the keyword `ExecuteAfterProjectOpen`
 }
 ```
 
-What is this good for you may ask? Well, let's assume that you are not using Git but a different version control software. With Git, Cider would execute the "status" command and show the result to the user. With your version control software, it can't do something similar.
+What is this application for this you may ask. Well, let's assume that you are not using Git but a different version control software. With Git, Cider would execute the "status" command and show the result to the user. With your version control software, it can't do something similar because it does not know what to do.
 
 You can easily achieve that by yourself: just add the required code to a function you load early into `⎕SE`, and then make sure that `ExecuteAfterProjectOpen` is calling that function and you are done.
 
 Another application could be to bring in non-Tatin dependencies defined in the `dependencies` and/or the `dependencies_dev` properties.
+
+Note that you may use the `ignoreUserExec` flag to tell `OpenProject` to ignore the global setting. This is certainly useful when Cider's test suite is executed.
+
+#### 11. Check for `ToDo`
+
+Finally Cider checks whether there is a variables `ToDo` in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.
+
+You may use this to keep track of steps that need to be executed before the project can be commited or published etc.
 
 
 ## Misc
@@ -517,3 +525,6 @@ The following example was created in a workspace where the project `APLGit2` was
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
 
 [^winonly]: At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature (or something similar) on all platforms.
+
+
+

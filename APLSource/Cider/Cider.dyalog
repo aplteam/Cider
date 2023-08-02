@@ -9,7 +9,14 @@
 
     ∇ r←Version;fully
       :Access Public Shared
-      r←'0.30.1+410'
+      r←'0.31.0-beta-5+410'
+      ⍝ * 0.31.0 ⋄ 2023-08-02
+      ⍝   * Step added to `OpenProject`: checks for a non-empty variable `ToDo` in the root of the project now
+      ⍝   * When Cider is asked for the "Make" it checks for a variable `ToDo` now
+      ⍝   * In case the user function `ExecuteAfterProjectOpen` is causing trouble the error message is more
+      ⍝     prominently emphasized now.
+      ⍝   * The newly introduced flag `ignoreUserExec` can be used to prevent the execution of the user function
+      ⍝     by a particular call of `OpenProject`
       ⍝ * 0.30.1 ⋄ 2023-07-23
       ⍝   * Bug fix in `CheckForTatinPackages`
       ⍝ * 0.30.0 ⋄ 2023-07-07
@@ -177,7 +184,8 @@
       InjectConfigDataIntoProject config projectSpace_ parms.folder
       InjectTatinVars projectSpace_ parms.folder
       {}ExecProjectInitFunction⍣(~parms.suppressInit)⊣config projectSpace_
-      ExecUserFunction config
+      {}ExecUserFunction⍣(~parms.ignoreUserExec)⊣config
+      CheckOnToDo projectSpace_
       successFlag←SUCCESS
       :If 0=parms.quietFlag
       :AndIf 0=parms.importFlag
@@ -185,6 +193,18 @@
           CheckForGit parms.folder config
       :EndIf
       ⍝Done
+    ∇
+
+    ∇ {r}←CheckOnToDo ref
+    ⍝ Checks whether there is a non-empty variable "ToDo" in the root of the project, and put it into ⎕ED if so.
+    ⍝ Returns a 1 if found and 0 otherwise
+      r←0
+      :If 2=ref.⎕NC'ToDo'
+      :AndIf 0<≢(∊ref.ToDo)~' '
+          ⎕←'>>> Found a variable ',(⍕ref),'.ToDo'
+          ⎕←Box Frame ref.ToDo
+          r←1
+      :EndIf
     ∇
 
     ∇ {r}←InjectTatinVars(projectRoot folder);cfg
@@ -268,7 +288,7 @@
       :EndIf
     ∇
 
-    ∇ status←path CheckForTatinPackages config;folders;list;bool;report;this;parms;q
+    ∇ status←path CheckForTatinPackages config;folders;list;bool;report;this;parms
     ⍝ Checks whether at least one Tatin install folder is defined, does exist and is not empty, in which case a 1 is returned.
     ⍝ In case at least one install folder contains just a dependency file and a build file but nothing else then...
     ⍝ * when the user goes for re-installing the packages, a 2 is returned
@@ -282,13 +302,10 @@
           status←0<+/≢¨list←{⊃0 ⎕NINFO⍠('Wildcard' 1)⊣⍵}¨(⊂path,'/'),¨folders,¨⊂'/*'
       :AndIf 1∊bool←0=≢¨ListDirs¨(⊂path,'/'),¨folders,¨'/'
       :AndIf 1∊bool←bool∧⎕NEXISTS(⊂path,'/'),¨folders,¨⊂'/apl-dependencies.txt'
-          q←'Tatin install folder',((1+1=+/bool)⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
-          q←'ReInstallMissingPkgs@',q
-          :If YesOrNo q
+          :If YesOrNo'Tatin install folder',((1+1=+/bool)⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
               status←2
               parms←⎕SE.Tatin.CreateReInstallParms
-              q←'LaterVersions@Would you like to install later version, if available?'
-              parms.update←YesOrNo q
+              parms.update←YesOrNo'Would you like to install later version, if available?'
               folders←bool/folders
               :For this :In (⊂path,'/'),¨folders
                   report←parms ⎕SE.Tatin.ReInstallDependencies this
@@ -332,6 +349,7 @@
       parms.alias←''
       parms.parent←''
       parms.suppressInit←0
+      parms.ignoreUserExec←0
       parms.importFlag←0
       parms.noPkgLoad←0
       parms.watch←(1+HasDotNet)⊃'ns' 'both'
@@ -770,24 +788,23 @@
       r←⍬
       msg←''
       :If 0<≢fn←GetFunctionNameFromCiderConfigFile ⍬
+          p'Attempting to execute user function ',fn,'...'
           :If 1=1 1⊃⎕AT fn
               :Trap 0
                   ⍎'{}',fn,' config'
               :Else
                   qdmx←⎕DMX
-                  msg←'Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
+                  msg←'Executing "',fn'" (ExecuteAfterProjectOpen) crashed: ',qdmx.EM
               :EndTrap
           :Else
               :Trap 0
                   ⍎fn,' config'
               :Else
                   qdmx←⎕DMX
-                  msg←'Executing "ExecuteAfterProjectOpen" crashed: ',qdmx.EM
+                  msg←'Executing "',fn,'" (ExecuteAfterProjectOpen) crashed: ',qdmx.EM
               :EndTrap
           :EndIf
-          :If 0=≢msg
-              p'User function successfully executed'
-          :Else
+          :If 0<≢msg
               1 p Frame msg
           :EndIf
       :EndIf

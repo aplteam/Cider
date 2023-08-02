@@ -11,7 +11,8 @@
  parms.importFlag←1
  parms.quietFlag←1
  parms.projectSpace←'Goo'                   ⍝ Overwrites the config file
-  parms.watch←'ns'
+ parms.watch←'ns'
+ parms.ignoreUserExec←1
  (success log)←##.Cider.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp'World'≢#.TEMP.Goo.Hello

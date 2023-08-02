@@ -13,6 +13,7 @@
  parms.alias←'Foo'
  parms.checkPackageVersions←2
  parms.watch←'ns'
+ parms.ignoreUserExec←1
  (success log)←##.Cider.Cider.OpenProject parms
  Assert success
  defs←##.Cider.Cider.GetAliasFileContent

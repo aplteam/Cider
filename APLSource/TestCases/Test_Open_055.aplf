@@ -10,6 +10,7 @@
  parms.parent←'#.TEMP'
  parms.quietFlag←1
  parms.watch←'firlefanz'
+ parms.ignoreUserExec←1
 
  :Trap 11
      {}##.Cider.Cider.OpenProject parms

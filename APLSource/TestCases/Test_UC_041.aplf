@@ -9,7 +9,7 @@
  wasDir←FilesAndDirs.Cd tempDir
 
  ⎕SE.Cider.##.CommTools.YesOrNo_Answers←1 2⍴'Sure you want to create the project' 'Y'
- {}⎕SE.UCMD'Cider.CreateProject "." -noEdit -quiet'
+ {}⎕SE.UCMD'Cider.CreateProject "." -noEdit -quiet -ignoreUserExec'
  list←##.Cider.Cider.ListOpenProjects 0
  →T.GoToTidyUp~(⊂'#.aaaa')∊list[;1]
  row←list[;1]⍳⊂'#.aaaa'

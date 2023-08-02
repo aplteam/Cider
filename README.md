@@ -47,6 +47,8 @@ Regarding the API there is a document "Cider-API-Reference.html" available.
 
 ## Installation
 
+From version 19.0 onwards Cider is part of a standard installation of Dyalog. Therefore you only have to worry about installing it with version 18.0 and 18.2. Cider does not run on earlier versions of Dyalog.
+
 With version 0.23 Cider became a Tatin package. That simplifies the installation process: all you need to do is issue this command:
 
 ```
@@ -179,3 +181,4 @@ Returns a three-item-vector with "Name", "Version number" and "Version date".
 Puts the config file of a project on display. 
 
 By specifying the `-edit` flag the user might edit the file rather than just viewing it.
+

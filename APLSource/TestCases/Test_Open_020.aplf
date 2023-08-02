@@ -10,7 +10,8 @@
  parms.parent←'#.TEMP'
  parms.importFlag←1
  parms.quietFlag←1
-  parms.watch←'ns'
+ parms.watch←'ns'
+ parms.ignoreUserExec←1
  (success log)←##.Cider.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello

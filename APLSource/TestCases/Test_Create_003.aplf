@@ -12,7 +12,7 @@
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  stop←0
- (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -quiet -noEdit'
+ (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -quiet -noEdit -ignoreUserExec'
 
  →T.GoToTidyUp 0=rc
  →T.GoToTidyUp~∨/'Both the target namespace and the source folder are not empty'⍷msg

@@ -10,6 +10,7 @@
  parms.parent←'#.TEMP'
  parms.quietFlag←1
  parms.watch←'ns'
+ parms.ignoreUserExec←1
  ##.Cider.CommTools.YesOrNo_Answers←1 2⍴'ReInstallMissingPkgs@' 'y'
  ##.Cider.CommTools.YesOrNo_Answers⍪←'LaterVersions@' 'y'
  (success log)←##.Cider.Cider.OpenProject parms

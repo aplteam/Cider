@@ -1,7 +1,7 @@
 ﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-07-06
+⍝ 2023-08-02
 
 
 
@@ -19,7 +19,7 @@
           c.Name←'OpenProject'
           c.Desc←'Load all source files into the WS and keep it linked by default'
           c.Group←'Cider'
-          c.Parse←'1s -projectSpace= -parent= -alias= -suppressInit -quiet -import -noPkgLoad -watch=ns dir both'
+          c.Parse←'1s -projectSpace= -parent= -alias= -suppressInit -quiet -import -noPkgLoad -ignoreUserExec -watch=ns dir both'
           r,←c
      
           c←⎕NS''
@@ -47,7 +47,7 @@
           c.Name←'CreateProject'
           c.Desc←'Makes the given folder a project folder'
           c.Group←'Cider'
-          c.Parse←'2s -alias= -acceptConfig -noEdit -quiet'
+          c.Parse←'2s -alias= -acceptConfig -noEdit -quiet -ignoreUserExec'
           r,←c
      
           c←⎕NS''
@@ -161,12 +161,17 @@
       :EndIf
     ∇
 
-    ∇ r←Make Args;config;path;list;index
+    ∇ r←Make Args;config;path;list;index;home
       r←''
       :If 0=≢path←GetProjectPath Args
           →0,≢⎕←'Cancelled by user'
       :Else
-          r←⎕SE.Cider.RunMake path
+          home←(⎕SE.Cider.ListOpenProjects 0){⊃⍺[⍺[;2]⍳⊂⍵;1]}path
+          :If 2≠⎕NC home,'.ToDo'
+          :OrIf 0=≢(∊home⍎'ToDo')~' '
+          :OrIf ⎕SE.Cider.##.CommTools.YesOrNo'IgnoreToDo@There is a non-empty variable "ToDo" in <',home,'> - carry on anyway?'
+              r←⎕SE.Cider.RunMake path
+          :EndIf
       :EndIf
     ∇
 
@@ -213,9 +218,9 @@
       :EndIf
       :If 0=≢Args._2
       :OrIf 0≡Args._2
-          r←CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.quiet)
+          r←CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.quiet)(Args.ignoreUserExec)
       :Else
-          r←Args._2 CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.quiet)
+          r←Args._2 CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.quiet)(Args.ignoreUserExec)
       :EndIf
       :If 0≢Args.alias
           :If 0<≢msg←P.AddAlias folder Args.alias
@@ -290,6 +295,7 @@
       parms.suppressInit←Args.suppressInit
       parms.importFlag←Args.import
       parms.noPkgLoad←Args.noPkgLoad
+      parms.ignoreUserExec←Args.ignoreUserExec
       (success log)←P.OpenProject parms
       :If Args.quiet
           r←log
@@ -311,7 +317,7 @@
           :Select ⎕C Cmd
           :Case ⎕C'OpenProject'
               r,←⊂'Load all source files into the WS and keep it linked by default plus many more actions...'
-              r,←⊂']Cider.OpenProject [folder|alias] -projectSpace= -parent= -alias= -suppressInit -quiet -import -noPkgLoad -watch=ns|dir|both'
+              r,←⊂']Cider.OpenProject [folder|alias] -projectSpace= -parent= -alias= -suppressInit -quiet -import -noPkgLoad -ignoreUserExec -watch=ns|dir|both'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'List all currently open projects'
               r,←⊂']Cider.ListOpenProjects -verbose'
@@ -323,7 +329,7 @@
               r,←⊂']Cider.ListTatinPackages [folder]'
           :Case ⎕C'CreateProject'
               r,←⊂'Makes the given folder a project folder'
-              r,←⊂']Cider.CreateProject <folder> [<project-namespace>] -alias= -acceptConfig -noEdit -quiet'
+              r,←⊂']Cider.CreateProject <folder> [<project-namespace>] -alias= -acceptConfig -noEdit -quiet -ignoreUserExec'
           :Case ⎕C'CloseProject'
               r,←⊂'Breaks the Link between one or more project spaces and their associated files on disk'
               r,←⊂']Cider.CloseProject [<namespace-name>|alias-name] -all'
@@ -361,27 +367,28 @@
               r,←⊂'projects that start their names with "A"'
               r,←⊂'    ]Cider.OpenProject [A*]'
               r,←⊂''
-              r,←⊂'-quiet        The user command prints messages to the session unless -quiet is specified.'
-              r,←⊂'-parent       The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
-              r,←⊂'              overwritten by setting the -parent= and/or the -projectSpace= option(s).'
-              r,←⊂'-projectSpace The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
-              r,←⊂'              overwritten by setting the -projectSpace= and/or the -parent= option(s).'
-              r,←⊂'-import       By default the namespace is linked to folder. By specifying the -import'
-              r,←⊂'              flag this can be avoided: the code is then loaded into the workspace with the'
-              r,←⊂'              Link.Import method, meaning that changes are not tracked.'
-              r,←⊂'              With -import the status of neither Git nor any installed Tatin packages is checked.'
-              r,←⊂'-alias=       In case you are going to work on a project frequently you may specify'
-              r,←⊂'              -alias=name for quicker access.'
-              r,←⊂'              (In order to remove an alias use ]Cider.ListAliases -edit)'
-              r,←⊂'-noPkgLoad    By default the Tatin packages from the installation folder(s) defined in the'
-              r,←⊂'              config will be loaded. If you don''t want this specify -noPkgLoad'
-              r,←⊂'-watch        Defaults to "both" (if .NET is available) but may be "ns" or "dir" instead.'
-              r,←⊂'               * "ns" means that changes in the workpace are saved on disk'
-              r,←⊂'               * "dir" means that any changes on disk are brought into the WS'
-              r,←⊂'               * "both" means that any changes in either "ns" or "dir" are reflected accordingly'
-              r,←⊂'                 However, currently "both" works only under Windows.'
-              r,←⊂'                 Note that the flag does NOT change the config file on disk'
-              r,←⊂'              Refer to the Link documentation for details.'
+              r,←⊂'-quiet          The user command prints messages to the session unless -quiet is specified.'
+              r,←⊂'-parent         The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
+              r,←⊂'                overwritten by setting the -parent= and/or the -projectSpace= option(s).'
+              r,←⊂'-projectSpace   The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
+              r,←⊂'                overwritten by setting the -projectSpace= and/or the -parent= option(s).'
+              r,←⊂'-import         By default the namespace is linked to folder. By specifying the -import'
+              r,←⊂'                flag this can be avoided: the code is then loaded into the workspace with the'
+              r,←⊂'                Link.Import method, meaning that changes are not tracked.'
+              r,←⊂'                With -import the status of neither Git nor any installed Tatin packages is checked.'
+              r,←⊂'-alias=         In case you are going to work on a project frequently you may specify'
+              r,←⊂'                -alias=name for quicker access.'
+              r,←⊂'                (In order to remove an alias use ]Cider.ListAliases -edit)'
+              r,←⊂'-noPkgLoad      By default the Tatin packages from the installation folder(s) defined in the'
+              r,←⊂'                config will be loaded. If you don''t want this specify -noPkgLoad'
+              r,←⊂'-watch          Defaults to "both" (if .NET is available) but may be "ns" or "dir" instead.'
+              r,←⊂'                * "ns" means that changes in the workpace are saved on disk'
+              r,←⊂'                * "dir" means that any changes on disk are brought into the WS'
+              r,←⊂'                * "both" means that any changes in either "ns" or "dir" are reflected accordingly'
+              r,←⊂'                   However, currently "both" works only under Windows.'
+              r,←⊂'                   Note that the flag does NOT change the config file on disk'
+              r,←⊂'                Refer to the Link documentation for details.'
+              r,←⊂'-ignoreUserExec Suppress execution of a user function defined in Cider''s config file on this occasion'
           :Case ⎕C'Config'
               r,←⊂'Puts the content of Cider''s global config into the editor and allows the user to change it.'
               r,←⊂'By specifying the -print flag you can force the user command to print the content of the file'
@@ -435,15 +442,16 @@
               r,←⊂'If no path is specified it acts on the current directory, but in that case the user'
               r,←⊂'is prompted for confirmation to avoid mishaps.'
               r,←⊂''
-              r,←⊂'-acceptConfig: By default a file cider.config is created, and an error is thrown in'
-              r,←⊂'               case it already exists. You can use -acceptConfig to force CreateProject'
-              r,←⊂'               to accept an already existing config file.'
-              r,←⊂'-noEdit:       With -noEdit you can prevent the user from being asked to edit the config file.'
-              r,←⊂'-alias:        In case you are going to work on the new project frequently you may specify'
-              r,←⊂'               -alias=name'
-              r,←⊂'-quiet         After a project has been created successfully, the user will be asked whether'
-              r,←⊂'               she wants to open the project as well. You can enforce that without the user'
-              r,←⊂'               being interrogated by setting the -quiet flag. Mainly useful for test cases.'
+              r,←⊂'-acceptConfig:  By default a file cider.config is created, and an error is thrown in'
+              r,←⊂'                case it already exists. You can use -acceptConfig to force CreateProject'
+              r,←⊂'                to accept an already existing config file.'
+              r,←⊂'-noEdit:        With -noEdit you can prevent the user from being asked to edit the config file.'
+              r,←⊂'-alias:         In case you are going to work on the new project frequently you may specify'
+              r,←⊂'                -alias=name'
+              r,←⊂'-quiet          After a project has been created successfully, the user will be asked whether'
+              r,←⊂'                she wants to open the project as well. You can enforce that without the user'
+              r,←⊂'                being interrogated by setting the -quiet flag. Mainly useful for test cases.'
+              r,←⊂'-ignoreUserExec Suppress execution of a user function defined in Cider''s config file on this occasion'
               r,←⊂'Note that the alias is not case sensitive'
           :Case ⎕C'CloseProject'
               r,←⊂'Breaks the Link between one or more projects and their associated files on disk.'
@@ -548,7 +556,7 @@
       :EndIf
     ∇
 
-    ∇ r←{namespace}CreateProject_(folder acceptFlag noEditFlag quietFlag);filename;success;config;projectFolder;parms;list
+    ∇ r←{namespace}CreateProject_(folder acceptFlag noEditFlag quietFlag ignoreUserExec);filename;success;config;projectFolder;parms;list
       :Access Public Shared
       r←''
       :If 0≡folder
@@ -625,6 +633,7 @@
               parms.alias←{0≡⍵:'' ⋄ ⍵}Args.alias
               parms.quietFlag←quietFlag
               parms.watch←config.LINK.watch
+              parms.ignoreUserExec←ignoreUserExec
           :AndIf {⍵:1 ⋄ 1 YesOrNo'Project successfully created; open as well?' ⋄ 1}quietFlag
           :AndIf ⊃P.OpenProject parms
               r←'Project created and opened'

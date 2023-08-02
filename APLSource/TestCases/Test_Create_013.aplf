@@ -16,7 +16,7 @@
  ⎕SE.Cider.##.CommTools.YesOrNo_Answers[2;]←'Target namespace "#.Foo" is not empty. Delete contents?' 'Y'
 
  stop←0
- (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -noEdit'
+ (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -noEdit -ignoreUserExec'
 
  →T.GoToTidyUp 0<rc
  →T.GoToTidyUp #.Foo.TheAnswerIs≠42  ⍝ Original (43) overwritten by the version in the source folder

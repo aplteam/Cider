@@ -12,7 +12,7 @@
  config←∆GetJSON5 tempDir,'/cider.config'
  (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
 
- res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -quiet'
+ res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -quiet -ignoreUserExec'
 
  →T.GoToTidyUp~∨/∨/¨'TheAnswerIs.aplf'∘⍷¨⊃('recursive' 1)FilesAndDirs.Dir tempDir,'/'
  →T.GoToTidyUp 42≢#.Foo.TheAnswerIs

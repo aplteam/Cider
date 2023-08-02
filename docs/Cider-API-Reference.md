@@ -48,12 +48,17 @@ A monadic function that returns a namespace with default parameters required by 
 
 
 ```
- alias         ''      
- folder        ''  
- parent        '#' 
- projectSpace  ''  
- quietFlag     0 
- suppressInit    0 
+ alias                 ''      
+ checkPackageVersions  ⍬
+ folder                ''  
+ ignoreUserExec        0
+ importFlag            0
+ noPkgLoad             0
+ parent                '#' 
+ projectSpace          ''  
+ quietFlag             0 
+ suppressInit          0
+ watch                 ['ns'|'both']  ⍝ depending on the availability of .NET 
 ```
 
 This is useful for creating a namespace with the defaults, set required parameters (at least `folder` and `projectSpace`), make amendments and pass the namespace as argument to `OpenProject`.
@@ -221,6 +226,10 @@ The name of the namespace the project is injected into. If this is empty it is g
 
 ### Flags
 
+#### ignoreUserExec
+
+This flag is ignored in case Cider's own global config file defines not function on `ExecuteAfterProjectOpen`, but if there is a fully qualified function name defined then this flag can be used to prevent the function from execution with a particular call of `OpenProject`.
+
 
 #### importFlag
 
@@ -300,3 +309,4 @@ This function takes a path to a Cider project as `⍵` and a namespace with Cide
 
    This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
 3. The version date in international date format: YYYY-MM-DD
+

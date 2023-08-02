@@ -11,7 +11,7 @@
  (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
 
  ⎕SE.Cider.##.CommTools.YesOrNo_Answers←1 2⍴'Project successfully created; open as well?' ''
- res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig'
+ res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -ignoreUserExec'
  'You did not just press <enter>!'Assert'Project created and opened'≡res
  →T.GoToTidyUp~(⊂'#.Foo')∊{⍵[;1]}##.Cider.Cider.ListOpenProjects 0
 

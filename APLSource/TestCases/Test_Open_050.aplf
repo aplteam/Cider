@@ -15,6 +15,7 @@
  parms.parent←'#.TEMP'
  parms.quietFlag←1
  parms.watch←'dir'
+ parms.ignoreUserExec←1
 
  filename←parms.folder,'/APLSource/Hello.aplf'
  (⊂'r←Hello' 'r←''World''')⎕NPUT filename 1

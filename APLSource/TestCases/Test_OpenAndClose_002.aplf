@@ -9,7 +9,7 @@
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
  (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
 
- {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" # -noEdit -acceptConfig -quiet'
+ {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" # -noEdit -acceptConfig -quiet -ignoreUserExec'
  list←FilesAndDirs.ListFiles tempDir
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list

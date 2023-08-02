@@ -15,7 +15,7 @@
  ⎕SE.Cider.##.CommTools.YesOrNo_Answers[1;]←'Project successfully created; open as well?' 'y'
  ⎕SE.Cider.##.CommTools.YesOrNo_Answers[2;]←'Target namespace "#.Foo" is not empty. Delete contents?' 'N'
  stop←0
- (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -noEdit'
+ (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -noEdit -ignoreUserExec'
 
  →T.GoToTidyUp 0=rc
  →T.GoToTidyUp~∨/'Both the target namespace and the source folder are not empty'⍷msg

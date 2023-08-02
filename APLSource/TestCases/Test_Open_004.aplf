@@ -12,6 +12,7 @@
  parms.parentSpace←TEMP
  parms.quietFlag←1
  parms.watch←'ns'
+ parms.ignoreUserExec←1
  :Trap 0
      {}##.Cider.Cider.OpenProject parms
      →T.FailsIf 1

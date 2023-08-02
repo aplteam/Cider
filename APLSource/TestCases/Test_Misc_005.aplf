@@ -18,6 +18,7 @@
  parms.checkPackageVersions←2
  parms.quietFlag←1
  parms.watch←'ns'
+ parms.ignoreUserExec←1
  (success log)←##.Cider.Cider.OpenProject parms
  Assert success
 
