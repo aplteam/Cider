@@ -10,9 +10,9 @@
     ∇ r←Version;fully
       :Access Public Shared
       r←'0.31.0-beta-5+410'
-      ⍝ * 0.31.0 ⋄ 2023-08-02
+      ⍝ * 0.31.0 ⋄ 2023-08-04
       ⍝   * Step added to `OpenProject`: checks for a non-empty variable `ToDo` in the root of the project now
-      ⍝   * When Cider is asked for the "Make" it checks for a variable `ToDo` now
+      ⍝   * When Cider is asked for "Make" it checks for a variable `ToDo` now and reports its findings
       ⍝   * In case the user function `ExecuteAfterProjectOpen` is causing trouble the error message is more
       ⍝     prominently emphasized now.
       ⍝   * The newly introduced flag `ignoreUserExec` can be used to prevent the execution of the user function
