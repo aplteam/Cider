@@ -1,7 +1,7 @@
-﻿:Class Cider_UC
+:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-08-02
+⍝ 2023-08-05
 
 
 
@@ -231,8 +231,9 @@
 
     ∇ r←ListAliases Args
       :If Args.edit
-          EditAliasFile ⍬
-          r←ProcessAliases 0 0 0
+          :If 0=≢r←EditAliasFile ⍬
+              r←ProcessAliases 0 0 0
+          :EndIf
       :Else
           r←ProcessAliases Args.(prune edit quiet)
       :EndIf
@@ -852,60 +853,63 @@
     ∇
 
     ∇ {r}←EditAliasFile dummy;filename;data_;Local;aliases;b;report;buff;b2;b3;flag;b4;b5;aliases_;b6
-      r←⍬
+      r←''
       filename←P.GetCiderAliasFilename
       :If ~⎕NEXISTS filename
           3 ⎕MKDIR 1⊃⎕NPARTS filename
           (⊂'')⎕NPUT filename
       :EndIf
       aliases_←P.GetAliasFileContent
-      aliases←⍕aliases_
-      aliases_←⊃¨{⍺,'=',⍵}/¨↓aliases_
-      :Repeat
-          ⎕ED'aliases'
-          aliases←{'⍝'∊⍵:⍵↑⍨¯1+⍵⍳'⍝' ⋄ ⍵}¨↓aliases   ⍝ Cider might inject comments to highlight problems, see below.
-          aliases←(aliases∨.≠¨' ')⌿aliases
-          aliases←{b←' '=⍵ ⋄ ⍵/⍨~(∧\b)∨(⌽∧\⌽b)∨'  '⍷⍵}¨aliases
-          aliases←{' '(≠⊆⊢)⍵}¨aliases
-          aliases←⊃¨{⍺,'=',⍵}/¨aliases
-          flag←0
-          :If aliases≢aliases_
-              aliases_/⍨←({⍵↑⍨¨⍵⍳¨'='}aliases_)∊{⍵↑⍨¨⍵⍳¨'='}aliases   ⍝ Get rid of deleted ones
-              report←(≢aliases)⍴⊂''
-              :If ∨/b←~1=aliases+.=¨'='
-                  (b/report)←⊂' ⍝ Does not carry exactly one "="'
-              :EndIf
-              buff←↑{'='(≠⊆⊢)⍵}¨(~b)/aliases
-              :If ∨/b2←~{∧/⍵∊⎕A,(⎕C ⎕A),⎕D,'-'}¨buff[;1]
-                  b3←(~b)\b2
-                  (b3/report){'⍝'∊⍺:⍺,'; ',⍵ ⋄ ⍺,' ⍝ ',⍵}←⊂'An alias must consist of nothing but A-Z, a-z, 0-9 and a hyphen'
-              :EndIf
-              :If ∨/b2←~⎕NEXISTS buff[;2]
-                  b3←(~b)\b2
-                  (b3/report){'⍝'∊⍺:⍺,'; ',⍵ ⋄ ⍺,' ⍝ ',⍵}←⊂'Folder does not exist'
-              :EndIf
-              :If ∨/b4←(~b2)\~⎕NEXISTS(~b2)/buff[;2],¨⊂'/cider.config'
-                  b5←(~b)\b4
-                  (b5/report){'⍝'∊⍺:⍺,'; ',⍵ ⋄ ⍺,' ⍝ ',⍵}←⊂'Folder does not contain a Cider config file'
-              :EndIf
-              :If {(≢⍵)>≢∪⍵}buff←{⍵↓⍨⍵⍳'='}¨aliases
-                  b6←~{(⍳≢⍵)=⍵⍳⍵}buff
-                  (b6/report)←⊂'⍝ Path has already an alias'
-              :EndIf
-              :If 0=≢∊report
-                  flag←1
+      :If 0<≢aliases←⍕aliases_
+          aliases_←⊃¨{⍺,'=',⍵}/¨↓aliases_
+          :Repeat
+              ⎕ED'aliases'
+              aliases←{'⍝'∊⍵:⍵↑⍨¯1+⍵⍳'⍝' ⋄ ⍵}¨↓aliases   ⍝ Cider might inject comments to highlight problems, see below.
+              aliases←(aliases∨.≠¨' ')⌿aliases
+              aliases←{b←' '=⍵ ⋄ ⍵/⍨~(∧\b)∨(⌽∧\⌽b)∨'  '⍷⍵}¨aliases
+              aliases←{' '(≠⊆⊢)⍵}¨aliases
+              aliases←⊃¨{⍺,'=',⍵}/¨aliases
+              flag←0
+              :If aliases≢aliases_
+                  aliases_/⍨←({⍵↑⍨¨⍵⍳¨'='}aliases_)∊{⍵↑⍨¨⍵⍳¨'='}aliases   ⍝ Get rid of deleted ones
+                  report←(≢aliases)⍴⊂''
+                  :If ∨/b←~1=aliases+.=¨'='
+                      (b/report)←⊂' ⍝ Does not carry exactly one "="'
+                  :EndIf
+                  buff←↑{'='(≠⊆⊢)⍵}¨(~b)/aliases
+                  :If ∨/b2←~{∧/⍵∊⎕A,(⎕C ⎕A),⎕D,'-'}¨buff[;1]
+                      b3←(~b)\b2
+                      (b3/report){'⍝'∊⍺:⍺,'; ',⍵ ⋄ ⍺,' ⍝ ',⍵}←⊂'An alias must consist of nothing but A-Z, a-z, 0-9 and a hyphen'
+                  :EndIf
+                  :If ∨/b2←~⎕NEXISTS buff[;2]
+                      b3←(~b)\b2
+                      (b3/report){'⍝'∊⍺:⍺,'; ',⍵ ⋄ ⍺,' ⍝ ',⍵}←⊂'Folder does not exist'
+                  :EndIf
+                  :If ∨/b4←(~b2)\~⎕NEXISTS(~b2)/buff[;2],¨⊂'/cider.config'
+                      b5←(~b)\b4
+                      (b5/report){'⍝'∊⍺:⍺,'; ',⍵ ⋄ ⍺,' ⍝ ',⍵}←⊂'Folder does not contain a Cider config file'
+                  :EndIf
+                  :If {(≢⍵)>≢∪⍵}buff←{⍵↓⍨⍵⍳'='}¨aliases
+                      b6←~{(⍳≢⍵)=⍵⍳⍵}buff
+                      (b6/report)←⊂'⍝ Path has already an alias'
+                  :EndIf
+                  :If 0=≢∊report
+                      flag←1
+                  :Else
+                      aliases←(1+⌈/≢¨aliases)↑¨aliases
+                      aliases←aliases{0=≢⍵:⍺ ⋄ ⍺,'⍝ ',⍵}¨report
+                  :EndIf
+                  :If ~flag
+                      aliases←⍕↑{'='(≠⊆⊢)⍵}¨aliases
+                  :EndIf
               :Else
-                  aliases←(1+⌈/≢¨aliases)↑¨aliases
-                  aliases←aliases{0=≢⍵:⍺ ⋄ ⍺,'⍝ ',⍵}¨report
+                  flag←1
               :EndIf
-              :If ~flag
-                  aliases←⍕↑{'='(≠⊆⊢)⍵}¨aliases
-              :EndIf
-          :Else
-              flag←1
-          :EndIf
-      :Until flag
-      (⊂aliases)⎕NPUT filename 1
+          :Until flag
+          (⊂aliases)⎕NPUT filename 1
+      :Else
+          r←'There are no aliases defined in ',filename
+      :EndIf
     ∇
 
     YesOrNo←{⍺←⊢ ⋄ ⍺ ⎕SE.Cider.##.CommTools.YesOrNo ⍵}

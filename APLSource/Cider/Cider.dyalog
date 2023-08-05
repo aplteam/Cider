@@ -9,7 +9,11 @@
 
     ∇ r←Version;fully
       :Access Public Shared
-      r←'0.31.0-beta-5+410'
+      r←'0.31.1+410'
+      ⍝ * 0.31.1 ⋄ 2023-08-05
+      ⍝   * The function `GetCiderGlobalConfigHomeFolder` crashed when Cider was not properly installed
+      ⍝   * The absence of APLGit2 is now reported by OpenProject in case the project is managed by Git
+      ⍝   * Version 0.30.0 wrongly pretended to be a beta release when it wasn't
       ⍝ * 0.31.0 ⋄ 2023-08-04
       ⍝   * Step added to `OpenProject`: checks for a non-empty variable `ToDo` in the root of the project now
       ⍝   * When Cider is asked for "Make" it checks for a variable `ToDo` now and reports its findings
@@ -556,6 +560,8 @@
                   dmx←⎕DMX
                   :If 127=dmx.EN
                       p'The project appears to be managed by Git but Git is not installed?!'
+                  :ElseIf 128=dmx.EN
+                      p'The project appears to be managed by Git but user.email and/or user.name are not defined'
                   :ElseIf 0<≢dmx.Message
                       ⎕←'The Git status of the project could not be determined due to an error:'
                       ⎕←dmx.Message,'; rc=',⍕dmx.EN
@@ -575,6 +581,8 @@
                   p'The project appears to be managed by Git but the user command ]APLGit2 and'
                   p'it''s API are missing, therefore no information can be provided regarding Git'
               :EndIf
+          :Else
+              p'The project appears to be managed by Git, but the package "APLGit2" is not installed...'
           :EndIf
       :EndIf
     ∇
@@ -1169,8 +1177,10 @@
       :If 'Win'≡3↑##.APLTreeUtils2.GetOperatingSystem ⍬
       :AndIf ~⎕NEXISTS folder,'config.json'
           oldFolder←(2 ⎕NQ #'GetEnvironment' 'APPDATA'),'/.cider/'
-          res←folder∘{⍺(⎕NMOVE⍠('IfExists' 'Skip')##.FilesAndDirs.ExecNfunction)⍵}¨##.FilesAndDirs.ListFiles oldFolder
-          ##.FilesAndDirs.RmDir oldFolder
+          :If ⎕NEXISTS oldFolder
+              res←folder∘{⍺(⎕NMOVE⍠('IfExists' 'Skip')##.FilesAndDirs.ExecNfunction)⍵}¨##.FilesAndDirs.ListFiles oldFolder
+              ##.FilesAndDirs.RmDir oldFolder
+          :EndIf
       :EndIf
     ∇
 
