@@ -1,0 +1,2 @@
+ r←GetTestFilesHome
+ r←FilesAndDirs.GetTempPath,'APLTreeUtils_TestCases/'

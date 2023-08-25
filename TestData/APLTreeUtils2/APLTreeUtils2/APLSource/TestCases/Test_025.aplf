@@ -1,0 +1,27 @@
+ R←Test_025(stopFlag batchFlag);A;⎕TRAP;res;qdmx;F
+⍝ Exercise  `Base64`
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ A←##.APLTreeUtils2 ⋄ F←FilesAndDirs
+ →T.FailsIf 1≠A.IsDevelopment
+
+ →T.PassesIf 129>⌈/⎕UCS res←A.Base64 ⎕AV
+ →T.PassesIf ⎕AV≡A.Base64 res
+
+ →T.PassesIf 129>⌈/⎕UCS res←1 A.Base64 ⎕AV
+ →T.PassesIf ⎕AV≡1 A.Base64 res
+
+ →T.PassesIf 129>⌈/⎕UCS res←2 A.Base64 ⎕AV
+ →T.PassesIf ⎕AV≡2 A.Base64 res
+
+ :Trap 11
+     {}3 A.Base64 ⎕AV
+     →T.FailsIf 1
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf'Invalid left argument: "type" must be either 1 or 2'≡qdmx.EM
+ :EndTrap
+
+ R←T._OK
+⍝Done

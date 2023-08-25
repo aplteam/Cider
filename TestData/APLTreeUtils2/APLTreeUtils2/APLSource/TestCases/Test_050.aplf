@@ -1,0 +1,12 @@
+ R←Test_050(stopFlag batchFlag);A;Foo;⎕TRAP;res
+⍝ Exercise "CreateUUID"
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ A←##.APLTreeUtils2
+
+ res←A.Create_UUID
+ →T.PassesIf 36=≢res
+ →T.PassesIf 4='-'+.=res
+
+ R←T._OK

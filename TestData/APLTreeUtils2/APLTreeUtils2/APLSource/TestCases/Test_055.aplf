@@ -1,0 +1,11 @@
+ R←Test_055(stopFlag batchFlag);A;Foo;⎕TRAP
+⍝ Exercise "IsScripted"
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ A←##.APLTreeUtils2
+
+ →T.PassesIf 0=A.IsScripted'aaa'
+ →T.PassesIf 1=A.IsScripted Tester2
+
+ R←T._OK

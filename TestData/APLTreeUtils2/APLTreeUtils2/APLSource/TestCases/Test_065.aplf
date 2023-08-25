@@ -1,0 +1,10 @@
+ R←Test_065(stopFlag batchFlag);A;Foo;⎕TRAP
+⍝ Exercise "IsRunningAsAdmin"
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ A←##.APLTreeUtils2
+
+ →T.PassesIf A.IsRunningAsAdmin∊0 1
+
+ R←T._OK

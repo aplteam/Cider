@@ -1,0 +1,17 @@
+ R←Test_033(stopFlag batchFlag);A;Foo;⎕TRAP
+⍝ Exercise "ToNum"
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ A←##.APLTreeUtils2
+
+ →T.FailsIf 1≠A.ToNum'1'
+ →T.FailsIf 123≠A.ToNum'123'
+ →T.FailsIf 123.456≠A.ToNum'123.456'
+ →T.FailsIf 20000≠A.ToNum'2E4'
+ →T.FailsIf 2J4≠A.ToNum'2J4'
+ →T.FailsIf 1 2≢A.ToNum'1 2'
+ →T.FailsIf ⍬≢A.ToNum'APL'
+ →T.FailsIf ⍬≢A.ToNum'-2'
+
+ R←T._OK

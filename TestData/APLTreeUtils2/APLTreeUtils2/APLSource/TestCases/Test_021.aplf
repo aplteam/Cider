@@ -1,0 +1,16 @@
+ R←Test_021(stopFlag batchFlag);A;⎕TRAP
+⍝ Exercise "DTB"
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ A←##.APLTreeUtils2
+
+ →T.FailsIf~0∊⍴A.DTB' '
+ →T.FailsIf''≢A.DTB''
+ →T.FailsIf'A'≢A.DTB'A'
+ →T.FailsIf'APL'≢A.DTB'APL'
+ →T.FailsIf' APL  is great'≢A.DTB' APL  is great    '
+ →T.FailsIf'APL' '   APL   is great'≢A.DTB'APL' '   APL   is great '
+ →T.FailsIf(↑'APL' '   APL   is great')≢A.DTB↑'APL' '   APL   is great '
+
+ R←T._OK

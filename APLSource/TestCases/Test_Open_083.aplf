@@ -1,0 +1,25 @@
+ R←Test_Open_083(stopFlag batchFlag);⎕TRAP;parms;r;rc;qdmx
+⍝ Loads a package and then tries to open the corresponding project; must be prevented
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ {}⎕SE.Tatin.LoadPackages(##.CiderConfig.HOME,'\TestData\APLTreeUtils2\aplteam-APLTreeUtils2-1.2.0.zip')'#.TEMP'
+
+ parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms.folder←##.CiderConfig.HOME,'\TestData\APLTreeUtils2\APLTreeUtils2'
+ parms.parent←'#.TEMP'
+ parms.watch←'ns'
+ parms.quietFlag←1
+ parms.ignoreUserExec←1
+
+ :Trap 11
+     {}##.Cider.Cider.OpenProject parms
+     →T.PassesIf 0
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf'Cannot open, is already loaded as a package'≡qdmx.EM
+ :EndTrap
+
+ R←T._OK
+⍝Done

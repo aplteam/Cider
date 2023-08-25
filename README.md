@@ -5,7 +5,7 @@
 
 Cider offers some User commands that are useful to manage projects. In addition is also offers an API.
 
-It cooperates with [Tatin](https://github.com/aplteam.Cider "Link to Cider on GitHub") and [APLGit2](https://github.com/aplteam.APLGit2 "Link to APLGit2 on GitHub") if available.
+It cooperates with [Tatin](https://github.com/aplteam.Cider "Link to Cider on GitHub") if available.
 
 
 ## Requirements
@@ -68,7 +68,7 @@ If that is not good enough for you, this article explains how to load user comma
 ## Methods
 
 
-### OpenProject
+### `OpenProject`
 
 
 #### Parameters
@@ -103,7 +103,8 @@ Once a folder is established that holds a Cider config file, the user command pe
    * adds a variable `HOME` that remembers the path the project was loaded from   
 1. Injects a namespace `TatinVars` in case the project would end up as a package
 1. Checks whether the project's config file does carry a non-empty value for `init`. If that's the case it must be a function that is then called by Cider, typically for initializing the project
-1. If the project is managed by Git and the user command `]APLGit` is around and the git bash is installed then Cider executes the `git status` command on the project folder and puts the result on view
+1. If there is a variable `ToDo` in the root of the project, and the variable is not empty, then this variable is printed to the session
+1. If the project is managed by Git then Cider executes the `git status` command on the project folder and puts the result on view
 
 Notes:
 
@@ -131,7 +132,7 @@ Notes:
 
   * All principal packages found in `packages_dev/` within the project folder  are loaded into the project's sub namespace `TestCases` within the project space because the default _was_ overwritten
 
-### CloseProject
+### `CloseProject`
 
 Takes one or more folders or a aliases and breaks the Link between the namespace and its folder for all of them.
 
@@ -140,45 +141,46 @@ Separate projects with space or commas.
 You may specify the `-all` flag to close all projects in `#` (*not* `⎕SE`!), but check the user command's detailed help (`-??`) for details.
 
 
-### CreateProject
+### `CreateProject`
 
 Requires one mandatory parameter: a folder that is going to be a project. 
 
 Creates a file `cider.config` in that folder.
 
  
-### Help
+### `Help`
 
 Offers the user to view selected or all HTML documents with her standard browser.
 
-### ListOpenProjects
+### `ListOpenProjects`
 
 Lists the project spaces of all currently linked projects together with the fully qualified paths of all projects currently open.
 
 
-### ListAliases
+### `ListAliases`
 
 Lists all Cider aliases together with their folders.
 
 
-### Make
+### `Make`
 
 Prints an APL statement to the session which, when executed, will build a new version of the project.
 
 
-### RunTests
+### `RunTests`
 
 Prints an APL statement to the session which, when executed, runs the project's test suite.
 
 
-### Version
+### `Version`
 
 Returns a three-item-vector with "Name", "Version number" and "Version date".
 
 
-### ViewConfig
+### `ViewConfig`
 
 Puts the config file of a project on display. 
 
 By specifying the `-edit` flag the user might edit the file rather than just viewing it.
+
 

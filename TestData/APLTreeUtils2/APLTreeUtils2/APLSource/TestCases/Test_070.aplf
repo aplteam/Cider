@@ -1,0 +1,13 @@
+ R←Test_070(stopFlag batchFlag);A;Foo;⎕TRAP
+⍝ Exercise "LazyMatch"
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ A←##.APLTreeUtils2
+
+ →T.PassesIf('This' 'That' 'More')A.LazyMatch('This' 'That' 'More')
+ →T.PassesIf('This' 'That' 'More')A.LazyMatch('This' 'More' 'That')
+ →T.PassesIf(1 2(3 4))A.LazyMatch(1(3 4)2)
+ →T.PassesIf~('This' 'That' 'More')A.LazyMatch('Something' 'Else')
+
+ R←T._OK

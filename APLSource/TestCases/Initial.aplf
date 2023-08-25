@@ -2,4 +2,5 @@
  ∆LINK_NOTIFY_WAS←⎕SE.Link.NOTIFY
  ⎕SE.Link.NOTIFY←0
  'Cider''s version number in # and ⎕SE diverge'Assert ⎕SE.Cider.Version≡##.Cider.Cider.Version
+⍝ T.exec_before_each_test←T.exec_after_each_test←'#.WS_Check'
 ⍝Done

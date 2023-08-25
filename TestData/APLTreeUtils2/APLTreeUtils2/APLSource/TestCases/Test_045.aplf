@@ -1,0 +1,11 @@
+ R←Test_045(stopFlag batchFlag);A;Foo;⎕TRAP;currentVersion
+⍝ Exercise "AtLeastVersion"
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ A←##.APLTreeUtils2
+
+ currentVersion←17
+ →T.PassesIf 1 1 1 0 0≡currentVersion A.AtLeastVersion¨15 16 17 17.1 18
+
+ R←T._OK

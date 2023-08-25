@@ -24,7 +24,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <ul>
 <li><a href="#APL-Version">2.1.1. APL Version</a></li>
 <li><a href="#Tatin">2.1.2. Tatin</a></li>
-<li><a href="#APLGit2">2.1.3. APLGit2</a></li>
+<li><a href="#Git">2.1.3. Git</a></li>
 </ul></li>
 <li><a href="#Installation">2.2. Installation</a>
 <ul>
@@ -77,6 +77,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <li><a href="#9-Initialising-a-project">2.5.9. 9. Initialising a project (optional)</a></li>
 <li><a href="#10-Executing-user-specific-code">2.5.10. 10. Executing user-specific code</a></li>
 <li><a href="#11-Check-for-ToDo">2.5.11. 11. Check for <code>ToDo</code></a></li>
+<li><a href="#12-Git">2.5.12. 12. Git</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#Misc">3. Misc</a>
@@ -138,26 +139,19 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </div>
 
 <div class="h_tag">
-<a href="#APLGit2" id="APLGit2" class="autoheader_anchor">
-<h4 data-id="APLGit2">2.1.3. APLGit2</h4>
+<a href="#Git" id="Git" class="autoheader_anchor">
+<h4 data-id="Git">2.1.3. Git</h4>
 </a>
 </div>
-<p>In case you use Git as a version control management tool it is recommended that you install the <a href="https://git-scm.com/downloads" class="external_link" title="Link to the Git Bash download page">Git Bash</a> as well as the user command <a href="https://github.com/aplteam/APLGit2" class="external_link" title="Link to APLGit2 on GitHub"><code>APLGit2</code></a>.</p>
-<p>When a project carries a directory <code>.git/</code> then Cider knows that the project is version controlled with Git. It also checks whether <code>⎕SE.APLGit2</code> is available: this is the API of the user command <code>]APLGit2</code>. Cider uses this to display the Git status report for a project in the later stages of opening a project.</p>
-<div class="leanpub">
-<img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information">
-<div>
-<p>In order to install <code>APLGit2</code> as a user command execute this statement:</p>
-<p><code>]InstallPackages [tatin]aplteam-APLGit2 [MyUCMDs]</code></p>
-</div>
-</div>
-
+<p>If you use Git for version control management and you have the <a href="https://git-scm.com/downloads" class="external_link" title="Link to the Git Bash download page">Git Bash</a> installed then Cider uses the package <a href="https://github.com/aplteam/APLGit2" class="external_link" title="Link to APLGit2 on GitHub"><code>APLGit2</code></a> for communicating with Git.</p>
+<p>For example, when a project carries a directory <code>.git/</code> then Cider knows that the project is version controlled with Git, and it therefore uses the API of <code>APLGit2</code> to display the Git status report for a project in the later stages of opening a project.</p>
 <div class="h_tag">
 <a href="#Installation" id="Installation" class="autoheader_anchor">
 <h3 data-id="Installation">2.2. Installation</h3>
 </a>
 </div>
 <p>With version 19.0 and later, Cider will be part of a default installation. In earlier versions you must install it yourself.</p>
+<p>Cider requires Tatin, and Tatin runs on Dyalog 18.0 or later, so Cider cannot run in earlier versions than Dyalog 18.0 either.</p>
 <p>To install Cider, issue this command:</p>
 <pre><code>]Tatin.InstallPackages [tatin]Cider [MyUCMDs]</code></pre>
 <p>When a new instance of Dyalog is started <code>]Cider</code> will be available. For an instance that was already running when Cider was installed execute <code>]UReset</code>.</p>
@@ -544,6 +538,12 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </div>
 <p>Finally Cider checks whether there is a variables <code>ToDo</code> in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.</p>
 <p>You may use this to keep track of steps that need to be executed before the project can be commited or published etc.</p>
+<div class="h_tag">
+<a href="#12-Git" id="12-Git" class="autoheader_anchor">
+<h4 data-id="12-Git">2.5.12. 12. Git</h4>
+</a>
+</div>
+<p>If the project is managed by Git then Cider will report the current branch and its status.</p>
 <div class="h_tag">
 <a href="#Misc" id="Misc" class="autoheader_anchor">
 <h2 data-id="Misc">3. Misc</h2>

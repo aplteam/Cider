@@ -1,0 +1,5 @@
+:Namespace  QuadVariables
+    ##.⎕io←1
+    ##.⎕ml←1
+    ##.⎕wx←3
+:EndNamespace

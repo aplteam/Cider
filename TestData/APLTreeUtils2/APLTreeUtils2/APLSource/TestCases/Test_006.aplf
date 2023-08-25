@@ -1,0 +1,24 @@
+ R←Test_006(stopFlag batchFlag);A;path;buffer;⎕TRAP
+⍝ Exercise "Last"
+ A←##.APLTreeUtils2
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ →T.FailsIf 0≠⍴buffer←A.Last''
+ →T.FailsIf 0≠⍴buffer←A.Last ⍬
+ →T.FailsIf''≢buffer←A.Last' '
+ →T.FailsIf ⍬≢buffer←A.Last 1
+ path←'C:/Buffer/Path1/Path Level 2/filen.ext'
+ →T.FailsIf'ext'≢buffer←A.Last path
+ →T.FailsIf'filen.ext'≢buffer←'/'A.Last path
+ →T.FailsIf(⊂1 2 3)≢buffer←¯1 A.Last 1(2 3)¯1(1 2 3)
+ →T.FailsIf(⊂1 2 3)≢buffer←(⊂¯1 ¯2)A.Last 1(2 3)(¯1 ¯2)(1 2 3)
+ →T.FailsIf(⊂1 2 3)≢buffer←(⊂⍬)A.Last 1(2 3)⍬(1 2 3)
+ →T.FailsIf(⊂'firlefanz')≢buffer←(⊂'')A.Last'qwe' 'z' '' 'firlefanz'
+ →T.FailsIf(⊂'firlefanz')≢buffer←(⊂'a' 'ab')A.Last'qwe' 'z'('a' 'ab')'firlefanz'
+ →T.FailsIf''≢buffer←'-'A.Last path
+ →T.FailsIf ⍬≢buffer←'-'A.Last 1 2 3
+ →T.FailsIf(0⍴path path)≢buffer←'-'A.Last path path
+ →T.FailsIf(0⍴2⍴⊂1 2 3)≢buffer←'-'A.Last 2⍴⊂1 2 3
+
+ R←T._OK

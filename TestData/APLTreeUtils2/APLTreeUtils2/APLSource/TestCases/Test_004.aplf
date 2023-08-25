@@ -1,0 +1,53 @@
+ R←Test_004(stopFlag batchFlag);fn;html;⎕TRAP;answer;browser;rideFlag;exe;success;A
+⍝ Exercise "GoToWebPage"
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ A←##.APLTreeUtils2
+
+ :If batchFlag
+     R←T._NoBatchTest
+ :Else
+     rideFlag←3501⌶⍬
+     browser←(1+rideFlag)⊃'your default browser?' 'the RIDE browser?'
+     :If ~rideFlag
+         CommTools.Pause'Please open a new (=empty) window of your default browser now.'
+     :EndIf
+
+     success←A.GoToWebPage'aplwiki.com'
+     →T.PassesIf success
+     :If 0=1 CommTools.YesOrNo 'Do you see http://aplwiki.com in ',browser
+         :Return
+     :EndIf
+
+     :If 'Win'≡A.GetOperatingSystem ⍬
+         exe←'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+         success←exe A.GoToWebPage'httpS://vector.org.uk'
+         →T.PassesIf success
+         :If 0=1 CommTools.YesOrNo'Do you see httpS://vector.org.uk in Chrome?'
+             :Return
+         :EndIf
+     :EndIf
+
+     fn←(¯4↓FilesAndDirs.GetTempFilename''),'.html'
+     fn←(¯5↓fn),' with spaces',¯5↑fn
+     html←'<h1>Homemade</h1><p>This page was created on the fly.</p><p>Note that the filename contains spaces.</p>'
+     (⊂html)FilesAndDirs.NPUT fn
+     success←A.GoToWebPage'file://',fn
+     →T.PassesIf success
+     :If 0=1 CommTools.YesOrNo'Do you see ',fn,' (watch the two spaces!) in ',browser
+         :Return
+     :EndIf
+     ⎕DL 0.2
+     FilesAndDirs.DeleteFile fn
+
+     :If 'Mac'≡A.GetOperatingSystem ⍬
+         success←'Safari'A.GoToWebPage'aplwiki.com'
+         →T.PassesIf success
+         :If 0=1 CommTools.YesOrNo'Do you see http://aplwiki.com in Safari'
+             :Return
+         :EndIf
+     :EndIf
+
+     R←T._OK
+
+ :EndIf

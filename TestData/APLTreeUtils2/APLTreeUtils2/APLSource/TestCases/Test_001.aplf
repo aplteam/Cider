@@ -1,0 +1,46 @@
+ R←Test_001(stopFlag batchFlag);A;buffer;⎕TRAP
+⍝ Exercise SplitPath
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ A←##.APLTreeUtils2
+ R←T._Failed
+
+ →T.FailsIf('' '')≢buffer←A.SplitPath''
+ →T.FailsIf(⍬ ⍬)≢buffer←A.SplitPath ⍬
+ →T.FailsIf(,¨(1 2)3)≢buffer←2 A.SplitPath 1 2 3
+ →T.FailsIf('' 'filename.exension')≢buffer←A.SplitPath'filename.exension'
+ →T.FailsIf('c:/Path/' '')≢buffer←A.SplitPath'c:/Path/'
+ →T.FailsIf('c:/Path/' 'filename.extension')≢buffer←A.SplitPath'c:/Path/filename.extension'
+ →T.FailsIf('level 1-level 2-third level-' 'final')≢buffer←'-'A.SplitPath'level 1-level 2-third level-final'
+
+ →T.FailsIf''≢buffer←A.DMB''
+ →T.FailsIf''≢buffer←A.DMB ⍬
+ →T.FailsIf''≢buffer←A.DMB' '
+ →T.FailsIf''≢buffer←A.DMB'  '
+ →T.FailsIf''≢buffer←A.DMB'   '
+ →T.FailsIf'a'≢buffer←A.DMB'a'
+ →T.FailsIf(,'a')≢buffer←A.DMB,'a '
+ →T.FailsIf(,'a')≢buffer←A.DMB,' a'
+ →T.FailsIf(,'a')≢buffer←A.DMB,' a '
+ →T.FailsIf(,'a')≢buffer←A.DMB,' a  '
+ →T.FailsIf(,'a')≢buffer←A.DMB,'  a  '
+ →T.FailsIf('a b')≢buffer←A.DMB,'a b'
+ →T.FailsIf('a b')≢buffer←A.DMB,'a b '
+ →T.FailsIf('a b')≢buffer←A.DMB,' a b'
+ →T.FailsIf('a b')≢buffer←A.DMB,'  a b '
+ →T.FailsIf('a b')≢buffer←A.DMB,'  a b  '
+ →T.FailsIf('a b')≢buffer←A.DMB,'  a  b  '
+ →T.FailsIf('a b')≢buffer←A.DMB,'  a    b  '
+ →T.FailsIf('')≢buffer←'-'A.DMB'-'
+ →T.FailsIf('')≢buffer←'-'A.DMB,'-'
+ →T.FailsIf('')≢buffer←'-'A.DMB'--'
+ →T.FailsIf('')≢buffer←'-'A.DMB'---'
+ →T.FailsIf('a b')≢buffer←'-'A.DMB,'a b'
+ →T.FailsIf('a- b')≢buffer←'-'A.DMB,'a- b'
+ →T.FailsIf('a- b')≢buffer←'-'A.DMB,'a-- b'
+ →T.FailsIf('a- b')≢buffer←'-'A.DMB,'a-- b-'
+ →T.FailsIf('a- b')≢buffer←'-'A.DMB,'-a-- b-'
+ →T.FailsIf('a- b')≢buffer←'-'A.DMB,'-a-- b--'
+ →T.FailsIf('a- b')≢buffer←'-'A.DMB,'--a-- b--'
+ →T.FailsIf('a- b')≢buffer←'-'A.DMB,'-a----- b-'
+
+ R←T._OK

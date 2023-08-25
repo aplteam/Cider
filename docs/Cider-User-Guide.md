@@ -35,19 +35,17 @@ If Tatin is not in `⎕SE` but available in the `MyUCMDs/` folder then Cider wil
 
 I> Note that Tatin will check whether Cider is available, and if so cooperate with it. However, Cider is not a requirement for using Tatin.
 
-#### APLGit2
+#### Git
 
-In case you use Git as a version control management tool it is recommended that you install the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") as well as the user command [`APLGit2`](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub").
+If you use Git for version control management and you have the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") installed then Cider uses the package [`APLGit2`](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub") for communicating with Git. 
 
-When a project carries a directory `.git/` then Cider knows that the project is version controlled with Git. It also checks whether `⎕SE.APLGit2` is available: this is the API of the user command `]APLGit2`. Cider uses this to display the Git status report for a project in the later stages of opening a project.
-
-I> In order to install `APLGit2` as a user command execute this statement:
-I>
-I> `]InstallPackages [tatin]aplteam-APLGit2 [MyUCMDs]`
+For example, when a project carries a directory `.git/` then Cider knows that the project is version controlled with Git, and it therefore uses the API of `APLGit2` to display the Git status report for a project in the later stages of opening a project.
 
 ### Installation
 
 With version 19.0 and later, Cider will be part of a default installation. In earlier versions you must install it yourself.
+
+Cider requires Tatin, and Tatin runs on Dyalog 18.0 or later, so Cider cannot run in earlier versions than Dyalog 18.0 either.
 
 To install Cider, issue this command:
 
@@ -471,11 +469,17 @@ Another application could be to bring in non-Tatin dependencies defined in the `
 
 Note that you may use the `ignoreUserExec` flag to tell `OpenProject` to ignore the global setting. This is certainly useful when Cider's test suite is executed.
 
+
 #### 11. Check for `ToDo`
 
 Finally Cider checks whether there is a variables `ToDo` in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.
 
 You may use this to keep track of steps that need to be executed before the project can be commited or published etc.
+
+
+#### 12. Git
+
+If the project is managed by Git then Cider will report the current branch and its status.
 
 
 ## Misc
@@ -525,6 +529,7 @@ The following example was created in a workspace where the project `APLGit2` was
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
 
 [^winonly]: At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature (or something similar) on all platforms.
+
 
 
 

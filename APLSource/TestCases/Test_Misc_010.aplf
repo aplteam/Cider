@@ -7,7 +7,7 @@
  :EndIf
  r←T._Failed
 
- 0 0⍴⍞,0/⎕←'This test needs you! Simply close the editor window after pressing <enter>. Press <enter> to continue.'
+ CommTools.Pause'This test needs you! Simply close the editor window after pressing <enter>. Press <enter> to continue.'
 
  filename←##.CiderConfig.HOME,'/cider.config'
  buff←⊃⎕NGET filename

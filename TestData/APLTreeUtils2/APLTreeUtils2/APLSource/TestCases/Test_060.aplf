@@ -1,0 +1,10 @@
+ R←Test_060(stopFlag batchFlag);A;Foo;⎕TRAP
+⍝ Exercise "Version"
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ A←##.APLTreeUtils2
+
+ →T.PassesIf 3=≢A.Version
+
+ R←T._OK

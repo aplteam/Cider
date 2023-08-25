@@ -1,0 +1,30 @@
+ R←Test_008(stopFlag batchFlag);A;buffer;⎕TRAP;noOf;result
+⍝ Exercise "Uppercase"
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ A←##.APLTreeUtils2
+
+ →T.FailsIf''≢buffer←A.Uppercase''
+ →T.FailsIf'KAI JAEGER APL SOFTWARE TEAM'≢buffer←A.Uppercase'KAI JAEGER APL Software Team'
+ →T.FailsIf'KAI JAEGER' 'APL SOFTWARE TEAM'≢buffer←A.Uppercase'KAI JAEGER' 'APL Software Team'
+ →T.FailsIf'ÜÄÖßÜÄÖ'≢buffer←A.Uppercase'üäößÜÄÖ'
+ →T.FailsIf'Ü'≢buffer←A.Uppercase'ü'
+ →T.FailsIf(,'Ü')≢buffer←A.Uppercase,'ü'
+ →T.FailsIf'Ü'≢buffer←A.Uppercase'Ü'
+ →T.FailsIf(,'Ü')≢buffer←A.Uppercase,'Ü'
+ →T.FailsIf'A'≢buffer←A.Uppercase'a'
+ →T.FailsIf(,'A')≢buffer←A.Uppercase,'a'
+ →T.FailsIf'∑X²'≢buffer←A.Uppercase'∑x²'
+ →T.FailsIf(2 2⍴'AABB')≢buffer←A.Uppercase 2 2⍴'AaBb'
+
+ :If 15>⊃(//)⎕VFI⊃'.'A.Split(1+⎕IO)⊃'#'⎕WG' APLVersion'
+     →T.FailsIf'' 'HELLO' '' '' 'A' 'B'≢,buffer←A.Uppercase ⍬'HELlo'⍬'' 'a' 'B'
+ :EndIf
+
+ noOf←⌊0.5×⌊⎕WA÷1000
+ buffer←(⊂1000000⍴'apl is fine '),'a',(noOf)⍴⊂'abc'   ⍝ This will cause a WS FULL when converted into a matrix
+ result←A.Uppercase buffer
+ buffer←(⊂1000000⍴'APL IS FINE '),'A',(noOf⍴⊂'ABC')
+ →T.FailsIf buffer≢result
+
+ R←T._OK

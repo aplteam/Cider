@@ -1,0 +1,23 @@
+ R←Test_024(stopFlag batchFlag);A;⎕TRAP;home;filename;rc;F
+⍝ Exercise "IsDevelopment"
+ R←T._Failed
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ A←##.APLTreeUtils2 ⋄ F←FilesAndDirs
+ →T.FailsIf 1≠A.IsDevelopment
+
+ :If 'Win'≡A.GetOperatingSystem ⍬
+     home←##.CiderConfig.HOME,'/Tests/'
+     filename←home,'IsDevelopment'
+     rc←Execute.Application'dyalog.exe "',home,'IsDevelopment.dws"'
+     →T.FailsIf 1≠3⊃rc
+     :If 0   ⍝ Works but Dyalog 14.0 has a problem here...
+         rc←Execute.Application'dyalogrt.exe "',home,'IsDevelopment.dws"'
+         →T.FailsIf 0≠3⊃rc
+     :EndIf
+
+     R←T._OK
+
+ :Else
+     R←T._WindowsOnly
+ :EndIf

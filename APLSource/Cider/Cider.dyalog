@@ -9,10 +9,17 @@
 
     ∇ r←Version;fully
       :Access Public Shared
-      r←'0.31.1+410'
+      r←'0.32.0+410'
+      ⍝ * 0.32.0 ⋄ 2023-08-25
+      ⍝   * `APLGit2` is now part of `Cider` and therefore always available
+      ⍝   * Bug fixes
+      ⍝     * The function `GetCiderGlobalConfigHomeFolder` crashed when Cider was not properly installed
+      ⍝     * Loading Tatin packages did not act appropriately when there were packages installed but they
+      ⍝       did not fit to the dependency list and/or the build list
+      ⍝     * Inconsistencies between the build list and the dependency file were not discovered. Now Cider
+      ⍝       does a re-install if the user permits that.
+      ⍝     * It was possible to load a package and then open it as a project; this is now prevented
       ⍝ * 0.31.1 ⋄ 2023-08-05
-      ⍝   * The function `GetCiderGlobalConfigHomeFolder` crashed when Cider was not properly installed
-      ⍝   * The absence of APLGit2 is now reported by OpenProject in case the project is managed by Git
       ⍝   * Version 0.30.0 wrongly pretended to be a beta release when it wasn't
       ⍝ * 0.31.0 ⋄ 2023-08-04
       ⍝   * Step added to `OpenProject`: checks for a non-empty variable `ToDo` in the root of the project now
@@ -175,7 +182,9 @@
                   :EndTrap
               :EndIf
               :Trap 0
-                  {}LoadTatinPackages config parms.folder(⍕projectSpace_)
+                  :If 0=parms.quietFlag LoadTatinPackages config parms.folder(⍕projectSpace_)
+                      1 p↓Frame'Package folder ',parms.folder,' needs attention!'
+                  :EndIf
               :Else
                   qdmx←⎕DMX
                   buff←''
@@ -233,7 +242,7 @@
     ⍝ This function looks for "tatinFolder", and if it is found suggests an automated conversion.
     ⍝ It expects to find either a single comma or no comma at all in "tatinFolder", otherwise it throws an error.
     ⍝ II.
-    ⍝ The property `githubUsername` is deleted from the config file because is not used anymore
+    ⍝ The property `githubUsername` is deleted from the config file because it is not used anymore
     ⍝ III.
     ⍝ With version 0.26.0 the property `distributionFolder` was introduced.
     ⍝ If not found it is injected as an empty character vector.
@@ -547,42 +556,35 @@
       p'  All fine'
     ∇
 
-    ∇ {r}←CheckForGit(path config);status;dmx;success
+    ∇ {r}←CheckForGit(path config);status;dmx
     ⍝ Checks whether the project is managed by Git, and if so offers some help
       r←⍬
-      success←0
       :If ##.FilesAndDirs.Exists(AddSlash path),'.git'
-          :If 9=⎕SE.⎕NC'APLGit2'
-              :Trap 0
-                  status←⎕SE.APLGit2.Status path
-                  success←1
-              :Else
-                  dmx←⎕DMX
-                  :If 127=dmx.EN
-                      p'The project appears to be managed by Git but Git is not installed?!'
-                  :ElseIf 128=dmx.EN
-                      p'The project appears to be managed by Git but user.email and/or user.name are not defined'
-                  :ElseIf 0<≢dmx.Message
-                      ⎕←'The Git status of the project could not be determined due to an error:'
-                      ⎕←dmx.Message,'; rc=',⍕dmx.EN
-                  :Else
-                      ⎕←'The Git status of the project could not be determined due to an error'
-                  :EndIf
-              :EndTrap
-              :If success
-                  :If ∧/∨/¨'nothing to commit' 'working tree clean'⍷¨⊂∊status
-                  :AndIf ~∨/∨/¨'on branch main' 'on branch master'⍷¨⊂⎕C∊status
-                      ⎕←'Git: ',(1⊃status),', ',⊃{⍺,', ',⍵}/1↓status
-                  :Else
-                      status←(↓(,[0.5]'Git status report')⍪'='),status
-                      {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
-                  :EndIf
-              :Else
-                  p'The project appears to be managed by Git but the user command ]APLGit2 and'
-                  p'it''s API are missing, therefore no information can be provided regarding Git'
-              :EndIf
+          :Trap 0
+              status←##.APLGit2.Status path
           :Else
-              p'The project appears to be managed by Git, but the package "APLGit2" is not installed...'
+              dmx←⎕DMX
+              :If 127=dmx.EN
+                  p'The project appears to be managed by Git but Git is not installed?!'
+                  :Return
+              :ElseIf 128=dmx.EN
+                  p'The project appears to be managed by Git but user.email and/or user.name are not defined'
+                  :Return
+              :ElseIf 0<≢dmx.Message
+                  ⎕←'The Git status of the project could not be determined due to an error:'
+                  ⎕←dmx.Message,'; rc=',⍕dmx.EN
+                  :Return
+              :Else
+                  ⎕←'The Git status of the project could not be determined due to an error'
+                  :Return
+              :EndIf
+          :EndTrap
+          :If ∧/∨/¨'nothing to commit' 'working tree clean'⍷¨⊂∊status
+          :AndIf ~∨/∨/¨'on branch main' 'on branch master'⍷¨⊂⎕C∊status
+              ⎕←'Git: ',(1⊃status),', ',⊃{⍺,', ',⍵}/1↓status
+          :Else
+              status←(↓(,[0.5]'Git status report')⍪'='),status
+              {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
           :EndIf
       :EndIf
     ∇
@@ -704,13 +706,14 @@
       :EndFor
     ∇
 
-    ∇ {r}←LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_;noOf;p
+    ∇ {r}←quiet LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_;noOf;qdmx;q;parms;p
     ⍝ Load all installed packages (if any) into their designated host namespaces.
-      r←FAILURE
-      p←{⍺←~parms.quietFlag ⋄ ⍺ PrintToSession ⍵}
+      r←SUCCESS
       pkgFolders←GetTatinDepedencyFolders config
+      p←quiet∘{⍺ PrintToSession ⍵}
       :If 0<≢pkgFolders
           :For pkgFolder :In pkgFolders
+     ∆Retry:
               :If '='∊pkgFolder
                   (pkgFolder_ target)←SplitTatinFolders pkgFolder
                   'Target namespace for Tatin packages is addressed with absolute path (invalid)'Assert~(⊃target)∊'#⎕'
@@ -724,15 +727,42 @@
               :If ##.FilesAndDirs.Exists folder2
                   :If 0<0<≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣folder2,'/*'
                       p ReportPackageOrigins folder2
-                      noOf←≢⎕SE.Tatin.LoadDependencies folder2 target
-                      p(⍕noOf),' Tatin package',((1<noOf)/'s'),' loaded'
+                      :Trap 0
+                          noOf←≢⎕SE.Tatin.LoadDependencies folder2 target
+                          p(⍕noOf),' Tatin package',((1<noOf)/'s'),' loaded'
+                      :Else
+                          qdmx←⎕DMX
+                          :If 998=qdmx.EN
+                              :If ∧/∨/¨'The build list in ' ' that are not installed:'⍷¨⊂qdmx.EM
+                                  q←'ReinstallBecauseOfInconsistency@The installed packages don''t fit the dependency/build list file(s); re-install?'
+                                  :If YesOrNo q
+                                      parms←⎕SE.Tatin.CreateReInstallParms
+                                      {}parms ⎕SE.Tatin.ReInstallDependencies folder2
+                                      →∆Retry
+                                  :Else
+                                      p'*** Packages in ',folder2,' need attention!'
+                                  :EndIf
+                              :ElseIf ∨/'Invalid entry:'⍷qdmx.EM
+                                  q←'ReinstallBecauseOfInvalidPkg@There are invalid entries in the dependency list; re-install?'
+                                  :If YesOrNo q
+                                      ⎕SE.Tatin.ReInstallDependencies folder2
+                                      →∆Retry
+                                  :Else
+                                      p'*** Packages in ',folder2,' need attention!'
+                                      r←FAILURE
+                                  :EndIf
+                              :Else
+                                  p'*** ',qdmx.EM
+                                  r←FAILURE
+                              :EndIf
+                          :EndIf
+                      :EndTrap
                   :Else
                       p'Tatin installation folder "',folder2,'" is empty, therefore no packages loaded'
                   :EndIf
               :Else
                   p'Tatin installation folder "',folder2,'" does not exists, therefore no packages loaded'
               :EndIf
-              r←SUCCESS
           :EndFor
       :EndIf
     ∇
@@ -1403,6 +1433,7 @@
     ⍝ be empty, otherwise an error is thrown.
       :If (⎕NC⊂⍕ref)∊9.1 9.4 9.5
           nsIsEmpty←0=≢' '~¨⍨↓ref.⎕NL⍳16
+          'Cannot open, is already loaded as a package'Assert'_tatin'≢{⍵↑⍨¯1+⍵⍳'.'}{⍵↓⍨⍵⍳'.'}⍕ref
           :If 0=##.FilesAndDirs.Exists parms.folder,'/',source
               folderIsEmpty←1
           :Else
