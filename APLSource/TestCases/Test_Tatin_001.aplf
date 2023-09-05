@@ -12,7 +12,7 @@
  parms.noPkgLoad←0
  parms.watch←'ns'
  parms.ignoreUserExec←1
- (res log)←##.Cider.Cider.OpenProject parms
+ (res log)←##.Cider.OpenProject parms
 
  →T.GoToTidyUp~res
  →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3

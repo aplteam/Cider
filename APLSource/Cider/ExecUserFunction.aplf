@@ -1,0 +1,26 @@
+ {r}←ExecUserFunction config;fn;qdmx;msg
+⍝ Check whether the config parameter "ExecuteAfterProjectOpen" is defined in Cider's global config file
+⍝ and execute it if it's a function.
+ r←⍬
+ msg←''
+ :If 0<≢fn←GetFunctionNameFromCiderConfigFile ⍬
+     p'Attempting to execute user function ',fn,'...'
+     :If 1=1 1⊃⎕AT fn
+         :Trap 0
+             ⍎'{}',fn,' config'
+         :Else
+             qdmx←⎕DMX
+             msg←'Executing "',fn'" (ExecuteAfterProjectOpen) crashed: ',qdmx.EM
+         :EndTrap
+     :Else
+         :Trap 0
+             ⍎fn,' config'
+         :Else
+             qdmx←⎕DMX
+             msg←'Executing "',fn,'" (ExecuteAfterProjectOpen) crashed: ',qdmx.EM
+         :EndTrap
+     :EndIf
+     :If 0<≢msg
+         1 p Frame msg
+     :EndIf
+ :EndIf

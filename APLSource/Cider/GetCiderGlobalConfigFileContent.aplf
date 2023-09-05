@@ -1,0 +1,11 @@
+ r←GetCiderGlobalConfigFileContent;filename;json
+⍝ Returns a namespace with all settings (if any) in the (optional) global Cider config file.
+⍝ Note that the file might not exist or be empty, in which case `⍬` is returned.
+ :Access Public Shared
+ r←⍬
+ filename←GetCiderGlobalConfigFilename
+ :If F.IsFile filename
+     json←F.NGET filename
+ :AndIf 0<≢json
+     r←⎕JSON⍠('Dialect' 'JSON5')⊣⊃json
+ :EndIf

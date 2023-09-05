@@ -16,7 +16,7 @@
  list←FilesAndDirs.ListFiles projectFolder1
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
- aliase←##.Cider.Cider.GetAliasFileContent
+ aliase←##.Cider.GetAliasFileContent
  →T.GoToTidyUp~(⊂⎕C'test-case-alias-Foo')∊aliase[;1]
 
  projectFolder2←tempDir,'/Goo'
@@ -30,12 +30,12 @@
  list←FilesAndDirs.ListFiles projectFolder2
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
- aliase←##.Cider.Cider.GetAliasFileContent
+ aliase←##.Cider.GetAliasFileContent
  →T.GoToTidyUp~∧/(⎕C'test-case-alias-Foo' 'test-case-alias-Goo')∊aliase[;1]
 
- →T.GoToTidyUp 1≠##.Cider.Cider.CloseProject'#.Foo'
- →T.GoToTidyUp 1≠##.Cider.Cider.CloseProject'[test-case-alias-Goo]'
- →T.GoToTidyUp 0≠##.Cider.Cider.CloseProject'[Does not exist]'
+ →T.GoToTidyUp 1≠##.Cider.CloseProject'#.Foo'
+ →T.GoToTidyUp 1≠##.Cider.CloseProject'[test-case-alias-Goo]'
+ →T.GoToTidyUp 0≠##.Cider.CloseProject'[Does not exist]'
 
  R←T._OK
 

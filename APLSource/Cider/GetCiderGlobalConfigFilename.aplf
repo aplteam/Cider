@@ -1,0 +1,6 @@
+ filename←GetCiderGlobalConfigFilename;folder
+⍝ Returns the name of the Cider config file.
+⍝ As a side effect it creates the file with defaults if it does not yet exist.
+ :Access Public Shared
+ folder←GetCiderGlobalConfigHomeFolder
+ filename←folder,'config.json'

@@ -1,5 +1,5 @@
 {
-  api: "Cider",
+  api: "API",
   assets: "html",
   description: "A project manager for Dyalog APL that cooperates with Tatin",
   documentation: "",
@@ -19,5 +19,5 @@
   source: "APLSource/Cider/",
   tags: "project-management",
   userCommandScript: "APLSource/Cider_UC.dyalog",
-  version: "0.32.0+495",
+  version: "0.33.0+507",
 }

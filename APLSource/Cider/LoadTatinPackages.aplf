@@ -1,0 +1,59 @@
+ {r}←quiet LoadTatinPackages(config folder projectSpace);pkgFolders;pkgFolder;folder2;target;pkgFolder_;noOf;qdmx;q;parms;p
+⍝ Load all installed packages (if any) into their designated host namespaces.
+ r←SUCCESS
+ pkgFolders←GetTatinDepedencyFolders config
+ p←quiet∘{⍺ PrintToSession ⍵}
+ :If 0<≢pkgFolders
+     :For pkgFolder :In pkgFolders
+∆Retry:
+         :If '='∊pkgFolder
+             (pkgFolder_ target)←SplitTatinFolders pkgFolder
+             'Target namespace for Tatin packages is addressed with absolute path (invalid)'Assert~(⊃target)∊'#⎕'
+             target←projectSpace,'.',target
+         :Else
+             target←projectSpace
+             pkgFolder_←pkgFolder
+         :EndIf
+         p'Attempting to load Tatin packages from ',pkgFolder_,' into ',target,'...'
+         folder2←folder,'/',pkgFolder_
+         :If F.Exists folder2
+             :If 0<0<≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣folder2,'/*'
+                 {}(PrintToSession ReportPackageOrigins)folder2
+                 :Trap 0
+                     noOf←≢⎕SE.Tatin.LoadDependencies folder2 target
+                     p(⍕noOf),' Tatin package',((1<noOf)/'s'),' loaded'
+                 :Else
+                     qdmx←⎕DMX
+                     :If 998=qdmx.EN
+                         :If ∧/∨/¨'The build list in ' ' not installed:'⍷¨⊂qdmx.EM
+                             q←'ReinstallBecauseOfInconsistency@The installed packages don''t fit the dependency/build list file(s); re-install?'
+                             :If C.YesOrNo q
+                                 parms←⎕SE.Tatin.CreateReInstallParms
+                                 {}parms ⎕SE.Tatin.ReInstallDependencies folder2
+                                 →∆Retry
+                             :Else
+                                 p'*** Packages in ',folder2,' need attention!'
+                             :EndIf
+                         :ElseIf ∨/'Invalid entry:'⍷qdmx.EM
+                             q←'ReinstallBecauseOfInvalidPkg@There are invalid entries in the dependency list; re-install?'
+                             :If C.YesOrNo q
+                                 ⎕SE.Tatin.ReInstallDependencies folder2
+                                 →∆Retry
+                             :Else
+                                 p'*** Packages in ',folder2,' need attention!'
+                                 r←FAILURE
+                             :EndIf
+                         :Else
+                             p'*** ',qdmx.EM
+                             r←FAILURE
+                         :EndIf
+                     :EndIf
+                 :EndTrap
+             :Else
+                 p'Tatin installation folder "',folder2,'" is empty, therefore no packages loaded'
+             :EndIf
+         :Else
+             p'Tatin installation folder "',folder2,'" does not exists, therefore no packages loaded'
+         :EndIf
+     :EndFor
+ :EndIf

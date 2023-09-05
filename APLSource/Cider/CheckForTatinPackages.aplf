@@ -1,0 +1,26 @@
+ status←path CheckForTatinPackages config;folders;list;bool;report;this;parms
+⍝ Checks whether at least one Tatin install folder is defined, does exist and is not empty, in which case a 1 is returned.
+⍝ In case at least one install folder contains just a dependency file and a build file but nothing else then...
+⍝ * when the user goes for re-installing the packages, a 2 is returned
+⍝ * when she does not a 3 is returned
+ status←0
+ folders←GetTatinDepedencyFolders config
+ :If 0<≢folders
+     folders←{'='∊⍵:⍵↑⍨¯1+⍵⍳'=' ⋄ ⍵}¨folders
+ :AndIf 0<≢folders←(0<≢¨folders)/folders
+ :AndIf 0<≢folders←(F.Exists(⊂path,'/'),¨folders)/folders
+     status←0<+/≢¨list←{⊃0 ⎕NINFO⍠('Wildcard' 1)⊣⍵}¨(⊂path,'/'),¨folders,¨⊂'/*'
+ :AndIf 1∊bool←0=≢¨F.ListDirs¨(⊂path,'/'),¨folders,¨'/'
+ :AndIf 1∊bool←bool∧⎕NEXISTS(⊂path,'/'),¨folders,¨⊂'/apl-dependencies.txt'
+     :If C.YesOrNo'Tatin install folder',((1+1=+/bool)⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
+         status←2
+         parms←⎕SE.Tatin.CreateReInstallParms
+         parms.update←C.YesOrNo'Would you like to install later version, if available?'
+         folders←bool/folders
+         :For this :In (⊂path,'/'),¨folders
+             report←parms ⎕SE.Tatin.ReInstallDependencies this
+         :EndFor
+     :Else
+         status←3
+     :EndIf
+ :EndIf

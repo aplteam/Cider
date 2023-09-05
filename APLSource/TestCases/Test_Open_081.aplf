@@ -9,7 +9,7 @@
  parms.quietFlag←1
  parms.ignoreUserExec←1
  :Trap 11
-     {}##.Cider.Cider.OpenProject parms
+     {}##.Cider.OpenProject parms
      →T.FailsIf 1
  :Else
      qdmx←⎕DMX

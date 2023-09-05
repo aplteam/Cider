@@ -6,13 +6,13 @@
  'TEMP'#.⎕NS''
 
  (PW PP FR)←⎕PW ⎕PP ⎕FR
- parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms←##.Cider.CreateOpenParms ⍬
  parms.folder←∆GetTestPath⊃⎕SI
  parms.parent←'#.TEMP'
  parms.quietFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
- (success log)←##.Cider.Cider.OpenProject parms
+ (success log)←##.Cider.OpenProject parms
  Assert success
 
  →T.GoToTidyUp 101≠#.TEMP.Foo.⎕PW

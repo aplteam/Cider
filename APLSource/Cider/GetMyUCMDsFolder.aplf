@@ -1,0 +1,10 @@
+ r←GetMyUCMDsFolder
+⍝ Returns standard path for Dyalog's MyUCMDs folder.
+⍝ Works on all platforms but returns different results.\\
+⍝ Under Windows typically:\\
+⍝ `'C:\Users\{⎕AN}\Documents\MyUCMDs\'  ←→ GetMyUCMDsFolder`
+ :If 'Win'≡A.GetOperatingSystem ⍬
+     r←(2 ⎕NQ'.' 'GetEnvironment' 'USERPROFILE'),'\Documents\MyUCMDs'
+ :Else
+     r←(2 ⎕NQ'.' 'GetEnvironment' 'Home'),'/MyUCMDs'
+ :EndIf

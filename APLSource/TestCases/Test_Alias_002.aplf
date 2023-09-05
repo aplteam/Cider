@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- list←##.Cider.Cider.GetAliasFileContent
+ list←##.Cider.GetAliasFileContent
  →T.PassesIf 2=2⊃⍴list   ⍝ Alias, folder
  →T.PassesIf 2≤≢list
  →T.PassesIf∧/'test-project-1' 'test-project-2'∊list[;1]

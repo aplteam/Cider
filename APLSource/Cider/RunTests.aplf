@@ -1,0 +1,18 @@
+ r←RunTests path;configFilename;config
+ r←''
+ :If '[]'≡path[1,≢path]
+     path←GetFolderFromAlias path
+ :EndIf
+ configFilename←path,'/cider.config'
+ ('No file "cider.config" found in ',path)Assert F.Exists configFilename
+ config←Get_JSON5 configFilename
+ :If 0<config.CIDER.⎕NC'tests'
+ :AndIf 0<≢config.CIDER.tests
+     :If (1⍴config.CIDER.tests~' ')∊'])'
+         r←config.CIDER.tests,' ⍝ Execute this for running the test suite'
+     :ElseIf (⊃config.CIDER.tests)∊'#⎕' ⍝ Was possible until 0.28.1
+         r←config.CIDER.tests,' ⍝ Execute this for running the test suite'
+     :Else
+         r←(config.CIDER.parent),({0=≢⍵:⍵ ⋄ '.',⍵},config.CIDER.projectSpace),'.',config.CIDER.tests,' ⍝ Execute this for running the test suite'
+     :EndIf
+ :EndIf

@@ -1,0 +1,28 @@
+ r←ListOpenProjects verboseFlag;res;aliases;ind
+ '⍵ must be a Boolean'Assert(⊂verboseFlag)∊0 1
+ r←(0(2+2×verboseFlag))⍴''
+ res←⎕SE.Link.Status''
+ :If 'No active links'≢res
+     :If 0<≢res←(∧/'Namespace' 'Directory' 'Files'∊res[1;])↓res   ⍝ Will become superfluous with a proper Link API but don't do damage
+         'Link demands a Resync!'Assert~∨/'Link.Resync required'⍷∊res
+     :AndIf 0<≢res←({⊃9=⍵.⎕NC'CiderConfig'}∘⍎¨res[;1])⌿res
+         r←res[;,1],({6::'' ⋄ ⍎⍵,'.CiderConfig.HOME'}¨res[;1])
+         :If verboseFlag
+             r,←res[;3]
+         :EndIf
+         r←(0<≢¨r[;2])⌿r
+         r[;2]←DropTrailingSlash¨r[;2]
+         r[;2]←F.EnforceSlash¨r[;2]
+         :If verboseFlag
+             :If 0<≢aliases←GetAliasFileContent
+                 aliases[;2]←DropTrailingSlash¨aliases[;2]
+             :AndIf 0<≢aliases←(aliases[;2]∊r[;2])⌿aliases
+                 r,←⊂''
+                 ind←r[;2]⍳aliases[;2]
+                 r[ind;4]←aliases[;1]
+             :Else
+                 r,←⊂''
+             :EndIf
+         :EndIf
+     :EndIf
+ :EndIf

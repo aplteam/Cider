@@ -1,0 +1,11 @@
+ {r}←InjectConfigDataIntoProject(config projectSpace_ folder)
+⍝ Create a namespace "CiderConfig" inside projectSpace and populate it with the configuration data.
+⍝ Main purpose is to avoid any "Session namespace is referenced by #" problems.
+ r←⍬
+ 'CiderConfig'projectSpace_.⎕NS config
+ projectSpace_.CiderConfig.CIDER←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.CIDER
+ projectSpace_.CiderConfig.LINK←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.LINK
+ projectSpace_.CiderConfig.USER←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.USER
+ projectSpace_.CiderConfig.SYSVARS←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.SYSVARS
+ projectSpace_.CiderConfig.HOME←⊃,/1 ⎕NPARTS folder
+⍝Done

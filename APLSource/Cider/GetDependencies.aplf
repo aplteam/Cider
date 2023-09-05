@@ -1,0 +1,9 @@
+ r←name GetDependencies config;ref
+⍝ Use this to return the content of "tatin" in either "dependencies" or "dependencies_dev" (defined by "name")
+⍝ but an empty vector in case the "tatin" sub-key does not exist
+ :Access Public Shared
+ r←''
+ :If 0<config.CIDER.⎕NC name
+     ref←config.CIDER.⍎name
+     r,←ref⍎'tatin'
+ :EndIf

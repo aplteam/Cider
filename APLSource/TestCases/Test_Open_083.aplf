@@ -6,7 +6,7 @@
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
  {}⎕SE.Tatin.LoadPackages(##.CiderConfig.HOME,'\TestData\APLTreeUtils2\aplteam-APLTreeUtils2-1.2.0.zip')'#.TEMP'
 
- parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms←##.Cider.CreateOpenParms ⍬
  parms.folder←##.CiderConfig.HOME,'\TestData\APLTreeUtils2\APLTreeUtils2'
  parms.parent←'#.TEMP'
  parms.watch←'ns'
@@ -14,7 +14,7 @@
  parms.ignoreUserExec←1
 
  :Trap 11
-     {}##.Cider.Cider.OpenProject parms
+     {}##.Cider.OpenProject parms
      →T.PassesIf 0
  :Else
      qdmx←⎕DMX

@@ -1,0 +1,28 @@
+ r←ListTatinPackages y;path;cfgFilename;cfg;buildFilenames;buildLists;b;tatinFolders
+ :If '[]'≡y[1,≢y]
+     path←GetFolderFromAlias2 y
+ :Else
+     path←y
+ :EndIf
+ cfgFilename←path,'/cider.config'
+ 'No Cider config file found'Assert F.Exists cfgFilename
+ cfg←ReadProjectConfigFile cfgFilename
+ tatinFolders←GetTatinDepedencyFolders cfg
+ :If 0=≢tatinFolders
+     r←'This Cider project has no Tatin packages'
+ :Else
+     tatinFolders←{⍵↑⍨¯1+⍵⍳'='}¨tatinFolders
+     buildFilenames←((⊂path,'/'),¨tatinFolders),¨⊂'/apl-buildlist.json'
+     :If 0∊b←F.Exists¨buildFilenames
+         ⎕←'Folder(s) do not exist: ',⊃,/(⊂(⎕UCS 13),' '),¨(~b)/buildFilenames
+         buildFilenames←b/buildFilenames
+     :EndIf
+     'No directory noted on parameter "dependencies/dependencies_dev" found'Assert∨/b
+     buildLists←{⎕JSON⍠('Dialect' 'JSON5')⊣⊃F.NGET ⍵}¨buildFilenames
+     r←⍉∘↑¨(⊂¨' ',¨¨buildLists.packageID),¨buildLists.(principal url)
+     r←{⍵,'? '[1+'https://tatin.dev/'∘≡¨⍵[;3]]}¨r
+     r←(⊂' Package-ID' 'Principal' 'URL' '')⍪¨(⊂'' '' '' '')⍪¨r
+     (2⌷¨r)←(⊂' ' '' '' ''),¨¨({(¯1 0 0 0)+¨⊃¨((⌈⌿⍴¨,¨⍵))}¨r)⍴¨¨'-'
+     r←{w←⍵ ⋄ w[2;4]←' ' ⋄ w}¨r
+     r←⊃⍪/((⊂¨'*** '∘,¨(⊂path,'/'),¨tatinFolders),¨⊂'' '' '')⍪¨r
+ :EndIf

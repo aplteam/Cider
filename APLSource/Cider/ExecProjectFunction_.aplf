@@ -1,0 +1,28 @@
+ {r}←x ExecProjectFunction_ init;fns;config;projectSpace;qdmx;valence
+ r←⍬
+ (projectSpace config)←x
+ :If 3=projectSpace.⎕NC init
+     p'Executing the project''s initialising function "',(init~' '),'"...'
+     valence←1 2⊃projectSpace.⎕AT init
+     :Select valence
+     :Case 0                   ⍝ Niladic
+         :Trap 0
+             projectSpace.⍎init
+         :Else
+             qdmx←⎕DMX
+             1 p Frame'Executing "init" crashed: ',qdmx.EM
+         :EndTrap
+     :CaseList 1 ¯2            ⍝ Monadic and ambivalent
+         fns←projectSpace.⍎init
+         :Trap 0
+             fns config
+         :Else
+             qdmx←⎕DMX
+             1 p Frame'Executing "init" crashed: ',qdmx.EM
+         :EndTrap
+     :Else
+         1 p Frame'Invalid function valence: is dyadic'
+     :EndSelect
+ :Else
+     1 p Frame'Could not execute "',init,'": function not found; check config file!'
+ :EndIf

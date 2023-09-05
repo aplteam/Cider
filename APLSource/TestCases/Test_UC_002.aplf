@@ -10,15 +10,15 @@
  {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig -quiet -ignoreUserExec'
  {}⎕SE.UCMD'Cider.CloseProject #.Foo'
 
- parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms←##.Cider.CreateOpenParms ⍬
  parms.folder←tempDir
  parms.quietFlag←1
  parms.watch←'ns'
  parms.parent←'#.Goo'
  parms.ignoreUserExec←1
- (res log)←##.Cider.Cider.OpenProject parms
+ (res log)←##.Cider.OpenProject parms
 
- →T.GoToTidyUp 0=≢list←##.Cider.Cider.ListOpenProjects 0
+ →T.GoToTidyUp 0=≢list←##.Cider.ListOpenProjects 0
 
  (rc msg result)←∆UCMD'CloseProject #.Goo.Foo'
  msg Assert rc=0

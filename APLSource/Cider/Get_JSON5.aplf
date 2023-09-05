@@ -1,0 +1,28 @@
+ config←Get_JSON5 filename;config;flag;qdmx;json
+ :If 0<≢json←⊃F.NGET filename
+     :Trap 11
+         config←⎕JSON⍠('Dialect' 'JSON5')⊣json
+     :Else
+         qdmx←⎕DMX
+         11 ⎕SIGNAL⍨'JSON import of <',filename,'> failed',{0=≢⍵:⍵ ⋄ ':'∊⍵:(¯1+⍵⍳':')↓⍵ ⋄ ': ',⍵}qdmx.Message
+     :EndTrap
+ :EndIf
+ :If 0<config.⎕NC'CIDER'
+     flag←0
+     :If 0<config.CIDER.⎕NC'lx'  ⍝ Renamed from `lx` to `init` in 2022-07
+         config.CIDER.init←config.CIDER.lx
+         config.CIDER.⎕EX'lx'
+         flag←1
+     :EndIf
+     :If 0=config.CIDER.⎕NC'tests'
+         config.CIDER.tests←''
+         flag←1
+     :EndIf
+     :If 0=config.CIDER.⎕NC'make'
+         config.CIDER.make←''
+         flag←1
+     :EndIf
+     :If flag
+         (⊂config)Put_JSON5 filename
+     :EndIf
+ :EndIf

@@ -1,0 +1,21 @@
+ {r}←configFilename HandleSysVars config;json;name;name_
+⍝ For inheritance we specify the system vars early
+ r←⍬
+ :If 9=config.⎕NC'SYSVARS'     ⍝ Was introduced in version 0.4.0
+     :For name :In ' '~⍨¨↓config.SYSVARS.⎕NL 2
+         name_←1 ⎕C name
+         :Trap 0
+             projectSpace_.⍎'⎕',name_,'←',⍕⍎'config.SYSVARS.',name
+         :Else
+             1 p Frame'Assigning system variable "',name,'" failed'
+         :EndTrap
+     :EndFor
+ :Else                         ⍝ SysVars prior to version 0.3.0
+     projectSpace_.(⎕IO ⎕ML)←config.CIDER.(io ml)
+     :If 1 C.YesOrNo'Convert old system vars definition to new one?'
+         'SYSVARS'config.⎕NS''
+         config.SYSVARS.(io ml)←config.CIDER.(io ml)
+         config.CIDER.⎕EX¨'io' 'ml' 'wx'
+         json←Put_JSON5 configFilename
+     :EndIf
+ :EndIf

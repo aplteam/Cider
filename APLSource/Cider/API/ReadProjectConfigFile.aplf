@@ -1,0 +1,1 @@
+ ReadProjectConfigFile←{##.ReadProjectConfigFile ⍵}

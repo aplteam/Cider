@@ -5,14 +5,14 @@
 
  'TEMP'#.⎕NS''
 
- parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms←##.Cider.CreateOpenParms ⍬
  parms.folder←∆GetTestPath⊃⎕SI
  parms.parent←'#.TEMP'
  parms.importFlag←1
  parms.quietFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
- (success log)←##.Cider.Cider.OpenProject parms
+ (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello
 

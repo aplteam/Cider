@@ -1,0 +1,10 @@
+ {r}←ExecProjectInitFunction(config projectSpace);fns
+⍝ Check whether a function "lx" is specified in the configuration and if so execute it.
+ r←0
+ :If 0<≢config.CIDER.init
+     :If '⋄'∊config.CIDER.init
+         (⊂projectSpace config)ExecProjectFunction_¨'⋄'(≠⊆⊢)config.CIDER.init
+     :Else
+         (projectSpace config)ExecProjectFunction_ config.CIDER.init
+     :EndIf
+ :EndIf

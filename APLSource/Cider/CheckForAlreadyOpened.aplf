@@ -1,0 +1,7 @@
+ flag←CheckForAlreadyOpened projectSpace;activeLinks
+⍝ Returns a 1 in case projectSpace is already LINKed, otherwise 0
+ flag←0
+ :If 2=⍴⍴activeLinks←⎕SE.Link.Status''
+ :AndIf 0<≢activeLinks                                          ⍝ Maybe one day when Link has a real API...
+     flag←(⊂⍕projectSpace)∊activeLinks[;1]
+ :EndIf

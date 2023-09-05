@@ -11,6 +11,7 @@
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
      parms.version←version
+     M.CreateAPI #.Cider.Cider ##.Cider.Public cfg.api
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
      :If 0<≢cfg.userCommandScript

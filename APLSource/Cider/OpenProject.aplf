@@ -1,0 +1,119 @@
+ (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff
+⍝ Open a Cider project.\\
+⍝ `y` must be one of:
+⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
+⍝  * A character vector holding the full path to a project
+ :Access Public Shared
+ successFlag←FAILURE ⋄ ∆LOG←''
+ :If 80=⎕DR y
+     parms←CreateOpenParms''
+     parms.folder←y
+ :Else
+     parms←CreateOpenParms y
+ :EndIf
+ '"folder" must be specified'Assert 0<parms.⎕NC'folder'
+ '"folder" must be specified'Assert 0<≢parms.folder
+ '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
+ '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both' 0
+ p←{⍺←~parms.quietFlag ⋄ ⍺ PrintToSession ⍵}
+ parms←(p GetFolderFromAlias)parms
+ ('Folder does not exist: ',parms.folder)Assert F.Exists parms.folder
+ p((1+parms.importFlag)⊃'Loading' 'Importing'),' project from ',parms.folder
+ parms.projectSpace←⍕parms.projectSpace
+ :If 0<≢parms.parent
+     parms.parent←,parms.parent
+     'First level of parent must be either "#" or "⎕SE"'Assert(⊆1 ⎕C{⍵↑⍨¯1+⍵⍳'.'}parms.parent)∊,¨'#' '⎕SE'
+     ('Parent namespace "',parms.parent,'" does not exist')Assert(9=⎕NC parms.parent)∨(⊂,1 ⎕C parms.parent)∊,¨'#' '⎕SE'
+ :EndIf
+ :If 0<≢parms.projectSpace
+     ('"projectSpace" must not carry a "." (see "parent"')Assert 0='.'+.=parms.projectSpace
+     'Project space is not a valid APL name'Assert{0::0 ⋄ 0=(⎕NS'').⎕NC ⍵}⍕parms.projectSpace
+ :EndIf
+ parms.alias←⎕C parms.alias
+ :If parms.alias≡'.'
+     parms.alias←⎕C 2⊃{1 ⎕NPARTS(-(¯1↑⍵)∊'/\')↓⍵}parms.folder
+ :EndIf
+ AddAlias parms.folder parms.alias
+ configFilename←parms.folder,'/cider.config'
+ ('No file "cider.config" found in ',parms.folder)Assert F.Exists configFilename
+ config←Get_JSON5 configFilename
+ :If 0=≢parms.projectSpace                                                         ⍝ Was it specified as argument?
+ :AndIf 0=≢parms.projectSpace←config.CIDER.projectSpace                            ⍝ Nope, so the config file rules...
+     parms.projectSpace←'#'                                                        ⍝ ... but only is it is not empty
+ :EndIf
+ :If 0=≢parms.parent                                                               ⍝ Was it specified as argument?
+     parms.parent←config.CIDER.parent                                              ⍝ Nope, so the config file rules
+ :EndIf
+ :If 0=≢parms.projectSpace
+     projectSpace_←⍎parms.parent                                                   ⍝ Is either # or ⎕SE
+ :Else
+     :If ~(,⊂1 ⎕C parms.parent)∊,¨'#' '⎕SE'
+         ('Namespace <',parms.parent,' does not exist')Assert 9=⎕NC parms.parent
+     :EndIf
+     projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                        ⍝ Create project space from "parent" to avoid problems
+ :EndIf
+ config←projectSpace_.⎕NS config
+ 'Already opened?!'Assert~CheckForAlreadyOpened projectSpace_
+ config←parms.folder PolishProperties config
+ config←CheckParameters config
+ configFilename HandleSysVars config
+ source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source              ⍝ For linking we are only interested in the code folder
+ ('Source folder does not exist: ',parms.folder)Assert F.Exists parms.folder
+ linkOptions←ExtractLinkOptions config                                             ⍝ Merge the default options with Cider's options
+ :If 0≢parms.watch
+     config.LINK.watch←linkOptions.watch←parms.watch
+ :EndIf
+ p'Bringing in the source code...'
+ projectSpace_←CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
+ :If parms.importFlag
+     res←linkOptions ⎕SE.Link.Import projectSpace_ source                          ⍝ Get the code into the WS
+     dmx←⎕DMX
+     ('LINK failed to import the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
+     p'  Code imported'
+ :Else
+     res←linkOptions ⎕SE.Link.Create projectSpace_ source                          ⍝ Get the code into the WS
+     dmx←⎕DMX
+     ('LINK failed to load the code (',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
+     :If ∨/'ERRORS ENCOUNTERED:'⍷res
+         1 p↓Frame CR(≠⊆⊢)res
+     :EndIf
+     p'  Code established, "watch" is "',linkOptions.watch,'"'
+ :EndIf
+ :If 0=parms.noPkgLoad
+     pkgStatus←parms.folder CheckForTatinPackages config
+     :If 0<pkgStatus
+         :If 0=parms.importFlag
+             :Trap 0
+                 CheckPackagesStatus config parms pkgStatus
+             :Else
+                 qdmx←⎕DMX
+                 buff←''
+                 buff,←⊂'ERROR: Checking Tatin package status in ',parms.folder
+                 buff,←⊂'       failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+                 1 p↓Frame buff
+             :EndTrap
+         :EndIf
+         :Trap 0
+             :If 0=parms.quietFlag LoadTatinPackages config parms.folder(⍕projectSpace_)
+                 1 p↓Frame'Package folder ',parms.folder,' needs attention!'
+             :EndIf
+         :Else
+             qdmx←⎕DMX
+             buff←''
+             buff,←⊂'ERROR: loading Tatin packages from ',parms.folder
+             buff,←⊂'       failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+             1 p↓Frame buff
+         :EndTrap
+     :EndIf
+ :EndIf
+ InjectConfigDataIntoProject config projectSpace_ parms.folder
+ InjectTatinVars projectSpace_ parms.folder
+ {}ExecProjectInitFunction⍣(~parms.suppressInit)⊣config projectSpace_
+ {}ExecUserFunction⍣(~parms.ignoreUserExec)⊣config
+ CheckOnToDo projectSpace_
+ successFlag←SUCCESS
+ :If 0=parms.quietFlag
+ :AndIf 0=parms.importFlag
+     p'*** Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,,{(,'#')≡,⍵:'"' ⋄ '.',⍵,'"'}parms.projectSpace
+     CheckForGit parms.folder config
+ :EndIf

@@ -1,0 +1,21 @@
+ r←RunMake path;configFilename;config;p
+ r←''
+ p←{⍺←~parms.quietFlag ⋄ ⍺ PrintToSession ⍵}
+ :If '[]'≡path[1,≢path]
+     path←GetFolderFromAlias path
+ :EndIf
+ configFilename←path,'/cider.config'
+ ('No file "cider.config" found in ',path)Assert F.Exists configFilename
+ config←Get_JSON5 configFilename
+ :If 0<config.CIDER.⎕NC'make'
+ :AndIf 0<≢config.CIDER.make
+     :If (1⍴config.CIDER.make~' ')∊'])'
+         r←config.CIDER.make,' ⍝ Execute this for creating a new version'
+     :ElseIf (⊃config.CIDER.make)∊'#⎕'   ⍝ Was possible until 0.28.1
+         r←config.CIDER.make,' ⍝ Execute this for creating a new version'
+     :Else
+         r←(config.CIDER.parent),({0=≢⍵:⍵ ⋄ '.',⍵},config.CIDER.projectSpace),'.',config.CIDER.make,' ⍝ Execute this for creating a new version'
+     :EndIf
+ :Else
+     1 p Frame'No expression found for creating a new version of <',config.CIDER.projectSpace,'>'
+ :EndIf

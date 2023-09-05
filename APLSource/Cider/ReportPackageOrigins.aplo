@@ -1,0 +1,8 @@
+ msg←(reportFns ReportPackageOrigins)folder;data;noOf
+⍝ Report where the package got installed from
+ msg←''
+ data←Get_JSON5 folder,'/apl-buildlist.json'
+ msg←1 2⍴'Packages were originally installed from:' ''
+ noOf←{≢⍵}⌸data.url
+ msg⍪←↑noOf{⍵(('(',⍕⍺),' package',((1<⍺)/'s'),')')}¨∪data.url
+ {}(1<≢msg)reportFns↓⎕FMT msg   ⍝ Report to ⎕SE only if installed from more than one URL

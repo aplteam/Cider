@@ -1,0 +1,14 @@
+ r←GetValidLinkParams
+ r←⍬
+ r,←⊂'arrays'
+ r,←⊂'beforeRead'
+ r,←⊂'beforeWrite'
+ r,←⊂'caseCode'
+ r,←⊂'codeExtensions'
+ r,←⊂'fastLoad'
+ r,←⊂'flatten'
+ r,←⊂'forceExtensions'
+ r,←⊂'forceFilenames'
+ r,←⊂'getFilename'
+ r,←⊂'typeExtensions'
+ r,←⊂'watch'

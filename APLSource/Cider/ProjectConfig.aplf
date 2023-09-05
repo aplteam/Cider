@@ -1,0 +1,44 @@
+ {r}←{editFlag}ProjectConfig path;filename;ns;orig;flag;edit;data
+⍝ By default the contents of the file cider.config in "path" is put into the editor in read-only mode.
+⍝ The user may edit the contents if `⍺` is 1 rather than anything else or undefined.
+⍝ Returns 1 in case the file was modified and 0 otherwise.
+ r←0
+ editFlag←{0=⎕NC ⍵:0 ⋄ ⍎⍵}'editFlag'
+ :If '['∊path
+     path←GetFolderFromAlias path
+     ('Alias "',path,'" not found')Assert 0<≢path
+ :EndIf
+ :If 'cider.config'{⍺≡⎕C(-≢⍺)↑⍵}path
+ :AndIf (¯1↑(-≢'cider.config')↓path)∊'/\'
+     filename←path
+ :Else
+     filename←path,'/cider.config'
+ :EndIf
+ ('Does not exist: "',filename,'"')Assert F.Exists filename
+ ns←⍎'edit'(⍎(1+'⎕'=⊃⊃⎕XSI)⊃'#' '⎕SE').⎕NS''
+ MassageConfig filename
+ orig←ns.cider_config←⊃F.NGET filename 1
+ :If ~CheckJsonSyntax ns.cider_config
+ :OrIf ~0 PerformConfigChecks ⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
+     orig←'' ⍝ This can happen in case the user edited the file with a externalm editor and introduced a mistake
+ :EndIf
+ flag←0
+ :Repeat
+     ns.⎕ED⍠('ReadOnly'(~(⊂,1)≡⊂,editFlag))⊣'cider_config'
+     :If orig≢ns.cider_config
+     :AndIf editFlag
+     :AndIf 0<≢(∊ns.cider_config)~' '
+         :If CheckJsonSyntax ns.cider_config
+             data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
+         :AndIf PerformConfigChecks data
+             (⊂ns.cider_config)⎕NPUT⍠('NEOL' 2)⊣filename 1
+             r←flag←1
+         :Else
+             :If ~1 C.YesOrNo'Syntax check failed. Try again? (no=changes are lost)'
+                 flag←1
+             :EndIf
+         :EndIf
+     :Else
+         flag←1
+     :EndIf
+ :Until flag

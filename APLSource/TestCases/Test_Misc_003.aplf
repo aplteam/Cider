@@ -8,7 +8,7 @@
 
  folder←∆GetTestPath⊃⎕SI
 
- filename←##.Cider.Cider.GetCiderGlobalConfigFilename
+ filename←##.Cider.GetCiderGlobalConfigFilename
  cfg←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
 
  was←cfg.{0=⎕NC'ExecuteAfterProjectOpen':'' ⋄ ExecuteAfterProjectOpen}⍬
@@ -19,7 +19,7 @@
  parms←⎕NS''
  parms.folder←folder,'/Project1'
  parms.quietFlag←1
- (success log)←##.Cider.Cider.OpenProject parms
+ (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠#.TEMP2.∆FLAG
 

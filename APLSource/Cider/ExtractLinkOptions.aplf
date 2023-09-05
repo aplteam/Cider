@@ -1,0 +1,17 @@
+ options←ExtractLinkOptions config;C;overWrite
+ options←⎕SE.Link.U.DefaultOpts ⎕NS''
+ C←config.LINK
+ overWrite←{0=≢⍵:⍺ ⋄ ⍵}
+ options.arrays(overWrite)←C.arrays
+ options.beforeRead(overWrite)←C.beforeRead
+ options.beforeWrite(overWrite)←C.beforeWrite
+ options.caseCode(overWrite)←C.caseCode
+ options.codeExtensions(overWrite)←C.codeExtensions
+ options.fastLoad(overWrite)←C.fastLoad
+ options.flatten(overWrite)←C.flatten
+ options.forceExtensions(overWrite)←C.forceExtensions
+ options.forceFilenames(overWrite)←C.forceFilenames
+ options.getFilename(overWrite)←C.getFilename
+ options.typeExtensions(overWrite)←↑C.typeExtensions
+ options.watch←C.watch
+ options.fastLoad←config.LINK.fastLoad

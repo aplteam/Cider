@@ -5,14 +5,14 @@
 
  'TEMP'#.⎕NS''
 
- parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms←##.Cider.CreateOpenParms ⍬
  parms.folder←##.CiderConfig.HOME,'/TestData/Boo-Project'
  parms.parent←'#.TEMP'
  parms.quietFlag←1
  parms.alias←'Boo'
  parms.watch←'ns'
  parms.ignoreUserExec←1
- (success log)←##.Cider.Cider.OpenProject parms
+ (success log)←##.Cider.OpenProject parms
  Assert success
  →T.GoToTidyUp~∨/,'────────────────────'⍷↑log
 

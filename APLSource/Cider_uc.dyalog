@@ -1,7 +1,7 @@
-:Class Cider_UC
+﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-08-05
+⍝ 2023-09-05
 
 
 
@@ -169,7 +169,7 @@
           home←(⎕SE.Cider.ListOpenProjects 0){⊃⍺[⍺[;2]⍳⊂⍵;1]}path
           :If 2≠⎕NC home,'.ToDo'
           :OrIf 0=≢(∊home⍎'ToDo')~' '
-          :OrIf ⎕SE.Cider.##.CommTools.YesOrNo'IgnoreToDo@There is a non-empty variable "ToDo" in <',home,'> - carry on anyway?'
+          :OrIf ⎕SE.Cider.##.C.YesOrNo'IgnoreToDo@There is a non-empty variable "ToDo" in <',home,'> - carry on anyway?'
               r←⎕SE.Cider.RunMake path
           :EndIf
       :EndIf
@@ -178,10 +178,10 @@
     ∇ r←Config Args;_Cider;filename;json
       r←'No action taken'
       filename←P.GetCiderGlobalConfigFilename
-      :If P.##.FilesAndDirs.IsFile filename
-          json←⊃P.##.FilesAndDirs.NGET filename
+      :If P.##.F.IsFile filename
+          json←⊃P.##.F.NGET filename
           :If Args.Switch'print'
-              r←'--- Conder Config File: ',('expand'P.##.FilesAndDirs.NormalizePath filename),' ---',⎕UCS 10
+              r←'--- Conder Config File: ',('expand'P.##.F.NormalizePath filename),' ---',⎕UCS 10
               r,←json
           :Else
               _Cider←⎕NS''
@@ -190,12 +190,12 @@
               :If 0<≢_Cider.config
               :AndIf json≢_Cider.config
               :AndIf YesOrNo'Would you like to save your changes on disk?'
-                  (⊂_Cider.config)P.##.FilesAndDirs.NPUT filename 1
+                  (⊂_Cider.config)P.##.F.NPUT filename 1
                   r←'File edited and changed saved to disk'
               :EndIf
           :EndIf
       :Else
-          r←'File not found: ','expand'P.##.FilesAndDirs.NormalizePath filename
+          r←'File not found: ','expand'P.##.F.NormalizePath filename
       :EndIf
     ∇
 
@@ -612,7 +612,7 @@
                   config.CIDER.projectSpace(⍎config.CIDER.parent).⎕NS''
               :Else
                   :If 0<≢((⍎config.CIDER.parent)⍎config.CIDER.projectSpace).⎕NL⍳16
-                      :If 1<≢list←⊃P.##.FilesAndDirs.Dir projectFolder
+                      :If 1<≢list←⊃P.##.F.Dir projectFolder
                       :OrIf 'cider.config'≢{1≠≢⍵:0 ⋄ ⊃,/1↓⎕NPARTS⊃⍵}list
                           :If quietFlag
                       ⍝ With quietFlag on there is nothing we can do but throw an error
@@ -652,9 +652,9 @@
       ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
       globalCiderConfigFilename←⎕SE.Cider.GetCiderGlobalConfigHomeFolder,'cider.config.template'
       :If 0=⎕NEXISTS globalCiderConfigFilename
-          globalCiderConfigFilename(⎕NCOPY P.##.FilesAndDirs.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
+          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
       :EndIf
-      config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃P.##.FilesAndDirs.NGET globalCiderConfigFilename
+      config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃P.##.F.NGET globalCiderConfigFilename
       :If ~⎕SE.Cider.HasDotNet
           config.LINK.watch←'ns'
       :EndIf
@@ -664,7 +664,7 @@
       ((~name∊⎕D,⎕A,'_∆⍙',⎕C ⎕A)/name)←'_'
       config.CIDER.projectSpace←⍕name
       config←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config
-      (⊂config)P.##.FilesAndDirs.NPUT filename
+      (⊂config)P.##.F.NPUT filename
     ∇
 
     ∇ r←GetUserConfigFileTemplate;folder;filename
@@ -673,7 +673,7 @@
     ⍝ Eventually the template is returned.
       folder←⎕SE.Cider.GetCiderGlobalConfigHomeFolder
       filename←folder',/cider.config.template'
-      :If ~##.FilesAndDirs.Exists filename
+      :If ~P.##.F.Exists filename
           :If 0<##.⎕NC'TatinVars'
               filename ⎕NCOPY ##.TatinVars.HOME,'/cider.config.template'
           :Else
@@ -744,7 +744,7 @@
               11 ⎕SIGNAL⍨'Invalid project name(s): ',⊃{⍺,',',⍵}/invalid/projectID
           :EndIf
           list←P.ListOpenProjects 0
-          invalid←~((⎕C projectID)∊⎕C list[;1])∨(P.##.FilesAndDirs.NormalizePath projectID)∊P.##.FilesAndDirs.NormalizePath list[;2]
+          invalid←~((⎕C projectID)∊⎕C list[;1])∨(P.##.F.NormalizePath projectID)∊P.##.F.NormalizePath list[;2]
           :If 1∊invalid
               ('Not an open Cider project: ',⊃{⍺,',',⍵}/invalid/projectID)Assert∧/~invalid
           :EndIf
@@ -912,7 +912,7 @@
       :EndIf
     ∇
 
-    YesOrNo←{⍺←⊢ ⋄ ⍺ ⎕SE.Cider.##.CommTools.YesOrNo ⍵}
+    YesOrNo←{⍺←⊢ ⋄ ⍺ ⎕SE.Cider.##.C.YesOrNo ⍵}
 
     ∇ r←{caption}SelectFromAliases data;row
       r←⍬
@@ -965,7 +965,7 @@
       index←{1<≢⍵:⍵ ⋄ ⊃⍵}index
     ∇
 
-    Select←{⍺←⊢ ⋄ ⍺ ⎕SE.Cider.##.CommTools.Select ⍵}
+    Select←{⍺←⊢ ⋄ ⍺ ⎕SE.Cider.##.C.Select ⍵}
 
     ∇ {r}←PerformConfigChecks config;buff;namespace;path
       r←0

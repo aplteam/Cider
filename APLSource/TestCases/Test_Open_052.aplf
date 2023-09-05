@@ -5,7 +5,7 @@
 
  'TEMP'#.⎕NS''
 
- parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms←##.Cider.CreateOpenParms ⍬
  parms.folder←∆GetTestPath⊃⎕SI
  parms.parent←'#.TEMP'
  parms.quietFlag←1
@@ -15,7 +15,7 @@
  filename←parms.folder,'/APLSource/Hello.aplf'
  (⊂'r←Hello' 'r←''World''')⎕NPUT filename 1
 
- (success log)←##.Cider.Cider.OpenProject parms
+ (success log)←##.Cider.OpenProject parms
  Assert success
 
  →T.GoToTidyUp'ns'≢#.TEMP.Foo.CiderConfig.LINK.watch

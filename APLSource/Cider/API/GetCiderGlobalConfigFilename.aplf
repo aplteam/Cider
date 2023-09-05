@@ -1,0 +1,2 @@
+ filename←GetCiderGlobalConfigFilename
+ filename←##.GetCiderGlobalConfigFilename

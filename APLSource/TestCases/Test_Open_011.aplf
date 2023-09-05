@@ -8,7 +8,7 @@
  'TEMP'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI
 
- (success log)←##.Cider.Cider.OpenProject folder
+ (success log)←##.Cider.OpenProject folder
  →T.GoToTidyUp~success
 
  →T.GoToTidyUp~success

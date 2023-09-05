@@ -7,7 +7,7 @@
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
  tempDir ⎕NCOPY⍠('Wildcard' 1)⊣##.CiderConfig.HOME,'/TestData/PksDontFitBuildList/*'
 
- parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms←##.Cider.CreateOpenParms ⍬
  parms.folder←tempDir
  parms.parent←'#.TEMP'
  parms.watch←'ns'
@@ -15,7 +15,7 @@
  parms.ignoreUserExec←1
 
  ##.Cider.CommTools.YesOrNo_Answers←1 2⍴'ReinstallBecauseOfInvalidPkg@' 'y'
- {}##.Cider.Cider.OpenProject parms
+ {}##.Cider.OpenProject parms
  →T.GoToTidyUp'#._tatin.aplteam_Tester2_3_5_0.Tester2'≢⍕#.TEMP.fooproj.Tester2  ⍝ VALUE ERROR? Try again, but execute stuff after ∆TidyUp
  →T.GoToTidyUp'#._tatin.aplteam_CodeCoverage_0_7_3.CodeCoverage'≢⍕#.TEMP.fooproj.CodeCoverage
 
@@ -23,6 +23,6 @@
 
 ∆TidyUp:
  ##.Cider.CommTools.Cleanup
- {}##.Cider.Cider.CloseProject'#.TEMP.fooproj'
+ {}##.Cider.CloseProject'#.TEMP.fooproj'
  {}FilesAndDirs.RmDirByForce tempDir
 ⍝Done

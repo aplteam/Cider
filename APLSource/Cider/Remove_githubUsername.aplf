@@ -1,0 +1,8 @@
+ report←Remove_githubUsername folder
+⍝ With version 0.24.0 of Cider the property "githubUsername" was removed from the config file.
+⍝ Cider now establishes the "owner" of a project on GitHub by investigating `project_url`.
+ ('Is not a directory: ',folder)Assert F.IsDir folder
+ report←''
+ Remove_githubUsername_ folder
+ report←⍪report
+⍝Done

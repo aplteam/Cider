@@ -1,0 +1,18 @@
+ {changeFlag}←MassageConfig filename;config
+⍝ Checks whether the config data comes with all expected antries.
+⍝ If anything is missing (late arrivals) those are added.
+⍝ Returns a 1 in case data was added, otherwise 0.
+ changeFlag←0
+ config←Get_JSON5 filename
+ :If 0=config.CIDER.⎕NC'tests'
+     config.CIDER.tests←''
+     changeFlag∨←1
+ :EndIf
+
+ :If 0=config.CIDER.⎕NC'make'
+     config.CIDER.make←''
+     changeFlag∨←1
+ :EndIf
+ :If changeFlag
+     config Put_JSON5 filename
+ :EndIf

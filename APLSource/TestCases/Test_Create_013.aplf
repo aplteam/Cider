@@ -11,9 +11,9 @@
  (⊂'r←TheAnswerIs' 'r←42')⎕NPUT tempDir,'/APLSource/TheAnswerIs.aplf'
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
- ⎕SE.Cider.##.CommTools.YesOrNo_Answers←2 2⍴''
- ⎕SE.Cider.##.CommTools.YesOrNo_Answers[1;]←'Project successfully created; open as well?' 'y'
- ⎕SE.Cider.##.CommTools.YesOrNo_Answers[2;]←'Target namespace "#.Foo" is not empty. Delete contents?' 'Y'
+ ⎕SE.Cider.##.C.YesOrNo_Answers←2 2⍴''
+ ⎕SE.Cider.##.C.YesOrNo_Answers[1;]←'Project successfully created; open as well?' 'y'
+ ⎕SE.Cider.##.C.YesOrNo_Answers[2;]←'Target namespace "#.Foo" is not empty. Delete contents?' 'Y'
 
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -noEdit -ignoreUserExec'
@@ -28,5 +28,5 @@
  rc←⊃FilesAndDirs.RmDir tempDir
  Assert rc∧.=0
  #.⎕EX'Foo'
- ⎕SE.Cider.##.CommTools.Cleanup
+ ⎕SE.Cider.##.C.Cleanup
 ⍝Done

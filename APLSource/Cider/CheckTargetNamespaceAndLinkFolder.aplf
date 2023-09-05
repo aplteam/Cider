@@ -1,0 +1,36 @@
+ ref←CheckTargetNamespaceAndLinkFolder(ref parms source);nsIsEmpty;folderIsEmpty
+⍝ 1. In case `ref` does not point to a namespace or a script but the name is already taken
+⍝ 2. In case the namespace `ref` and the folder are both empty no action is taken
+⍝ 3. In case only the namespace `ref` is empty no action is taken
+⍝ 4. In case only the folder is empty no action is taken
+⍝ 5. In case neither the namespace `ref` nor the folder are empty the user is asked
+⍝    whether she wants the namespace to be recreated; if not an error is thrown.
+⍝ When `quietFlag` is set however then either the namepace or the folder or both must
+⍝ be empty, otherwise an error is thrown.
+ :If (⎕NC⊂⍕ref)∊9.1 9.4 9.5
+     nsIsEmpty←0=≢' '~¨⍨↓ref.⎕NL⍳16
+     'Cannot open, is already loaded as a package'Assert'_tatin'≢{⍵↑⍨¯1+⍵⍳'.'}{⍵↓⍨⍵⍳'.'}⍕ref
+     :If 0=F.Exists parms.folder,'/',source
+         folderIsEmpty←1
+     :Else
+         folderIsEmpty←0=≢⊃⎕NINFO⍠('Wildcard' 1)⊣parms.folder,'/',source,'/*'
+     :EndIf
+     :If nsIsEmpty∧~folderIsEmpty
+     :OrIf folderIsEmpty∧~nsIsEmpty
+     :OrIf folderIsEmpty∧nsIsEmpty
+         :Return
+     :EndIf
+     :If parms.quietFlag
+          ⍝ With quietFlag being true there is nothing we can do but throw an error
+         'Both the target and the source folder are not empty'Assert 0
+     :Else
+         :If C.YesOrNo'Target "',(⍕ref),'" is not empty - recreate?'
+             ⎕EX⍕ref                                 ⍝ It might be a class, so we first delete it...
+             ref←⍎(⍕ref)({⍎⍵↑⍨¯1+⍵⍳'.'}⍕ref).⎕NS''   ⍝ ... and then we re-create it
+         :Else
+             'Both the target and the source folder are not empty'Assert 0
+         :EndIf
+     :EndIf
+ :Else
+     ('The name "',(⍕ref),'" is already in use')Assert 0
+ :EndIf

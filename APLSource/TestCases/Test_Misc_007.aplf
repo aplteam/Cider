@@ -7,7 +7,7 @@
      r←T._WindowsOnly ⋄ →0
  :EndIf
 
- path←##.Cider.Cider.GetMyUCMDsFolder
+ path←##.Cider.GetMyUCMDsFolder
  →T.PassesIf path≡(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\MyUCMDs'
 
  r←T._OK

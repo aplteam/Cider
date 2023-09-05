@@ -14,7 +14,7 @@
  parms.suppressInit←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
- (success log)←##.Cider.Cider.OpenProject parms
+ (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
 
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello

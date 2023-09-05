@@ -12,7 +12,7 @@
  →T.GoToTidyUp'ns'≢#.TEMP.Foo.CiderConfig.LINK.watch
  {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
 
- :If ##.Cider.Cider.HasDotNet
+ :If ##.Cider.HasDotNet
      #.⎕EX'TEMP' ⋄ 'TEMP'#.⎕NS''
      (rc msg result)←stop ∆UCMD cmd,' -watch=dir'
      Assert rc=0

@@ -1,0 +1,64 @@
+ config←projectHome PolishProperties config;buff;noOfCommas;folders;question;errorFlag;errMsg;f1;f2;f3
+⍝ Temporary solution for several problems:
+⍝ I.
+⍝ With version 0.25.0 Cider expects "dependencies" and/or "dependencies_dev" instead of "tatinFolder".
+⍝ This function looks for "tatinFolder", and if it is found suggests an automated conversion.
+⍝ It expects to find either a single comma or no comma at all in "tatinFolder", otherwise it throws an error.
+⍝ II.
+⍝ The property `githubUsername` is deleted from the config file because it is not used anymore
+⍝ III.
+⍝ With version 0.26.0 the property `distributionFolder` was introduced.
+⍝ If not found it is injected as an empty character vector.
+⍝ Note that with the introduction of Cider version 1.0 this function can be removed  ⍝TODO⍝
+ errorFlag←0
+ errMsg←''
+ f1←f2←f3←0
+ :If 0<config.CIDER.⎕NC'tatinFolder'
+     question←''
+     question,←⊂'AutoConversion@This project carries the (now deprecated) property "tatinFolder".'
+     question,←⊂'Would you like to convert it automatically into the new format?'
+     :If 1 C.YesOrNo question
+         'dependencies' 'dependencies_dev'config.CIDER.⎕NS¨⊂''
+         config.CIDER.(dependencies dependencies_dev).tatin←⊂''
+         folders←config.CIDER.tatinFolder
+         :If (noOfCommas←','+.=folders)∊0 1
+             :If ','=1⍴folders
+                  ⍝ This project has only development dependencies
+                 config.CIDER.dependencies_dev.tatin←' '~⍨1↓folders
+             :ElseIf 0=noOfCommas
+                  ⍝ This project has dependencies but not for development
+                 config.CIDER.dependencies.tatin←folders~' '
+             :Else
+                  ⍝ This project has ordinary as well as development dependencies
+                 config.CIDER.(dependencies dependencies_dev).tatin←' '~¨⍨','(≠⊆⊢)folders
+                 config.CIDER.⎕EX'tatinFolder'
+             :EndIf
+             f1←1
+         :Else
+             errorFlag←1
+             errMsg,←⊂'Project carries old (now deprecated) property "tatinfolder" but with an invalid syntax:'
+             errMsg,←⊂'It has ',(⍕noOfCommas),' commas: must be zero or one.'
+         :EndIf
+         config.CIDER.⎕EX'tatinFolder'
+     :Else
+         errorFlag←1
+         errMsg,←⊂'Project carries old (now deprecated) property "tatinfolder" but user refused to convert:'
+         errMsg,←⊂'The project cannot be opened.'
+     :EndIf
+ :EndIf
+ :If 0<config.CIDER.⎕NC'githubUsername'
+     config.CIDER.⎕EX'githubUsername'
+     f2←1
+ :EndIf
+ :If 0=config.CIDER.⎕NC'distributionFolder'
+     config.CIDER.distributionFolder←''
+     f3←1
+ :EndIf
+ :If f1∨f2∨f3
+     config Put_JSON5(F.AddTrailingSep projectHome),'cider.config'
+     p'   Modified file "cider.config" saved in ',projectHome
+ :EndIf
+ :If errorFlag
+     1 p↓Frame errMsg
+     ⎕SIGNAL 11
+ :EndIf

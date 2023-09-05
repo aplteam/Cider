@@ -3,10 +3,10 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- mat1←##.Cider.Cider.GetAliasFileContent
+ mat1←##.Cider.GetAliasFileContent
  Delete_∆ALIAS_TEMP_FOLDER
  res←⎕SE.UCMD'Cider.ListAliases -prune -quiet'
- mat2←##.Cider.Cider.GetAliasFileContent
+ mat2←##.Cider.GetAliasFileContent
  →T.PassesIf(+/~⎕NEXISTS mat1[;2])=-/≢¨mat1 mat2
 
  R←T._OK

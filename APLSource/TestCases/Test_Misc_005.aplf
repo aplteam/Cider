@@ -12,14 +12,14 @@
 
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
 
- parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms←##.Cider.CreateOpenParms ⍬
  parms.folder←dir
  parms.projectSpace←'TEMP'
  parms.checkPackageVersions←2
  parms.quietFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
- (success log)←##.Cider.Cider.OpenProject parms
+ (success log)←##.Cider.OpenProject parms
  Assert success
 
  →T.GoToTidyUp 0≠FilesAndDirs.IsDir dir,'/packages/aplteam-MarkAPL-11.0.0'

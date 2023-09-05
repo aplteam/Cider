@@ -1,0 +1,15 @@
+ Remove_githubUsername_ folder;filename;list;ns
+ filename←folder,'/cider.config'
+ :If F.IsFile filename
+     ns←ReadProjectConfigFile filename
+     :If 0<ns.CIDER.⎕NC'githubUsername'
+         ns.CIDER.⎕EX'githubUsername'
+         ns WriteProjectConfigFile filename
+         report,←⊂filename
+     :EndIf
+ :EndIf
+ list←F.ListDirs folder
+ :If 0<≢list
+     RenameInfo_url_¨list
+ :EndIf
+⍝Done

@@ -6,7 +6,7 @@
 
  'TEMP'#.⎕NS''
 
- parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms←##.Cider.CreateOpenParms ⍬
  parms.folder←##.CiderConfig.HOME,'/TestData/myproj'
  parms.parent←'#.TEMP'
  parms.quietFlag←1
@@ -14,9 +14,9 @@
  parms.checkPackageVersions←2
  parms.watch←'ns'
  parms.ignoreUserExec←1
- (success log)←##.Cider.Cider.OpenProject parms
+ (success log)←##.Cider.OpenProject parms
  Assert success
- defs←##.Cider.Cider.GetAliasFileContent
+ defs←##.Cider.GetAliasFileContent
  →T.GoToTidyUp~(⊂'foo')∊defs[;1]
 
  R←T._OK
@@ -25,5 +25,5 @@
  Assert ⎕SE.Cider.CloseProject'[foo]'
  #.⎕EX'TEMP'
  defs←(defs[;1]≢¨⊂'foo')⌿defs
- (⊂⊃¨{⍺,'=',⍵}/¨↓defs)⎕NPUT ##.Cider.Cider.GetCiderAliasFilename 1
+ (⊂⊃¨{⍺,'=',⍵}/¨↓defs)⎕NPUT ##.Cider.GetCiderAliasFilename 1
 ⍝Done

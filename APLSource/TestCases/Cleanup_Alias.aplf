@@ -1,4 +1,4 @@
  Cleanup_Alias
 ⍝ Just in case...
- ##.Cider.Cider.DropAlias'test-project-1'
- ##.Cider.Cider.DropAlias'test-project-2'
+ ##.Cider.DropAlias'test-project-1'
+ ##.Cider.DropAlias'test-project-2'

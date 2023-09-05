@@ -1,0 +1,2 @@
+ txt←DropTrailingSlash txt
+ txt↓⍨←-'/\'∊⍨¯1↑txt

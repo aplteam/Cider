@@ -1,0 +1,19 @@
+ folder←GetCiderGlobalConfigHomeFolder;name;flag;oldFolder;res
+⍝ Return the full path to (and including) .cider in the user's home directory
+⍝ Has a side effect: creates the hosting folder in case it does not yet exist
+ name←(1+'win'≡⎕C 3↑1⊃'.'⎕WG'aplversion')⊃'HOME' 'USERPROFILE'
+ folder←F.NormalizePath(2 ⎕NQ #'GetEnvironment'name),'/.cider/'
+ 1 ⎕MKDIR folder
+⍝ The remaining code checks whether there is a .cider folder in a different location
+⍝ and if so copies the content over.
+⍝ This is a temporary measure since the parent for the .cider folder was changed on
+⍝ Windows from APPDATA\ to the user's home directory.
+⍝ Nothing changed on other platform
+ :If 'Win'≡3↑A.GetOperatingSystem ⍬
+ :AndIf ~⎕NEXISTS folder,'config.json'
+     oldFolder←(2 ⎕NQ #'GetEnvironment' 'APPDATA'),'/.cider/'
+     :If ⎕NEXISTS oldFolder
+         res←folder∘{⍺(⎕NMOVE⍠('IfExists' 'Skip')F.ExecNfunction)⍵}¨F.ListFiles oldFolder
+         F.RmDir oldFolder
+     :EndIf
+ :EndIf

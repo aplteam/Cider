@@ -1,0 +1,16 @@
+ {config}←CheckParameters config;list;bool;list2
+    ⍝ Check the parameters for being complete and valid
+ p'Checking parameters...'
+ list←' '~⍨¨⊃,/↓¨config.(LINK CIDER).⎕NL 2 9
+ list2←list~GetValidCiderParams
+ bool←(list~GetValidCiderParams)∊GetValidLinkParams
+ ('Invalid LINK parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool
+ bool←GetValidLinkParams∊list2
+ ('Missing LINK parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidLinkParams)Assert∧/bool
+ list2←list~GetValidLinkParams
+ bool←(list~GetValidLinkParams)∊GetValidCiderParams
+ ('Invalid Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool
+ list←' '~⍨¨↓config.CIDER.⎕NL 2 9
+ bool←GetValidCiderParams∊list
+ ('Missing Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams)Assert∧/bool
+ p'  All fine'

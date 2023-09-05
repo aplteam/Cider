@@ -1,0 +1,9 @@
+ {r}←flag PrintToSession msg
+ r←0 0⍴⍬
+ :If flag
+ :AndIf 0<≢msg
+     ⎕←⍪⊆msg
+ :EndIf
+ :If 0<⎕NC'∆LOG'
+     ∆LOG,←⊆msg
+ :EndIf

@@ -1,0 +1,36 @@
+ r←{list}CloseProject projects;list;project;ind;res
+⍝ Simply breaks the Link between a project and its folder on disk.
+⍝ In case ⍵ is empty ALL projects are closed.
+⍝ `projects` may be one of:
+⍝ 1. Empty vector (=close all)
+⍝ 2. One or more projectName like `#.Foo`
+⍝ 3. One or more alias names like `[my-alias]`
+⍝ 4. One or more paths of currently open projects
+⍝ 5. A mixture of 2, 3 and 4
+⍝ Returns the number of projects closed.
+ :Access Public Shared
+ r←0
+ list←{0=⎕NC ⍵:ListOpenProjects 1 ⋄ ⍎⍵}'list'
+ :If 0<≢list
+     :If 0=≢projects
+         res←{⎕SE.Link.Break ⍵}¨list
+         r←+/{'Unlinked: '{⍺≡(≢⍺)↑⍵}⍵}¨res[;1]
+     :Else
+         list[;2]←F.NormalizePath list[;2]
+         projects←⊆projects
+         :For project :In projects
+             :If ∧/'[]'∊project
+                 ind←list[;4]⍳⊂⎕C project~'[]'
+             :Else
+                 ind←(⎕C list[;1])⍳⊂⎕C project
+             :EndIf
+             :If ind>≢list
+                 ind←list[;2]⍳⊂F.NormalizePath project
+             :EndIf
+             :If (≢list)≥ind
+                 res←⎕SE.Link.Break 1⊃list[ind;]
+                 r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
+             :EndIf
+         :EndFor
+     :EndIf
+ :EndIf

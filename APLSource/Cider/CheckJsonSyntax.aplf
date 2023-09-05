@@ -1,0 +1,7 @@
+ flag←CheckJsonSyntax json
+ :Trap 0
+     {}⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆json
+     flag←1
+ :Else
+     flag←0
+ :EndTrap

@@ -1,0 +1,15 @@
+ parms←(fns GetFolderFromAlias)parms;data;alias;msg;alias_;folder
+⍝ Translates the alias in "folder" (if any) into a path from a parameter namespace.\\
+⍝ If an alias is defined it is saved, possibly by overwriting the old one.
+ :If '[]'≡parms.folder[1,≢parms.folder]
+     alias←parms.folder~'[]'
+     folder←GetFolderFromAlias2 alias
+     :If 0<≢folder
+         parms.folder←folder
+         :If 0=≢parms.alias
+             parms.alias←alias
+         :EndIf
+     :Else
+         (alias,'" is not a valid alias')⎕SIGNAL 11
+     :EndIf
+ :EndIf

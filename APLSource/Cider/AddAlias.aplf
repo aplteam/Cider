@@ -1,0 +1,53 @@
+ {r}←AddAlias(folder alias);ciderAliasFilename;data;q;path;folder_;row;path_;ind;msg
+⍝ Takes a folder and an alias.
+⍝ If the folder does not exist `msg` carries a corresponding message.
+⍝ * If the alias is already associated with the folder no action is taken
+⍝ * If the alias is already defined with a different folder the user is asked to confirm overwriting it
+⍝ * If the alias is undefined yet it as added
+⍝ * You cannot delete an alias with this function.
+ :Access Public Shared
+ r←⍬
+ ciderAliasFilename←GetCiderAliasFilename
+ msg←''
+ alias←⎕C alias~'[]'
+ :If 0≠≢alias
+ :AndIf 0<≢ciderAliasFilename
+     :If F.Exists ciderAliasFilename
+         data←⊃F.NGET ciderAliasFilename 1
+         :If ~F.Exists folder
+             1 p Frame'Could not find "',folder,'"'
+         :ElseIf 0=+/(alias,'=')∘{⍺≡(≢⍺)↑⍵}¨data
+             ind←({⍵↓⍨⍵⍳'='}¨data)⍳⊂folder
+             :If ind≤≢data
+                 DropAlias{⍵↑⍨¯1+⍵⍳'='}ind⊃data
+                 data←⊃F.NGET ciderAliasFilename 1
+             :EndIf
+             (⊂data,⊂(⎕C alias),'=',folder)F.NPUT ciderAliasFilename 1
+         :Else
+             data←↑{'='(≠⊆⊢)⍵}¨data
+             :If (⊂alias)∊data[;1]
+                 row←data[;1]⍳⊂alias
+                 path←2⊃data[row;]
+                 (path folder)←F.EnforceSlash¨path folder
+                 :If 'Win'≡A.GetOperatingSystem ⍬
+                     (path_ folder_)←⎕C¨path folder
+                 :Else
+                     (path_ folder_)←path folder
+                 :EndIf
+                 (path_ folder_)←{⍵↓⍨-'/'=¯1↑⍵}¨path_ folder_
+                 :If ≢/path_ folder_
+                     q←'Alias [',alias,'] is already defined for:',CR,('   ',path),CR,'Overwrite?'
+                     :If C.YesOrNo q
+                         data[row;2]←⊂folder
+                         data←⊃¨{⍺,'=',⍵}/¨↓data
+                         (⊂data)F.NPUT ciderAliasFilename 1
+                     :Else
+                         1 p Frame'Alias "',alias,'" is already in use with a different path - alias not assigned'
+                     :EndIf
+                 :EndIf
+             :EndIf
+         :EndIf
+     :Else
+         (⊂(⎕C alias),'=',folder)F.NPUT ciderAliasFilename
+     :EndIf
+ :EndIf

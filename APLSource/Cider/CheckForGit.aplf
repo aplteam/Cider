@@ -1,0 +1,31 @@
+ {r}←CheckForGit(path config);status;dmx
+⍝ Checks whether the project is managed by Git, and if so offers some help
+ r←⍬
+ :If F.Exists(AddSlash path),'.git'
+     :Trap 0
+         status←G.Status path
+     :Else
+         dmx←⎕DMX
+         :If 127=dmx.EN
+             p'The project appears to be managed by Git but Git is not installed?!'
+             :Return
+         :ElseIf 128=dmx.EN
+             p'The project appears to be managed by Git but user.email and/or user.name are not defined'
+             :Return
+         :ElseIf 0<≢dmx.Message
+             ⎕←'The Git status of the project could not be determined due to an error:'
+             ⎕←dmx.Message,'; rc=',⍕dmx.EN
+             :Return
+         :Else
+             ⎕←'The Git status of the project could not be determined due to an error'
+             :Return
+         :EndIf
+     :EndTrap
+     :If ∧/∨/¨'nothing to commit' 'working tree clean'⍷¨⊂∊status
+     :AndIf ~∨/∨/¨'on branch main' 'on branch master'⍷¨⊂⎕C∊status
+         ⎕←'Git: ',(1⊃status),', ',⊃{⍺,', ',⍵}/1↓status
+     :Else
+         status←(↓(,[0.5]'Git status report')⍪'='),status
+         {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
+     :EndIf
+ :EndIf

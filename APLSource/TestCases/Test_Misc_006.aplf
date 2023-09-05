@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
 
- path←##.Cider.Cider.GetProjectPath''
+ path←##.Cider.GetProjectPath''
  →T.PassesIf #.Cider.CiderConfig.HOME≡path
 
  r←T._OK

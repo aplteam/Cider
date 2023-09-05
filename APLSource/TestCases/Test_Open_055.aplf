@@ -5,7 +5,7 @@
 
  'TEMP'#.⎕NS''
 
- parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms←##.Cider.CreateOpenParms ⍬
  parms.folder←∆GetTestPath⊃⎕SI
  parms.parent←'#.TEMP'
  parms.quietFlag←1
@@ -13,7 +13,7 @@
  parms.ignoreUserExec←1
 
  :Trap 11
-     {}##.Cider.Cider.OpenProject parms
+     {}##.Cider.OpenProject parms
      →T.GoToTidyUp 1
  :Else
      qdmx←⎕DMX

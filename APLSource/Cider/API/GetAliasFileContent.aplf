@@ -1,0 +1,2 @@
+ r←GetAliasFileContent
+ r←##.GetAliasFileContent

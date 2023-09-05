@@ -12,7 +12,7 @@
  parms.quietFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
- (success log)←##.Cider.Cider.OpenProject parms
+ (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3
  →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP.⎕NL(⍳16)~3)~⊂'CiderConfig'
@@ -22,12 +22,12 @@
  parms2.quietFlag←1
  parms2.watch←'ns'
  parms2.ignoreUserExec←1
- (success log)←##.Cider.Cider.OpenProject parms2
+ (success log)←##.Cider.OpenProject parms2
  →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠≢#.TEMP2.⎕NL 3
  →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP2.⎕NL(⍳16)~3)~⊂'CiderConfig'
 
- list←##.Cider.Cider.ListOpenProjects 0
+ list←##.Cider.ListOpenProjects 0
  →T.GoToTidyUp 2≠2⊃⍴list   ⍝ Namespace, folder
  →T.GoToTidyUp 2>≢list
  →T.GoToTidyUp 2≠+/((-1+≢'Project1')↑¨list[;2])∊'/Project1' '/Project2' '\Project1' '\Project2'

@@ -5,7 +5,7 @@
 
  'TEMP'#.⎕NS''
 
- parms←##.Cider.Cider.CreateOpenParms ⍬
+ parms←##.Cider.CreateOpenParms ⍬
  parms.folder←##.CiderConfig.HOME,'/TestData/Foo2-Project'
  parms.parent←'#.TEMP'
  parms.quietFlag←1
@@ -13,7 +13,7 @@
  parms.ignoreUserExec←1
  ##.Cider.CommTools.YesOrNo_Answers←1 2⍴'ReInstallMissingPkgs@' 'y'
  ##.Cider.CommTools.YesOrNo_Answers⍪←'LaterVersions@' 'y'
- (success log)←##.Cider.Cider.OpenProject parms
+ (success log)←##.Cider.OpenProject parms
  Assert success
  →T.GoToTidyUp~(⊂'1 Tatin package loaded')∊log
 

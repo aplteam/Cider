@@ -1,0 +1,31 @@
+ parms←CreateOpenParms y;list;b;l
+⍝ Creates a namespace with all parameters one might pass to `OpenProject`.\\
+⍝ `y` might be an empty vector or a namespace with some such parameters.
+⍝ Any parameters passed this way overwrite defaults.
+ :Access Public Shared
+ parms←(1⊃1↓⎕RSI,⎕THIS).⎕NS''      ⍝ Create namespace where we got called from
+ parms.folder←''
+ parms.projectSpace←''
+ parms.quietFlag←0
+ parms.alias←''
+ parms.parent←''
+ parms.suppressInit←0
+ parms.ignoreUserExec←0
+ parms.importFlag←0
+ parms.noPkgLoad←0
+ parms.watch←(1+HasDotNet)⊃'ns' 'both'
+ parms.checkPackageVersions←⍬      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
+ :If ~(⊂y)∊''⍬
+ :AndIf 9=⎕NC'y'
+     :If 9=y.⎕NC'projectSpace'
+         y.projectSpace←⍕y.projectSpace
+     :EndIf
+     :If 9=y.⎕NC'parent'
+         y.parent←⍕y.parent
+     :EndIf
+     '⍵ must not contain references'Assert 0=≢y.⎕NL 9
+     (b{0=+/b:'' ⋄ 'Invalid parameter: ',⊃{⍺,',',⍵}/⍺/⍵}l)Assert 0=+/b←~(l←' '~⍨¨↓y.⎕NL 2)∊' '~⍨¨↓parms.⎕NL 2
+     :If 0<≢list←' '~⍨¨↓y.⎕NL 2
+         parms⍎¨list{' '=1↑0⍴⍵:⍺,'←''',⍵,'''' ⋄ ⍵≡⍬:⍺,'←⍬' ⋄ ⍺,'←',⍕⍵}¨y.{⍎⍵}¨list
+     :EndIf
+ :EndIf

@@ -1,0 +1,14 @@
+ {successFlag}←DropAlias alias;ciderAliasFilename;data;noOf
+ ciderAliasFilename←GetCiderAliasFilename
+ successFlag←FAILURE
+ :If 0≠≢alias
+ :AndIf 0<≢ciderAliasFilename
+     :If F.Exists ciderAliasFilename
+         noOf←≢data←⊃F.NGET ciderAliasFilename 1
+         data←((⊆⎕C alias),¨'='){⍵/⍨~((⍵↑⍨¨⍵⍳¨'='))∊⍺}data
+         :If noOf>≢data
+             (⊂data)F.NPUT ciderAliasFilename 1
+             successFlag←SUCCESS
+         :EndIf
+     :EndIf
+ :EndIf

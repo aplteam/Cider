@@ -1,0 +1,5 @@
+ filename←GetCiderAliasFilename;folder
+ filename←''
+ folder←GetCiderGlobalConfigHomeFolder
+ filename←folder,'aliase.txt'
+⍝Done

@@ -1,0 +1,12 @@
+ r←GetValidCiderParams
+ r←⍬
+ r,←⊂'source'
+ r,←⊂'init'
+ r,←⊂'parent'
+ r,←⊂'projectSpace'
+ r,←⊂'dependencies'
+ r,←⊂'dependencies_dev'
+ r,←⊂'distributionFolder'
+ r,←⊂'project_url'
+ r,←⊂'tests'
+ r,←⊂'make'

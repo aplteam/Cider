@@ -11,7 +11,7 @@
 
  filename←##.CiderConfig.HOME,'/cider.config'
  buff←⊃⎕NGET filename
- 1 ##.Cider.Cider.ProjectConfig ##.CiderConfig.HOME
+ 1 ##.Cider.ProjectConfig ##.CiderConfig.HOME
  (⊂buff)⎕NPUT filename 1 ⍝ Paranoia
 
  r←T._OK

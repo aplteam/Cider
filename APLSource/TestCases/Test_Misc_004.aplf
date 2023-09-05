@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- version←##.Cider.Cider.Version
+ version←##.Cider.Version
  →T.PassesIf 1='+'+.=version
  version←{⍵↑⍨¯1+⌊/⍵⍳'+-'}version
  →T.PassesIf 2='.'+.=version

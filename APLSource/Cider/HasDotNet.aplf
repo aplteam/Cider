@@ -1,0 +1,5 @@
+ r←HasDotNet;buff
+⍝ Returns a 1 if either .NET Core or .NET is available and the bridge DLL was successfully loaded
+ :Access Public Shared
+ buff←2250⌶0
+ r←(1 2∊⍨1⊃buff)∧2⊃buff
