@@ -5,7 +5,6 @@
 ⍝ * If the alias is already defined with a different folder the user is asked to confirm overwriting it
 ⍝ * If the alias is undefined yet it as added
 ⍝ * You cannot delete an alias with this function.
- :Access Public Shared
  r←⍬
  ciderAliasFilename←GetCiderAliasFilename
  msg←''
@@ -15,7 +14,7 @@
      :If F.Exists ciderAliasFilename
          data←⊃F.NGET ciderAliasFilename 1
          :If ~F.Exists folder
-             1 p Frame'Could not find "',folder,'"'
+             (1 parms.batch)p'Could not find "',folder,'"'
          :ElseIf 0=+/(alias,'=')∘{⍺≡(≢⍺)↑⍵}¨data
              ind←({⍵↓⍨⍵⍳'='}¨data)⍳⊂folder
              :If ind≤≢data
@@ -42,7 +41,7 @@
                          data←⊃¨{⍺,'=',⍵}/¨↓data
                          (⊂data)F.NPUT ciderAliasFilename 1
                      :Else
-                         1 p Frame'Alias "',alias,'" is already in use with a different path - alias not assigned'
+                         (1 parms.batch)p'Alias "',alias,'" is already in use with a different path - alias not assigned'
                      :EndIf
                  :EndIf
              :EndIf

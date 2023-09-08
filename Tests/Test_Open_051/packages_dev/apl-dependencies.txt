@@ -1,1 +1,1 @@
-aplteam-CodeCoverage-0.7.3
+aplteam-CodeCoverage-0.10.3

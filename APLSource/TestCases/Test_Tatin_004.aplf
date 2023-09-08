@@ -9,9 +9,9 @@
 
  parms←⎕NS''
  parms.folder←folder
- parms.quietFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
+ parms.batch←1
  (res log)←##.Cider.OpenProject parms
 
  R←T._OK

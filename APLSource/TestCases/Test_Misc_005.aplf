@@ -16,9 +16,9 @@
  parms.folder←dir
  parms.projectSpace←'TEMP'
  parms.checkPackageVersions←2
- parms.quietFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
+ parms.batch←1
  (success log)←##.Cider.OpenProject parms
  Assert success
 

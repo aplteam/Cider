@@ -1,6 +1,5 @@
- r←RunMake path;configFilename;config;p
+ r←RunMake path;configFilename;config
  r←''
- p←{⍺←~parms.quietFlag ⋄ ⍺ PrintToSession ⍵}
  :If '[]'≡path[1,≢path]
      path←GetFolderFromAlias path
  :EndIf
@@ -17,5 +16,5 @@
          r←(config.CIDER.parent),({0=≢⍵:⍵ ⋄ '.',⍵},config.CIDER.projectSpace),'.',config.CIDER.make,' ⍝ Execute this for creating a new version'
      :EndIf
  :Else
-     1 p Frame'No expression found for creating a new version of <',config.CIDER.projectSpace,'>'
+     1 PrintToSession'No expression found for creating a new version of <',config.CIDER.projectSpace,'>'
  :EndIf

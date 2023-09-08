@@ -1,4 +1,4 @@
- r←Test_UC_002(stopFlag batchFlag);⎕TRAP;parms;res;log;rc;msg;result
+ r←Test_UC_002(stopFlag batchFlag);⎕TRAP;parms;res;log;rc;msg;result;tempDir
 ⍝ Exercise the user command "Config"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
@@ -7,15 +7,15 @@
  tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
- {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig -quiet -ignoreUserExec'
+ {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig -batch -ignoreUserExec'
  {}⎕SE.UCMD'Cider.CloseProject #.Foo'
 
  parms←##.Cider.CreateOpenParms ⍬
  parms.folder←tempDir
- parms.quietFlag←1
  parms.watch←'ns'
  parms.parent←'#.Goo'
  parms.ignoreUserExec←1
+ parms.batch←1
  (res log)←##.Cider.OpenProject parms
 
  →T.GoToTidyUp 0=≢list←##.Cider.ListOpenProjects 0

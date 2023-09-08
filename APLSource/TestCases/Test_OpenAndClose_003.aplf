@@ -7,7 +7,7 @@
  tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
- {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig -quiet -ignoreUserExec'
+ {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig  -batch -ignoreUserExec'
 
  list←##.Cider.ListOpenProjects 0
  →T.GoToTidyUp 0≠##.Cider.CloseProject'DoesNotExist'

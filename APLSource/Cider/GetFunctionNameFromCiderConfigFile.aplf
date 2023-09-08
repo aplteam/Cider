@@ -5,11 +5,11 @@
  :AndIf 0<≢functionName←globalUserConfig.ExecuteAfterProjectOpen
      :If 3=⎕NC functionName
          :If 1≠1 2⊃⎕AT functionName
-             p'   "ExecuteAfterProjectOpen" is not a monadic function, therefore not executed'
+             p'"ExecuteAfterProjectOpen" is not a monadic function, therefore not executed'
              functionName←''
          :EndIf
      :Else
-         p'   "ExecuteAfterProjectOpen" is not a function, therefore not executed'
+         p'"ExecuteAfterProjectOpen" is not a function, therefore not executed'
          functionName←''
      :EndIf
  :EndIf

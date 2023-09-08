@@ -4,18 +4,18 @@
  r←0
  updateParms←⎕SE.Tatin.CreateReInstallParms
  updateParms.update←1
- updateParms.quiet←parms.quietFlag
+ updateParms.quiet←parms.batch
  :For i :In ⍳≢reports
      report←i⊃reports
      :If 0<≢report
          folder←{⍵↑⍨¯1+⍵⍳'='}i⊃folders
-         p'   Later versions in <',(AddSlash folder),'> :'
-         p' ',' ',' ',⎕FMT↑{(1⊃⍵),' ==> ',(2⊃⍵)}¨↓report
+         1 parms.batch p'Later versions in <',(AddSlash folder),'> :'
+         1 parms.batch p ⎕FMT↑{(1⊃⍵),' ==> ',(2⊃⍵)}¨↓report
          :If ~updateFlag←2≡parms.checkPackageVersions
-             updateFlag←1 C.YesOrNo'Re-install latest versions in <',(AddSlash folder),'> ?'
+             updateFlag←1 C.YesOrNo'ReinstallLatest@Re-install latest versions in <',(AddSlash folder),'> ?'
          :EndIf
          :If updateFlag
-             p'  Re-installing all packages in <',(AddSlash folder),'> ...'
+             1 parms.batch p'Re-installing all packages in <',(AddSlash folder),'> ...'
              updateParms ⎕SE.Tatin.ReInstallDependencies parms.folder,'/',folder
              r+←1
          :EndIf

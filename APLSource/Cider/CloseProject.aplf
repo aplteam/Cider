@@ -8,7 +8,6 @@
 ⍝ 4. One or more paths of currently open projects
 ⍝ 5. A mixture of 2, 3 and 4
 ⍝ Returns the number of projects closed.
- :Access Public Shared
  r←0
  list←{0=⎕NC ⍵:ListOpenProjects 1 ⋄ ⍎⍵}'list'
  :If 0<≢list

@@ -1,9 +1,7 @@
 ﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-09-05
-
-
+⍝ 2023-09-07
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
@@ -19,7 +17,7 @@
           c.Name←'OpenProject'
           c.Desc←'Load all source files into the WS and keep it linked by default'
           c.Group←'Cider'
-          c.Parse←'1s -projectSpace= -parent= -alias= -suppressInit -quiet -import -noPkgLoad -ignoreUserExec -watch=ns dir both'
+          c.Parse←'1s -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns dir both -verbose -batch'
           r,←c
      
           c←⎕NS''
@@ -40,14 +38,14 @@
           c.Name←'ListAliases'
           c.Desc←'List all defined aliases with their folders'
           c.Group←'Cider'
-          c.Parse←'0 -prune -edit -quiet'
+          c.Parse←'0 -prune -edit -batch'
           r,←c
      
           c←⎕NS''
           c.Name←'CreateProject'
           c.Desc←'Makes the given folder a project folder'
           c.Group←'Cider'
-          c.Parse←'2s -alias= -acceptConfig -noEdit -quiet -ignoreUserExec'
+          c.Parse←'2s -alias= -acceptConfig -noEdit -batch -ignoreUserExec'
           r,←c
      
           c←⎕NS''
@@ -115,7 +113,12 @@
       :If 0=⎕SE.⎕NC'Cider'
           {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)'⎕SE'
       :EndIf
-      P←⎕SE.Cider
+      :If 1
+          P←⎕SE.Cider
+      :Else
+          P←#.Cider.Cider
+          ⎕←'******* P←#.Cider.Cider'
+      :EndIf
       :If 18={⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'.'}aplVersion←2⊃'.'⎕WG'aplversion'
       :AndIf 44280>⊃(//)⎕VFI 3⊃'.'(≠⊆⊢)aplVersion  ⍝ 44280 has essential ⎕FIX fix for Link to work
           'Version 18 must be at least on build number 44280, otherwise Link won''t work as expected'⎕SIGNAL 11
@@ -218,9 +221,9 @@
       :EndIf
       :If 0=≢Args._2
       :OrIf 0≡Args._2
-          r←CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.quiet)(Args.ignoreUserExec)
+          r←CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.batch)(Args.ignoreUserExec)
       :Else
-          r←Args._2 CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.quiet)(Args.ignoreUserExec)
+          r←Args._2 CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.batch)(Args.ignoreUserExec)
       :EndIf
       :If 0≢Args.alias
           :If 0<≢msg←P.AddAlias folder Args.alias
@@ -235,7 +238,7 @@
               r←ProcessAliases 0 0 0
           :EndIf
       :Else
-          r←ProcessAliases Args.(prune edit quiet)
+          r←ProcessAliases Args.(prune edit batch)
       :EndIf
     ∇
 
@@ -292,19 +295,20 @@
       parms.parent←{(,0)≡,⍵:'' ⋄ ⍵}Args.parent
       parms.alias←⎕C''Args.Switch'alias'
       parms.watch←⎕C Args.Switch'watch'
-      parms.quietFlag←Args.quiet
       parms.suppressInit←Args.suppressInit
       parms.importFlag←Args.import
       parms.noPkgLoad←Args.noPkgLoad
       parms.ignoreUserExec←Args.ignoreUserExec
+      parms.verbose←0 Args.Switch'verbose'
+      parms.batch←0 Args.Switch'batch'
       (success log)←P.OpenProject parms
-      :If Args.quiet
+      :If Args.verbose
           r←log
           :If success
-              r,←⊂'Project successfully opened'
+              r,←(⎕UCS 13),{⍵↑⍨-(⎕UCS 13)⍳⍨1↓⌽⍵}log
           :EndIf
       :ElseIf success
-          r←'Project successfully opened'
+          r←{⍵↑⍨-(⎕UCS 13)⍳⍨1↓⌽⍵}log
       :Else
           r←'Attempt to open the project failed'
       :EndIf
@@ -318,19 +322,19 @@
           :Select ⎕C Cmd
           :Case ⎕C'OpenProject'
               r,←⊂'Load all source files into the WS and keep it linked by default plus many more actions...'
-              r,←⊂']Cider.OpenProject [folder|alias] -projectSpace= -parent= -alias= -suppressInit -quiet -import -noPkgLoad -ignoreUserExec -watch=ns|dir|both'
+              r,←⊂']Cider.OpenProject [folder|alias] -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns|dir|both -verbose -batch'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'List all currently open projects'
               r,←⊂']Cider.ListOpenProjects -verbose'
           :Case ⎕C'ListAliases'
               r,←⊂'List all defined aliases with their folders'
-              r,←⊂']Cider.ListAliases -prune -edit -quiet'
+              r,←⊂']Cider.ListAliases -prune -edit -batch'
           :Case ⎕C'ListTatinPackages'
               r,←⊂'Lists all Tatin packages in all install folders'
               r,←⊂']Cider.ListTatinPackages [folder]'
           :Case ⎕C'CreateProject'
               r,←⊂'Makes the given folder a project folder'
-              r,←⊂']Cider.CreateProject <folder> [<project-namespace>] -alias= -acceptConfig -noEdit -quiet -ignoreUserExec'
+              r,←⊂']Cider.CreateProject <folder> [<project-namespace>] -alias= -acceptConfig -noEdit -batch -ignoreUserExec'
           :Case ⎕C'CloseProject'
               r,←⊂'Breaks the Link between one or more project spaces and their associated files on disk'
               r,←⊂']Cider.CloseProject [<namespace-name>|alias-name] -all'
@@ -368,7 +372,6 @@
               r,←⊂'projects that start their names with "A"'
               r,←⊂'    ]Cider.OpenProject [A*]'
               r,←⊂''
-              r,←⊂'-quiet          The user command prints messages to the session unless -quiet is specified.'
               r,←⊂'-parent         The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
               r,←⊂'                overwritten by setting the -parent= and/or the -projectSpace= option(s).'
               r,←⊂'-projectSpace   The project is loaded into Cider.(parent.projectSpace) unless this is (temporarily)'
@@ -389,12 +392,16 @@
               r,←⊂'                   However, currently "both" works only under Windows.'
               r,←⊂'                   Note that the flag does NOT change the config file on disk'
               r,←⊂'                Refer to the Link documentation for details.'
-              r,←⊂'-ignoreUserExec Suppress execution of a user function defined in Cider''s config file on this occasion'
+              r,←⊂'-verbose        If this is specified then Cider reports every single step it carries out.'
+              r,←⊂'-ignoreUserExec Suppress execution of a user function defined in Cider''s config file once'
+              r,←⊂'-batch          Does not print to the session and prevents user interaction. In a situation were'
+              r,←⊂'                user must decide what to do an error is thrown.'
           :Case ⎕C'Config'
               r,←⊂'Puts the content of Cider''s global config into the editor and allows the user to change it.'
               r,←⊂'By specifying the -print flag you can force the user command to print the content of the file'
-              r,←⊂'to the session.'
+              r,←⊂'to the session rather than putting it into ⎕ED.'
               r,←⊂''
+              r,←⊂'You may change the data, but those changes will only be written to the file if you confirm that.'
               r,←⊂'Note that changing the config file does not affect the currently running instance of Cider.'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'Print a list with the namespaces of all currently opened projects.'
@@ -410,8 +417,8 @@
               r,←⊂'-edit   Cider will allow you to edit the file that keeps the alias information'
               r,←⊂'-prune  Cider will delete all aliases for which their folders cannot be found'
               r,←⊂''
-              r,←⊂'-quiet  When -prune is specified the user will be asked for confirmation in case there'
-              r,←⊂'        is something to prune at all. You can specify -quiet in order to prevent this.'
+              r,←⊂'-batch  When -prune is specified the user will be asked for confirmation in case there'
+              r,←⊂'        is something to prune at all. You can specify -batch in order to prevent this.'
               r,←⊂'        All reporting to the session will be suppressed as well.'
           :Case ⎕C'ListTatinPackages'
               r,←⊂'Lists all Tatin packages in all install folders of a given project'
@@ -449,9 +456,10 @@
               r,←⊂'-noEdit:        With -noEdit you can prevent the user from being asked to edit the config file.'
               r,←⊂'-alias:         In case you are going to work on the new project frequently you may specify'
               r,←⊂'                -alias=name'
-              r,←⊂'-quiet          After a project has been created successfully, the user will be asked whether'
+              r,←⊂'-batch          After a project has been created successfully, the user will be asked whether'
               r,←⊂'                she wants to open the project as well. You can enforce that without the user'
-              r,←⊂'                being interrogated by setting the -quiet flag. Mainly useful for test cases.'
+              r,←⊂'                being interrogated by setting the -batch flag. Mainly useful for test cases and'
+              r,←⊂'                and possibly an automated build process.'
               r,←⊂'-ignoreUserExec Suppress execution of a user function defined in Cider''s config file on this occasion'
               r,←⊂'Note that the alias is not case sensitive'
           :Case ⎕C'CloseProject'
@@ -522,7 +530,7 @@
       path,←(~(¯1↑path)∊'/\')/'/'
     ∇
 
-    ∇ r←ProcessAliases(prune edit quiet);bool;flag
+    ∇ r←ProcessAliases(prune edit batch);bool;flag
       r←P.GetAliasFileContent
       :If prune
           :If 0<≢r
@@ -530,7 +538,7 @@
           :AndIf ~∧/bool
               flag←0
               :Repeat
-                  :If quiet
+                  :If batch
                       ⎕←'Pruning Cider aliases:'
                       ⎕←' ',' ',(~bool)⌿r
                   :OrIf 1 YesOrNo'Sure you want to prune ',((1+1<+/~bool)⊃'this' 'these'),'?'
@@ -543,13 +551,13 @@
                   :Else
                       flag←1
                       r←0 2⍴''
-                      :If ~quiet
+                      :If ~batch
                           ⎕←'Nothing done'
                       :EndIf
                   :EndIf
               :Until flag
           :Else
-              :If ~quiet
+              :If ~batch
                   ⎕←'Nothing to prune'
               :EndIf
               r←0 2⍴''
@@ -557,7 +565,7 @@
       :EndIf
     ∇
 
-    ∇ r←{namespace}CreateProject_(folder acceptFlag noEditFlag quietFlag ignoreUserExec);filename;success;config;projectFolder;parms;list
+    ∇ r←{namespace}CreateProject_(folder acceptFlag noEditFlag batch ignoreUserExec);filename;success;config;projectFolder;parms;list;log
       :Access Public Shared
       r←''
       :If 0≡folder
@@ -614,11 +622,11 @@
                   :If 0<≢((⍎config.CIDER.parent)⍎config.CIDER.projectSpace).⎕NL⍳16
                       :If 1<≢list←⊃P.##.F.Dir projectFolder
                       :OrIf 'cider.config'≢{1≠≢⍵:0 ⋄ ⊃,/1↓⎕NPARTS⊃⍵}list
-                          :If quietFlag
-                      ⍝ With quietFlag on there is nothing we can do but throw an error
+                          :If batch
+                      ⍝In batch mode there is nothing we can do but throw an error
                               'Both the target namespace and the source folder are not empty'Assert 0
                           :Else
-                              :If YesOrNo'Target namespace "',(config.CIDER.parent,'.',config.CIDER.projectSpace),'" is not empty. Delete contents?'
+                              :If YesOrNo'TargetNotEmpty@Target namespace "',(config.CIDER.parent,'.',config.CIDER.projectSpace),'" is not empty. Delete contents?'
                                   ((⍎config.CIDER.parent)⍎config.CIDER.projectSpace).{⎕EX ⎕NL⍳16}⍬
                               :Else
                                   'Both the target namespace and the source folder are not empty'Assert 0
@@ -627,19 +635,21 @@
                       :EndIf
                   :EndIf
               :EndIf
+          :AndIf {⍵:1 ⋄ 1 YesOrNo'OpenAsWell@Project successfully created; open as well?' ⋄ 1}batch
               parms←P.CreateOpenParms ⍬
               parms.folder←projectFolder
               parms.projectSpace←config.CIDER.projectSpace
               parms.parent←config.CIDER.parent
               parms.alias←{0≡⍵:'' ⋄ ⍵}Args.alias
-              parms.quietFlag←quietFlag
               parms.watch←config.LINK.watch
               parms.ignoreUserExec←ignoreUserExec
-          :AndIf {⍵:1 ⋄ 1 YesOrNo'Project successfully created; open as well?' ⋄ 1}quietFlag
-          :AndIf ⊃P.OpenProject parms
-              r←'Project created and opened'
-          :Else
-              r←'Project created'
+              parms.batch←batch
+              (success log)←P.OpenProject parms
+              :If success
+                  r←{⍵↑⍨-(⎕UCS 13)⍳⍨1↓⌽⍵}log
+              :Else
+                  r←'Project created but not opened'
+              :EndIf
           :EndIf
       :Else
           ⎕NDELETE filename

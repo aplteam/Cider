@@ -9,7 +9,7 @@
  'Create!'FilesAndDirs.CheckPath sourceFolder1
  (projectFolder1,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
  #.⎕EX'Foo' ⋄ 'Foo'#.⎕NS''
- (rc msg buff)←∆UCMD'CreateProject "',projectFolder1,'" #.Foo -alias=test-case-alias-Foo -noEdit -acceptConfig -quiet -ignoreUserExec'
+ (rc msg buff)←∆UCMD'CreateProject "',projectFolder1,'" #.Foo -alias=test-case-alias-Foo -noEdit -acceptConfig -batch -ignoreUserExec'
  Assert rc=0
  #.Foo.⎕FX'r←Hello' 'r←''World'''
  {}⎕SE.Link.Add'#.Foo.Hello'
@@ -25,7 +25,7 @@
  (projectFolder2,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Goo')
  #.⎕EX'Goo' ⋄ 'Goo'#.⎕NS''
  #.Goo.⎕FX'r←Hello' 'r←''Galaxy'''
- (rc msg buff)←∆UCMD'CreateProject "',projectFolder2,'" #.Goo -alias=test-case-alias-Goo -noEdit -acceptConfig -quiet -ignoreUserExec'
+ (rc msg buff)←∆UCMD'CreateProject "',projectFolder2,'" #.Goo -alias=test-case-alias-Goo -noEdit -acceptConfig  -batch -ignoreUserExec'
  Assert rc=0
  list←FilesAndDirs.ListFiles projectFolder2
  →T.GoToTidyUp 1≠≢list
@@ -44,6 +44,6 @@
  ∆LINK'Break' '#.Goo'  ⍝ ... then it's not linked anymore.
  rc←FilesAndDirs.RmDir tempDir
  Assert 0=+/∊rc
- #.⎕EX¨'Foo' 'Goo'
  ⎕SE.Cider.DropAlias'test-case-alias-Foo' 'test-case-alias-Goo'
+ #.⎕EX¨'Foo' 'Goo'
 ⍝Done

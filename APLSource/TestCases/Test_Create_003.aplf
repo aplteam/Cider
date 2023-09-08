@@ -1,5 +1,5 @@
  R←Test_Create_003(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc
-⍝ Attempts to create and then open a project with a non-empty namespace and a non-empty folder with -quiet
+⍝ Attempts to create and then open a project with a non-empty namespace and a non-empty folder - must fail
 ⍝ A config file is copied over in order to avoid user interaction
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -12,7 +12,7 @@
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  stop←0
- (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -quiet -noEdit -ignoreUserExec'
+ (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -batch -acceptConfig -noEdit -ignoreUserExec'
 
  →T.GoToTidyUp 0=rc
  →T.GoToTidyUp~∨/'Both the target namespace and the source folder are not empty'⍷msg

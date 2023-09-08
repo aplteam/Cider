@@ -2,17 +2,17 @@
 ⍝ Creates a namespace with all parameters one might pass to `OpenProject`.\\
 ⍝ `y` might be an empty vector or a namespace with some such parameters.
 ⍝ Any parameters passed this way overwrite defaults.
- :Access Public Shared
  parms←(1⊃1↓⎕RSI,⎕THIS).⎕NS''      ⍝ Create namespace where we got called from
  parms.folder←''
  parms.projectSpace←''
- parms.quietFlag←0
  parms.alias←''
  parms.parent←''
  parms.suppressInit←0
  parms.ignoreUserExec←0
  parms.importFlag←0
  parms.noPkgLoad←0
+ parms.verbose←GetGlobalVerboseDefault
+ parms.batch←0
  parms.watch←(1+HasDotNet)⊃'ns' 'both'
  parms.checkPackageVersions←⍬      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
  :If ~(⊂y)∊''⍬

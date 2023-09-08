@@ -1,5 +1,5 @@
  {config}←CheckParameters config;list;bool;list2
-    ⍝ Check the parameters for being complete and valid
+⍝ Check the parameters for being complete and valid
  p'Checking parameters...'
  list←' '~⍨¨⊃,/↓¨config.(LINK CIDER).⎕NL 2 9
  list2←list~GetValidCiderParams
@@ -13,4 +13,5 @@
  list←' '~⍨¨↓config.CIDER.⎕NL 2 9
  bool←GetValidCiderParams∊list
  ('Missing Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams)Assert∧/bool
- p'  All fine'
+ p'Parameters are okay'
+⍝Done

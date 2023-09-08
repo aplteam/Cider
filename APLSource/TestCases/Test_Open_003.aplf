@@ -12,9 +12,9 @@
  parms.folder←folder
  parms.projectSpace←'___Zoo___'
  parms.parent←'⎕SE'
- parms.quietFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
+ parms.batch←1
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp 1≠success
 

@@ -6,8 +6,8 @@
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
 
  folder←∆GetTestPath⊃⎕SI
- res←⎕SE.UCMD'Cider.OpenProject ',folder,' -noPkgLoad -import -quiet -watch=ns -ignoreUserExec'
- →T.PassesIf∨/'Project successfully opened'⍷∊res
+ res←⎕SE.UCMD'Cider.OpenProject ',folder,' -noPkgLoad -import -watch=ns -ignoreUserExec'
+ →T.PassesIf∨/'Project successfully imported and established in'⍷∊res
 
  →T.PassesIf'World'≡#.TEMP.Hello
  →T.PassesIf 2=≢#.TEMP.⎕NL⍳16                 ⍝ We must not find any packages, just the function and CiderConfig

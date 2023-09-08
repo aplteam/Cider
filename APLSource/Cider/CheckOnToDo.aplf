@@ -1,10 +1,10 @@
- {r}←CheckOnToDo ref
+ {r}←parms CheckOnToDo ref
 ⍝ Checks whether there is a non-empty variable "ToDo" in the root of the project, and put it into ⎕ED if so.
 ⍝ Returns a 1 if found and 0 otherwise
  r←0
  :If 2=ref.⎕NC'ToDo'
  :AndIf 0<≢(∊ref.ToDo)~' '
-     ⎕←'>>> Found a variable ',(⍕ref),'.ToDo'
-     ⎕←Box Frame ref.ToDo
+     (1 parms.batch)p'>>> Found a variable ',(⍕ref),'.ToDo'
+     (1 parms.batch)p ref.ToDo
      r←1
  :EndIf

@@ -13,29 +13,29 @@
              (path namespace)←'='(≠⊆⊢)tatinFolder
              successFlag,←(1+0=(⎕NS'').{⎕NC ⍵}namespace)⊃FAILURE SUCCESS
              :If 0=¯1↑successFlag
-                 report,←⊂Frame'Something is wrong with "',this,'"'
+                 report,←⊂'Something is wrong with "',this,'"'
              :EndIf
          :EndIf
      :ElseIf ~','∊tatinFolder
          successFlag,←SUCCESS
      :Else
               ⍝ More than one is invalid
-         report,←⊂Frame'Something is wrong with "',this,'"'
+         report,←⊂'Something is wrong with "',this,'"'
      :EndIf
  :EndFor
  :If (⊃config.CIDER.make)∊'#⎕'
      successFlag,←FAILURE
-     report,←⊂Frame'"make" is defined with an absolute path; must be relative to the project'
+     report,←⊂'"make" is defined with an absolute path; must be relative to the project'
  :ElseIf 0<≢config.CIDER.make
  :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.make
-     ⎕←'*** Warning: "make" does not point to a function!'
+     report,←⊂'Warning: "make" does not point to a function!'
  :EndIf
  :If (⊃config.CIDER.tests)∊'#⎕'
      successFlag,←FAILURE
-     report,←⊂Frame'"tests" is defined with an absolute path; must be relative to the project (check "make")'
+     report,←⊂'"tests" is defined with an absolute path; must be relative to the project (check "make")'
  :ElseIf 0<≢config.CIDER.tests
  :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.tests
-     ⎕←'*** Warning: "test" does not point to a function'
+     report,←⊂'Warning: "test" does not point to a function'
  :EndIf
  successFlag←∧/successFlag
  :If reportFlag

@@ -12,8 +12,8 @@
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  ⎕SE.Cider.##.C.YesOrNo_Answers←2 2⍴''
- ⎕SE.Cider.##.C.YesOrNo_Answers[1;]←'Project successfully created; open as well?' 'y'
- ⎕SE.Cider.##.C.YesOrNo_Answers[2;]←'Target namespace "#.Foo" is not empty. Delete contents?' 'Y'
+ ⎕SE.Cider.##.C.YesOrNo_Answers[1;]←'OpenAsWell@' 'y'
+ ⎕SE.Cider.##.C.YesOrNo_Answers[2;]←'TargetNotEmpty@' 'Y'
 
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -noEdit -ignoreUserExec'

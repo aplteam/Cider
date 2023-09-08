@@ -1,7 +1,6 @@
  r←ReadProjectConfigFile path;path2
 ⍝ Reads a project config file and returns it as a namespace with variables.
 ⍝ `path` may or may not carry the filename as such.
- :Access Public Shared
  path2←'cider.config'{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}path
  r←Get_JSON5 path2
 ⍝Done

@@ -9,7 +9,6 @@
  parms.folder←∆GetTestPath⊃⎕SI
  parms.parent←'#.TEMP'
  parms.importFlag←1
- parms.quietFlag←1
  parms.projectSpace←'Goo'                   ⍝ Overwrites the config file
  parms.watch←'ns'
  parms.ignoreUserExec←1

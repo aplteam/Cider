@@ -6,7 +6,6 @@
  parms←⎕NS''
  parms.folder←''        ⍝ Does not matter
  parms.invalid←'Goo'
- parms.quietFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
  :Trap 11

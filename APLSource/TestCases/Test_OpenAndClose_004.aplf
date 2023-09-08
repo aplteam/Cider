@@ -9,7 +9,7 @@
  'Create!'FilesAndDirs.CheckPath sourceFolder1
  (projectFolder1,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
  #.⎕EX'Foo' ⋄ 'Foo'#.⎕NS''
- (rc msg buff)←∆UCMD'CreateProject "',projectFolder1,'" #.Foo -alias=test-case-alias-Foo -noEdit -acceptConfig -quiet -ignoreUserExec'
+ (rc msg buff)←∆UCMD'CreateProject "',projectFolder1,'" #.Foo -alias=test-case-alias-Foo -noEdit -acceptConfig  -batch -ignoreUserExec'
  Assert rc=0
  #.Foo.⎕FX'r←Hello' 'r←''World'''
  {}⎕SE.Link.Add'#.Foo.Hello'
@@ -25,7 +25,7 @@
  (projectFolder2,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Goo')
  #.⎕EX'Goo' ⋄ 'Goo'#.⎕NS''
  #.Goo.⎕FX'r←Hello' 'r←''Galaxy'''
- (rc msg buff)←∆UCMD'CreateProject "',projectFolder2,'" #.Goo -alias=test-case-alias-Goo -noEdit -acceptConfig -quiet -ignoreUserExec'
+ (rc msg buff)←∆UCMD'CreateProject "',projectFolder2,'" #.Goo -alias=test-case-alias-Goo -noEdit -acceptConfig  -batch -ignoreUserExec'
  Assert rc=0
  list←FilesAndDirs.ListFiles projectFolder2
  →T.GoToTidyUp 1≠≢list
@@ -39,7 +39,7 @@
  (projectFolder3,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Zoo')
  #.⎕EX'Zoo' ⋄ 'Zoo'#.⎕NS''
  #.Zoo.⎕FX'r←Hello' 'r←''Universe'''
- (rc msg buff)←∆UCMD'CreateProject "',projectFolder3,'" #.Zoo -noEdit -acceptConfig -quiet -ignoreUserExec'
+ (rc msg buff)←∆UCMD'CreateProject "',projectFolder3,'" #.Zoo -noEdit -acceptConfig  -batch -ignoreUserExec'
  Assert rc=0
  list←FilesAndDirs.ListFiles projectFolder3
  →T.GoToTidyUp 1≠≢list

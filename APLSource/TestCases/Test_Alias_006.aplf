@@ -10,9 +10,9 @@
  parms.folder←##.CiderConfig.HOME,'/Tests/TestAlias2/Project1'
  parms.parent←'#.TEMP'
  parms.alias←'Firlefanz1'
- parms.quietFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
+ parms.batch←1
  (success log)←⎕SE.Cider.OpenProject parms
  Assert success
 

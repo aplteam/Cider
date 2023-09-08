@@ -8,10 +8,10 @@
 
  parms←⎕NS''
  parms.folder←folder
- parms.quietFlag←1
  parms.noPkgLoad←0
  parms.watch←'ns'
  parms.ignoreUserExec←1
+ parms.batch←1
  (res log)←##.Cider.OpenProject parms
 
  →T.GoToTidyUp~res

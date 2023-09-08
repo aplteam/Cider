@@ -5,7 +5,7 @@
 ⍝ 4. In case only the folder is empty no action is taken
 ⍝ 5. In case neither the namespace `ref` nor the folder are empty the user is asked
 ⍝    whether she wants the namespace to be recreated; if not an error is thrown.
-⍝ When `quietFlag` is set however then either the namepace or the folder or both must
+⍝ When `batch` is set however, then either the namepace or the folder or both must
 ⍝ be empty, otherwise an error is thrown.
  :If (⎕NC⊂⍕ref)∊9.1 9.4 9.5
      nsIsEmpty←0=≢' '~¨⍨↓ref.⎕NL⍳16
@@ -20,8 +20,8 @@
      :OrIf folderIsEmpty∧nsIsEmpty
          :Return
      :EndIf
-     :If parms.quietFlag
-          ⍝ With quietFlag being true there is nothing we can do but throw an error
+     :If parms.batch
+          ⍝ With `batch` being true there is nothing we can do but throw an error
          'Both the target and the source folder are not empty'Assert 0
      :Else
          :If C.YesOrNo'Target "',(⍕ref),'" is not empty - recreate?'

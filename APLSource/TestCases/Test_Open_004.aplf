@@ -10,7 +10,6 @@
  parms.folder←'Does-not-matter/'
  parms.parent←⍕⎕THIS
  parms.parentSpace←TEMP
- parms.quietFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
  :Trap 0

@@ -6,12 +6,18 @@
  :If 3501⌶0
      r←T._NotApplicable ⋄ →0  ⍝ Only suitable when not running in Ride (trouble with the Ride browser window)
  :EndIf
+ :If batchFlag
+     r←T._NoBatchTest ⋄ →0
+ :EndIf
+
+ CommTools.Pause'This test needs you: it will display 2 HTML files with your default browser'
 
  stop←0
  ⎕SE.Cider.##.C.Select_Choices←1 2⍴'Select document to be viewed:' 'a'
  (rc msg res)←stop ∆UCMD'Help'
  →T.GoToTidyUp 0≠rc
  →T.GoToTidyUp 0≠≢msg
+ →T.GoToTidyUp 0=CommTools.YesOrNo'Did the two HTML files show?'
 
  r←T._OK
 

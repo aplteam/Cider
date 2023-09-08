@@ -1,8 +1,15 @@
  msg←(reportFns ReportPackageOrigins)folder;data;noOf
-⍝ Report where the package got installed from
+⍝ Report where the package got installed from but not if all came from https://tatin.dev/
  msg←''
  data←Get_JSON5 folder,'/apl-buildlist.json'
- msg←1 2⍴'Packages were originally installed from:' ''
- noOf←{≢⍵}⌸data.url
- msg⍪←↑noOf{⍵(('(',⍕⍺),' package',((1<⍺)/'s'),')')}¨∪data.url
- {}(1<≢msg)reportFns↓⎕FMT msg   ⍝ Report to ⎕SE only if installed from more than one URL
+ :If ~∧/'https://tatin.dev/'∘≡¨data.url
+     noOf←{≢⍵}⌸data.url
+     :If 1=≢noOf
+         msg←'All packages (',(⍕noOf),') were originally installed from ',⊃data.url
+         {}reportFns↓⎕FMT msg   ⍝ Report to ⎕SE only if installed from more than one URL
+     :Else
+         msg←1 2⍴'Packages were originally installed from:' ''
+         msg⍪←↑noOf{⍵(('(',⍕⍺),' package',((1<⍺)/'s'),')')}¨∪data.url
+         {}reportFns↓⎕FMT msg   ⍝ Report to ⎕SE only if installed from more than one URL
+     :EndIf
+ :EndIf

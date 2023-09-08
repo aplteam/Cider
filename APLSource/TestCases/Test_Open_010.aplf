@@ -10,7 +10,6 @@
  parms←⎕NS''
  parms.folder←folder
  parms.parent←'#.TEMP'
- parms.quietFlag←1
  parms.importFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1

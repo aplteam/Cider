@@ -7,16 +7,14 @@
      R←T._NotApplicable ⋄ →0
  :EndIf
 
-
  'TEMP'#.⎕NS''
 
  parms←##.Cider.CreateOpenParms ⍬
  parms.folder←∆GetTestPath⊃⎕SI
  parms.parent←'#.TEMP'
- parms.quietFlag←1
  parms.watch←'dir'
  parms.ignoreUserExec←1
-
+ parms.batch←1
  filename←parms.folder,'/APLSource/Hello.aplf'
  (⊂'r←Hello' 'r←''World''')⎕NPUT filename 1
 

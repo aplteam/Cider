@@ -21,6 +21,6 @@
          :EndTrap
      :EndIf
      :If 0<≢msg
-         1 p Frame msg
+         (1 parms.batch)p msg
      :EndIf
  :EndIf

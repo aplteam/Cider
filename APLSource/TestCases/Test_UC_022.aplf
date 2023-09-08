@@ -6,8 +6,8 @@
  'TEMP'#.⎕NS''
 
  folder←∆GetTestPath⊃⎕SI
- res←⎕SE.UCMD'Cider.OpenProject ',folder,' -projectSpace=TEMP -import -quiet -watch=ns -ignoreUserExec'
- →T.PassesIf∨/'Project successfully opened'⍷∊res
+ res←⎕SE.UCMD'Cider.OpenProject ',folder,' -projectSpace=TEMP -import -watch=ns -ignoreUserExec'
+ →T.PassesIf∨/'Project successfully imported and established in'⍷∊res
  →T.PassesIf'World'≡#.TEMP.Hello
 
  R←T._OK

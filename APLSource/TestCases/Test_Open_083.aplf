@@ -10,7 +10,6 @@
  parms.folder←##.CiderConfig.HOME,'\TestData\APLTreeUtils2\APLTreeUtils2'
  parms.parent←'#.TEMP'
  parms.watch←'ns'
- parms.quietFlag←1
  parms.ignoreUserExec←1
 
  :Trap 11

@@ -9,9 +9,9 @@
  parms.folder←folder
  parms.parent←⎕THIS
  parms.projectSpace←'TEMP'
- parms.quietFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
+ parms.batch←1
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
 

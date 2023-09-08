@@ -1,13 +1,13 @@
  {r}←configFilename HandleSysVars config;json;name;name_
 ⍝ For inheritance we specify the system vars early
  r←⍬
- :If 9=config.⎕NC'SYSVARS'     ⍝ Was introduced in version 0.4.0
+ :If 9=config.⎕NC'SYSVARS'
      :For name :In ' '~⍨¨↓config.SYSVARS.⎕NL 2
          name_←1 ⎕C name
          :Trap 0
              projectSpace_.⍎'⎕',name_,'←',⍕⍎'config.SYSVARS.',name
          :Else
-             1 p Frame'Assigning system variable "',name,'" failed'
+             (1 parms.batch)p'Assigning system variable "',name,'" failed'
          :EndTrap
      :EndFor
  :Else                         ⍝ SysVars prior to version 0.3.0

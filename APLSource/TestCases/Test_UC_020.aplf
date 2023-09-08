@@ -4,7 +4,7 @@
  r←T._Failed
 
  'TEMP'#.⎕NS''
- cmd←'OpenProject "',(∆GetTestPath⊃⎕SI),'" -quiet -parent=#.TEMP -ignoreUserExec'
+ cmd←'OpenProject "',(∆GetTestPath⊃⎕SI),'" -parent=#.TEMP -ignoreUserExec -batch'
 
  stop←0
  (rc msg result)←stop ∆UCMD cmd,' -watch=ns'

@@ -1,4 +1,12 @@
 (
+ '* 0.34.0 ⋄ 2023-09-09'
+ '  * `OpenProject` does not report anything but serious stuff and final success to `⎕SE`, but watch out'
+ '    for the global config parameter `verbose` and the user command flags `-verbose` and `-batch`'
+ '  * `OpenProject`s `quiet` flag got retied'
+ '  ⍝ `OpenProject` has now a parameter `verbose` and `batch`; the latter is for tests'
+ '  * `]OpenProject` has now a -verbose flag and a `-batch` flag'
+ '  * Cider honours a variable `verbose` in its global configuration file. By default no such file exists,'
+ '    meaning that the default is 0. If it does exist it might or might nor carry `verbose`. '
  '* 0.33.0 ⋄ 2023-09-05'
  '  * `Cider` is now an ordinary namespace rather than a class script.'
  '  * `LoadTatinPackages` now reports the URL the packages were loaded from, but only if they were loaded'

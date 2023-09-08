@@ -1,5 +1,5 @@
  r←Test_UC_004(stopFlag batchFlag);⎕TRAP;tempDir;config;res;rc
-⍝ Exercise the user command "CreateProject" with a path and a namespace name but without the -quiet flag
+⍝ Exercise the user command "CreateProject" with a path and a namespace name
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
 
@@ -10,9 +10,10 @@
  config←∆GetJSON5 tempDir,'/cider.config'
  (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
 
- ⎕SE.Cider.##.C.YesOrNo_Answers←1 2⍴'Project successfully created; open as well?' ''
- res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -ignoreUserExec'
- 'You did not just press <enter>!'Assert'Project created and opened'≡res
+ ⎕SE.Cider.##.C.YesOrNo_Answers←1 2⍴'TargetNotEmpty@' 'y'
+ ⎕SE.Cider.##.C.YesOrNo_Answers⍪←'OpenAsWell@' 'y'
+ res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -ignoreUserExec -batch'
+ 'You did not just press <enter>!'Assert∨/'Project successfully loaded and established in'⍷res
  →T.GoToTidyUp~(⊂'#.Foo')∊{⍵[;1]}##.Cider.ListOpenProjects 0
 
  r←T._OK

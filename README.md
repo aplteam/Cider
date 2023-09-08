@@ -22,21 +22,22 @@ If Tatin packages are part of a project then Tatin is required as well.
 
 These commands are available:
 
-* `]Cider.OpenProject`
-* `]Cider.CreateProject`
 * `]Cider.CloseProject`
+* `]Cider.Config`
+* `]Cider.CreateProject`
 * `]Cider.Help`
-* `]Cider.ListOpenProjects`
 * `]Cider.ListAliases`
+* `]Cider.ListOpenProjects`
+* `]Cider.ListTatinPackages`
 * `]Cider.Make`
+* `]Cider.OpenProject`
+* `]Cider.ProjectConfig`
 * `]Cider.RunTests`
 * `]Cider.Version`
-* `]Cider.ViewConfig`
-* `]Cider.ListTatinPackages`
 
 ## Documentation
 
-In this document only `OpenProject` is discussed in detail because that is the principal command.
+In this document only `OpenProject` is discussed in detail because that is the main command.
 
 For all other commands only basic information is provided, but there is a document "Cider-User-Guide.html" available that discusses all features in detail.
 
@@ -182,5 +183,6 @@ Returns a three-item-vector with "Name", "Version number" and "Version date".
 Puts the config file of a project on display. 
 
 By specifying the `-edit` flag the user might edit the file rather than just viewing it.
+
 
 

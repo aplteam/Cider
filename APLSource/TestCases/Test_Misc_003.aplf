@@ -18,7 +18,6 @@
 
  parms←⎕NS''
  parms.folder←folder,'/Project1'
- parms.quietFlag←1
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp 1≠#.TEMP2.∆FLAG

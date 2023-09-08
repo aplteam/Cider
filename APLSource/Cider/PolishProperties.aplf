@@ -1,4 +1,4 @@
- config←projectHome PolishProperties config;buff;noOfCommas;folders;question;errorFlag;errMsg;f1;f2;f3
+ config←parms PolishProperties config;buff;noOfCommas;folders;question;errorFlag;errMsg;f1;f2;f3
 ⍝ Temporary solution for several problems:
 ⍝ I.
 ⍝ With version 0.25.0 Cider expects "dependencies" and/or "dependencies_dev" instead of "tatinFolder".
@@ -55,10 +55,10 @@
      f3←1
  :EndIf
  :If f1∨f2∨f3
-     config Put_JSON5(F.AddTrailingSep projectHome),'cider.config'
-     p'   Modified file "cider.config" saved in ',projectHome
+     config Put_JSON5(F.AddTrailingSep parms.folder),'cider.config'
+     p'Modified file "cider.config" saved in ',parms.folder
  :EndIf
  :If errorFlag
-     1 p↓Frame errMsg
+     1 p errMsg
      ⎕SIGNAL 11
  :EndIf
