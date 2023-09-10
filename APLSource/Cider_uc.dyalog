@@ -1,8 +1,8 @@
-﻿:Class Cider_UC
+:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 ⍝ Kai Jaeger
-⍝ 2023-09-05
-
+⍝ 2023-09-05      
+⍝ 2023-09-10 Version with "Dependency" added by Morten Kromberg
 
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
@@ -14,7 +14,14 @@
       :Access Shared Public
       r←⍬
       :If AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
-     
+               
+          c←⎕NS''
+          c.Name←'Dependency'
+          c.Desc←'Add a Tatin or Cider dependency'
+          c.Group←'Cider'
+          c.Parse←'3s -list'
+          r,←c
+
           c←⎕NS''
           c.Name←'OpenProject'
           c.Desc←'Load all source files into the WS and keep it linked by default'
@@ -101,7 +108,7 @@
       :EndIf
     ∇
 
-    ∇ r←Run(Cmd Args);folder;P;⎕TRAP
+    ∇ r←Run(Cmd Args);folder;P;⎕TRAP;ciderns;ciderref;refs;deps
       :Access Shared Public
       r←0 0⍴''
       ('Cider needs at least version ',MinimumVersionOfDyalog,' of Dyalog APL')Assert AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
@@ -121,6 +128,8 @@
           'Version 18 must be at least on build number 44280, otherwise Link won''t work as expected'⎕SIGNAL 11
       :EndIf
       :Select ⎕C Cmd
+      :Case ⎕C'Dependency'
+          r←Dependency Args
       :Case ⎕C'OpenProject'
           r←OpenProject Args
       :Case ⎕C'ListOpenProjects'
@@ -172,6 +181,18 @@
           :OrIf ⎕SE.Cider.##.C.YesOrNo'IgnoreToDo@There is a non-empty variable "ToDo" in <',home,'> - carry on anyway?'
               r←⎕SE.Cider.RunMake path
           :EndIf
+      :EndIf
+    ∇
+
+    ∇ r←Dependency Args;list;path;index;z;load
+    ⍝ Dependency nuget Clock [projectpath] -list
+      r←''
+      :If 0=≢path←GetProjectPath z⊣(z←⎕NS '')._1←Args._3
+          →0,≢⎕←'Cancelled by user'
+      :Else
+          path←(1+0≡Args._3)⊃Args._3 path
+          load←0 ⍝ OpenProject will call with load←1
+          r← ⎕SE.Cider.Dependency (2↑Args.Arguments),path Args.list load
       :EndIf
     ∇
 
@@ -316,6 +337,9 @@
       :Select level
       :Case 0
           :Select ⎕C Cmd
+          :Case ⎕C'Dependency'
+              r,←⊂'Add a dependency'
+              r,←⊂']Cider.Dependency [tatin|nuget] [package] [projectpath] -list'
           :Case ⎕C'OpenProject'
               r,←⊂'Load all source files into the WS and keep it linked by default plus many more actions...'
               r,←⊂']Cider.OpenProject [folder|alias] -projectSpace= -parent= -alias= -suppressInit -quiet -import -noPkgLoad -ignoreUserExec -watch=ns|dir|both'

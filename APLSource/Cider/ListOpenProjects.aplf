@@ -3,7 +3,7 @@
  r←(0(2+2×verboseFlag))⍴''
  res←⎕SE.Link.Status''
  :If 'No active links'≢res
-     :If 0<≢res←(∧/'Namespace' 'Directory' 'Files'∊res[1;])↓res   ⍝ Will become superfluous with a proper Link API but don't do damage
+     :If 0<≢res←(∧/'Namespace' 'Files'∊res[1;])↓res   ⍝ Will become superfluous with a proper Link API but don't do damage
          'Link demands a Resync!'Assert~∨/'Link.Resync required'⍷∊res
      :AndIf 0<≢res←({⊃9=⍵.⎕NC'CiderConfig'}∘⍎¨res[;1])⌿res
          r←res[;,1],({6::'' ⋄ ⍎⍵,'.CiderConfig.HOME'}¨res[;1])

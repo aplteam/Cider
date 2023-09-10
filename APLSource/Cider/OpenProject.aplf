@@ -105,6 +105,8 @@
              1 p↓Frame buff
          :EndTrap
      :EndIf
+     ⍝ Now establish NuGet dependencies, if any
+     p '  ',Dependency 'nuget' '' parms.folder 0 projectSpace_
  :EndIf
  InjectConfigDataIntoProject config projectSpace_ parms.folder
  InjectTatinVars projectSpace_ parms.folder
