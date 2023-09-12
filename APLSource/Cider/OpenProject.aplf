@@ -54,6 +54,7 @@
  config←projectSpace_.⎕NS config
  'Already opened?!'Assert~CheckForAlreadyOpened projectSpace_
  config←parms PolishProperties config
+ config←HandleLinkParameters config configFilename
  config←CheckParameters config
  configFilename HandleSysVars config
  source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source           ⍝ For linking we are only interested in the code folder
@@ -76,9 +77,7 @@
      :If ∨/'ERRORS ENCOUNTERED:'⍷res
          (1 parms.batch)p res
      :EndIf
-     :If 'both'≢linkOptions.watch
-         (1 parms.batch)p'Link:watch is "',linkOptions.watch,'"'              ⍝ Report non-default setting
-     :EndIf
+     ReportLinkSettings config
  :EndIf
  :If 0=parms.noPkgLoad
      pkgStatus←parms.folder CheckForTatinPackages config

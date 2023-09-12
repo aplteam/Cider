@@ -1,17 +1,45 @@
  options←ExtractLinkOptions config;C;overWrite
+⍝ This is slowly going to disappear because Link 4.0 will come with its own set of features
+⍝ for setting Link parameters.
  options←⎕SE.Link.U.DefaultOpts ⎕NS''
  C←config.LINK
  overWrite←{0=≢⍵:⍺ ⋄ ⍵}
- options.arrays(overWrite)←C.arrays
- options.beforeRead(overWrite)←C.beforeRead
- options.beforeWrite(overWrite)←C.beforeWrite
- options.caseCode(overWrite)←C.caseCode
- options.codeExtensions(overWrite)←C.codeExtensions
- options.fastLoad(overWrite)←C.fastLoad
- options.flatten(overWrite)←C.flatten
- options.forceExtensions(overWrite)←C.forceExtensions
- options.forceFilenames(overWrite)←C.forceFilenames
- options.getFilename(overWrite)←C.getFilename
- options.typeExtensions(overWrite)←↑C.typeExtensions
- options.watch←C.watch
- options.fastLoad←config.LINK.fastLoad
+ :If 0<C.⎕NC'arrays'
+     options.arrays(overWrite)←C.arrays
+ :EndIf
+ :If 0<C.⎕NC'beforeRead'
+     options.beforeRead(overWrite)←C.beforeRead
+ :EndIf
+ :If 0<C.⎕NC'beforeWrite'
+     options.beforeWrite(overWrite)←C.beforeWrite
+ :EndIf
+ :If 0<C.⎕NC'caseCode'
+     options.caseCode(overWrite)←C.caseCode
+ :EndIf
+ :If 0<C.⎕NC'codeExtensions'
+     options.codeExtensions(overWrite)←C.codeExtensions
+ :EndIf
+ :If 0<C.⎕NC'fastLoad'
+     options.fastLoad(overWrite)←C.fastLoad
+ :EndIf
+ :If 0<C.⎕NC'flatten'
+     options.flatten(overWrite)←C.flatten
+ :EndIf
+ :If 0<C.⎕NC'forceExtensions'
+     options.forceExtensions(overWrite)←C.forceExtensions
+ :EndIf
+ :If 0<C.⎕NC'forceFilenames'
+     options.forceFilenames(overWrite)←C.forceFilenames
+ :EndIf
+ :If 0<C.⎕NC'getFilename'
+     options.getFilename(overWrite)←C.getFilename
+ :EndIf
+ :If 0<C.⎕NC'typeExtensions'
+     options.typeExtensions(overWrite)←↑C.typeExtensions
+ :EndIf
+ :If 0<C.⎕NC'watch'
+     options.watch←C.watch
+ :EndIf
+ :If 0<C.⎕NC'fastLoad'
+     options.fastLoad←config.LINK.fastLoad
+ :EndIf

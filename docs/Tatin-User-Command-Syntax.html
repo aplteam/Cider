@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior:smooth" >
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>Tatin UC Syntax</title>
+<style media="screen">
+html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}body{margin:0;}article,aside,footer,header,nav,section{display:block;}h1{font-size:2em;margin:0.67em 0;}figcaption,figure,main{display:block;}figure{margin:1em 40px;}hr{box-sizing:content-box;height:0;overflow:visible;}pre{font-family:monospace, monospace;font-size:1em;}a{background-color:transparent;-webkit-text-decoration-skip:objects;}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted;}b,strong{font-weight:inherit;}b,strong{font-weight:bolder;}code,kbd,samp{font-family:monospace, monospace;font-size:1em;}dfn{font-style:italic;}mark{background-color:#ff0;color:#000;}small{font-size:0.8em;}sub,sup{font-size:0.75em;line-height:0;position:relative;vertical-align:baseline;}sub{bottom:-0.25em;}sup{top:-0.5em;}audio,video{display:inline-block;}audio:not([controls]){display:none;height:0;}img{border-style:none;}svg:not(:root){overflow:hidden;}button,input,optgroup,select,textarea{font-family:sans-serif;font-size:1em;line-height:1.15;margin:0;}button,input{overflow:visible;}button,select{text-transform:none;}button,html [type="button"], [type="reset"],[type="submit"]{-webkit-appearance:button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner{border-style:none;padding:0;}button:-moz-focusring,[type="button"]:-moz-focusring,[type="reset"]:-moz-focusring,[type="submit"]:-moz-focusring{outline:1px dotted ButtonText;}fieldset{padding:0.35em 0.75em 0.625em;}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal;}progress{display:inline-block;vertical-align:baseline;}textarea{overflow:auto;}[type="checkbox"],[type="radio"]{box-sizing:border-box;padding:0;}[type="number"]::-webkit-inner-spin-button,[type="number"]::-webkit-outer-spin-button{height:auto;}[type="search"]{-webkit-appearance:textfield;outline-offset:-2px;}[type="search"]::-webkit-search-cancel-button,[type="search"]::-webkit-search-decoration{-webkit-appearance:none;}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit;}details, menu{display:block;}summary{display:list-item;}canvas{display:inline-block;}template{display:none;}[hidden]{display:none;}body{margin:0;font-family:"Bookman Old Style", "Callisto MT", Bookman, "Goudy Old Style", Garamond, serif;background-color:#fdfdfd;font-size:18px;line-height:1.4;max-width:900px;padding:0.83em;color:#292929;word-wrap:break-word;overflow-wrap:break-word;}h1, h2, h3, h4, h5, h6{color:#404040;font-weight:800;padding-left:0;}h1, h2, h3, h4, h5, h6{font-family:"Century Gothic", Verdana, "Sans";}h1, h2, h3, h4, p{margin-bottom:0.88em;}h1{font-size:1.8em;margin:0.27em 0 1.11em 0;}h1 > code, h2 > code, h3 > code, h4 > code, h5 > code, h6 > code{font-size:1em;background-color:inherit;}h2{font-size:1.44em;margin:0.55em 0 0.55em 0;padding-top:0.55em;border-bottom:1px solid Silver;}h3{margin:0;margin-top:0.55em;font-size:1.22em;}nav h3{font-size:0.88em;margin-left:0.83em;margin-bottom:0.27em;}h4{font-size:1em;margin:0;margin-top:0.55em;}h5{font-size:0.94em;margin:0;margin-top:0.66em;padding:0;}h6{font-size:0.88em;margin:0;margin-top:0.66em;padding:0;}a{color:#0099ff;margin:0;padding:0;vertical-align:baseline;}a:visited{color:purple;}a.autoheader_anchor{text-decoration:none;}ul{list-style-type:disc;}dd{padding-top:0.25em;}p.first_dd{padding-top:0.25em;}li > ul, ol{padding-bottom:0;}li{line-height:1.3;margin-left:1.38em;margin-bottom:0.55em;}ul > li{margin-left:2.5em;}ol > li{margin-left:2.5em;}li ul{margin-left:0.55em;}li ul{margin-left:0.27em;}li p{padding:1px 0 0 0;margin:0.55em 0 0.27em 0;line-height:1.3;}ul, ol{line-height:1.3;padding:0.33em 0 0 0;margin:0.5em;margin-top:1.2em;}p{line-height:1.2;padding:0.40em 0 0 0;margin:0;}pre{overflow:scroll;padding:0.55em 0.27em;margin:0.55em 0 0.55em 0 !important;background-color:#faebd7;color:#3e3e3e;border:1px Silver dashed;display:block;font-family:APLFont, monospace;font-weight:normal;white-space:pre-wrap;}pre > code{line-height:1.2;border:0;padding:0;margin:0;background-color:inherit;color:inherit;font-weight:inherit;white-space:pre-wrap;}td code{padding:0;}a code{padding:0;font-size:1em;}nav code{background-color:inherit;font-weight:400;color:inherit;}code{font-family:APLFont, monospace;color:Black;font-weight:800;line-height:1.2;font-size:0.88em;margin:0;color:#950000;padding:0 0.16em;}tbody tr:nth-child(even){background-color:#F0F0F0;}th{background-color:#E6E6E6;color:black;}th, td{padding:0.16em 0.55em;vertical-align:top;}table td + td{border-left:1px solid gray;}table th + th{border-left:1px solid gray;}table{border-color:Black;margin:1.5em 0;border:2px black;border-collapse:collapse;font-family:APLFont;font-size:0.88em;line-height:1.2;border:1px solid Gray;}li > table{margin:0.55em 0 0.55em 0;}tr{margin:1.11em;}th{font-weight:bold;}tfoot td{font-weight:bold;}blockquote{border-left:0.27em solid silver;padding-left:0.27em;margin:0.83em 0.27em 0.83em 0.55em;}blockquote ul li{margin-left:1.38em;}blockquote ol li{margin-left:1.38em;}li > blockquote{margin-left:0;}nav{background-color:#f5f5f5;border:1px solid Black;padding:0.55em;margin:0.55em;margin-right:0;box-shadow:0.27em 0.27em 0.27em Gray;overflow:hidden;clear:both;}nav#main_nav{position:fixed;top:0;right:0.55em;float:none;width:auto;}nav#main_nav_no_collapse li{font-size:0.77rem;}nav#main_nav_no_collapse li{line-height:1.5;}nav ul{list-style-type:none;margin:0 0 0.11em 0;padding:0;}nav a:visited{color:black;}nav ul li{margin-bottom:0.16em;}nav li p{margin:0;padding:0;line-height:1;margin:0;padding:0;}nav li{font-size:0.75rem;line-height:1.3;padding:0;margin-top:0;margin-bottom:0;margin-left:0.83em;}nav p{font-weight:bold;font-size:0.75rem;padding-top:0;}dl{margin-top:0.1em;margin-bottom:0.1em;}dt{margin-top:0.75em;margin-bottom:0.1em;font-weight:800;}label#hide_toc_label{font-size:0.8em;}.toc-container{position:relative;height:auto;}div.toc-container h1{font-size:0.88em;margin:0.27em 0 0.27em 0;}[type="checkbox"]{position:absolute;left:-9999px;}label{display:block;width:100%;height:1.1em;cursor:pointer;top:0;padding-left:1.1em;}label:before{content:'Table of contents \25BC';font-weight:bold;font-size:90%;padding-bottom:0;}[type="checkbox"] ~ div{display:none;}[type="checkbox"]:checked ~ div{display:block;margin-top:1.1em;}[type="checkbox"]:checked + label{top:100%;}[type="checkbox"]:checked + label:before{content:'Table of contents ▲';}div#footnotes_div p{line-height:1;padding-bottom:0;padding-top:0;}div#footnotes_div ol{padding-top:0;}@font-face{font-family:"APLFont";src:local("APL385 Unicode"), url("https://misc.aplteam.com/apl385.ttf") format("truetype");}.no_display{display:none;}.red{color:red;}.center{text-align:center;margin-left:auto;margin-right:auto;}.left{text-align:left;margin-right:0 auto;}.right{text-align:right;margin-left:0 auto;}img{margin-top:0.55em;margin-bottom:0.27em;}div.leanpub{padding:0.83em 0.55em 1.11em 0;margin:0.55em 0 0 0.27em;overflow:auto;}div.leanpub_A{border:1px solid black;background-color:#f1f1f1;padding:0.55em;margin:1.11em 0 0.83em 0;}div.leanpub h3, div.leanpub_A h3{font-size:1.2em;padding:0;margin:0;}div.leanpub h4, div.leanpub_A h4{font-size:1.1em;padding:0.27em 0 0 0;margin:0;}div.leanpub h5, div.leanpub h5{font-size:1.0em;padding:0.27em 0 0 0;margin:0;}div.leanpub_A h5, div.leanpub_A h5{font-size:1.0em;padding:0.27em 0 0 0;margin:0;}div.leanpub img{padding:0;margin:0 1.11em 0.27em 0;}div.leanpub_A > p:first-child{padding-top:0;margin-top:0;}div.leanpub img{float:left;padding:0;margin:0.55em 1.11em 0 0;clear:both;}div.leanpub tbody *{background-color:transparent;}div.leanpub p{padding:0.17em 0 0 0;margin:0;}span.leanpub_code{color:Red;}div.leanpub p{display:block;padding:0.44em 0 0 0;}div.leanpub > div{margin-left:2.27em;}.print_only{display:none;}
+</style>
+<style media="print">
+@page{margin:25mm 20mm 25mm 20mm;}body{font-family:"Bookman Old Style", "Callisto MT", Bookman,"Goudy Old Style", Garamond, serif;font-size:9pt;line-height:1.2;}h1{font-size:170%;}h2{font-size:110%;}h3{font-size:110%;}h4{font-size:105%;}h5{font-size:100%;}h6{font-size:95%;}h1{margin:0 0 20pt 0;}h2{margin:15pt 0 3pt 0;}h3{margin:10pt 0 0pt 0;}h4{margin:10pt 0 0pt 0;}h5{margin:9pt 0 0pt 0;}h6{margin:9pt 0 0pt 0;}h1, h2, h3, h4, h5, h6{color:black;font-family:"Century Gothic", Verdana, "Sans";page-break-after:avoid;}h1 > code, h2 > code, h3 > code, h4 > code, h5 > code, h6 > code{font-size:100%;}h2{border-bottom:1pt solid Silver;padding-bottom:2pt;}.h_tag{page-break-after:avoid;break-after:avoid;}abbr[title]{border-bottom:0;text-decoration:none;}a{color:black;margin:0;padding:0;vertical-align:baseline;text-decoration:none;font-style:italic;}a.autoheader_anchor{text-decoration:none;font-style:normal;page-break-after:avoid;break-after:avoid;}ul{list-style-type:square;}ul, ol{padding:0;margin:0;margin-top:10pt;}li > ul, ol{padding-bottom:0;}li{line-height:1.3;margin-left:13pt;margin-bottom:5pt;}ul > li{margin-left:25pt;}ol > li{margin-left:25pt;}li ul{margin-left:5pt;}li ul{margin-left:3pt;}li p{padding:1pt 0 0 0;margin:5pt 0 3pt 0;line-height:1.3;}p, ul, ol{line-height:1.3;padding:4pt 0 0 0;margin:0;color:black;}ul, ol{margin-top:0.75em;}pre{padding:3pt;margin:5pt 0;white-space:pre-wrap;background-color:#FAFAFA;border:1pt Silver solid;display:block;font-family:APLFont, monospace;page-break-inside:avoid;}pre code{background-color:#FAFAFA;color:Black;padding:0;margin:0 0 -6pt 0;line-height:1.1;border:0;white-space:pre-wrap;}code{font-family:APLFont, monospace;line-height:1.2;font-size:9pt;padding:3pt 1pt 3pt 1pt;color:#950000;padding:3pt 0pt 3pt 0pt;margin:0;}tbody th, tfoot tr{background-color:#e6e6e6;}tbody tr:nth-child(even){background-color:#fafafa;}th{background-color:#F0F0F0;}th, td{padding:1pt 5pt;border:1px solid #E3E3E3;vertical-align:top;}table td + td{border-left:1px solid gray;}table th + th{border-left:1px solid gray;}table code{font-style:normal;padding-left:0;padding-right:0;}table{margin:1.5em 0;font-family:APLFont;font-size:9pt;padding:0;border:1pt solid silver;border-collapse:collapse;}li > table{margin:10pt 0 10pt 0;}tr{margin:20pt;}th{font-weight:bold;}tfoot td{font-weight:bold;}blockquote{border-left:5pt solid silver;padding-left:5pt;margin:8pt 3pt 8pt 8pt;}nav{background-color:#f8f8f8;border:1pt solid Gray;width:auto;float:right;padding:5pt 5pt 5pt 0;margin:5pt 0 5pt 5pt;page-break-inside:avoid;break-inside:avoid;clear:both;overflow:hidden;}nav *{font-size:75%;}nav ul{list-style-type:none;margin:0 0 2pt 0;padding:0;}nav ul li{margin-bottom:0;}nav li p{margin:0;padding:0;line-height:1;margin:0;padding:0;}nav li{font-size:9pt;line-height:1;padding:0;margin-top:0;margin-bottom:0;margin-left:8pt;}dl{margin-top:0;margin-bottom:10pt;}dt{margin-top:10pt;margin-bottom:0;font-weight:800;page-break-inside:avoid;}dd{margin-top:2pt;}label#hide_toc_label{font-size:65%;}.toc-container{position:relative;height:auto;margin-top:2pt;background-color:inherit;}.toc-container h3{margin:0 0 2pt 7pt;}[type="checkbox"]{display:none;}label{display:block;width:100%;height:1.1em;top:0;padding-left:10pt;}label:before{content:'Table of contents';font-weight:bold;font-size:140%;padding-bottom:10pt;}a.external_link::before{content:" 🌎";}a.bookmark_link::before{content:" ➯";}a.mailto_link::before{content:" ✉"}nav a.bookmark_link{font-style:normal;}nav p{margin-left:10pt;font-weight:bold;font-size:9pt;}nav a{font-style:normal;}nav a.bookmark_link::before{content:"";}div#footnotes_div a::before{content:"";}div#footnotes_div a{font-style:normal;}div#footnotes_div{page-break-inside:avoid;}@font-face{font-family:"APLFont";src:local("APL385 Unicode"), url("https://misc.aplteam.com/apl385.ttf") format("truetype");}.no_print{display:none;}.red{color:red;}.center{text-align:center;margin:0 auto;}.left{text-align:left;margin-right:0 auto;}.right{text-align:right;margin-left:0 auto;}.avoid_page_break{page-break-inside:avoid;}.page_break_before{page-break-before:always;}div.leanpub{margin:10pt 0 10pt 8pt;page-break-inside:avoid;}div.leanpub_A{border:1pt solid black;background-color:#f9f9f9;padding:5pt;margin:10pt 0 10pt 0;page-break-inside:avoid;}div.leanpub h3, div.leanpub_A h3{font-size:1.2em;padding:3pt 0 0 0;margin:0;}div.leanpub h4, div.leanpub_A h4{font-size:1.1em;padding:3pt 0 0 0;margin:0;}div.leanpub h5, div.leanpub h5{font-size:1.0em;padding:3pt 0 0 0;margin:0;}div.leanpub_A h5, div.leanpub_A h5{font-size:1.0em;padding:3pt 0 0 0;margin:0;}div.leanpub img{padding:0;margin:0 10pt 2pt 0;}div.leanpub_A > p:first-child{padding-top:0;margin-top:0;}div.leanpub > div > h1:first-child{padding-top:5pt;}div.leanpub img{float:left;padding:0;margin:5pt 10pt 0 0;clear:both;}div.leanpub p{padding:3pt 0 0 0;margin:0;}span.leanpub_code{font-weight:bold;}div.leanpub p{display:block;padding:8pt 0 0 0;}div.leanpub > div{margin-left:35pt;}sup{font-size:0.75em;line-height:0;position:relative;vertical-align:baseline;top:-0.4em;}
+</style>
+<style>
+body {font-family:"APL385 Unicode";}
+</style>
+</head>
+<body>
+<nav id="main_nav">
+<input type="checkbox" id="hide_toc">
+<label id="hide_toc_label" for="hide_toc"></label>
+<div class="toc-container">
+<ul>
+<li><a href="#BuildPackage">BuildPackage</a></li>
+<li><a href="#Cache">Cache</a></li>
+<li><a href="#CheckForLaterVersion">CheckForLaterVersion</a></li>
+<li><a href="#CreatePackage">CreatePackage</a></li>
+<li><a href="#DeletePackage">DeletePackage</a></li>
+<li><a href="#DeprecatePackage">DeprecatePackage</a></li>
+<li><a href="#Documentation">Documentation</a></li>
+<li><a href="#FindDependencies">FindDependencies</a></li>
+<li><a href="#GetDeletePolicy">GetDeletePolicy</a></li>
+<li><a href="#Init">Init</a></li>
+<li><a href="#InstallPackages">InstallPackages</a></li>
+<li><a href="#ListDeprecated">ListDeprecated</a></li>
+<li><a href="#ListLicenses">ListLicenses</a></li>
+<li><a href="#ListPackages">ListPackages</a></li>
+<li><a href="#ListRegistries">ListRegistries</a></li>
+<li><a href="#ListTags">ListTags</a></li>
+<li><a href="#ListVersions">ListVersions</a></li>
+<li><a href="#LoadDependencies">LoadDependencies</a></li>
+<li><a href="#LoadPackages">LoadPackages</a></li>
+<li><a href="#LoadTatin">LoadTatin</a></li>
+<li><a href="#Maintenance">Maintenance</a></li>
+<li><a href="#PackageConfig">PackageConfig</a></li>
+<li><a href="#PackageDependencies">PackageDependencies</a></li>
+<li><a href="#Ping">Ping</a></li>
+<li><a href="#PublishPackage">PublishPackage</a></li>
+<li><a href="#ReInstallDependencies">ReInstallDependencies</a></li>
+<li><a href="#UnInstallPackages">UnInstallPackages</a></li>
+<li><a href="#UpdateTatin">UpdateTatin</a></li>
+<li><a href="#UsageData">UsageData</a></li>
+<li><a href="#UserSettings">UserSettings</a></li>
+<li><a href="#Version">Version</a></li>
+<li><a href="#section"></a></li>
+<li><a href="#section-1">]</a>
+</ul>
+</div>
+</nav>
+<div class="h_tag">
+<a href="#Tatin-User-Command-Syntax" id="Tatin-User-Command-Syntax" class="autoheader_anchor">
+<h1 data-id="Tatin-User-Command-Syntax">Tatin User Command Syntax</h1>
+</a>
+</div>
+<div class="h_tag">
+<a href="#BuildPackage" id="BuildPackage" class="autoheader_anchor">
+<h2 data-id="BuildPackage">BuildPackage</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax" id="Syntax" class="autoheader_anchor">
+<h3 data-id="Syntax">Syntax</h3>
+</a>
+</div>
+<p>Create a new version of a package (resulting in a ZIP) from the directory.</p>
+<p>Syntax: up to 2 arguments</p>
+<p>Accepts modifiers <code>-dependencies=</code>, <code>-version=</code></p>
+<pre><code>]Tatin.BuildPackage [&lt;package-folder&gt;] [&lt;target-folder&gt;] -dependencies= -version=</code></pre>
+<div class="h_tag">
+<a href="#Details" id="Details" class="autoheader_anchor">
+<h3 data-id="Details">Details</h3>
+</a>
+</div>
+<p>]Tatin.BuildPackage [&lt;package-folder&gt;] [&lt;target-folder&gt;] -dependencies= -version= Creates a ZIP file from the directory ⍵[1] that is a package, and saves it in ⍵[2].</p>
+<p>Requires directory ⍵[1] to host a file “apl-package.json” defining the package.</p>
+<p>Always bumps the build number except when -version= is specified <em>and</em> carries a build number.</p>
+<ul>
+<li>If ⍵[2] is not specified Cider (if available) will be questioned: “distributionFolder”</li>
+<li>If ⍵[1] is not specified it will act on any open Cider project If BuildPackage makes any assumptions at all then the user will be asked for confirmation.</li>
+</ul>
+<p>-version= Use this to set the version number in both the package project and the package that is about to be created. You have several options: * -version=+0.0.1 → bumps the patch number * -version=+0.1.0 → bumps the minor number, and resets the patch number * -version=+1.0.0 → bumps the major number, and resets patch &amp; minor number * -version=1.2.3-beta-2 assigns the given string to “version” It will preserve any build number and bump it * -version=1.2.3-beta-2+123 will replace whatever is saved on “version”, including the build number</p>
+<p>-dependencies= Use this to specify a subfolder of the project holding package dependencies.</p>
+<p>Usually there is no need to specify this, refer to the documentation for details: the document “Publishing Packages”.</p>
+<div class="h_tag">
+<a href="#Cache" id="Cache" class="autoheader_anchor">
+<h2 data-id="Cache">Cache</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-1" id="Syntax-1" class="autoheader_anchor">
+<h3 data-id="Syntax-1">Syntax</h3>
+</a>
+</div>
+<p>List the contents of the Tatin package cache.</p>
+<p>Syntax: up to 1 argument</p>
+<p>Accepts modifiers <code>-clear</code>, <code>-force</code>, <code>-path</code></p>
+<pre><code>]Tatin.Cache [url] -path -clear -force</code></pre>
+<div class="h_tag">
+<a href="#Details-1" id="Details-1" class="autoheader_anchor">
+<h3 data-id="Details-1">Details</h3>
+</a>
+</div>
+<p>]Tatin.Cache [url] -path -clear -force Lists all packages of all URLs saved in the Tatin package cache.</p>
+<p>One may specify a URL as argument; then only packages of that URL are listed.</p>
+<p>-path By default just domain names and package names are returned. By specifying this option you can force it to return full paths instead.</p>
+<p>-clear Lists all cached packages and then asks for confirmation before removing them.</p>
+<p>If confirmed all packages are removed or, if an argument (URL) was specified, all packages of that URL.</p>
+<p>-force Ignored in case -clear was not specified as well. Prevents the user from being interrogated regarding clearing the cache. Mainly for test cases.</p>
+<div class="h_tag">
+<a href="#CheckForLaterVersion" id="CheckForLaterVersion" class="autoheader_anchor">
+<h2 data-id="CheckForLaterVersion">CheckForLaterVersion</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-2" id="Syntax-2" class="autoheader_anchor">
+<h3 data-id="Syntax-2">Syntax</h3>
+</a>
+</div>
+<p>Check whether for the installed packages a later versions are available.</p>
+<p>Syntax: 1 argument</p>
+<p>Accepts modifiers <code>-dependencies</code>, <code>-major</code></p>
+<pre><code>]Tatin.CheckForLaterVersion &lt;install-folder&gt; -major -dependencies</code></pre>
+<div class="h_tag">
+<a href="#Details-2" id="Details-2" class="autoheader_anchor">
+<h3 data-id="Details-2">Details</h3>
+</a>
+</div>
+<p>]Tatin.CheckForLaterVersion &lt;install-folder&gt; -major -dependencies Checks whether later versions of the installed packages are available.</p>
+<p>Takes a folder that hosts a file “apl-buildlist.json” as argument.</p>
+<p>Scans all known Registries with a priority greater than 0 for later versions.</p>
+<p>Returns a matrix with five columns for all packages found: [;1] Currently installed package ID [;2] package ID of the latest version found or something like “no response” or “not found” [;3] URL of the Registry the package was originally installed from [;4] ! for a later version [;5] URL of the Registry hosting a different (usually later) version; might be empty</p>
+<p>-major By default later MAJOR versions are ignored, but this default behaviour can be changed by specifying -major: then only later major versions are reported.</p>
+<p>-dependencies By default only principal packages are checked.</p>
+<p>You may include dependencies by specifying this flag.</p>
+<div class="h_tag">
+<a href="#CreatePackage" id="CreatePackage" class="autoheader_anchor">
+<h2 data-id="CreatePackage">CreatePackage</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-3" id="Syntax-3" class="autoheader_anchor">
+<h3 data-id="Syntax-3">Syntax</h3>
+</a>
+</div>
+<p>Create a new Tatin package with a given folder.</p>
+<p>Version: (none found)</p>
+<p>Syntax: up <code>to</code>, <code>1</code>, <code>argument</code>, ``</p>
+<pre><code>]Tatin.CreatePackage</code></pre>
+<div class="h_tag">
+<a href="#Details-3" id="Details-3" class="autoheader_anchor">
+<h3 data-id="Details-3">Details</h3>
+</a>
+</div>
+<p>]Tatin.CreatePackage Prints a user command to the session that allow creating a package config file, the equivalent of creating a package.</p>
+<div class="h_tag">
+<a href="#DeletePackage" id="DeletePackage" class="autoheader_anchor">
+<h2 data-id="DeletePackage">DeletePackage</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-4" id="Syntax-4" class="autoheader_anchor">
+<h3 data-id="Syntax-4">Syntax</h3>
+</a>
+</div>
+<p>Delete a given package from a Tatin Registry.</p>
+<p>Version: (none found)</p>
+<p>Syntax: 1 <code>argument</code>, ``</p>
+<pre><code>]Tatin.DeletePackage &lt;([Registry-alias|Registry-URL|file://package-folder)package-ID)&gt;</code></pre>
+<div class="h_tag">
+<a href="#Details-4" id="Details-4" class="autoheader_anchor">
+<h3 data-id="Details-4">Details</h3>
+</a>
+</div>
+<table>
+<tbody>
+<tr>
+<td>]Tatin.DeletePackage &lt;([Registry-alias</td>
+<td>Registry-URL</td>
+<td>file://package-folder)package-ID)&gt;</td>
+</tr>
+</tbody>
+</table>
+<p>Deletes a given package.</p>
+<p>Takes one of:</p>
+<ul>
+<li>URL specifying a Tatin Registry, followed by a full package ID</li>
+<li>[alias] specifying a Tatin Registry, followed by a full package ID</li>
+<li>Folder hosting a package; must start with file:// The folder must contain a file apl-package.json, otherwise an error is thrown</li>
+</ul>
+<p>Whether a package can be deleted depends on the delete policy operated by a given Registry.</p>
+<p>A Registry may allow…</p>
+<ul>
+<li>no deletion at all</li>
+<li>deletion of beta versions only</li>
+<li>everything</li>
+</ul>
+<p>]DeletePackage -??? ⍝ Enter this for examples</p>
+<div class="h_tag">
+<a href="#DeprecatePackage" id="DeprecatePackage" class="autoheader_anchor">
+<h2 data-id="DeprecatePackage">DeprecatePackage</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-5" id="Syntax-5" class="autoheader_anchor">
+<h3 data-id="Syntax-5">Syntax</h3>
+</a>
+</div>
+<p>Declare packages as deprecated.</p>
+<p>Syntax: 2 arguments</p>
+<p>Accepts modifier <code>-force</code></p>
+<pre><code>]Tatin.DeprecatePackage &lt;URL|[Alias&gt;&lt;group&gt;&lt;name&gt;[&lt;major-version&gt;] &lt;comment&gt; -force</code></pre>
+<div class="h_tag">
+<a href="#Details-5" id="Details-5" class="autoheader_anchor">
+<h3 data-id="Details-5">Details</h3>
+</a>
+</div>
+<table>
+<tbody>
+<tr>
+<td>]Tatin.DeprecatePackage &lt;URL</td>
+<td>[Alias&gt;&lt;group&gt;&lt;name&gt;[&lt;major-version&gt;] &lt;comment&gt; -force</td>
+</tr>
+</tbody>
+</table>
+<p>Declares a particular major version of a package or all major versions of a particular package as deprecated. Requires two arguments:</p>
+<ol start="1">
+<li>Argument
+<ul>
+<li>If a package ID like “GroupName-PkgName-6 is specified as first argument then a new version is published for the major version number 6 that will have a property ”deprecated" injected into its config file with the value 1.
+<p>It will also have a property “comment” that can carry stuff like “Use xyz instead”.</p></li>
+<li>If a package ID like "GroupName-PkgName is specified then new versions are published for all major versions of that package.</li>
+</ul></li>
+<li>Argument A text that will be injected into the package's config file together with “deprecated”.</li>
+</ol>
+<p>-force By default the user is questioned whether she is sure. With this flag this can be overwritten. Mainly for tests.</p>
+<div class="h_tag">
+<a href="#Documentation" id="Documentation" class="autoheader_anchor">
+<h2 data-id="Documentation">Documentation</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-6" id="Syntax-6" class="autoheader_anchor">
+<h3 data-id="Syntax-6">Syntax</h3>
+</a>
+</div>
+<p>Version: (none found)</p>
+<div class="h_tag">
+<a href="#Details-6" id="Details-6" class="autoheader_anchor">
+<h3 data-id="Details-6">Details</h3>
+</a>
+</div>
+<p>Put https://tatin.dev/v1/documentation into the default browser</p>
+<div class="h_tag">
+<a href="#FindDependencies" id="FindDependencies" class="autoheader_anchor">
+<h2 data-id="FindDependencies">FindDependencies</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-7" id="Syntax-7" class="autoheader_anchor">
+<h3 data-id="Syntax-7">Syntax</h3>
+</a>
+</div>
+<p>Attempts to find all folder(s) with the given Tatin package(s)</p>
+<p>Syntax: 1-2 arguments</p>
+<p>Accepts modifier <code>-verbose</code></p>
+<pre><code>]Tatin.FindDependencies &lt;comma-separated list of pkgs&gt; [target] -verbose</code></pre>
+<div class="h_tag">
+<a href="#Details-7" id="Details-7" class="autoheader_anchor">
+<h3 data-id="Details-7">Details</h3>
+</a>
+</div>
+<p>]Tatin.FindDependencies &lt;comma-separated list of pkgs&gt; [target] -verbose Scans “target” recursively for a file “apl-dependencies.txt”.</p>
+<p>“target” can be a folder or a URL or registry alias or [*] for all defined Registries.</p>
+<p>Folders with such a file will be scanned for packages defined in “pkgList”.</p>
+<p>Useful for finding out where one or more packages are used.</p>
+<ul>
+<li>If “target” is embraced by square brackets it is interpreted as a Registry alias</li>
+<li>If it is [*] all defined Registries with a priority greater than 0 are scanned</li>
+<li>If it starts with http[s]:// it is interpreted as a URL pointing to a Registry</li>
+<li>Otherwise “target” is treated as path</li>
+<li>If “target” is not specified it becomes the current dir, but confirmation is required</li>
+</ul>
+<p>“pkgList” must be a simple char vector with “,”-separated package IDs. The packages can be specified fully or partly. “Group” and “version” can be left out while “Name” is mandatory. You may specify a major version but “minor” and “patch” will be ignored.</p>
+<p>Note that the sequence of the arguments does not matter.</p>
+<p>By default the folder(s)/Registries hosting the package(s) are returned, but that can be changed by specifying the -verbose flag:</p>
+<p>-verbose By setting this flag you can force the user command to report the actual package folder(s) rather than the hosting folder.</p>
+<p>As a side effect the result might be larger, in case a package is installed more than once.</p>
+<div class="h_tag">
+<a href="#GetDeletePolicy" id="GetDeletePolicy" class="autoheader_anchor">
+<h2 data-id="GetDeletePolicy">GetDeletePolicy</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-8" id="Syntax-8" class="autoheader_anchor">
+<h3 data-id="Syntax-8">Syntax</h3>
+</a>
+</div>
+<p>Request which “Delete” policy is operated by a Registry.</p>
+<p>Syntax: up to 1 argument</p>
+<p>Accepts modifier <code>-check</code></p>
+<pre><code>]Tatin.GetDeletePolicy [&lt;Registry-URL&gt;] -check</code></pre>
+<div class="h_tag">
+<a href="#Details-8" id="Details-8" class="autoheader_anchor">
+<h3 data-id="Details-8">Details</h3>
+</a>
+</div>
+<p>]Tatin.GetDeletePolicy [&lt;Registry-URL&gt;] -check Requests which “Delete” policy is operated by a Registry.</p>
+<p>Return one of “None”, “Any”, “JustBetas”:</p>
+<ul>
+<li>“None” means a package, once published, cannot be deleted</li>
+<li>“Any” means any package can be deleted</li>
+<li>“JustBetas” means that only beta versions can be deleted If no Registry is specified the user will be prompted, unless there is just one anyway.</li>
+</ul>
+<p>Note that Tatin interrogates all known Registries for their delete policies just once. It then saves the results on a variable for better performance. This can be a problem is case the policy of a server got changed, most likely your own one. To overcome this specify the -check flag which will result in the servers being asked again rather than trusting former results.</p>
+<div class="h_tag">
+<a href="#Init" id="Init" class="autoheader_anchor">
+<h2 data-id="Init">Init</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-9" id="Syntax-9" class="autoheader_anchor">
+<h3 data-id="Syntax-9">Syntax</h3>
+</a>
+</div>
+<p>(Re-)Establish the user settings in ⎕SE.</p>
+<p>Version: (none found)</p>
+<p>Syntax: up <code>to</code>, <code>1</code>, <code>argument</code>, ``</p>
+<pre><code>]Tatin.Init [&lt;config-folder&gt;]</code></pre>
+<div class="h_tag">
+<a href="#Details-9" id="Details-9" class="autoheader_anchor">
+<h3 data-id="Details-9">Details</h3>
+</a>
+</div>
+<p>]Tatin.Init [&lt;config-folder&gt;] (Re-)Establishes the user settings in ⎕SE. Call this in case the user settings got changed on file and you want to incorporate the changes in the current session.</p>
+<p>Without an argument Init processes the default user settings file.</p>
+<p>Instead you may specify a folder that contains a file tatin-client.json.</p>
+<div class="h_tag">
+<a href="#InstallPackages" id="InstallPackages" class="autoheader_anchor">
+<h2 data-id="InstallPackages">InstallPackages</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-10" id="Syntax-10" class="autoheader_anchor">
+<h3 data-id="Syntax-10">Syntax</h3>
+</a>
+</div>
+<p>Install the given package(s) and all dependencies into the given folder.</p>
+<p>Syntax: 1-2 arguments</p>
+<p>Accepts modifier <code>-nobetas</code></p>
+<pre><code>]Tatin. &lt;packageIDs|package-URLs|Zip-file&gt; &lt;install-path&gt;</code></pre>
+<div class="h_tag">
+<a href="#Details-10" id="Details-10" class="autoheader_anchor">
+<h3 data-id="Details-10">Details</h3>
+</a>
+</div>
+<table>
+<tbody>
+<tr>
+<td>]Tatin. &lt;packageIDs</td>
+<td>package-URLs</td>
+<td>Zip-file&gt; &lt;install-path&gt;</td>
+</tr>
+</tbody>
+</table>
+<p>Installs the given package(s) and all dependencies into a given folder.</p>
+<p>If the installation folder does not yet exist it will be created; user must confirm.</p>
+<p>Requires two arguments:</p>
+<p>A) First argument: You may specify a Tatin alias for a package by putting it to the front and separate it with an @. This allows to use different versions of the same package in parallel. Don't use it for other purposes.</p>
+<p>If neither a Registry nor a ZIP is specified but just a package ID (partly/fully) then all defined Registries with priority&gt;0 will be scanned; the first hit wins.</p>
+<p>(For dependencies a scan will be performed in any case)</p>
+<p>Case does not matter: MyGrp-MyPkg, mygrp-mypkg, MYGRP-MYPKG are all considered equal.</p>
+<p>A package might be:</p>
+<ul>
+<li>A full package ID.
+<p>A full package ID has three components: {group}-{name}-{major.minor.patch}.</p></li>
+<li>You may also specify an incomplete package ID in terms of no patch number, or neither minor nor patch number, or no version information at all, and leave it to Tatin to establish the latest version itself.</li>
+<li>You may also omit the group. This will fail in case the same package name is used in two or more different groups but will succeed otherwise.</li>
+<li>Either a full path or an http[s] URL in front of the package ID.</li>
+</ul>
+<p>B) Second argument The optional second argument must be one of:</p>
+<ul>
+<li>Path to a folder into which the packages are going to be installed</li>
+<li>“[MyUCMDs]” (case insensitive) with or without specifying a name; the name will be derived from the package ID if none was specified</li>
+<li>A Cider alias specifying a project</li>
+</ul>
+<p>If more than one user command package is specified after [MyUCMDs] an error is thrown.</p>
+<p>If no second argument is specified Tatin tries to find an open Cider project.</p>
+<p>If there is just one open, Tatin acts on it, otherwise the user is questioned.</p>
+<p>It then inspects the “dependencies” &amp; “dependencies_dev” properties.</p>
+<p>If that defines just one folder Tatin acts on it.</p>
+<p>If there are multiple folders defined the user is questioned which one to install into.</p>
+<p>-nobetas: By default beta versions are included. Specify -nobetas to suppress them.</p>
+<p>]InstallPackages -??? ⍝ Enter this for examples</p>
+<div class="h_tag">
+<a href="#ListDeprecated" id="ListDeprecated" class="autoheader_anchor">
+<h2 data-id="ListDeprecated">ListDeprecated</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-11" id="Syntax-11" class="autoheader_anchor">
+<h3 data-id="Syntax-11">Syntax</h3>
+</a>
+</div>
+<p>List all deprecated major versions</p>
+<p>Syntax: up to 1 argument</p>
+<p>Accepts modifier <code>-all</code></p>
+<pre><code>]Tatin.ListDeprecated &lt;URL|[Alias&gt; -all</code></pre>
+<div class="h_tag">
+<a href="#Details-11" id="Details-11" class="autoheader_anchor">
+<h3 data-id="Details-11">Details</h3>
+</a>
+</div>
+<table>
+<tbody>
+<tr>
+<td>]Tatin.ListDeprecated &lt;URL</td>
+<td>[Alias&gt; -all</td>
+</tr>
+</tbody>
+</table>
+<p>Lists all deprecated major versions</p>
+<p>By default just the major versions would be listed.</p>
+<p>-all By specifying this flag you can force the command to list all versions of all deprecated mnajor versions.</p>
+<div class="h_tag">
+<a href="#ListLicenses" id="ListLicenses" class="autoheader_anchor">
+<h2 data-id="ListLicenses">ListLicenses</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-12" id="Syntax-12" class="autoheader_anchor">
+<h3 data-id="Syntax-12">Syntax</h3>
+</a>
+</div>
+<p>Returns information regarding the licenses tolerated by a managed Tatin Registry</p>
+<p>Syntax: up to 1 argument</p>
+<p>Accepts modifier <code>-verbose</code></p>
+<pre><code>]Tatin.ListLicenses &lt;url&gt; -verbose</code></pre>
+<div class="h_tag">
+<a href="#Details-12" id="Details-12" class="autoheader_anchor">
+<h3 data-id="Details-12">Details</h3>
+</a>
+</div>
+<p>]Tatin.ListLicenses &lt;url&gt; -verbose Returns a list with all licenses tolerated by a managed Tatin Registry If no Registry is specified https://tatin.dev is assumed.</p>
+<p>-verbose If specified not only the names of the licenses are returned but also their URLs.</p>
+<div class="h_tag">
+<a href="#ListPackages" id="ListPackages" class="autoheader_anchor">
+<h2 data-id="ListPackages">ListPackages</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-13" id="Syntax-13" class="autoheader_anchor">
+<h3 data-id="Syntax-13">Syntax</h3>
+</a>
+</div>
+<p>List all packages in the Registry or install folder passed as argument</p>
+<p>Syntax: up to 1 argument</p>
+<p>Accepts modifiers <code>-date</code>, <code>-group=</code>, <code>-noaggr</code>, <code>-os=</code>, <code>-project_url</code>, <code>-since=</code>, <code>-tags=</code>, <code>-uc</code></p>
+<pre><code>]Tatin.ListPackages &lt;URL|[Alias|&lt;path/to/registry&gt;|&lt;install-folder&gt;]&gt; -uc -group= -tags= -os= -date -project_url -since={YYYYMMDD|YYYY-MM-DD} -noaggr</code></pre>
+<div class="h_tag">
+<a href="#Details-13" id="Details-13" class="autoheader_anchor">
+<h3 data-id="Details-13">Details</h3>
+</a>
+</div>
+<table>
+<tbody>
+<tr>
+<td>]Tatin.ListPackages &lt;URL</td>
+<td>[Alias</td>
+<td>&lt;path/to/registry&gt;</td>
+<td>&lt;install-folder&gt;]&gt; -uc -group= -tags= -os= -date -project_url -since={YYYYMMDD</td>
+<td>YYYY-MM-DD} -noaggr</td>
+</tr>
+</tbody>
+</table>
+<p>Lists all packages in the Registry or install folder specified.</p>
+<ul>
+<li>If no argument was specified then the principal Tatin Registry will be assumed (https://tatin.dev)</li>
+<li>If “?” is specified the user will be prompted for the Registry if there are multiple</li>
+<li>If “[*]” is specified then ALL registries are questioned.</li>
+</ul>
+<p>It does not matter whether you specify / or \ in a path, or whether it has or has not a trailing separator: Tatin is taking care of that.</p>
+<p>In case an install folder was specified (rather than a Registry) flags are ignored and just two columns are returned: package name and a Boolean indicating principal packages with a 1.</p>
+<p>By default all packages are listed. You can influence the output in several ways: -group={foo} List only packages with the given group name.</p>
+<p>-tags=foo,goo List only packages carrying the tags “foo” &amp; “goo”.</p>
+<p>-uc List only packages that are user commands -os=mac List only packages for the specified operating system(s). Must be a comma-seperated list with “win”, “mac”, “lin” being valid values.</p>
+<p>-since= Must be a date (YYYYMMDD or YYYY-MM-DD) when specified.</p>
+<p>List only packages published on that date or later.</p>
+<p>Implies -date and ignores -noaggr.</p>
+<p>You can also influence the data returned with the following flags: -date Add the publishing date to the output. -noaggr is set to 1 then.</p>
+<p>-project_url Add the URL saved in the package config file to the result.</p>
+<p>-noaggr By default the output is aggregated. -noaggr prevents that.</p>
+<div class="h_tag">
+<a href="#ListRegistries" id="ListRegistries" class="autoheader_anchor">
+<h2 data-id="ListRegistries">ListRegistries</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-14" id="Syntax-14" class="autoheader_anchor">
+<h3 data-id="Syntax-14">Syntax</h3>
+</a>
+</div>
+<p>List URL, alias, priority and port of all Registries as defined in the user settings.</p>
+<p>Syntax: 0 argument</p>
+<p>Accepts modifier <code>-full</code></p>
+<pre><code>]Tatin.ListRegistries -full</code></pre>
+<div class="h_tag">
+<a href="#Details-14" id="Details-14" class="autoheader_anchor">
+<h3 data-id="Details-14">Details</h3>
+</a>
+</div>
+<p>]Tatin.ListRegistries -full Lists URL, alias, priority, port and the no-caching flag of all Registries as defined in the user settings.</p>
+<p>The result is ordered by priority: the one with the highest priority is listed first etc.</p>
+<p>Notes:</p>
+<ul>
+<li>Registries with a priority of 0 will not participate in a scan of Registries</li>
+<li>In case a Registry does not respond when questioned by ]ListRegistries the user is given three options: Retry, skip and cancel operation</li>
+</ul>
+<p>-full By default all data but the API keys are listed. Specify -full if you want the API keys to be listed as well.</p>
+<div class="h_tag">
+<a href="#ListTags" id="ListTags" class="autoheader_anchor">
+<h2 data-id="ListTags">ListTags</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-15" id="Syntax-15" class="autoheader_anchor">
+<h3 data-id="Syntax-15">Syntax</h3>
+</a>
+</div>
+<p>List all unique tags as defined in all packages on a Registry, sorted alphabetically.</p>
+<p>Syntax: up to 1 argument</p>
+<p>Accepts modifiers <code>-os=</code>, <code>-tags=</code></p>
+<pre><code>]Tatin.ListTags [&lt;Registry-URL&gt;] -tags= -os=</code></pre>
+<div class="h_tag">
+<a href="#Details-15" id="Details-15" class="autoheader_anchor">
+<h3 data-id="Details-15">Details</h3>
+</a>
+</div>
+<p>]Tatin.ListTags [&lt;Registry-URL&gt;] -tags= -os= Lists all unique tags as defined in all packages of a Registry, sorted alphabetically.</p>
+<p>If no argument was specified then the principal Tatin Registry will be assumed (https://tatin.dev).</p>
+<p>If a “?” is passed as argument the user will be prompted for the Registry, except when there is just one defined anyway.</p>
+<p>-tags= You may specify one or more tags like -tags=foo,goo In that case all tags are listed from packages that carry both “foo” &amp; “goo”.</p>
+<p>-os= You may specify one or more operating systems as a comma-separated vector.</p>
+<p>Only “lin”, “mac” and “win” are valid.</p>
+<p>For details how tags are search refer to the documentation.</p>
+<div class="h_tag">
+<a href="#ListVersions" id="ListVersions" class="autoheader_anchor">
+<h2 data-id="ListVersions">ListVersions</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-16" id="Syntax-16" class="autoheader_anchor">
+<h3 data-id="Syntax-16">Syntax</h3>
+</a>
+</div>
+<p>List all versions of the given package of a given Registry or all Registries with a priority&gt;0</p>
+<p>Syntax: 1 argument</p>
+<p>Accepts modifier <code>-date</code></p>
+<pre><code>]Tatin.ListVersions &lt;[Registry-URL|[Registry-Alias][&lt;group&gt;]-&lt;name&gt;-[&lt;version&gt;] -date</code></pre>
+<div class="h_tag">
+<a href="#Details-16" id="Details-16" class="autoheader_anchor">
+<h3 data-id="Details-16">Details</h3>
+</a>
+</div>
+<table>
+<tbody>
+<tr>
+<td>]Tatin.ListVersions &lt;[Registry-URL</td>
+<td>[Registry-Alias][&lt;group&gt;]-&lt;name&gt;-[&lt;version&gt;] -date</td>
+</tr>
+</tbody>
+</table>
+<p>Lists all versions of the given package.</p>
+<p>You may specify a package in several ways:</p>
+<table>
+<tbody>
+<tr>
+<td>* ]Tatin.ListVersions [Registry-URL</td>
+<td>Registry-alias]{group}-{package}</td>
+</tr>
+<tr>
+<td>* ]Tatin.ListVersions [Registry-URL</td>
+<td>Registry-alias]{package}</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>]Tatin.ListVersions {package}</li>
+<li>]Tatin.ListVersions {package}-{major}</li>
+<li>]Tatin.ListVersions {package}-{major}.{minor} In all these cases a list of packages is returned, possibly empty.</li>
+</ul>
+<p>Note that case does not matter, meaning that a package MyGroup-MyPkg can be specified as mygroup-mypkg or MYGROUP-MYPKG, it does not matter.</p>
+<p>You may not specify a Registry at all; in that case all Registries with a priority greater than zero are scanned.</p>
+<p>Finally you may specify a ? (or [?]): then you will be prompted with a list of all known Registries for selecting one.</p>
+<p>If just a package is specified, a matrix with two columns is returned: [;1] The Registry [;2] Full package ID</p>
+<p>Lacking a group does not make a difference if the package exists only in one group anyway.</p>
+<p>If it exists in more than one group then all of them are listed.</p>
+<p>If version precedence cannot be established from the version numbers alone (often a problem with beta versions) then the publishing date is taken into account.</p>
+<p>-date : adds the publishing date to the report.</p>
+<div class="h_tag">
+<a href="#LoadDependencies" id="LoadDependencies" class="autoheader_anchor">
+<h2 data-id="LoadDependencies">LoadDependencies</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-17" id="Syntax-17" class="autoheader_anchor">
+<h3 data-id="Syntax-17">Syntax</h3>
+</a>
+</div>
+<p>Load all packages defined in a file apl-dependencies.txt.</p>
+<p>Syntax: 1-2 arguments</p>
+<p>Accepts modifiers <code>-makeHomeRelative</code>, <code>-overwrite</code></p>
+<pre><code>]Tatin.LoadDependencies &lt;package-folder&gt; [&lt;parent-namespace&gt;] -overwrite</code></pre>
+<div class="h_tag">
+<a href="#Details-17" id="Details-17" class="autoheader_anchor">
+<h3 data-id="Details-17">Details</h3>
+</a>
+</div>
+<p>]Tatin.LoadDependencies &lt;package-folder&gt; [&lt;parent-namespace&gt;] -overwrite Loads all packages defined in a file apl-dependencies.txt.</p>
+<p>Takes up to two arguments: [1] A folder into which one or more packages have been installed [2] Optional: a namespace into which the packages are going to be loaded Default is # except when “folder” is [MyUCMDs] when the default is ⎕SE instead.</p>
+<p>-overwrite: By default a package is not loaded if it already exists. You can enforce the load operation by specifying the -overwrite flag.</p>
+<p>-makeHomeRelative By default the paths returned by HOME and GetFullPath2AssetsFolder would be absolute. By specifying this you can enforce them to be relative: onle the package folder and its parent are returned.</p>
+<div class="h_tag">
+<a href="#LoadPackages" id="LoadPackages" class="autoheader_anchor">
+<h2 data-id="LoadPackages">LoadPackages</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-18" id="Syntax-18" class="autoheader_anchor">
+<h3 data-id="Syntax-18">Syntax</h3>
+</a>
+</div>
+<p>Load the specified package(s) and all dependencies into the workspace.</p>
+<p>Syntax: 1-2 arguments</p>
+<p>Accepts modifiers <code>-nobetas</code>, <code>-verbose</code></p>
+<pre><code>]Tatin.LoadPackages &lt;packageIDs|package-URLs|Zip-file&gt; [&lt;target namespace&gt;] -nobetas</code></pre>
+<div class="h_tag">
+<a href="#Details-18" id="Details-18" class="autoheader_anchor">
+<h3 data-id="Details-18">Details</h3>
+</a>
+</div>
+<table>
+<tbody>
+<tr>
+<td>]Tatin.LoadPackages &lt;packageIDs</td>
+<td>package-URLs</td>
+<td>Zip-file&gt; [&lt;target namespace&gt;] -nobetas</td>
+</tr>
+</tbody>
+</table>
+<p>Loads the specified package(s) and all its dependencies into the workspace.</p>
+<p>A) First argument: Specify one or more (comma-separated) packages to be loaded.</p>
+<p>B) Second (optional) argument: target namespace (defaults to #) Must be the fully qualified name of a namespace the package will be loaded into.</p>
+<p>May be # or ⎕SE or a sub-namespace of any level.</p>
+<p>-nobetas By default beta versions are included. Specify -nobetas to suppress them.</p>
+<p>-verbose Let the command report steps along the way.</p>
+<p>Returns the number of packages loaded into the workspace, including dependencies.</p>
+<p>You may specify a Tatin alias for a package by putting it to the front and separate it with an @. This allows to use different versions of the same package in parallel. Don't use it for other purposes.</p>
+<p>If neither a Registry nor a ZIP is specified but just a package ID (partly/fully) then all defined Registries with priority&gt;0 will be scanned; the first hit wins.</p>
+<p>(For dependencies a scan will be performed in any case)</p>
+<p>Case does not matter: MyGrp-MyPkg, mygrp-mypkg, MYGRP-MYPKG are all considered equal.</p>
+<p>A package might be:</p>
+<ul>
+<li>A full package ID.
+<p>A full package ID has three components: {group}-{name}-{major.minor.patch}.</p></li>
+<li>You may also specify an incomplete package ID in terms of no patch number, or neither minor nor patch number, or no version information at all, and leave it to Tatin to establish the latest version itself.</li>
+<li>You may also omit the group. This will fail in case the same package name is used in two or more different groups but will succeed otherwise.</li>
+<li>Either a full path or an http[s] URL in front of the package ID.</li>
+</ul>
+<p>]LoadPackages -??? ⍝ Enter this for examples</p>
+<div class="h_tag">
+<a href="#LoadTatin" id="LoadTatin" class="autoheader_anchor">
+<h2 data-id="LoadTatin">LoadTatin</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-19" id="Syntax-19" class="autoheader_anchor">
+<h3 data-id="Syntax-19">Syntax</h3>
+</a>
+</div>
+<p>Load the Tatin client into ⎕SE (if it's not already there) and initializes it.</p>
+<p>Syntax: up to 1 argument</p>
+<p>Accepts modifier <code>-force</code></p>
+<pre><code>]Tatin.LoadTatin</code></pre>
+<div class="h_tag">
+<a href="#Details-19" id="Details-19" class="autoheader_anchor">
+<h3 data-id="Details-19">Details</h3>
+</a>
+</div>
+<p>]Tatin.LoadTatin Loads the Tatin client into ⎕SE (if it's not already there) and initializes it.</p>
+<p>Allows accessing the Tatin API via ⎕SE.Tatin.</p>
+<p>By default the user config file is expected in the user's home folder, and it will be created there if it does not already exist.</p>
+<p>Instead you may specify a different folder. Note that this is NOT a permanent change;</p>
+<p>-permanent Make any changes permanent -force Enforce the load even if ⎕SE.Tatin already exists</p>
+<div class="h_tag">
+<a href="#Maintenance" id="Maintenance" class="autoheader_anchor">
+<h2 data-id="Maintenance">Maintenance</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-20" id="Syntax-20" class="autoheader_anchor">
+<h3 data-id="Syntax-20">Syntax</h3>
+</a>
+</div>
+<p>Checks whether there are maintenance files available and asks the user about it</p>
+<p>Syntax: up to 1 argument</p>
+<p>Accepts modifiers <code>-dry</code>, <code>-show</code></p>
+<pre><code>]Tatin.Maintenance path -dry -show</code></pre>
+<div class="h_tag">
+<a href="#Details-20" id="Details-20" class="autoheader_anchor">
+<h3 data-id="Details-20">Details</h3>
+</a>
+</div>
+<p>]Tatin.Maintenance path -dry -show Checks whether there are any files in the folder Maintenance/. These are expected to be .aplf files (functions). Such files will be listed, and the user can select which one(s) to execute. They will be fed with the argument provided, which is expected to be a folder.</p>
+<p>That folder and all its sub folders will be scanned for packages, and every package will be potentially changed by the maintenance file(s) selected by the user.</p>
+<p>Usually this means changing the package config file.</p>
+<p>This mechanism can be used to, say, rename properties, or inject new ones. The purpose is to ensure that all packages are up to date.</p>
+<p>-dry When specified all actions will be listed, including a list of all packages found, but no package will actually be changed at all.</p>
+<p>-show Shows the leading comments of all maintenance files that would be executed.</p>
+<p>If this is specified no other action is taken.</p>
+<p>Note that this is NOT about packages that are managed by a Tatin server. The server has its own mechanism for updating packages.</p>
+<div class="h_tag">
+<a href="#PackageConfig" id="PackageConfig" class="autoheader_anchor">
+<h2 data-id="PackageConfig">PackageConfig</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-21" id="Syntax-21" class="autoheader_anchor">
+<h3 data-id="Syntax-21">Syntax</h3>
+</a>
+</div>
+<p>Manage a package config file: fetch, create, edit or delete it.</p>
+<p>Syntax: up to 1 argument</p>
+<p>Accepts modifiers <code>-delete</code>, <code>-edit</code>, <code>-quiet</code></p>
+<pre><code>]Tatin.PackageConfig &lt;package-URL|package-folder&gt; -edit -delete</code></pre>
+<div class="h_tag">
+<a href="#Details-21" id="Details-21" class="autoheader_anchor">
+<h3 data-id="Details-21">Details</h3>
+</a>
+</div>
+<table>
+<tbody>
+<tr>
+<td>]Tatin.PackageConfig &lt;package-URL</td>
+<td>package-folder&gt; -edit -delete</td>
+</tr>
+</tbody>
+</table>
+<p>Manages a package config file: fetch, create, edit or delete it.</p>
+<p>The argument, if specified, must be either a URL or a path.</p>
+<ul>
+<li>In case of a URL the contents of the config file is printed to the session (JSON).
+<p>Specifying any of the flags has no effect then.</p></li>
+<li>In case it is a path it must point to a folder that contains a Tatin package.
+<p>The contents “apl-package.json” in that folder is printed to the session (JSON).</p>
+<p>In case the file does not yet exist it will be created.</p></li>
+</ul>
+<p>In case no argument is specified Tatin checks whether there are any open Cider projects.</p>
+<p>If there is just one open it will act on it, if there are multiple projects open the user will be asked which one she wants to act on.</p>
+<p>If Cider is not available or no project is open the command tries to find a package config file in the current directory, but the user is asked for confirmation.</p>
+<p>-edit You may edit the file by specifying the -edit flag.</p>
+<p>-delete In case you want to delete the file specify the -delete flag.</p>
+<div class="h_tag">
+<a href="#PackageDependencies" id="PackageDependencies" class="autoheader_anchor">
+<h2 data-id="PackageDependencies">PackageDependencies</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-22" id="Syntax-22" class="autoheader_anchor">
+<h3 data-id="Syntax-22">Syntax</h3>
+</a>
+</div>
+<p>Return the contents of a file “apl-dependencies.txt”.</p>
+<p>Syntax: 1 argument</p>
+<p>Accepts modifiers <code>-delete</code>, <code>-edit</code>, <code>-quiet</code></p>
+<pre><code>]Tatin.PackageDependencies &lt;package-path&gt; -edit -delete -quiet</code></pre>
+<div class="h_tag">
+<a href="#Details-22" id="Details-22" class="autoheader_anchor">
+<h3 data-id="Details-22">Details</h3>
+</a>
+</div>
+<p>]Tatin.PackageDependencies &lt;package-path&gt; -edit -delete -quiet Returns the contents of a file “apl-dependencies.txt”.</p>
+<p>Takes a path hosting such a file as an argument.</p>
+<p>-edit You may edit the file by specifying the -edit flag. In case the file does not already exist it is created.</p>
+<p>After an edit operation the data is checked for being complete and syntactically correct JSON and then saved to the given folder.</p>
+<p>-delete In case you want to delete the file specify the -delete flag.</p>
+<p>-quiet Useful for test cases: it prevents Tatin from interrogating the user</p>
+<div class="h_tag">
+<a href="#Ping" id="Ping" class="autoheader_anchor">
+<h2 data-id="Ping">Ping</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-23" id="Syntax-23" class="autoheader_anchor">
+<h3 data-id="Syntax-23">Syntax</h3>
+</a>
+</div>
+<p>Try to contact the specified or all known Tatin Registries</p>
+<p>Version: (none found)</p>
+<p>Syntax: up <code>to</code>, <code>1</code>, <code>argument</code>, ``</p>
+<pre><code>]Tatin.Ping [Registry-URL]</code></pre>
+<div class="h_tag">
+<a href="#Details-23" id="Details-23" class="autoheader_anchor">
+<h3 data-id="Details-23">Details</h3>
+</a>
+</div>
+<p>]Tatin.Ping [Registry-URL] Tries to contact one or more Tatin Registries.</p>
+<ul>
+<li>Optionally you may specify a Registry URL as an argument.</li>
+<li>You can also specify just a “?”; then a list with all known Registries will be provided.
+<p>You may then select one or multiple of them.</p></li>
+<li>If no argument is provided at all then all defined Registries are contacted.</li>
+<li>In case the path to a folder is passed as ⍵ a 1 is returned in case the folder exists.</li>
+</ul>
+<p>In any case a matrix with two columns is returned: [;1] is the Registry URL [;2] is a Boolean, a 1 means that the Registry responded</p>
+<p>]Ping -??? ⍝ Enter this for examples</p>
+<div class="h_tag">
+<a href="#PublishPackage" id="PublishPackage" class="autoheader_anchor">
+<h2 data-id="PublishPackage">PublishPackage</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-24" id="Syntax-24" class="autoheader_anchor">
+<h3 data-id="Syntax-24">Syntax</h3>
+</a>
+</div>
+<p>Publish a package to a particular Tatin Registry.</p>
+<p>Syntax: up to 2 arguments</p>
+<p>Accepts modifier <code>-dependencies=</code></p>
+<pre><code>]Tatin.PublishPackage &lt;package-folder|ZIP-file&gt; [&lt;Registry-URL|Registry-Alias]&gt; -dependencies=</code></pre>
+<div class="h_tag">
+<a href="#Details-24" id="Details-24" class="autoheader_anchor">
+<h3 data-id="Details-24">Details</h3>
+</a>
+</div>
+<table>
+<tbody>
+<tr>
+<td>]Tatin.PublishPackage &lt;package-folder</td>
+<td>ZIP-file&gt; [&lt;Registry-URL</td>
+<td>Registry-Alias]&gt; -dependencies=</td>
+</tr>
+</tbody>
+</table>
+<p>Publishes a package to a particular Tatin Registry.</p>
+<p>Such a package can be one of:</p>
+<ul>
+<li>ZIP file, typically created by calling ]Tatin.BuildPackage</li>
+<li>Folder that contains everything that defines a package; in this case the required ZIP is created by “PublishPackage” itself.</li>
+</ul>
+<p>Requires up to two arguments:</p>
+<ul>
+<li>Path to ZIP file or package folder</li>
+<li>URL or alias of a Registry or a “?” (you may or may not embrace the “?” with []) In case this is not specified the principal Registry is assumed.</li>
+</ul>
+<p>If the path to the ZIP file is not specified Tatin asks Cider for any open projects, and takes it if it's a single one or let the user choose one. Cider knows where to find a ZIP file.</p>
+<p>The name of the resulting package is extracted from the ZIP file which therefore must conform to the Tatin rules.</p>
+<p>Tatin checks the “delete” policy of the Registry. If the package cannot be deleted then the user must confirm that she really wants to publish to that particular Registry.</p>
+<p>-dependencies=: Use this to specify a subfolder of the project that hosts the packages the package about to be published depends on. Usually there is no need to specify this; refer to the documentation (“Publishing Packages”) for details.</p>
+<div class="h_tag">
+<a href="#ReInstallDependencies" id="ReInstallDependencies" class="autoheader_anchor">
+<h2 data-id="ReInstallDependencies">ReInstallDependencies</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-25" id="Syntax-25" class="autoheader_anchor">
+<h3 data-id="Syntax-25">Syntax</h3>
+</a>
+</div>
+<p>ReInstall all packages installed in a folder from scratch.</p>
+<p>Syntax: up to 2 arguments</p>
+<p>Accepts modifiers <code>-dry</code>, <code>-force</code>, <code>-nobetas</code>, <code>-update</code></p>
+<pre><code>]Tatin.ReInstallDependencies [install-folder] [Registry-URL|Registry-alias] -force -dry -nobeta -update</code></pre>
+<div class="h_tag">
+<a href="#Details-25" id="Details-25" class="autoheader_anchor">
+<h3 data-id="Details-25">Details</h3>
+</a>
+</div>
+<table>
+<tbody>
+<tr>
+<td>]Tatin.ReInstallDependencies [install-folder] [Registry-URL</td>
+<td>Registry-alias] -force -dry -nobeta -update</td>
+</tr>
+</tbody>
+</table>
+<p>ReInstalls all packages (principals as well as dependencies) from scratch.</p>
+<p>Takes a folder as argument. If specified the folder must host a file apl-dependencies.txt.</p>
+<p>If this is not an absolute path then it might be a sub folder of an open Cider project.</p>
+<p>Then Tatin works out the correct one:</p>
+<ul>
+<li>If there is just one project open it is taken</li>
+<li>If there are multiple Cider projects open the user is questioned</li>
+<li>If Cider is not available or no projects are open the current directory is checked For a relative path the user is always asked for confirmation.</li>
+</ul>
+<p>If it was not specified at all then all open Cider projects are presented for selection, except if there is only one open anyway. The the Tatin dependency is taken. If there is more than one then they are presented for selection by the user.</p>
+<p>All installed packages are removed from the folder (except ZIP files) before a new build list is compiled and used to install all packages from scratch.</p>
+<p>Notes:</p>
+<ul>
+<li>This does not install a later version (but check on -update).</li>
+<li>ZIP files are not removed upfront and have therefore a higher priority, so when the dependency list refers to a ZIP file then it will always survive.</li>
+</ul>
+<p>All defined Registries with a priority greater than 0 are scanned for principal packages but one can specify a particular Registry as second (optional) argument.</p>
+<p>For dependencies, all Registries with a priority greater than 0 are scanned in any case.</p>
+<p>-force Prevents user confirmation and reporting to the session, including establishing a project in case no folder was specified.</p>
+<p>-dry Report what would be done without actually doing it.</p>
+<p>-nobetas By default betas are included; suppress with -nobetas.</p>
+<p>-update By default ReInstallDependencies does not install later versions.</p>
+<p>You may change this by specifying this flag.</p>
+<p>]ReInstallDependencies -??? ⍝ Enter this for examples</p>
+<div class="h_tag">
+<a href="#UnInstallPackages" id="UnInstallPackages" class="autoheader_anchor">
+<h2 data-id="UnInstallPackages">UnInstallPackages</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-26" id="Syntax-26" class="autoheader_anchor">
+<h3 data-id="Syntax-26">Syntax</h3>
+</a>
+</div>
+<p>Uninstall a given package and possibly all its dependencies.</p>
+<p>Syntax: up to 2 arguments</p>
+<p>Accepts modifiers <code>-cleanup</code>, <code>-quiet</code></p>
+<pre><code>]Tatin.UnInstallPackages [&lt;package-ID|package-alias&gt;] &lt;package-folder&gt; -cleanup -quiet</code></pre>
+<div class="h_tag">
+<a href="#Details-26" id="Details-26" class="autoheader_anchor">
+<h3 data-id="Details-26">Details</h3>
+</a>
+</div>
+<table>
+<tbody>
+<tr>
+<td>]Tatin.UnInstallPackages [&lt;package-ID</td>
+<td>package-alias&gt;] &lt;package-folder&gt; -cleanup -quiet</td>
+</tr>
+</tbody>
+</table>
+<p>UnInstalls a given package and its dependencies if those are neither top-level packages nor required by other packages. Superfluous packages (like outdated versions) are removed as well.</p>
+<p>If you don't want to delete a specific package but get rid of all superfluous packages then don't specify a package ID but -cleanup.</p>
+<p>Requires at least one argument which must be one of:</p>
+<ul>
+<li>A folder in conjunction with -cleanup flag</li>
+<li>A package ID; this works only in conjunction with the Cider project manager, since Tatin will work out the folder by looking at any open Cider projects.</li>
+<li>A “?”; Tatin will then present all top-level packages for selection.</li>
+</ul>
+<table>
+<tbody>
+<tr>
+<td>Two arguments must be  [package-ID</td>
+<td>alias</td>
+<td>?] and a folder.</td>
+</tr>
+</tbody>
+</table>
+<p>In case the first argument is a package ID it must be one of:</p>
+<ul>
+<li>Package ID</li>
+<li>Alias and fully qualified name of a package</li>
+<li>Just an alias; postfix with a “@” in order to mark it as alias A package ID might be fully qualified or &lt;group&gt;-&lt;name&gt;.</li>
+</ul>
+<p>If a second argument is specified it must be one of:</p>
+<ul>
+<li>Path to a folder with installed packages If this is not an absolute path then it must be a sub folder of an open Cider project.
+<p>Then Tatin works out the correct one.</p></li>
+<li>The symbolic name [MyUCMDs] (case independent).</li>
+<li>A Cider alias in square brackets</li>
+</ul>
+<div class="h_tag">
+<a href="#UpdateTatin" id="UpdateTatin" class="autoheader_anchor">
+<h2 data-id="UpdateTatin">UpdateTatin</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-27" id="Syntax-27" class="autoheader_anchor">
+<h3 data-id="Syntax-27">Syntax</h3>
+</a>
+</div>
+<p>Version: (none found)</p>
+<div class="h_tag">
+<a href="#Details-27" id="Details-27" class="autoheader_anchor">
+<h3 data-id="Details-27">Details</h3>
+</a>
+</div>
+<p>Downloads the latest version from GitHub and installs it in the folder it was started from in case there is a later version available.</p>
+<p>Note that this user command does not attempt to update the current workspace, therefore it is recommended to close the current session and start a new one.</p>
+<div class="h_tag">
+<a href="#UsageData" id="UsageData" class="autoheader_anchor">
+<h2 data-id="UsageData">UsageData</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-28" id="Syntax-28" class="autoheader_anchor">
+<h3 data-id="Syntax-28">Syntax</h3>
+</a>
+</div>
+<p>Make package usage data available.</p>
+<p>Syntax: up to 1 argument</p>
+<p>Accepts modifiers <code>-all</code>, <code>-download</code>, <code>-folder=</code>, <code>-unzip</code></p>
+<pre><code>]Tatin.UsageData [Registry-alias|Registry-URL] -download -all -folder=</code></pre>
+<div class="h_tag">
+<a href="#Details-28" id="Details-28" class="autoheader_anchor">
+<h3 data-id="Details-28">Details</h3>
+</a>
+</div>
+<table>
+<tbody>
+<tr>
+<td>]Tatin.UsageData [Registry-alias</td>
+<td>Registry-URL] -download -all -folder=</td>
+</tr>
+</tbody>
+</table>
+<p>Use this to deal with usage data of a Tatin Registry.</p>
+<p>If no argument is specified then the user will be prompted for the Registry, except when there is just one anyway.</p>
+<p>If no option is specified all available files will be listed.</p>
+<p>If only a URL (or Registry alias) is specified a list with all downloadable files is printed.</p>
+<p>-download Use this flag to indicate that you wish to download one or more files.</p>
+<p>A list with all files available for download will be presented to you together with the additional options “all” and “quit”. You may then select none, one, several or all files for download or cancel the operation.</p>
+<p>The folder holding the file(s) is printed together with a list of all files.</p>
+<p>-folder= By default downloaded files will be saved in a sub folder of your OS's temp folder which is printed to the session. You may override this by specifying a folder.</p>
+<p>If you do it must be an empty folder. Ignored when -download is not specified.</p>
+<p>-unzip Specify this if you want Tatin to unzip the downloaded file(s).</p>
+<p>The ZIP files will be deleted afterwards. Ignored when -download is not specified.</p>
+<p>-all This circumvents the selection dialog; mainly useful for test cases.</p>
+<div class="h_tag">
+<a href="#UserSettings" id="UserSettings" class="autoheader_anchor">
+<h2 data-id="UserSettings">UserSettings</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-29" id="Syntax-29" class="autoheader_anchor">
+<h3 data-id="Syntax-29">Syntax</h3>
+</a>
+</div>
+<p>Print the usfer settings found in the config file to ⎕SE and allows manipulation via flags</p>
+<p>Syntax: 0 argument</p>
+<p>Accepts modifiers <code>-apikey</code>, <code>-edit</code>, <code>-refresh</code></p>
+<pre><code>]Tatin.UserSettings -apikey -edit -refresh</code></pre>
+<div class="h_tag">
+<a href="#Details-29" id="Details-29" class="autoheader_anchor">
+<h3 data-id="Details-29">Details</h3>
+</a>
+</div>
+<p>]Tatin.UserSettings -apikey -edit -refresh Prints the user settings found in the config file to the session in JSON format.</p>
+<p>By default the API key is replaced by asterisks; specify -apikey to overwrite this.</p>
+<p>If you want to investigate the current user settings (rather than the file contents) please use the API.</p>
+<p>-edit If you want to change the file you can add -edit in order to get the data into the editor and make changes. In this case the API key will always show.</p>
+<p>If you did change the data, you will first be prompted for saving the changes on disk and then for refreshing the current user settings.</p>
+<p>-refresh If you did change the user settings from another APL session, or by editing the file, you can refresh the current user settings with -refresh.</p>
+<div class="h_tag">
+<a href="#Version" id="Version" class="autoheader_anchor">
+<h2 data-id="Version">Version</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-30" id="Syntax-30" class="autoheader_anchor">
+<h3 data-id="Syntax-30">Syntax</h3>
+</a>
+</div>
+<p>Print name, version number and version date of Tatin to the session.</p>
+<p>Syntax: up to 1 argument</p>
+<p>Accepts modifiers <code>-all</code>, <code>-check</code></p>
+<pre><code>]Tatin.Version [*] -check -all</code></pre>
+<div class="h_tag">
+<a href="#Details-30" id="Details-30" class="autoheader_anchor">
+<h3 data-id="Details-30">Details</h3>
+</a>
+</div>
+<p>Print name, version number and version date of Tatin to the session.</p>
+<p>Prints name, version number and version date of Tatin to the session.</p>
+<ul>
+<li>Specify a URL or an alias if you are after the version number of a particular Tatin Registry</li>
+<li>Specify “*” for all version numbers of the client and all known Tatin Registries; see also -all</li>
+<li>Specify -all if you want to be prompted with a list of all available Tatin Registries; see also “*”</li>
+<li>Specify “?” if you want to be prompted with a list of all available Tatin Registries</li>
+</ul>
+<p>If you want to compare the version you are using locally with what is used on the principal Tatin Registry then specify the -check flag. Any argument is then ignored.</p>
+<div class="h_tag">
+<a href="#section" id="section" class="autoheader_anchor">
+<h2 data-id="section"></h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-31" id="Syntax-31" class="autoheader_anchor">
+<h3 data-id="Syntax-31">Syntax</h3>
+</a>
+</div>
+<div class="h_tag">
+<a href="#section-1" id="section-1" class="autoheader_anchor">
+<h2 data-id="section-1">]</h2>
+</a>
+</div>
+<div class="h_tag">
+<a href="#Syntax-32" id="Syntax-32" class="autoheader_anchor">
+<h3 data-id="Syntax-32">Syntax</h3>
+</a>
+</div>
+</body>
+</html>

@@ -805,7 +805,7 @@
       :EndIf
     ∇
 
-    ∇ r←ShowHelp dummy;list;folder;flag;answer;msg
+    ∇ r←ShowHelp dummy;list;folder;flag;answer;msg;filename;filenames
       r←''
       folder←1⊃⎕NPARTS ##.SourceFile
       list←⊃⎕NINFO⍠('Wildcard' 1)⊣folder,'*'
@@ -822,11 +822,17 @@
               :If (⊂answer)∊1 2(1 2)
                   :Select answer
                   :Case 1
-                      {}⎕SE.UCMD'Open file://',folder,1⊃list
+                      filename←folder,1⊃list
+                      filename←SanitizePath filename
+                      {}⎕SE.UCMD'Open ',filename
                   :Case 2
-                      {}⎕SE.UCMD'Open file://',folder,2⊃list
+                      filename←folder,2⊃list
+                      filename←SanitizePath filename
+                      {}⎕SE.UCMD'Open ',filename
                   :Case 1 2
-                      {}{⎕SE.UCMD'Open file://',⍵}¨folder∘,¨list
+                      filenames←folder∘,¨list
+                      filenames←SanitizePath¨filenames
+                      {}{⎕SE.UCMD'Open ',⍵}¨filenames
                   :EndSelect
                   flag←1
               :Else
@@ -1035,6 +1041,18 @@
                       :Return
                   :EndIf
               :EndSelect
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ path←SanitizePath path;UNCflag
+    ⍝ Use this to convert any \\ or // to /, and any \ to /
+      :If 0<≢path
+          UNCflag←'\\'≡2↑path
+          ((path='\')/path)←'\'
+          path←(~'//'⍷path)/path
+          :If UNCflag
+              path←'\\',1↓path
           :EndIf
       :EndIf
     ∇

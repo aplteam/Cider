@@ -1,0 +1,7 @@
+ ReportLinkSettings cfg;list
+⍝ Report all Link settings (if any) that differ from their default
+⍝ `cfg` is a namespace representing a project's Cider config file.
+ list←' '~⍨¨↓cfg.LINK.⎕NL 2
+ :If 0<≢list
+     ⎕←⍪cfg∘{'LINK:',⍵,'=',⍕⍺.LINK⍎⍵}¨list
+ :EndIf
