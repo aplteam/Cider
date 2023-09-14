@@ -1,0 +1,9 @@
+ r←IsDirty y;rc;more;path;project;buff
+⍝ Are there uncommited changes?
+ project←EstablishProject y
+ 'Not a Cider project'⎕SIGNAL 6/⍨0=≢project
+ path←2⊃project
+ (rc more buff)←path U.RunGitCommand'status --porcelain'
+ more U.Assert 0=rc
+ r←0<'?'+.≠⊃¨buff
+⍝Done

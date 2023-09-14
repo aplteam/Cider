@@ -1,0 +1,22 @@
+ (rc msg result)←path RunGitCommand command;cmd;buff
+ path←{'/'@(⍸'\'=⍵)⊣⍵}path
+ cmd←'-C "',path,'" ',command
+ buff←RunProcess'git'cmd
+ (rc msg result)←buff.(ExitCode StdErr StdOut)
+ :Select rc
+ :Case 127
+     'It appears that Git is not installed'⎕SIGNAL 127
+ :Case 128
+     :If ∨/'Who are you'⍷msg
+         'Who are you? (set user.email and user.name)'⎕SIGNAL 128
+     :EndIf
+ :Else
+     :If ∨/'''git'' is not recognized'⍷msg
+         'It appears that Git is not installed'⎕SIGNAL 127
+     :Else
+         :If 0=≢msg
+             msg←command,' => ',path
+         :EndIf
+     :EndIf
+ :EndSelect
+⍝Done

@@ -1,0 +1,14 @@
+ r←ListDependencies arg
+⍝ List dependencies
+⍝TODO⍝
+
+
+⍝ Call
+⍝ ListTatinPackages
+⍝ and/or
+⍝ ListNuGetPackages
+⍝ and returnd their (possibly combined) output
+
+
+ r←ListTatinPackages arg
+⍝Done

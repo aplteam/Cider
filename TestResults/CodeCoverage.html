@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Coverage</title>
+<meta charset="utf-8"/>
+<style>
+@media screen{
+    html {background-color: #FFFFF0;}
+body {
+    font-size: 16px;
+    font-family : Verdana, "Bitstream Vera Sans", "DejaVu Sans", Tahoma, Geneva, Arial, Sans-serif;
+    margin: 1em;
+}
+th, td {padding: 5px 10px;}
+th {text-align: left;}
+h1, h2, h3, h4, h5, h6 {color: #424242;}
+h1 {font-size: 22px;}
+h2 {font-size: 18px; margin-top: 2em; margin-bottom:0.3em;}
+tbody tr:nth-child(even) {background-color: #F0F0F0;}
+tbody tr:nth-child(odd) {background-color: #FAFAFA;}
+th {background-color: #E6E6E6;color: #424242;}
+table {border: silver 1px solid; font-size: 14px;font-family: APLFont, monospace;}
+code , code a {font-size: 14px; font-family: APLFont, monospace;}
+code.header {
+    font-size: 16px; 
+    font-family: APLFont, monospace; 
+    margin: 1.5em 0.5em 0 0.5em; 
+    padding:0;
+    display: block;
+}
+div.code-block {
+    border: 1px silver dashed;
+    background-color: #F2F2F2;
+    display: block;
+    margin: 0.5em 0.5em 0.5em 0.5em;
+    padding: 0.5em;
+}
+div.code-block.missing {
+    background-color: #fa605254;
+}
+div.code-block code {display: block; white-space: pre-wrap; margin:0; padding:0; word-wrap: break-word;}
+.emphasize { font-weight: 800;}
+ul li, ol li {margin: 0.7em 0.2em;}
+.float-right {float:right;}
+.no-underline {    text-decoration :none;}
+.top-links {font-size:20px; padding-left: 0.6em;}
+.align-right {text-align: right;}
+#footer hr {margin-top:1.5em;}
+#footer p {margin-top:5px; padding-top:0; font-size: 9px;}
+@font-face {
+        font-family: "APLFont";
+    src:
+        local("APL385 Unicode"),
+        url("https://misc.aplteam.com/apl385.ttf") format("truetype");
+}
+.info {border: 1px silver dashed; background-color: #F2F2F2;margin: 0.5em; padding: 0.5em;}
+}
+@media print{@page {size: portrait}
+@page {
+    margin: 1cm 1cm 1cm 1.75cm;
+    @bottom-right {
+        content: counter(page) " / " counter(pages);
+  }
+}
+body {
+    font: 12pt "Times New Roman", Times, serif;
+    line-height: 1.2;
+     /* CSS3 filter, at the moment Webkit only. Prefix it for future implementations */
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%); /* future-proof */
+}
+h1 {font-size: 18pt;}
+h2 {font-size: 16pt; margin-top: 10pt; margin-bottom: 3pt;}
+th, td {padding: 2pt 3pt;}
+th {text-align: left;background-color: #DBDBDB;}
+tbody tr:nth-child(odd) {background-color: #EDEDED;}
+table {
+    color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    font-size: 8pt;
+    font-family: APLFont, monospace;
+}
+div.keep-together {break-inside: avoid; break-before:auto;}
+table {border: silver 1pt solid;}
+code , code a {font-size: 8pt; font-family: APLFont, monospace;}
+code.header {
+    font-size: 8pt;
+    font-family: APLFont, monospace;
+    margin: 7pt 3pt 0 10pt;
+    padding:0;
+    display: block;
+}
+div.code-block {
+    border: 1pt silver dashed;
+    background-color: #F2F2F2;
+    display: block;
+    margin: 4pt 4pt 4pt 4pt;
+    padding: 4pt;
+}
+div.code-block code {display: block; white-space: pre-wrap; margin:0; padding:0; word-wrap: break-word;}
+.emphasize { font-weight: 800;}
+a {text-decoration: none;color: black;}
+ul li, ol li {margin: 8pt 3pt;}
+.no-print {display:none;}
+.align-right {text-align: right;}
+#footer hr {margin-top:1.5em;}
+#footer p {margin-top:5pt; padding-top:0; font-size: 6pt;}
+@font-face {
+        font-family: "APLFont";
+    src:
+        local("APL385 Unicode"),
+        url("https://misc.aplteam.com/apl385.ttf") format("truetype");
+}
+.info {border: 1px silver dashed; background-color: #F2F2F2;margin: 8px; padding: 8px;}
+}
+</style>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.2/b-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.2/b-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.js"></script>
+</head>
+<body>
+<h1 id="top">Coverage Report</h1>
+<p>Watched: 101 fns/opr within <code>#.Cider.Cider</code></p>
+<p>The test suite was executed once:</p>
+<table>
+<thead>
+<tr><th>Executed at</th><th>APLVersion</th><th>Memory (MB)</th></tr>
+</thead>
+<tbody>
+<tr><td>2023-09-14 20:00:39</td><td>Windows-64 ⋄ 18.2.47418.0 ⋄ W ⋄ Development ⋄ Unicode</td><td>52</td></tr>
+</tbody>
+</table>
+<p>Overall 52% of the testable code is covered.</p>
+<p>(Comment lines, empty lines, all <code>:End</code>* lines etc. are ignored)</p>
+<p>47 of the fns/opr are 100% covered.</p>
+<div id="partly-covered" class="keep-together">
+<table id="percent">
+<thead>
+<tr><th style="text-align:left;">Function/Operator</th><th style="text-align:left;">Lines not executed</th><th style="text-align:left;">Coverage</th><th style="text-align:right;">≢</th></tr>
+</thead>
+<tbody>
+<tr class="uncovered"><td><a href="#listing_1" title="Link to listing">#.Cider.Cider.AddNuGetDependencies</a></td><td>48←≢3-8,11-12,15-16,19-20,22-24,27-29,32-34,36-38,41-46,48-52,56-58,60,63-65,68-70,72-74</td><td>0</td><td>48</td></tr>
+<tr class="uncovered"><td><a href="#listing_2" title="Link to listing">#.Cider.Cider.AddTatinDependencies</a></td><td>2</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_3" title="Link to listing">#.Cider.Cider.Init</a></td><td>1, 2</td><td>0</td><td>2</td></tr>
+<tr class="uncovered"><td><a href="#listing_4" title="Link to listing">#.Cider.Cider.ListNuGetDependencies</a></td><td>52←≢3-8,11-12,15-16,19-20,22-24,27-29,32-34,36-38,41-46,48-52,56-58,60,63-67,70-72,74-76,78-79</td><td>0</td><td>52</td></tr>
+<tr class="uncovered"><td><a href="#listing_5" title="Link to listing">#.Cider.Cider.ListNuGetPackages</a></td><td>52←≢2-7,10-11,14-15,18-19,21-23,26-28,31-33,35-37,40-45,47-51,55-57,59,62-66,69-71,73-75,77-78</td><td>0</td><td>52</td></tr>
+<tr class="uncovered"><td><a href="#listing_6" title="Link to listing">#.Cider.Cider.LoadNugetDependencies</a></td><td>48←≢3-8,11-12,15-16,19-20,22-24,27-29,32-34,36-38,41-46,48-52,56-58,60,63-65,68-70,72-74</td><td>0</td><td>48</td></tr>
+<tr class="uncovered"><td><a href="#listing_7" title="Link to listing">#.Cider.Cider.Public</a></td><td>25←≢1-2,4-17,19-27</td><td>0</td><td>25</td></tr>
+<tr class="uncovered"><td><a href="#listing_8" title="Link to listing">#.Cider.Cider.Remove_githubUsername</a></td><td>4←≢3-6</td><td>0</td><td>4</td></tr>
+<tr class="uncovered"><td><a href="#listing_9" title="Link to listing">#.Cider.Cider.Remove_githubUsername_</a></td><td>10←≢1-7,10-12</td><td>0</td><td>10</td></tr>
+<tr class="uncovered"><td><a href="#listing_10" title="Link to listing">#.Cider.Cider.RenameInfo_url</a></td><td>4←≢6-9</td><td>0</td><td>4</td></tr>
+<tr class="uncovered"><td><a href="#listing_11" title="Link to listing">#.Cider.Cider.RenameInfo_url_</a></td><td>11←≢1-8,11-13</td><td>0</td><td>11</td></tr>
+<tr class="uncovered"><td><a href="#listing_12" title="Link to listing">#.Cider.Cider.RunMake</a></td><td>14←≢1-3,5-13,15,18</td><td>0</td><td>14</td></tr>
+<tr class="uncovered"><td><a href="#listing_13" title="Link to listing">#.Cider.Cider.RunTests</a></td><td>13←≢1-3,5-13,15</td><td>0</td><td>13</td></tr>
+<tr class="uncovered"><td><a href="#listing_14" title="Link to listing">#.Cider.Cider.WriteProjectConfigFile</a></td><td>3, 4</td><td>0</td><td>2</td></tr>
+<tr class="uncovered"><td><a href="#listing_15" title="Link to listing">#.Cider.Cider.API.GetAliasFileContent</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_16" title="Link to listing">#.Cider.Cider.API.GetCiderAliasFilename</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_17" title="Link to listing">#.Cider.Cider.API.GetCiderGlobalConfigFileContent</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_18" title="Link to listing">#.Cider.Cider.API.GetCiderGlobalConfigFilename</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_19" title="Link to listing">#.Cider.Cider.API.GetCiderGlobalConfigHomeFolder</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_20" title="Link to listing">#.Cider.Cider.API.GetMyUCMDsFolder</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_21" title="Link to listing">#.Cider.Cider.API.HasDotNet</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_22" title="Link to listing">#.Cider.Cider.API.Version</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td><a href="#listing_23" title="Link to listing">#.Cider.Cider.CheckForGit</a></td><td>21←≢5-6,8-18,20-21,24-29</td><td>13</td><td>24</td></tr>
+<tr><td><a href="#listing_24" title="Link to listing">#.Cider.Cider.GetFolderFromAlias</a></td><td>7←≢4-9,12</td><td>13</td><td>8</td></tr>
+<tr><td><a href="#listing_25" title="Link to listing">#.Cider.Cider.GetProjectPath</a></td><td>23←≢7-8,12-13,15,18-22,24-33,36-38</td><td>26</td><td>31</td></tr>
+<tr><td><a href="#listing_26" title="Link to listing">#.Cider.Cider.PolishProperties</a></td><td>26←≢16-24,26-27,29,32-33,35,37-39,41,43-45,49-50,61-62</td><td>32</td><td>38</td></tr>
+<tr><td><a href="#listing_27" title="Link to listing">#.Cider.Cider.CheckOnToDo</a></td><td>4←≢5-8</td><td>33</td><td>6</td></tr>
+<tr><td><a href="#listing_28" title="Link to listing">#.Cider.Cider.CheckForTatinPackages</a></td><td>9←≢13-20,23</td><td>47</td><td>17</td></tr>
+<tr><td><a href="#listing_29" title="Link to listing">#.Cider.Cider.CheckTatinFoldersForLaterVersions</a></td><td>8←≢11-16,18,22</td><td>50</td><td>16</td></tr>
+<tr><td><a href="#listing_30" title="Link to listing">#.Cider.Cider.MassageConfig</a></td><td>5←≢7-8,12-13,16</td><td>50</td><td>10</td></tr>
+<tr><td><a href="#listing_31" title="Link to listing">#.Cider.Cider.CheckTargetNamespaceAndLinkFolder</a></td><td>8←≢13,22,24,26-28,30,34</td><td>53</td><td>17</td></tr>
+<tr><td><a href="#listing_32" title="Link to listing">#.Cider.Cider.ExecProjectFunction_</a></td><td>9←≢11-12,15-17,19-20,23,26</td><td>53</td><td>19</td></tr>
+<tr><td><a href="#listing_33" title="Link to listing">#.Cider.Cider.ExecUserFunction</a></td><td>7←≢8-9,11-12,18-19,23</td><td>53</td><td>15</td></tr>
+<tr><td><a href="#listing_34" title="Link to listing">#.Cider.Cider.ProjectConfig</a></td><td>14←≢7-8,11-12,22,28-34,36-37</td><td>55</td><td>31</td></tr>
+<tr><td><a href="#listing_35" title="Link to listing">#.Cider.Cider.GetCiderGlobalConfigHomeFolder</a></td><td>4←≢13-16</td><td>56</td><td>9</td></tr>
+<tr><td><a href="#listing_36" title="Link to listing">#.Cider.Cider.HandleSysVars</a></td><td>6←≢13-18</td><td>57</td><td>14</td></tr>
+<tr><td><a href="#listing_37" title="Link to listing">#.Cider.Cider.Get_JSON5</a></td><td>8←≢12-14,17-18,21-22,25</td><td>58</td><td>19</td></tr>
+<tr><td><a href="#listing_38" title="Link to listing">#.Cider.Cider.GetFunctionNameFromCiderConfigFile</a></td><td>4←≢7-8,11-12</td><td>60</td><td>10</td></tr>
+<tr><td><a href="#listing_39" title="Link to listing">#.Cider.Cider.ExtractLinkOptions</a></td><td>11←≢7,10,13,16,19,22,25,28,34,37,43</td><td>62</td><td>29</td></tr>
+<tr><td><a href="#listing_40" title="Link to listing">#.Cider.Cider.PerformConfigChecks</a></td><td>12←≢10,15,19,22,26-27,30,33-34,37,41-42</td><td>64</td><td>33</td></tr>
+<tr><td><a href="#listing_41" title="Link to listing">#.Cider.Cider.AddAlias</a></td><td>11←≢16,20-21,33,37-41,43,49</td><td>67</td><td>33</td></tr>
+<tr><td><a href="#listing_42" title="Link to listing">#.Cider.Cider.GetMyUCMDsFolder</a></td><td>8</td><td>67</td><td>3</td></tr>
+<tr><td><a href="#listing_43" title="Link to listing">#.Cider.Cider.ReportPackageOrigins</a></td><td>10, 11, 12</td><td>70</td><td>10</td></tr>
+<tr><td><a href="#listing_44" title="Link to listing">#.Cider.Cider.LoadTatinPackages</a></td><td>12←≢29-33,35,45-46,49-50,55,58</td><td>72</td><td>43</td></tr>
+<tr><td><a href="#listing_45" title="Link to listing">#.Cider.Cider.CheckJsonSyntax</a></td><td>5</td><td>75</td><td>4</td></tr>
+<tr><td><a href="#listing_46" title="Link to listing">#.Cider.Cider.SplitTatinFolders</a></td><td>5</td><td>80</td><td>5</td></tr>
+<tr><td><a href="#listing_47" title="Link to listing">#.Cider.Cider.ListTatinPackages</a></td><td>4←≢4,11,16-17</td><td>82</td><td>22</td></tr>
+<tr><td><a href="#listing_48" title="Link to listing">#.Cider.Cider.CloseProject</a></td><td>14, 15</td><td>88</td><td>17</td></tr>
+<tr><td><a href="#listing_49" title="Link to listing">#.Cider.Cider.GetFolderFromAlias2</a></td><td>13</td><td>89</td><td>9</td></tr>
+<tr><td><a href="#listing_50" title="Link to listing">#.Cider.Cider.OpenProject</a></td><td>9←≢40,46,88-93,98</td><td>90</td><td>91</td></tr>
+<tr><td><a href="#listing_51" title="Link to listing">#.Cider.Cider.UpdatePackages</a></td><td>14</td><td>94</td><td>16</td></tr>
+<tr><td><a href="#listing_52" title="Link to listing">#.Cider.Cider.CheckPackagesStatus</a></td><td>15</td><td>95</td><td>22</td></tr>
+<tr><td><a href="#listing_53" title="Link to listing">#.Cider.Cider.ListOpenProjects</a></td><td>23</td><td>95</td><td>21</td></tr>
+<tr><td><a href="#listing_54" title="Link to listing">#.Cider.Cider.CreateOpenParms</a></td><td>20</td><td>96</td><td>23</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_55" title="Link to listing">#.Cider.Cider.AddSlash</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_56" title="Link to listing">#.Cider.Cider.Assert</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_57" title="Link to listing">#.Cider.Cider.BitsToInt</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_58" title="Link to listing">#.Cider.Cider.CR</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_59" title="Link to listing">#.Cider.Cider.CheckForAlreadyOpened</a></td><td></td><td>100</td><td>4</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_60" title="Link to listing">#.Cider.Cider.CheckParameters</a></td><td></td><td>100</td><td>13</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_61" title="Link to listing">#.Cider.Cider.DropAlias</a></td><td></td><td>100</td><td>10</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_62" title="Link to listing">#.Cider.Cider.DropTrailingSlash</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_63" title="Link to listing">#.Cider.Cider.ExecProjectInitFunction</a></td><td></td><td>100</td><td>5</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_64" title="Link to listing">#.Cider.Cider.FAILURE</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_65" title="Link to listing">#.Cider.Cider.GetAliasFileContent</a></td><td></td><td>100</td><td>10</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_66" title="Link to listing">#.Cider.Cider.GetCiderAliasFilename</a></td><td></td><td>100</td><td>3</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_67" title="Link to listing">#.Cider.Cider.GetCiderGlobalConfigFileContent</a></td><td></td><td>100</td><td>6</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_68" title="Link to listing">#.Cider.Cider.GetCiderGlobalConfigFilename</a></td><td></td><td>100</td><td>2</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_69" title="Link to listing">#.Cider.Cider.GetDependencies</a></td><td></td><td>100</td><td>4</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_70" title="Link to listing">#.Cider.Cider.GetGlobalVerboseDefault</a></td><td></td><td>100</td><td>4</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_71" title="Link to listing">#.Cider.Cider.GetTatinDepedencyFolders</a></td><td></td><td>100</td><td>4</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_72" title="Link to listing">#.Cider.Cider.GetValidCiderParams</a></td><td></td><td>100</td><td>11</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_73" title="Link to listing">#.Cider.Cider.GetValidLinkParams</a></td><td></td><td>100</td><td>13</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_74" title="Link to listing">#.Cider.Cider.HandleLinkParameters</a></td><td></td><td>100</td><td>15</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_75" title="Link to listing">#.Cider.Cider.HasDotNet</a></td><td></td><td>100</td><td>2</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_76" title="Link to listing">#.Cider.Cider.InjectConfigDataIntoProject</a></td><td></td><td>100</td><td>7</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_77" title="Link to listing">#.Cider.Cider.InjectTatinVars</a></td><td></td><td>100</td><td>5</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_78" title="Link to listing">#.Cider.Cider.IntToBits</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_79" title="Link to listing">#.Cider.Cider.ListDependencies</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_80" title="Link to listing">#.Cider.Cider.PrintToSession</a></td><td></td><td>100</td><td>13</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_81" title="Link to listing">#.Cider.Cider.Put_JSON5</a></td><td></td><td>100</td><td>3</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_82" title="Link to listing">#.Cider.Cider.ReadProjectConfigFile</a></td><td></td><td>100</td><td>2</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_83" title="Link to listing">#.Cider.Cider.ReportLinkSettings</a></td><td></td><td>100</td><td>4</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_84" title="Link to listing">#.Cider.Cider.SUCCESS</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_85" title="Link to listing">#.Cider.Cider.Version</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_86" title="Link to listing">#.Cider.Cider.API.AddAlias</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_87" title="Link to listing">#.Cider.Cider.API.AddTatinDependencies</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_88" title="Link to listing">#.Cider.Cider.API.CloseProject</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_89" title="Link to listing">#.Cider.Cider.API.CreateOpenParms</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_90" title="Link to listing">#.Cider.Cider.API.DropAlias</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_91" title="Link to listing">#.Cider.Cider.API.GetDependencies</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_92" title="Link to listing">#.Cider.Cider.API.GetProjectPath</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_93" title="Link to listing">#.Cider.Cider.API.ListOpenProjects</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_94" title="Link to listing">#.Cider.Cider.API.OpenProject</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_95" title="Link to listing">#.Cider.Cider.API.ProjectConfig</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_96" title="Link to listing">#.Cider.Cider.API.ReadProjectConfigFile</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_97" title="Link to listing">#.Cider.Cider.API.Remove_githubUsername</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_98" title="Link to listing">#.Cider.Cider.API.RenameInfo_url</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_99" title="Link to listing">#.Cider.Cider.API.RunMake</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_100" title="Link to listing">#.Cider.Cider.API.RunTests</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_101" title="Link to listing">#.Cider.Cider.API.WriteProjectConfigFile</a></td><td></td><td>100</td><td>0</td></tr>
+</tbody>
+</table>
+</div>
+<script>
+$(document).ready(function() {
+    var oTable;
+    oTable = $("#percent").DataTable( {
+        paging:   false,
+        ordering: true,
+        info:     true,
+        fixedHeader: true,
+        order: [2,"asc"],
+        dom: "Bft",
+        drawCallback: function( settings ) {
+             var api = this.api();
+             $('.header[id^="listing_"]').next().addBack().css("display","none");
+             api.rows( {page:"current"} ).data().each(function(data){
+              id = data[0];
+              id = id.match(/"(\#.*?)"/);
+              if (id){$(id[1]).next().addBack().css("display","block");}
+             })
+        },      
+        buttons: [
+        {
+            text: "Partly covered (32)",
+            titleAttr: "50%",
+            className: "active",
+            action: function ( e, dt, node, config ) {
+                var text = this.text();
+                var search = "^(?!(0%|100%)).*";
+                oTable.column(2)
+                    .search(search,true,false,false)
+                    .draw();
+                $(".dt-buttons button").removeClass("active");
+                this.active( true );
+            }
+        },
+        {
+            text: "Uncovered (22)",
+            titleAttr: "0%",
+            className: "active",
+            action: function ( e, dt, node, config ) {
+                var text = this.text();
+                var search = "^0%";
+                oTable.column(2)
+                    .search(search,true,false,false)
+                    .draw();
+                $(".dt-buttons button").removeClass("active");
+                this.active( true );
+            }
+        },
+        {
+            text: "Fully covered (47)",
+            titleAttr: "100%",
+            className: "active",
+            action: function ( e, dt, node, config ) {
+                var text = this.text();
+                var search = "100%";
+                oTable.column(2)
+                    .search(search,true,false,false)
+                    .draw();
+                $(".dt-buttons button").removeClass("active");
+                this.active( true );
+            }
+        },
+        {
+            text: "All (101)",
+            titleAttr: "all",
+            className: "active",
+            action: function ( e, dt, node, config ) {
+                var text = this.text();
+                var search = ".";
+                oTable.column(2)
+                    .search(search,true,false,false)
+                    .draw();
+                $(".dt-buttons button").removeClass("active");
+                this.active( true );
+            }
+        },
+    ],
+ 
+        columnDefs: [
+            {className: "align-right", targets: [2,3]
+            },
+            {
+                render: function ( data, type, row, meta ) {
+                            return data+"%" ;        
+                        },
+                targets: 2
+            }
+        ]             
+    } );
+    oTable.button(0).trigger();
+
+} );    
+</script>
+<h2>Listings</h2>
+<code class="header" id="listing_1">#.Cider.Cider.AddNuGetDependencies &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←AddNuGetDependencies</code>
+<code> [1]  ⍝ Either add one or more Tatin packages or one or more or nuget packages</code>
+<code> [2]  ⍝Morten⍝</code>
+<code class="emphasize">→[3]   ∘∘∘</code>
+<code class="emphasize">→[4]   load←9=⎕NC'ns' ⍝ Project Space provided</code>
+<code class="emphasize">→[5]   none←'No nuget dependencies registered.'</code>
+<code class="emphasize">→[6]   type←⎕C type</code>
+<code class="emphasize">→[7]   :If (~list∨load)∧0∊≢¨type package</code>
+<code class="emphasize">→[8]       'syntax is ]Cider.Dependency nuget|tatin package [folder] -list'⎕SIGNAL 11</code>
+<code> [9]   :EndIf</code>
+<code> [10] </code>
+<code class="emphasize">→[11]  :If ~∧/m←(gotnuget gottatin)←9=⌊⎕SE.⎕NC'NuGet' 'Tatin'</code>
+<code class="emphasize">→[12]      ⎕←'Warning: ',(⍕(~m)/'⎕SE.NuGet' '⎕SE.Tatin'),' not found - unable to report on or manage those dependencies.'</code>
+<code> [13]  :EndIf</code>
+<code> [14] </code>
+<code class="emphasize">→[15]  :If gotnuget</code>
+<code class="emphasize">→[16]      NuGet←⎕SE.NuGet</code>
+<code> [17]  :EndIf</code>
+<code> [18] </code>
+<code class="emphasize">→[19]  :If ~load</code>
+<code class="emphasize">→[20]      ns←path{3::0 ⋄ ⊃⍵[⍵[;2]⍳⊂⍺;1]}ListOpenProjects 0</code>
+<code> [21]  :EndIf</code>
+<code class="emphasize">→[22]  config←Get_JSON5 configfile←path,'/cider.config'</code>
+<code class="emphasize">→[23]  :If load∧~hasdeps←0≠⎕NC'config.CIDER.dependencies.nuget'</code>
+<code class="emphasize">→[24]      →0⊣r←'' ⍝ Asked to load, and there are no nuget dependencies</code>
+<code> [25]  :EndIf</code>
+<code> [26] </code>
+<code class="emphasize">→[27]  :If ~list∨load∨hasdeps∨~gotnuget</code>
+<code class="emphasize">→[28]      config.CIDER.dependencies.nuget←'nuget-packages'</code>
+<code class="emphasize">→[29]      config Put_JSON5 configfile</code>
+<code> [30]  :EndIf</code>
+<code> [31] </code>
+<code class="emphasize">→[32]  nuget_dir←path,'/',{0::⍵ ⋄ config.CIDER.dependencies.nuget}'nuget-packages'</code>
+<code class="emphasize">→[33]  tatin_dir←path,'/',config.CIDER.dependencies.tatin</code>
+<code class="emphasize">→[34]  gotnuget←gotnuget∧~list∧~⎕NEXISTS nuget_dir ⍝ Pretend we have no nuget if listing and no folder</code>
+<code> [35] </code>
+<code class="emphasize">→[36]  :If gotnuget∧type≡'nuget'</code>
+<code class="emphasize">→[37]      r←NuGet.Setup nuget_dir</code>
+<code class="emphasize">→[38]      →(∨/'error:'⍷⎕C r)⍴0</code>
+<code> [39]  :EndIf</code>
+<code> [40] </code>
+<code class="emphasize">→[41]  :If list</code>
+<code class="emphasize">→[42]      r←0 2⍴⊂nuget←tatin←''</code>
+<code class="emphasize">→[43]      :If gotnuget</code>
+<code class="emphasize">→[44]      :AndIf ⎕NEXISTS nuget_dir</code>
+<code class="emphasize">→[45]          nuget←{⍵,(0=≢⍵)/none}NuGet.Packages nuget_dir</code>
+<code class="emphasize">→[46]          nuget←{1↓∊'/',¨⍵}¨nuget</code>
+<code> [47]      :EndIf</code>
+<code class="emphasize">→[48]      :If gottatin</code>
+<code class="emphasize">→[49]          :If {0::0 ⋄ ⎕NEXISTS ⍵}tatin_dir</code>
+<code class="emphasize">→[50]              :Trap 11 ⍝ ListTatinPackages fails if there are none</code>
+<code class="emphasize">→[51]                  tatin←{2=⍴⍴⍵:(3↓⍵[;2])/3↓⍵[;1] ⋄ ⍬}ListTatinPackages path</code>
+<code class="emphasize">→[52]                  tatin←(' '=⊃¨tatin)↓¨tatin ⍝ leading space?</code>
+<code> [53]              :EndTrap</code>
+<code> [54]          :EndIf</code>
+<code> [55]      :EndIf</code>
+<code class="emphasize">→[56]      r←(×≢¨nuget tatin)⌿2 2⍴'nuget: 'nuget'tatin:'tatin</code>
+<code class="emphasize">→[57]      :If 0=≢r</code>
+<code class="emphasize">→[58]          r←'No dependencies found'</code>
+<code> [59]      :EndIf</code>
+<code class="emphasize">→[60]      →0</code>
+<code> [61]  :EndIf</code>
+<code> [62] </code>
+<code class="emphasize">→[63]  :If gotnuget∧(0≠≢package)∧type≡'nuget'</code>
+<code class="emphasize">→[64]      r←NuGet.Add nuget_dir package</code>
+<code class="emphasize">→[65]      →(∨/'error:'⍷⎕C r)⍴0</code>
+<code> [66]  :EndIf</code>
+<code> [67] </code>
+<code class="emphasize">→[68]  :If ns≢0</code>
+<code class="emphasize">→[69]      :If 2=⎕NC'ns'</code>
+<code class="emphasize">→[70]          ns←⍎ns</code>
+<code> [71]      :EndIf</code>
+<code class="emphasize">→[72]      'dotnet'ns.⎕NS''</code>
+<code class="emphasize">→[73]      ns.dotnet.⎕USING←NuGet.Using nuget_dir</code>
+<code class="emphasize">→[74]      r←((~load)/r,'. '),'NuGet dependencies established in ',(⍕ns),'.dotnet'</code>
+<code> [75]  :EndIf</code>
+</div>
+<code class="header" id="listing_2">#.Cider.Cider.AddTatinDependencies &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←AddTatinDependencies(packageIDs targetFolder)</code>
+<code> [1] ⍝ Add  one or more Tatin packages as dependencies</code>
+<code class="emphasize">→[2]  r←⎕SE.Tatin.InstallPackages packageIDs targetFolder</code>
+<code> [3] ⍝Done</code>
+</div>
+<code class="header" id="listing_3">#.Cider.Cider.Init &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> Init</code>
+<code class="emphasize">→[1]  :If 1 CommTools.YesOrNo'Would you like to create a variable DEVELOPMENT in ⎕SE.Cider?'</code>
+<code class="emphasize">→[2]      ⎕SE.Cider.DEVELOPMENT←1</code>
+<code> [3]  :EndIf</code>
+</div>
+<code class="header" id="listing_4">#.Cider.Cider.ListNuGetDependencies &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  Pr←ListNuGetDependencies</code>
+<code> [1]  ⍝ List dependencies</code>
+<code> [2]  ⍝Morten</code>
+<code class="emphasize">→[3]   ∘∘∘</code>
+<code class="emphasize">→[4]   load←9=⎕NC'ns' ⍝ Project Space provided</code>
+<code class="emphasize">→[5]   none←'No nuget dependencies registered.'</code>
+<code class="emphasize">→[6]   type←⎕C type</code>
+<code class="emphasize">→[7]   :If (~list∨load)∧0∊≢¨type package</code>
+<code class="emphasize">→[8]       'syntax is ]Cider.Dependency nuget|tatin package [folder] -list'⎕SIGNAL 11</code>
+<code> [9]   :EndIf</code>
+<code> [10] </code>
+<code class="emphasize">→[11]  :If ~∧/m←(gotnuget gottatin)←9=⌊⎕SE.⎕NC'NuGet' 'Tatin'</code>
+<code class="emphasize">→[12]      ⎕←'Warning: ',(⍕(~m)/'⎕SE.NuGet' '⎕SE.Tatin'),' not found - unable to report on or manage those dependencies.'</code>
+<code> [13]  :EndIf</code>
+<code> [14] </code>
+<code class="emphasize">→[15]  :If gotnuget</code>
+<code class="emphasize">→[16]      NuGet←⎕SE.NuGet</code>
+<code> [17]  :EndIf</code>
+<code> [18] </code>
+<code class="emphasize">→[19]  :If ~load</code>
+<code class="emphasize">→[20]      ns←path{3::0 ⋄ ⊃⍵[⍵[;2]⍳⊂⍺;1]}ListOpenProjects 0</code>
+<code> [21]  :EndIf</code>
+<code class="emphasize">→[22]  config←Get_JSON5 configfile←path,'/cider.config'</code>
+<code class="emphasize">→[23]  :If load∧~hasdeps←0≠⎕NC'config.CIDER.dependencies.nuget'</code>
+<code class="emphasize">→[24]      →0⊣r←'' ⍝ Asked to load, and there are no nuget dependencies</code>
+<code> [25]  :EndIf</code>
+<code> [26] </code>
+<code class="emphasize">→[27]  :If ~list∨load∨hasdeps∨~gotnuget</code>
+<code class="emphasize">→[28]      config.CIDER.dependencies.nuget←'nuget-packages'</code>
+<code class="emphasize">→[29]      config Put_JSON5 configfile</code>
+<code> [30]  :EndIf</code>
+<code> [31] </code>
+<code class="emphasize">→[32]  nuget_dir←path,'/',{0::⍵ ⋄ config.CIDER.dependencies.nuget}'nuget-packages'</code>
+<code class="emphasize">→[33]  tatin_dir←path,'/',config.CIDER.dependencies.tatin</code>
+<code class="emphasize">→[34]  gotnuget←gotnuget∧~list∧~⎕NEXISTS nuget_dir ⍝ Pretend we have no nuget if listing and no folder</code>
+<code> [35] </code>
+<code class="emphasize">→[36]  :If gotnuget∧type≡'nuget'</code>
+<code class="emphasize">→[37]      r←NuGet.Setup nuget_dir</code>
+<code class="emphasize">→[38]      →(∨/'error:'⍷⎕C r)⍴0</code>
+<code> [39]  :EndIf</code>
+<code> [40] </code>
+<code class="emphasize">→[41]  :If list</code>
+<code class="emphasize">→[42]      r←0 2⍴⊂nuget←tatin←''</code>
+<code class="emphasize">→[43]      :If gotnuget</code>
+<code class="emphasize">→[44]      :AndIf ⎕NEXISTS nuget_dir</code>
+<code class="emphasize">→[45]          nuget←{⍵,(0=≢⍵)/none}NuGet.Packages nuget_dir</code>
+<code class="emphasize">→[46]          nuget←{1↓∊'/',¨⍵}¨nuget</code>
+<code> [47]      :EndIf</code>
+<code class="emphasize">→[48]      :If gottatin</code>
+<code class="emphasize">→[49]          :If {0::0 ⋄ ⎕NEXISTS ⍵}tatin_dir</code>
+<code class="emphasize">→[50]              :Trap 11 ⍝ ListTatinPackages fails if there are none</code>
+<code class="emphasize">→[51]                  tatin←{2=⍴⍴⍵:(3↓⍵[;2])/3↓⍵[;1] ⋄ ⍬}ListTatinPackages path</code>
+<code class="emphasize">→[52]                  tatin←(' '=⊃¨tatin)↓¨tatin ⍝ leading space?</code>
+<code> [53]              :EndTrap</code>
+<code> [54]          :EndIf</code>
+<code> [55]      :EndIf</code>
+<code class="emphasize">→[56]      r←(×≢¨nuget tatin)⌿2 2⍴'nuget: 'nuget'tatin:'tatin</code>
+<code class="emphasize">→[57]      :If 0=≢r</code>
+<code class="emphasize">→[58]          r←'No dependencies found'</code>
+<code> [59]      :EndIf</code>
+<code class="emphasize">→[60]      →0</code>
+<code> [61]  :EndIf</code>
+<code> [62] </code>
+<code class="emphasize">→[63]  :Select type</code>
+<code class="emphasize">→[64]  :Case 'nuget'</code>
+<code class="emphasize">→[65]      :If gotnuget∧(0≠≢package)∧type≡'nuget'</code>
+<code class="emphasize">→[66]          r←NuGet.Add nuget_dir package</code>
+<code class="emphasize">→[67]          →(∨/'error:'⍷⎕C r)⍴0</code>
+<code> [68]      :EndIf</code>
+<code> [69] </code>
+<code class="emphasize">→[70]      :If ns≢0</code>
+<code class="emphasize">→[71]          :If 2=⎕NC'ns'</code>
+<code class="emphasize">→[72]              ns←⍎ns</code>
+<code> [73]          :EndIf</code>
+<code class="emphasize">→[74]          'dotnet'ns.⎕NS''</code>
+<code class="emphasize">→[75]          ns.dotnet.⎕USING←NuGet.Using nuget_dir</code>
+<code class="emphasize">→[76]          r←((~load)/r,'. '),'NuGet dependencies established in ',(⍕ns),'.dotnet'</code>
+<code> [77]      :EndIf</code>
+<code class="emphasize">→[78]  :Case 'tatin'</code>
+<code class="emphasize">→[79]      r←⎕SE.Tatin.InstallPackages package tatin_dir</code>
+<code> [80]  :EndSelect</code>
+</div>
+<code class="header" id="listing_5">#.Cider.Cider.ListNuGetPackages &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  Pr←ListNuGetPackages</code>
+<code> [1]  ⍝Morten</code>
+<code class="emphasize">→[2]   ∘∘∘</code>
+<code class="emphasize">→[3]   load←9=⎕NC'ns' ⍝ Project Space provided</code>
+<code class="emphasize">→[4]   none←'No nuget dependencies registered.'</code>
+<code class="emphasize">→[5]   type←⎕C type</code>
+<code class="emphasize">→[6]   :If (~list∨load)∧0∊≢¨type package</code>
+<code class="emphasize">→[7]       'syntax is ]Cider.Dependency nuget|tatin package [folder] -list'⎕SIGNAL 11</code>
+<code> [8]   :EndIf</code>
+<code> [9]  </code>
+<code class="emphasize">→[10]  :If ~∧/m←(gotnuget gottatin)←9=⌊⎕SE.⎕NC'NuGet' 'Tatin'</code>
+<code class="emphasize">→[11]      ⎕←'Warning: ',(⍕(~m)/'⎕SE.NuGet' '⎕SE.Tatin'),' not found - unable to report on or manage those dependencies.'</code>
+<code> [12]  :EndIf</code>
+<code> [13] </code>
+<code class="emphasize">→[14]  :If gotnuget</code>
+<code class="emphasize">→[15]      NuGet←⎕SE.NuGet</code>
+<code> [16]  :EndIf</code>
+<code> [17] </code>
+<code class="emphasize">→[18]  :If ~load</code>
+<code class="emphasize">→[19]      ns←path{3::0 ⋄ ⊃⍵[⍵[;2]⍳⊂⍺;1]}ListOpenProjects 0</code>
+<code> [20]  :EndIf</code>
+<code class="emphasize">→[21]  config←Get_JSON5 configfile←path,'/cider.config'</code>
+<code class="emphasize">→[22]  :If load∧~hasdeps←0≠⎕NC'config.CIDER.dependencies.nuget'</code>
+<code class="emphasize">→[23]      →0⊣r←'' ⍝ Asked to load, and there are no nuget dependencies</code>
+<code> [24]  :EndIf</code>
+<code> [25] </code>
+<code class="emphasize">→[26]  :If ~list∨load∨hasdeps∨~gotnuget</code>
+<code class="emphasize">→[27]      config.CIDER.dependencies.nuget←'nuget-packages'</code>
+<code class="emphasize">→[28]      config Put_JSON5 configfile</code>
+<code> [29]  :EndIf</code>
+<code> [30] </code>
+<code class="emphasize">→[31]  nuget_dir←path,'/',{0::⍵ ⋄ config.CIDER.dependencies.nuget}'nuget-packages'</code>
+<code class="emphasize">→[32]  tatin_dir←path,'/',config.CIDER.dependencies.tatin</code>
+<code class="emphasize">→[33]  gotnuget←gotnuget∧~list∧~⎕NEXISTS nuget_dir ⍝ Pretend we have no nuget if listing and no folder</code>
+<code> [34] </code>
+<code class="emphasize">→[35]  :If gotnuget∧type≡'nuget'</code>
+<code class="emphasize">→[36]      r←NuGet.Setup nuget_dir</code>
+<code class="emphasize">→[37]      →(∨/'error:'⍷⎕C r)⍴0</code>
+<code> [38]  :EndIf</code>
+<code> [39] </code>
+<code class="emphasize">→[40]  :If list</code>
+<code class="emphasize">→[41]      r←0 2⍴⊂nuget←tatin←''</code>
+<code class="emphasize">→[42]      :If gotnuget</code>
+<code class="emphasize">→[43]      :AndIf ⎕NEXISTS nuget_dir</code>
+<code class="emphasize">→[44]          nuget←{⍵,(0=≢⍵)/none}NuGet.Packages nuget_dir</code>
+<code class="emphasize">→[45]          nuget←{1↓∊'/',¨⍵}¨nuget</code>
+<code> [46]      :EndIf</code>
+<code class="emphasize">→[47]      :If gottatin</code>
+<code class="emphasize">→[48]          :If {0::0 ⋄ ⎕NEXISTS ⍵}tatin_dir</code>
+<code class="emphasize">→[49]              :Trap 11 ⍝ ListTatinPackages fails if there are none</code>
+<code class="emphasize">→[50]                  tatin←{2=⍴⍴⍵:(3↓⍵[;2])/3↓⍵[;1] ⋄ ⍬}ListTatinPackages path</code>
+<code class="emphasize">→[51]                  tatin←(' '=⊃¨tatin)↓¨tatin ⍝ leading space?</code>
+<code> [52]              :EndTrap</code>
+<code> [53]          :EndIf</code>
+<code> [54]      :EndIf</code>
+<code class="emphasize">→[55]      r←(×≢¨nuget tatin)⌿2 2⍴'nuget: 'nuget'tatin:'tatin</code>
+<code class="emphasize">→[56]      :If 0=≢r</code>
+<code class="emphasize">→[57]          r←'No dependencies found'</code>
+<code> [58]      :EndIf</code>
+<code class="emphasize">→[59]      →0</code>
+<code> [60]  :EndIf</code>
+<code> [61] </code>
+<code class="emphasize">→[62]  :Select type</code>
+<code class="emphasize">→[63]  :Case 'nuget'</code>
+<code class="emphasize">→[64]      :If gotnuget∧(0≠≢package)∧type≡'nuget'</code>
+<code class="emphasize">→[65]          r←NuGet.Add nuget_dir package</code>
+<code class="emphasize">→[66]          →(∨/'error:'⍷⎕C r)⍴0</code>
+<code> [67]      :EndIf</code>
+<code> [68] </code>
+<code class="emphasize">→[69]      :If ns≢0</code>
+<code class="emphasize">→[70]          :If 2=⎕NC'ns'</code>
+<code class="emphasize">→[71]              ns←⍎ns</code>
+<code> [72]          :EndIf</code>
+<code class="emphasize">→[73]          'dotnet'ns.⎕NS''</code>
+<code class="emphasize">→[74]          ns.dotnet.⎕USING←NuGet.Using nuget_dir</code>
+<code class="emphasize">→[75]          r←((~load)/r,'. '),'NuGet dependencies established in ',(⍕ns),'.dotnet'</code>
+<code> [76]      :EndIf</code>
+<code class="emphasize">→[77]  :Case 'tatin'</code>
+<code class="emphasize">→[78]      r←⎕SE.Tatin.InstallPackages package tatin_dir</code>
+<code> [79]  :EndSelect</code>
+</div>
+<code class="header" id="listing_6">#.Cider.Cider.LoadNugetDependencies &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←LoadNugetDependencies</code>
+<code> [1]  ⍝ Load all NuGet dependencies</code>
+<code> [2]  ⍝Morten⍝</code>
+<code class="emphasize">→[3]   ∘∘∘</code>
+<code class="emphasize">→[4]   load←9=⎕NC'ns' ⍝ Project Space provided</code>
+<code class="emphasize">→[5]   none←'No nuget dependencies registered.'</code>
+<code class="emphasize">→[6]   type←⎕C type</code>
+<code class="emphasize">→[7]   :If (~list∨load)∧0∊≢¨type package</code>
+<code class="emphasize">→[8]       'syntax is ]Cider.Dependency nuget|tatin package [folder] -list'⎕SIGNAL 11</code>
+<code> [9]   :EndIf</code>
+<code> [10] </code>
+<code class="emphasize">→[11]  :If ~∧/m←(gotnuget gottatin)←9=⌊⎕SE.⎕NC'NuGet' 'Tatin'</code>
+<code class="emphasize">→[12]      ⎕←'Warning: ',(⍕(~m)/'⎕SE.NuGet' '⎕SE.Tatin'),' not found - unable to report on or manage those dependencies.'</code>
+<code> [13]  :EndIf</code>
+<code> [14] </code>
+<code class="emphasize">→[15]  :If gotnuget</code>
+<code class="emphasize">→[16]      NuGet←⎕SE.NuGet</code>
+<code> [17]  :EndIf</code>
+<code> [18] </code>
+<code class="emphasize">→[19]  :If ~load</code>
+<code class="emphasize">→[20]      ns←path{3::0 ⋄ ⊃⍵[⍵[;2]⍳⊂⍺;1]}ListOpenProjects 0</code>
+<code> [21]  :EndIf</code>
+<code class="emphasize">→[22]  config←Get_JSON5 configfile←path,'/cider.config'</code>
+<code class="emphasize">→[23]  :If load∧~hasdeps←0≠⎕NC'config.CIDER.dependencies.nuget'</code>
+<code class="emphasize">→[24]      →0⊣r←'' ⍝ Asked to load, and there are no nuget dependencies</code>
+<code> [25]  :EndIf</code>
+<code> [26] </code>
+<code class="emphasize">→[27]  :If ~list∨load∨hasdeps∨~gotnuget</code>
+<code class="emphasize">→[28]      config.CIDER.dependencies.nuget←'nuget-packages'</code>
+<code class="emphasize">→[29]      config Put_JSON5 configfile</code>
+<code> [30]  :EndIf</code>
+<code> [31] </code>
+<code class="emphasize">→[32]  nuget_dir←path,'/',{0::⍵ ⋄ config.CIDER.dependencies.nuget}'nuget-packages'</code>
+<code class="emphasize">→[33]  tatin_dir←path,'/',config.CIDER.dependencies.tatin</code>
+<code class="emphasize">→[34]  gotnuget←gotnuget∧~list∧~⎕NEXISTS nuget_dir ⍝ Pretend we have no nuget if listing and no folder</code>
+<code> [35] </code>
+<code class="emphasize">→[36]  :If gotnuget∧type≡'nuget'</code>
+<code class="emphasize">→[37]      r←NuGet.Setup nuget_dir</code>
+<code class="emphasize">→[38]      →(∨/'error:'⍷⎕C r)⍴0</code>
+<code> [39]  :EndIf</code>
+<code> [40] </code>
+<code class="emphasize">→[41]  :If list</code>
+<code class="emphasize">→[42]      r←0 2⍴⊂nuget←tatin←''</code>
+<code class="emphasize">→[43]      :If gotnuget</code>
+<code class="emphasize">→[44]      :AndIf ⎕NEXISTS nuget_dir</code>
+<code class="emphasize">→[45]          nuget←{⍵,(0=≢⍵)/none}NuGet.Packages nuget_dir</code>
+<code class="emphasize">→[46]          nuget←{1↓∊'/',¨⍵}¨nuget</code>
+<code> [47]      :EndIf</code>
+<code class="emphasize">→[48]      :If gottatin</code>
+<code class="emphasize">→[49]          :If {0::0 ⋄ ⎕NEXISTS ⍵}tatin_dir</code>
+<code class="emphasize">→[50]              :Trap 11 ⍝ ListTatinPackages fails if there are none</code>
+<code class="emphasize">→[51]                  tatin←{2=⍴⍴⍵:(3↓⍵[;2])/3↓⍵[;1] ⋄ ⍬}ListTatinPackages path</code>
+<code class="emphasize">→[52]                  tatin←(' '=⊃¨tatin)↓¨tatin ⍝ leading space?</code>
+<code> [53]              :EndTrap</code>
+<code> [54]          :EndIf</code>
+<code> [55]      :EndIf</code>
+<code class="emphasize">→[56]      r←(×≢¨nuget tatin)⌿2 2⍴'nuget: 'nuget'tatin:'tatin</code>
+<code class="emphasize">→[57]      :If 0=≢r</code>
+<code class="emphasize">→[58]          r←'No dependencies found'</code>
+<code> [59]      :EndIf</code>
+<code class="emphasize">→[60]      →0</code>
+<code> [61]  :EndIf</code>
+<code> [62] </code>
+<code class="emphasize">→[63]  :If gotnuget∧(0≠≢package)∧type≡'nuget'</code>
+<code class="emphasize">→[64]      r←NuGet.Add nuget_dir package</code>
+<code class="emphasize">→[65]      →(∨/'error:'⍷⎕C r)⍴0</code>
+<code> [66]  :EndIf</code>
+<code> [67] </code>
+<code class="emphasize">→[68]  :If ns≢0</code>
+<code class="emphasize">→[69]      :If 2=⎕NC'ns'</code>
+<code class="emphasize">→[70]          ns←⍎ns</code>
+<code> [71]      :EndIf</code>
+<code class="emphasize">→[72]      'dotnet'ns.⎕NS''</code>
+<code class="emphasize">→[73]      ns.dotnet.⎕USING←NuGet.Using nuget_dir</code>
+<code class="emphasize">→[74]      r←((~load)/r,'. '),'NuGet dependencies established in ',(⍕ns),'.dotnet'</code>
+<code> [75]  :EndIf</code>
+</div>
+<code class="header" id="listing_7">#.Cider.Cider.Public &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←Public</code>
+<code class="emphasize">→[1]   r←''</code>
+<code class="emphasize">→[2]   r,←⊂'AddAlias'</code>
+<code> [3]  ⍝Morten⍝   r,←⊂'AddNuGetDependencies'</code>
+<code class="emphasize">→[4]   r,←⊂'AddTatinDependencies'</code>
+<code class="emphasize">→[5]   r,←⊂'CloseProject'</code>
+<code class="emphasize">→[6]   r,←⊂'CreateOpenParms'</code>
+<code class="emphasize">→[7]   r,←⊂'DropAlias'</code>
+<code class="emphasize">→[8]   r,←⊂'GetAliasFileContent'</code>
+<code class="emphasize">→[9]   r,←⊂'GetCiderAliasFilename'</code>
+<code class="emphasize">→[10]  r,←⊂'GetCiderGlobalConfigFileContent'</code>
+<code class="emphasize">→[11]  r,←⊂'GetCiderGlobalConfigFilename'</code>
+<code class="emphasize">→[12]  r,←⊂'GetCiderGlobalConfigHomeFolder'</code>
+<code class="emphasize">→[13]  r,←⊂'GetDependencies'</code>
+<code class="emphasize">→[14]  r,←⊂'GetMyUCMDsFolder'</code>
+<code class="emphasize">→[15]  r,←⊂'GetProjectPath'</code>
+<code class="emphasize">→[16]  r,←⊂'HasDotNet'</code>
+<code class="emphasize">→[17]  r,←⊂'ListOpenProjects'</code>
+<code> [18] ⍝Morten⍝ r,←⊂'ListDependencies'</code>
+<code class="emphasize">→[19]  r,←⊂'OpenProject'</code>
+<code class="emphasize">→[20]  r,←⊂'ProjectConfig'</code>
+<code class="emphasize">→[21]  r,←⊂'ReadProjectConfigFile'</code>
+<code class="emphasize">→[22]  r,←⊂'Remove_githubUsername'</code>
+<code class="emphasize">→[23]  r,←⊂'RenameInfo_url'</code>
+<code class="emphasize">→[24]  r,←⊂'RunMake'</code>
+<code class="emphasize">→[25]  r,←⊂'RunTests'</code>
+<code class="emphasize">→[26]  r,←⊂'Version'</code>
+<code class="emphasize">→[27]  r,←⊂'WriteProjectConfigFile'</code>
+</div>
+<code class="header" id="listing_8">#.Cider.Cider.Remove_githubUsername &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> report←Remove_githubUsername folder</code>
+<code> [1] ⍝ With version 0.24.0 of Cider the property "githubUsername" was removed from the config file.</code>
+<code> [2] ⍝ Cider now establishes the "owner" of a project on GitHub by investigating `project_url`.</code>
+<code class="emphasize">→[3]  ('Is not a directory: ',folder)Assert F.IsDir folder</code>
+<code class="emphasize">→[4]  report←''</code>
+<code class="emphasize">→[5]  Remove_githubUsername_ folder</code>
+<code class="emphasize">→[6]  report←⍪report</code>
+<code> [7] ⍝Done</code>
+</div>
+<code class="header" id="listing_9">#.Cider.Cider.Remove_githubUsername_ &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  Remove_githubUsername_ folder</code>
+<code class="emphasize">→[1]   filename←folder,'/cider.config'</code>
+<code class="emphasize">→[2]   :If F.IsFile filename</code>
+<code class="emphasize">→[3]       ns←ReadProjectConfigFile filename</code>
+<code class="emphasize">→[4]       :If 0&lt;ns.CIDER.⎕NC'githubUsername'</code>
+<code class="emphasize">→[5]           ns.CIDER.⎕EX'githubUsername'</code>
+<code class="emphasize">→[6]           ns WriteProjectConfigFile filename</code>
+<code class="emphasize">→[7]           report,←⊂filename</code>
+<code> [8]       :EndIf</code>
+<code> [9]   :EndIf</code>
+<code class="emphasize">→[10]  list←F.ListDirs folder</code>
+<code class="emphasize">→[11]  :If 0&lt;≢list</code>
+<code class="emphasize">→[12]      RenameInfo_url_¨list</code>
+<code> [13]  :EndIf</code>
+<code> [14] ⍝Done</code>
+</div>
+<code class="header" id="listing_10">#.Cider.Cider.RenameInfo_url &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  report←RenameInfo_url folder</code>
+<code> [1]  ⍝ With version 0.80.0 of Tatin the property "info_url" was renamed to "project_url".</code>
+<code> [2]  ⍝ Cider was amended accordingly with version 0.22.0.</code>
+<code> [3]  ⍝ This function takes a folder and searches for Cider config file in all sub folders.</code>
+<code> [4]  ⍝ In every file found `info_url` is renamed to `project_url`.</code>
+<code> [5]  ⍝ The names off all files that got changed are returned as a matrix.</code>
+<code class="emphasize">→[6]   ('Is not a directory: ',folder)Assert F.IsDir folder</code>
+<code class="emphasize">→[7]   report←''</code>
+<code class="emphasize">→[8]   RenameInfo_url_ folder</code>
+<code class="emphasize">→[9]   report←⍪report</code>
+<code> [10] ⍝Done</code>
+</div>
+<code class="header" id="listing_11">#.Cider.Cider.RenameInfo_url_ &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  RenameInfo_url_ folder</code>
+<code class="emphasize">→[1]   filename←folder,'/cider.config'</code>
+<code class="emphasize">→[2]   :If F.IsFile filename</code>
+<code class="emphasize">→[3]       ns←ReadProjectConfigFile filename</code>
+<code class="emphasize">→[4]       :If 0&lt;ns.CIDER.⎕NC'info_url'</code>
+<code class="emphasize">→[5]           ns.CIDER.project_url←ns.CIDER.info_url</code>
+<code class="emphasize">→[6]           ns.CIDER.⎕EX'info_url'</code>
+<code class="emphasize">→[7]           ns WriteProjectConfigFile filename</code>
+<code class="emphasize">→[8]           report,←⊂filename</code>
+<code> [9]       :EndIf</code>
+<code> [10]  :EndIf</code>
+<code class="emphasize">→[11]  list←F.ListDirs folder</code>
+<code class="emphasize">→[12]  :If 0&lt;≢list</code>
+<code class="emphasize">→[13]      RenameInfo_url_¨list</code>
+<code> [14]  :EndIf</code>
+</div>
+<code class="header" id="listing_12">#.Cider.Cider.RunMake &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←RunMake path</code>
+<code class="emphasize">→[1]   r←''</code>
+<code class="emphasize">→[2]   :If '[]'≡path[1,≢path]</code>
+<code class="emphasize">→[3]       path←GetFolderFromAlias path</code>
+<code> [4]   :EndIf</code>
+<code class="emphasize">→[5]   configFilename←path,'/cider.config'</code>
+<code class="emphasize">→[6]   ('No file "cider.config" found in ',path)Assert F.Exists configFilename</code>
+<code class="emphasize">→[7]   config←Get_JSON5 configFilename</code>
+<code class="emphasize">→[8]   :If 0&lt;config.CIDER.⎕NC'make'</code>
+<code class="emphasize">→[9]   :AndIf 0&lt;≢config.CIDER.make</code>
+<code class="emphasize">→[10]      :If (1⍴config.CIDER.make~' ')∊'])'</code>
+<code class="emphasize">→[11]          r←config.CIDER.make,' ⍝ Execute this for creating a new version'</code>
+<code class="emphasize">→[12]      :ElseIf (⊃config.CIDER.make)∊'#⎕'   ⍝ Was possible until 0.28.1</code>
+<code class="emphasize">→[13]          r←config.CIDER.make,' ⍝ Execute this for creating a new version'</code>
+<code> [14]      :Else</code>
+<code class="emphasize">→[15]          r←(config.CIDER.parent),({0=≢⍵:⍵ ⋄ '.',⍵},config.CIDER.projectSpace),'.',config.CIDER.make,' ⍝ Execute this for creating a new version'</code>
+<code> [16]      :EndIf</code>
+<code> [17]  :Else</code>
+<code class="emphasize">→[18]      1 PrintToSession'No expression found for creating a new version of &lt;',config.CIDER.projectSpace,'&gt;'</code>
+<code> [19]  :EndIf</code>
+</div>
+<code class="header" id="listing_13">#.Cider.Cider.RunTests &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←RunTests path</code>
+<code class="emphasize">→[1]   r←''</code>
+<code class="emphasize">→[2]   :If '[]'≡path[1,≢path]</code>
+<code class="emphasize">→[3]       path←GetFolderFromAlias path</code>
+<code> [4]   :EndIf</code>
+<code class="emphasize">→[5]   configFilename←path,'/cider.config'</code>
+<code class="emphasize">→[6]   ('No file "cider.config" found in ',path)Assert F.Exists configFilename</code>
+<code class="emphasize">→[7]   config←Get_JSON5 configFilename</code>
+<code class="emphasize">→[8]   :If 0&lt;config.CIDER.⎕NC'tests'</code>
+<code class="emphasize">→[9]   :AndIf 0&lt;≢config.CIDER.tests</code>
+<code class="emphasize">→[10]      :If (1⍴config.CIDER.tests~' ')∊'])'</code>
+<code class="emphasize">→[11]          r←config.CIDER.tests,' ⍝ Execute this for running the test suite'</code>
+<code class="emphasize">→[12]      :ElseIf (⊃config.CIDER.tests)∊'#⎕' ⍝ Was possible until 0.28.1</code>
+<code class="emphasize">→[13]          r←config.CIDER.tests,' ⍝ Execute this for running the test suite'</code>
+<code> [14]      :Else</code>
+<code class="emphasize">→[15]          r←(config.CIDER.parent),({0=≢⍵:⍵ ⋄ '.',⍵},config.CIDER.projectSpace),'.',config.CIDER.tests,' ⍝ Execute this for running the test suite'</code>
+<code> [16]      :EndIf</code>
+<code> [17]  :EndIf</code>
+</div>
+<code class="header" id="listing_14">#.Cider.Cider.WriteProjectConfigFile &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←config WriteProjectConfigFile path</code>
+<code> [1] ⍝ Writes project configuration "config" to file.\\</code>
+<code> [2] ⍝ `path` may or may not carry the filename as such.</code>
+<code class="emphasize">→[3]  path2←'cider.config'{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}path</code>
+<code class="emphasize">→[4]  r←config Put_JSON5 path2</code>
+<code> [5] ⍝Done</code>
+</div>
+<code class="header" id="listing_15">#.Cider.Cider.API.GetAliasFileContent &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←GetAliasFileContent</code>
+<code class="emphasize">→[1]  r←##.GetAliasFileContent</code>
+</div>
+<code class="header" id="listing_16">#.Cider.Cider.API.GetCiderAliasFilename &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> filename←GetCiderAliasFilename</code>
+<code class="emphasize">→[1]  filename←##.GetCiderAliasFilename</code>
+</div>
+<code class="header" id="listing_17">#.Cider.Cider.API.GetCiderGlobalConfigFileContent &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←GetCiderGlobalConfigFileContent</code>
+<code class="emphasize">→[1]  r←##.GetCiderGlobalConfigFileContent</code>
+</div>
+<code class="header" id="listing_18">#.Cider.Cider.API.GetCiderGlobalConfigFilename &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> filename←GetCiderGlobalConfigFilename</code>
+<code class="emphasize">→[1]  filename←##.GetCiderGlobalConfigFilename</code>
+</div>
+<code class="header" id="listing_19">#.Cider.Cider.API.GetCiderGlobalConfigHomeFolder &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> folder←GetCiderGlobalConfigHomeFolder</code>
+<code class="emphasize">→[1]  folder←##.GetCiderGlobalConfigHomeFolder</code>
+</div>
+<code class="header" id="listing_20">#.Cider.Cider.API.GetMyUCMDsFolder &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←GetMyUCMDsFolder</code>
+<code class="emphasize">→[1]  r←##.GetMyUCMDsFolder</code>
+</div>
+<code class="header" id="listing_21">#.Cider.Cider.API.HasDotNet &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←HasDotNet</code>
+<code class="emphasize">→[1]  r←##.HasDotNet</code>
+</div>
+<code class="header" id="listing_22">#.Cider.Cider.API.Version &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←Version</code>
+<code class="emphasize">→[1]  r←##.Version</code>
+</div>
+<code class="header" id="listing_23">#.Cider.Cider.CheckForGit &mdash; 13%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←CheckForGit(path config parms)</code>
+<code> [1]  ⍝ Checks whether the project is managed by Git, and if so offers some help, unless parms.batch=1</code>
+<code> [2]   r←⍬</code>
+<code> [3]   :If 0=parms.batch</code>
+<code> [4]   :AndIf F.Exists(AddSlash path),'.git'</code>
+<code class="emphasize">→[5]       :Trap 0</code>
+<code class="emphasize">→[6]           status←G.Status path</code>
+<code> [7]       :Else</code>
+<code class="emphasize">→[8]           dmx←⎕DMX</code>
+<code class="emphasize">→[9]           :If 127=dmx.EN</code>
+<code class="emphasize">→[10]              (1 parms.batch)p'The project appears to be managed by Git but Git is not installed?!'</code>
+<code class="emphasize">→[11]              :Return</code>
+<code class="emphasize">→[12]          :ElseIf 128=dmx.EN</code>
+<code class="emphasize">→[13]              (1 parms.batch)p'The project appears to be managed by Git but user.email and/or user.name are not defined'</code>
+<code class="emphasize">→[14]              :Return</code>
+<code class="emphasize">→[15]          :ElseIf 0&lt;≢dmx.Message</code>
+<code class="emphasize">→[16]              (1 parms.batch)p'The Git status of the project could not be determined due to an error:'</code>
+<code class="emphasize">→[17]              (1 parms.batch)pdmx.Message,'; rc=',⍕dmx.EN</code>
+<code class="emphasize">→[18]              :Return</code>
+<code> [19]          :Else</code>
+<code class="emphasize">→[20]              (1 parms.batch)p'The Git status of the project could not be determined due to an error'</code>
+<code class="emphasize">→[21]              :Return</code>
+<code> [22]          :EndIf</code>
+<code> [23]      :EndTrap</code>
+<code class="emphasize">→[24]      :If ∧/∨/¨'nothing to commit' 'working tree clean'⍷¨⊂∊status</code>
+<code class="emphasize">→[25]      :AndIf ~∨/∨/¨'on branch main' 'on branch master'⍷¨⊂⎕C∊status</code>
+<code class="emphasize">→[26]          (1 parms.batch)p'Git: ',(1⊃status),', ',⊃{⍺,', ',⍵}/1↓status</code>
+<code class="emphasize">→[27]      :ElseIf 0=parms.batch</code>
+<code class="emphasize">→[28]          status←(↓(,[0.5]'Git status report')⍪'='),status</code>
+<code class="emphasize">→[29]          {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&amp;{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status</code>
+<code> [30]      :EndIf</code>
+<code> [31]  :EndIf</code>
+</div>
+<code class="header" id="listing_24">#.Cider.Cider.GetFolderFromAlias &mdash; 13%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  parms←(fns GetFolderFromAlias)parms</code>
+<code> [1]  ⍝ Translates the alias in "folder" (if any) into a path from a parameter namespace.\\</code>
+<code> [2]  ⍝ If an alias is defined it is saved, possibly by overwriting the old one.</code>
+<code> [3]   :If '[]'≡parms.folder[1,≢parms.folder]</code>
+<code class="emphasize">→[4]       alias←parms.folder~'[]'</code>
+<code class="emphasize">→[5]       folder←GetFolderFromAlias2 alias</code>
+<code class="emphasize">→[6]       :If 0&lt;≢folder</code>
+<code class="emphasize">→[7]           parms.folder←folder</code>
+<code class="emphasize">→[8]           :If 0=≢parms.alias</code>
+<code class="emphasize">→[9]               parms.alias←alias</code>
+<code> [10]          :EndIf</code>
+<code> [11]      :Else</code>
+<code class="emphasize">→[12]          (alias,'" is not a valid alias')⎕SIGNAL 11</code>
+<code> [13]      :EndIf</code>
+<code> [14]  :EndIf</code>
+</div>
+<code class="header" id="listing_25">#.Cider.Cider.GetProjectPath &mdash; 26%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  path←GetProjectPath project</code>
+<code> [1]   path←''</code>
+<code> [2]   :If 0≡project</code>
+<code> [3]   :OrIf 0=≢project</code>
+<code> [4]       list←ListOpenProjects 0</code>
+<code> [5]       :Select ≢list</code>
+<code> [6]       :Case 0</code>
+<code class="emphasize">→[7]           ⎕←'No open Cider project found'</code>
+<code class="emphasize">→[8]           :Return</code>
+<code> [9]       :Case 1</code>
+<code> [10]          path←⊃list[1;2]</code>
+<code> [11]      :Else</code>
+<code class="emphasize">→[12]          :If 0=≢index←'Select a Cider project:'C.Select↓⎕FMT list</code>
+<code class="emphasize">→[13]              :Return</code>
+<code> [14]          :EndIf</code>
+<code class="emphasize">→[15]          path←2⊃list[index;]</code>
+<code> [16]      :EndSelect</code>
+<code> [17]  :Else</code>
+<code class="emphasize">→[18]      aliasDefs←P.GetAliasFileContent</code>
+<code class="emphasize">→[19]      path←Args._1</code>
+<code class="emphasize">→[20]      :If path≡'[?]'</code>
+<code class="emphasize">→[21]          :If 0=≢path←SelectFromAliases aliasDefs</code>
+<code class="emphasize">→[22]              :Return</code>
+<code> [23]          :EndIf</code>
+<code class="emphasize">→[24]      :ElseIf '['=1⍴path</code>
+<code class="emphasize">→[25]      :AndIf '*'=¯1↑path~'[]'</code>
+<code class="emphasize">→[26]          bool←(¯1↓path~'[]'){(⎕C(≢⍺)↑[2]⍵)∧.=⎕C ⍺}↑aliasDefs[;1]</code>
+<code class="emphasize">→[27]          :Select +/bool</code>
+<code class="emphasize">→[28]          :Case 0</code>
+<code class="emphasize">→[29]              :Return</code>
+<code class="emphasize">→[30]          :Case 1</code>
+<code class="emphasize">→[31]              (alias path)←aliasDefs[bool⍳1;]</code>
+<code class="emphasize">→[32]              :If 0=1 C.YesOrNo'Sure you want to open "',path,'" ?'</code>
+<code class="emphasize">→[33]                  :Return</code>
+<code> [34]              :EndIf</code>
+<code> [35]          :Else</code>
+<code class="emphasize">→[36]              info←'(',((⍕+/bool),' of ',(⍕≢aliasDefs)),')'</code>
+<code class="emphasize">→[37]              :If 0=≢path←info SelectFromAliases bool⌿aliasDefs</code>
+<code class="emphasize">→[38]                  :Return</code>
+<code> [39]              :EndIf</code>
+<code> [40]          :EndSelect</code>
+<code> [41]      :EndIf</code>
+<code> [42]  :EndIf</code>
+</div>
+<code class="header" id="listing_26">#.Cider.Cider.PolishProperties &mdash; 32%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  config←parms PolishProperties config</code>
+<code> [1]  ⍝ Temporary solution for several problems:</code>
+<code> [2]  ⍝ I.</code>
+<code> [3]  ⍝ With version 0.25.0 Cider expects "dependencies" and/or "dependencies_dev" instead of "tatinFolder".</code>
+<code> [4]  ⍝ This function looks for "tatinFolder", and if it is found suggests an automated conversion.</code>
+<code> [5]  ⍝ It expects to find either a single comma or no comma at all in "tatinFolder", otherwise it throws an error.</code>
+<code> [6]  ⍝ II.</code>
+<code> [7]  ⍝ The property `githubUsername` is deleted from the config file because it is not used anymore</code>
+<code> [8]  ⍝ III.</code>
+<code> [9]  ⍝ With version 0.26.0 the property `distributionFolder` was introduced.</code>
+<code> [10] ⍝ If not found it is injected as an empty character vector.</code>
+<code> [11] ⍝ Note that with the introduction of Cider version 1.0 this function can be removed  ⍝TODO⍝</code>
+<code> [12]  errorFlag←0</code>
+<code> [13]  errMsg←''</code>
+<code> [14]  f1←f2←f3←0</code>
+<code> [15]  :If 0&lt;config.CIDER.⎕NC'tatinFolder'</code>
+<code class="emphasize">→[16]      question←''</code>
+<code class="emphasize">→[17]      question,←⊂'AutoConversion@This project carries the (now deprecated) property "tatinFolder".'</code>
+<code class="emphasize">→[18]      question,←⊂'Would you like to convert it automatically into the new format?'</code>
+<code class="emphasize">→[19]      :If 1 C.YesOrNo question</code>
+<code class="emphasize">→[20]          'dependencies' 'dependencies_dev'config.CIDER.⎕NS¨⊂''</code>
+<code class="emphasize">→[21]          config.CIDER.(dependencies dependencies_dev).tatin←⊂''</code>
+<code class="emphasize">→[22]          folders←config.CIDER.tatinFolder</code>
+<code class="emphasize">→[23]          :If (noOfCommas←','+.=folders)∊0 1</code>
+<code class="emphasize">→[24]              :If ','=1⍴folders</code>
+<code> [25]                   ⍝ This project has only development dependencies</code>
+<code class="emphasize">→[26]                  config.CIDER.dependencies_dev.tatin←' '~⍨1↓folders</code>
+<code class="emphasize">→[27]              :ElseIf 0=noOfCommas</code>
+<code> [28]                   ⍝ This project has dependencies but not for development</code>
+<code class="emphasize">→[29]                  config.CIDER.dependencies.tatin←folders~' '</code>
+<code> [30]              :Else</code>
+<code> [31]                   ⍝ This project has ordinary as well as development dependencies</code>
+<code class="emphasize">→[32]                  config.CIDER.(dependencies dependencies_dev).tatin←' '~¨⍨','(≠⊆⊢)folders</code>
+<code class="emphasize">→[33]                  config.CIDER.⎕EX'tatinFolder'</code>
+<code> [34]              :EndIf</code>
+<code class="emphasize">→[35]              f1←1</code>
+<code> [36]          :Else</code>
+<code class="emphasize">→[37]              errorFlag←1</code>
+<code class="emphasize">→[38]              errMsg,←⊂'Project carries old (now deprecated) property "tatinfolder" but with an invalid syntax:'</code>
+<code class="emphasize">→[39]              errMsg,←⊂'It has ',(⍕noOfCommas),' commas: must be zero or one.'</code>
+<code> [40]          :EndIf</code>
+<code class="emphasize">→[41]          config.CIDER.⎕EX'tatinFolder'</code>
+<code> [42]      :Else</code>
+<code class="emphasize">→[43]          errorFlag←1</code>
+<code class="emphasize">→[44]          errMsg,←⊂'Project carries old (now deprecated) property "tatinfolder" but user refused to convert:'</code>
+<code class="emphasize">→[45]          errMsg,←⊂'The project cannot be opened.'</code>
+<code> [46]      :EndIf</code>
+<code> [47]  :EndIf</code>
+<code> [48]  :If 0&lt;config.CIDER.⎕NC'githubUsername'</code>
+<code class="emphasize">→[49]      config.CIDER.⎕EX'githubUsername'</code>
+<code class="emphasize">→[50]      f2←1</code>
+<code> [51]  :EndIf</code>
+<code> [52]  :If 0=config.CIDER.⎕NC'distributionFolder'</code>
+<code> [53]      config.CIDER.distributionFolder←''</code>
+<code> [54]      f3←1</code>
+<code> [55]  :EndIf</code>
+<code> [56]  :If f1∨f2∨f3</code>
+<code> [57]      config Put_JSON5(F.AddTrailingSep parms.folder),'cider.config'</code>
+<code> [58]      p'Modified file "cider.config" saved in ',parms.folder</code>
+<code> [59]  :EndIf</code>
+<code> [60]  :If errorFlag</code>
+<code class="emphasize">→[61]      1 p errMsg</code>
+<code class="emphasize">→[62]      ⎕SIGNAL 11</code>
+<code> [63]  :EndIf</code>
+</div>
+<code class="header" id="listing_27">#.Cider.Cider.CheckOnToDo &mdash; 33%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←parms CheckOnToDo ref</code>
+<code> [1]  ⍝ Checks whether there is a non-empty variable "ToDo" in the root of the project, and put it into ⎕ED if so.</code>
+<code> [2]  ⍝ Returns a 1 if found and 0 otherwise</code>
+<code> [3]   r←0</code>
+<code> [4]   :If 2=ref.⎕NC'ToDo'</code>
+<code class="emphasize">→[5]   :AndIf 0&lt;≢(∊ref.ToDo)~' '</code>
+<code class="emphasize">→[6]       (1 parms.batch)p'&gt;&gt;&gt; Found a variable ',(⍕ref),'.ToDo'</code>
+<code class="emphasize">→[7]       (1 parms.batch)p ref.ToDo</code>
+<code class="emphasize">→[8]       r←1</code>
+<code> [9]   :EndIf</code>
+</div>
+<code class="header" id="listing_28">#.Cider.Cider.CheckForTatinPackages &mdash; 47%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  status←path CheckForTatinPackages config</code>
+<code> [1]  ⍝ Checks whether at least one Tatin install folder is defined, does exist and is not empty, in which case a 1 is returned.</code>
+<code> [2]  ⍝ In case at least one install folder contains just a dependency file and a build file but nothing else then...</code>
+<code> [3]  ⍝ * when the user goes for re-installing the packages, a 2 is returned</code>
+<code> [4]  ⍝ * when she does not a 3 is returned</code>
+<code> [5]   status←0</code>
+<code> [6]   folders←GetTatinDepedencyFolders config</code>
+<code> [7]   :If 0&lt;≢folders</code>
+<code> [8]       folders←{'='∊⍵:⍵↑⍨¯1+⍵⍳'=' ⋄ ⍵}¨folders</code>
+<code> [9]   :AndIf 0&lt;≢folders←(0&lt;≢¨folders)/folders</code>
+<code> [10]  :AndIf 0&lt;≢folders←(F.Exists(⊂path,'/'),¨folders)/folders</code>
+<code> [11]      status←0&lt;+/≢¨list←{⊃0 ⎕NINFO⍠('Wildcard' 1)⊣⍵}¨(⊂path,'/'),¨folders,¨⊂'/*'</code>
+<code> [12]  :AndIf 1∊bool←0=≢¨F.ListDirs¨(⊂path,'/'),¨folders,¨'/'</code>
+<code class="emphasize">→[13]  :AndIf 1∊bool←bool∧⎕NEXISTS(⊂path,'/'),¨folders,¨⊂'/apl-dependencies.txt'</code>
+<code class="emphasize">→[14]      :If C.YesOrNo'Tatin install folder',((1+1=+/bool)⊃'s do' ' does'),' not contain packages - do you want them re-installed?'</code>
+<code class="emphasize">→[15]          status←2</code>
+<code class="emphasize">→[16]          parms←⎕SE.Tatin.CreateReInstallParms</code>
+<code class="emphasize">→[17]          parms.update←C.YesOrNo'Would you like to install later version, if available?'</code>
+<code class="emphasize">→[18]          folders←bool/folders</code>
+<code class="emphasize">→[19]          :For this :In (⊂path,'/'),¨folders</code>
+<code class="emphasize">→[20]              report←parms ⎕SE.Tatin.ReInstallDependencies this</code>
+<code> [21]          :EndFor</code>
+<code> [22]      :Else</code>
+<code class="emphasize">→[23]          status←3</code>
+<code> [24]      :EndIf</code>
+<code> [25]  :EndIf</code>
+</div>
+<code class="header" id="listing_29">#.Cider.Cider.CheckTatinFoldersForLaterVersions &mdash; 50%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  report←report CheckTatinFoldersForLaterVersions(parms folders)</code>
+<code> [1]  ⍝ Loop through all Tatin install folders</code>
+<code> [2]   :For folder :In folders</code>
+<code> [3]       folder_←⊃'='(≠⊆⊢)folder</code>
+<code> [4]       :If F.Exists parms.folder,'/',folder_</code>
+<code> [5]           p'Checking Tatin packages in &lt;',(AddSlash folder_),'&gt; ...'</code>
+<code> [6]           folder_←parms.folder,'/',folder_</code>
+<code> [7]           :If 0&lt;≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣folder_,'/*'</code>
+<code> [8]               :Trap 998</code>
+<code> [9]                   report,←⊂⎕SE.Tatin.CheckForLaterVersion folder_</code>
+<code> [10]              :Else</code>
+<code class="emphasize">→[11]                  qdmx←⎕DMX</code>
+<code class="emphasize">→[12]                  :If qdmx.EM≡'The build list carries entries that are not on the Tatin Registry search path'</code>
+<code class="emphasize">→[13]                      msg←''</code>
+<code class="emphasize">→[14]                      msg,←⊂'ERROR: Checking for later versions of Tatin packages failed:'</code>
+<code class="emphasize">→[15]                      msg,←⊂' ',qdmx.EM</code>
+<code class="emphasize">→[16]                      (1 parms.batch)p msg</code>
+<code> [17]                  :Else</code>
+<code class="emphasize">→[18]                      qdmx.EM ⎕SIGNAL 998</code>
+<code> [19]                  :EndIf</code>
+<code> [20]              :EndTrap</code>
+<code> [21]          :Else</code>
+<code class="emphasize">→[22]              (1 parms.batch)p'Installation folder &lt;',parms.folder,'/',folder,'&gt; is empty'</code>
+<code> [23]          :EndIf</code>
+<code> [24]      :EndIf</code>
+<code> [25]  :EndFor</code>
+</div>
+<code class="header" id="listing_30">#.Cider.Cider.MassageConfig &mdash; 50%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {changeFlag}←MassageConfig filename</code>
+<code> [1]  ⍝ Checks whether the config data comes with all expected antries.</code>
+<code> [2]  ⍝ If anything is missing (late arrivals) those are added.</code>
+<code> [3]  ⍝ Returns a 1 in case data was added, otherwise 0.</code>
+<code> [4]   changeFlag←0</code>
+<code> [5]   config←Get_JSON5 filename</code>
+<code> [6]   :If 0=config.CIDER.⎕NC'tests'</code>
+<code class="emphasize">→[7]       config.CIDER.tests←''</code>
+<code class="emphasize">→[8]       changeFlag∨←1</code>
+<code> [9]   :EndIf</code>
+<code> [10] </code>
+<code> [11]  :If 0=config.CIDER.⎕NC'make'</code>
+<code class="emphasize">→[12]      config.CIDER.make←''</code>
+<code class="emphasize">→[13]      changeFlag∨←1</code>
+<code> [14]  :EndIf</code>
+<code> [15]  :If changeFlag</code>
+<code class="emphasize">→[16]      config Put_JSON5 filename</code>
+<code> [17]  :EndIf</code>
+</div>
+<code class="header" id="listing_31">#.Cider.Cider.CheckTargetNamespaceAndLinkFolder &mdash; 53%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  ref←CheckTargetNamespaceAndLinkFolder(ref parms source)</code>
+<code> [1]  ⍝ 1. In case `ref` does not point to a namespace or a script but the name is already taken</code>
+<code> [2]  ⍝ 2. In case the namespace `ref` and the folder are both empty no action is taken</code>
+<code> [3]  ⍝ 3. In case only the namespace `ref` is empty no action is taken</code>
+<code> [4]  ⍝ 4. In case only the folder is empty no action is taken</code>
+<code> [5]  ⍝ 5. In case neither the namespace `ref` nor the folder are empty the user is asked</code>
+<code> [6]  ⍝    whether she wants the namespace to be recreated; if not an error is thrown.</code>
+<code> [7]  ⍝ When `batch` is set however, then either the namepace or the folder or both must</code>
+<code> [8]  ⍝ be empty, otherwise an error is thrown.</code>
+<code> [9]   :If (⎕NC⊂⍕ref)∊9.1 9.4 9.5</code>
+<code> [10]      nsIsEmpty←0=≢' '~¨⍨↓ref.⎕NL⍳16</code>
+<code> [11]      'Cannot open, is already loaded as a package'Assert'_tatin'≢{⍵↑⍨¯1+⍵⍳'.'}{⍵↓⍨⍵⍳'.'}⍕ref</code>
+<code> [12]      :If 0=F.Exists parms.folder,'/',source</code>
+<code class="emphasize">→[13]          folderIsEmpty←1</code>
+<code> [14]      :Else</code>
+<code> [15]          folderIsEmpty←0=≢⊃⎕NINFO⍠('Wildcard' 1)⊣parms.folder,'/',source,'/*'</code>
+<code> [16]      :EndIf</code>
+<code> [17]      :If nsIsEmpty∧~folderIsEmpty</code>
+<code> [18]      :OrIf folderIsEmpty∧~nsIsEmpty</code>
+<code> [19]      :OrIf folderIsEmpty∧nsIsEmpty</code>
+<code> [20]          :Return</code>
+<code> [21]      :EndIf</code>
+<code class="emphasize">→[22]      :If parms.batch</code>
+<code> [23]           ⍝ With `batch` being true there is nothing we can do but throw an error</code>
+<code class="emphasize">→[24]          'Both the target and the source folder are not empty'Assert 0</code>
+<code> [25]      :Else</code>
+<code class="emphasize">→[26]          :If C.YesOrNo'Target "',(⍕ref),'" is not empty - recreate?'</code>
+<code class="emphasize">→[27]              ⎕EX⍕ref                                 ⍝ It might be a class, so we first delete it...</code>
+<code class="emphasize">→[28]              ref←⍎(⍕ref)({⍎⍵↑⍨¯1+⍵⍳'.'}⍕ref).⎕NS''   ⍝ ... and then we re-create it</code>
+<code> [29]          :Else</code>
+<code class="emphasize">→[30]              'Both the target and the source folder are not empty'Assert 0</code>
+<code> [31]          :EndIf</code>
+<code> [32]      :EndIf</code>
+<code> [33]  :Else</code>
+<code class="emphasize">→[34]      ('The name "',(⍕ref),'" is already in use')Assert 0</code>
+<code> [35]  :EndIf</code>
+</div>
+<code class="header" id="listing_32">#.Cider.Cider.ExecProjectFunction_ &mdash; 53%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←x ExecProjectFunction_ init</code>
+<code> [1]   r←⍬</code>
+<code> [2]   (projectSpace config parms)←x</code>
+<code> [3]   :If 3=projectSpace.⎕NC init</code>
+<code> [4]       p'Executing the project''s initialising function "',(init~' '),'"...'</code>
+<code> [5]       valence←1 2⊃projectSpace.⎕AT init</code>
+<code> [6]       :Select valence</code>
+<code> [7]       :Case 0                   ⍝ Niladic</code>
+<code> [8]           :Trap 0</code>
+<code> [9]               projectSpace.⍎init</code>
+<code> [10]          :Else</code>
+<code class="emphasize">→[11]              qdmx←⎕DMX</code>
+<code class="emphasize">→[12]              (1 parms.batch)p'Executing "init" crashed: ',qdmx.EM</code>
+<code> [13]          :EndTrap</code>
+<code> [14]      :CaseList 1 ¯2            ⍝ Monadic and ambivalent</code>
+<code class="emphasize">→[15]          fns←projectSpace.⍎init</code>
+<code class="emphasize">→[16]          :Trap 0</code>
+<code class="emphasize">→[17]              fns config</code>
+<code> [18]          :Else</code>
+<code class="emphasize">→[19]              qdmx←⎕DMX</code>
+<code class="emphasize">→[20]              (1 parms.batch)p'Executing "init" crashed: ',qdmx.EM</code>
+<code> [21]          :EndTrap</code>
+<code> [22]      :Else</code>
+<code class="emphasize">→[23]          (1 parms.batch)p'Invalid function valence: is dyadic'</code>
+<code> [24]      :EndSelect</code>
+<code> [25]  :Else</code>
+<code class="emphasize">→[26]      (1 parms.batch)p'Could not execute "',init,'": function not found; check config file!'</code>
+<code> [27]  :EndIf</code>
+</div>
+<code class="header" id="listing_33">#.Cider.Cider.ExecUserFunction &mdash; 53%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←ExecUserFunction config</code>
+<code> [1]  ⍝ Check whether the config parameter "ExecuteAfterProjectOpen" is defined in Cider's global config file</code>
+<code> [2]  ⍝ and execute it if it's a function.</code>
+<code> [3]   r←⍬</code>
+<code> [4]   msg←''</code>
+<code> [5]   :If 0&lt;≢fn←GetFunctionNameFromCiderConfigFile ⍬</code>
+<code> [6]       p'Attempting to execute user function ',fn,'...'</code>
+<code> [7]       :If 1=1 1⊃⎕AT fn</code>
+<code class="emphasize">→[8]           :Trap 0</code>
+<code class="emphasize">→[9]               ⍎'{}',fn,' config'</code>
+<code> [10]          :Else</code>
+<code class="emphasize">→[11]              qdmx←⎕DMX</code>
+<code class="emphasize">→[12]              msg←'Executing "',fn'" (ExecuteAfterProjectOpen) crashed: ',qdmx.EM</code>
+<code> [13]          :EndTrap</code>
+<code> [14]      :Else</code>
+<code> [15]          :Trap 0</code>
+<code> [16]              ⍎fn,' config'</code>
+<code> [17]          :Else</code>
+<code class="emphasize">→[18]              qdmx←⎕DMX</code>
+<code class="emphasize">→[19]              msg←'Executing "',fn,'" (ExecuteAfterProjectOpen) crashed: ',qdmx.EM</code>
+<code> [20]          :EndTrap</code>
+<code> [21]      :EndIf</code>
+<code> [22]      :If 0&lt;≢msg</code>
+<code class="emphasize">→[23]          (1 parms.batch)p msg</code>
+<code> [24]      :EndIf</code>
+<code> [25]  :EndIf</code>
+</div>
+<code class="header" id="listing_34">#.Cider.Cider.ProjectConfig &mdash; 55%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←{editFlag}ProjectConfig path</code>
+<code> [1]  ⍝ By default the contents of the file cider.config in "path" is put into the editor in read-only mode.</code>
+<code> [2]  ⍝ The user may edit the contents if `⍺` is 1 rather than anything else or undefined.</code>
+<code> [3]  ⍝ Returns 1 in case the file was modified and 0 otherwise.</code>
+<code> [4]   r←0</code>
+<code> [5]   editFlag←{0=⎕NC ⍵:0 ⋄ ⍎⍵}'editFlag'</code>
+<code> [6]   :If '['∊path</code>
+<code class="emphasize">→[7]       path←GetFolderFromAlias path</code>
+<code class="emphasize">→[8]       ('Alias "',path,'" not found')Assert 0&lt;≢path</code>
+<code> [9]   :EndIf</code>
+<code> [10]  :If 'cider.config'{⍺≡⎕C(-≢⍺)↑⍵}path</code>
+<code class="emphasize">→[11]  :AndIf (¯1↑(-≢'cider.config')↓path)∊'/\'</code>
+<code class="emphasize">→[12]      filename←path</code>
+<code> [13]  :Else</code>
+<code> [14]      filename←path,'/cider.config'</code>
+<code> [15]  :EndIf</code>
+<code> [16]  ('Does not exist: "',filename,'"')Assert F.Exists filename</code>
+<code> [17]  ns←⍎'edit'(⍎(1+'⎕'=⊃⊃⎕XSI)⊃'#' '⎕SE').⎕NS''</code>
+<code> [18]  MassageConfig filename</code>
+<code> [19]  orig←ns.cider_config←⊃F.NGET filename 1</code>
+<code> [20]  :If ~CheckJsonSyntax ns.cider_config</code>
+<code> [21]  :OrIf ~0 PerformConfigChecks ⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config</code>
+<code class="emphasize">→[22]      orig←'' ⍝ This can happen in case the user edited the file with a externalm editor and introduced a mistake</code>
+<code> [23]  :EndIf</code>
+<code> [24]  flag←0</code>
+<code> [25]  :Repeat</code>
+<code> [26]      ns.⎕ED⍠('ReadOnly'(~(⊂,1)≡⊂,editFlag))⊣'cider_config'</code>
+<code> [27]      :If orig≢ns.cider_config</code>
+<code class="emphasize">→[28]      :AndIf editFlag</code>
+<code class="emphasize">→[29]      :AndIf 0&lt;≢(∊ns.cider_config)~' '</code>
+<code class="emphasize">→[30]          :If CheckJsonSyntax ns.cider_config</code>
+<code class="emphasize">→[31]              data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config</code>
+<code class="emphasize">→[32]          :AndIf PerformConfigChecks data</code>
+<code class="emphasize">→[33]              (⊂ns.cider_config)⎕NPUT⍠('NEOL' 2)⊣filename 1</code>
+<code class="emphasize">→[34]              r←flag←1</code>
+<code> [35]          :Else</code>
+<code class="emphasize">→[36]              :If ~1 C.YesOrNo'Syntax check failed. Try again? (no=changes are lost)'</code>
+<code class="emphasize">→[37]                  flag←1</code>
+<code> [38]              :EndIf</code>
+<code> [39]          :EndIf</code>
+<code> [40]      :Else</code>
+<code> [41]          flag←1</code>
+<code> [42]      :EndIf</code>
+<code> [43]  :Until flag</code>
+</div>
+<code class="header" id="listing_35">#.Cider.Cider.GetCiderGlobalConfigHomeFolder &mdash; 56%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  folder←GetCiderGlobalConfigHomeFolder</code>
+<code> [1]  ⍝ Return the full path to (and including) .cider in the user's home directory</code>
+<code> [2]  ⍝ Has a side effect: creates the hosting folder in case it does not yet exist</code>
+<code> [3]   name←(1+'win'≡⎕C 3↑1⊃'.'⎕WG'aplversion')⊃'HOME' 'USERPROFILE'</code>
+<code> [4]   folder←F.NormalizePath(2 ⎕NQ #'GetEnvironment'name),'/.cider/'</code>
+<code> [5]   1 ⎕MKDIR folder</code>
+<code> [6]  ⍝ The remaining code checks whether there is a .cider folder in a different location</code>
+<code> [7]  ⍝ and if so copies the content over.</code>
+<code> [8]  ⍝ This is a temporary measure since the parent for the .cider folder was changed on</code>
+<code> [9]  ⍝ Windows from APPDATA\ to the user's home directory.</code>
+<code> [10] ⍝ Nothing changed on other platform</code>
+<code> [11]  :If 'Win'≡3↑A.GetOperatingSystem ⍬</code>
+<code> [12]  :AndIf ~⎕NEXISTS folder,'config.json'</code>
+<code class="emphasize">→[13]      oldFolder←(2 ⎕NQ #'GetEnvironment' 'APPDATA'),'/.cider/'</code>
+<code class="emphasize">→[14]      :If ⎕NEXISTS oldFolder</code>
+<code class="emphasize">→[15]          res←folder∘{⍺(⎕NMOVE⍠('IfExists' 'Skip')F.ExecNfunction)⍵}¨F.ListFiles oldFolder</code>
+<code class="emphasize">→[16]          F.RmDir oldFolder</code>
+<code> [17]      :EndIf</code>
+<code> [18]  :EndIf</code>
+</div>
+<code class="header" id="listing_36">#.Cider.Cider.HandleSysVars &mdash; 57%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←configFilename HandleSysVars config</code>
+<code> [1]  ⍝ For inheritance we specify the system vars early</code>
+<code> [2]   r←⍬</code>
+<code> [3]   :If 9=config.⎕NC'SYSVARS'</code>
+<code> [4]       :For name :In ' '~⍨¨↓config.SYSVARS.⎕NL 2</code>
+<code> [5]           name_←1 ⎕C name</code>
+<code> [6]           :Trap 0</code>
+<code> [7]               projectSpace_.⍎'⎕',name_,'←',⍕⍎'config.SYSVARS.',name</code>
+<code> [8]           :Else</code>
+<code> [9]               (1 parms.batch)p'Assigning system variable "',name,'" failed'</code>
+<code> [10]          :EndTrap</code>
+<code> [11]      :EndFor</code>
+<code> [12]  :Else                         ⍝ SysVars prior to version 0.3.0</code>
+<code class="emphasize">→[13]      projectSpace_.(⎕IO ⎕ML)←config.CIDER.(io ml)</code>
+<code class="emphasize">→[14]      :If 1 C.YesOrNo'Convert old system vars definition to new one?'</code>
+<code class="emphasize">→[15]          'SYSVARS'config.⎕NS''</code>
+<code class="emphasize">→[16]          config.SYSVARS.(io ml)←config.CIDER.(io ml)</code>
+<code class="emphasize">→[17]          config.CIDER.⎕EX¨'io' 'ml' 'wx'</code>
+<code class="emphasize">→[18]          json←Put_JSON5 configFilename</code>
+<code> [19]      :EndIf</code>
+<code> [20]  :EndIf</code>
+</div>
+<code class="header" id="listing_37">#.Cider.Cider.Get_JSON5 &mdash; 58%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  config←Get_JSON5 filename</code>
+<code> [1]   :If 0&lt;≢json←⊃F.NGET filename</code>
+<code> [2]       :Trap 11</code>
+<code> [3]           config←⎕JSON⍠('Dialect' 'JSON5')⊣json</code>
+<code> [4]       :Else</code>
+<code> [5]           qdmx←⎕DMX</code>
+<code> [6]           11 ⎕SIGNAL⍨'JSON import of &lt;',filename,'&gt; failed',{0=≢⍵:⍵ ⋄ ':'∊⍵:(¯1+⍵⍳':')↓⍵ ⋄ ': ',⍵}qdmx.Message</code>
+<code> [7]       :EndTrap</code>
+<code> [8]   :EndIf</code>
+<code> [9]   :If 0&lt;config.⎕NC'CIDER'</code>
+<code> [10]      flag←0</code>
+<code> [11]      :If 0&lt;config.CIDER.⎕NC'lx'  ⍝ Renamed from `lx` to `init` in 2022-07</code>
+<code class="emphasize">→[12]          config.CIDER.init←config.CIDER.lx</code>
+<code class="emphasize">→[13]          config.CIDER.⎕EX'lx'</code>
+<code class="emphasize">→[14]          flag←1</code>
+<code> [15]      :EndIf</code>
+<code> [16]      :If 0=config.CIDER.⎕NC'tests'</code>
+<code class="emphasize">→[17]          config.CIDER.tests←''</code>
+<code class="emphasize">→[18]          flag←1</code>
+<code> [19]      :EndIf</code>
+<code> [20]      :If 0=config.CIDER.⎕NC'make'</code>
+<code class="emphasize">→[21]          config.CIDER.make←''</code>
+<code class="emphasize">→[22]          flag←1</code>
+<code> [23]      :EndIf</code>
+<code> [24]      :If flag</code>
+<code class="emphasize">→[25]          (⊂config)Put_JSON5 filename</code>
+<code> [26]      :EndIf</code>
+<code> [27]  :EndIf</code>
+</div>
+<code class="header" id="listing_38">#.Cider.Cider.GetFunctionNameFromCiderConfigFile &mdash; 60%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  functionName←GetFunctionNameFromCiderConfigFile dummy</code>
+<code> [1]   functionName←''</code>
+<code> [2]   :If ⍬≢globalUserConfig←GetCiderGlobalConfigFileContent</code>
+<code> [3]   :AndIf 2=globalUserConfig.⎕NC'ExecuteAfterProjectOpen'</code>
+<code> [4]   :AndIf 0&lt;≢functionName←globalUserConfig.ExecuteAfterProjectOpen</code>
+<code> [5]       :If 3=⎕NC functionName</code>
+<code> [6]           :If 1≠1 2⊃⎕AT functionName</code>
+<code class="emphasize">→[7]               p'"ExecuteAfterProjectOpen" is not a monadic function, therefore not executed'</code>
+<code class="emphasize">→[8]               functionName←''</code>
+<code> [9]           :EndIf</code>
+<code> [10]      :Else</code>
+<code class="emphasize">→[11]          p'"ExecuteAfterProjectOpen" is not a function, therefore not executed'</code>
+<code class="emphasize">→[12]          functionName←''</code>
+<code> [13]      :EndIf</code>
+<code> [14]  :EndIf</code>
+</div>
+<code class="header" id="listing_39">#.Cider.Cider.ExtractLinkOptions &mdash; 62%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  options←ExtractLinkOptions config</code>
+<code> [1]  ⍝ This is slowly going to disappear because Link 4.0 will come with its own set of features</code>
+<code> [2]  ⍝ for setting Link parameters.</code>
+<code> [3]   options←⎕SE.Link.U.DefaultOpts ⎕NS''</code>
+<code> [4]   C←config.LINK</code>
+<code> [5]   overWrite←{0=≢⍵:⍺ ⋄ ⍵}</code>
+<code> [6]   :If 0&lt;C.⎕NC'arrays'</code>
+<code class="emphasize">→[7]       options.arrays(overWrite)←C.arrays</code>
+<code> [8]   :EndIf</code>
+<code> [9]   :If 0&lt;C.⎕NC'beforeRead'</code>
+<code class="emphasize">→[10]      options.beforeRead(overWrite)←C.beforeRead</code>
+<code> [11]  :EndIf</code>
+<code> [12]  :If 0&lt;C.⎕NC'beforeWrite'</code>
+<code class="emphasize">→[13]      options.beforeWrite(overWrite)←C.beforeWrite</code>
+<code> [14]  :EndIf</code>
+<code> [15]  :If 0&lt;C.⎕NC'caseCode'</code>
+<code class="emphasize">→[16]      options.caseCode(overWrite)←C.caseCode</code>
+<code> [17]  :EndIf</code>
+<code> [18]  :If 0&lt;C.⎕NC'codeExtensions'</code>
+<code class="emphasize">→[19]      options.codeExtensions(overWrite)←C.codeExtensions</code>
+<code> [20]  :EndIf</code>
+<code> [21]  :If 0&lt;C.⎕NC'fastLoad'</code>
+<code class="emphasize">→[22]      options.fastLoad(overWrite)←C.fastLoad</code>
+<code> [23]  :EndIf</code>
+<code> [24]  :If 0&lt;C.⎕NC'flatten'</code>
+<code class="emphasize">→[25]      options.flatten(overWrite)←C.flatten</code>
+<code> [26]  :EndIf</code>
+<code> [27]  :If 0&lt;C.⎕NC'forceExtensions'</code>
+<code class="emphasize">→[28]      options.forceExtensions(overWrite)←C.forceExtensions</code>
+<code> [29]  :EndIf</code>
+<code> [30]  :If 0&lt;C.⎕NC'forceFilenames'</code>
+<code> [31]      options.forceFilenames(overWrite)←C.forceFilenames</code>
+<code> [32]  :EndIf</code>
+<code> [33]  :If 0&lt;C.⎕NC'getFilename'</code>
+<code class="emphasize">→[34]      options.getFilename(overWrite)←C.getFilename</code>
+<code> [35]  :EndIf</code>
+<code> [36]  :If 0&lt;C.⎕NC'typeExtensions'</code>
+<code class="emphasize">→[37]      options.typeExtensions(overWrite)←↑C.typeExtensions</code>
+<code> [38]  :EndIf</code>
+<code> [39]  :If 0&lt;C.⎕NC'watch'</code>
+<code> [40]      options.watch←C.watch</code>
+<code> [41]  :EndIf</code>
+<code> [42]  :If 0&lt;C.⎕NC'fastLoad'</code>
+<code class="emphasize">→[43]      options.fastLoad←config.LINK.fastLoad</code>
+<code> [44]  :EndIf</code>
+</div>
+<code class="header" id="listing_40">#.Cider.Cider.PerformConfigChecks &mdash; 64%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  successFlag←{reportFlag}PerformConfigChecks config</code>
+<code> [1]   reportFlag←{0&lt;⎕NC ⍵:⍎⍵ ⋄ 1}'reportFlag'</code>
+<code> [2]   successFlag←⍬</code>
+<code> [3]   report←''</code>
+<code> [4]   tatinFolders←('dependencies' 'dependencies_dev'GetDependencies¨⊂config)~⊂''</code>
+<code> [5]   :For i :In ⍳≢tatinFolders</code>
+<code> [6]       tatinFolder←i⊃tatinFolders</code>
+<code> [7]       this←i⊃'dependencies' 'dependencies_dev'</code>
+<code> [8]       :If '='∊tatinFolder</code>
+<code> [9]           :If 1&lt;'='+.=tatinFolder</code>
+<code class="emphasize">→[10]              successFlag,←SUCCESS</code>
+<code> [11]          :Else</code>
+<code> [12]              (path namespace)←'='(≠⊆⊢)tatinFolder</code>
+<code> [13]              successFlag,←(1+0=(⎕NS'').{⎕NC ⍵}namespace)⊃FAILURE SUCCESS</code>
+<code> [14]              :If 0=¯1↑successFlag</code>
+<code class="emphasize">→[15]                  report,←⊂'Something is wrong with "',this,'"'</code>
+<code> [16]              :EndIf</code>
+<code> [17]          :EndIf</code>
+<code> [18]      :ElseIf ~','∊tatinFolder</code>
+<code class="emphasize">→[19]          successFlag,←SUCCESS</code>
+<code> [20]      :Else</code>
+<code> [21]               ⍝ More than one is invalid</code>
+<code class="emphasize">→[22]          report,←⊂'Something is wrong with "',this,'"'</code>
+<code> [23]      :EndIf</code>
+<code> [24]  :EndFor</code>
+<code> [25]  :If (⊃config.CIDER.make)∊'#⎕'</code>
+<code class="emphasize">→[26]      successFlag,←FAILURE</code>
+<code class="emphasize">→[27]      report,←⊂'"make" is defined with an absolute path; must be relative to the project'</code>
+<code> [28]  :ElseIf 0&lt;≢config.CIDER.make</code>
+<code> [29]  :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.make</code>
+<code class="emphasize">→[30]      report,←⊂'Warning: "make" does not point to a function!'</code>
+<code> [31]  :EndIf</code>
+<code> [32]  :If (⊃config.CIDER.tests)∊'#⎕'</code>
+<code class="emphasize">→[33]      successFlag,←FAILURE</code>
+<code class="emphasize">→[34]      report,←⊂'"tests" is defined with an absolute path; must be relative to the project (check "make")'</code>
+<code> [35]  :ElseIf 0&lt;≢config.CIDER.tests</code>
+<code> [36]  :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.tests</code>
+<code class="emphasize">→[37]      report,←⊂'Warning: "test" does not point to a function'</code>
+<code> [38]  :EndIf</code>
+<code> [39]  successFlag←∧/successFlag</code>
+<code> [40]  :If reportFlag</code>
+<code class="emphasize">→[41]  :AndIf 0&lt;≢report</code>
+<code class="emphasize">→[42]      ⎕←⍪report</code>
+<code> [43]  :EndIf</code>
+</div>
+<code class="header" id="listing_41">#.Cider.Cider.AddAlias &mdash; 67%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←AddAlias(folder alias)</code>
+<code> [1]  ⍝ Takes a folder and an alias.</code>
+<code> [2]  ⍝ If the folder does not exist `msg` carries a corresponding message.</code>
+<code> [3]  ⍝ * If the alias is already associated with the folder no action is taken</code>
+<code> [4]  ⍝ * If the alias is already defined with a different folder the user is asked to confirm overwriting it</code>
+<code> [5]  ⍝ * If the alias is undefined yet it as added</code>
+<code> [6]  ⍝ * You cannot delete an alias with this function.</code>
+<code> [7]   r←⍬</code>
+<code> [8]   ciderAliasFilename←GetCiderAliasFilename</code>
+<code> [9]   msg←''</code>
+<code> [10]  alias←⎕C alias~'[]'</code>
+<code> [11]  :If 0≠≢alias</code>
+<code> [12]  :AndIf 0&lt;≢ciderAliasFilename</code>
+<code> [13]      :If F.Exists ciderAliasFilename</code>
+<code> [14]          data←⊃F.NGET ciderAliasFilename 1</code>
+<code> [15]          :If ~F.Exists folder</code>
+<code class="emphasize">→[16]              (1 parms.batch)p'Could not find "',folder,'"'</code>
+<code> [17]          :ElseIf 0=+/(alias,'=')∘{⍺≡(≢⍺)↑⍵}¨data</code>
+<code> [18]              ind←({⍵↓⍨⍵⍳'='}¨data)⍳⊂folder</code>
+<code> [19]              :If ind≤≢data</code>
+<code class="emphasize">→[20]                  DropAlias{⍵↑⍨¯1+⍵⍳'='}ind⊃data</code>
+<code class="emphasize">→[21]                  data←⊃F.NGET ciderAliasFilename 1</code>
+<code> [22]              :EndIf</code>
+<code> [23]              (⊂data,⊂(⎕C alias),'=',folder)F.NPUT ciderAliasFilename 1</code>
+<code> [24]          :Else</code>
+<code> [25]              data←↑{'='(≠⊆⊢)⍵}¨data</code>
+<code> [26]              :If (⊂alias)∊data[;1]</code>
+<code> [27]                  row←data[;1]⍳⊂alias</code>
+<code> [28]                  path←2⊃data[row;]</code>
+<code> [29]                  (path folder)←F.EnforceSlash¨path folder</code>
+<code> [30]                  :If 'Win'≡A.GetOperatingSystem ⍬</code>
+<code> [31]                      (path_ folder_)←⎕C¨path folder</code>
+<code> [32]                  :Else</code>
+<code class="emphasize">→[33]                      (path_ folder_)←path folder</code>
+<code> [34]                  :EndIf</code>
+<code> [35]                  (path_ folder_)←{⍵↓⍨-'/'=¯1↑⍵}¨path_ folder_</code>
+<code> [36]                  :If ≢/path_ folder_</code>
+<code class="emphasize">→[37]                      q←'Alias [',alias,'] is already defined for:',CR,('   ',path),CR,'Overwrite?'</code>
+<code class="emphasize">→[38]                      :If C.YesOrNo q</code>
+<code class="emphasize">→[39]                          data[row;2]←⊂folder</code>
+<code class="emphasize">→[40]                          data←⊃¨{⍺,'=',⍵}/¨↓data</code>
+<code class="emphasize">→[41]                          (⊂data)F.NPUT ciderAliasFilename 1</code>
+<code> [42]                      :Else</code>
+<code class="emphasize">→[43]                          (1 parms.batch)p'Alias "',alias,'" is already in use with a different path - alias not assigned'</code>
+<code> [44]                      :EndIf</code>
+<code> [45]                  :EndIf</code>
+<code> [46]              :EndIf</code>
+<code> [47]          :EndIf</code>
+<code> [48]      :Else</code>
+<code class="emphasize">→[49]          (⊂(⎕C alias),'=',folder)F.NPUT ciderAliasFilename</code>
+<code> [50]      :EndIf</code>
+<code> [51]  :EndIf</code>
+</div>
+<code class="header" id="listing_42">#.Cider.Cider.GetMyUCMDsFolder &mdash; 67%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←GetMyUCMDsFolder</code>
+<code> [1]  ⍝ Returns standard path for Dyalog's MyUCMDs folder.</code>
+<code> [2]  ⍝ Works on all platforms but returns different results.\\</code>
+<code> [3]  ⍝ Under Windows typically:\\</code>
+<code> [4]  ⍝ `'C:\Users\{⎕AN}\Documents\MyUCMDs\'  ←→ GetMyUCMDsFolder`</code>
+<code> [5]   :If 'Win'≡A.GetOperatingSystem ⍬</code>
+<code> [6]       r←(2 ⎕NQ'.' 'GetEnvironment' 'USERPROFILE'),'\Documents\MyUCMDs'</code>
+<code> [7]   :Else</code>
+<code class="emphasize">→[8]       r←(2 ⎕NQ'.' 'GetEnvironment' 'Home'),'/MyUCMDs'</code>
+<code> [9]   :EndIf</code>
+</div>
+<code class="header" id="listing_43">#.Cider.Cider.ReportPackageOrigins &mdash; 70%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  msg←(reportFns ReportPackageOrigins)folder</code>
+<code> [1]  ⍝ Report where the package got installed from but not if all came from https://tatin.dev/</code>
+<code> [2]   msg←''</code>
+<code> [3]   data←Get_JSON5 folder,'/apl-buildlist.json'</code>
+<code> [4]   :If ~∧/'https://tatin.dev/'∘≡¨data.url</code>
+<code> [5]       noOf←{≢⍵}⌸data.url</code>
+<code> [6]       :If 1=≢noOf</code>
+<code> [7]           msg←'All packages (',(⍕noOf),') were originally installed from ',⊃data.url</code>
+<code> [8]           {}reportFns↓⎕FMT msg   ⍝ Report to ⎕SE only if installed from more than one URL</code>
+<code> [9]       :Else</code>
+<code class="emphasize">→[10]          msg←1 2⍴'Packages were originally installed from:' ''</code>
+<code class="emphasize">→[11]          msg⍪←↑noOf{⍵(('(',⍕⍺),' package',((1&lt;⍺)/'s'),')')}¨∪data.url</code>
+<code class="emphasize">→[12]          {}reportFns↓⎕FMT msg   ⍝ Report to ⎕SE only if installed from more than one URL</code>
+<code> [13]      :EndIf</code>
+<code> [14]  :EndIf</code>
+</div>
+<code class="header" id="listing_44">#.Cider.Cider.LoadTatinPackages &mdash; 72%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←x LoadTatinPackages(config folder projectSpace)</code>
+<code> [1]  ⍝ Load all installed packages (if any) into their designated host namespaces.</code>
+<code> [2]   r←SUCCESS</code>
+<code> [3]   (verbose batch)←2↑x,0</code>
+<code> [4]   pkgFolders←GetTatinDepedencyFolders config</code>
+<code> [5]   p←verbose batch∘{⍺ PrintToSession ⍵}</code>
+<code> [6]   :If 0&lt;≢pkgFolders</code>
+<code> [7]       :For pkgFolder :In pkgFolders</code>
+<code> [8]  ∆Retry:</code>
+<code> [9]           :If '='∊pkgFolder</code>
+<code> [10]              (pkgFolder_ target)←SplitTatinFolders pkgFolder</code>
+<code> [11]              'Target namespace for Tatin packages is addressed with absolute path (invalid)'Assert~(⊃target)∊'#⎕'</code>
+<code> [12]              target←projectSpace,'.',target</code>
+<code> [13]          :Else</code>
+<code> [14]              target←projectSpace</code>
+<code> [15]              pkgFolder_←pkgFolder</code>
+<code> [16]          :EndIf</code>
+<code> [17]          p'Attempting to load Tatin packages from ',pkgFolder_,' into ',target,'...'</code>
+<code> [18]          folder2←folder,'/',pkgFolder_</code>
+<code> [19]          :If F.Exists folder2</code>
+<code> [20]              :If 0&lt;0&lt;≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣folder2,'/*'</code>
+<code> [21]                  {}((1 batch)∘PrintToSession ReportPackageOrigins)folder2</code>
+<code> [22]                  :Trap 0</code>
+<code> [23]                      noOf←≢⎕SE.Tatin.LoadDependencies folder2 target</code>
+<code> [24]                      p(⍕noOf),' Tatin package',((1&lt;noOf)/'s'),' loaded'</code>
+<code> [25]                  :Else</code>
+<code> [26]                      qdmx←⎕DMX</code>
+<code> [27]                      :If 998=qdmx.EN</code>
+<code> [28]                          :If ∧/∨/¨'The build list in ' ' not installed:'⍷¨⊂qdmx.EM</code>
+<code class="emphasize">→[29]                              q←'ReinstallBecauseOfInconsistency@The installed packages don''t fit the dependency/build list file(s); re-install?'</code>
+<code class="emphasize">→[30]                              :If C.YesOrNo q</code>
+<code class="emphasize">→[31]                                  parms←⎕SE.Tatin.CreateReInstallParms</code>
+<code class="emphasize">→[32]                                  {}parms ⎕SE.Tatin.ReInstallDependencies folder2</code>
+<code class="emphasize">→[33]                                  →∆Retry</code>
+<code> [34]                              :Else</code>
+<code class="emphasize">→[35]                                  p'Packages in ',folder2,' need attention!'</code>
+<code> [36]                              :EndIf</code>
+<code> [37]                          :ElseIf ∨/'Invalid entry:'⍷qdmx.EM</code>
+<code> [38]                              q←'ReinstallBecauseOfInvalidPkg@There are invalid entries in the dependency list; re-install?'</code>
+<code> [39]                              :If C.YesOrNo q</code>
+<code> [40]                                  parms←⎕SE.Tatin.CreateReInstallParms</code>
+<code> [41]                                  parms.batch←batch</code>
+<code> [42]                                  parms ⎕SE.Tatin.ReInstallDependencies folder2</code>
+<code> [43]                                  →∆Retry</code>
+<code> [44]                              :Else</code>
+<code class="emphasize">→[45]                                  p'Packages in ',folder2,' need attention!'</code>
+<code class="emphasize">→[46]                                  r←FAILURE</code>
+<code> [47]                              :EndIf</code>
+<code> [48]                          :Else</code>
+<code class="emphasize">→[49]                              p qdmx.EM</code>
+<code class="emphasize">→[50]                              r←FAILURE</code>
+<code> [51]                          :EndIf</code>
+<code> [52]                      :EndIf</code>
+<code> [53]                  :EndTrap</code>
+<code> [54]              :Else</code>
+<code class="emphasize">→[55]                  (1 parms.batch)p'Tatin installation folder "',folder2,'" is empty, therefore no packages loaded'</code>
+<code> [56]              :EndIf</code>
+<code> [57]          :Else</code>
+<code class="emphasize">→[58]              (1 parms.batch)p'Tatin installation folder "',folder2,'" does not exists, therefore no packages loaded'</code>
+<code> [59]          :EndIf</code>
+<code> [60]      :EndFor</code>
+<code> [61]  :EndIf</code>
+</div>
+<code class="header" id="listing_45">#.Cider.Cider.CheckJsonSyntax &mdash; 75%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> flag←CheckJsonSyntax json</code>
+<code> [1]  :Trap 0</code>
+<code> [2]      {}⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆json</code>
+<code> [3]      flag←1</code>
+<code> [4]  :Else</code>
+<code class="emphasize">→[5]      flag←0</code>
+<code> [6]  :EndTrap</code>
+</div>
+<code class="header" id="listing_46">#.Cider.Cider.SplitTatinFolders &mdash; 80%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←SplitTatinFolders pkgFolder</code>
+<code> [1]  msg←'Something is wrong with the "dependencies" or "dependencies_dev" setting in Cider.config'</code>
+<code> [2]  :Trap 0</code>
+<code> [3]      r←'='(≠⊆⊢)pkgFolder</code>
+<code> [4]  :Else</code>
+<code class="emphasize">→[5]      msg Assert 0</code>
+<code> [6]  :EndTrap</code>
+<code> [7]  msg Assert 2=≢r</code>
+<code> [8] ⍝Done</code>
+</div>
+<code class="header" id="listing_47">#.Cider.Cider.ListTatinPackages &mdash; 82%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←ListTatinPackages y</code>
+<code> [1]   :If '[]'≡y[1,≢y]</code>
+<code> [2]       path←GetFolderFromAlias2 y</code>
+<code> [3]   :Else</code>
+<code class="emphasize">→[4]       path←y</code>
+<code> [5]   :EndIf</code>
+<code> [6]   cfgFilename←path,'/cider.config'</code>
+<code> [7]   'No Cider config file found'Assert F.Exists cfgFilename</code>
+<code> [8]   cfg←ReadProjectConfigFile cfgFilename</code>
+<code> [9]   tatinFolders←GetTatinDepedencyFolders cfg</code>
+<code> [10]  :If 0=≢tatinFolders</code>
+<code class="emphasize">→[11]      r←'This Cider project has no Tatin packages'</code>
+<code> [12]  :Else</code>
+<code> [13]      tatinFolders←{⍵↑⍨¯1+⍵⍳'='}¨tatinFolders</code>
+<code> [14]      buildFilenames←((⊂path,'/'),¨tatinFolders),¨⊂'/apl-buildlist.json'</code>
+<code> [15]      :If 0∊b←F.Exists¨buildFilenames</code>
+<code class="emphasize">→[16]          ⎕←'Folder(s) do not exist: ',⊃,/(⊂(⎕UCS 13),' '),¨(~b)/buildFilenames</code>
+<code class="emphasize">→[17]          buildFilenames←b/buildFilenames</code>
+<code> [18]      :EndIf</code>
+<code> [19]      'No directory noted on parameter "dependencies/dependencies_dev" found'Assert∨/b</code>
+<code> [20]      buildLists←{⎕JSON⍠('Dialect' 'JSON5')⊣⊃F.NGET ⍵}¨buildFilenames</code>
+<code> [21]      r←⍉∘↑¨(⊂¨' ',¨¨buildLists.packageID),¨buildLists.(principal url)</code>
+<code> [22]      r←{⍵,'? '[1+'https://tatin.dev/'∘≡¨⍵[;3]]}¨r</code>
+<code> [23]      r←(⊂' Package-ID' 'Principal' 'URL' '')⍪¨(⊂'' '' '' '')⍪¨r</code>
+<code> [24]      (2⌷¨r)←(⊂' ' '' '' ''),¨¨({(¯1 0 0 0)+¨⊃¨((⌈⌿⍴¨,¨⍵))}¨r)⍴¨¨'-'</code>
+<code> [25]      r←{w←⍵ ⋄ w[2;4]←' ' ⋄ w}¨r</code>
+<code> [26]      r←⊃⍪/((⊂¨'*** '∘,¨(⊂path,'/'),¨tatinFolders),¨⊂'' '' '')⍪¨r</code>
+<code> [27]  :EndIf</code>
+</div>
+<code class="header" id="listing_48">#.Cider.Cider.CloseProject &mdash; 88%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←{list}CloseProject projects</code>
+<code> [1]  ⍝ Simply breaks the Link between a project and its folder on disk.</code>
+<code> [2]  ⍝ In case ⍵ is empty ALL projects are closed.</code>
+<code> [3]  ⍝ `projects` may be one of:</code>
+<code> [4]  ⍝ 1. Empty vector (=close all)</code>
+<code> [5]  ⍝ 2. One or more projectName like `#.Foo`</code>
+<code> [6]  ⍝ 3. One or more alias names like `[my-alias]`</code>
+<code> [7]  ⍝ 4. One or more paths of currently open projects</code>
+<code> [8]  ⍝ 5. A mixture of 2, 3 and 4</code>
+<code> [9]  ⍝ Returns the number of projects closed.</code>
+<code> [10]  r←0</code>
+<code> [11]  list←{0=⎕NC ⍵:ListOpenProjects 1 ⋄ ⍎⍵}'list'</code>
+<code> [12]  :If 0&lt;≢list</code>
+<code> [13]      :If 0=≢projects</code>
+<code class="emphasize">→[14]          res←{⎕SE.Link.Break ⍵}¨list</code>
+<code class="emphasize">→[15]          r←+/{'Unlinked: '{⍺≡(≢⍺)↑⍵}⍵}¨res[;1]</code>
+<code> [16]      :Else</code>
+<code> [17]          list[;2]←F.NormalizePath list[;2]</code>
+<code> [18]          projects←⊆projects</code>
+<code> [19]          :For project :In projects</code>
+<code> [20]              :If ∧/'[]'∊project</code>
+<code> [21]                  ind←list[;4]⍳⊂⎕C project~'[]'</code>
+<code> [22]              :Else</code>
+<code> [23]                  ind←(⎕C list[;1])⍳⊂⎕C project</code>
+<code> [24]              :EndIf</code>
+<code> [25]              :If ind&gt;≢list</code>
+<code> [26]                  ind←list[;2]⍳⊂F.NormalizePath project</code>
+<code> [27]              :EndIf</code>
+<code> [28]              :If (≢list)≥ind</code>
+<code> [29]                  res←⎕SE.Link.Break 1⊃list[ind;]</code>
+<code> [30]                  r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res</code>
+<code> [31]              :EndIf</code>
+<code> [32]          :EndFor</code>
+<code> [33]      :EndIf</code>
+<code> [34]  :EndIf</code>
+</div>
+<code class="header" id="listing_49">#.Cider.Cider.GetFolderFromAlias2 &mdash; 89%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  folder←GetFolderFromAlias2 alias</code>
+<code> [1]  ⍝ Translates the alias in "folder" (if any) into a path.\\</code>
+<code> [2]  ⍝ In case the alias does not exist an empty vector is returned.\\</code>
+<code> [3]  ⍝ If an alias is defined it is saved, possibly by overwriting the old one.</code>
+<code> [4]   folder←''</code>
+<code> [5]   filename←GetCiderAliasFilename</code>
+<code> [6]   :If F.Exists filename</code>
+<code> [7]       :If 0&lt;≢data←⊃F.NGET filename 1</code>
+<code> [8]           data←↑{'='(≠⊆⊢)⍵}¨data</code>
+<code> [9]           alias←⎕C alias~'[]'</code>
+<code> [10]          :If (⊂alias)∊data[;1]</code>
+<code> [11]              folder←2⊃data[data[;1]⍳⊂alias;]</code>
+<code> [12]          :Else</code>
+<code class="emphasize">→[13]              ('"',alias,'" is not a valid alias')Assert(⎕NS'').{0=⎕NC ⍵}⎕C alias~'[]'</code>
+<code> [14]          :EndIf</code>
+<code> [15]      :EndIf</code>
+<code> [16]  :EndIf</code>
+</div>
+<code class="header" id="listing_50">#.Cider.Cider.OpenProject &mdash; 90%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>   (successFlag ∆LOG)←OpenProject y</code>
+<code> [1]   ⍝ Open a Cider project.\\</code>
+<code> [2]   ⍝ `y` must be one of:</code>
+<code> [3]   ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`</code>
+<code> [4]   ⍝  * A character vector holding the full path to a project</code>
+<code> [5]    successFlag←FAILURE ⋄ ∆LOG←''</code>
+<code> [6]    :If 80=⎕DR y</code>
+<code> [7]        parms←CreateOpenParms''</code>
+<code> [8]        parms.folder←y</code>
+<code> [9]    :Else</code>
+<code> [10]       parms←CreateOpenParms y</code>
+<code> [11]   :EndIf</code>
+<code> [12]   '"folder" must be specified'Assert 0&lt;parms.⎕NC'folder'</code>
+<code> [13]   '"folder" must be specified'Assert 0&lt;≢parms.folder</code>
+<code> [14]   '"projectSpace" must be specified'Assert 0&lt;parms.⎕NC'projectSpace'</code>
+<code> [15]   '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both' 0</code>
+<code> [16]   p←{⍺←parms.(verbose batch) ⋄ ⍺ PrintToSession ⍵}</code>
+<code> [17]   parms←(p GetFolderFromAlias)parms</code>
+<code> [18]   ('Folder does not exist: ',parms.folder)Assert F.Exists parms.folder</code>
+<code> [19]   p((1+parms.importFlag)⊃'Loading' 'Importing'),' project from ',parms.folder</code>
+<code> [20]   parms.projectSpace←⍕parms.projectSpace</code>
+<code> [21]   :If 0&lt;≢parms.parent</code>
+<code> [22]       parms.parent←,parms.parent</code>
+<code> [23]       'First level of parent must be either "#" or "⎕SE"'Assert(⊆1 ⎕C{⍵↑⍨¯1+⍵⍳'.'}parms.parent)∊,¨'#' '⎕SE'</code>
+<code> [24]       ('Parent namespace "',parms.parent,'" does not exist')Assert(9=⎕NC parms.parent)∨(⊂,1 ⎕C parms.parent)∊,¨'#' '⎕SE'</code>
+<code> [25]   :EndIf</code>
+<code> [26]   :If 0&lt;≢parms.projectSpace</code>
+<code> [27]       ('"projectSpace" must not carry a "." (see "parent"')Assert 0='.'+.=parms.projectSpace</code>
+<code> [28]       'Project space is not a valid APL name'Assert{0::0 ⋄ 0=(⎕NS'').⎕NC ⍵}⍕parms.projectSpace</code>
+<code> [29]   :EndIf</code>
+<code> [30]   parms.alias←⎕C parms.alias</code>
+<code> [31]   :If parms.alias≡'.'</code>
+<code> [32]       parms.alias←⎕C 2⊃{1 ⎕NPARTS(-(¯1↑⍵)∊'/\')↓⍵}parms.folder</code>
+<code> [33]   :EndIf</code>
+<code> [34]   AddAlias parms.folder parms.alias</code>
+<code> [35]   configFilename←parms.folder,'/cider.config'</code>
+<code> [36]   ('No file "cider.config" found in ',parms.folder)Assert F.Exists configFilename</code>
+<code> [37]   config←Get_JSON5 configFilename</code>
+<code> [38]   :If 0=≢parms.projectSpace                                                      ⍝ Was it specified as argument?</code>
+<code> [39]   :AndIf 0=≢parms.projectSpace←config.CIDER.projectSpace                         ⍝ Nope, so the config file rules...</code>
+<code class="emphasize">→[40]       parms.projectSpace←'#'                                                     ⍝ ... but only is it is not empty</code>
+<code> [41]   :EndIf</code>
+<code> [42]   :If 0=≢parms.parent                                                            ⍝ Was it specified as argument?</code>
+<code> [43]       parms.parent←config.CIDER.parent                                           ⍝ Nope, so the config file rules</code>
+<code> [44]   :EndIf</code>
+<code> [45]   :If 0=≢parms.projectSpace</code>
+<code class="emphasize">→[46]       projectSpace_←⍎parms.parent                                                ⍝ Is either # or ⎕SE</code>
+<code> [47]   :Else</code>
+<code> [48]       :If ~(,⊂1 ⎕C parms.parent)∊,¨'#' '⎕SE'</code>
+<code> [49]           ('Namespace &lt;',parms.parent,' does not exist')Assert 9=⎕NC parms.parent</code>
+<code> [50]       :EndIf</code>
+<code> [51]       projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                     ⍝ Create project space from "parent" to avoid problems</code>
+<code> [52]   :EndIf</code>
+<code> [53]   config←projectSpace_.⎕NS config</code>
+<code> [54]   'Already opened?!'Assert~CheckForAlreadyOpened projectSpace_</code>
+<code> [55]   config←parms PolishProperties config</code>
+<code> [56]   config←HandleLinkParameters config configFilename</code>
+<code> [57]   config←CheckParameters config</code>
+<code> [58]   configFilename HandleSysVars config</code>
+<code> [59]   source←parms.folder,(0&lt;≢config.CIDER.source)/'/',config.CIDER.source           ⍝ For linking we are only interested in the code folder</code>
+<code> [60]   ('Source folder does not exist: ',parms.folder)Assert F.Exists parms.folder</code>
+<code> [61]   linkOptions←ExtractLinkOptions config                                          ⍝ Merge the default options with Cider's options</code>
+<code> [62]   :If 0≢parms.watch</code>
+<code> [63]       config.LINK.watch←linkOptions.watch←parms.watch</code>
+<code> [64]   :EndIf</code>
+<code> [65]   p'Bringing in the source code...'</code>
+<code> [66]   projectSpace_←CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source</code>
+<code> [67]   :If parms.importFlag</code>
+<code> [68]       res←linkOptions ⎕SE.Link.Import projectSpace_ source                       ⍝ Get the code into the WS</code>
+<code> [69]       dmx←⎕DMX</code>
+<code> [70]       ('LINK failed to import the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res</code>
+<code> [71]       p'Code imported'</code>
+<code> [72]   :Else</code>
+<code> [73]       res←linkOptions ⎕SE.Link.Create projectSpace_ source                       ⍝ Get the code into the WS</code>
+<code> [74]       dmx←⎕DMX</code>
+<code> [75]       ('LINK failed to load the code (',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res</code>
+<code> [76]       :If ∨/'ERRORS ENCOUNTERED:'⍷res</code>
+<code> [77]           (1 parms.batch)p res</code>
+<code> [78]       :EndIf</code>
+<code> [79]       {}ReportLinkSettings⍣(~parms.batch)⊣config</code>
+<code> [80]   :EndIf</code>
+<code> [81]   :If 0=parms.noPkgLoad</code>
+<code> [82]       pkgStatus←parms.folder CheckForTatinPackages config</code>
+<code> [83]       :If 0&lt;pkgStatus</code>
+<code> [84]           :If 0=parms.importFlag</code>
+<code> [85]               :Trap 0</code>
+<code> [86]                   CheckPackagesStatus config parms pkgStatus</code>
+<code> [87]               :Else</code>
+<code class="emphasize">→[88]                   ⎕SE._Tatin.Client.CloseConnections 1                           ⍝ Just in case...</code>
+<code class="emphasize">→[89]                   qdmx←⎕DMX</code>
+<code class="emphasize">→[90]                   buff←''</code>
+<code class="emphasize">→[91]                   buff,←⊂'ERROR: Checking Tatin package status in ',parms.folder</code>
+<code class="emphasize">→[92]                   buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM</code>
+<code class="emphasize">→[93]                   (1 parms.batch)p buff</code>
+<code> [94]               :EndTrap</code>
+<code> [95]           :EndIf</code>
+<code> [96]           :Trap 0</code>
+<code> [97]               :If 0=parms.(verbose batch)LoadTatinPackages config parms.folder(⍕projectSpace_)</code>
+<code class="emphasize">→[98]                   (1 parms.batch)p'Package folder ',parms.folder,' needs attention!'</code>
+<code> [99]               :EndIf</code>
+<code> [100]          :Else</code>
+<code> [101]              ⎕SE._Tatin.Client.CloseConnections 1                               ⍝ Just in case...</code>
+<code> [102]              qdmx←⎕DMX</code>
+<code> [103]              buff←''</code>
+<code> [104]              buff,←⊂'ERROR: loading Tatin packages from ',parms.folder</code>
+<code> [105]              buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM</code>
+<code> [106]              (1 parms.batch)p buff</code>
+<code> [107]          :EndTrap</code>
+<code> [108]      :EndIf</code>
+<code> [109] ⍝Morten⍝  LoadNugetDependencies ....    //   p Dependency 'nuget' '' parms.folder 0 projectSpace_         ⍝ Now establish NuGet dependencies, if any</code>
+<code> [110]  :EndIf</code>
+<code> [111]  InjectConfigDataIntoProject config projectSpace_ parms.folder</code>
+<code> [112]  InjectTatinVars projectSpace_ parms.folder</code>
+<code> [113]  {}parms ExecProjectInitFunction⍣(~parms.suppressInit)⊣config projectSpace_</code>
+<code> [114]  {}ExecUserFunction⍣(~parms.ignoreUserExec)⊣config</code>
+<code> [115]  parms CheckOnToDo projectSpace_</code>
+<code> [116]  successFlag←SUCCESS</code>
+<code> [117]  CheckForGit parms.folder config parms</code>
+<code> [118]  p'Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,,{(,'#')≡,⍵:'"' ⋄ '.',⍵,'"'}parms.projectSpace</code>
+<code> [119] ⍝Done</code>
+</div>
+<code class="header" id="listing_51">#.Cider.Cider.UpdatePackages &mdash; 94%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←UpdatePackages(folders reports parms)</code>
+<code> [1]  ⍝ Update Tatin install folders by running ReInstallDependencies with the updateFlag set</code>
+<code> [2]  ⍝ Returns the number of install folders updated.</code>
+<code> [3]   r←0</code>
+<code> [4]   updateParms←⎕SE.Tatin.CreateReInstallParms</code>
+<code> [5]   updateParms.update←1</code>
+<code> [6]   updateParms.quiet←parms.batch</code>
+<code> [7]   :For i :In ⍳≢reports</code>
+<code> [8]       report←i⊃reports</code>
+<code> [9]       :If 0&lt;≢report</code>
+<code> [10]          folder←{⍵↑⍨¯1+⍵⍳'='}i⊃folders</code>
+<code> [11]          1 parms.batch p'Later versions in &lt;',(AddSlash folder),'&gt; :'</code>
+<code> [12]          1 parms.batch p ⎕FMT↑{(1⊃⍵),' ==&gt; ',(2⊃⍵)}¨↓report</code>
+<code> [13]          :If ~updateFlag←2≡parms.checkPackageVersions</code>
+<code class="emphasize">→[14]              updateFlag←1 C.YesOrNo'ReinstallLatest@Re-install latest versions in &lt;',(AddSlash folder),'&gt; ?'</code>
+<code> [15]          :EndIf</code>
+<code> [16]          :If updateFlag</code>
+<code> [17]              1 parms.batch p'Re-installing all packages in &lt;',(AddSlash folder),'&gt; ...'</code>
+<code> [18]              updateParms ⎕SE.Tatin.ReInstallDependencies parms.folder,'/',folder</code>
+<code> [19]              r+←1</code>
+<code> [20]          :EndIf</code>
+<code> [21]      :EndIf</code>
+<code> [22]  :EndFor</code>
+</div>
+<code class="header" id="listing_52">#.Cider.Cider.CheckPackagesStatus &mdash; 95%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←CheckPackagesStatus(config parms pkgStatus)</code>
+<code> [1]  ⍝ Check whether Tatin packages should be updated in case parms.importFlag is not 1.</code>
+<code> [2]  ⍝ When pkgStatus is 2 it means that packages have just been re-installed, so no need to check for later versions.</code>
+<code> [3]  ⍝ This is ruled by parms.checkPackageVersions:</code>
+<code> [4]  ⍝ ⍬ means the user will be asked for both checking and updating</code>
+<code> [5]  ⍝ 0 means don't update</code>
+<code> [6]  ⍝ 1 means yes, check, but ask before updating</code>
+<code> [7]  ⍝ 2 means update without further ado</code>
+<code> [8]   r←⍬</code>
+<code> [9]   folders←GetTatinDepedencyFolders config</code>
+<code> [10]  :If 0&lt;≢folders</code>
+<code> [11]      :If 0≢parms.checkPackageVersions</code>
+<code> [12]      :AndIf 2&gt;pkgStatus</code>
+<code> [13]          :If (⊂parms.checkPackageVersions)∊⍬ 1</code>
+<code> [14]          :AndIf 0=parms.batch</code>
+<code class="emphasize">→[15]              checkFlag←0 C.YesOrNo' Report availability of later versions of installed Tatin packages?'</code>
+<code> [16]          :Else</code>
+<code> [17]              checkFlag←2≡parms.checkPackageVersions</code>
+<code> [18]          :EndIf</code>
+<code> [19]      :Else</code>
+<code> [20]          checkFlag←0</code>
+<code> [21]      :EndIf</code>
+<code> [22]      :If checkFlag</code>
+<code> [23]          report←⍬</code>
+<code> [24]          1 ⎕SE._Tatin.Client.EstablishRumbaClients ⍬</code>
+<code> [25]          :If 0&lt;≢report←report CheckTatinFoldersForLaterVersions parms folders</code>
+<code> [26]          :AndIf 0=+/⊃,/4⌷[2]¨report</code>
+<code> [27]              (1 parms.batch)p'No later versions found '</code>
+<code> [28]              :If 0&lt;≢buff←(⊂'https://tatin.dev/')~⍨⊃,/3⌷[2]¨report</code>
+<code> [29]                  plural←1&lt;≢buff</code>
+<code> [30]                  (1 parms.batch)p{'Note that ',(⍕≢⍵),' package',(plural/'s'),((1+plural)⊃' was' ' were'),' loaded from ',⊃{⍺,',',⍵}/∪⍵}buff</code>
+<code> [31]              :EndIf</code>
+<code> [32]          :Else</code>
+<code> [33]              report←{⍵[;4]⌿⍵}¨report</code>
+<code> [34]              UpdatePackages folders report parms</code>
+<code> [35]          :EndIf</code>
+<code> [36]          ⎕SE._Tatin.Client.CloseConnections 1</code>
+<code> [37]      :EndIf</code>
+<code> [38]  :EndIf</code>
+</div>
+<code class="header" id="listing_53">#.Cider.Cider.ListOpenProjects &mdash; 95%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←ListOpenProjects verboseFlag</code>
+<code> [1]   '⍵ must be a Boolean'Assert(⊂verboseFlag)∊0 1</code>
+<code> [2]   r←(0(2+2×verboseFlag))⍴''</code>
+<code> [3]   res←⎕SE.Link.Status''</code>
+<code> [4]   :If 'No active links'≢res</code>
+<code> [5]       :If 0&lt;≢res←(∧/'Namespace' 'Files'∊res[1;])↓res   ⍝ Will become superfluous with a proper Link API but don't do damage</code>
+<code> [6]           'Link demands a Resync!'Assert~∨/'Link.Resync required'⍷∊res</code>
+<code> [7]       :AndIf 0&lt;≢res←({⊃9=⍵.⎕NC'CiderConfig'}∘⍎¨res[;1])⌿res</code>
+<code> [8]           r←res[;,1],({6::'' ⋄ (⍎⍵).CiderConfig.HOME}¨res[;1])</code>
+<code> [9]           :If verboseFlag</code>
+<code> [10]              r,←res[;3]</code>
+<code> [11]          :EndIf</code>
+<code> [12]          r←(0&lt;≢¨r[;2])⌿r</code>
+<code> [13]          r[;2]←DropTrailingSlash¨r[;2]</code>
+<code> [14]          r[;2]←F.EnforceSlash¨r[;2]</code>
+<code> [15]          :If verboseFlag</code>
+<code> [16]              :If 0&lt;≢aliases←GetAliasFileContent</code>
+<code> [17]                  aliases[;2]←DropTrailingSlash¨aliases[;2]</code>
+<code> [18]              :AndIf 0&lt;≢aliases←(aliases[;2]∊r[;2])⌿aliases</code>
+<code> [19]                  r,←⊂''</code>
+<code> [20]                  ind←r[;2]⍳aliases[;2]</code>
+<code> [21]                  r[ind;4]←aliases[;1]</code>
+<code> [22]              :Else</code>
+<code class="emphasize">→[23]                  r,←⊂''</code>
+<code> [24]              :EndIf</code>
+<code> [25]          :EndIf</code>
+<code> [26]      :EndIf</code>
+<code> [27]  :EndIf</code>
+</div>
+<code class="header" id="listing_54">#.Cider.Cider.CreateOpenParms &mdash; 96%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  parms←CreateOpenParms y</code>
+<code> [1]  ⍝ Creates a namespace with all parameters one might pass to `OpenProject`.\\</code>
+<code> [2]  ⍝ `y` might be an empty vector or a namespace with some such parameters.</code>
+<code> [3]  ⍝ Any parameters passed this way overwrite defaults.</code>
+<code> [4]   parms←(1⊃1↓⎕RSI,⎕THIS).⎕NS''      ⍝ Create namespace where we got called from</code>
+<code> [5]   parms.folder←''</code>
+<code> [6]   parms.projectSpace←''</code>
+<code> [7]   parms.alias←''</code>
+<code> [8]   parms.parent←''</code>
+<code> [9]   parms.suppressInit←0</code>
+<code> [10]  parms.ignoreUserExec←0</code>
+<code> [11]  parms.importFlag←0</code>
+<code> [12]  parms.noPkgLoad←0</code>
+<code> [13]  parms.verbose←GetGlobalVerboseDefault</code>
+<code> [14]  parms.batch←0</code>
+<code> [15]  parms.watch←(1+HasDotNet)⊃'ns' 'both'</code>
+<code> [16]  parms.checkPackageVersions←⍬      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update</code>
+<code> [17]  :If ~(⊂y)∊''⍬</code>
+<code> [18]  :AndIf 9=⎕NC'y'</code>
+<code> [19]      :If 9=y.⎕NC'projectSpace'</code>
+<code class="emphasize">→[20]          y.projectSpace←⍕y.projectSpace</code>
+<code> [21]      :EndIf</code>
+<code> [22]      :If 9=y.⎕NC'parent'</code>
+<code> [23]          y.parent←⍕y.parent</code>
+<code> [24]      :EndIf</code>
+<code> [25]      '⍵ must not contain references'Assert 0=≢y.⎕NL 9</code>
+<code> [26]      (b{0=+/b:'' ⋄ 'Invalid parameter: ',⊃{⍺,',',⍵}/⍺/⍵}l)Assert 0=+/b←~(l←' '~⍨¨↓y.⎕NL 2)∊' '~⍨¨↓parms.⎕NL 2</code>
+<code> [27]      :If 0&lt;≢list←' '~⍨¨↓y.⎕NL 2</code>
+<code> [28]          parms⍎¨list{' '=1↑0⍴⍵:⍺,'←''',⍵,'''' ⋄ ⍵≡⍬:⍺,'←⍬' ⋄ ⍺,'←',⍕⍵}¨y.{⍎⍵}¨list</code>
+<code> [29]      :EndIf</code>
+<code> [30]  :EndIf</code>
+</div>
+<code class="header" id="listing_55">#.Cider.Cider.AddSlash &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> path←AddSlash path</code>
+<code> [1]  path,←(~(¯1↑path)∊'/\')/'/'</code>
+</div>
+<code class="header" id="listing_56">#.Cider.Cider.Assert &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⎕ML←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),11}</code>
+</div>
+<code class="header" id="listing_57">#.Cider.Cider.BitsToInt &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> BitsToInt←{(32⍴2)⊥⌽32↑⍵}</code>
+</div>
+<code class="header" id="listing_58">#.Cider.Cider.CR &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←CR</code>
+<code> [1]  r←⎕UCS 13</code>
+</div>
+<code class="header" id="listing_59">#.Cider.Cider.CheckForAlreadyOpened &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> flag←CheckForAlreadyOpened projectSpace</code>
+<code> [1] ⍝ Returns a 1 in case projectSpace is already LINKed, otherwise 0</code>
+<code> [2]  flag←0</code>
+<code> [3]  :If 2=⍴⍴activeLinks←⎕SE.Link.Status''</code>
+<code> [4]  :AndIf 0&lt;≢activeLinks                                          ⍝ Maybe one day when Link has a real API...</code>
+<code> [5]      flag←(⊂⍕projectSpace)∊activeLinks[;1]</code>
+<code> [6]  :EndIf</code>
+</div>
+<code class="header" id="listing_60">#.Cider.Cider.CheckParameters &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {config}←CheckParameters config</code>
+<code> [1]  ⍝ Check the parameters for being complete and valid</code>
+<code> [2]   p'Checking parameters...'</code>
+<code> [3]   list←' '~⍨¨⊃,/↓¨config.(LINK CIDER).⎕NL 2 9</code>
+<code> [4]   list2←list~GetValidCiderParams</code>
+<code> [5]   bool←(list~GetValidCiderParams)∊GetValidLinkParams</code>
+<code> [6]   ('Invalid LINK parameter',((1&lt;+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool</code>
+<code> [7]   bool←GetValidLinkParams∊list2</code>
+<code> [8]  ⍝TODO⍝  ('Missing LINK parameter',((1&lt;+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidLinkParams)Assert∧/bool</code>
+<code> [9]   list2←list~GetValidLinkParams</code>
+<code> [10]  bool←(list~GetValidLinkParams)∊GetValidCiderParams</code>
+<code> [11]  ('Invalid Cider parameter',((1&lt;+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool</code>
+<code> [12]  list←' '~⍨¨↓config.CIDER.⎕NL 2 9</code>
+<code> [13]  bool←GetValidCiderParams∊list</code>
+<code> [14]  ('Missing Cider parameter',((1&lt;+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams)Assert∧/bool</code>
+<code> [15]  p'Parameters are okay'</code>
+<code> [16] ⍝Done</code>
+</div>
+<code class="header" id="listing_61">#.Cider.Cider.DropAlias &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {successFlag}←DropAlias alias</code>
+<code> [1]   ciderAliasFilename←GetCiderAliasFilename</code>
+<code> [2]   successFlag←FAILURE</code>
+<code> [3]   :If 0≠≢alias</code>
+<code> [4]   :AndIf 0&lt;≢ciderAliasFilename</code>
+<code> [5]       :If F.Exists ciderAliasFilename</code>
+<code> [6]           noOf←≢data←⊃F.NGET ciderAliasFilename 1</code>
+<code> [7]           data←((⊆⎕C alias),¨'='){⍵/⍨~((⍵↑⍨¨⍵⍳¨'='))∊⍺}data</code>
+<code> [8]           :If noOf&gt;≢data</code>
+<code> [9]               (⊂data)F.NPUT ciderAliasFilename 1</code>
+<code> [10]              successFlag←SUCCESS</code>
+<code> [11]          :EndIf</code>
+<code> [12]      :EndIf</code>
+<code> [13]  :EndIf</code>
+</div>
+<code class="header" id="listing_62">#.Cider.Cider.DropTrailingSlash &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> txt←DropTrailingSlash txt</code>
+<code> [1]  txt↓⍨←-'/\'∊⍨¯1↑txt</code>
+</div>
+<code class="header" id="listing_63">#.Cider.Cider.ExecProjectInitFunction &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←parms ExecProjectInitFunction(config projectSpace)</code>
+<code> [1]  ⍝ Check whether a function "lx" is specified in the configuration and if so execute it.</code>
+<code> [2]   r←0</code>
+<code> [3]   :If 0&lt;≢config.CIDER.init</code>
+<code> [4]       :If '⋄'∊config.CIDER.init</code>
+<code> [5]           (⊂projectSpace config parms)ExecProjectFunction_¨'⋄'(≠⊆⊢)config.CIDER.init</code>
+<code> [6]       :Else</code>
+<code> [7]           (projectSpace config parms)ExecProjectFunction_ config.CIDER.init</code>
+<code> [8]       :EndIf</code>
+<code> [9]   :EndIf</code>
+</div>
+<code class="header" id="listing_64">#.Cider.Cider.FAILURE &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←FAILURE</code>
+<code> [1]  r←0</code>
+</div>
+<code class="header" id="listing_65">#.Cider.Cider.GetAliasFileContent &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←GetAliasFileContent</code>
+<code> [1]   r←0 2⍴''</code>
+<code> [2]   filename←GetCiderAliasFilename</code>
+<code> [3]   :If F.Exists filename</code>
+<code> [4]   :AndIf 0&lt;≢buff←⊃F.NGET filename 1</code>
+<code> [5]   :AndIf 0&lt;≢buff←(0&lt;≢¨buff)/buff</code>
+<code> [6]       r←↑{'='(≠⊆⊢)⍵}¨buff</code>
+<code> [7]       r[;1]←⎕C¨r[;1]</code>
+<code> [8]       r[;2]←F.EnforceSlash¨r[;2]</code>
+<code> [9]       r[;2]←{⍵↓⍨¯1×(¯1↑⍵)∊'/\'}¨r[;2]</code>
+<code> [10]      r←r[⍋r[;1];]</code>
+<code> [11]  :EndIf</code>
+</div>
+<code class="header" id="listing_66">#.Cider.Cider.GetCiderAliasFilename &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> filename←GetCiderAliasFilename</code>
+<code> [1]  filename←''</code>
+<code> [2]  folder←GetCiderGlobalConfigHomeFolder</code>
+<code> [3]  filename←folder,'aliase.txt'</code>
+<code> [4] ⍝Done</code>
+</div>
+<code class="header" id="listing_67">#.Cider.Cider.GetCiderGlobalConfigFileContent &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←GetCiderGlobalConfigFileContent</code>
+<code> [1]  ⍝ Returns a namespace with all settings (if any) in the (optional) global Cider config file.</code>
+<code> [2]  ⍝ Note that the file might not exist or be empty, in which case `⍬` is returned.</code>
+<code> [3]   r←⍬</code>
+<code> [4]   filename←GetCiderGlobalConfigFilename</code>
+<code> [5]   :If F.IsFile filename</code>
+<code> [6]       json←F.NGET filename</code>
+<code> [7]   :AndIf 0&lt;≢json</code>
+<code> [8]       r←⎕JSON⍠('Dialect' 'JSON5')⊣⊃json</code>
+<code> [9]   :EndIf</code>
+</div>
+<code class="header" id="listing_68">#.Cider.Cider.GetCiderGlobalConfigFilename &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> filename←GetCiderGlobalConfigFilename</code>
+<code> [1] ⍝ Returns the name of the Cider config file.</code>
+<code> [2] ⍝ As a side effect it creates the file with defaults if it does not yet exist.</code>
+<code> [3]  folder←GetCiderGlobalConfigHomeFolder</code>
+<code> [4]  filename←folder,'config.json'</code>
+</div>
+<code class="header" id="listing_69">#.Cider.Cider.GetDependencies &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←name GetDependencies config</code>
+<code> [1] ⍝ Use this to return the content of "tatin" in either "dependencies" or "dependencies_dev" (defined by "name")</code>
+<code> [2] ⍝ but an empty vector in case the "tatin" sub-key does not exist</code>
+<code> [3]  r←''</code>
+<code> [4]  :If 0&lt;config.CIDER.⎕NC name</code>
+<code> [5]      ref←config.CIDER.⍎name</code>
+<code> [6]      r,←ref⍎'tatin'</code>
+<code> [7]  :EndIf</code>
+</div>
+<code class="header" id="listing_70">#.Cider.Cider.GetGlobalVerboseDefault &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←GetGlobalVerboseDefault</code>
+<code> [1] ⍝ Checks whether Cider's global configuration file carries a value for `verbose`,</code>
+<code> [2] ⍝ and if so, returns its value.</code>
+<code> [3]  r←0</code>
+<code> [4]  :If ⍬≢globalUserConfig←GetCiderGlobalConfigFileContent</code>
+<code> [5]  :AndIf 2=globalUserConfig.⎕NC'verbose'</code>
+<code> [6]      r←globalUserConfig.verbose</code>
+<code> [7]  :EndIf</code>
+</div>
+<code class="header" id="listing_71">#.Cider.Cider.GetTatinDepedencyFolders &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←GetTatinDepedencyFolders config</code>
+<code> [1]  ⍝ Returns a vector of two-item vectors with (path namespaceName) from the project `config` namespace.</code>
+<code> [2]  ⍝ `r` might be empty in case there are no Tatin dependencies, otherwise it is a vector character vectors</code>
+<code> [3]  ⍝ with relative path and optionally the name of a target namespace (separated by "=").</code>
+<code> [4]  r←''</code>
+<code> [5]  r,←⊂'dependencies'GetDependencies config</code>
+<code> [6]  r,←⊂'dependencies_dev'GetDependencies config</code>
+<code> [7]  r~←⊂''</code>
+</div>
+<code class="header" id="listing_72">#.Cider.Cider.GetValidCiderParams &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←GetValidCiderParams</code>
+<code> [1]   r←⍬</code>
+<code> [2]   r,←⊂'source'</code>
+<code> [3]   r,←⊂'init'</code>
+<code> [4]   r,←⊂'parent'</code>
+<code> [5]   r,←⊂'projectSpace'</code>
+<code> [6]   r,←⊂'dependencies'</code>
+<code> [7]   r,←⊂'dependencies_dev'</code>
+<code> [8]   r,←⊂'distributionFolder'</code>
+<code> [9]   r,←⊂'project_url'</code>
+<code> [10]  r,←⊂'tests'</code>
+<code> [11]  r,←⊂'make'</code>
+</div>
+<code class="header" id="listing_73">#.Cider.Cider.GetValidLinkParams &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←GetValidLinkParams</code>
+<code> [1]   r←⍬</code>
+<code> [2]   r,←⊂'arrays'</code>
+<code> [3]   r,←⊂'beforeRead'</code>
+<code> [4]   r,←⊂'beforeWrite'</code>
+<code> [5]   r,←⊂'caseCode'</code>
+<code> [6]   r,←⊂'codeExtensions'</code>
+<code> [7]   r,←⊂'fastLoad'</code>
+<code> [8]   r,←⊂'flatten'</code>
+<code> [9]   r,←⊂'forceExtensions'</code>
+<code> [10]  r,←⊂'forceFilenames'</code>
+<code> [11]  r,←⊂'getFilename'</code>
+<code> [12]  r,←⊂'typeExtensions'</code>
+<code> [13]  r,←⊂'watch'</code>
+</div>
+<code class="header" id="listing_74">#.Cider.Cider.HandleLinkParameters &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  cfg←HandleLinkParameters(cfg cfgFilename)</code>
+<code> [1]  ⍝ With version 0.34.0 Cider removes all Link settings that are defaults anyway from the Cider config file.</code>
+<code> [2]  ⍝ That's what this function is doing. This implies that as a side effect it writes the configuration</code>
+<code> [3]  ⍝ back to file.</code>
+<code> [4]   linkDefaults←{⍵.{⍵,[1.5]⍎¨⍵}' '~⍨¨↓⍵.⎕NL 2}⎕SE.Link.U.DefaultOpts ⎕NS''</code>
+<code> [5]   list←' '~⍨¨↓cfg.LINK.⎕NL 2</code>
+<code> [6]   flag←0</code>
+<code> [7]   :For i :In ⍳≢list</code>
+<code> [8]       name←i⊃list</code>
+<code> [9]       ind←linkDefaults[;1]⍳⊂name</code>
+<code> [10]      :If ind≤≢linkDefaults</code>
+<code> [11]          value←cfg.LINK⍎name</code>
+<code> [12]          :If value≡2⊃linkDefaults[ind;]</code>
+<code> [13]          :OrIf value≡↓2⊃linkDefaults[ind;]</code>
+<code> [14]              cfg.LINK.⎕EX name</code>
+<code> [15]              flag←1</code>
+<code> [16]          :EndIf</code>
+<code> [17]      :EndIf</code>
+<code> [18]  :EndFor</code>
+<code> [19]  :If flag</code>
+<code> [20]      json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣cfg</code>
+<code> [21]      (⊂json)⎕NPUT cfgFilename 1</code>
+<code> [22]  :EndIf</code>
+<code> [23] ⍝Done</code>
+</div>
+<code class="header" id="listing_75">#.Cider.Cider.HasDotNet &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←HasDotNet</code>
+<code> [1] ⍝ Returns a 1 if either .NET Core or .NET is available and the bridge DLL was successfully loaded</code>
+<code> [2]  buff←2250⌶0</code>
+<code> [3]  r←(1 2∊⍨1⊃buff)∧2⊃buff</code>
+</div>
+<code class="header" id="listing_76">#.Cider.Cider.InjectConfigDataIntoProject &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←InjectConfigDataIntoProject(config projectSpace_ folder)</code>
+<code> [1]  ⍝ Create a namespace "CiderConfig" inside projectSpace and populate it with the configuration data.</code>
+<code> [2]  ⍝ Main purpose is to avoid any "Session namespace is referenced by #" problems.</code>
+<code> [3]   r←⍬</code>
+<code> [4]   'CiderConfig'projectSpace_.⎕NS config</code>
+<code> [5]   projectSpace_.CiderConfig.CIDER←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.CIDER</code>
+<code> [6]   projectSpace_.CiderConfig.LINK←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.LINK</code>
+<code> [7]   projectSpace_.CiderConfig.USER←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.USER</code>
+<code> [8]   projectSpace_.CiderConfig.SYSVARS←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.SYSVARS</code>
+<code> [9]   projectSpace_.CiderConfig.HOME←⊃,/1 ⎕NPARTS folder</code>
+<code> [10] ⍝Done</code>
+</div>
+<code class="header" id="listing_77">#.Cider.Cider.InjectTatinVars &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←InjectTatinVars(projectRoot folder)</code>
+<code> [1]  ⍝ When a package is loaded a namespace `TatinVars` is injected into the root of the package by Tatin.</code>
+<code> [2]  ⍝ In case `projectSpace` is a Tatin package Cider is injecting this into the root of the project in order</code>
+<code> [3]  ⍝ to make it as simple as possible for the user.</code>
+<code> [4]  ⍝ Whether the project is a going to be a package is determined by looking for a file ⎕se._Tatin.Registry.CFG_Name.</code>
+<code> [5]  ⍝ In case `TatinVars` as injected a ` is returned, otherwise a 0.</code>
+<code> [6]  ⍝ This allows a developer working on the project to acces `TatinVars` as if it were loaded as a package.</code>
+<code> [7]   r←0</code>
+<code> [8]   :If ⎕NEXISTS folder,'/',⎕SE._Tatin.Registry.CFG_Name</code>
+<code> [9]       cfg←⎕SE._Tatin.Registry.ReadPackageConfigFile folder</code>
+<code> [10]      ⎕SE._Tatin.Client.EstablishStuffInTatinVars projectRoot cfg folder</code>
+<code> [11]      r←1</code>
+<code> [12]  :EndIf</code>
+</div>
+<code class="header" id="listing_78">#.Cider.Cider.IntToBits &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> IntToBits←{⌽(32⍴2)⊤⍵}</code>
+</div>
+<code class="header" id="listing_79">#.Cider.Cider.ListDependencies &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←ListDependencies arg</code>
+<code> [1]  ⍝ List dependencies</code>
+<code> [2]  ⍝TODO⍝</code>
+<code> [3]  </code>
+<code> [4]  </code>
+<code> [5]  ⍝ Call</code>
+<code> [6]  ⍝ ListTatinPackages</code>
+<code> [7]  ⍝ and/or</code>
+<code> [8]  ⍝ ListNuGetPackages</code>
+<code> [9]  ⍝ and returnd their (possibly combined) output</code>
+<code> [10] </code>
+<code> [11] </code>
+<code> [12]  r←ListTatinPackages arg</code>
+<code> [13] ⍝Done</code>
+</div>
+<code class="header" id="listing_80">#.Cider.Cider.PrintToSession &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←flags PrintToSession msg</code>
+<code> [1]  ⍝ If `msg` is not empty:</code>
+<code> [2]  ⍝ * Prints `msg` to rte session in case `flag` is 1</code>
+<code> [3]  ⍝ * Adds `msg` to `∆LOG` if that variable already exists</code>
+<code> [4]  ⍝ `msg` might be a simple character vector or a vector of character vectors.\\</code>
+<code> [5]  ⍝ `flags` must be a scalar Boolean or a vector of two Booleans, defaulting to 0 0:</code>
+<code> [6]  ⍝ * `flags[1]` must be 1 in order to print `msg` to the session</code>
+<code> [7]  ⍝ * `flags[2]` must be 1 in order add</code>
+<code> [8]  ⍝ only added to `∆LOG`.</code>
+<code> [9]   r←0 0⍴⍬</code>
+<code> [10]  Assert∧/flags∊0 1</code>
+<code> [11]  (sessionFlag quiet)←2↑flags,0</code>
+<code> [12]  :If 0&lt;≢msg</code>
+<code> [13]      :If sessionFlag</code>
+<code> [14]      :AndIf ~quiet</code>
+<code> [15]          ⎕←↑,⊆msg</code>
+<code> [16]      :EndIf</code>
+<code> [17]      :If 0&lt;⎕NC'∆LOG'</code>
+<code> [18]          :If 1&lt;|≡msg</code>
+<code> [19]              ∆LOG,←1↓⊃,/CR,¨msg</code>
+<code> [20]          :ElseIf 2=⍴⍴msg</code>
+<code> [21]              ∆LOG,←1↓,CR,msg</code>
+<code> [22]          :Else</code>
+<code> [23]              ∆LOG,←msg,CR</code>
+<code> [24]          :EndIf</code>
+<code> [25]      :EndIf</code>
+<code> [26]  :EndIf</code>
+</div>
+<code class="header" id="listing_81">#.Cider.Cider.Put_JSON5 &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> {r}←config Put_JSON5 filename</code>
+<code> [1]  r←0</code>
+<code> [2]  json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config</code>
+<code> [3]  (⊂json)⎕NPUT⍠('NEOL' 2)⊣filename 1</code>
+<code> [4] ⍝Done</code>
+</div>
+<code class="header" id="listing_82">#.Cider.Cider.ReadProjectConfigFile &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←ReadProjectConfigFile path</code>
+<code> [1] ⍝ Reads a project config file and returns it as a namespace with variables.</code>
+<code> [2] ⍝ `path` may or may not carry the filename as such.</code>
+<code> [3]  path2←'cider.config'{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}path</code>
+<code> [4]  r←Get_JSON5 path2</code>
+<code> [5] ⍝Done</code>
+</div>
+<code class="header" id="listing_83">#.Cider.Cider.ReportLinkSettings &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> {r}←ReportLinkSettings cfg</code>
+<code> [1] ⍝ Report all Link settings (if any) that differ from their default</code>
+<code> [2] ⍝ `cfg` is a namespace representing a project's Cider config file.</code>
+<code> [3]  r←0</code>
+<code> [4]  list←' '~⍨¨↓cfg.LINK.⎕NL 2</code>
+<code> [5]  :If 0&lt;≢list</code>
+<code> [6]      ⎕←⍪cfg∘{'LINK:',⍵,'=',⍕⍺.LINK⍎⍵}¨list</code>
+<code> [7]  :EndIf</code>
+</div>
+<code class="header" id="listing_84">#.Cider.Cider.SUCCESS &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←SUCCESS</code>
+<code> [1]  r←1</code>
+</div>
+<code class="header" id="listing_85">#.Cider.Cider.Version &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←Version</code>
+<code> [1] ⍝ See als History</code>
+<code> [2]  r←'0.34.0+410'</code>
+</div>
+<code class="header" id="listing_86">#.Cider.Cider.API.AddAlias &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> AddAlias←{1:shy←##.AddAlias ⍵}</code>
+</div>
+<code class="header" id="listing_87">#.Cider.Cider.API.AddTatinDependencies &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> AddTatinDependencies←{##.AddTatinDependencies ⍵}</code>
+</div>
+<code class="header" id="listing_88">#.Cider.Cider.API.CloseProject &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> CloseProject←{⍺←⊢ ⋄ ⍺ ##.CloseProject ⍵}</code>
+</div>
+<code class="header" id="listing_89">#.Cider.Cider.API.CreateOpenParms &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> CreateOpenParms←{##.CreateOpenParms ⍵}</code>
+</div>
+<code class="header" id="listing_90">#.Cider.Cider.API.DropAlias &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> DropAlias←{1:shy←##.DropAlias ⍵}</code>
+</div>
+<code class="header" id="listing_91">#.Cider.Cider.API.GetDependencies &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> GetDependencies←{⍺←⊢ ⋄ ⍺ ##.GetDependencies ⍵}</code>
+</div>
+<code class="header" id="listing_92">#.Cider.Cider.API.GetProjectPath &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> GetProjectPath←{##.GetProjectPath ⍵}</code>
+</div>
+<code class="header" id="listing_93">#.Cider.Cider.API.ListOpenProjects &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> ListOpenProjects←{##.ListOpenProjects ⍵}</code>
+</div>
+<code class="header" id="listing_94">#.Cider.Cider.API.OpenProject &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> OpenProject←{##.OpenProject ⍵}</code>
+</div>
+<code class="header" id="listing_95">#.Cider.Cider.API.ProjectConfig &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> ProjectConfig←{⍺←⊢ ⋄ 1:shy←⍺ ##.ProjectConfig ⍵}</code>
+</div>
+<code class="header" id="listing_96">#.Cider.Cider.API.ReadProjectConfigFile &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> ReadProjectConfigFile←{##.ReadProjectConfigFile ⍵}</code>
+</div>
+<code class="header" id="listing_97">#.Cider.Cider.API.Remove_githubUsername &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> Remove_githubUsername←{##.Remove_githubUsername ⍵}</code>
+</div>
+<code class="header" id="listing_98">#.Cider.Cider.API.RenameInfo_url &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> RenameInfo_url←{##.RenameInfo_url ⍵}</code>
+</div>
+<code class="header" id="listing_99">#.Cider.Cider.API.RunMake &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> RunMake←{##.RunMake ⍵}</code>
+</div>
+<code class="header" id="listing_100">#.Cider.Cider.API.RunTests &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> RunTests←{##.RunTests ⍵}</code>
+</div>
+<code class="header" id="listing_101">#.Cider.Cider.API.WriteProjectConfigFile &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> WriteProjectConfigFile←{⍺←⊢ ⋄ ⍺ ##.WriteProjectConfigFile ⍵}</code>
+</div>
+<div id="footer">
+<hr>
+<p>Created by "CodeCoverage" version 0.10.3+52 from 2023-06-23</p>
+</div>
+
+</body>
+</html>

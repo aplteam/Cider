@@ -1,6 +1,12 @@
  Initial
  ∆LINK_NOTIFY_WAS←⎕SE.Link.NOTIFY
  ⎕SE.Link.NOTIFY←0
+ :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'
+ :AndIf ⎕SE.Cider.DEVELOPMENT
+     ⎕SE.Cider.DEVELOPMENT←0
+     ⎕←'*** Warning:⎕SE.Cider.DEVELOPMENT was 1 but is now 0; will be restored by Cleanup'
+     ∆QSE_CIDER_DEVELOPMENT←1
+ :EndIf
  'Cider''s version number in # and ⎕SE diverge'Assert ⎕SE.Cider.Version≡##.Cider.Version
 ⍝ T.exec_before_each_test←T.exec_after_each_test←'#.WS_Check'
 ⍝Done

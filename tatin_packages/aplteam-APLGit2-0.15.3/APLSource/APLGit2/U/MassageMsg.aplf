@@ -1,0 +1,9 @@
+ MassageMsg←{
+⍝ This function exchanges all single quotes and all double quotes against ticks (`).
+⍝ Note that under Windows a message MUST NOT be enclosed between single quotes,
+⍝ and that means we cannot escape quotes, so using a substitute is the only way.
+⍝ Having said this, on a Mac (and ONLY the Mac) backticks must be escaped.
+     r←'`'@(⍸⍵∊'''"')⊣⍵
+     'win'≡⎕C A.GetOperatingSystem ⍬:r
+     '`'⎕R'\\`'⊣r  ⍝ Escape backticks, otherwise on a Mac we are in trouble
+ }

@@ -1,6 +1,8 @@
  r←Public
  r←''
  r,←⊂'AddAlias'
+⍝Morten⍝   r,←⊂'AddNuGetDependencies'
+ r,←⊂'AddTatinDependencies'
  r,←⊂'CloseProject'
  r,←⊂'CreateOpenParms'
  r,←⊂'DropAlias'
@@ -14,7 +16,7 @@
  r,←⊂'GetProjectPath'
  r,←⊂'HasDotNet'
  r,←⊂'ListOpenProjects'
- r,←⊂'ListTatinPackages'
+⍝Morten⍝ r,←⊂'ListDependencies'
  r,←⊂'OpenProject'
  r,←⊂'ProjectConfig'
  r,←⊂'ReadProjectConfigFile'

@@ -1,5 +1,5 @@
  R←Test_Tatin_003(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc;log
-⍝ Load project with two tatin packages. The config file rules that one package goes into NS1.
+⍝ Open project with two tatin packages. The config file rules that one package goes into NS1.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

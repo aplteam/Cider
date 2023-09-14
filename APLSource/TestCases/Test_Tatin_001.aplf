@@ -1,5 +1,5 @@
  R←Test_Tatin_001(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc;log
-⍝ Load project with tatin packages. No parent for the packages is specified.
+⍝ Open project with tatin packages. No parent for the packages is specified.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

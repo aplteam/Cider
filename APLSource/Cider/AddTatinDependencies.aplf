@@ -1,0 +1,4 @@
+ r←AddTatinDependencies(packageIDs targetFolder)
+⍝ Add  one or more Tatin packages as dependencies
+ r←⎕SE.Tatin.InstallPackages packageIDs targetFolder
+⍝Done

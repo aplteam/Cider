@@ -1,5 +1,4 @@
  Init
- G←APLGit2
- F←FilesAndDirs
- C←CommTools
- A←APLTreeUtils2
+ :If 1 CommTools.YesOrNo'Would you like to create a variable DEVELOPMENT in ⎕SE.Cider?'
+     ⎕SE.Cider.DEVELOPMENT←1
+ :EndIf
