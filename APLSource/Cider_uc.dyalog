@@ -18,15 +18,13 @@
           c.Parse←'1s -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns dir both -verbose -batch'
           r,←c
      
-          :If 0 ⍝Morten⍝
-              c←⎕NS''
-              c.Name←'AddNuGetDependencies'
-              c.Desc←'Add one or more NuGet packages as dependencies'
-              c.Group←'Cider'
-              c.Parse←''   ⍝ ????
-              r,←c
-          :EndIf
-     
+          c←⎕NS''
+          c.Name←'AddNuGetDependencies'
+          c.Desc←'Add one or more NuGet packages as dependencies'
+          c.Group←'Cider'
+          c.Parse←'1-2s'
+          r,←c
+          
           c←⎕NS''
           c.Name←'AddTatinDependencies'
           c.Desc←'Add one or more Tatin packages as dependencies'
@@ -145,11 +143,11 @@
       :Case ⎕C'ListOpenProjects'
           r←ListOpenProjects Args
       :Case ⎕C'ListDependencies'
-          r←ListDependency Args
-      :Case ⎕C'AddDependency'
-          r←0 Dependency Args
-      :Case ⎕C'ListDependency'
-          r←1 Dependency Args
+          r←P.ListDependencies Args
+      :Case ⎕C'AddTatinDependencies'  
+          r←AddTatinDependencies Args
+      :Case ⎕C'AddNuGetDependencies'
+          r←AddNugetDependencies Args
       :Case ⎕C'ListAliases'
           r←ListAliases Args
       :Case ⎕C'ListDependencies'
@@ -197,22 +195,6 @@
           :OrIf P.##.C.YesOrNo'IgnoreToDo@There is a non-empty variable "ToDo" in <',home,'> - carry on anyway?'
               r←P.RunMake path
           :EndIf
-      :EndIf
-    ∇
-
-    ∇ r←list Dependency Args;path;index;z;load;type;package
-    ⍝ Add Tatin or NuGet dependencies
-      type←⎕C Args._1
-      package←{⍵≡0:'' ⋄ ⍵}Args._2
-      path←{⍵≡0:'' ⋄ ⍵}Args._3
-      'Type must be either "Tatin" or "nuget" or empty'P.Assert(⊂type)∊'tatin' 'nuget' ''⍬
-      r←''
-      :If 0=≢path←GetProjectPath Args
-          →0,≢⎕←'Cancelled by user'
-      :Else
-          path←(1+0≡Args._3)⊃Args._3 path
-          load←0 ⍝ OpenProject will call with load←1
-          r←P.Dependency type package path list ⍬   ⍝ type package path list ns
       :EndIf
     ∇
 
@@ -285,11 +267,28 @@
       :If 0=≢path←'act on'GetProjectPath Args
           →0,≢⎕←'Cancelled by user'
       :Else
-          ∘∘∘  ⍝TODO⍝
-          r←P.Dependencies path
+          r←P.ListDependencies path
       :EndIf
     ∇
-
+    
+    ∇ r←AddTatinDependencies Args;path
+      r←''
+      :If 0=≢path←'act on'GetProjectPath Args
+          →0,≢⎕←'Cancelled by user'
+      :Else
+          r←P.AddTatinDependencies path Args
+      :EndIf
+    ∇
+    
+    ∇ r←AddNuGetDependencies Args;path
+      r←''                    
+      '⎕SE.Dyalog.NuGet not found - unable to add NuGet dependencies' ⎕SIGNAL (9≠⎕NC'⎕SE.Dyalog.NuGet')/11          
+      :If 0=≢path←'act on'GetProjectPath Args
+          →0,≢⎕←'Cancelled by user'
+      :Else
+          r←P.AddNugetDependencies path Args
+      :EndIf
+    ∇
 
     ∇ r←ListOpenProjects Args
       r←P.ListOpenProjects Args.verbose
@@ -364,7 +363,7 @@
               r,←⊂']Cider.OpenProject [folder|alias] -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns|dir|both -verbose -batch'
           :Case ⎕C'AddTatinDependencies'
               r,←⊂'Add one or more Tatin dependencies'
-              r,←⊂']Cider.AddTatinDependency [packages] [projectpath]'
+              r,←⊂']Cider.AddTatinDependencies [packages] [projectpath]'
           :Case ⎕C'AddNuGetDependencies'
               r,←⊂'Add one or more NuGet dependencies'
               r,←⊂']Cider.AddNuGetDependencies [packages] [projectpath]'
