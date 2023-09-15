@@ -1,0 +1,38 @@
+ FetchUserCommandScript;ts1;ts2;filename1;filename2;F;C;options;flag;ind;parms;path1;path2;changes
+⍝ Gives you options regarding the Cider user command script in both the project and [MyUCMDs]
+ path1←Cider.GetMyUCMDsFolder,'/Cider'
+ path2←CiderConfig.HOME,'/',CiderConfig.CIDER.source
+ filename1←path1,'/Cider_UC.dyalog'
+ filename2←path2,'/Cider_UC.dyalog'
+ ('File does not exist: ',filename1)Cider.Assert ⎕NEXISTS filename1
+ ('File does not exist: ',filename2)Cider.Assert ⎕NEXISTS filename2
+ F←TestCases.FilesAndDirs ⋄ C←Cider.CommTools
+ flag←0
+ :Repeat
+     :If ≢/{⊃F.NGET ⍵}¨filename1 filename2
+         (ts1 ts2)←TestCases.APLTreeUtils2.FormatDateTime∘F.GetModifiedDate¨filename1 filename2
+         options←↓↑'Copy over from [MyUCMDs]' 'Copy over from project folder'
+         options,¨←(' (last modified ',ts1,')')(' (last modified ',ts2,')')
+         options,←⊂'Compare the two'
+         ind←'Actions on the Cider user command script'C.Select options
+         →(0=≢ind)/0
+         :Select ind
+         :Case 1
+             (path2,'/')⎕NCOPY⍠('IfExists' 'Replace')⊣filename1
+         :Case 2
+             (path1,'/')⎕NCOPY⍠('IfExists' 'Replace')⊣filename2
+         :Case 3
+             :If 0<⎕SE.⎕NC'CompareFiles'
+                 parms←⎕SE.CompareFiles.ComparisonTools.CreateParmsForCompareIt
+                 parms.(file1 file2)←filename1 filename2
+                 parms.(caption1 caption2)←'[MyUCMDs]' '<Project Folder>'
+                 {}⎕SE.CompareFiles.Compare parms
+             :Else
+                 ⎕←'Sorry, could not find the user command ]CompareFiles, therefore I can only print the filenames:'
+                 ⎕←'"',filename1,'"    "',filename2,'"'
+             :EndIf
+         :EndSelect
+     :Else
+         ⎕←'The two files are identical' ⋄ →0
+     :EndIf
+ :Until flag

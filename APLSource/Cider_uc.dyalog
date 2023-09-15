@@ -31,7 +31,7 @@
           c.Name←'AddTatinDependencies'
           c.Desc←'Add one or more Tatin packages as dependencies'
           c.Group←'Cider'
-          c.Parse←'1-2s'
+          c.Parse←'1-2'
           r,←c
      
           c←⎕NS''
@@ -113,47 +113,26 @@
       :EndIf
     ∇
 
-    ∇ r←Run(Cmd Args);folder;P;⎕TRAP
+    ∇ r←Run(Cmd Args);folder;P;⎕TRAP;aplVersion
       :Access Shared Public
       r←0 0⍴''
-      ('Cider needs at least version ',MinimumVersionOfDyalog,' of Dyalog APL')Assert AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
-      :If 0=⎕SE.⎕NC'Tatin'
-          :Trap 6
-              {}⎕SE.UCMD'Tatin.Version'
-          :Else
-              'Tatin is not available and cannot be loaded into ⎕SE, therefore Cider won''t work'Assert 0
-          :EndTrap
-      :EndIf
-      :If 0=⎕SE.⎕NC'Cider'
-          {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)'⎕SE'
-      :EndIf
-      P←⎕SE.Cider
-      :If {2≠⎕SE.Cider.⎕NC ⍵:0 ⋄ ⎕SE.Cider⍎⍵}'DEVELOPMENT'
-      :AndIf 0<#.⎕NC'Cider'
-      :AndIf 0<#.Cider.⎕NC'Cider'
-          P←#.Cider.Cider
-          P.##.C←P.C
-          ⎕←'*** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!'
-      :EndIf
-      :If 18={⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'.'}aplVersion←2⊃'.'⎕WG'aplversion'
-      :AndIf 44280>⊃(//)⎕VFI 3⊃'.'(≠⊆⊢)aplVersion  ⍝ 44280 has essential ⎕FIX fix for Link to work
-          'Version 18 must be at least on build number 44280, otherwise Link won''t work as expected'⎕SIGNAL 11
-      :EndIf
+      CheckAPLversion ⍬
+      AutoLoadTatin ⍬
+      AutoLoadCider⊃⎕NPARTS ##.SourceFile
+      P←GetRefToCiderCoder Cmd Args
       :Select ⎕C Cmd
       :Case ⎕C'OpenProject'
           r←OpenProject Args
       :Case ⎕C'ListOpenProjects'
           r←ListOpenProjects Args
       :Case ⎕C'ListDependencies'
-          r←ListDependency Args
-      :Case ⎕C'AddDependency'
-          r←0 Dependency Args
-      :Case ⎕C'ListDependency'
-          r←1 Dependency Args
+          r←ListDependencies Args
+      :Case ⎕C'AddTatinDependencies'
+          r←AddTatinDependencies Args
+      :Case ⎕C'AddNuGetDependencies'
+          r←0 AddNuGetDependencies Args
       :Case ⎕C'ListAliases'
           r←ListAliases Args
-      :Case ⎕C'ListDependencies'
-          r←ListDependencies Args
       :Case ⎕C'CreateProject'
           r←CreateProject Args
       :Case ⎕C'CloseProject'
@@ -177,7 +156,7 @@
 
     ∇ r←RunTests Args;config;path;list;index
       r←''
-      :If 0=≢path←GetProjectPath Args
+      :If 0=≢path←GetProjectPath Args._1
           →0,≢⎕←'Cancelled by user'
       :Else
           :If 0=≢r←P.RunTests path
@@ -188,7 +167,7 @@
 
     ∇ r←Make Args;config;path;list;index;home
       r←''
-      :If 0=≢path←GetProjectPath Args
+      :If 0=≢path←GetProjectPath Args._1
           →0,≢⎕←'Cancelled by user'
       :Else
           home←(P.ListOpenProjects 0){⊃⍺[⍺[;2]⍳⊂⍵;1]}path
@@ -200,19 +179,24 @@
       :EndIf
     ∇
 
-    ∇ r←list Dependency Args;path;index;z;load;type;package
-    ⍝ Add Tatin or NuGet dependencies
-      type←⎕C Args._1
-      package←{⍵≡0:'' ⋄ ⍵}Args._2
-      path←{⍵≡0:'' ⋄ ⍵}Args._3
-      'Type must be either "Tatin" or "nuget" or empty'P.Assert(⊂type)∊'tatin' 'nuget' ''⍬
+    ∇ r←AddNuGetDependencies Args;path
+      path←GetProjectPath Args._2
+      ∘∘∘
+    ∇
+
+    ∇ r←AddTatinDependencies Args;path
+      path←GetProjectPath Args._2
+      ∘∘∘ 
+    ∇
+
+    ∇ r←ListDependencies Args;path;index;z;load;type;package
+    ⍝ List Tatin and/or NuGet dependencies
+      type←''Args.Switch'type'
       r←''
-      :If 0=≢path←GetProjectPath Args
+      :If 0=≢path←GetProjectPath Args._1
           →0,≢⎕←'Cancelled by user'
       :Else
-          path←(1+0≡Args._3)⊃Args._3 path
-          load←0 ⍝ OpenProject will call with load←1
-          r←P.Dependency type package path list ⍬   ⍝ type package path list ns
+          r←P.ListDependencies path type
       :EndIf
     ∇
 
@@ -242,7 +226,7 @@
 
     ∇ r←ProjectConfig Args;list;path;index
       r←''
-      :If 0=≢path←GetProjectPath Args
+      :If 0=≢path←GetProjectPath Args._1
           →0,≢⎕←'Cancelled by user'
       :Else
           :If Args.edit P.ProjectConfig path
@@ -279,17 +263,6 @@
           r←ProcessAliases Args.(prune edit batch)
       :EndIf
     ∇
-
-    ∇ r←ListDependencies Args;path
-      r←''
-      :If 0=≢path←'act on'GetProjectPath Args
-          →0,≢⎕←'Cancelled by user'
-      :Else
-          ∘∘∘  ⍝TODO⍝
-          r←P.Dependencies path
-      :EndIf
-    ∇
-
 
     ∇ r←ListOpenProjects Args
       r←P.ListOpenProjects Args.verbose
@@ -1049,25 +1022,29 @@
       :EndIf
     ∇
 
-    ∇ path←{verb}GetProjectPath Args;list;index;aliasDefs;bool;alias;info
+    ∇ path←{verb}GetProjectPath y;list;index;aliasDefs;bool;alias;info
+    ⍝ `y` is typically a user command parameter but might also be a path or an alias, even with a wildcard.
+    ⍝ If needs must this function consults the user.
+    ⍝ If `y` is realt a path this function returns it unchanged.
       path←''
       verb←{0<⎕NC ⍵:⍎⍵ ⋄ 'open'}'verb'
-      :If 0≡Args._1
+      'Left argument must not be a namespace'Assert 326≠⎕DR y          ⍝ Old syntax is not permitted any longer
+      :If (⊂y)∊0 ''⍬                                                   ⍝ Might be 0 in case something like Args._1 was passed
           list←P.ListOpenProjects 0
           :Select ≢list
           :Case 0
-              'No open projects found'Assert 0
+              'No open projects found'Assert 0                          ⍝ Nothing we can do here
           :Case 1
-              path←⊃list[1;2]
+              path←⊃list[1;2]                                           ⍝ There is just one open project
           :Else
-              :If 0=≢index←'Select a Cider project:'Select↓⎕FMT list
+              :If 0=≢index←'Select a Cider project:'Select↓⎕FMT list    ⍝ Let the user select one of the open projects
                   :Return
               :EndIf
               path←2⊃list[index;]
           :EndSelect
       :Else
           aliasDefs←P.GetAliasFileContent
-          path←Args._1
+          path←y
           :If (⊂,path)∊,¨'[' '[?' '[?]'
               :If 0=≢path←SelectFromAliases aliasDefs
                   :Return
@@ -1093,6 +1070,23 @@
       :EndIf
     ∇
 
+    ∇ r←GetRefToCiderCoder(cmd arg)
+    ⍝ Checks whether it makes sense to execute code in #.Cider rather than in ⎕SE.Cider
+    ⍝ Note that when the Cider project itself is about to be opened, the code is not yet available in #,
+    ⍝ and even if it is as a left-over from earlier operations, it's potentially an outdated version.
+    ⍝ Has side affects in case a ref to #.Cider is returned: prints a message and creates some essential refs.
+      :If {2≠⎕SE.Cider.⎕NC ⍵:0 ⋄ ⎕SE.Cider⍎⍵}'DEVELOPMENT'      ⍝ Does the developer really want this?
+      :AndIf 0<#.⎕NC'Cider'                                     ⍝ And is there no...
+      :AndIf 0<#.Cider.⎕NC'Cider'                               ⍝ ... namespace #.Cider yet?
+      :AndIf (⊂'#.Cider')∊(1↓⎕SE.Link.Status ⍬)[;1]             ⍝ And is that namespace LINKed?
+          r←#.Cider.Cider
+          r.##.(C A F G)←r.(C A F G)
+          ⎕←'*** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!'
+      :Else
+          r←⎕SE.Cider
+      :EndIf
+    ∇
+
     ∇ path←SanitizePath path;UNCflag
     ⍝ Use this to convert any \\ or // to /, and any \ to /
       :If 0<≢path
@@ -1102,6 +1096,34 @@
           :If UNCflag
               path←'\\',1↓path
           :EndIf
+      :EndIf
+    ∇
+
+    ∇ {r}←CheckAPLversion dummy;aplVersion
+    ⍝ Check whether the currently running version of Dyalog fulfills the requirements
+      r←0
+      ('Cider needs at least version ',MinimumVersionOfDyalog,' of Dyalog APL')Assert AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
+      :If 18={⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'.'}aplVersion←2⊃'.'⎕WG'aplversion'
+      :AndIf 44280>⊃(//)⎕VFI 3⊃'.'(≠⊆⊢)aplVersion  ⍝ 44280 has essential ⎕FIX fix for Link to work
+          'Version 18 must be at least on build number 44280, otherwise Link won''t work as expected'⎕SIGNAL 11
+      :EndIf
+    ∇
+
+    ∇ {r}←AutoLoadCider filename
+      :If 0=⎕SE.⎕NC'Cider'
+          ⎕SE.Tatin.LoadDependencies filename'⎕SE'
+      :EndIf
+    ∇
+
+    ∇ {r}←AutoLoadTatin dummy
+    ⍝ In case the Tatin API is not yet available it is forced by executing the user command ]Tatin.Version
+      r←0
+      :If 0=⎕SE.⎕NC'Tatin'
+          :Trap 6
+              {}⎕SE.UCMD'Tatin.Version'
+          :Else
+              'Tatin is not available and cannot be loaded into ⎕SE, therefore Cider won''t work'Assert 0
+          :EndTrap
       :EndIf
     ∇
 

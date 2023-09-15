@@ -1,4 +1,4 @@
- r←ListDependencies arg
+ r←ListDependencies(path type)
 ⍝ List dependencies
 ⍝TODO⍝
 
@@ -10,5 +10,5 @@
 ⍝ and returnd their (possibly combined) output
 
 
- r←ListTatinPackages arg
+ r←ListTatinPackages path
 ⍝Done
