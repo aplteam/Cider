@@ -4,7 +4,6 @@
  r←0
  :If 2=ref.⎕NC'ToDo'
  :AndIf 0<≢(∊ref.ToDo)~' '
-     (1 parms.batch)p'>>> Found a variable ',(⍕ref),'.ToDo'
-     (1 parms.batch)p ref.ToDo
+     {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'ed'}ed←⍵)}ref.ToDo
      r←1
  :EndIf

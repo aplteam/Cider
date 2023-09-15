@@ -1,4 +1,7 @@
 (
+ '* 0.34.1 ⋄ 2023-09-15'
+ '  * Bug fixes:'
+ '    * There were refs missing in the user command script in case of DEVELOPMENT←1'
  '* 0.34.0 ⋄ 2023-09-14'
  '  * `OpenProject` does not report anymore anything but serious stuff and final success to `⎕SE`, but watch '
  '    out for the global config parameter `verbose` and the user command flags `-verbose` and `-batch`'

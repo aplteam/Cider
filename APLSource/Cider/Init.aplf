@@ -1,4 +1,5 @@
  Init
- :If 1 CommTools.YesOrNo'Would you like to create a variable DEVELOPMENT in ⎕SE.Cider?'
+ :If 0=⎕SE.Cider.⎕NC'DEVELOPMENT'
+ :AndIf 1 CommTools.YesOrNo'Would you like to create a variable DEVELOPMENT in ⎕SE.Cider?'
      ⎕SE.Cider.DEVELOPMENT←1
  :EndIf
