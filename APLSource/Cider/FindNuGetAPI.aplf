@@ -1,0 +1,7 @@
+NuGet←FindNuGetAPI dummy
+⍝ Find a NuGet ns
+
+NuGet←{⊃0,⍨(9=⌊⎕NC ⍵)/⍵} '#.NuGet' '⎕SE.Dyalog.Nuget' '⎕SE.NuGet'
+:If 0≢NuGet
+    NuGet←⍎NuGet
+:EndIf

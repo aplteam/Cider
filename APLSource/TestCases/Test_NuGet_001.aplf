@@ -1,28 +1,37 @@
- R←Test_NuGet_001(stopFlag batchFlag);⎕TRAP;folder;parms;res;log
-⍝ Open a project with a single NuGet dependency
+ R←Test_NuGet_001(stopFlag batchFlag);⎕TRAP;folder;parms;res;log;success;rc;msg;stop;tempDir
+⍝ Open a project with no dependencies, add a NuGet dependency, close and reopen
+
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- →0,R←T._NotImplemented   ⍝TODO⍝  ⍝TODO⍝  ⍝TODO⍝  ⍝TODO⍝  ⍝TODO⍝  ⍝TODO⍝
-
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI
- ∘∘∘ ⍝Morten⍝  That folder must carry proper NuGet definitions
+ tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ tempDir ⎕NCOPY⍠1⊢ folder,'/*'
 
  parms←⎕NS''
- parms.folder←folder
+ parms.folder←∊⎕NPARTS tempDir
  parms.noPkgLoad←0
- parms.watch←'ns'
- parms.ignoreUserExec←1
  parms.batch←1
- (res log)←##.Cider.OpenProject parms
 
- →T.GoToTidyUp~res
- ∘∘∘                                    ⍝ More tests
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp ~success
+
+ res←##.Cider.AddNuGetDependencies 'Clock' tempDir
+ →T.GoToTidyUp ~(⊂'UtcNow')∊#.TEMP.dotnet.Clock.⎕NL -2
+
+ res←##.Cider.CloseProject tempDir
+ →T.GoToTidyUp res≠1
+
+ #.TEMP.(⎕EX ⎕NL -⍳9)
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp ~(⊂'UtcNow')∊#.TEMP.dotnet.Clock.⎕NL -2
+ res←##.Cider.CloseProject tempDir
+ →T.GoToTidyUp res≠1
 
  R←T._OK
+ →0 ⍝ If we get here, we *have* tidied up
 
 ∆TidyUp:
  res←∆LINK'Break' '#.TEMP'
- Assert res ∆StartsWith'Unlinked:'
-⍝Done
+ ⍝ Assert res ∆StartsWith'Unlinked:'

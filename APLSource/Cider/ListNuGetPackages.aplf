@@ -1,80 +1,10 @@
- Pr←ListNuGetPackages
-⍝Morten
- ∘∘∘
- load←9=⎕NC'ns' ⍝ Project Space provided
- none←'No nuget dependencies registered.'
- type←⎕C type
- :If (~list∨load)∧0∊≢¨type package
-     'syntax is ]Cider.Dependency nuget|tatin package [folder] -list'⎕SIGNAL 11
- :EndIf
+ r←ListNuGetPackages path;NuGet;nuget_dir
+⍝ List NuGet Dependencies (what a useful comment!)
 
- :If ~∧/m←(gotnuget gottatin)←9=⌊⎕SE.⎕NC'NuGet' 'Tatin'
-     ⎕←'Warning: ',(⍕(~m)/'⎕SE.NuGet' '⎕SE.Tatin'),' not found - unable to report on or manage those dependencies.'
- :EndIf
-
- :If gotnuget
-     NuGet←⎕SE.NuGet
- :EndIf
-
- :If ~load
-     ns←path{3::0 ⋄ ⊃⍵[⍵[;2]⍳⊂⍺;1]}ListOpenProjects 0
- :EndIf
- config←Get_JSON5 configfile←path,'/cider.config'
- :If load∧~hasdeps←0≠⎕NC'config.CIDER.dependencies.nuget'
-     →0⊣r←'' ⍝ Asked to load, and there are no nuget dependencies
- :EndIf
-
- :If ~list∨load∨hasdeps∨~gotnuget
-     config.CIDER.dependencies.nuget←'nuget-packages'
-     config Put_JSON5 configfile
- :EndIf
-
+ NuGet←FindNuGetAPI''
  nuget_dir←path,'/',{0::⍵ ⋄ config.CIDER.dependencies.nuget}'nuget-packages'
- tatin_dir←path,'/',config.CIDER.dependencies.tatin
- gotnuget←gotnuget∧~list∧~⎕NEXISTS nuget_dir ⍝ Pretend we have no nuget if listing and no folder
-
- :If gotnuget∧type≡'nuget'
-     r←NuGet.Setup nuget_dir
-     →(∨/'error:'⍷⎕C r)⍴0
+ :If ⎕NEXISTS nuget_dir
+     r←NuGet.Packages nuget_dir
+ :Else
+     r←0⍴⊂'' ''
  :EndIf
-
- :If list
-     r←0 2⍴⊂nuget←tatin←''
-     :If gotnuget
-     :AndIf ⎕NEXISTS nuget_dir
-         nuget←{⍵,(0=≢⍵)/none}NuGet.Packages nuget_dir
-         nuget←{1↓∊'/',¨⍵}¨nuget
-     :EndIf
-     :If gottatin
-         :If {0::0 ⋄ ⎕NEXISTS ⍵}tatin_dir
-             :Trap 11 ⍝ ListTatinPackages fails if there are none
-                 tatin←{2=⍴⍴⍵:(3↓⍵[;2])/3↓⍵[;1] ⋄ ⍬}ListTatinPackages path
-                 tatin←(' '=⊃¨tatin)↓¨tatin ⍝ leading space?
-             :EndTrap
-         :EndIf
-     :EndIf
-     r←(×≢¨nuget tatin)⌿2 2⍴'nuget: 'nuget'tatin:'tatin
-     :If 0=≢r
-         r←'No dependencies found'
-     :EndIf
-     →0
- :EndIf
-
- :Select type
- :Case 'nuget'
-     :If gotnuget∧(0≠≢package)∧type≡'nuget'
-         r←NuGet.Add nuget_dir package
-         →(∨/'error:'⍷⎕C r)⍴0
-     :EndIf
-
-     :If ns≢0
-         :If 2=⎕NC'ns'
-             ns←⍎ns
-         :EndIf
-         'dotnet'ns.⎕NS''
-         ns.dotnet.⎕USING←NuGet.Using nuget_dir
-         r←((~load)/r,'. '),'NuGet dependencies established in ',(⍕ns),'.dotnet'
-     :EndIf
- :Case 'tatin'
-     r←⎕SE.Tatin.InstallPackages package tatin_dir
- :EndSelect
