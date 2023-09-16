@@ -107,7 +107,7 @@
              (1 parms.batch)p buff
          :EndTrap
      :EndIf
-⍝Morten⍝  LoadNugetDependencies ....    //   p Dependency 'nuget' '' parms.folder 0 projectSpace_         ⍝ Now establish NuGet dependencies, if any
+     p LoadNugetDependencies parms.folder projectSpace_ ⍝ Now establish NuGet dependencies, if any
  :EndIf
  InjectConfigDataIntoProject config projectSpace_ parms.folder
  InjectTatinVars projectSpace_ parms.folder
