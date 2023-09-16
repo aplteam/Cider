@@ -1,0 +1,28 @@
+ (version buildNo)←SplitVersionFromBuildNumber version;b;ind
+⍝ Takes one of:
+⍝ * A text vector that is a version number, possibly with a build number
+⍝ * A nested vector of length 2 with the version number in the first item and YYYY-MM-DD in the second
+⍝ * A nested vector of length 3 with name, version and date\\
+⍝ Returns a nested vector of length two:\\
+⍝ * [1] Version number
+⍝ * [2] Build number, possibly empty\\
+⍝ Examples:
+⍝ * `('1.2.3' '')     ← SplitVersionFromBuildNumber '1.2.3'`
+⍝ * `('1.2.3' '1234') ← SplitVersionFromBuildNumber '1.2.3+1234'`
+⍝ * `('1.2.3' '')     ← SplitVersionFromBuildNumber 'Foo' '1.2.3' '2019-03-07'`
+⍝ * `('1.2.3' '1234') ← SplitVersionFromBuildNumber 'Foo' '1.2.3+1234' '2019-03-07'`
+⍝ * `('1.2.3' '')     ← SplitVersionFromBuildNumber '1.2.3' '2023-01-01'`
+⍝ * `('1.2.3' '1234') ← SplitVersionFromBuildNumber '1.2.3+1234' '2023-01-01'`
+⍝ * `('1.2.3' '')     ← SplitVersionFromBuildNumber '<Name>' '1.2.3' '2023-01-01'`
+⍝ * `('1.2.3' '1234') ← SplitVersionFromBuildNumber '<Name>' '1.2.3+1234' '2023-01-01'`
+ :If 1<≡version
+     ind←1+3=≢version
+     'More than "+" is not allowed'Assert('+'+.=ind⊃version)∊0 1
+     (version buildNo)←{'+'∊⍵:('+'≠⍵)⊆⊣⍵ ⋄ ⍵''}ind⊃version
+ :ElseIf '+'∊version
+     'More than "+" is not allowed'Assert('+'+.=version)∊0 1
+     (version buildNo)←('+'≠version)⊆⊣version
+ :Else
+     buildNo←''
+ :EndIf
+⍝Done

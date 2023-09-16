@@ -1,0 +1,28 @@
+ {r}←{savePath}CreateAPIfromCFG(refToSourceNS cfg);names;targetNamespace;Tref;b;name;level;subNamespace;flag;type;backRef;at;header;fullName;extension;filename;body
+⍝ Creates an API according to the config file. No checks are performed, so you must not call this functions in case
+⍝ you don't want the API to be (re)-created automatically.\\
+⍝ Established either all functions and operators in the API or, if there is a function `Public`, only those noted by it.\\
+⍝ The API is always created within `refToSourceNS`.\\
+⍝ `⍵` must be a vector of length 2:\\
+⍝ 1. `refToSourceNS`: ref to the source namespace
+⍝ 2. `cfg`: the package config file in JSON5 format\\
+⍝ Note that `Public` might not only list fns and ops but also classes, interfaces and namespace scripts
+⍝ By default Link is told about the functions (but not refs) created.
+⍝ Instead you may specify a folder via `⍺` which must exist.
+⍝ If you do then all fns/opr are saved within that folder without involving Link.
+⍝ If you don't want anything to be saved on disk at all then specify `''` as `⍺`.\\
+⍝ Returns the number of fns/opr and refs established.\\
+ r←0
+ 'Source namespace (1⊃⍵) is not a reference'Assert 0 1≡{(≡⍵)(≢⍵)}refToSourceNS
+ 'Source namespace (1⊃⍵) is not a namespace'Assert 0=+/'[]'∊refToSourceNS
+ 'Source namespace (1⊃⍵) is not a namespace'Assert 9.1≡⎕NC⊂⍕refToSourceNS
+ savePath←{0<⎕NC ⍵:⍎⍵ ⋄ ¯1}'savePath'
+ :If 3=refToSourceNS.⎕NC'Public'
+     names←refToSourceNS⍎'Public'           ⍝ A function `Public` rules if it exists
+ :Else
+     names←' '~⍨¨↓refToSourceNS.⎕NL 3 4     ⍝ Default: the names of all fns and ops
+ :EndIf
+ 'No API names specified?!'Assert 0<≢names
+ targetNamespace←(⍕refToSourceNS),'.',cfg.api
+ r←CreateAPI refToSourceNS names targetNamespace
+⍝Done

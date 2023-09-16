@@ -15,7 +15,7 @@
              :Return
          :ElseIf 0<≢dmx.Message
              (1 parms.batch)p'The Git status of the project could not be determined due to an error:'
-             (1 parms.batch)pdmx.Message,'; rc=',⍕dmx.EN
+             (1 parms.batch)p dmx.Message,'; rc=',⍕dmx.EN
              :Return
          :Else
              (1 parms.batch)p'The Git status of the project could not be determined due to an error'

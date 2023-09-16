@@ -7,7 +7,7 @@
   group: "aplteam",
   io: 1,
   license: "MIT",
-  lx: "",
+  lx: "CreateRefs",
   maintainer: "kai@aplteam.com",
   minimumAplVersion: "18.0",
   ml: 1,
@@ -19,5 +19,5 @@
   source: "APLSource/Cider/",
   tags: "project-management",
   userCommandScript: "APLSource/Cider_UC.dyalog",
-  version: "0.34.0+535",
+  version: "0.34.1+540",
 }
