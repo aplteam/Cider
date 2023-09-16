@@ -1,0 +1,31 @@
+ newVersion←{force}CompileVersionNumberPattern y;currentVersion;caption;options;choice;version;cfg;project
+⍝ Establishes the current version of a Tatin package from the right argument and then asks the user
+⍝ whether she wants to bump any part of the version number, or none at all.\\
+⍝ The right argument must be one of:
+⍝ * A package config file (`cfg`), in which case `cfg.version` rules what the current version is
+⍝ * A two-item vector:
+⍝   1. Version (like "1.2.3" or "10.22.3-beta-1+123"), usually returned by a "Version" function
+⍝   2. Name of the project\\
+⍝ That defines what is used for communicating with the user.\\
+⍝ Note that the user by default has no option to cancel the operation because the optional left argument
+⍝ `force` defaults to 1. If you specify a 0 as `⍺` then the user may cancel, and `newVersion←⎕NULL`.
+ force←{0<⎕NC ⍵:⍎⍵ ⋄ 1}'force'
+ 'Left argument must be a Boolean'Assert(⊂force)∊0 1
+ 'Right argument must have a length of 1 (pkg cfg) or 2 (version and name)'Assert(≢y)∊1 2
+ :If 1=≢y
+     cfg←y                                  ⍝ It must be a package configuration namespace
+     version←cfg.version
+     project←⊃{⍺,'-',⍵}/cfg.(group name)
+ :Else
+     (version project)←y
+ :EndIf
+ currentVersion←DropBuildNumber version
+ caption←'Bump version of ',project,' (currently on ',version,')'
+ options←'Don''t change' 'Bump patch number' 'Bump minor number' 'Bump major number',(~force)/⊂'Cancel operation'
+ choice←caption 0 1 Select options
+ :If choice=5
+     newVersion←⎕NULL
+ :Else
+     newVersion←choice⊃'' '+0.0.1' '+0.1.0' '+1.0.0'
+ :EndIf
+⍝Done

@@ -1,0 +1,1 @@
+ CreateAPIfromCFG←{⍺←⊢ ⋄ 1:shy←⍺ ##.CreateAPIfromCFG ⍵}

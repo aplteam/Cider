@@ -1,7 +1,7 @@
- Make flag;M;C;path;zipFilename;res;version;cfg;parms
+ Make flag;M;C;path;zipFilename;res;version;cfg;parms;folder1;folder2
 ⍝ "Make" a new version of this project
  :If flag
-     M←⎕SE.MakeHelpers
+     M←##.TestCases.MakeHelpers
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
      cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
@@ -15,10 +15,27 @@
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
      :If 0<≢cfg.userCommandScript
-     :AndIf 1 M.YesOrNo'Install new version in MyUCMDs?'
-         {}M.##.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder cfg.name
-         res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
-         ⎕←'  New version installed as user command in MyUCMDs/: ',res
+         :If 1 M.YesOrNo'Install new version in MyUCMDs?'
+             {}M.##.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder cfg.name
+             res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
+             ⎕←'  New version installed as user command in MyUCMDs/: ',res
+         :EndIf
+         :If 'Win'≡M.##.APLTreeUtils2.GetOperatingSystem ⍬
+             folder1←'C:\Users\kai\Documents\Dyalog APL-64 19.0 Unicode Files\StartupSession\SessionExtensions\'
+             folder2←'C:\Users\kai\Documents\Dyalog APL 19.0 Unicode Files\StartupSession\SessionExtensions\'
+         :AndIf ∨/⎕NEXISTS¨folder1 folder2
+         :AndIf 1 M.YesOrNo'Install new version in 19.0 StartupSession folder(s)?'
+             :If ⎕NEXISTS folder1
+                 {}M.##.FilesAndDirs.RmDirByForce folder1,'Cider'
+                 res←⎕SE.Tatin.InstallPackages zipFilename(folder1,'Cider')
+                 ⎕←'  New version installed as user command in ',folder1,'Cider/: ',∊res
+             :EndIf
+             :If ⎕NEXISTS folder2
+                 {}M.##.FilesAndDirs.RmDirByForce folder2,'Cider'
+                 res←⎕SE.Tatin.InstallPackages zipFilename(folder2,'Cider')
+                 ⎕←'  New version installed as user command in ',folder2,'Cider/: ',∊res
+             :EndIf
+         :EndIf
      :EndIf
  :EndIf
  ⍝Done

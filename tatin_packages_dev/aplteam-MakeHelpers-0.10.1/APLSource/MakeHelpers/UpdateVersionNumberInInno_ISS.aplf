@@ -1,0 +1,15 @@
+ {changeFlag}←UpdateVersionNumberInInno_ISS(issFilename version);iss;item;buff;buff2
+⍝ Updates `MyAppVersion` by `version` but remove any build number.\\
+⍝ Returns 1 in case the file was changed and 0 otherwise.
+ changeFlag←0
+ ('Inno INI file not found: ',issFilename)Assert ⎕NEXISTS issFilename
+ iss←⊃⎕NGET issFilename 1
+ item←1⍳⍨∨/¨'MyAppVersion'∘⍷¨iss
+ buff←item⊃iss
+ buff2←({⍵↑⍨⍵⍳'"'}buff),({⍵↑⍨¯1+⍵⍳'+'}version),'"'
+ :If buff≢buff2
+     (item⊃iss)←buff2
+     (⊂,iss)⎕NPUT issFilename 1
+     changeFlag←1
+ :EndIf
+⍝Done
