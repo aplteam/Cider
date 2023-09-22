@@ -1,4 +1,4 @@
- R←Test_NuGet_001(stopFlag batchFlag);⎕TRAP;folder;parms;res;log;success;rc;msg;stop;tempDir
+ R←Test_NuGet_001(stopFlag batchFlag);⎕TRAP;folder;parms;res;log;success;rc;msg;stop;tempDir;config;configfile;list
 ⍝ Open a project with no dependencies, add a NuGet dependency, close and reopen
 
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
@@ -6,32 +6,44 @@
 
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI
- tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
- tempDir ⎕NCOPY⍠1⊢ folder,'/*'
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
 
- parms←⎕NS''
+ configfile←tempDir,'/cider.config'
+ config←##.Cider.Get_JSON5 configfile
+ config.CIDER.dependencies.nuget←'nuget-packages'
+ config ##.Cider.Put_JSON5 configfile
+
+ parms←##.Cider.CreateOpenParms''
  parms.folder←∊⎕NPARTS tempDir
  parms.noPkgLoad←0
  parms.batch←1
+ parms.ignoreUserExec←1
 
  (success log)←##.Cider.OpenProject parms
- →T.GoToTidyUp ~success
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
 
- res←##.Cider.AddNuGetDependencies 'Clock' tempDir
- →T.GoToTidyUp ~(⊂'UtcNow')∊#.TEMP.dotnet.Clock.⎕NL -2
+ list←##.Cider.AddNuGetDependencies'Clock'tempDir
+ →T.GoToTidyUp~(⊂'Clock')∆LazyMatch list
+
+ {}0 1 ##.Cider.LoadNuGetDependencies tempDir #.TEMP
+ →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
 
  res←##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
 
- #.TEMP.(⎕EX ⎕NL -⍳9)
+ #.TEMP.(⎕EX ⎕NL-⍳9)
  (success log)←##.Cider.OpenProject parms
- →T.GoToTidyUp ~(⊂'UtcNow')∊#.TEMP.dotnet.Clock.⎕NL -2
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+ →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
  res←##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
 
  R←T._OK
- →0 ⍝ If we get here, we *have* tidied up
 
 ∆TidyUp:
- res←∆LINK'Break' '#.TEMP'
- ⍝ Assert res ∆StartsWith'Unlinked:'
+ {}∆LINK'Break' '#.TEMP'
+ FilesAndDirs.RmDir tempDir,'/..'    ⍝ Would be nice, but it does not work because the .NET DLL blocks this, and there is no way around this
+⍝Done

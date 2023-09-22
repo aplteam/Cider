@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
 
- tempDir←FilesAndDirs.GetTempSubDir(⊃⎕SI),'_1'
+ tempDir←∆GetFolderInTempDir(⊃⎕SI),'_1'
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  #.⎕SHADOW'Foo' ⋄ 'Foo'#.⎕NS''

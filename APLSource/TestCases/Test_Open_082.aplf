@@ -1,9 +1,9 @@
- R←Test_Open_082(stopFlag batchFlag);⎕TRAP;parms;r;rc;tempDir
+ R←Test_Open_082(stopFlag batchFlag);⎕TRAP;parms;r;rc;tempDir;log;success
 ⍝ Tries to open a project that has packages but the installed packages and the build list don't fit
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
  tempDir ⎕NCOPY⍠('Wildcard' 1)⊣##.CiderConfig.HOME,'/TestData/PksDontFitBuildList/*'
 
@@ -14,7 +14,8 @@
  parms.ignoreUserExec←1
  parms.batch←1
  ##.Cider.CommTools.YesOrNo_Answers←1 2⍴'ReinstallBecauseOfInvalidPkg@' 'y'
- {}##.Cider.OpenProject parms
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp∨/'ERROR'⍷log
  →T.GoToTidyUp'#._tatin.aplteam_Tester2_3_5_0.Tester2'≢⍕#.TEMP.fooproj.Tester2  ⍝ VALUE ERROR? Try again, but first execute stuff after ∆TidyUp
  →T.GoToTidyUp'#._tatin.aplteam_CodeCoverage_0_7_3.CodeCoverage'≢⍕#.TEMP.fooproj.CodeCoverage
 

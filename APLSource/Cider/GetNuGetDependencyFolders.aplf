@@ -1,0 +1,8 @@
+ r←GetNuGetDependencyFolders config
+ ⍝ Returns a vector of two-item vectors with (path namespaceName) from the project `config` namespace.
+ ⍝ `r` might be empty in case there are no Tatin dependencies, otherwise it is a vector character vectors
+ ⍝ with relative path and optionally the name of a target namespace (separated by "=").
+ ⍝ Returns a nested vector in case we extend it for development one day.
+ r←''
+ r,←⊂'dependencies'GetNuGetDependencies config
+ r~←⊂''

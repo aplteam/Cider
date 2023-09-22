@@ -1,0 +1,31 @@
+ R←Test_NuGet_010(stopFlag batchFlag);⎕TRAP;folder;parms;res;log;cals;success;tempDir
+⍝ Open a project that has already two NuGet dependencies
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
+
+ parms←##.Cider.CreateOpenParms''
+ parms.folder←tempDir
+ parms.noPkgLoad←0
+ parms.batch←1
+ parms.ignoreUserExec←1
+
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+ →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
+ →T.GoToTidyUp~∧/'Julian' 'Gregorian'∊⍕¨#.TEMP.NodaTime.CalendarSystem.⎕NL-2
+
+ res←##.Cider.CloseProject tempDir
+ →T.GoToTidyUp res≠1
+
+ R←T._OK
+
+∆TidyUp:
+ res←∆LINK'Break' '#.TEMP'
+ FilesAndDirs.RmDir tempDir,'/..'   ⍝ Would be nice, but it does not work because the .NET DLL blocks this, and there is no way around this
+⍝Done

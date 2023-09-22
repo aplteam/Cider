@@ -14,6 +14,7 @@
  parms.batch←1
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello
 
  R←T._OK

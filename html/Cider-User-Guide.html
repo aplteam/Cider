@@ -5,102 +5,112 @@
 <meta charset="utf-8">
 <title>Cider User Guide</title>
 <style media="screen">
-html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}body{margin:0;}article,aside,footer,header,nav,section{display:block;}h1{font-size:2em;margin:0.67em 0;}figcaption,figure,main{display:block;}figure{margin:1em 40px;}hr{box-sizing:content-box;height:0;overflow:visible;}pre{font-family:monospace, monospace;font-size:1em;}a{background-color:transparent;-webkit-text-decoration-skip:objects;}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted;}b,strong{font-weight:inherit;}b,strong{font-weight:bolder;}code,kbd,samp{font-family:monospace, monospace;font-size:1em;}dfn{font-style:italic;}mark{background-color:#ff0;color:#000;}small{font-size:0.8em;}sub,sup{font-size:0.75em;line-height:0;position:relative;vertical-align:baseline;}sub{bottom:-0.25em;}sup{top:-0.5em;}audio,video{display:inline-block;}audio:not([controls]){display:none;height:0;}img{border-style:none;}svg:not(:root){overflow:hidden;}button,input,optgroup,select,textarea{font-family:sans-serif;font-size:1em;line-height:1.15;margin:0;}button,input{overflow:visible;}button,select{text-transform:none;}button,html [type="button"], [type="reset"],[type="submit"]{-webkit-appearance:button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner{border-style:none;padding:0;}button:-moz-focusring,[type="button"]:-moz-focusring,[type="reset"]:-moz-focusring,[type="submit"]:-moz-focusring{outline:1px dotted ButtonText;}fieldset{padding:0.35em 0.75em 0.625em;}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal;}progress{display:inline-block;vertical-align:baseline;}textarea{overflow:auto;}[type="checkbox"],[type="radio"]{box-sizing:border-box;padding:0;}[type="number"]::-webkit-inner-spin-button,[type="number"]::-webkit-outer-spin-button{height:auto;}[type="search"]{-webkit-appearance:textfield;outline-offset:-2px;}[type="search"]::-webkit-search-cancel-button,[type="search"]::-webkit-search-decoration{-webkit-appearance:none;}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit;}details, menu{display:block;}summary{display:list-item;}canvas{display:inline-block;}template{display:none;}[hidden]{display:none;}body{margin:0;font-family:"Bookman Old Style", "Callisto MT", Bookman, "Goudy Old Style", Garamond, serif;background-color:#fdfdfd;font-size:18px;line-height:1.4;max-width:none;padding:0.83em;color:#292929;word-wrap:break-word;overflow-wrap:break-word;}h1, h2, h3, h4, h5, h6{color:#404040;font-weight:800;padding-left:0;}h1, h2, h3, h4, h5, h6{font-family:"Century Gothic", Verdana, "Sans";}h1, h2, h3, h4, p{margin-bottom:0.88em;}h1{font-size:1.8em;margin:0.27em 0 1.11em 0;}h1 > code, h2 > code, h3 > code, h4 > code, h5 > code, h6 > code{font-size:1em;background-color:inherit;}h2{font-size:1.44em;margin:0.55em 0 0.55em 0;padding-top:0.55em;border-bottom:1px solid Silver;}h3{margin:0;margin-top:0.55em;font-size:1.22em;}nav h3{font-size:0.88em;margin-left:0.83em;margin-bottom:0.27em;}h4{font-size:1em;margin:0;margin-top:0.55em;}h5{font-size:0.94em;margin:0;margin-top:0.66em;padding:0;}h6{font-size:0.88em;margin:0;margin-top:0.66em;padding:0;}a{color:#0099ff;margin:0;padding:0;vertical-align:baseline;}a:visited{color:purple;}a.autoheader_anchor{text-decoration:none;}ul{list-style-type:disc;}ul, ol{padding:0;margin:0;}dd{padding-top:0.25em;}p.first_dd{padding-top:0.25em;}li > ul, ol{padding-bottom:0;}li{line-height:1.3;margin-left:1.38em;margin-bottom:0.55em;}ul > li{margin-left:2.5em;}ol > li{margin-left:2.5em;}li ul{margin-left:0.55em;}li ul{margin-left:0.27em;}li p{padding:1px 0 0 0;margin:0.55em 0 0.27em 0;line-height:1.3;}ul, ol{line-height:1.3;padding:0.33em 0 0 0;margin:0.5em;}p{line-height:1.2;padding:0.40em 0 0 0;margin:0;}pre{overflow:scroll;padding:0.55em 0.27em;margin:0.55em 0 0.55em 0 !important;background-color:#faebd7;color:#3e3e3e;border:1px Silver dashed;display:block;font-family:APLFont, monospace;font-weight:normal;white-space:pre-wrap;}pre > code{line-height:1.2;border:0;padding:0;margin:0;background-color:inherit;color:inherit;font-weight:inherit;white-space:pre-wrap;}td code{padding:0;}a code{padding:0;font-size:1em;}nav code{background-color:inherit;font-weight:400;color:inherit;}code{font-family:APLFont, monospace;color:Black;font-weight:800;line-height:1.2;font-size:0.88em;margin:0;color:#950000;padding:0 0.16em;}tbody tr:nth-child(even){background-color:#F0F0F0;}th{background-color:#E6E6E6;color:black;}th, td{padding:0.16em 0.55em;vertical-align:top;}table td + td{border-left:1px solid gray;}table th + th{border-left:1px solid gray;}table{border-color:Black;margin:1.5em 0;border:2px black;border-collapse:collapse;font-family:APLFont;font-size:0.88em;line-height:1.2;border:1px solid Gray;}li > table{margin:0.55em 0 0.55em 0;}tr{margin:1.11em;}th{font-weight:bold;}tfoot td{font-weight:bold;}blockquote{border-left:0.27em solid silver;padding-left:0.27em;margin:0.83em 0.27em 0.83em 0.55em;}blockquote ul li{margin-left:1.38em;}blockquote ol li{margin-left:1.38em;}li > blockquote{margin-left:0;}nav{background-color:#f5f5f5;border:1px solid Black;padding:0.55em;margin:0.55em;margin-right:0;box-shadow:0.27em 0.27em 0.27em Gray;overflow:hidden;clear:both;}nav#main_nav{position:fixed;top:0;right:0.55em;float:none;width:auto;}nav#main_nav_no_collapse li{font-size:0.77rem;}nav#main_nav_no_collapse li{line-height:1.5;}nav ul{list-style-type:none;margin:0 0 0.11em 0;padding:0;}nav a:visited{color:black;}nav ul li{margin-bottom:0.16em;}nav li p{margin:0;padding:0;line-height:1;margin:0;padding:0;}nav li{font-size:0.75rem;line-height:1.3;padding:0;margin-top:0;margin-bottom:0;margin-left:0.83em;}nav p{font-weight:bold;font-size:0.75rem;padding-top:0;}dl{margin-top:0.1em;margin-bottom:0.1em;}dt{margin-top:0.75em;margin-bottom:0.1em;font-weight:800;}label#hide_toc_label{font-size:0.8em;}.toc-container{position:relative;height:auto;}div.toc-container h1{font-size:0.88em;margin:0.27em 0 0.27em 0;}[type="checkbox"]{position:absolute;left:-9999px;}label{display:block;width:100%;height:1.1em;cursor:pointer;top:0;padding-left:1.1em;}label:before{content:'Table of contents \25BC';font-weight:bold;font-size:90%;padding-bottom:0;}[type="checkbox"] ~ div{display:none;}[type="checkbox"]:checked ~ div{display:block;margin-top:1.1em;}[type="checkbox"]:checked + label{top:100%;}[type="checkbox"]:checked + label:before{content:'Table of contents ▲';}div#footnotes_div p{line-height:1;padding-bottom:0;padding-top:0;}div#footnotes_div ol{padding-top:0;}@font-face{font-family:"APLFont";src:local("APL385 Unicode"), url("https://misc.aplteam.com/apl385.ttf") format("truetype");}.no_display{display:none;}.red{color:red;}.center{text-align:center;margin-left:auto;margin-right:auto;}.left{text-align:left;margin-right:0 auto;}.right{text-align:right;margin-left:0 auto;}img{margin-top:0.55em;margin-bottom:0.27em;}div.leanpub{padding:0.83em 0.55em 1.11em 0;margin:0.55em 0 0 0.27em;overflow:auto;}div.leanpub_A{border:1px solid black;background-color:#f1f1f1;padding:0.55em;margin:1.11em 0 0.83em 0;}div.leanpub h3, div.leanpub_A h3{font-size:1.2em;padding:0;margin:0;}div.leanpub h4, div.leanpub_A h4{font-size:1.1em;padding:0.27em 0 0 0;margin:0;}div.leanpub h5, div.leanpub h5{font-size:1.0em;padding:0.27em 0 0 0;margin:0;}div.leanpub_A h5, div.leanpub_A h5{font-size:1.0em;padding:0.27em 0 0 0;margin:0;}div.leanpub img{padding:0;margin:0 1.11em 0.27em 0;}div.leanpub_A > p:first-child{padding-top:0;margin-top:0;}div.leanpub img{float:left;padding:0;margin:0.55em 1.11em 0 0;clear:both;}div.leanpub tbody *{background-color:transparent;}div.leanpub p{padding:0.17em 0 0 0;margin:0;}span.leanpub_code{color:Red;}div.leanpub p{display:block;padding:0.44em 0 0 0;}div.leanpub > div{margin-left:2.27em;}.print_only{display:none;}
+html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}body{margin:0;}article,aside,footer,header,nav,section{display:block;}h1{font-size:2em;margin:0.67em 0;}figcaption,figure,main{display:block;}figure{margin:1em 40px;}hr{box-sizing:content-box;height:0;overflow:visible;}pre{font-family:monospace, monospace;font-size:1em;}a{background-color:transparent;-webkit-text-decoration-skip:objects;}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted;}b,strong{font-weight:inherit;}b,strong{font-weight:bolder;}code,kbd,samp{font-family:monospace, monospace;font-size:1em;}dfn{font-style:italic;}mark{background-color:#ff0;color:#000;}small{font-size:0.8em;}sub,sup{font-size:0.75em;line-height:0;position:relative;vertical-align:baseline;}sub{bottom:-0.25em;}sup{top:-0.5em;}audio,video{display:inline-block;}audio:not([controls]){display:none;height:0;}img{border-style:none;}svg:not(:root){overflow:hidden;}button,input,optgroup,select,textarea{font-family:sans-serif;font-size:1em;line-height:1.15;margin:0;}button,input{overflow:visible;}button,select{text-transform:none;}button,html [type="button"], [type="reset"],[type="submit"]{-webkit-appearance:button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner{border-style:none;padding:0;}button:-moz-focusring,[type="button"]:-moz-focusring,[type="reset"]:-moz-focusring,[type="submit"]:-moz-focusring{outline:1px dotted ButtonText;}fieldset{padding:0.35em 0.75em 0.625em;}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal;}progress{display:inline-block;vertical-align:baseline;}textarea{overflow:auto;}[type="checkbox"],[type="radio"]{box-sizing:border-box;padding:0;}[type="number"]::-webkit-inner-spin-button,[type="number"]::-webkit-outer-spin-button{height:auto;}[type="search"]{-webkit-appearance:textfield;outline-offset:-2px;}[type="search"]::-webkit-search-cancel-button,[type="search"]::-webkit-search-decoration{-webkit-appearance:none;}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit;}details, menu{display:block;}summary{display:list-item;}canvas{display:inline-block;}template{display:none;}[hidden]{display:none;}body{margin:0;font-family:"Bookman Old Style", "Callisto MT", Bookman, "Goudy Old Style", Garamond, serif;background-color:#fdfdfd;font-size:18px;line-height:1.4;max-width:1200px;padding:0.83em;color:#292929;word-wrap:break-word;overflow-wrap:break-word;}h1, h2, h3, h4, h5, h6{color:#404040;font-weight:800;padding-left:0;}h1, h2, h3, h4, h5, h6{font-family:"Century Gothic", Verdana, "Sans";}h1, h2, h3, h4, p{margin-bottom:0.88em;}h1{font-size:1.8em;margin:0.27em 0 1.11em 0;}h1 > code, h2 > code, h3 > code, h4 > code, h5 > code, h6 > code{font-size:1em;background-color:inherit;}h2{font-size:1.44em;margin:0.55em 0 0.55em 0;padding-top:0.55em;border-bottom:1px solid Silver;}h3{margin:0;margin-top:0.55em;font-size:1.22em;}nav h3{font-size:1.2em;margin:0 0 0.7em 0;}h4{font-size:1em;margin:0;margin-top:0.55em;}h5{font-size:0.94em;margin:0;margin-top:0.66em;padding:0;}h6{font-size:0.88em;margin:0;margin-top:0.66em;padding:0;}a{color:#0099ff;margin:0;padding:0;vertical-align:baseline;}a:visited{color:purple;}a.autoheader_anchor{text-decoration:none;}ul{list-style-type:disc;}ul, ol{padding:0;margin:0;}dd{padding-top:0.25em;}p.first_dd{padding-top:0.25em;}li > ul, ol{padding-bottom:0;}li{line-height:1.3;margin-left:1.38em;margin-bottom:0.55em;}ul > li{margin-left:2.5em;}ol > li{margin-left:2.5em;}li ul{margin-left:0.55em;}li ul{margin-left:0.27em;}li p{padding:1px 0 0 0;margin:0.55em 0 0.27em 0;line-height:1.3;}ul, ol{line-height:1.3;padding:0.33em 0 0 0;margin:0.5em;}p{line-height:1.2;padding:0.40em 0 0 0;margin:0;}pre{overflow:scroll;padding:0.55em 0.27em;margin:0.55em 0 0.55em 0 !important;background-color:#faebd7;color:#3e3e3e;border:1px Silver dashed;display:block;font-family:APLFont, monospace;font-weight:normal;white-space:pre-wrap;}pre > code{line-height:1.2;border:0;padding:0;margin:0;background-color:inherit;color:inherit;font-weight:inherit;white-space:pre-wrap;}td code{padding:0;}a code{padding:0;font-size:1em;}nav code{background-color:inherit;font-weight:400;color:inherit;}code{font-family:APLFont, monospace;font-weight:800;color:#950000;background-color:#e7e7e7;line-height:1.1;font-size:85%;white-space:break-spaces;margin:0;padding:0.2em 0.4em;border-radius:6px;}tbody tr:nth-child(even){background-color:#F0F0F0;}th{background-color:#E6E6E6;color:black;}th, td{padding:0.16em 0.55em;vertical-align:top;}table td + td{border-left:1px solid gray;}table th + th{border-left:1px solid gray;}table{border-color:Black;margin:1.5em 0;border:2px black;border-collapse:collapse;font-family:APLFont;font-size:0.88em;line-height:1.2;border:1px solid Gray;}li > table{margin:0.55em 0 0.55em 0;}tr{margin:1.11em;}th{font-weight:bold;}tfoot td{font-weight:bold;}blockquote{border-left:0.27em solid silver;padding-left:0.27em;margin:0.83em 0.27em 0.83em 0.55em;}blockquote ul li{margin-left:1.38em;}blockquote ol li{margin-left:1.38em;}li > blockquote{margin-left:0;}nav{background-color:#f5f5f5;border:1px solid Black;padding:0.55em;margin:0.50em 0.30em 2em 0.30em;margin-right:0;box-shadow:0.27em 0.27em 0.27em Gray;overflow:hidden;}nav#main_nav{width:auto;}nav ul{list-style-type:None;margin:0 1em 0.11em 0;padding:0;}nav ul ul{margin-left:2em;}nav > ul ul{margin-left:2em;}nav a:visited{color:black;}nav ul li{margin:0 0 0.16em 0;}nav li p{margin:0;padding:0;line-height:1;margin:0;padding:0;}nav li{line-height:1.5;padding:0;margin-top:0;margin-bottom:0;margin-left:2em;}nav p{font-weight:bold;font-size:1rem;padding-top:0;margin-bottom:0.5em;}dl{margin-top:0.1em;margin-bottom:0.1em;}dt{margin-top:0.75em;margin-bottom:0.1em;font-weight:800;}label#hide_toc_label{font-size:1.1em;}.toc-container{height:auto;margin:0;padding:0;}div.toc-container h1{font-size:0.88em;margin:0.27em 0 0.27em 0;}div.toc-container ul{margin-right:1em;}[type="checkbox"]{position:absolute;left:-9999px;}label{display:block;width:100%;height:1.1em;cursor:pointer;top:0;padding-left:1em;}label:before{content:'Table of contents \25BC';font-weight:bold;font-size:80%;padding-bottom:0;}[type="checkbox"] ~ div{display:none;}[type="checkbox"]:checked ~ div{display:block;margin-top:1.1em;}[type="checkbox"]:checked + label{top:100%;}[type="checkbox"]:checked + label:before{content:'Table of contents ▲';}div#footnotes_div p{line-height:1;padding-bottom:0;padding-top:0;}div#footnotes_div ol{padding-top:0;}@font-face{font-family:"APLFont";src:local("APL385 Unicode"), url("https://misc.aplteam.com/apl385.ttf") format("truetype");}.no_display{display:none;}.red{color:red;}.center{text-align:center;margin-left:auto;margin-right:auto;}.left{text-align:left;margin-right:0 auto;}.right{text-align:right;margin-left:0 auto;}img{margin-top:0.55em;margin-bottom:0.27em;}div.leanpub{padding:0.83em 0.55em 1.11em 0;margin:0.55em 0 0 0.27em;overflow:auto;}div.leanpub_A{border:1px solid black;background-color:#f1f1f1;padding:0.55em;margin:1.11em 0 0.83em 0;}div.leanpub h3, div.leanpub_A h3{font-size:1.2em;padding:0;margin:0;}div.leanpub h4, div.leanpub_A h4{font-size:1.1em;padding:0.27em 0 0 0;margin:0;}div.leanpub h5, div.leanpub h5{font-size:1.0em;padding:0.27em 0 0 0;margin:0;}div.leanpub_A h5, div.leanpub_A h5{font-size:1.0em;padding:0.27em 0 0 0;margin:0;}div.leanpub img{padding:0;margin:0 1.11em 0.27em 0;}div.leanpub_A > p:first-child{padding-top:0;margin-top:0;}div.leanpub img{float:left;padding:0;margin:0.55em 1.11em 0 0;clear:both;}div.leanpub tbody *{background-color:transparent;}div.leanpub p{padding:0.17em 0 0 0;margin:0;}span.leanpub_code{color:Red;}div.leanpub p{display:block;padding:0.44em 0 0 0;}div.leanpub > div{margin-left:2.27em;}.print_only{display:none;}pre[class*="language-"]{position:relative;margin:5px 0;padding:1.75rem 0 1.75rem 1rem;}
 </style>
 <style media="print">
-@page{margin:25mm 20mm 25mm 20mm;}body{font-family:"Bookman Old Style", "Callisto MT", Bookman,"Goudy Old Style", Garamond, serif;font-size:9pt;line-height:1.2;}h1{font-size:170%;}h2{font-size:110%;}h3{font-size:110%;}h4{font-size:105%;}h5{font-size:100%;}h6{font-size:95%;}h1{margin:0 0 20pt 0;}h2{margin:15pt 0 3pt 0;}h3{margin:10pt 0 0pt 0;}h4{margin:10pt 0 0pt 0;}h5{margin:9pt 0 0pt 0;}h6{margin:9pt 0 0pt 0;}h1, h2, h3, h4, h5, h6{color:black;font-family:"Century Gothic", Verdana, "Sans";page-break-after:avoid;}h1 > code, h2 > code, h3 > code, h4 > code, h5 > code, h6 > code{font-size:100%;}h2{border-bottom:1pt solid Silver;padding-bottom:2pt;}.h_tag{page-break-after:avoid;break-after:avoid;}abbr[title]{border-bottom:0;text-decoration:none;}a{color:black;margin:0;padding:0;vertical-align:baseline;text-decoration:none;font-style:italic;}a.autoheader_anchor{text-decoration:none;font-style:normal;page-break-after:avoid;break-after:avoid;}ul{list-style-type:square;}ul, ol{padding:0;margin:0;}li > ul, ol{padding-bottom:0;}li{line-height:1.3;margin-left:13pt;margin-bottom:5pt;}ul > li{margin-left:25pt;}ol > li{margin-left:25pt;}li ul{margin-left:5pt;}li ul{margin-left:3pt;}li p{padding:1pt 0 0 0;margin:5pt 0 3pt 0;line-height:1.3;}p, ul, ol{line-height:1.3;padding:4pt 0 0 0;margin:0;color:black;}ul, ol{margin-top:0.75em;}pre{padding:3pt;margin:5pt 0;white-space:pre-wrap;background-color:#FAFAFA;border:1pt Silver solid;display:block;font-family:APLFont, monospace;page-break-inside:avoid;}pre code{background-color:#FAFAFA;color:Black;padding:0;margin:0 0 -6pt 0;line-height:1.1;border:0;white-space:pre-wrap;}code{font-family:APLFont, monospace;line-height:1.2;font-size:9pt;padding:3pt 1pt 3pt 1pt;color:#950000;padding:3pt 4pt 3pt 4pt;}tbody th, tfoot tr{background-color:#e6e6e6;}tbody tr:nth-child(even){background-color:#fafafa;}th{background-color:#F0F0F0;}th, td{padding:1pt 5pt;border:1px solid #E3E3E3;vertical-align:top;}table td + td{border-left:1px solid gray;}table th + th{border-left:1px solid gray;}table code{font-style:normal;padding-left:0;padding-right:0;}table{margin:1.5em 0;font-family:APLFont;font-size:9pt;padding:0;border:1pt solid silver;border-collapse:collapse;}li > table{margin:10pt 0 10pt 0;}tr{margin:20pt;}th{font-weight:bold;}tfoot td{font-weight:bold;}blockquote{border-left:5pt solid silver;padding-left:5pt;margin:8pt 3pt 8pt 8pt;}nav{background-color:#f8f8f8;border:1pt solid Gray;width:auto;float:right;padding:5pt 5pt 5pt 0;margin:5pt 0 5pt 5pt;page-break-inside:avoid;break-inside:avoid;clear:both;overflow:hidden;}nav *{font-size:75%;}nav ul{list-style-type:none;margin:0 0 2pt 0;padding:0;}nav ul li{margin-bottom:0;}nav li p{margin:0;padding:0;line-height:1;margin:0;padding:0;}nav li{font-size:9pt;line-height:1;padding:0;margin-top:0;margin-bottom:0;margin-left:8pt;}dl{margin-top:0;margin-bottom:10pt;}dt{margin-top:10pt;margin-bottom:0;font-weight:800;page-break-inside:avoid;}dd{margin-top:2pt;}label#hide_toc_label{font-size:65%;}.toc-container{position:relative;height:auto;margin-top:2pt;background-color:inherit;}.toc-container h3{margin:0 0 2pt 7pt;}[type="checkbox"]{display:none;}label{display:block;width:100%;height:1.1em;top:0;padding-left:10pt;}label:before{content:'Table of contents';font-weight:bold;font-size:140%;padding-bottom:10pt;}a.external_link::before{content:" 🌎";}a.bookmark_link::before{content:" ➯";}a.mailto_link::before{content:" ✉"}nav a.bookmark_link{font-style:normal;}nav p{margin-left:10pt;font-weight:bold;font-size:9pt;}nav a{font-style:normal;}nav a.bookmark_link::before{content:"";}div#footnotes_div a::before{content:"";}div#footnotes_div a{font-style:normal;}div#footnotes_div{page-break-inside:avoid;}@font-face{font-family:"APLFont";src:local("APL385 Unicode"), url("https://misc.aplteam.com/apl385.ttf") format("truetype");}.no_print{display:none;}.red{color:red;}.center{text-align:center;margin:0 auto;}.left{text-align:left;margin-right:0 auto;}.right{text-align:right;margin-left:0 auto;}.avoid_page_break{page-break-inside:avoid;}.page_break_before{page-break-before:always;}div.leanpub{margin:10pt 0 10pt 8pt;page-break-inside:avoid;}div.leanpub_A{border:1pt solid black;background-color:#f9f9f9;padding:5pt;margin:10pt 0 10pt 0;page-break-inside:avoid;}div.leanpub h3, div.leanpub_A h3{font-size:1.2em;padding:3pt 0 0 0;margin:0;}div.leanpub h4, div.leanpub_A h4{font-size:1.1em;padding:3pt 0 0 0;margin:0;}div.leanpub h5, div.leanpub h5{font-size:1.0em;padding:3pt 0 0 0;margin:0;}div.leanpub_A h5, div.leanpub_A h5{font-size:1.0em;padding:3pt 0 0 0;margin:0;}div.leanpub img{padding:0;margin:0 10pt 2pt 0;}div.leanpub_A > p:first-child{padding-top:0;margin-top:0;}div.leanpub > div > h1:first-child{padding-top:5pt;}div.leanpub img{float:left;padding:0;margin:5pt 10pt 0 0;clear:both;}div.leanpub p{padding:3pt 0 0 0;margin:0;}span.leanpub_code{font-weight:bold;}div.leanpub p{display:block;padding:8pt 0 0 0;}div.leanpub > div{margin-left:35pt;}sup{font-size:0.75em;line-height:0;position:relative;vertical-align:baseline;top:-0.4em;}
+@page{margin:25mm 20mm 25mm 20mm;}body{font-family:"Bookman Old Style", "Callisto MT", Bookman,"Goudy Old Style", Garamond, serif;font-size:9pt;line-height:1.2;}h1{font-size:170%;}h2{font-size:110%;}h3{font-size:110%;}h4{font-size:105%;}h5{font-size:100%;}h6{font-size:95%;}h1{margin:0 0 20pt 0;}h2{margin:15pt 0 3pt 0;}h3{margin:10pt 0 0pt 0;}h4{margin:10pt 0 0pt 0;}h5{margin:9pt 0 0pt 0;}h6{margin:9pt 0 0pt 0;}h1, h2, h3, h4, h5, h6{color:black;font-family:"Century Gothic", Verdana, "Sans";page-break-after:avoid;}h1 > code, h2 > code, h3 > code, h4 > code, h5 > code, h6 > code{font-size:100%;}h2{border-bottom:1pt solid Silver;padding-bottom:2pt;}.h_tag{page-break-after:avoid;break-after:avoid;}abbr[title]{border-bottom:0;text-decoration:none;}a{color:black;margin:0;padding:0;vertical-align:baseline;text-decoration:none;font-style:italic;}a.autoheader_anchor{text-decoration:none;font-style:normal;page-break-after:avoid;break-after:avoid;}ul{list-style-type:square;}ul, ol{padding:0;margin:0;margin-top:10pt;}li > ul, ol{padding-bottom:0;}li{line-height:1.3;margin-left:13pt;margin-bottom:5pt;}ul > li{margin-left:25pt;}ol > li{margin-left:25pt;}li ul{margin-left:5pt;}li ul{margin-left:3pt;}li p{padding:1pt 0 0 0;margin:5pt 0 3pt 0;line-height:1.3;}p, ul, ol{line-height:1.3;padding:4pt 0 0 0;margin:0;color:black;}ul, ol{margin-top:0.75em;}pre{padding:3pt;margin:5pt 0;white-space:pre-wrap;background-color:#FAFAFA;border:1pt Silver solid;display:block;font-family:APLFont, monospace;page-break-inside:avoid;}pre code{background-color:#FAFAFA;color:Black;padding:0;margin:0 0 -6pt 0;line-height:1.1;border:0;white-space:pre-wrap;}code{font-family:APLFont, monospace;line-height:1.2;font-size:9pt;padding:3pt 1pt 3pt 1pt;color:#950000;padding:3pt 4pt 3pt 4pt;}tbody th, tfoot tr{background-color:#e6e6e6;}tbody tr:nth-child(even){background-color:#fafafa;}th{background-color:#F0F0F0;}th, td{padding:1pt 5pt;border:1px solid #E3E3E3;vertical-align:top;}table td + td{border-left:1px solid gray;}table th + th{border-left:1px solid gray;}table code{font-style:normal;padding-left:0;padding-right:0;}table{margin:1.5em 0;font-family:APLFont;font-size:9pt;padding:0;border:1pt solid silver;border-collapse:collapse;}li > table{margin:10pt 0 10pt 0;}tr{margin:20pt;}th{font-weight:bold;}tfoot td{font-weight:bold;}blockquote{border-left:5pt solid silver;padding-left:5pt;margin:8pt 3pt 8pt 8pt;}nav{background-color:#f8f8f8;border:1pt solid Gray;width:auto;padding:5pt 5pt 5pt 0;margin:5pt 0 15pt 5pt;page-break-inside:avoid;overflow:hidden;}nav *{font-size:75%;}nav ul{list-style-type:none;margin:0 0 2pt 0;padding:0;}nav ul li{margin-bottom:0;}nav li p{margin:0;padding:0;line-height:1;margin:0;padding:0;}nav li{font-size:9pt;line-height:1;padding:0;margin-top:0;margin-bottom:0;margin-left:8pt;}dl{margin-top:0;margin-bottom:10pt;}dt{margin-top:10pt;margin-bottom:0;font-weight:800;page-break-inside:avoid;}dd{margin-top:2pt;}label#hide_toc_label{font-size:65%;}.toc-container{background-color:inherit;}.toc-container h3{margin:0 0 2pt 7pt;}[type="checkbox"]{display:none;}label{display:block;width:100%;height:1.1em;top:0;padding-left:10pt;}label:before{content:'Table of contents';font-weight:bold;font-size:140%;padding-bottom:10pt;}a.external_link::before{content:" 🔗 ";}a.bookmark_link::before{content:" ➯";}a.mailto_link::before{content:" ✉"}nav a.bookmark_link{font-style:normal;}nav p{margin-left:10pt;font-weight:bold;font-size:9pt;}nav a{font-style:normal;}nav a.bookmark_link::before{content:"";}div#footnotes_div a::before{content:"";}div#footnotes_div a{font-style:normal;}div#footnotes_div{page-break-inside:avoid;}@font-face{font-family:"APLFont";src:local("APL385 Unicode"), url("https://misc.aplteam.com/apl385.ttf") format("truetype");}.no_print{display:none;}.red{color:red;}.center{text-align:center;margin:0 auto;}.left{text-align:left;margin-right:0 auto;}.right{text-align:right;margin-left:0 auto;}.avoid_page_break{page-break-inside:avoid;}.page_break_before{page-break-before:always;}div.leanpub{margin:10pt 0 10pt 8pt;page-break-inside:avoid;}div.leanpub_A{border:1pt solid black;background-color:#f9f9f9;padding:5pt;margin:10pt 0 10pt 0;page-break-inside:avoid;}div.leanpub h3, div.leanpub_A h3{font-size:1.2em;padding:3pt 0 0 0;margin:0;}div.leanpub h4, div.leanpub_A h4{font-size:1.1em;padding:3pt 0 0 0;margin:0;}div.leanpub h5, div.leanpub h5{font-size:1.0em;padding:3pt 0 0 0;margin:0;}div.leanpub_A h5, div.leanpub_A h5{font-size:1.0em;padding:3pt 0 0 0;margin:0;}div.leanpub img{padding:0;margin:0 10pt 2pt 0;}div.leanpub_A > p:first-child{padding-top:0;margin-top:0;}div.leanpub > div > h1:first-child{padding-top:5pt;}div.leanpub img{float:left;padding:0;margin:5pt 10pt 0 0;clear:both;}div.leanpub p{padding:3pt 0 0 0;margin:0;}span.leanpub_code{font-weight:bold;}div.leanpub p{display:block;padding:8pt 0 0 0;}div.leanpub > div{margin-left:35pt;}sup{font-size:0.75em;line-height:0;position:relative;vertical-align:baseline;top:-0.4em;}pre[class*="language-"]{position:relative;margin:5px 0;padding:1.75rem 0 1.75rem 1rem;}pre[class*="language-"] button{position:absolute;top:5px;right:5px;}
 </style>
 <meta name="author" content="kai">
 </head>
 <body>
-<nav id="main_nav_no_collapse">
-<div class="toc-container">
-<h3>Table of contents</h3>
-<ul>
-<li><a href="#What-is-Cider-for">1. What is Cider for?</a></li>
-<li><a href="#The-solution">2. The solution</a>
-<ul>
-<li><a href="#Requirements">2.1. Requirements</a>
-<ul>
-<li><a href="#APL-Version">2.1.1. APL Version</a></li>
-<li><a href="#Tatin">2.1.2. Tatin</a></li>
-<li><a href="#Git">2.1.3. Git</a></li>
-</ul></li>
-<li><a href="#Installation">2.2. Installation</a>
-<ul>
-<li><a href="#Upgrading-Cider">2.2.1. Upgrading Cider</a></li>
-</ul></li>
-<li><a href="#Configuration">2.3. Configuration</a></li>
-<li><a href="#CreateProject">2.4. CreateProject</a>
-<ul>
-<li><a href="#Configuration-parameters">2.4.1. Configuration parameters</a>
-<ul>
-<li><a href="#CIDER">2.4.1.1. CIDER</a>
-<ul>
-<li><a href="#distributionFolder">2.4.1.1.1. distributionFolder</a></li>
-<li><a href="#parent">2.4.1.1.2. parent</a></li>
-<li><a href="#projectSpace">2.4.1.1.3. projectSpace</a></li>
-<li><a href="#source">2.4.1.1.4. source</a></li>
-<li><a href="#dependencies">2.4.1.1.5. dependencies</a></li>
-<li><a href="#dependencies_dev">2.4.1.1.6. dependencies_dev</a></li>
-<li><a href="#init">2.4.1.1.7. init</a></li>
-<li><a href="#make">2.4.1.1.8. make</a></li>
-<li><a href="#project_url">2.4.1.1.9. project_url</a></li>
-<li><a href="#tests">2.4.1.1.10. tests</a></li>
-<li><a href="#githubUsername">2.4.1.1.11. githubUsername</a></li>
-</ul></li>
-<li><a href="#LINK">2.4.1.2. LINK</a>
-<ul>
-<li><a href="#arrays">2.4.1.2.1. arrays</a></li>
-<li><a href="#beforeRead">2.4.1.2.2. beforeRead</a></li>
-<li><a href="#beforeWrite">2.4.1.2.3. beforeWrite</a></li>
-<li><a href="#watch">2.4.1.2.4. watch</a></li>
-</ul></li>
-<li><a href="#SYSVARS">2.4.1.3. SYSVARS</a>
-<ul>
-<li><a href="#io">2.4.1.3.1. io</a></li>
-<li><a href="#ml">2.4.1.3.2. ml</a></li>
-</ul></li>
-<li><a href="#USER">2.4.1.4. USER</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#OpenProject">2.5. OpenProject</a>
-<ul>
-<li><a href="#1-Creating-a-project-space">2.5.1. 1. Creating a project space</a></li>
-<li><a href="#2-Setting-system-variables">2.5.2. 2. Setting system variables</a></li>
-<li><a href="#3-Bringing-the-code-into-the-workspace">2.5.3. 3. Bringing the code into the workspace</a></li>
-<li><a href="#4-Check-for-empty-package-folders">2.5.4. 4. Check for empty package folders</a></li>
-<li><a href="#5-Check-for-later-packages-versions">2.5.5. 5. Check for later packages versions</a></li>
-<li><a href="#6-Loading-Tatin-packages">2.5.6. 6. Loading Tatin packages</a></li>
-<li><a href="#7-Injecting-a-namespace-CiderConfig">2.5.7. 7. Injecting a namespace <code>CiderConfig</code></a></li>
-<li><a href="#8-Injecting-a-namespace-TatinVars">2.5.8. 8. Injecting a namespace <code>TatinVars</code></a></li>
-<li><a href="#9-Initialising-a-project">2.5.9. 9. Initialising a project (optional)</a></li>
-<li><a href="#10-Executing-user-specific-code">2.5.10. 10. Executing user-specific code</a></li>
-<li><a href="#11-Check-for-ToDo">2.5.11. 11. Check for <code>ToDo</code></a></li>
-<li><a href="#12-Git">2.5.12. 12. Git</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#Misc">3. Misc</a>
-<ul>
-<li><a href="#ListTatinPackage">3.1. ListTatinPackage</a>
-</li></ul></li>
-</ul>
-</div>
-</nav>
 <div class="h_tag">
-<a href="#Cider-User-Guide" id="Cider-User-Guide" class="autoheader_anchor">
+<a href="#cider-user-guide" id="cider-user-guide" class="autoheader_anchor">
 <h1 data-id="Cider-User-Guide">Cider User Guide</h1>
 </a>
 </div>
+<nav id="main_nav">
+<div class="toc-container">
+<h3>Table of contents</h3>
+<ul id=toc-list>
+<li class="toc-entry toc-h2"><a href="#what-is-cider-for">1. What is Cider for?</a></li>
+<li class="toc-entry toc-h2"><a href="#the-solution">2. The solution</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#requirements">2.1. Requirements</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#apl-version">2.1.1. APL Version</a></li>
+<li class="toc-entry toc-h4"><a href="#tatin">2.1.2. Tatin</a></li>
+<li class="toc-entry toc-h4"><a href="#git">2.1.3. Git</a></li>
+</ul></li>
+<li class="toc-entry toc-h3"><a href="#installation">2.2. Installation</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#version-190">2.2.1. Version 19.0</a>
+<ul>
+<li class="toc-entry toc-h5"><a href="#windows">2.2.1.1. Windows</a></li>
+<li class="toc-entry toc-h5"><a href="#linux">2.2.1.2. Linux</a></li>
+<li class="toc-entry toc-h5"><a href="#mac-os">2.2.1.3. Mac OS</a></li>
+</ul></li>
+<li class="toc-entry toc-h4"><a href="#version-180-and-182">2.2.2. Version 18.0 and 18.2</a></li>
+</ul></li>
+<li class="toc-entry toc-h3"><a href="#upgrading-cider">2.3. Upgrading Cider</a></li>
+<li class="toc-entry toc-h3"><a href="#configuration">2.4. Configuration</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#global-configuration">2.4.1. Global configuration</a></li>
+<li class="toc-entry toc-h4"><a href="#project-configuration">2.4.2. Project configuration</a></li>
+</ul></li>
+<li class="toc-entry toc-h3"><a href="#createproject">2.5. CreateProject</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#configuration-parameters">2.5.1. Configuration parameters</a>
+<ul>
+<li class="toc-entry toc-h5"><a href="#cider">2.5.1.1. CIDER</a>
+<ul>
+<li class="toc-entry toc-h6"><a href="#distributionfolder">2.5.1.1.1. distributionFolder</a></li>
+<li class="toc-entry toc-h6"><a href="#parent">2.5.1.1.2. parent</a></li>
+<li class="toc-entry toc-h6"><a href="#projectspace">2.5.1.1.3. projectSpace</a></li>
+<li class="toc-entry toc-h6"><a href="#source">2.5.1.1.4. source</a></li>
+<li class="toc-entry toc-h6"><a href="#dependencies">2.5.1.1.5. dependencies</a></li>
+<li class="toc-entry toc-h6"><a href="#dependencies_dev">2.5.1.1.6. dependencies_dev</a></li>
+<li class="toc-entry toc-h6"><a href="#init">2.5.1.1.7. init</a></li>
+<li class="toc-entry toc-h6"><a href="#make">2.5.1.1.8. make</a></li>
+<li class="toc-entry toc-h6"><a href="#project_url">2.5.1.1.9. project_url</a></li>
+<li class="toc-entry toc-h6"><a href="#tests">2.5.1.1.10. tests</a></li>
+</ul></li>
+<li class="toc-entry toc-h5"><a href="#link">2.5.1.2. LINK</a>
+<ul>
+<li class="toc-entry toc-h6"><a href="#watch">2.5.1.2.1. watch</a></li>
+</ul></li>
+<li class="toc-entry toc-h5"><a href="#sysvars">2.5.1.3. SYSVARS</a>
+<ul>
+<li class="toc-entry toc-h6"><a href="#io">2.5.1.3.1. io</a></li>
+<li class="toc-entry toc-h6"><a href="#ml">2.5.1.3.2. ml</a></li>
+</ul></li>
+<li class="toc-entry toc-h5"><a href="#user">2.5.1.4.  USER</a></li>
+</ul></li>
+</ul></li>
+<li class="toc-entry toc-h3"><a href="#openproject">2.6. OpenProject</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#1-creating-a-project-space">2.6.1. 1. Creating a project space</a></li>
+<li class="toc-entry toc-h4"><a href="#2-setting-system-variables">2.6.2. 2. Setting system variables</a></li>
+<li class="toc-entry toc-h4"><a href="#3-bringing-the-code-into-the-workspace">2.6.3. 3. Bringing the code into the workspace</a></li>
+<li class="toc-entry toc-h4"><a href="#4-check-for-empty-package-folders">2.6.4. 4. Check for empty package folders</a></li>
+<li class="toc-entry toc-h4"><a href="#5-check-for-later-packages-versions">2.6.5. 5. Check for later packages versions</a></li>
+<li class="toc-entry toc-h4"><a href="#6-loading-tatin-packages">2.6.6. 6. Loading Tatin packages</a></li>
+<li class="toc-entry toc-h4"><a href="#7-loading-nuget-packages">2.6.7. 7. Loading NuGet packages</a></li>
+<li class="toc-entry toc-h4"><a href="#8-injecting-a-namespace-ciderconfig">2.6.8. 8. Injecting a namespace <code>CiderConfig</code></a></li>
+<li class="toc-entry toc-h4"><a href="#9-injecting-a-namespace-tatinvars">2.6.9. 9. Injecting a namespace <code>TatinVars</code></a></li>
+<li class="toc-entry toc-h4"><a href="#10-initialising-a-project">2.6.10. 10. Initialising a project (optional)</a></li>
+<li class="toc-entry toc-h4"><a href="#11-executing-user-specific-code">2.6.11. 11. Executing user-specific code</a></li>
+<li class="toc-entry toc-h4"><a href="#12-check-for-todo">2.6.12. 12. Check for <code>ToDo</code></a></li>
+<li class="toc-entry toc-h4"><a href="#13-git">2.6.13. 13. Git</a></li>
+</ul></li>
+</ul></li>
+<li class="toc-entry toc-h2"><a href="#misc">3. Misc</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#addtatindependencies">3.1. AddTatinDependencies</a></li>
+<li class="toc-entry toc-h3"><a href="#addnugetdependencies">3.2. AddNuGetDependencies</a></li>
+<li class="toc-entry toc-h3"><a href="#listtatindependencies">3.3. ListTatinDependencies</a></li>
+<li class="toc-entry toc-h3"><a href="#listnugetdependencies">3.4. ListNuGetDependencies</a>
+</li></ul></li>
+</ul>
+</nav>
 <div class="h_tag">
-<a href="#What-is-Cider-for" id="What-is-Cider-for" class="autoheader_anchor">
+<a href="#what-is-cider-for" id="what-is-cider-for" class="autoheader_anchor">
 <h2 data-id="What-is-Cider-for">1. What is Cider for?</h2>
 </a>
 </div>
 <p>In this document, we use the word “project” for an application or a tool that consists not only of what is finally delivered, like an Installer EXE under Windows or a Tatin package or a workspace or whatnot, but also of stuff that is required only during development, like test cases and test data, tools, helpers etc.</p>
 <p>While LINK is perfect for bringing stuff into the workspace, putting together an environment in which development can take place requires more than just that. Something is missing…</p>
 <div class="h_tag">
-<a href="#The-solution" id="The-solution" class="autoheader_anchor">
+<a href="#the-solution" id="the-solution" class="autoheader_anchor">
 <h2 data-id="The-solution">2. The solution</h2>
 </a>
 </div>
@@ -114,18 +124,18 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </div>
 
 <div class="h_tag">
-<a href="#Requirements" id="Requirements" class="autoheader_anchor">
+<a href="#requirements" id="requirements" class="autoheader_anchor">
 <h3 data-id="Requirements">2.1. Requirements</h3>
 </a>
 </div>
 <div class="h_tag">
-<a href="#APL-Version" id="APL-Version" class="autoheader_anchor">
+<a href="#apl-version" id="apl-version" class="autoheader_anchor">
 <h4 data-id="APL-Version">2.1.1. APL Version</h4>
 </a>
 </div>
 <p>The first version you can use Cider with is 18.0. This is because Cider is a Tatin package, and Tatin runs under 18.0 or later.</p>
 <div class="h_tag">
-<a href="#Tatin" id="Tatin" class="autoheader_anchor">
+<a href="#tatin" id="tatin" class="autoheader_anchor">
 <h4 data-id="Tatin">2.1.2. Tatin</h4>
 </a>
 </div>
@@ -139,44 +149,103 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </div>
 
 <div class="h_tag">
-<a href="#Git" id="Git" class="autoheader_anchor">
+<a href="#git" id="git" class="autoheader_anchor">
 <h4 data-id="Git">2.1.3. Git</h4>
 </a>
 </div>
 <p>If you use Git for version control management and you have the <a href="https://git-scm.com/downloads" class="external_link" title="Link to the Git Bash download page">Git Bash</a> installed then Cider uses the package <a href="https://github.com/aplteam/APLGit2" class="external_link" title="Link to APLGit2 on GitHub"><code>APLGit2</code></a> for communicating with Git.</p>
 <p>For example, when a project carries a directory <code>.git/</code> then Cider knows that the project is version controlled with Git, and it therefore uses the API of <code>APLGit2</code> to display the Git status report for a project in the later stages of opening a project.</p>
 <div class="h_tag">
-<a href="#Installation" id="Installation" class="autoheader_anchor">
+<a href="#installation" id="installation" class="autoheader_anchor">
 <h3 data-id="Installation">2.2. Installation</h3>
 </a>
 </div>
-<p>With version 19.0 and later, Cider will be part of a default installation. In earlier versions you must install it yourself.</p>
-<p>Cider requires Tatin, and Tatin runs on Dyalog 18.0 or later, so Cider cannot run in earlier versions than Dyalog 18.0 either.</p>
-<p>To install Cider, issue this command:</p>
-<pre><code>]Tatin.InstallPackages [tatin]Cider [MyUCMDs]</code></pre>
-<p>When a new instance of Dyalog is started <code>]Cider</code> will be available. For an instance that was already running when Cider was installed execute <code>]UReset</code>.</p>
-<p>However, the API only becomes available after any Cider user command was executed. <code>]Cider.Version</code> is enough for that.</p>
-<p>If that is not good enough for you, this article explains how to load user commands into <code>⎕SE</code> at a very early stage: <a href="https://aplwiki.com/wiki/Dyalog_User_Commands" class="external_link">https://aplwiki.com/wiki/Dyalog_User_Commands</a></p>
+<p>With version 19.0, Cider will be part of a default installation, though it won't be activated: for that you have to take action.</p>
+<p>In earlier versions you must install Cider yourself. Note that updating and installing Cider is essentially the same.</p>
+<p>Cider requires Tatin, and Tatin runs on Dyalog 18.0 or later, so Cider cannot run in earlier versions than Dyalog 18.0.</p>
 <div class="h_tag">
-<a href="#Upgrading-Cider" id="Upgrading-Cider" class="autoheader_anchor">
-<h4 data-id="Upgrading-Cider">2.2.1. Upgrading Cider</h4>
+<a href="#version-190" id="version-190" class="autoheader_anchor">
+<h4 data-id="Version-190">2.2.1. Version 19.0</h4>
 </a>
 </div>
-<p>You can upgrade Cider to the latest version by issuing the following command:</p>
-<pre><code>]Tatin.ReInstallDependencies [MyUCMDs]/Cider</code></pre>
-<p>Either issue <code>]UReset</code> or restart Dyalog to start using the new version.</p>
+<p>Version 19.0 comes with both Tatin and Cider, but neither is active by default.</p>
+<p>In order to activate them, the folder <code>[DYALOG]/SessionExtensions</code> need to be copied into one of the following folders:</p>
 <div class="h_tag">
-<a href="#Configuration" id="Configuration" class="autoheader_anchor">
-<h3 data-id="Configuration">2.3. Configuration</h3>
+<a href="#windows" id="windows" class="autoheader_anchor">
+<h5 data-id="Windows">2.2.1.1. Windows</h5>
 </a>
 </div>
-<p>Every Cider project has a configuration file called <code>cider.config</code> that is saved in the root of the project's folder.</p>
-<p>Cider may also have a global configuration file that can be used to define settings that effect all projects. It's also named <code>cider.config</code> but referred to as the <em>global</em> Cider config file.</p>
+<pre tabindex="0"><code>C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL 19.0 Unicode Files\StartupSession\    ⍝ 32-bit
+C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 19.0 Unicode Files\StartupSession\ ⍝ 64-bit
+C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\                 ⍝ version agnostic</code></pre>
+<p>Once the folder <code>SessionExtension/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
+<div class="h_tag">
+<a href="#linux" id="linux" class="autoheader_anchor">
+<h5 data-id="Linux">2.2.1.2. Linux</h5>
+</a>
+</div>
+<pre tabindex="0"><code>/home/&lt;⎕AN&gt;/dyalog.190U32.files ⍝ 32-bit
+/home/&lt;⎕AN&gt;/dyalog.190U64.files ⍝ 64-bit
+/home/&lt;⎕AN&gt;/dyalog.files        ⍝ version agnostic</code></pre>
+<p>Note that your intended target directory might not exist yet.</p>
+<p>Once the folder <code>SessionExtension/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
+<div class="h_tag">
+<a href="#mac-os" id="mac-os" class="autoheader_anchor">
+<h5 data-id="Mac-OS">2.2.1.3. Mac OS</h5>
+</a>
+</div>
+<pre tabindex="0"><code>/Users/&lt;⎕AN&gt;/dyalog.190U32.files ⍝ 32-bit
+/Users/&lt;⎕AN&gt;/dyalog.190U64.files ⍝ 64-bit
+/Users/&lt;⎕AN&gt;/dyalog.files        ⍝ version agnostic</code></pre>
+<p>Note that your intended target directory might not exist yet.</p>
+<p>Once the folder <code>SessionExtension/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
+<div class="h_tag">
+<a href="#version-180-and-182" id="version-180-and-182" class="autoheader_anchor">
+<h4 data-id="Version-180-and-182">2.2.2. Version 18.0 and 18.2</h4>
+</a>
+</div>
+<p>Unlike 19.0, these versions don't come with neither Tatin and Cider, so you first have to make sure that Tatin is installed and available.</p>
+<p><a href="https://tatin.dev/" class="external_link">https://tatin.dev/</a> provides instructions for how to install Tatin on 18.0 and 18.2.</p>
+<p>Once Tatin is available, installing Cider is easy and straightforward, just issue this command:</p>
+<pre tabindex="0"><code>]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES_32]
+]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES_64]
+]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES]</code></pre>
+<p>Once the folder <code>SessionExtension/</code> is in place, any newly started version of Dyalog is aware of the user commands <code>]Tatin.*</code> and <code>]Cider.*</code>.</p>
+<p>The APIs are not available yet at this point, but they will become available once a user command is issued. For examples, after issuing the following two commands the APIs will both be available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>:</p>
+<pre tabindex="0"><code>]Tatin.Version
+]Cider.Version</code></pre>
+<p>If that is not good enough for you (because you want the API to be available right from the start) this article explains how to load stuff into <code>⎕SE</code> at a very early stage: <a href="https://aplwiki.com/wiki/Dyalog_User_Commands" class="external_link">https://aplwiki.com/wiki/Dyalog_User_Commands</a></p>
+<div class="h_tag">
+<a href="#upgrading-cider" id="upgrading-cider" class="autoheader_anchor">
+<h3 data-id="Upgrading-Cider">2.3. Upgrading Cider</h3>
+</a>
+</div>
+<p>You can update Cider to the latest version by issuing the following command:</p>
+<pre tabindex="0"><code>]Cider.UpdateCider</code></pre>
+<p>You must restart Dyalog in order to start using the new version.</p>
+<div class="h_tag">
+<a href="#configuration" id="configuration" class="autoheader_anchor">
+<h3 data-id="Configuration">2.4. Configuration</h3>
+</a>
+</div>
+<div class="h_tag">
+<a href="#global-configuration" id="global-configuration" class="autoheader_anchor">
+<h4 data-id="Global-configuration">2.4.1. Global configuration</h4>
+</a>
+</div>
+<p>Cider may have a global configuration file that can be used to define settings that effect all projects. It's named is <code>cider.json</code>, and it is referred to as the <em>global</em> Cider config file.</p>
 <p>This file, if it exists, it situated in a folder <code>.cider</code> that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be C:\Users\JohnDoe\.cider on Windows, on Linux it would be /home/JohnDoe/.cider etc.</p>
 <p>This folder does not only host the global config file, it's also the place where the file with alias definitions (<code>aliase.txt</code>) is saved as well as the file <code>cider.config.template</code> that is used as a template when a new project is created.</p>
 <div class="h_tag">
-<a href="#CreateProject" id="CreateProject" class="autoheader_anchor">
-<h3 data-id="CreateProject">2.4. CreateProject</h3>
+<a href="#project-configuration" id="project-configuration" class="autoheader_anchor">
+<h4 data-id="Project-configuration">2.4.2. Project configuration</h4>
+</a>
+</div>
+<p>Every Cider project has a configuration file called <code>cider.config</code> that is saved in the root of the project's folder.</p>
+<p>When a new project is created, a copy of the file <code>cider.config.template</code> is copied from the global configuration folder (see above) into the root of the new project.</p>
+<div class="h_tag">
+<a href="#createproject" id="createproject" class="autoheader_anchor">
+<h3 data-id="CreateProject">2.5. CreateProject</h3>
 </a>
 </div>
 <p>With <code>]Cider.CreateProject</code> any folder that does not yet host a file <code>cider.config</code> can be transformed into a Cider project. (You may specify the <code>-acceptConfig</code> flag to override this default behaviour and make Cider accept an already existing file <code>cider.config</code>)</p>
@@ -200,8 +269,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>However, when the namespace and source folder are <em>both not empty</em> then the user will be asked whether the contents of the namespace should be deleted because that might well make sense.</p>
 <p>If the user answers this question with “No” then an error is thrown.</p>
 <div class="h_tag">
-<a href="#Configuration-parameters" id="Configuration-parameters" class="autoheader_anchor">
-<h4 data-id="Configuration-parameters">2.4.1. Configuration parameters</h4>
+<a href="#configuration-parameters" id="configuration-parameters" class="autoheader_anchor">
+<h4 data-id="Configuration-parameters">2.5.1. Configuration parameters</h4>
 </a>
 </div>
 <p>The Cider configuration file comes with four sections:</p>
@@ -213,56 +282,58 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </ul>
 <p>We will discuss the settings in each section in detail.</p>
 <div class="h_tag">
-<a href="#CIDER" id="CIDER" class="autoheader_anchor">
-<h5 data-id="CIDER">2.4.1.1. CIDER</h5>
+<a href="#cider" id="cider" class="autoheader_anchor">
+<h5 data-id="CIDER">2.5.1.1. CIDER</h5>
 </a>
 </div>
 <p>This section discusses the Cider-specific parameters in alphabetical order.</p>
 <div class="h_tag">
-<a href="#distributionFolder" id="distributionFolder" class="autoheader_anchor">
-<h6 data-id="distributionFolder">2.4.1.1.1. distributionFolder</h6>
+<a href="#distributionfolder" id="distributionfolder" class="autoheader_anchor">
+<h6 data-id="distributionFolder">2.5.1.1.1. distributionFolder</h6>
 </a>
 </div>
 <p>Has no default. If it is not empty it is supposed to be a folder, usually relative to the root of the project. Tatin's <code>BuildPackage</code> function would use this property in order to save the resulting ZIP file in this folder in case no specific target folder was specified.</p>
 <p>If you create all your package ZIP files always in the same sub-folder of any project then you can define this in Cider's project config template file in order to make sure that it will always default to that folder name: Tatin's <code>BuildPackage</code> function, when not provided with a target folder, would check whether the project is managed by Cider and has a non-empty property <code>distributionFolder</code> defined, and if so take that as the target folder.</p>
 <div class="h_tag">
 <a href="#parent" id="parent" class="autoheader_anchor">
-<h6 data-id="parent">2.4.1.1.2. parent</h6>
+<h6 data-id="parent">2.5.1.1.2. parent</h6>
 </a>
 </div>
 <p>Defaults to <code>#</code> but can be something like <code>⎕SE</code> or <code>#.MyNamespace1.MyNamespace2</code>.</p>
 <p>Note that all namespaces specified as <code>parent</code> <em>must already exist</em>, otherwise an error is thrown.</p>
 <p>With the user command, this can be overwritten temporarily with, say:</p>
-<pre><code>]Cider.OpenProject {path} -parent=#.MyProjects</code></pre>
+<pre tabindex="0"><code>]Cider.OpenProject {path} -parent=#.MyProjects</code></pre>
 <div class="h_tag">
-<a href="#projectSpace" id="projectSpace" class="autoheader_anchor">
-<h6 data-id="projectSpace">2.4.1.1.3. projectSpace</h6>
+<a href="#projectspace" id="projectspace" class="autoheader_anchor">
+<h6 data-id="projectSpace">2.5.1.1.3. projectSpace</h6>
 </a>
 </div>
 <p>The name of a namespace that will host the project. <em>Must</em> be set by the user in the config file.</p>
 <p>With the user command, this can be overwritten temporarily with, say:</p>
-<pre><code>]Cider.OpenProject {path} -projectspace=Foo</code></pre>
+<pre tabindex="0"><code>]Cider.OpenProject {path} -projectspace=Foo</code></pre>
 <div class="h_tag">
 <a href="#source" id="source" class="autoheader_anchor">
-<h6 data-id="source">2.4.1.1.4. source</h6>
+<h6 data-id="source">2.5.1.1.4. source</h6>
 </a>
 </div>
 <p>Defaults to <code>APLSource</code>: a subfolder that hosts the code. That's where the code lives, relative to the project folder.</p>
 <p>This might be empty, for example when the project is just a single script (class or namespace).</p>
 <div class="h_tag">
 <a href="#dependencies" id="dependencies" class="autoheader_anchor">
-<h6 data-id="dependencies">2.4.1.1.5. dependencies</h6>
+<h6 data-id="dependencies">2.5.1.1.5. dependencies</h6>
 </a>
 </div>
-<p>This carries one sub-key: “tatin”. This is how the template config file looks like:</p>
-<pre><code>dependencies: {
-    tatin: "packages",
+<p>This carries two sub-keys: “tatin” and “nuget”. This is how the template config file looks like:</p>
+<pre tabindex="0"><code>dependencies: {
+    tatin: "tatin-packages",
+    nuget: "nuget-packages",
     },</code></pre>
-<p>The sub-key “tatin” defaults to “packages”, which must be a folder in the root of the project the resulting package or application depends on.</p>
-<p>This makes Cider load all Tatin packages that are installed in the project's subfolder “packages” into the namespace that hosts the project.</p>
-<p>In case you don't want the packages to be loaded into the root of the project but a sub-namespace, say “Foo”:</p>
-<pre><code>dependencies: {
-    tatin: "packages=Foo",
+<p>The sub-key “tatin” defaults to “tatin-packages”, which must be a folder in the root of the project the resulting package or application depends on.</p>
+<p>This makes Cider load all Tatin and NuGet packages that are installed in the project's subfolder “tatin-packages” and “nuget-packages” respectively into the namespace that hosts the project.</p>
+<p>In case you don't want the packages to be loaded into the root of the project but a sub-namespace, say “Foo”/“Goo”:</p>
+<pre tabindex="0"><code>dependencies: {
+    tatin: "tatin-packages=Foo",
+    nuget: "nuget-packages=Goo",
     },</code></pre>
 <div class="leanpub">
 <img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information">
@@ -273,18 +344,19 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 
 <div class="h_tag">
 <a href="#dependencies_dev" id="dependencies_dev" class="autoheader_anchor">
-<h6 data-id="dependencies_dev">2.4.1.1.6. dependencies_dev</h6>
+<h6 data-id="dependencies_dev">2.5.1.1.6. dependencies_dev</h6>
 </a>
 </div>
 <p>In principle this is the same as <code>dependencies</code>, but it regards dependencies that are only required for development and testing, not for producing the final result, be it a package or an application.</p>
 <p>For that reason those dependencies are more often than not expected to be loaded into a sub-namespace of the project:</p>
-<pre><code>dependencies_dev: {
-    tatin: "packages_dev=Testcases",
+<pre tabindex="0"><code>dependencies_dev: {
+    tatin: "tatin-packages_dev=Testcases",
     },</code></pre>
-<p>All packages in the sub-folder packages_dev/ are loaded into the sub-namespace <code>Testcases</code></p>
+<p>All packages in the sub-folder tatin-packages_dev/ are loaded into the sub-namespace <code>Testcases</code></p>
+<p>However, note that you cannot have a sub-key “nuget” in “dependencies_dev”.</p>
 <div class="h_tag">
 <a href="#init" id="init" class="autoheader_anchor">
-<h6 data-id="init">2.4.1.1.7. init</h6>
+<h6 data-id="init">2.5.1.1.7. init</h6>
 </a>
 </div>
 <p>If not empty this must be the name of a function within <code>projectSpace</code>. The function will be executed after a project was opened.</p>
@@ -296,18 +368,18 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </ul>
 <div class="h_tag">
 <a href="#make" id="make" class="autoheader_anchor">
-<h6 data-id="make">2.4.1.1.8. make</h6>
+<h6 data-id="make">2.5.1.1.8. make</h6>
 </a>
 </div>
 <p>Empty or an expression (relative to the project) that would create a new version of the project.</p>
 <p>The purpose is to tell anybody not familiar with the project how to create a new version by entering:</p>
-<pre><code>      ]Cider.Make
+<pre tabindex="0"><code>      ]Cider.Make
 #.Cider.Admin.Make 1 ⍝ Execute this for creating a new version</code></pre>
 <p>The output is compiled from the config parameter values <code>CIDER.parent</code>, <code>CIDER.projectSpace</code> and <code>CIDER.make</code> and the comment is then added.</p>
 <p>However, if the first non-white space character of <code>make</code> is a <code>]</code> its definition would just be printed to the session together with a comment because then it's obviously a user command.</p>
 <div class="h_tag">
 <a href="#project_url" id="project_url" class="autoheader_anchor">
-<h6 data-id="project_url">2.4.1.1.9. project_url</h6>
+<h6 data-id="project_url">2.5.1.1.9. project_url</h6>
 </a>
 </div>
 <p>If not empty this is expected to be a URL pointing to, say, a GitHub project. For information only.</p>
@@ -315,101 +387,74 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Some function of <code>APLGit2</code> must know the <code>owner</code> of a project on GitHub. Those functions will investigate project_url`: if that points to GitHub, the owner is established from its contents.</p>
 <div class="h_tag">
 <a href="#tests" id="tests" class="autoheader_anchor">
-<h6 data-id="tests">2.4.1.1.10. tests</h6>
+<h6 data-id="tests">2.5.1.1.10. tests</h6>
 </a>
 </div>
 <p>Empty or an expression (relative to the project) that would execute the test cases of the project.</p>
 <p>The purpose is to tell anybody not familiar with the project how to execute the test cases by entering:</p>
-<pre><code>      ]Cider.RunTests
+<pre tabindex="0"><code>      ]Cider.RunTests
 #.Cider.TestCases.RunTests ⍝ Execute this for running the test suite</code></pre>
 <p>The output is compiled from the config parameter values <code>CIDER.parent</code>, <code>CIDER.projectSpace</code> and <code>CIDER.tests</code>, and the comment is then added.</p>
 <p>However, if the first non-white space character of <code>tests</code> is a <code>]</code> (making it a user command rather than a function call) its definition would just be printed to the session together with a comment because then it's obviously a user command.</p>
 <div class="h_tag">
-<a href="#githubUsername" id="githubUsername" class="autoheader_anchor">
-<h6 data-id="githubUsername">2.4.1.1.11. githubUsername</h6>
-</a>
-</div>
-<p>This parameter was introduced with version 0.19.0 and removed with version 0.24.0</p>
-<p>If for some reason the information this property was expected to hold is required then Cider will investigate the <code>project_url</code> property and establish it this way.</p>
-<p>If a config file still carries this property it is simply ignored.</p>
-<div class="h_tag">
-<a href="#LINK" id="LINK" class="autoheader_anchor">
-<h5 data-id="LINK">2.4.1.2. LINK</h5>
+<a href="#link" id="link" class="autoheader_anchor">
+<h5 data-id="LINK">2.5.1.2. LINK</h5>
 </a>
 </div>
 <p>These are LINK parameters which are passed on to LINK when Cider brings the APL code into the WS with LINK.</p>
-<p>Note that this is a temporary solution: LINK should have its own config files for this, and will get them. Once they are available this section will be ignored in Cider config files, and should be removed.</p>
-<p>You may add other settings like <code>caseCode</code> as well; refer to LINKs documentation for details.</p>
-<div class="h_tag">
-<a href="#arrays" id="arrays" class="autoheader_anchor">
-<h6 data-id="arrays">2.4.1.2.1. arrays</h6>
-</a>
-</div>
-<p>This is a Boolean that defaults to 0.</p>
-<p>A 1 means that all variables are watched, and 0 means that Cider/Link does not care unless a variable is already saved in an <code>.apla</code> file.</p>
-<div class="h_tag">
-<a href="#beforeRead" id="beforeRead" class="autoheader_anchor">
-<h6 data-id="beforeRead">2.4.1.2.2. beforeRead</h6>
-</a>
-</div>
-<p>Empty or a <em>fully qualified</em> function name.</p>
-<div class="h_tag">
-<a href="#beforeWrite" id="beforeWrite" class="autoheader_anchor">
-<h6 data-id="beforeWrite">2.4.1.2.3. beforeWrite</h6>
-</a>
-</div>
-<p>Empty or a <em>fully qualified</em> function name.</p>
+<p>Note that this is a temporary solution: LINK should have its own config files for this, and will get them with Link 4.0.</p>
+<p>However, until all supported versions of Link can deal with Link's own configuration file, Cider will save non-defaults values in a Cider project config file.</p>
 <div class="h_tag">
 <a href="#watch" id="watch" class="autoheader_anchor">
-<h6 data-id="watch">2.4.1.2.4. watch</h6>
+<h6 data-id="watch">2.5.1.2.1. watch</h6>
 </a>
 </div>
 <p>Defaults to “both” but can be “ns” or “dir” as well.</p>
 <p>Defines which source to track for changes, so the other can be synchronised.</p>
-<p>Note that for “both” and “dir” .NET or .NET Core is required. Under Windows this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not the default for “watch” will be “ns”.</p>
+<p>Note that for “both” and “dir” .NET or .NET Core is required. Under Windows this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not, the default for “watch” will be “ns”.</p>
 <div class="h_tag">
-<a href="#SYSVARS" id="SYSVARS" class="autoheader_anchor">
-<h5 data-id="SYSVARS">2.4.1.3. SYSVARS</h5>
+<a href="#sysvars" id="sysvars" class="autoheader_anchor">
+<h5 data-id="SYSVARS">2.5.1.3. SYSVARS</h5>
 </a>
 </div>
 <p>This section allows you to define system variables. <code>⎕IO</code> and <code>⎕ML</code> should always be defined here.</p>
 <p>You may add other <code>⎕</code>-variables here like, say, <code>⎕CT</code> as “ct” etc.</p>
 <div class="h_tag">
 <a href="#io" id="io" class="autoheader_anchor">
-<h6 data-id="io">2.4.1.3.1. io</h6>
+<h6 data-id="io">2.5.1.3.1. io</h6>
 </a>
 </div>
 <p>Defaults to 1.</p>
 <div class="h_tag">
 <a href="#ml" id="ml" class="autoheader_anchor">
-<h6 data-id="ml">2.4.1.3.2. ml</h6>
+<h6 data-id="ml">2.5.1.3.2. ml</h6>
 </a>
 </div>
 <p>Defaults to 1.</p>
 <div class="h_tag">
-<a href="#USER" id="USER" class="autoheader_anchor">
-<h5 data-id="USER">2.4.1.4. USER</h5>
+<a href="#user" id="user" class="autoheader_anchor">
+<h5 data-id="USER">2.5.1.4.  USER</h5>
 </a>
 </div>
 <p>This section allows you to specify your own project-specific values; its contents (if any) is ignored by Cider.</p>
 <p>This is an example:</p>
-<pre><code>USER: {
+<pre tabindex="0"><code>USER: {
    "Foo": 1,
     },
 }
 },</code></pre>
 <p>After opening the project into, say, <code>#.MyProject</code> the value is accessible via</p>
-<pre><code>#.MyProject.CiderConfig.USER.Foo</code></pre>
+<pre tabindex="0"><code>#.MyProject.CiderConfig.USER.Foo</code></pre>
 <div class="h_tag">
-<a href="#OpenProject" id="OpenProject" class="autoheader_anchor">
-<h3 data-id="OpenProject">2.5. OpenProject</h3>
+<a href="#openproject" id="openproject" class="autoheader_anchor">
+<h3 data-id="OpenProject">2.6. OpenProject</h3>
 </a>
 </div>
 <p>Naturally, <code>OpenProject</code> is the most important command Cider offers. We discuss all its actions in detail.</p>
 <p>Note that the contents of the file <code>cider.config</code> directs what exactly Cider is going to do when its principal method, <code>OpenProject</code>, is executed.</p>
 <div class="h_tag">
-<a href="#1-Creating-a-project-space" id="1-Creating-a-project-space" class="autoheader_anchor">
-<h4 data-id="1-Creating-a-project-space">2.5.1. 1. Creating a project space</h4>
+<a href="#1-creating-a-project-space" id="1-creating-a-project-space" class="autoheader_anchor">
+<h4 data-id="1-Creating-a-project-space">2.6.1. 1. Creating a project space</h4>
 </a>
 </div>
 <p>The first step carried out by <code>]Cider.OpenProject</code> is to create a namespace with the name <code>projectSpace</code> as a child of <code>parent</code>, when <code>parent</code> defaults to <code>#</code> but may be something like <code>⎕SE</code> or <code>#.Foo.Goo</code> etc.</p>
@@ -421,8 +466,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <li>In case neither the namespace nor the folder is empty the user is asked whether she wants the namespace to be emptied; if not an error is thrown.</li>
 </ul>
 <div class="h_tag">
-<a href="#2-Setting-system-variables" id="2-Setting-system-variables" class="autoheader_anchor">
-<h4 data-id="2-Setting-system-variables">2.5.2. 2. Setting system variables</h4>
+<a href="#2-setting-system-variables" id="2-setting-system-variables" class="autoheader_anchor">
+<h4 data-id="2-Setting-system-variables">2.6.2. 2. Setting system variables</h4>
 </a>
 </div>
 <p>In the next step <code>]Cider.OpenProject</code> is going to set at least two system variables defined in the config file in the <code>SYSVARS</code> section of the INI file: <code>⎕IO</code> and <code>⎕ML</code>.</p>
@@ -437,25 +482,25 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </div>
 
 <div class="h_tag">
-<a href="#3-Bringing-the-code-into-the-workspace" id="3-Bringing-the-code-into-the-workspace" class="autoheader_anchor">
-<h4 data-id="3-Bringing-the-code-into-the-workspace">2.5.3. 3. Bringing the code into the workspace</h4>
+<a href="#3-bringing-the-code-into-the-workspace" id="3-bringing-the-code-into-the-workspace" class="autoheader_anchor">
+<h4 data-id="3-Bringing-the-code-into-the-workspace">2.6.3. 3. Bringing the code into the workspace</h4>
 </a>
 </div>
 <p>In this step, all files with supported file extensions (See LINK's documentation for details) found in <code>source</code> and any subfolder are established in the workspace in <code>{parent}. {projectSpace}</code>.</p>
-<p>To achieve this Cider uses LINK[<a href="#fnref2" class="footnote_link"><sup>2</sup></a>].</p>
+<p>To achieve this Cider uses LINK[<a href="#fnref3" class="footnote_link"><sup>3</sup></a>].</p>
 <p>Note that from now on we will refer to:</p>
 <p><code>{parent}.{projectSpace}</code> as <em>the root of a project</em>.</p>
 <p>By default, a link is established between the root of the project and the folder. When you intend to work on the project (read: change the code) then this is the obvious thing to do.</p>
 <div class="leanpub_A">
 <h3>LINK's <code>watch</code> parameter</h3>
-<p>By default Cider sets the <code>watch</code> parameter to “both”, meaning that changes in the workspace via the editor are saved to disk, and any changes on disk are brought into the workspace[<a href="#fnref4" class="footnote_link"><sup>4</sup></a>].</p>
+<p>By default Cider sets the <code>watch</code> parameter to “both”, meaning that changes in the workspace via the editor are saved to disk, and any changes on disk are brought into the workspace[<a href="#fnref5" class="footnote_link"><sup>5</sup></a>].</p>
 <p>You may set <code>watch</code> to “ns” or “dir” instead. Refer to the LINK documentation for details.</p>
 </div>
 
 <p>However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the <code>-import</code> flag.</p>
 <div class="h_tag">
-<a href="#4-Check-for-empty-package-folders" id="4-Check-for-empty-package-folders" class="autoheader_anchor">
-<h4 data-id="4-Check-for-empty-package-folders">2.5.4. 4. Check for empty package folders</h4>
+<a href="#4-check-for-empty-package-folders" id="4-check-for-empty-package-folders" class="autoheader_anchor">
+<h4 data-id="4-Check-for-empty-package-folders">2.6.4. 4. Check for empty package folders</h4>
 </a>
 </div>
 <p>Cider now checks whether any of the Tatin installation folders — as noted on the <code>dependencies</code> and <code>dependencies_dev</code> properties — is empty apart from a dependency file and a build list.</p>
@@ -468,24 +513,31 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 
 <p>In case a Tatin installation folder defined in the Cider config file does not contain any packages but the two definition files, the user will be asked whether she wants to re-install the packages.</p>
 <div class="h_tag">
-<a href="#5-Check-for-later-packages-versions" id="5-Check-for-later-packages-versions" class="autoheader_anchor">
-<h4 data-id="5-Check-for-later-packages-versions">2.5.5. 5. Check for later packages versions</h4>
+<a href="#5-check-for-later-packages-versions" id="5-check-for-later-packages-versions" class="autoheader_anchor">
+<h4 data-id="5-Check-for-later-packages-versions">2.6.5. 5. Check for later packages versions</h4>
 </a>
 </div>
 <p>In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will only happen in case <code>importFlag</code> is 0.</p>
 <p>However, note that this is only true if you've loaded the package(s) from a Tatin Registry that is in your config file <em>and</em> has a priority greater than 0. Refer to the Tatin documentation for details.</p>
 <p>If <code>]Cider.OpenProject</code> discovers later packages it will ask the user whether these packages shall be re-installed with the <code>-update</code> flag set. This will happen independently for each package installation folder.</p>
 <div class="h_tag">
-<a href="#6-Loading-Tatin-packages" id="6-Loading-Tatin-packages" class="autoheader_anchor">
-<h4 data-id="6-Loading-Tatin-packages">2.5.6. 6. Loading Tatin packages</h4>
+<a href="#6-loading-tatin-packages" id="6-loading-tatin-packages" class="autoheader_anchor">
+<h4 data-id="6-Loading-Tatin-packages">2.6.6. 6. Loading Tatin packages</h4>
 </a>
 </div>
-<p>Your application or tool might depend on one or more Tatin[<a href="#fnref1" class="footnote_link"><sup>1</sup></a>] packages. By assigning one or more comma-separated folders hosting Tatin packages to the <code>tatin</code> sub-key in <code>dependencies</code> and potentially <code>dependencies_dev</code> you can make sure that Cider will load[<a href="#fnref3" class="footnote_link"><sup>3</sup></a>] those installed packages into the root of your project or the assigned sub-namespace.</p>
-<p>In particular when you specify more than a single folder you are likely to want some packages to be loaded into a sub-namespace of the root of your project.</p>
-<p>See the config properties <code>dependencies</code> and <code>dependencies_dev</code> for details on how to achieve this.</p>
+<p>Your application or tool might depend on one or more Tatin[<a href="#fnref1" class="footnote_link"><sup>1</sup></a>] packages. By assigning a folder hosting Tatin packages to the <code>tatin</code> sub-key in <code>dependencies</code> and potentially <code>dependencies_dev</code> you can make sure that Cider will load[<a href="#fnref4" class="footnote_link"><sup>4</sup></a>] those installed packages into the root of your project or the assigned sub-namespace.</p>
+<p>See the config properties <code>dependencies</code> and <code>dependencies_dev</code> for details.</p>
 <div class="h_tag">
-<a href="#7-Injecting-a-namespace-CiderConfig" id="7-Injecting-a-namespace-CiderConfig" class="autoheader_anchor">
-<h4 data-id="7-Injecting-a-namespace-CiderConfig">2.5.7. 7. Injecting a namespace <code>CiderConfig</code></h4>
+<a href="#7-loading-nuget-packages" id="7-loading-nuget-packages" class="autoheader_anchor">
+<h4 data-id="7-Loading-NuGet-packages">2.6.7. 7. Loading NuGet packages</h4>
+</a>
+</div>
+<p>Your application or tool might depend on a NuGet[<a href="#fnref2" class="footnote_link"><sup>2</sup></a>] package. By assigning a folder hosting NuGet packages to the <code>nuget</code> sub-key in <code>dependencies</code> you can make sure that Cider will load those installed packages into the root of your project or the assigned sub-namespace.</p>
+<p>See the config property <code>dependencies</code> details.</p>
+<p>Note that NuGet packages can currently become part of your application, but they cannot be loaded as development tools. This restriction might be lifted in a later release.</p>
+<div class="h_tag">
+<a href="#8-injecting-a-namespace-ciderconfig" id="8-injecting-a-namespace-ciderconfig" class="autoheader_anchor">
+<h4 data-id="8-Injecting-a-namespace-CiderConfig">2.6.8. 8. Injecting a namespace <code>CiderConfig</code></h4>
 </a>
 </div>
 <p>In this step <code>]Cider.OpenProject</code> injects a namespace <code>CiderConfig</code> into the project space and…</p>
@@ -494,16 +546,16 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <li>adds a variable <code>HOME</code> that remembers the path the project was loaded from</li>
 </ul>
 <div class="h_tag">
-<a href="#8-Injecting-a-namespace-TatinVars" id="8-Injecting-a-namespace-TatinVars" class="autoheader_anchor">
-<h4 data-id="8-Injecting-a-namespace-TatinVars">2.5.8. 8. Injecting a namespace <code>TatinVars</code></h4>
+<a href="#9-injecting-a-namespace-tatinvars" id="9-injecting-a-namespace-tatinvars" class="autoheader_anchor">
+<h4 data-id="9-Injecting-a-namespace-TatinVars">2.6.9. 9. Injecting a namespace <code>TatinVars</code></h4>
 </a>
 </div>
 <p>If the project becomes eventually a package, Cider injects a namespace <code>TatinVars</code> which contains exactly the same stuff as if it were loaded as a package.</p>
 <p>This allows a developer to access <code>TatinVars</code> as if it was loaded as a package while working on the project.</p>
 <p>Whether the project ends up as a package is determined by the presencse of a file <code>apl-package.json</code> in the root of the project.</p>
 <div class="h_tag">
-<a href="#9-Initialising-a-project" id="9-Initialising-a-project" class="autoheader_anchor">
-<h4 data-id="9-Initialising-a-project">2.5.9. 9. Initialising a project (optional)</h4>
+<a href="#10-initialising-a-project" id="10-initialising-a-project" class="autoheader_anchor">
+<h4 data-id="10-Initialising-a-project">2.6.10. 10. Initialising a project (optional)</h4>
 </a>
 </div>
 <p>Now there might well be demand for executing some code to initialise your project.</p>
@@ -515,8 +567,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <li>An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project</li>
 </ul>
 <div class="h_tag">
-<a href="#10-Executing-user-specific-code" id="10-Executing-user-specific-code" class="autoheader_anchor">
-<h4 data-id="10-Executing-user-specific-code">2.5.10. 10. Executing user-specific code</h4>
+<a href="#11-executing-user-specific-code" id="11-executing-user-specific-code" class="autoheader_anchor">
+<h4 data-id="11-Executing-user-specific-code">2.6.11. 11. Executing user-specific code</h4>
 </a>
 </div>
 <p>You might want to execute some general code (as opposed to project-specific code) after a project was loaded. “General” means that this code is executed whenever a project (any project!) is opened.</p>
@@ -524,7 +576,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>The function may or may not return a result, but when it does the result will be discarded.</p>
 <p>The fully qualified name of the function must go into the file that is returned by the function <code>GetCiderGlobalConfigFilename</code> which is available only via the API, not as a user command. This is the Cider config file, not a Cider project config file.</p>
 <p>That file already contains a definition of the keyword <code>ExecuteAfterProjectOpen</code>, but it is empty:</p>
-<pre><code>{
+<pre tabindex="0"><code>{
     ExecuteAfterProjectOpen: "",
 }</code></pre>
 <p>What is this application for this you may ask. Well, let's assume that you are not using Git but a different version control software. With Git, Cider would execute the “status” command and show the result to the user. With your version control software, it can't do something similar because it does not know what to do.</p>
@@ -532,62 +584,96 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <p>Another application could be to bring in non-Tatin dependencies defined in the <code>dependencies</code> and/or the <code>dependencies_dev</code> properties.</p>
 <p>Note that you may use the <code>ignoreUserExec</code> flag to tell <code>OpenProject</code> to ignore the global setting. This is certainly useful when Cider's test suite is executed.</p>
 <div class="h_tag">
-<a href="#11-Check-for-ToDo" id="11-Check-for-ToDo" class="autoheader_anchor">
-<h4 data-id="11-Check-for-ToDo">2.5.11. 11. Check for <code>ToDo</code></h4>
+<a href="#12-check-for-todo" id="12-check-for-todo" class="autoheader_anchor">
+<h4 data-id="12-Check-for-ToDo">2.6.12. 12. Check for <code>ToDo</code></h4>
 </a>
 </div>
 <p>Finally Cider checks whether there is a variables <code>ToDo</code> in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.</p>
 <p>You may use this to keep track of steps that need to be executed before the project can be commited or published etc.</p>
 <div class="h_tag">
-<a href="#12-Git" id="12-Git" class="autoheader_anchor">
-<h4 data-id="12-Git">2.5.12. 12. Git</h4>
+<a href="#13-git" id="13-git" class="autoheader_anchor">
+<h4 data-id="13-Git">2.6.13. 13. Git</h4>
 </a>
 </div>
 <p>If the project is managed by Git then Cider will report the current branch and its status.</p>
 <div class="h_tag">
-<a href="#Misc" id="Misc" class="autoheader_anchor">
+<a href="#misc" id="misc" class="autoheader_anchor">
 <h2 data-id="Misc">3. Misc</h2>
 </a>
 </div>
 <p>Cider offers helpers that are useful in particular circumstances.</p>
 <div class="h_tag">
-<a href="#ListTatinPackage" id="ListTatinPackage" class="autoheader_anchor">
-<h3 data-id="ListTatinPackage">3.1. ListTatinPackage</h3>
+<a href="#addtatindependencies" id="addtatindependencies" class="autoheader_anchor">
+<h3 data-id="AddTatinDependencies">3.1. AddTatinDependencies</h3>
+</a>
+</div>
+<p>This requires at least a comma-separated list of Tatin packages to be added to a project.</p>
+<p>A second (optional) argument, if specified, must be either a path to a Cider project or a Cider project alias.</p>
+<p>If the second argument is omitted Cider acts an any open project. If there is more than one project currently open the user is asked which one she wants to act on.</p>
+<p>If the dependencies are going to be part of the development tool the <code>-development</code> flag must be specified.</p>
+<div class="h_tag">
+<a href="#addnugetdependencies" id="addnugetdependencies" class="autoheader_anchor">
+<h3 data-id="AddNuGetDependencies">3.2. AddNuGetDependencies</h3>
+</a>
+</div>
+<p>This requires at least a comma-separated list of NuGet packages to be added to a project.</p>
+<p>A second (optional) argument, if specified, must be either a path to a Cider project or a Cider project alias.</p>
+<p>If the second argument is omitted Cider acts an any open project. If there is more than one project currently open the user is asked which one she wants to act on.</p>
+<p>Note that NuGet packages cannot be added to a Cider project as development tools.</p>
+<div class="h_tag">
+<a href="#listtatindependencies" id="listtatindependencies" class="autoheader_anchor">
+<h3 data-id="ListTatinDependencies">3.3. ListTatinDependencies</h3>
 </a>
 </div>
 <p>Checking dependencies before publishing to the principal Tatin Registry is a good idea, in particular when one uses several Tatin Registries like a personal one, a company Registry and https://tatin.dev</p>
-<p>In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev. However, when eventually the packaged <strong>is</strong> published on tatin.dev then you most likely don't want it to depend on release candidates anymore.</p>
-<p>The function <code>ListTatinPackage</code> puts all build lists from all Tatin install folders of a given project on display, making it easy to check.</p>
-<p>The following example was created in a workspace where the project <code>APLGit2</code> was opened. Because it is the only one Cider knows about, it will act on it.</p>
-<p><code>APLGit2</code> has two Tatin installation folders, one for production (<code>packages/</code>) and one for development and testing (<code>packages_dev/</code>):</p>
-<pre><code>      ]listTatinPackages
-*** C:/.../APLGit2/packages:
- Package-ID                                         Principal  URL
- ---------------------------                        ---------  ------------------
- aplteam-OS-3.0.1                                           1  https://tatin.dev/
- aplteam-GitHubAPIv3-0.7.0                                  1  https://tatin.dev/
- aplteam-FilesAndDirs-5.1.5                                 1  https://tatin.dev/
- aplteam-CommTools-1.0.1                                    1  https://tatin.dev/
- aplteam-APLTreeUtils2-1.1.3                                1  https://tatin.dev/
-*** C:/.../APLGit2/packages_dev:
- Package-ID                                         Principal  URL
- ---------------------------                        ---------  ------------------
- aplteam-ZipArchive-1.0.0                                   1  https://tatin.dev/
- aplteam-Tester2-3.2.7                                      1  https://tatin.dev/
- aplteam-FilesAndDirs-5.1.5                                 1  https://tatin.dev/
- aplteam-CodeCoverage-0.9.3                                 1  https://tatin.dev/
- aplteam-APLTreeUtils2-1.1.3                                1  https://tatin.dev/
- aplteam-OS-3.0.1                                           0  https://tatin.dev/
- aplteam-IniFiles-5.0.3                                     0  https://tatin.dev/
- aplteam-DotNetZip-2.0.2                                    0  https://tatin.dev/</code></pre>
+<p>In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev. However, when the package <strong>is</strong> published on tatin.dev then you most likely don't want your projecty to depend on release candidates anymore.</p>
+<p>The function <code>ListTatinDependencies</code> puts all build lists from all Tatin install folders of a given project on display, making it easy to check.</p>
+<p>The following example was created in a workspace where the project <code>Cider</code> was opened. Because it was the only open project at that time, it acted on it.</p>
+<p><code>Cider</code> has two Tatin installation folders, one for production (<code>tatin-packages/</code>) and one for development and testing (<code>tatin-packages_dev/</code>):</p>
+<pre tabindex="0"><code>      ]listTatinDependencies
+ Source               Package-ID                      Principal  URL
+ -------------------  ------------------------------  ---------  ------------------
+ tatin-packages/       G@aplteam-APLGit2-0.15.3               1  https://tatin.dev/
+ tatin-packages/       F@aplteam-FilesAndDirs-5.5.0           1  https://tatin.dev/
+ tatin-packages/       C@aplteam-CommTools-1.7.0              1  https://tatin.dev/
+ tatin-packages/       aplteam-FilesAndDirs-5.5.0             1  https://tatin.dev/
+ tatin-packages/       aplteam-CommTools-1.7.0                1  https://tatin.dev/
+ tatin-packages/       aplteam-APLTreeUtils2-1.2.0            1  https://tatin.dev/
+ tatin-packages/       aplteam-APLGit2-0.15.3                 1  https://tatin.dev/
+ tatin-packages/       A@aplteam-APLTreeUtils2-1.2.0          1  https://tatin.dev/
+ tatin-packages/       dyalog-HttpCommand-5.2.0               0  https://tatin.dev/
+ tatin-packages/       aplteam-OS-3.1.1                       0  https://tatin.dev/
+ tatin-packages/       aplteam-GitHubAPIv3-0.7.0              0  https://tatin.dev/
+ tatin-packages_dev/   aplteam-Tester2-3.5.0                  1  https://tatin.dev/
+ tatin-packages_dev/   aplteam-MakeHelpers-0.10.1             1  https://tatin.dev/
+ tatin-packages_dev/   aplteam-FilesAndDirs-5.5.0             1  https://tatin.dev/
+ tatin-packages_dev/   aplteam-CommTools-1.7.0                1  https://tatin.dev/
+ tatin-packages_dev/   aplteam-CodeCoverage-0.10.3            1  https://tatin.dev/
+ tatin-packages_dev/   aplteam-APLTreeUtils2-1.2.0            1  https://tatin.dev/
+ tatin-packages_dev/   aplteam-ZipArchive-1.1.0               0  https://tatin.dev/
+ tatin-packages_dev/   aplteam-OS-3.1.1                       0  https://tatin.dev/
+ tatin-packages_dev/   aplteam-MarkAPL-11.1.0                 0  https://tatin.dev/
+ tatin-packages_dev/   aplteam-IniFiles-5.0.3                 0  https://tatin.dev/
+ tatin-packages_dev/   aplteam-DotNetZip-2.0.2                0  https://tatin.dev/</code></pre>
+<div class="h_tag">
+<a href="#listnugetdependencies" id="listnugetdependencies" class="autoheader_anchor">
+<h3 data-id="ListNuGetDependencies">3.4. ListNuGetDependencies</h3>
+</a>
+</div>
+<p>This lists all installed NuGet dependencies.</p>
+<p>An example:</p>
+<pre tabindex="0"><code>      ]Cider.ListNuGetDependencies
+ Clock     1.0.3
+ NodaTime  3.1.9</code></pre>
 <div id="footnotes_div">
 <hr>
 <p><strong>Footnotes</strong></p>
 <ol>
 <li id="fnref1"><p><em>Tatin</em> is a Dyalog APL package manager: <a href="https://github.com/aplteam/Tatin" class="external_link">https://github.com/aplteam/Tatin</a></p><a href="#fnref1" class="footnote_anchor"></a>
-<li id="fnref2"><p><em>LINK</em> is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from: <a href="https://github.com/dyalog/Link" class="external_link">https://github.com/dyalog/Link</a></p><a href="#fnref2" class="footnote_anchor"></a>
-<li id="fnref3"><p>Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either <code>#._tatin</code> or <code>⎕SE._tatin</code></p><a href="#fnref3" class="footnote_anchor"></a>
-<li id="fnref4"><p>At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature (or something similar) on all platforms.</p><a href="#fnref4" class="footnote_anchor"></a>
+<li id="fnref2"><p>NuGet is all about .NET packages: <a href="https://en.wikipedia.org/wiki/NuGet" class="external_link">https://en.wikipedia.org/wiki/NuGet</a></p><a href="#fnref2" class="footnote_anchor"></a>
+<li id="fnref3"><p><em>LINK</em> is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from: <a href="https://github.com/dyalog/Link" class="external_link">https://github.com/dyalog/Link</a></p><a href="#fnref3" class="footnote_anchor"></a>
+<li id="fnref4"><p>Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either <code>#._tatin</code> or <code>⎕SE._tatin</code></p><a href="#fnref4" class="footnote_anchor"></a>
+<li id="fnref5"><p>At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature (or something similar) on all platforms.</p><a href="#fnref5" class="footnote_anchor"></a>
 </ol>
 </div>
 </body>

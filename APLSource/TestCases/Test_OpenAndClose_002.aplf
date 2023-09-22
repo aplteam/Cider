@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
  sourceFolder←tempDir,'/APLSource'
  'Create!'FilesAndDirs.CheckPath sourceFolder
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')

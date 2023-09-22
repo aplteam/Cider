@@ -1,0 +1,47 @@
+ R←Test_UC_052(stopFlag batchFlag);⎕TRAP;folder;res;log;cals;success;tempDir;config;msg;rc;stop;batch;package;cfg
+⍝ Open project, add a Tatin package to a non-default folder, load, call, list, close, re-open, close
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
+
+ stop←0
+ (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
+ Assert rc=0
+
+ cfg←##.Cider.ReadProjectConfigFile tempDir
+ cfg.CIDER.dependencies.tatin←'tatin-packages'
+ cfg.CIDER.dependencies_dev.tatin←'tatin-packages_dev'
+ cfg ##.Cider.WriteProjectConfigFile tempDir
+
+ package←##.CiderConfig.HOME,'/TestData/APLTreeUtils2/aplteam-APLTreeUtils2-1.2.0.zip,'
+ (rc msg res)←stop ∆UCMD'AddTatinDependencies ',package,' ',tempDir,' -development'
+ Assert rc=0
+ →T.GoToTidyUp'aplteam-APLTreeUtils2-1.2.0'≢∊res
+
+ (rc msg res)←stop ∆UCMD'ListTatinDependencies ',tempDir
+ Assert rc=0
+ →T.GoToTidyUp 3≠≢res   ⍝ One data row, two for pimping
+
+ (rc msg res)←∆UCMD'CloseProject ',tempDir
+ Assert rc=0
+ →T.GoToTidyUp'Number of projects closed: 1'≢res
+
+ #.TEMP.(⎕EX ⎕NL-⍳9)
+ (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
+ Assert rc=0
+ →T.GoToTidyUp'Project successfully loaded and established in "#.TEMP"'≢res~⎕TC
+ →T.GoToTidyUp~(⊂#.TEMP.APLTreeUtils2.GetOperatingSystem ⍬)∊'Win' 'Mac' 'Lin'
+
+ (rc msg res)←∆UCMD'CloseProject ',tempDir
+ Assert rc=0
+
+ R←T._OK
+
+∆TidyUp:
+ res←∆LINK'Break' '#.TEMP'
+ FilesAndDirs.RmDir tempDir,'/..'   ⍝ Would be nice, but it does not work because the .NET DLL blocks this, and there is no way around this
+⍝Done

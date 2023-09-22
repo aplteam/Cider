@@ -13,6 +13,7 @@
  parms.ignoreUserExec←1
  parms.batch←1
  (res log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp∨/'ERROR'⍷log
 
  →T.GoToTidyUp~res
  →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3

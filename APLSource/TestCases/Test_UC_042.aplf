@@ -1,14 +1,15 @@
- R←Test_UC_042(stopFlag batchFlag);⎕TRAP;tempDir;list;rc;wasDir;row;res
+ R←Test_UC_042(stopFlag batchFlag);⎕TRAP;tempDir;list;rc;wasDir;row;res;ref
 ⍝ Create a project from the current directory with specifying a namespace name
 ⍝ Must remember the absolute path rather than the relative one.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←(FilesAndDirs.GetTempSubDir⊃⎕SI),'/aaaa'
+ tempDir←(∆GetFolderInTempDir⊃⎕SI),'/aaaa'
  3 ⎕MKDIR tempDir
  wasDir←FilesAndDirs.Cd tempDir
 
- ⎕SE.Cider.##.C.YesOrNo_Answers←1 2⍴'Sure you want to create the project in' 'y'
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'Sure you want to create the project in' 'y'
  {}⎕SE.UCMD'Cider.CreateProject "./" #.HOO -noEdit -batch -ignoreUserExec'
  list←##.Cider.ListOpenProjects 0
  →T.GoToTidyUp~(⊂'#.HOO')∊list[;1]
@@ -18,7 +19,7 @@
  R←T._OK
 
 ∆TidyUp:
- ⎕SE.Cider.##.C.Cleanup
+ ref.Cleanup
  {}FilesAndDirs.Cd wasDir
  res←∆LINK'Break' '#.HOO'
  Assert res ∆StartsWith'Unlinked:'

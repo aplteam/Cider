@@ -4,7 +4,7 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig  -batch -ignoreUserExec'

@@ -1,17 +1,40 @@
- r←LoadNugetDependencies (path ns);NuGet;config;nuget_dir
-⍝ Load all NuGet dependencies
-
- r←''
- NuGet←FindNuGetAPI ⍬
- config←Get_JSON5 configfile←path,'/cider.config'
- →(0=⎕NC'config.CIDER.dependencies.nuget')⍴0 ⍝ No dependencies
- nuget_dir←path,'/',{0::⍵ ⋄ config.CIDER.dependencies.nuget}'nuget-packages'
-
- :If ns≢0
+ list←x LoadNuGetDependencies(folder ns);NuGet;p;verbose;batch;cfg;nuGetFolder;list;data;attr;names;name;list2;targetNamespace;buff
+⍝ Load all NuGet dependencies from folder into `ns` (namspace).
+⍝ Returns the number
+ (verbose batch)←2↑x,0
+ list←''
+ ('"',folder,'" is not a Cider project directory')Assert F.IsDir folder
+ cfg←ReadProjectConfigFile folder
+ nuGetFolder←folder,'/','dependencies'GetNuGetDependencies cfg
+ targetNamespace←''
+ :If '='∊buff←2⊃⎕NPARTS nuGetFolder
+     targetNamespace←{⍵↓⍨⍵⍳'='}buff
+     nuGetFolder←(-1+≢targetNamespace)↓nuGetFolder
+ :EndIf
+ :If F.IsDir nuGetFolder
+ :AndIf 0<≢list2←F.ListFiles nuGetFolder,'/*.csproj'
+     p←verbose batch∘{⍺ PrintToSession ⍵}
+     NuGet←FindNuGetAPI ⍬
      :If 2=⎕NC'ns'
          ns←⍎ns
      :EndIf
-     'dotnet'ns.⎕NS''
-     ns.dotnet.⎕USING←NuGet.Using nuget_dir
-     r←'NuGet dependencies established in ',(⍕ns),'.dotnet'
+     '_dotnet'ns.⎕NS''
+     :If 0<≢targetNamespace
+         targetNamespace ns.⎕NS''
+     :EndIf
+     nuGetFolder←F.EnforceSlash nuGetFolder
+     ns._dotnet.⎕USING←NuGet.Using nuGetFolder
+     data←⎕XML⊃⎕NGET⊃list2
+     attr←(data[;2]≡¨⊂'PackageReference')⌿data[;4]
+     names←{2⊃⍵[⊃⍸⍵[;1]≡¨⊂'Include';]}¨attr
+     :For name :In names
+         :Trap 6
+             :If 0=≢targetNamespace
+                 ns.{⍎⍵,'←_dotnet.',⍵}name
+             :Else
+                 targetNamespace ns.{⍎⍺,'.',⍵,'←_dotnet.',⍵}name
+             :EndIf
+             list,←⊂name
+         :EndTrap
+     :EndFor
  :EndIf

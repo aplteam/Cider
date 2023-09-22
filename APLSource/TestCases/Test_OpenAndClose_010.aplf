@@ -1,9 +1,9 @@
  R←Test_OpenAndClose_010(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;res;rc;cfg
-⍝ Open a (new) project with all sort of Init functions
+⍝ Open a (new) project with all sorts of Init functions
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
  sourceFolder←tempDir,'/APLSource'
  'Create!'FilesAndDirs.CheckPath sourceFolder
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')

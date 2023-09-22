@@ -1,0 +1,34 @@
+ R←Test_UC_045(stopFlag batchFlag);⎕TRAP;res;msg;rc;folder;parms;tempDir;success;log
+⍝ Exercise ]Cider.AddNuGetDependencies and ListNuGetDependencies
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
+
+ parms←##.Cider.CreateOpenParms''
+ parms.folder←∊⎕NPARTS tempDir
+ parms.noPkgLoad←0
+ parms.batch←1
+ parms.ignoreUserExec←1
+
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+
+ {}##.Cider.AddNuGetDependencies'Clock,NodaTime'tempDir   ⍝ Clock is already installed
+
+ (rc msg res)←∆UCMD'ListNuGetDependencies "',tempDir,'"'
+ →T.PassesIf rc=0
+ →T.PassesIf 0=≢msg
+ →T.PassesIf 2=≢res
+ →T.PassesIf 2=2⊃⍴res
+
+ R←T._OK
+
+∆TidyUp:
+ {}∆LINK'Break' '#.TEMP'
+ FilesAndDirs.RmDir tempDir,'/..'   ⍝ Would be nice, but it does not work because the .NET DLL blocks this, and there is no way around this
+⍝Done

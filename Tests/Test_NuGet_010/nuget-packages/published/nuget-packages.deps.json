@@ -1,0 +1,79 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "nuget-packages/1.0.0": {
+        "dependencies": {
+          "Clock": "1.0.3",
+          "NodaTime": "3.1.9"
+        },
+        "runtime": {
+          "nuget-packages.dll": {}
+        }
+      },
+      "Clock/1.0.3": {
+        "dependencies": {
+          "ClockAnalyser": "1.0.99"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Clock.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "ClockAnalyser/1.0.99": {},
+      "NodaTime/3.1.9": {
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "4.7.1"
+        },
+        "runtime": {
+          "lib/net6.0/NodaTime.dll": {
+            "assemblyVersion": "3.1.9.0",
+            "fileVersion": "3.1.9.0"
+          }
+        }
+      },
+      "System.Runtime.CompilerServices.Unsafe/4.7.1": {}
+    }
+  },
+  "libraries": {
+    "nuget-packages/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Clock/1.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2nvPfdGeE+tAUBKdQpFXQcbaYvzX5ykaoP6lH+KEkmX0XTgwJrp3csCReSVcX6y6Rc/H3vspsq5MzqZ9pr2Hbw==",
+      "path": "clock/1.0.3",
+      "hashPath": "clock.1.0.3.nupkg.sha512"
+    },
+    "ClockAnalyser/1.0.99": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hmtx5eHjkqEdUEduRlA3eHB2whV7DlJ7Y5cRUAmYMznsrUIpeVsgrvvp5lLiTw9kXYKlyHih96mBH6KosDeWcw==",
+      "path": "clockanalyser/1.0.99",
+      "hashPath": "clockanalyser.1.0.99.nupkg.sha512"
+    },
+    "NodaTime/3.1.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-EzjwDOtsETlXWBDE6qvTQqc3guP+9xrAOf9j1mHL++UD4VeZay+dbCPNnXyZhoQMkKAOZ/+hIOtz7STl0Rkknw==",
+      "path": "nodatime/3.1.9",
+      "hashPath": "nodatime.3.1.9.nupkg.sha512"
+    },
+    "System.Runtime.CompilerServices.Unsafe/4.7.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zOHkQmzPCn5zm/BH+cxC1XbUS3P4Yoi3xzW7eRgVpDR2tPGSzyMZ17Ig1iRkfJuY0nhxkQQde8pgePNiA7z7TQ==",
+      "path": "system.runtime.compilerservices.unsafe/4.7.1",
+      "hashPath": "system.runtime.compilerservices.unsafe.4.7.1.nupkg.sha512"
+    }
+  }
+}

@@ -1,4 +1,4 @@
- (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff
+ (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder
 ⍝ Open a Cider project.\\
 ⍝ `y` must be one of:
 ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
@@ -35,7 +35,7 @@
  AddAlias parms.folder parms.alias
  configFilename←parms.folder,'/cider.config'
  ('No file "cider.config" found in ',parms.folder)Assert F.Exists configFilename
- config←Get_JSON5 configFilename
+ config←ReadProjectConfigFile configFilename
  :If 0=≢parms.projectSpace                                                      ⍝ Was it specified as argument?
  :AndIf 0=≢parms.projectSpace←config.CIDER.projectSpace                         ⍝ Nope, so the config file rules...
      parms.projectSpace←'#'                                                     ⍝ ... but only is it is not empty
@@ -77,7 +77,7 @@
      :If ∨/'ERRORS ENCOUNTERED:'⍷res
          (1 parms.batch)p res
      :EndIf
-     {}ReportLinkSettings⍣(~parms.batch)⊣config
+     (1 parms.batch)p ReportLinkSettings config
  :EndIf
  :If 0=parms.noPkgLoad
      pkgStatus←parms.folder CheckForTatinPackages config
@@ -95,7 +95,7 @@
              :EndTrap
          :EndIf
          :Trap 0
-             :If 0=parms.(verbose batch)LoadTatinPackages config parms.folder(⍕projectSpace_)
+             :If 0=parms.(verbose batch)LoadTatinDependencies config parms.folder(⍕projectSpace_)
                  (1 parms.batch)p'Package folder ',parms.folder,' needs attention!'
              :EndIf
          :Else
@@ -107,7 +107,19 @@
              (1 parms.batch)p buff
          :EndTrap
      :EndIf
-     p LoadNugetDependencies parms.folder projectSpace_ ⍝ Now establish NuGet dependencies, if any
+     :If 0<config.⎕NC'CIDER.dependencies.nuget'
+     :AndIf 0<≢config.CIDER.dependencies.nuget
+         :Trap 11
+             {}parms.(verbose batch)LoadNuGetDependencies parms.folder projectSpace_
+         :Else
+             ⎕SE._Tatin.Client.CloseConnections 1                               ⍝ Just in case...
+             qdmx←⎕DMX
+             buff←''
+             buff,←⊂'ERROR: loading NuGet packages from ',parms.folder
+             buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+             (1 parms.batch)p buff
+         :EndTrap
+     :EndIf
  :EndIf
  InjectConfigDataIntoProject config projectSpace_ parms.folder
  InjectTatinVars projectSpace_ parms.folder

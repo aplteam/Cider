@@ -1,0 +1,7 @@
+ r←{x}Initial_NuGet ps
+ r←9=⎕NC'⎕SE.NuGet'
+ :If ~r                 ⍝ ⎕se.NuGet not found and...
+ :AndIf ~ps.batchFlag   ⍝ ... not in batch mode ...
+     CommTools.Pause'⎕SE.NeuGet is not available, so the NuGet tests can not be executed.'  ⍝ ... so we inform the user
+ :EndIf
+⍝Done

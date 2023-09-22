@@ -1,11 +1,12 @@
- folder←GetFolderFromAlias2 alias;filename;data
-⍝ Translates the alias in "folder" (if any) into a path.\\
-⍝ In case the alias does not exist an empty vector is returned.\\
-⍝ If an alias is defined it is saved, possibly by overwriting the old one.
+ folder←{globalAliasFilename}GetFolderFromAlias2 alias;data
+⍝ Translates an alias (if any) into a folder.\\
+⍝ In case no global alias file can be found an empty vector is returned.\\
+⍝ If the alias cannot be found an error is thrown.\\
+⍝ `globalAliasFilename` should only be specified by test cases
  folder←''
- filename←GetCiderAliasFilename
- :If F.Exists filename
-     :If 0<≢data←⊃F.NGET filename 1
+ globalAliasFilename←{0<⎕NC ⍵:⍎⍵ ⋄ GetCiderAliasFilename}'globalAliasFilename'
+ :If F.Exists globalAliasFilename
+     :If 0<≢data←⊃F.NGET globalAliasFilename 1
          data←↑{'='(≠⊆⊢)⍵}¨data
          alias←⎕C alias~'[]'
          :If (⊂alias)∊data[;1]

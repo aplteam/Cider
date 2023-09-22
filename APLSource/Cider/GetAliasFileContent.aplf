@@ -1,6 +1,6 @@
- r←GetAliasFileContent;filename;buff
+ r←{filename}GetAliasFileContent dummy;filename;buff
  r←0 2⍴''
- filename←GetCiderAliasFilename
+ filename←{0<⎕NC ⍵:⍎⍵ ⋄ GetCiderAliasFilename}'filename'
  :If F.Exists filename
  :AndIf 0<≢buff←⊃F.NGET filename 1
  :AndIf 0<≢buff←(0<≢¨buff)/buff

@@ -1,0 +1,15 @@
+ r←Test_Misc_015(stopFlag batchFlag);⎕TRAP;b;res
+⍝ Exercise a number of Get* functions
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ res←##.Cider.GetAliasFileContent ⍬
+ →T.PassesIf 0<≢res
+ res←##.Cider.GetCiderAliasFilename
+ →T.PassesIf∨/'/aliase.txt'⍷FilesAndDirs.EnforceSlash res
+ res←##.Cider.GetCiderGlobalConfigFileContent
+ res←##.Cider.GetCiderGlobalConfigFilename
+ →T.PassesIf∨/'/config.json'⍷FilesAndDirs.EnforceSlash res
+ res←##.Cider.GetCiderGlobalConfigHomeFolder
+ →T.PassesIf∨/'/.cider/'⍷FilesAndDirs.EnforceSlash res
+
+ r←T._OK

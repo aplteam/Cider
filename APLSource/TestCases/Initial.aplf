@@ -1,12 +1,23 @@
- Initial
+ Initial ps
  ∆LINK_NOTIFY_WAS←⎕SE.Link.NOTIFY
- ⎕SE.Link.NOTIFY←0
+ ⎕SE.Link.NOTIFY←1
  :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'
- :AndIf ⎕SE.Cider.DEVELOPMENT
-     ⎕SE.Cider.DEVELOPMENT←0
-     ⎕←'*** Warning:⎕SE.Cider.DEVELOPMENT was 1 but is now 0; will be restored by Cleanup'
-     ∆QSE_CIDER_DEVELOPMENT←1
+     ∆QSE_CIDER_DEVELOPMENT←⎕SE.Cider.DEVELOPMENT
+ :AndIf 0<⎕SE.Cider.DEVELOPMENT
+     :If ps.batchFlag
+         ⎕SE.Cider.DEVELOPMENT←0
+     :Else
+         :If 0 CommTools.YesOrNo'Would you like to set ⎕SE.Cider.DEVELOPMENT←0 ?'
+             ⎕SE.Cider.DEVELOPMENT←0
+             ⎕←'*** Warning: ⎕SE.Cider.DEVELOPMENT was ',(⍕⎕SE.Cider.DEVELOPMENT),' but is now 0; will be restored by Cleanup'
+         :Else
+             ⎕SE.Cider.DEVELOPMENT←2    ⍝ Supresses the warning - only for test cases
+         :EndIf
+     :EndIf
  :EndIf
- 'Cider''s version number in # and ⎕SE diverge'Assert ⎕SE.Cider.Version≡##.Cider.Version
+ :If 0=⎕SE.Cider.DEVELOPMENT
+     'Cider''s version number in # and ⎕SE diverge'Assert ⎕SE.Cider.Version≡##.Cider.Version
+ :EndIf
+ FilesAndDirs.RmDir FilesAndDirs.ListDirs FilesAndDirs.GetTempPath,'Cider-Tests*'  ⍝ Last test run might have left something behind because of the .NET-DLLs-don't-unload problem
 ⍝ T.exec_before_each_test←T.exec_after_each_test←'#.WS_Check'
 ⍝Done

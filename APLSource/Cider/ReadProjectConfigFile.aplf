@@ -1,6 +1,20 @@
- r←ReadProjectConfigFile path;path2
+ config←ReadProjectConfigFile projectFolder;projectFolder2;saveFlag
 ⍝ Reads a project config file and returns it as a namespace with variables.
-⍝ `path` may or may not carry the filename as such.
- path2←'cider.config'{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}path
- r←Get_JSON5 path2
+⍝ `projectFolder` may or may not carry the filename as such.
+⍝ Check the config file for some entries and adds them if they are missing. In such a
+⍝ case the config file is also written back to file.
+ projectFolder2←'cider.config'{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}projectFolder
+ config←Get_JSON5 projectFolder2
+ saveFlag←0
+ :If 0=config.CIDER.dependencies.⎕NC'tatin'
+     config.CIDER.dependencies.tatin←''
+     saveFlag←1
+ :EndIf
+ :If 0=config.CIDER.dependencies.⎕NC'nuget'
+     config.CIDER.dependencies.nuget←''
+     saveFlag←1
+ :EndIf
+ :If saveFlag
+     {}config WriteProjectConfigFile projectFolder
+ :EndIf
 ⍝Done

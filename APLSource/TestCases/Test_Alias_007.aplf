@@ -17,7 +17,7 @@
  (rc msg res)←∆UCMD'OpenProject [firlefanz1] -parent=#.TEMP -alias=Firlefanz2 -watch=ns -batch -ignoreUserExec'
  msg Assert 0=rc
 
- aliase←⎕SE.Cider.GetAliasFileContent
+ aliase←⎕SE.Cider.GetAliasFileContent ⍬
 
  (rc msg res)←∆UCMD'CloseProject [firlefanz2]'
  msg Assert 0=rc
@@ -30,5 +30,6 @@
 
 ∆TidyUp:
  {}∆UCMD'CloseProject [firlefanz2]'
+ ⎕SE.Cider.DropAlias'firlefanz1'  ⍝ Just in case
  Assert ⎕SE.Cider.DropAlias'firlefanz2'
 ⍝Done

@@ -22,7 +22,7 @@
      :EndIf
      :If parms.batch
           ⍝ With `batch` being true there is nothing we can do but throw an error
-         'Both the target and the source folder are not empty'Assert 0
+         ('Both the target (',(⍕ref),') and the source folder are not empty')Assert 0
      :Else
          :If C.YesOrNo'Target "',(⍕ref),'" is not empty - recreate?'
              ⎕EX⍕ref                                 ⍝ It might be a class, so we first delete it...

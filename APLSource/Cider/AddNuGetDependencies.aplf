@@ -1,33 +1,36 @@
- r←AddNuGetDependencies (packages path);NuGet;ns;config;nuget_dir;configfile
-⍝ Either add one or more NuGet packages
-
+ list←AddNuGetDependencies(packages projectFolder);NuGet;msg;cfg;nuGetFolder;package;buff;targetNamespace
+⍝ Add one or more NuGet packages to the NuGet-folder define in the config file of `projectFolder`.
+⍝ * `packages` must be either a nested vector with package names or a comma-separated list of package names
+⍝ * `projectFolder` must carry a Cider config files used to establish the NuGet folder.\\
+⍝ Returns a list with the names that got installed or at least updated.
  :If 1=≡packages
-     packages←{1↓¨(⍵∊',;')⊂⍵}';',packages
+     packages←','(≠⊆⊢)packages
  :EndIf
- path←FilesAndDirs.EnforceSlash path
-
- 'Unable to locate NuGet API' ⎕SIGNAL (0≡NuGet←FindNuGetAPI ⍬)/11
- ns←path{3::0 ⋄ ⊃⍵[⍵[;2]⍳⊂⍺;1]}ListOpenProjects 0 ⍝ namespace project loaded into
- config←Get_JSON5 configfile←path,'/cider.config'
-
- :If 0=⎕NC 'config.CIDER.dependencies.nuget'
-     config.CIDER.dependencies.nuget←'nuget-packages'
-     config Put_JSON5 configfile
+ :If IsAlias projectFolder
+     projectFolder←GetFolderFromAlias2 projectFolder
  :EndIf
-
- nuget_dir←path,'/',{0::⍵ ⋄ config.CIDER.dependencies.nuget}'nuget-packages'
-
- r←NuGet.Setup nuget_dir
- →(∨/'error:'⍷⎕C r)⍴0
-
- r←NuGet.Add (⊂nuget_dir),packages
- →(∨/'error:'⍷⎕C r)⍴0
-
- :If ns≢0 ⍝ We have a project namespace
-     :If 2=⎕NC 'ns'
-         ns←⍎ns
-     :EndIf
-     'dotnet'ns.⎕NS''
-     ns.dotnet.⎕USING←NuGet.Using nuget_dir
-     r←'NuGet dependencies established in ',(⍕ns),'.dotnet'
+ 'No Cider config file found'Assert F.Exists projectFolder,'/cider.config'
+ cfg←ReadProjectConfigFile projectFolder
+ nuGetFolder←projectFolder,'/',⊃GetNuGetDependencyFolders cfg
+ targetNamespace←''
+ :If '='∊buff←2⊃⎕NPARTS nuGetFolder
+     targetNamespace←{⍵↓⍨⍵⍳'='}buff
+     nuGetFolder←(-1+≢targetNamespace)↓nuGetFolder
  :EndIf
+ :If 0<≢nuGetFolder
+     nuGetFolder←FilesAndDirs.EnforceSlash nuGetFolder  ⍝ .NET requirement
+     {}⎕MKDIR⍣(~⎕NEXISTS nuGetFolder)⊣nuGetFolder
+     'Unable to locate NuGet API'Assert 0≢NuGet←FindNuGetAPI ⍬
+     msg←NuGet.Setup nuGetFolder
+     msg Assert~∨/'error:'⍷⎕C msg
+     list←''
+     :For package :In packages
+         :Trap 99
+             msg←NuGet.Add(⊂nuGetFolder),⊂package
+             :If ~∨/'error:'⍷⎕C msg
+                 list,←⊂package
+             :EndIf
+         :EndTrap
+     :EndFor
+ :EndIf
+⍝Done

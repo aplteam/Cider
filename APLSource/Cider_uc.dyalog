@@ -18,20 +18,18 @@
           c.Parse←'1s -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns dir both -verbose -batch'
           r,←c
      
-          :If 0 ⍝Morten⍝
-              c←⎕NS''
-              c.Name←'AddNuGetDependencies'
-              c.Desc←'Add one or more NuGet packages as dependencies'
-              c.Group←'Cider'
-              c.Parse←''   ⍝ ????
-              r,←c
-          :EndIf
+          c←⎕NS''
+          c.Name←'AddNuGetDependencies'
+          c.Desc←'Add one or more NuGet packages as dependencies'
+          c.Group←'Cider'
+          c.Parse←'1-2'
+          r,←c
      
           c←⎕NS''
           c.Name←'AddTatinDependencies'
           c.Desc←'Add one or more Tatin packages as dependencies'
           c.Group←'Cider'
-          c.Parse←'1-2'
+          c.Parse←'1-2 -development'
           r,←c
      
           c←⎕NS''
@@ -56,10 +54,17 @@
           r,←c
      
           c←⎕NS''
-          c.Name←'ListDependencies'
-          c.Desc←'List NuGet and/or Tatin packages installed as dependencies'
+          c.Name←'ListNuGetDependencies'
+          c.Desc←'List NuGet packages installed as dependencies'
           c.Group←'Cider'
-          c.Parse←'1s -type=tatin nuget'
+          c.Parse←'1s'
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'ListTatinDependencies'
+          c.Desc←'List Tatin packages installed as dependencies'
+          c.Group←'Cider'
+          c.Parse←'1s'
           r,←c
      
           c←⎕NS''
@@ -84,6 +89,13 @@
           r,←c
      
           c←⎕NS''
+          c.Name←'UpdateCider'
+          c.Desc←'Tries to update Cider'
+          c.Group←'Cider'
+          c.Parse←''
+          r,←c
+     
+          c←⎕NS''
           c.Name←'Make'
           c.Desc←'Build a new version of the project'
           c.Group←'Cider'
@@ -101,7 +113,7 @@
           c.Name←'ProjectConfig'
           c.Desc←'Puts the config file of a project on display'
           c.Group←'Cider'
-          c.Parse←'1s -edit'
+          c.Parse←'1s'
           r,←c
      
           c←⎕NS''
@@ -119,18 +131,20 @@
       CheckAPLversion ⍬
       AutoLoadTatin ⍬
       AutoLoadCider⊃⎕NPARTS ##.SourceFile
-      P←GetRefToCiderCoder Cmd Args
+      P←GetRefToCiderCode Cmd Args
       :Select ⎕C Cmd
       :Case ⎕C'OpenProject'
           r←OpenProject Args
       :Case ⎕C'ListOpenProjects'
           r←ListOpenProjects Args
-      :Case ⎕C'ListDependencies'
-          r←ListDependencies Args
+      :Case ⎕C'ListNuGetDependencies'
+          r←ListNuGetDependencies Args
+      :Case ⎕C'ListTatinDependencies'
+          r←ListTatinDependencies Args
       :Case ⎕C'AddTatinDependencies'
           r←AddTatinDependencies Args
       :Case ⎕C'AddNuGetDependencies'
-          r←0 AddNuGetDependencies Args
+          r←AddNuGetDependencies Args
       :Case ⎕C'ListAliases'
           r←ListAliases Args
       :Case ⎕C'CreateProject'
@@ -145,6 +159,8 @@
           r←Make Args
       :Case ⎕C'Config'
           r←Config Args
+      :Case ⎕C'UpdateCider'
+          r←UpdateCider Args
       :Case ⎕C'Version'
           r←P.Version
       :Case ⎕C'Help'
@@ -173,30 +189,105 @@
           home←(P.ListOpenProjects 0){⊃⍺[⍺[;2]⍳⊂⍵;1]}path
           :If 2≠⎕NC home,'.ToDo'
           :OrIf 0=≢(∊home⍎'ToDo')~' '
-          :OrIf P.##.C.YesOrNo'IgnoreToDo@There is a non-empty variable "ToDo" in <',home,'> - carry on anyway?'
+          :OrIf 1 P.##.C.YesOrNo'IgnoreToDo@There is a non-empty variable "ToDo" in <',home,'> - carry on anyway?'
               r←P.RunMake path
           :EndIf
       :EndIf
     ∇
 
-    ∇ r←AddNuGetDependencies Args;path
-      path←GetProjectPath Args._2
-      ∘∘∘
+    ∇ r←AddNuGetDependencies Args;packages;projectFolder;cfg;ref;flag;q;oldList;newList
+    ⍝ Returns list of (newly) installed NuGet packages.
+      packages←Args._1
+      projectFolder←Args._2
+      :If IsAlias projectFolder
+          projectFolder←P.GetFolderFromAlias projectFolder
+      :Else
+          projectFolder←GetProjectPath projectFolder
+      :EndIf
+      cfg←P.ReadProjectConfigFile projectFolder
+      ref←cfg.CIDER.dependencies
+      flag←0
+      :Repeat
+          :If 0=ref.⎕NC'nuget'
+          :OrIf 0=≢ref.nuget
+              q←'No NuGet dependency folder defined for "dependencies" - edit project config file?'
+              q←'EditProjectConfig@',q
+              :If 1 P.##.C.YesOrNo q
+                  P.ProjectConfig projectFolder
+                  cfg←P.ReadProjectConfigFile projectFolder
+                  ref←cfg.CIDER.dependencies
+              :Else
+                  →0,≢r←'Cancelled by user'
+              :EndIf
+          :Else
+              flag←1
+          :EndIf
+      :Until flag
+      oldList←P.ListNuGetDependencies projectFolder
+      {}P.AddNuGetDependencies packages projectFolder
+      newList←P.ListNuGetDependencies projectFolder
+      r←newList[;1]~oldList[;1]
     ∇
 
-    ∇ r←AddTatinDependencies Args;path
-      path←GetProjectPath Args._2
-      ∘∘∘ 
+    ∇ r←UpdateCider dummy
+      r←'Not implemented yet'
     ∇
 
-    ∇ r←ListDependencies Args;path;index;z;load;type;package
-    ⍝ List Tatin and/or NuGet dependencies
-      type←''Args.Switch'type'
+    ∇ r←AddTatinDependencies Args;path;packages;projectFolder;cfg;development;ref;flag;q
+      packages←Args._1
+      projectFolder←Args._2
+      development←0 Args.Switch'development'
+      :If IsAlias projectFolder
+          projectFolder←P.GetFolderFromAlias projectFolder
+      :Else
+          projectFolder←GetProjectPath projectFolder
+      :EndIf
+      cfg←P.ReadProjectConfigFile projectFolder
+      :If development
+          ref←cfg.CIDER.dependencies_dev
+      :Else
+          ref←cfg.CIDER.dependencies
+      :EndIf
+      flag←0
+      :Repeat
+          :If 0=ref.⎕NC'tatin'
+          :OrIf 0=≢ref.tatin
+              q←'No Tatin dependency folder defined for "dependencies',(development/'_dev'),'" - edit project config file?'
+              q←'EditProjectConfig@',q
+              :If 1 P.##.C.YesOrNo q
+                  P.ProjectConfig projectFolder
+                  cfg←P.ReadProjectConfigFile projectFolder
+                  ref←cfg.CIDER.dependencies
+              :Else
+                  →0,≢r←'Cancelled by user'
+              :EndIf
+          :Else
+              flag←1
+          :EndIf
+      :Until flag
+      r←P.AddTatinDependencies packages projectFolder development
+    ∇
+
+    ∇ r←ListNuGetDependencies Args;path
+    ⍝ List all NuGet dependencies
       r←''
       :If 0=≢path←GetProjectPath Args._1
-          →0,≢⎕←'Cancelled by user'
+          ⎕←'Cancelled by user'
+      :ElseIf 0=≢r←P.ListNuGetDependencies path
+          r←'No dependencies found'
+      :EndIf
+    ∇
+
+    ∇ r←ListTatinDependencies Args;path
+    ⍝ List all Tatin dependencies
+      r←0 5⍴''
+      :If 0=≢path←GetProjectPath Args._1
+          ⎕←'Cancelled by user'
       :Else
-          r←P.ListDependencies path type
+          r←P.ListTatinDependencies path
+          r←('Source' 'Package-ID' 'Principal' 'URL' '')⍪('' '' '' '' '')⍪r
+          (2⌷r)←(⊃¨⌈⌿≢¨r)⍴¨'-'
+          r←{w←⍵ ⋄ w[2;2⊃⍴w]←' ' ⋄ w}r
       :EndIf
     ∇
 
@@ -229,7 +320,7 @@
       :If 0=≢path←GetProjectPath Args._1
           →0,≢⎕←'Cancelled by user'
       :Else
-          :If Args.edit P.ProjectConfig path
+          :If P.ProjectConfig path
               r←'Changed: ',path,'/cider.config; changes are NOT reflected in the workspace!'
           :EndIf
       :EndIf
@@ -272,7 +363,7 @@
     ∇ r←OpenProject Args;path;parms;aliasDefs;bool;info;opCode;alias;log;success
       r←0 0⍴''
       Args.projectSpace←{(,0)≡,⍵:'' ⋄ ⍵}Args.projectSpace
-      aliasDefs←P.GetAliasFileContent
+      aliasDefs←P.GetAliasFileContent ⍬
       :If 0≡Args._1
       :OrIf Args._1≡'[?]'
           :If 0=≢path←SelectFromAliases aliasDefs
@@ -281,7 +372,7 @@
       :Else
           path←Args._1
       :EndIf
-      :If '[]'≡path[1,≢path]
+      :If ']['≡¯1⌽path
       :AndIf '*'=¯1↑path~'[]'
           bool←~aliasDefs[;2]∊{⍵[;2]}P.ListOpenProjects 0
           bool←bool\(¯1↓path~'[]'){(⎕C(≢⍺)↑[2]⍵)∧.=⎕C ⍺}↑bool⌿aliasDefs[;1]
@@ -300,7 +391,7 @@
               :EndIf
           :EndSelect
       :EndIf
-      path←⎕C⍣('[]'≡path[1,≢path])⊣path
+      path←⎕C⍣(']['≡¯1⌽path)⊣path
       parms←P.CreateOpenParms''
       parms.folder←path
       parms.projectSpace←Args.projectSpace
@@ -313,6 +404,7 @@
       parms.ignoreUserExec←Args.ignoreUserExec
       parms.verbose←0 Args.Switch'verbose'
       parms.batch←0 Args.Switch'batch'
+      parms.checkPackageVersions←⍬
       (success log)←P.OpenProject parms
       :If Args.verbose
           r←log
@@ -326,7 +418,7 @@
       :EndIf
     ∇
 
-    ∇ r←level Help Cmd;ref
+    ∇ r←level Help Cmd;ref;⎕TRAP
       :Access Shared Public
       r←''
       :Select level
@@ -337,22 +429,22 @@
               r,←⊂']Cider.OpenProject [folder|alias] -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns|dir|both -verbose -batch'
           :Case ⎕C'AddTatinDependencies'
               r,←⊂'Add one or more Tatin dependencies'
-              r,←⊂']Cider.AddTatinDependency [packages] [projectpath]'
+              r,←⊂']Cider.AddTatinDependency [packages] [projectpath] -development'
           :Case ⎕C'AddNuGetDependencies'
               r,←⊂'Add one or more NuGet dependencies'
-              r,←⊂']Cider.AddNuGetDependencies [packages] [projectpath]'
-          :Case ⎕C'ListDependencies'
-              r,←⊂'List all Tatin and NuGet dependencies'
-              r,←⊂']Cider.ListDependencies [projectpath] -type=nuget tatin'
+              r,←⊂']Cider.AddNuGetDependencies [packages] [projectpath] -depFolder='
+          :Case ⎕C'ListNuGetDependencies'
+              r,←⊂'List all NuGet dependencies'
+              r,←⊂']Cider.ListNuGetDependencies [projectpath]'
+          :Case ⎕C'ListNuGetTatinDependencies'
+              r,←⊂'List all Tatin dependencies'
+              r,←⊂']Cider.ListTatinDependencies [projectpath]'
           :Case ⎕C'ListOpenProjects'
               r,←⊂'List all currently open projects'
               r,←⊂']Cider.ListOpenProjects -verbose'
           :Case ⎕C'ListAliases'
               r,←⊂'List all defined aliases with their folders'
               r,←⊂']Cider.ListAliases -prune -edit -batch'
-          :Case ⎕C'ListDependencies'
-              r,←⊂'Lists all NuGet and /or Tatin packages in all install folders'
-              r,←⊂']Cider.ListPackages [folder] -type=[nuget|tatin]'
           :Case ⎕C'CreateProject'
               r,←⊂'Makes the given folder a project folder'
               r,←⊂']Cider.CreateProject <folder> [<project-namespace>] -alias= -acceptConfig -noEdit -batch -ignoreUserExec'
@@ -369,7 +461,10 @@
               r,←⊂'Prints the project''s specific statements to the session that will run the test suite'
           :Case ⎕C'Make'
               r,←⊂'Prints the project''s specific statements to the session that will create a new version ("Make")'
-          :Case ⎕C'Cider'
+          :Case ⎕C'UpdateCider'
+              r,←⊂'Attempts to update the currently running version of Cider'
+              r,←⊂']Cider.UpdateCider'
+          :Case ⎕C'Config'
               r,←⊂'Allows the user to edit one or both of Cider''s config files'
               r,←⊂']Cider.Config -print'
           :Case ⎕C'Version'
@@ -417,6 +512,43 @@
               r,←⊂'-ignoreUserExec Suppress execution of a user function defined in Cider''s config file once'
               r,←⊂'-batch          Does not print to the session and prevents user interaction. In a situation were'
               r,←⊂'                user must decide what to do an error is thrown.'
+          :Case ⎕C'AddNuGetDependencies'
+              r,←⊂'Requires one mandatory argument: a comma-separated list of NuGet packages to be installed.'
+              r,←⊂''
+              r,←⊂'The second argument is optional. If it is omitted Cider acts on any open project, or let the'
+              r,←⊂'user select in case there is more than one project open.'
+              r,←⊂''
+              r,←⊂'If the second argument is specified it must be one of:'
+              r,←⊂'* An [alias]'
+              r,←⊂'* A path pointing to a Cider project'
+              r,←⊂''
+              r,←⊂'In case the project''s config file does not carry a definition for a NuGet dependency folder'
+              r,←⊂'the user is given the oportunity to edit the config file.'
+          :Case ⎕C'AddTatinDependencies'
+              r,←⊂'Requires one mandatory argument: a comma-separated list of Tatin packages to be installed.'
+              r,←⊂''
+              r,←⊂'The second argument is optional. If it is omitted Cider acts on any open project, or let the'
+              r,←⊂'user select a project in case there is more than one open.'
+              r,←⊂''
+              r,←⊂'If the second argument is specified it must be one of:'
+              r,←⊂'* An [alias]'
+              r,←⊂'* A path pointing to a Cider project'
+              r,←⊂''
+              r,←⊂'In case the project''s config file does not carry a definition for a Tatin dependency folder'
+              r,←⊂'the user is given the oportunity to edit the config file.'
+              r,←⊂''
+              r,←⊂'-development   By default the packages are added as project dependencies. The -development'
+              r,←⊂'               flag can be used to make it a development dependency instead.'
+          :Case ⎕C'ListNuGetDependencies'
+              r,←⊂'Lists all NuGet dependencies in the Nuget dependency folder.'
+              r,←⊂''
+              r,←⊂'Takes a path to a project or a project alias as (optional) argument.'
+              r,←⊂'If no argument is provided the command looks for open Cider projects.'
+          :Case ⎕C'ListTatinDependencies'
+              r,←⊂'Lists all Tatin dependencies in the Tatin dependency folders.'
+              r,←⊂''
+              r,←⊂'Takes a path to a project or a project alias as (optional) argument.'
+              r,←⊂'If no argument is provided the command looks for open Cider projects.'
           :Case ⎕C'Config'
               r,←⊂'Puts the content of Cider''s global config into the editor and allows the user to change it.'
               r,←⊂'By specifying the -print flag you can force the user command to print the content of the file'
@@ -518,6 +650,10 @@
               r,←⊂'The optional parameter must be the path to a folder holding a cider.config file (a project).'
               r,←⊂'In case no path is provided Cider will present all currently opened projects to the user for'
               r,←⊂'selecting one, except when there is only one project open anyway.'
+          :Case ⎕C'CiderUpdate'
+              r,←⊂'Checks whether there is a later version of Cider available.'
+              r,←⊂'If there is no later version this is reported.'
+              r,←⊂'Otherwise the user will be asked whether she wants to update to the new version.'
           :Case ⎕C'Help'
               r,←⊂'Cider comes with two HTML files with documentation. This user command offers to put'
               r,←⊂'one or both of them on display in the default browser.'
@@ -552,7 +688,7 @@
     ∇
 
     ∇ r←ProcessAliases(prune edit batch);bool;flag
-      r←P.GetAliasFileContent
+      r←P.GetAliasFileContent ⍬
       :If prune
           :If 0<≢r
               bool←⎕NEXISTS¨r[;2]
@@ -686,9 +822,7 @@
           globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
       :EndIf
       config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃P.##.F.NGET globalCiderConfigFilename
-      :If ~P.HasDotNet
-          config.LINK.watch←'ns'
-      :EndIf
+      config.LINK.watch←(1+P.HasDotNet)⊃'ns' 'both'
       :If (⊃name)∊'#⎕'
           name←{⍵↓⍨⍵⍳'.'}name
       :EndIf
@@ -816,8 +950,8 @@
     ∇
 
     ∇ r←TranslateAlias alias;aliase;row
-      :If '[]'≡alias[1,≢alias]
-          aliase←P.GetAliasFileContent
+      :If IsAlias alias
+          aliase←P.GetAliasFileContent ⍬
           row←aliase[;1]⍳⊂alias~'[]'
           ('Unknown alias: ',alias)Assert row≤≢aliase
           r←2⊃aliase[row;]
@@ -826,7 +960,7 @@
       :EndIf
     ∇
 
-    ∇ r←ShowHelp dummy;list;folder;flag;answer;msg;filename;filenames
+    ∇ r←ShowHelp dummy;list;folder;flag;answer;msg;filenames
       r←''
       folder←1⊃⎕NPARTS ##.SourceFile
       list←⊃⎕NINFO⍠('Wildcard' 1)⊣folder,'*'
@@ -840,21 +974,9 @@
           :Repeat
               msg←'Select document to be viewed:'
               answer←msg 1 Select 2⊃∘⎕NPARTS¨list
-              :If (⊂answer)∊1 2(1 2)
-                  :Select answer
-                  :Case 1
-                      filename←folder,1⊃list
-                      filename←SanitizePath filename
-                      {}⎕SE.UCMD'Open ',filename
-                  :Case 2
-                      filename←folder,2⊃list
-                      filename←SanitizePath filename
-                      {}⎕SE.UCMD'Open ',filename
-                  :Case 1 2
-                      filenames←folder∘,¨list
-                      filenames←SanitizePath¨filenames
-                      {}{⎕SE.UCMD'Open ',⍵}¨filenames
-                  :EndSelect
+              :If 0<≢answer
+                  filenames←SanitizePath¨folder∘,¨list[answer]
+                  {}{⎕SE.UCMD'Open ',⍵}¨filenames
                   flag←1
               :Else
                   flag←1
@@ -896,7 +1018,7 @@
           3 ⎕MKDIR 1⊃⎕NPARTS filename
           (⊂'')⎕NPUT filename
       :EndIf
-      aliases_←P.GetAliasFileContent
+      aliases_←P.GetAliasFileContent ⍬
       :If 0<≢aliases←⍕aliases_
           aliases_←⊃¨{⍺,'=',⍵}/¨↓aliases_
           :Repeat
@@ -955,7 +1077,7 @@
       r←⍬
       caption←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'caption'
       :If 0=≢data
-          data←P.GetAliasFileContent
+          data←P.GetAliasFileContent ⍬
       :EndIf
       :If 0<≢data
           data[;1]←{'[',⍵,']'}¨data[;1]
@@ -1043,7 +1165,7 @@
               path←2⊃list[index;]
           :EndSelect
       :Else
-          aliasDefs←P.GetAliasFileContent
+          aliasDefs←P.GetAliasFileContent ⍬
           path←y
           :If (⊂,path)∊,¨'[' '[?' '[?]'
               :If 0=≢path←SelectFromAliases aliasDefs
@@ -1070,18 +1192,20 @@
       :EndIf
     ∇
 
-    ∇ r←GetRefToCiderCoder(cmd arg)
+    ∇ r←GetRefToCiderCode(cmd arg)
     ⍝ Checks whether it makes sense to execute code in #.Cider rather than in ⎕SE.Cider
     ⍝ Note that when the Cider project itself is about to be opened, the code is not yet available in #,
     ⍝ and even if it is as a left-over from earlier operations, it's potentially an outdated version.
     ⍝ Has side affects in case a ref to #.Cider is returned: prints a message and creates some essential refs.
-      :If {2≠⎕SE.Cider.⎕NC ⍵:0 ⋄ ⎕SE.Cider⍎⍵}'DEVELOPMENT'      ⍝ Does the developer really want this?
+      :If {2≠⎕SE.Cider.⎕NC ⍵:0 ⋄ 0<⎕SE.Cider⍎⍵}'DEVELOPMENT'      ⍝ Does the developer really want this?
       :AndIf 0<#.⎕NC'Cider'                                     ⍝ And is there no...
       :AndIf 0<#.Cider.⎕NC'Cider'                               ⍝ ... namespace #.Cider yet?
       :AndIf (⊂'#.Cider')∊(1↓⎕SE.Link.Status ⍬)[;1]             ⍝ And is that namespace LINKed?
           r←#.Cider.Cider
           r.##.(C A F G)←r.(C A F G)
-          ⎕←'*** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!'
+          :If 1=⎕SE.Cider.DEVELOPMENT
+              ⎕←'*** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!'
+          :EndIf
       :Else
           r←⎕SE.Cider
       :EndIf
@@ -1125,6 +1249,10 @@
               'Tatin is not available and cannot be loaded into ⎕SE, therefore Cider won''t work'Assert 0
           :EndTrap
       :EndIf
+    ∇
+
+    ∇ r←IsAlias path
+      r←']['≡2↑¯1⌽path
     ∇
 
 :EndClass

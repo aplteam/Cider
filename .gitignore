@@ -3,6 +3,7 @@ aplcore
 CONTINUE.dws
 conga.crash
 /packages/*
+/TestResults/
 !/packages/apl-dependencies.txt
 !/packages/apl-buildlist.json
 /packages_dev/*

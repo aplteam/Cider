@@ -8,7 +8,7 @@
      R←T._WindowsOnly ⋄ →0
  :EndIf
 
- tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.special-watch')
  ⎕DL 0.5
 

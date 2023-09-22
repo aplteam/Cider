@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
  projectFolder1←tempDir,'/Foo'
  sourceFolder1←projectFolder1,'/APLSource'
  'Create!'FilesAndDirs.CheckPath sourceFolder1
@@ -16,7 +16,7 @@
  list←FilesAndDirs.ListFiles projectFolder1
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
- aliase←##.Cider.GetAliasFileContent
+ aliase←##.Cider.GetAliasFileContent ⍬
  →T.GoToTidyUp~(⊂⎕C'test-case-alias-Foo')∊aliase[;1]
 
  projectFolder2←tempDir,'/Goo'
@@ -30,7 +30,7 @@
  list←FilesAndDirs.ListFiles projectFolder2
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
- aliase←##.Cider.GetAliasFileContent
+ aliase←##.Cider.GetAliasFileContent ⍬
  →T.GoToTidyUp~∧/(⎕C'test-case-alias-Foo' 'test-case-alias-Goo')∊aliase[;1]
 
  →T.GoToTidyUp 1≠##.Cider.CloseProject'#.Foo'

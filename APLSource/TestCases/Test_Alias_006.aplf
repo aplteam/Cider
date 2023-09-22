@@ -15,6 +15,7 @@
  parms.batch←1
  (success log)←⎕SE.Cider.OpenProject parms
  Assert success
+ →T.GoToTidyUp∨/'ERROR'⍷log
 
  Assert ⎕SE.Cider.CloseProject'[Firlefanz1]'
  #.⎕EX'TEMP' ⋄ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
@@ -23,9 +24,10 @@
  parms.folder←'[Firlefanz1]'
  (success log)←⎕SE.Cider.OpenProject parms
  Assert success
+ →T.GoToTidyUp∨/'ERROR'⍷log
  Assert ⎕SE.Cider.CloseProject'[Firlefanz2]'
 
- aliase←⎕SE.Cider.GetAliasFileContent
+ aliase←⎕SE.Cider.GetAliasFileContent ⍬
  →T.GoToTidyUp(⊂'firlefanz1')∊aliase[;1]
  →T.GoToTidyUp~(⊂'firlefanz2')∊aliase[;1]
 

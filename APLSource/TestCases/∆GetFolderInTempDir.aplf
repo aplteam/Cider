@@ -1,0 +1,4 @@
+ r←∆GetFolderInTempDir y
+ r←(FilesAndDirs.GetTempSubDir'Cider-Tests'),'/',y
+ 3 ⎕MKDIR r
+⍝Done

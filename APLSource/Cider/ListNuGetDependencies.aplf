@@ -1,10 +1,14 @@
- r←ListNuGetDependencies path;NuGet;nuget_dir
-⍝ List NuGet Dependencies (what a useful comment!)
-
- NuGet←FindNuGetAPI ''
- nuget_dir←path,'/',{0::⍵ ⋄ config.CIDER.dependencies.nuget}'nuget-packages'
- :If ⎕NEXISTS nuget_dir
-     r←NuGet.Packages nuget_dir
- :Else
-     r←'No dependencies found'
+ r←ListNuGetDependencies projectFolder;NuGet;cfg;nuGetFolder
+ r←0 2⍴''
+ NuGet←FindNuGetAPI''
+ :If IsAlias projectFolder
+     projectFolder←GetFolderFromAlias2 projectFolder
+ :EndIf
+ 'No Cider config file found'Assert F.Exists projectFolder,'/cider.config'
+ cfg←ReadProjectConfigFile projectFolder
+ :If 0<≢nuGetFolder←⊃GetNuGetDependencyFolders cfg
+     nuGetFolder←{~'='∊2⊃⎕NPARTS ⍵:⍵ ⋄ ⊃{⍺,{⍵↑⍨¯1+⍵⍳'='}⍵}/⎕NPARTS ⍵}nuGetFolder
+ :AndIf ⎕NEXISTS projectFolder,'/',nuGetFolder
+ :AndIf 0<≢F.ListFiles projectFolder,'/',nuGetFolder,'/*.csproj'
+     r←↑NuGet.Packages projectFolder,'/',nuGetFolder
  :EndIf

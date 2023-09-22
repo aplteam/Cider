@@ -5,7 +5,7 @@
  r←T._Failed
 
  #.⎕EX'Goo' ⋄ 'Goo'#.⎕NS''
- tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig -batch -ignoreUserExec'

@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
  (tempDir,'/')⎕NCOPY⍠('Wildcard' 1)⊣∆GetTestPath(⊃⎕SI),'/*'
 
  {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -ignoreUserExec -batch'

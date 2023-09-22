@@ -4,7 +4,7 @@
 ⍝ * when the user goes for re-installing the packages, a 2 is returned
 ⍝ * when she does not a 3 is returned
  status←0
- folders←GetTatinDepedencyFolders config
+ folders←GetTatinDependencyFolders config
  :If 0<≢folders
      folders←{'='∊⍵:⍵↑⍨¯1+⍵⍳'=' ⋄ ⍵}¨folders
  :AndIf 0<≢folders←(0<≢¨folders)/folders

@@ -16,7 +16,7 @@
          path←2⊃list[index;]
      :EndSelect
  :Else
-     aliasDefs←P.GetAliasFileContent
+     aliasDefs←P.GetAliasFileContent ⍬
      path←Args._1
      :If path≡'[?]'
          :If 0=≢path←SelectFromAliases aliasDefs

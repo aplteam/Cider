@@ -14,7 +14,7 @@
  parms.verbose←GetGlobalVerboseDefault
  parms.batch←0
  parms.watch←(1+HasDotNet)⊃'ns' 'both'
- parms.checkPackageVersions←⍬      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
+ parms.checkPackageVersions←0      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
  :If ~(⊂y)∊''⍬
  :AndIf 9=⎕NC'y'
      :If 9=y.⎕NC'projectSpace'

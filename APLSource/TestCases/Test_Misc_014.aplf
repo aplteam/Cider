@@ -1,0 +1,19 @@
+ r←Test_Misc_014(stopFlag batchFlag);⎕TRAP;tempFolder;filename;res;config1;config2
+⍝ Exercise Remove_githubUsername
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ tempFolder←∆GetFolderInTempDir⊃⎕SI
+ filename←tempFolder,'/cider.config'
+ filename ⎕NCOPY⍠('IfExists' 'Replace')⊣##.CiderConfig.HOME,'/TestData/cider.config.GitHubUserName'
+ config1←##.Cider.Get_JSON5 filename
+ Assert'JohnDoe'≡config1.CIDER.githubUsername
+ res←##.Cider.Remove_githubUsername tempFolder
+ →T.GoToTidyUp filename≢∊res
+ config2←##.Cider.Get_JSON5 filename
+ →T.GoToTidyUp 0≠config2.CIDER.⎕nc'githubUsername'
+
+ r←T._OK
+
+∆TidyUp:
+ FilesAndDirs.RmDir tempFolder
+ ⍝Done

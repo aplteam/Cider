@@ -1,9 +1,7 @@
- {r}←{editFlag}ProjectConfig path;filename;ns;orig;flag;edit;data
-⍝ By default the contents of the file cider.config in "path" is put into the editor in read-only mode.
-⍝ The user may edit the contents if `⍺` is 1 rather than anything else or undefined.
+ {r}←ProjectConfig path;filename;ns;orig;flag;edit;data
+⍝ Puts the contents of the file cider.config in "path" into the editor.
 ⍝ Returns 1 in case the file was modified and 0 otherwise.
  r←0
- editFlag←{0=⎕NC ⍵:0 ⋄ ⍎⍵}'editFlag'
  :If '['∊path
      path←GetFolderFromAlias path
      ('Alias "',path,'" not found')Assert 0<≢path
@@ -24,11 +22,11 @@
  :EndIf
  flag←0
  :Repeat
-     ns.⎕ED⍠('ReadOnly'(~(⊂,1)≡⊂,editFlag))⊣'cider_config'
+     ns.⎕ED'cider_config'
      :If orig≢ns.cider_config
-     :AndIf editFlag
      :AndIf 0<≢(∊ns.cider_config)~' '
-         :If CheckJsonSyntax ns.cider_config
+         :If 1 C.YesOrNo'Would you like to save your changes?'
+         :AndIf CheckJsonSyntax ns.cider_config
              data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
          :AndIf PerformConfigChecks data
              (⊂ns.cider_config)⎕NPUT⍠('NEOL' 2)⊣filename 1

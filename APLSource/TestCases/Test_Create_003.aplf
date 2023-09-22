@@ -4,7 +4,7 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
  3 ⎕MKDIR tempDir,'/APLSource'
  'Foo'#.⎕NS''
  #.Foo.⎕FX'r←TheAnswerIs' 'r←42'

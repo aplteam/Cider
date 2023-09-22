@@ -1,0 +1,24 @@
+ r←ListTatinDependencies projectFolder;cfgFilename;cfg;buildFilenames;buildLists;b;tatinFolders;buildFolders
+⍝ `y` must point to a project, either as alias ([]) or as a projectFolder.
+⍝ The actualt Tatin dependency folders are established from the project config file.
+ r←0 5⍴''
+ :If IsAlias projectFolder
+     projectFolder←GetFolderFromAlias2 projectFolder
+ :EndIf
+ cfgFilename←projectFolder,'/cider.config'
+ 'No Cider config file found'Assert F.Exists cfgFilename
+ cfg←ReadProjectConfigFile cfgFilename
+ tatinFolders←GetTatinDependencyFolders cfg
+ :If 0<≢tatinFolders
+     tatinFolders←{⍵↑⍨¯1+⍵⍳'='}¨tatinFolders
+     buildFolders←(⊂projectFolder,'/'),¨tatinFolders
+     buildFilenames←buildFolders,¨⊂'/apl-buildlist.json'
+     b←F.Exists¨buildFilenames
+ :AndIf 0<≢buildFilenames←b/buildFilenames
+     '"dependencies" and "dependencies_dev" do not point to existing folders'Assert∨/b
+     buildLists←{⎕JSON⍠('Dialect' 'JSON5')⊣⊃F.NGET ⍵}¨buildFilenames
+     r←⍉∘↑¨(⊂¨' ',¨¨buildLists.packageID),¨buildLists.(principal url)
+     r←(⊂¨b/tatinFolders,¨'/'),¨r
+     r←{⍵,'? '[1+'https://tatin.dev/'∘≡¨⍵[;4]]}¨r
+     r←⊃⍪/r
+ :EndIf

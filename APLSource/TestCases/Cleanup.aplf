@@ -4,7 +4,7 @@
      ⎕EX'∆LINK_NOTIFY_WAS'
  :EndIf
  :If 0<⎕NC'∆QSE_CIDER_DEVELOPMENT'
-     ⎕SE.Cider.DEVELOPMENT←1
-     ⎕←'Restored: ⎕SE.Cider.DEVELOPMENT←1'
+     ⎕SE.Cider.DEVELOPMENT←∆QSE_CIDER_DEVELOPMENT
+     ⎕←'Restored: ⎕SE.Cider.DEVELOPMENT←',⍕∆QSE_CIDER_DEVELOPMENT
  :EndIf
  ⍝Done

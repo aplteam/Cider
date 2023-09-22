@@ -20,7 +20,7 @@
  (rc msg res)←∆UCMD'CloseProject [firlefanz1]'
  msg Assert 0=rc
 
- aliase←⎕SE.Cider.GetAliasFileContent
+ aliase←⎕SE.Cider.GetAliasFileContent ⍬
 
  →T.GoToTidyUp 1≠+/'firlefanz1'∘≡¨aliase[;1]
 

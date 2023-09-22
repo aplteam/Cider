@@ -20,6 +20,7 @@
 
  (success log)←##.Cider.OpenProject parms
  Assert success
+ →T.GoToTidyUp∨/'ERROR'⍷log
 
  body1←⊃⎕NGET filename
  {}'#.TEMP'⎕SE.Link.Fix'r←Hello' 'r←''World'''

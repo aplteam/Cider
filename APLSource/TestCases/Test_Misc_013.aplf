@@ -1,0 +1,10 @@
+ r←Test_Misc_013(stopFlag batchFlag);⎕TRAP;list;b
+⍝ Exercise Public
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ list←##.Cider.Public
+ →T.PassesIf 0<≢list
+ b←##.Cider.⎕NC↑list
+ →T.PassesIf 0∧.<b
+
+ r←T._OK

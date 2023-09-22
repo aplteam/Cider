@@ -1,4 +1,15 @@
- r←AddTatinDependencies(packageIDs targetFolder)
-⍝ Add  one or more Tatin packages as dependencies
+ r←AddTatinDependencies(packageIDs projectFolder dev);targetFolder;cfg;ref
+⍝ Add one or more Tatin packages as dependencies.
+⍝ `dev` is a flag that decides whether `dependencies` or `dependencies_dev` is the target.
+ :If 1<≡packageIDs
+     packageIDs←⊃1↓,/',',¨packageIDs
+ :EndIf
+ cfg←ReadProjectConfigFile projectFolder
+ :If dev
+     ref←cfg.CIDER.dependencies_dev
+ :Else
+     ref←cfg.CIDER.dependencies
+ :EndIf
+ targetFolder←projectFolder,'/',{⍵↑⍨¯1+⍵⍳'='}ref.tatin
  r←⎕SE.Tatin.InstallPackages packageIDs targetFolder
 ⍝Done

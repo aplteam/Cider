@@ -1,0 +1,8 @@
+ InitPackage;⎕TRAP
+⍝ Executed by Tatin when the Cider package is loaded
+ CreateRefs
+ :If 0
+     ⎕TRAP←0 'S'
+     ∘∘∘   ⍝TODO⍝
+ :EndIf
+⍝Done

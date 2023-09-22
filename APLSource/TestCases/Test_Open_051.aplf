@@ -21,6 +21,7 @@
 
  (success log)←##.Cider.OpenProject parms
  Assert success
+ →T.GoToTidyUp∨/'ERROR'⍷log
 
  body1←⊃⎕NGET filename
  Assert(,⊂'Hello')≡#.TEMP.Foo ⎕SE.Link.Fix'r←Hello' 'r←''Galaxy'''

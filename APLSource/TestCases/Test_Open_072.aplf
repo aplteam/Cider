@@ -15,6 +15,7 @@
  ##.Cider.CommTools.YesOrNo_Answers⍪←'LaterVersions@' 'y'
  (success log)←##.Cider.OpenProject parms
  Assert success
+ →T.GoToTidyUp∨/'ERROR'⍷log
  →T.GoToTidyUp~∨/'1 Tatin package loaded'⍷log
 
  R←T._OK

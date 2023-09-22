@@ -1,11 +1,10 @@
- r←RunTests path;configFilename;config
+ r←RunTests projectFolder;config
  r←''
- :If '[]'≡path[1,≢path]
-     path←GetFolderFromAlias path
+ :If IsAlias projectFolder
+     projectFolder←GetFolderFromAlias projectFolder
  :EndIf
- configFilename←path,'/cider.config'
- ('No file "cider.config" found in ',path)Assert F.Exists configFilename
- config←Get_JSON5 configFilename
+ ('No file "cider.config" found in ',projectFolder)Assert F.Exists projectFolder,'/cider.config'
+ config←ReadProjectConfigFile projectFolder
  :If 0<config.CIDER.⎕NC'tests'
  :AndIf 0<≢config.CIDER.tests
      :If (1⍴config.CIDER.tests~' ')∊'])'

@@ -13,7 +13,7 @@
  parms.ignoreUserExec←1
  (success log)←##.Cider.OpenProject parms
  →T.PassesIf success
-
+ →T.PassesIf~∨/'ERROR'⍷log
  →T.PassesIf'World'≡#.TEMP.Hello
  →T.PassesIf 2=≢#.TEMP.⎕NL⍳16                 ⍝ We must not find any packages, just the function and CiderConfig
 

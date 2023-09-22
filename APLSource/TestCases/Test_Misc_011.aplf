@@ -1,0 +1,9 @@
+ r←Test_Misc_011(stopFlag batchFlag);⎕TRAP;res
+⍝ Exercise ListTatinDependencies
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ res←##.Cider.ListTatinDependencies ##.CiderConfig.HOME
+ →T.PassesIf 5=2⊃⍴res
+ →T.PassesIf 0<≢⍴res
+
+ r←T._OK

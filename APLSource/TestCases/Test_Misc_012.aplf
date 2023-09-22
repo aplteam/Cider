@@ -1,0 +1,21 @@
+ r←Test_Misc_012(stopFlag batchFlag);⎕TRAP;parms;data;filename;qdmx
+⍝ Exercise GetFolderFromAlias and GetFolderFromAlias2
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ filename←##.CiderConfig.HOME,'/TestData/aliase.txt'
+ data←filename #.Cider.Cider.GetFolderFromAlias2'foo'
+ →T.PassesIf'/totally/made/up'≡data
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←'[foo]'
+
+ :Trap 11
+     ({⍵}#.Cider.Cider.GetFolderFromAlias)parms
+     →T.FailsIf 1
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf 11=qdmx.EN
+     →T.PassesIf '"foo" is not a valid alias'≡qdmx.EM
+ :EndTrap
+
+ r←T._OK

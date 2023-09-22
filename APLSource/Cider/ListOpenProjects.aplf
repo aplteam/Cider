@@ -14,7 +14,7 @@
          r[;2]←DropTrailingSlash¨r[;2]
          r[;2]←F.EnforceSlash¨r[;2]
          :If verboseFlag
-             :If 0<≢aliases←GetAliasFileContent
+             :If 0<≢aliases←GetAliasFileContent ⍬
                  aliases[;2]←DropTrailingSlash¨aliases[;2]
              :AndIf 0<≢aliases←(aliases[;2]∊r[;2])⌿aliases
                  r,←⊂''

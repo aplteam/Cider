@@ -21,6 +21,7 @@
  parms.batch←1
  (success log)←##.Cider.OpenProject parms
  Assert success
+ →T.GoToTidyUp∨/'ERROR'⍷log
 
  →T.GoToTidyUp 0≠FilesAndDirs.IsDir dir,'/packages/aplteam-MarkAPL-11.0.0'
  →T.GoToTidyUp 1≠≢⊃FilesAndDirs.Dir dir,'/packages/aplteam-MarkAPL-11*'

@@ -30,6 +30,30 @@ Actions taken:
 Returns an empty vector in case of success and an error message otherwise.
 
 
+## AddNuGetDependencies
+
+Installs NuGet packages in the (single) NuGet dependency folder defined in the projects configuration file.
+
+Requires two arguments:
+
+1. One or more packages as either a nested vector of character vectors or a comma-separated simple character vector
+
+2. A path to a project or a Cider alias
+
+
+## AddTatinDependencies
+
+Installs Tatin packages in one of the Tatin dependency folders defined in the projects configuration file, by default in `dependencies.tatin`.
+
+Requires three arguments:
+
+1. One or more packages as either a nested vector of character vectors or a comma-separated simple character vector
+
+2. A path to a project or a Cider alias
+
+3. A flag that decides whether `dependencies` or `dependencies_dev` is going to be the target.
+
+
 ## CloseProject
 
 Takes one ore more projects and closes them (read: breaks the link).
@@ -140,7 +164,9 @@ With the verbose flag set it returns 4 columns:
 `[;3]` | Number of objects belonging to the project
 `[;4]` | Alias (if any)
 
-## ListTatinPackages
+## ListTatinDependencies
+
+Until version 0.34.0 this was named `ListTatinPackages`.
 
 Lists all dependencies installed in the Tatin installation folders, if any. 
 
@@ -149,6 +175,12 @@ For every install folder these pieces of information are listed:
 * The full package ID
 * A Boolean indicating whether the package is a principal one or just a dependency
 * A URL where the package was loaded from
+
+## ListNuGetDependencies
+
+Lists all installed NuGet dependencies with "name" and "version".
+
+Note that there can be only one NuGet installation folder: currently you cannot have NuGet packages for development purposes. This restriction may be lifted in a future release.
 
 ## OpenProject
 
@@ -159,13 +191,17 @@ Opening a project means carrying out the following actions:
    From here on we refer to this as the _root of the project_.
 2. Setting the system variables `⎕IO` and `⎕ML` in the root of the project
 3. Bringing all code and variables into the root of the project
-4. Loading all Tatin packages from the Tatin installation folders defined by `dependencies` and `dependencies_dev`
+4. Loading all Tatin packages from the Tatin installation folders defined by `dependencies:tatin` and `dependencies_dev:tatin`
+4. Loading all NuGet packages from the NuGet installation folder defined by `dependencies:nuget`
 5. Injecting a namespace `CiderConfig` into the root of the project and populating it with the contents of the configuration file as an APL array
 6. Adding a variable `HOME` to `CiderConfig` that carries a path to where the project was loaded from
 7. Executing the project-specific function noted on `init`, usually to initialize the project
 8. Executing a non-project-specific function defined in Cider's own configuration file
 
    This can be used for carrying out the same user-specific actions after a project was opened.
+
+9. Checking for a variable `ToDo` in the root of the project, and putting it on display (with `⎕ED`) in case it exists
+10. Checking the Git status of the project, if it is managed byGit
 
 `OpenProject` requires on of the following two options as right argument:
 
@@ -280,17 +316,19 @@ A> This imposes a danger because those handlers set a Hold under some circumstan
 
 ## ProjectConfig
 
-Takes a path as `⍵` and an optional Boolean edit flag as `⍺` that defaults to 0.
+Takes a path as `⍵`.
 
-Puts the config file found in `path` on display and allows the user to edit it if the left argument is 1.
+Puts the config file found in `path` on display and allows the user to edit it.
 
-Performs checks before writing it back to file.
+Asks for permission before writing changes back to file, and performs checks before writing it back to file.
 
 ## ReadProjectConfigFile
 
 This function takes a path to a Cider project as `⍵` and returns the contents of the config files as a namespace with variables.
 
-`path` may or may not come the actual filename `cider.config'
+`path` may or may not come the actual filename `cider.config'.
+
+Note that the function checks whether the sub-keys `dependency.tatin` and `dependency.nuget` are defined; if not they are created and the data is written to file.
 
 
 ## WriteProjectConfigFile
@@ -309,4 +347,8 @@ This function takes a path to a Cider project as `⍵` and a namespace with Cide
 
    This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
 3. The version date in international date format: YYYY-MM-DD
+
+
+
+
 

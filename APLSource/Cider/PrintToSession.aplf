@@ -17,9 +17,9 @@
      :EndIf
      :If 0<⎕NC'∆LOG'
          :If 1<|≡msg
-             ∆LOG,←1↓⊃,/CR,¨msg
+             ∆LOG,←⊃,/msg,¨CR
          :ElseIf 2=⍴⍴msg
-             ∆LOG,←1↓,CR,msg
+             ∆LOG,←,msg,CR
          :Else
              ∆LOG,←msg,CR
          :EndIf

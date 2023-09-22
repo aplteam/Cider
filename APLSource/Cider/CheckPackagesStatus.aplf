@@ -7,7 +7,7 @@
 ⍝ 1 means yes, check, but ask before updating
 ⍝ 2 means update without further ado
  r←⍬
- folders←GetTatinDepedencyFolders config
+ folders←GetTatinDependencyFolders config
  :If 0<≢folders
      :If 0≢parms.checkPackageVersions
      :AndIf 2>pkgStatus

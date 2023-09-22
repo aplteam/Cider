@@ -1,11 +1,12 @@
- Remove_githubUsername_ folder;filename;list;ns
+ {r}←rep Remove_githubUsername_ folder;filename;list;ns
+ r←0
  filename←folder,'/cider.config'
  :If F.IsFile filename
      ns←ReadProjectConfigFile filename
      :If 0<ns.CIDER.⎕NC'githubUsername'
          ns.CIDER.⎕EX'githubUsername'
-         ns WriteProjectConfigFile filename
-         report,←⊂filename
+         {}ns WriteProjectConfigFile filename
+         rep.report,←⊂filename
      :EndIf
  :EndIf
  list←F.ListDirs folder
