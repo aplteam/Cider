@@ -43,9 +43,9 @@ For example, when a project carries a directory `.git/` then Cider knows that th
 
 ### Installation
 
-With version 19.0, Cider will be part of a default installation, though it won't be activated: for that you have to take action. 
+With version 19.0, Cider will be part of a default installation, though it won't be active: for that you have to take action. 
 
-In earlier versions you must install Cider yourself. Note that updating and installing Cider is essentially the same.
+In earlier versions you must install Cider yourself.
 
 Cider requires Tatin, and Tatin runs on Dyalog 18.0 or later, so Cider cannot run in earlier versions than Dyalog 18.0.
 
@@ -53,7 +53,7 @@ Cider requires Tatin, and Tatin runs on Dyalog 18.0 or later, so Cider cannot ru
 
 Version 19.0 comes with both Tatin and Cider, but neither is active by default.
 
-In order to activate them, the folder `[DYALOG]/SessionExtensions` need to be copied into one of the following folders:
+In order to activate them, the folder `[DYALOG]/Experimental/CiderTatin` needs to be copied into one of the following folders:
 
 ##### Windows
 
@@ -63,7 +63,7 @@ C:\Users\<⎕AN>\Documents\Dyalog APL-64 19.0 Unicode Files\StartupSession\ ⍝ 
 C:\Users\<⎕AN>\Documents\Dyalog APL Files\StartupSession\                 ⍝ version agnostic
 ```
 
-Once the folder `SessionExtension/` is in place, any newly started version of Dyalog comes with the user commands `]Tatin.*` as well as `]Cider.*`; the APIs are both available via `⎕SE.Tatin` and `⎕SE.Cider`.
+Once the folder `CiderTatin/` is in place, any newly started version of Dyalog comes with the user commands `]Tatin.*` as well as `]Cider.*`; the APIs are both available via `⎕SE.Tatin` and `⎕SE.Cider`.
 
 ##### Linux
 
@@ -75,7 +75,7 @@ Once the folder `SessionExtension/` is in place, any newly started version of Dy
 
 Note that your intended target directory might not exist yet.
 
-Once the folder `SessionExtension/` is in place, any newly started version of Dyalog comes with the user commands `]Tatin.*` as well as `]Cider.*`; the APIs are both available via `⎕SE.Tatin` and `⎕SE.Cider`.
+Once the folder `CiderTatin/` is in place, any newly started version of Dyalog comes with the user commands `]Tatin.*` as well as `]Cider.*`; the APIs are both available via `⎕SE.Tatin` and `⎕SE.Cider`.
 
 ##### Mac OS
 
@@ -87,7 +87,7 @@ Once the folder `SessionExtension/` is in place, any newly started version of Dy
 
 Note that your intended target directory might not exist yet.
 
-Once the folder `SessionExtension/` is in place, any newly started version of Dyalog comes with the user commands `]Tatin.*` as well as `]Cider.*`; the APIs are both available via `⎕SE.Tatin` and `⎕SE.Cider`.
+Once the folder `CiderTatin/` is in place, any newly started version of Dyalog comes with the user commands `]Tatin.*` as well as `]Cider.*`; the APIs are both available via `⎕SE.Tatin` and `⎕SE.Cider`.
 
 
 #### Version 18.0 and 18.2
@@ -99,14 +99,14 @@ Unlike 19.0, these versions don't come with neither Tatin and Cider, so you firs
 Once Tatin is available, installing Cider is easy and straightforward, just issue this command:
 
 ```
-]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES_32]
-]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES_64]
-]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES]
+]Tatin.InstallPackages [tatin]Cider [PROGRAM_FILES_32]
+]Tatin.InstallPackages [tatin]Cider [PROGRAM_FILES_64]
+]Tatin.InstallPackages [tatin]Cider [PROGRAM_FILES]
 ```
 
-Once the folder `SessionExtension/` is in place, any newly started version of Dyalog is aware of the user commands `]Tatin.*` and `]Cider.*`.
+Once the folder `CiderTatin/` is in place, any newly started version of Dyalog is aware of the user commands `]Tatin.*` and `]Cider.*`.
 
-The APIs are not available yet at this point, but they will become available once a user command is issued. For examples, after issuing the following two commands the APIs will both be available via `⎕SE.Tatin` and `⎕SE.Cider`:
+The APIs are not available yet at this point, but they will become available once a user command is issued. For example, after issuing the following two commands the APIs will both be available via `⎕SE.Tatin` and `⎕SE.Cider`:
 
 ```
 ]Tatin.Version
@@ -621,6 +621,7 @@ An example:
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
 
 [^winonly]: At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature (or something similar) on all platforms.
+
 
 
 

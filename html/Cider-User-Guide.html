@@ -160,8 +160,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h3 data-id="Installation">2.2. Installation</h3>
 </a>
 </div>
-<p>With version 19.0, Cider will be part of a default installation, though it won't be activated: for that you have to take action.</p>
-<p>In earlier versions you must install Cider yourself. Note that updating and installing Cider is essentially the same.</p>
+<p>With version 19.0, Cider will be part of a default installation, though it won't be active: for that you have to take action.</p>
+<p>In earlier versions you must install Cider yourself.</p>
 <p>Cider requires Tatin, and Tatin runs on Dyalog 18.0 or later, so Cider cannot run in earlier versions than Dyalog 18.0.</p>
 <div class="h_tag">
 <a href="#version-190" id="version-190" class="autoheader_anchor">
@@ -169,7 +169,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </a>
 </div>
 <p>Version 19.0 comes with both Tatin and Cider, but neither is active by default.</p>
-<p>In order to activate them, the folder <code>[DYALOG]/SessionExtensions</code> need to be copied into one of the following folders:</p>
+<p>In order to activate them, the folder <code>[DYALOG]/Experimental/CiderTatin</code> needs to be copied into one of the following folders:</p>
 <div class="h_tag">
 <a href="#windows" id="windows" class="autoheader_anchor">
 <h5 data-id="Windows">2.2.1.1. Windows</h5>
@@ -178,7 +178,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <pre tabindex="0"><code>C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL 19.0 Unicode Files\StartupSession\    ⍝ 32-bit
 C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 19.0 Unicode Files\StartupSession\ ⍝ 64-bit
 C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\                 ⍝ version agnostic</code></pre>
-<p>Once the folder <code>SessionExtension/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
+<p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
 <div class="h_tag">
 <a href="#linux" id="linux" class="autoheader_anchor">
 <h5 data-id="Linux">2.2.1.2. Linux</h5>
@@ -188,7 +188,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\               
 /home/&lt;⎕AN&gt;/dyalog.190U64.files ⍝ 64-bit
 /home/&lt;⎕AN&gt;/dyalog.files        ⍝ version agnostic</code></pre>
 <p>Note that your intended target directory might not exist yet.</p>
-<p>Once the folder <code>SessionExtension/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
+<p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
 <div class="h_tag">
 <a href="#mac-os" id="mac-os" class="autoheader_anchor">
 <h5 data-id="Mac-OS">2.2.1.3. Mac OS</h5>
@@ -198,7 +198,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\               
 /Users/&lt;⎕AN&gt;/dyalog.190U64.files ⍝ 64-bit
 /Users/&lt;⎕AN&gt;/dyalog.files        ⍝ version agnostic</code></pre>
 <p>Note that your intended target directory might not exist yet.</p>
-<p>Once the folder <code>SessionExtension/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
+<p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
 <div class="h_tag">
 <a href="#version-180-and-182" id="version-180-and-182" class="autoheader_anchor">
 <h4 data-id="Version-180-and-182">2.2.2. Version 18.0 and 18.2</h4>
@@ -207,11 +207,11 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\               
 <p>Unlike 19.0, these versions don't come with neither Tatin and Cider, so you first have to make sure that Tatin is installed and available.</p>
 <p><a href="https://tatin.dev/" class="external_link">https://tatin.dev/</a> provides instructions for how to install Tatin on 18.0 and 18.2.</p>
 <p>Once Tatin is available, installing Cider is easy and straightforward, just issue this command:</p>
-<pre tabindex="0"><code>]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES_32]
-]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES_64]
-]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES]</code></pre>
-<p>Once the folder <code>SessionExtension/</code> is in place, any newly started version of Dyalog is aware of the user commands <code>]Tatin.*</code> and <code>]Cider.*</code>.</p>
-<p>The APIs are not available yet at this point, but they will become available once a user command is issued. For examples, after issuing the following two commands the APIs will both be available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>:</p>
+<pre tabindex="0"><code>]Tatin.InstallPackages [tatin]Cider [PROGRAM_FILES_32]
+]Tatin.InstallPackages [tatin]Cider [PROGRAM_FILES_64]
+]Tatin.InstallPackages [tatin]Cider [PROGRAM_FILES]</code></pre>
+<p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog is aware of the user commands <code>]Tatin.*</code> and <code>]Cider.*</code>.</p>
+<p>The APIs are not available yet at this point, but they will become available once a user command is issued. For example, after issuing the following two commands the APIs will both be available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>:</p>
 <pre tabindex="0"><code>]Tatin.Version
 ]Cider.Version</code></pre>
 <p>If that is not good enough for you (because you want the API to be available right from the start) this article explains how to load stuff into <code>⎕SE</code> at a very early stage: <a href="https://aplwiki.com/wiki/Dyalog_User_Commands" class="external_link">https://aplwiki.com/wiki/Dyalog_User_Commands</a></p>

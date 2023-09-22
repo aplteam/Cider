@@ -1,4 +1,6 @@
 (
+ '* 0.36.0 ⋄ 2023-09-23'
+ '  * Documentation now in line with latest changes to the installatin routine'
  '* 0.35.0 ⋄ 2023-09-22'
  '  * User commands implemented:'
  '    * `]Cider.AddTatinDependencies`'
