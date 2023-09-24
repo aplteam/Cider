@@ -29,9 +29,9 @@ The first version you can use Cider with is 18.0. This is because Cider is a Tat
 
 #### Tatin
 
-Cider relies on the [Tatin package manager](https://github.com/aplteam/Tatin "Link to Tatin on GitHub") because it is a Tatin package. With version 19.0 and later Tatin will be available in `⎕SE` right from the start. With earlier versions (18.0 and 18.2) it's up to the user to take care of that.
+Cider relies on the [Tatin package manager](https://github.com/aplteam/Tatin "Link to Tatin on GitHub") because it is a Tatin package. With version 19.0 and later Tatin will optionally be available in `⎕SE` right from the start. With earlier versions (18.0 and 18.2) it's up to the user to take care of that.
 
-If Tatin is not in `⎕SE` but available in the `MyUCMDs/` folder then Cider will attempt to load it by executing the user command `]Tatin.Version` which should implicitly load Tatin into `⎕SE`.
+If Tatin is not in `⎕SE` but available in the user's home folder then Cider will attempt to load it by executing the user command `]Tatin.Version` which should implicitly load Tatin into `⎕SE`.
 
 I> Note that Tatin will check whether Cider is available, and if so cooperate with it. However, Cider is not a requirement for using Tatin.
 
@@ -43,11 +43,9 @@ For example, when a project carries a directory `.git/` then Cider knows that th
 
 ### Installation
 
-With version 19.0, Cider will be part of a default installation, though it won't be active: for that you have to take action. 
+With version 19.0, Cider will be part of a default installation, though it won't be active: for that the user has to take action. 
 
 In earlier versions you must install Cider yourself.
-
-Cider requires Tatin, and Tatin runs on Dyalog 18.0 or later, so Cider cannot run in earlier versions than Dyalog 18.0.
 
 #### Version 19.0
 
@@ -58,10 +56,13 @@ In order to activate them, the folder `[DYALOG]/Experimental/CiderTatin` needs t
 ##### Windows
 
 ```
-C:\Users\<⎕AN>\Documents\Dyalog APL 19.0 Unicode Files\StartupSession\    ⍝ 32-bit
-C:\Users\<⎕AN>\Documents\Dyalog APL-64 19.0 Unicode Files\StartupSession\ ⍝ 64-bit
-C:\Users\<⎕AN>\Documents\Dyalog APL Files\StartupSession\                 ⍝ version agnostic
+C:\Users\<⎕AN>\Documents\Dyalog APL 19.0 Unicode Files\StartupSession\     ⍝ 32-bit
+C:\Users\<⎕AN>\Documents\Dyalog APL-64 19.0 Unicode Files\StartupSession\  ⍝ 64-bit
+C:\Users\<⎕AN>\Documents\Dyalog APL Files\StartupSession\                  ⍝ version agnostic
 ```
+
+
+It is up to the user to choose a target folder: either an appropriate version-specific folder (first or second) or a version-agnostic folder (third).
 
 Once the folder `CiderTatin/` is in place, any newly started version of Dyalog comes with the user commands `]Tatin.*` as well as `]Cider.*`; the APIs are both available via `⎕SE.Tatin` and `⎕SE.Cider`.
 
@@ -72,6 +73,8 @@ Once the folder `CiderTatin/` is in place, any newly started version of Dyalog c
 /home/<⎕AN>/dyalog.190U64.files ⍝ 64-bit
 /home/<⎕AN>/dyalog.files        ⍝ version agnostic
 ```
+
+It is up to the user to choose a target folder: either an appropriate version-specific folder (first or second) or a version-agnostic folder (third).
 
 Note that your intended target directory might not exist yet.
 
@@ -84,6 +87,8 @@ Once the folder `CiderTatin/` is in place, any newly started version of Dyalog c
 /Users/<⎕AN>/dyalog.190U64.files ⍝ 64-bit
 /Users/<⎕AN>/dyalog.files        ⍝ version agnostic
 ```
+
+It is up to the user to choose a target folder: either an appropriate version-specific folder (first or second) or a version-agnostic folder (third).
 
 Note that your intended target directory might not exist yet.
 
@@ -415,7 +420,7 @@ By default, a link is established between the root of the project and the folder
 
 A> ### LINK's `watch` parameter
 A>
-A> By default Cider sets the `watch` parameter to "both", meaning that changes in the workspace via the editor are saved to disk, and any changes on disk are brought into the workspace[^winonly]. 
+A> By default Cider sets the `watch` parameter to "both", meaning that changes in the workspace via the editor are saved to disk, and any changes on disk are brought into the workspace. 
 A>
 A> You may set `watch` to "ns" or "dir" instead. Refer to the LINK documentation for details.
 
@@ -616,16 +621,7 @@ An example:
 
 [^nuget]: NuGet is all about .NET packages: <https://en.wikipedia.org/wiki/NuGet>
 
-[^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from: <https://github.com/dyalog/Link>
+[^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
-
-[^winonly]: At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature (or something similar) on all platforms.
-
-
-
-
-
-
-
 

@@ -1,0 +1,36 @@
+ DeleteLinksInDocuments_APLFiles flag;hostingFolder;res;targetFolder
+⍝ This function attempts to delete all CiderTatin links in all version-specific folders in $USERPROFILE\Documents\
+⍝ The version-agnostic folder is left alone
+⍝ `flag` is an insurance against accidental calls
+ :If flag
+     'This function requires Admin rights'⎕SIGNAL 11/⍨~##.Cider.APLTreeUtils2.IsRunningAsAdmin
+     :If 'Win'≡3↑1⊃# ⎕WG'APLVersion'
+         hostingFolder←(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\'
+         targetFolder←hostingFolder,'/Dyalog APL-64 18.0 Unicode Files\CiderTatin\Cider'
+         :If ##.Cider.F.IsSymbolicLink targetFolder
+             ⎕NDELETE targetFolder
+         :EndIf
+         targetFolder←hostingFolder,'/Dyalog APL 18.0 Unicode Files\CiderTatin\Cider'
+         :If ##.Cider.F.IsSymbolicLink targetFolder
+             ⎕NDELETE targetFolder
+         :EndIf
+         targetFolder←hostingFolder,'/Dyalog APL-64 18.1 Unicode Files\CiderTatin\Cider'
+         :If ##.Cider.F.IsSymbolicLink targetFolder
+             ⎕NDELETE targetFolder
+         :EndIf
+         targetFolder←hostingFolder,'/Dyalog APL 18.1 Unicode Files\CiderTatin\Cider'
+         :If ##.Cider.F.IsSymbolicLink targetFolder
+             ⎕NDELETE targetFolder
+         :EndIf
+         targetFolder←hostingFolder,'/Dyalog APL-64 19.0 Unicode Files\CiderTatin\Cider'
+         :If ##.Cider.F.IsSymbolicLink targetFolder
+             ⎕NDELETE targetFolder
+         :EndIf
+         targetFolder←hostingFolder,'/Dyalog APL 19.0 Unicode Files\CiderTatin\Cider'
+         :If ##.Cider.F.IsSymbolicLink targetFolder
+             ⎕NDELETE targetFolder
+         :EndIf
+     :Else
+         ∘∘∘ ⍝ Not implemented (yet?!)
+     :EndIf
+ :EndIf

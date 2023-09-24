@@ -1,4 +1,4 @@
-﻿:Class Cider_UC
+:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
@@ -229,8 +229,30 @@
       r←newList[;1]~oldList[;1]
     ∇
 
-    ∇ r←UpdateCider dummy
-      r←'Not implemented yet'
+    ∇ r←UpdateCider dummy;allVersions;thisVersion;ind;noOf;targetFolder;tempFolder;res;q
+      allVersions←,⎕SE.Tatin.ListVersions'[Tatin]aplteam-Cider'
+      thisVersion←'aplteam-Cider-',{⍵↑⍨¯1+⍵⍳'+'}P.Version
+      ind←allVersions⍳⊂thisVersion
+      noOf←≢allVersions
+      :If ind=noOf
+          r←'Cider is up-to-date'
+      :ElseIf ind>noOf
+          r←'The currently running version of Cider appears to have no regular version number - updating is impossible'
+      :Else
+          q←'UpdateCider@Are you sure that you want to update Cider to version ',({1↓⍵/⍨2≤+\⍵='-'}noOf⊃allVersions),' ?'
+          :If 1 P.##.C.YesOrNo q
+              tempFolder←P.##.F.GetTempSubDir'Cider'
+              res←⎕SE.Tatin.InstallPackages('[tatin]aplteam-Cider')tempFolder
+              targetFolder←⊃⎕NPARTS ##.SourceFile
+              {}P.##.F.RmDir targetFolder
+              3 ⎕MKDIR targetFolder
+              targetFolder ⎕NMOVE⍠1⊣tempFolder,'/*'
+              r←'Cider was successfully updated to version ',{1↓⍵/⍨2≤+\⍵='-'}⊃res
+              {}P.##.F.RmDir tempFolder
+          :Else
+              r←'Cancelled by user'
+          :EndIf
+      :EndIf
     ∇
 
     ∇ r←AddTatinDependencies Args;path;packages;projectFolder;cfg;development;ref;flag;q

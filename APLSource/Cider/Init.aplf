@@ -1,4 +1,5 @@
- Init
+ Init;json;cfg;buildNo;body
+⍝ Initialize the project as part of Cider opening itself.
  CreateRefs
  :If 0=⎕SE.Cider.⎕NC'DEVELOPMENT'
  :AndIf 1 C.YesOrNo'Would you like to create a variable DEVELOPMENT in ⎕SE.Cider?'

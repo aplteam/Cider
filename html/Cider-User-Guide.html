@@ -139,8 +139,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h4 data-id="Tatin">2.1.2. Tatin</h4>
 </a>
 </div>
-<p>Cider relies on the <a href="https://github.com/aplteam/Tatin" class="external_link" title="Link to Tatin on GitHub">Tatin package manager</a> because it is a Tatin package. With version 19.0 and later Tatin will be available in <code>⎕SE</code> right from the start. With earlier versions (18.0 and 18.2) it's up to the user to take care of that.</p>
-<p>If Tatin is not in <code>⎕SE</code> but available in the <code>MyUCMDs/</code> folder then Cider will attempt to load it by executing the user command <code>]Tatin.Version</code> which should implicitly load Tatin into <code>⎕SE</code>.</p>
+<p>Cider relies on the <a href="https://github.com/aplteam/Tatin" class="external_link" title="Link to Tatin on GitHub">Tatin package manager</a> because it is a Tatin package. With version 19.0 and later Tatin will optionally be available in <code>⎕SE</code> right from the start. With earlier versions (18.0 and 18.2) it's up to the user to take care of that.</p>
+<p>If Tatin is not in <code>⎕SE</code> but available in the user's home folder then Cider will attempt to load it by executing the user command <code>]Tatin.Version</code> which should implicitly load Tatin into <code>⎕SE</code>.</p>
 <div class="leanpub">
 <img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information">
 <div>
@@ -160,9 +160,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h3 data-id="Installation">2.2. Installation</h3>
 </a>
 </div>
-<p>With version 19.0, Cider will be part of a default installation, though it won't be active: for that you have to take action.</p>
+<p>With version 19.0, Cider will be part of a default installation, though it won't be active: for that the user has to take action.</p>
 <p>In earlier versions you must install Cider yourself.</p>
-<p>Cider requires Tatin, and Tatin runs on Dyalog 18.0 or later, so Cider cannot run in earlier versions than Dyalog 18.0.</p>
 <div class="h_tag">
 <a href="#version-190" id="version-190" class="autoheader_anchor">
 <h4 data-id="Version-190">2.2.1. Version 19.0</h4>
@@ -175,9 +174,10 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h5 data-id="Windows">2.2.1.1. Windows</h5>
 </a>
 </div>
-<pre tabindex="0"><code>C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL 19.0 Unicode Files\StartupSession\    ⍝ 32-bit
-C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 19.0 Unicode Files\StartupSession\ ⍝ 64-bit
-C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\                 ⍝ version agnostic</code></pre>
+<pre tabindex="0"><code>C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL 19.0 Unicode Files\StartupSession\     ⍝ 32-bit
+C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 19.0 Unicode Files\StartupSession\  ⍝ 64-bit
+C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\                  ⍝ version agnostic</code></pre>
+<p>It is up to the user to choose a target folder: either an appropriate version-specific folder (first or second) or a version-agnostic folder (third).</p>
 <p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
 <div class="h_tag">
 <a href="#linux" id="linux" class="autoheader_anchor">
@@ -187,6 +187,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\               
 <pre tabindex="0"><code>/home/&lt;⎕AN&gt;/dyalog.190U32.files ⍝ 32-bit
 /home/&lt;⎕AN&gt;/dyalog.190U64.files ⍝ 64-bit
 /home/&lt;⎕AN&gt;/dyalog.files        ⍝ version agnostic</code></pre>
+<p>It is up to the user to choose a target folder: either an appropriate version-specific folder (first or second) or a version-agnostic folder (third).</p>
 <p>Note that your intended target directory might not exist yet.</p>
 <p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
 <div class="h_tag">
@@ -197,6 +198,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\               
 <pre tabindex="0"><code>/Users/&lt;⎕AN&gt;/dyalog.190U32.files ⍝ 32-bit
 /Users/&lt;⎕AN&gt;/dyalog.190U64.files ⍝ 64-bit
 /Users/&lt;⎕AN&gt;/dyalog.files        ⍝ version agnostic</code></pre>
+<p>It is up to the user to choose a target folder: either an appropriate version-specific folder (first or second) or a version-agnostic folder (third).</p>
 <p>Note that your intended target directory might not exist yet.</p>
 <p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
 <div class="h_tag">
@@ -493,7 +495,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\               
 <p>By default, a link is established between the root of the project and the folder. When you intend to work on the project (read: change the code) then this is the obvious thing to do.</p>
 <div class="leanpub_A">
 <h3>LINK's <code>watch</code> parameter</h3>
-<p>By default Cider sets the <code>watch</code> parameter to “both”, meaning that changes in the workspace via the editor are saved to disk, and any changes on disk are brought into the workspace[<a href="#fnref5" class="footnote_link"><sup>5</sup></a>].</p>
+<p>By default Cider sets the <code>watch</code> parameter to “both”, meaning that changes in the workspace via the editor are saved to disk, and any changes on disk are brought into the workspace.</p>
 <p>You may set <code>watch</code> to “ns” or “dir” instead. Refer to the LINK documentation for details.</p>
 </div>
 
@@ -671,9 +673,8 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\               
 <ol>
 <li id="fnref1"><p><em>Tatin</em> is a Dyalog APL package manager: <a href="https://github.com/aplteam/Tatin" class="external_link">https://github.com/aplteam/Tatin</a></p><a href="#fnref1" class="footnote_anchor"></a>
 <li id="fnref2"><p>NuGet is all about .NET packages: <a href="https://en.wikipedia.org/wiki/NuGet" class="external_link">https://en.wikipedia.org/wiki/NuGet</a></p><a href="#fnref2" class="footnote_anchor"></a>
-<li id="fnref3"><p><em>LINK</em> is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from: <a href="https://github.com/dyalog/Link" class="external_link">https://github.com/dyalog/Link</a></p><a href="#fnref3" class="footnote_anchor"></a>
+<li id="fnref3"><p><em>LINK</em> is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <a href="https://github.com/dyalog/Link" class="external_link">https://github.com/dyalog/Link</a> and <a href="https://dyalog.github.io/link" class="external_link">https://dyalog.github.io/link</a></p><a href="#fnref3" class="footnote_anchor"></a>
 <li id="fnref4"><p>Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either <code>#._tatin</code> or <code>⎕SE._tatin</code></p><a href="#fnref4" class="footnote_anchor"></a>
-<li id="fnref5"><p>At the time of writing (July 2022) this works under Windows but not on other operating systems. However, Dyalog plans to implement this feature (or something similar) on all platforms.</p><a href="#fnref5" class="footnote_anchor"></a>
 </ol>
 </div>
 </body>

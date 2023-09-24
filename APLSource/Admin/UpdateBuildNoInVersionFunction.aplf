@@ -1,0 +1,15 @@
+ {r}←{increment}UpdateBuildNoInVersionFunction flag;json;cfg;buildNo;body
+⍝ Reads the package config file, extracts the build number and injects that number into `Version`.
+⍝ If the optional ⍺ is 1 then the build number is incremented before injecting
+ r←0
+ :If flag
+     increment←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'increment'
+     json←⊃⎕NGET ##.CiderConfig.HOME,'/apl-package.json'
+     cfg←⎕JSON⍠('Dialect' 'JSON5')⊣json
+     :If 0<≢buildNo←{⍵↓⍨⍵⍳'+'}cfg.version
+         buildNo←⍕increment+⊃⊃(//)⎕VFI buildNo
+         body←##.Cider.⎕NR'Version'
+         body←'\+[0-9]+'⎕R('+',buildNo)⊣body ⍝ Replace the build number
+         ##.Cider ⎕SE.Link.Fix body
+     :EndIf
+ :EndIf

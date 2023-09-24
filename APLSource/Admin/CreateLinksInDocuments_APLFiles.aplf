@@ -1,0 +1,43 @@
+ CreateLinksInDocuments_APLFiles flag;sourceFolder;targetFolder;cmd;res
+⍝ This function assumes that the "correct" version of Cider is installed in $USERPROFILE\Documents\Dyalog APL Files
+⍝ It attempts to create links from this folder to all version-specific folders in $USERPROFILE\Documents\
+⍝ `flag` is an insurance against accidental calls
+ :If flag
+     'This function requires Admin rights'⎕SIGNAL 11/⍨~##.Cider.APLTreeUtils2.IsRunningAsAdmin
+     sourceFolder←(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\Dyalog APL Files\CiderTatin/Cider'
+     :If 'Win'≡3↑1⊃# ⎕WG'APLVersion'
+         targetFolder←4{⍵/⍨⍺>+\'\'=⍵}sourceFolder
+         :If ⎕NEXISTS targetFolder,'/Dyalog APL-64 18.0 Unicode Files'
+             3 ⎕MKDIR targetFolder,'/Dyalog APL-64 18.0 Unicode Files\CiderTatin'
+             cmd←'mklink /d "',targetFolder,'/Dyalog APL-64 18.0 Unicode Files\CiderTatin\Cider" "',sourceFolder,'"'
+             res←⎕CMD cmd
+         :EndIf
+         :If ⎕NEXISTS targetFolder,'/Dyalog APL 18.0 Unicode Files'
+             3 ⎕MKDIR targetFolder,'/Dyalog APL 18.0 Unicode Files\CiderTatin'
+             cmd←'mklink /d "',targetFolder,'/Dyalog APL 18.0 Unicode Files\CiderTatin\Cider" "',sourceFolder,'"'
+             res←⎕CMD cmd
+         :EndIf
+         :If ⎕NEXISTS targetFolder,'/Dyalog APL 18.2 Unicode Files'
+             3 ⎕MKDIR targetFolder,'/Dyalog APL 18.2 Unicode Files\CiderTatin'
+             cmd←'mklink /d "',targetFolder,'/Dyalog APL 18.2 Unicode Files\CiderTatin\Cider" "',sourceFolder,'"'
+             res←⎕CMD cmd
+         :EndIf
+         :If ⎕NEXISTS targetFolder,'/Dyalog APL-64 18.2 Unicode Files'
+             3 ⎕MKDIR targetFolder,'/Dyalog APL-64 18.2 Unicode Files\CiderTatin'
+             cmd←'mklink /d "',targetFolder,'/Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cider" "',sourceFolder,'"'
+             res←⎕CMD cmd
+         :EndIf
+         :If ⎕NEXISTS targetFolder,'/Dyalog APL 19.0 Unicode Files'
+             3 ⎕MKDIR targetFolder,'/Dyalog APL 19.0 Unicode Files\StartupSession\CiderTatin'
+             cmd←'mklink /d "',targetFolder,'/Dyalog APL 19.0 Unicode Files\StartupSession\CiderTatin\Cider" "',sourceFolder,'"'
+             res←⎕CMD cmd
+         :EndIf
+         :If ⎕NEXISTS targetFolder,'/Dyalog APL-64 19.0 Unicode Files'
+             3 ⎕MKDIR targetFolder,'/Dyalog APL-64 19.0 Unicode Files\StartupSession\CiderTatin'
+             cmd←'mklink /d "',targetFolder,'/Dyalog APL-64 19.0 Unicode Files\StartupSession\CiderTatin\Cider" "',sourceFolder,'"'
+             res←⎕CMD cmd
+         :EndIf
+     :Else
+         ∘∘∘ ⍝ Not implemented (yet?!)
+     :EndIf
+ :EndIf
