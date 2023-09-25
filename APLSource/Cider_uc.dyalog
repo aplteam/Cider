@@ -348,7 +348,7 @@
       :EndIf
     ∇
 
-    ∇ r←CreateProject Args;folder;msg
+    ∇ r←CreateProject Args;folder;msg;namespace
       :If 0=≢Args._1
           folder←''
       :Else
@@ -356,10 +356,15 @@
       :EndIf
       :If 0=≢Args._2
       :OrIf 0≡Args._2
-          r←CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.batch)(Args.ignoreUserExec)
+          namespace←''
       :Else
-          r←Args._2 CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.batch)(Args.ignoreUserExec)
+          namespace←Args._2
+          :If '#'≠⊃namespace
+              namespace←(⊃{⍵↓⍨+/∧\'⎕'=⊃¨⍵}⎕NSI),'.',namespace
+              ('Is not a namespace: ',namespace)Assert 9=⎕NC namespace
+          :EndIf
       :EndIf
+      r←namespace CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.batch)(Args.ignoreUserExec)
       :If 0≢Args.alias
           :If 0<≢msg←P.AddAlias folder Args.alias
               r,←(⎕UCS 13)msg
@@ -781,7 +786,7 @@
           CreateConfigFile filename namespace
       :EndIf
       :If ~noEditFlag
-          1 P.ProjectConfig filename
+          P.ProjectConfig filename
           config←⊃⎕NGET filename 1
           :If success←0<≢(∊config)~' '
               config←⎕JSON⍠('Dialect' 'JSON5')⊣¯1↓∊config,¨⎕UCS 10

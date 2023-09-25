@@ -1,7 +1,22 @@
- r←{x}Initial_NuGet ps
+ r←{x}Initial_NuGet ps;info
  r←9=⎕NC'⎕SE.NuGet'
+ info←''
  :If ~r                 ⍝ ⎕se.NuGet not found and...
- :AndIf ~ps.batchFlag   ⍝ ... not in batch mode ...
-     CommTools.Pause'⎕SE.NeuGet is not available, so the NuGet tests can not be executed.'  ⍝ ... so we inform the user
+     info←'⎕SE.NuGet is not available, so the NuGet tests can not be executed.'  ⍝ ... so we inform the user
+ :EndIf
+ :Select ⊃1⊃2250⌶0
+ :Case ¯1
+     r←0
+     info←'.NET interface is not supported.'
+ :Case 0
+     r←0
+     info←'.NET interface is not configured.'
+ :Case 2
+     r←0
+     info←'The .NET interface is configured to use .NET Framework - incompatible with NuGet.'
+ :EndSelect
+ :If ~ps.batchFlag
+ :AndIf 0<≢info
+     CommTools.Pause info,(⎕UCS 13),'Therefore the NuGet tests cannot be executed.'
  :EndIf
 ⍝Done

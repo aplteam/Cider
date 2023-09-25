@@ -59,7 +59,7 @@ The former value is re-established once the tests are done.
 
 ### Changing the script `Cider.dyalog`
 
-For the following to work you must put the following into `configdcfg` (see the "Installation and Configuration Guide" of Dyalog for your OS for details):
+For the following to work you must put the following into `config.dcfg` (see the "Installation and Configuration Guide" of Dyalog for your OS for details):
 
  
 ```
@@ -97,5 +97,6 @@ You may ask Cider for how to build a new version:
 ```
 
 ... (more to come)
+
 
 

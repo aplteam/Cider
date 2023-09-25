@@ -75,22 +75,18 @@ Once Tatin is available, installing Cider is easy and straightforward, just issu
 ⍝ Windows
 C:\Users\<⎕AN>\Documents\Dyalog APL 18.2 Unicode Files\StartupSession\    ⍝ 32 bit
 C:\Users\<⎕AN>\Documents\Dyalog APL-64 18.2 Unicode Files\StartupSession\ ⍝ 64 bit
-C:\Users\<⎕AN>\Documents\Dyalog APL Files\StartupSession\                 ⍝ version agnostic
 
 ⍝ Linux
 /home/<⎕AN>/dyalog.182U32.files/StartupSession/   ⍝ 32-bit
 /home/<⎕AN>/dyalog.182U64.files/StartupSession/   ⍝ 64-bit
-/home/<⎕AN>/dyalog.files/StartupSession/          ⍝ version agnostik
+
 
 ⍝ Mac-OS
 /Users/<⎕AN>/dyalog.182U32.files/StartupSession/  ⍝ 32-bit
 /Users/<⎕AN>/dyalog.182U64.files/StartupSession/  ⍝ 64-bit
-/Users/<⎕AN>/dyalog.files/StartupSession/         ⍝ version agnostik
 ```
 
-It's your choice: either install into the correct folder of the Dyalog version you use (32- or 64 bit) or install into the version-agnostice folder, which will make it available to all suitable versions of Dyalog.[^tatin_version]
-
-Note that `DYALOG_FILES` typically translates on Windows to `C:\Users\{⎕AN}\Documents\Dyalog APL Files` and on other platforms to something like `/home/{⎕AN}/dyalog.files"`.
+I> For the time being you must not install into the version-agnostic folder because that would prevent `]Cider.UpdateCider` from working. This restriction is likely to be lifted in a later release.
 
 Once the folder `CiderTatin/` is in place, any newly started version of Dyalog is aware of the user commands `]Tatin.*` and `]Cider.*`.
 
@@ -620,9 +616,3 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
-
-[^tatin_version]: These alias names are understood by Tatin 0.100.2 and later
-
-
-
-

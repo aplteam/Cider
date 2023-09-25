@@ -178,20 +178,22 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <pre tabindex="0"><code>⍝ Windows
 C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL 18.2 Unicode Files\StartupSession\    ⍝ 32 bit
 C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\StartupSession\ ⍝ 64 bit
-C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\                 ⍝ version agnostic
 
 ⍝ Linux
 /home/&lt;⎕AN&gt;/dyalog.182U32.files/StartupSession/   ⍝ 32-bit
 /home/&lt;⎕AN&gt;/dyalog.182U64.files/StartupSession/   ⍝ 64-bit
-/home/&lt;⎕AN&gt;/dyalog.files/StartupSession/          ⍝ version agnostik
 
 
 ⍝ Mac-OS
 /Users/&lt;⎕AN&gt;/dyalog.182U32.files/StartupSession/  ⍝ 32-bit
-/Users/&lt;⎕AN&gt;/dyalog.182U64.files/StartupSession/  ⍝ 64-bit
-/Users/&lt;⎕AN&gt;/dyalog.files/StartupSession/         ⍝ version agnostik</code></pre>
-<p>It's your choice: either install into the correct folder of the Dyalog version you use (32- or 64 bit) or install into the version-agnostice folder, which will make it available to all suitable versions of Dyalog.[<a href="#fnref5" class="footnote_link"><sup>5</sup></a>]</p>
-<p>Note that <code>DYALOG_FILES</code> typically translates on Windows to <code>C:\Users\{⎕AN}\Documents\Dyalog APL Files</code> and on other platforms to something like <code>/home/{⎕AN}/dyalog.files"</code>.</p>
+/Users/&lt;⎕AN&gt;/dyalog.182U64.files/StartupSession/  ⍝ 64-bit</code></pre>
+<div class="leanpub">
+<img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information">
+<div>
+<p>For the time being you must not install into the version-agnostic folder because that would prevent <code>]Cider.UpdateCider</code> from working. This restriction is likely to be lifted in a later release.</p>
+</div>
+</div>
+
 <p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog is aware of the user commands <code>]Tatin.*</code> and <code>]Cider.*</code>.</p>
 <p>The APIs are not available yet at this point, but they will become available once a user command is issued. For example, after issuing the following two commands the APIs will both be available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>:</p>
 <pre tabindex="0"><code>]Tatin.Version
@@ -664,7 +666,6 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\               
 <li id="fnref2"><p>NuGet is all about .NET packages: <a href="https://en.wikipedia.org/wiki/NuGet" class="external_link">https://en.wikipedia.org/wiki/NuGet</a></p><a href="#fnref2" class="footnote_anchor"></a>
 <li id="fnref3"><p><em>LINK</em> is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <a href="https://github.com/dyalog/Link" class="external_link">https://github.com/dyalog/Link</a> and <a href="https://dyalog.github.io/link" class="external_link">https://dyalog.github.io/link</a></p><a href="#fnref3" class="footnote_anchor"></a>
 <li id="fnref4"><p>Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either <code>#._tatin</code> or <code>⎕SE._tatin</code></p><a href="#fnref4" class="footnote_anchor"></a>
-<li id="fnref5"><p>These alias names are understood by Tatin 0.100.2 and later</p><a href="#fnref5" class="footnote_anchor"></a>
 </ol>
 </div>
 </body>
