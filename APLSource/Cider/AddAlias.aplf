@@ -13,9 +13,8 @@
  :AndIf 0<≢ciderAliasFilename
      :If F.Exists ciderAliasFilename
          data←⊃F.NGET ciderAliasFilename 1
-         :If ~F.Exists folder
-             (1 parms.batch)p'Could not find "',folder,'"'
-         :ElseIf 0=+/(alias,'=')∘{⍺≡(≢⍺)↑⍵}¨data
+         ('Could not find "',folder,'"')Assert F.Exists folder
+         :If 0=+/(alias,'=')∘{⍺≡(≢⍺)↑⍵}¨data
              ind←({⍵↓⍨⍵⍳'='}¨data)⍳⊂folder
              :If ind≤≢data
                  DropAlias{⍵↑⍨¯1+⍵⍳'='}ind⊃data
@@ -41,7 +40,7 @@
                          data←⊃¨{⍺,'=',⍵}/¨↓data
                          (⊂data)F.NPUT ciderAliasFilename 1
                      :Else
-                         (1 parms.batch)p'Alias "',alias,'" is already in use with a different path - alias not assigned'
+                         1 PrintToSession 'Alias "',alias,'" is associated with another folder - alias not assigned'
                      :EndIf
                  :EndIf
              :EndIf

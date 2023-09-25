@@ -1,12 +1,11 @@
  {r}←flags PrintToSession msg;quiet;sessionFlag
 ⍝ If `msg` is not empty:
-⍝ * Prints `msg` to rte session in case `flag` is 1
+⍝ * Prints `msg` to the session in case `flag` is 1
 ⍝ * Adds `msg` to `∆LOG` if that variable already exists
 ⍝ `msg` might be a simple character vector or a vector of character vectors.\\
 ⍝ `flags` must be a scalar Boolean or a vector of two Booleans, defaulting to 0 0:
 ⍝ * `flags[1]` must be 1 in order to print `msg` to the session
-⍝ * `flags[2]` must be 1 in order add
-⍝ only added to `∆LOG`.
+⍝ * `flags[2]` must be 1 in order to suppress output and only add `msg` to `∆LOG`
  r←0 0⍴⍬
  Assert∧/flags∊0 1
  (sessionFlag quiet)←2↑flags,0
