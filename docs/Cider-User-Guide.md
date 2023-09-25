@@ -63,12 +63,29 @@ Unlike 19.0, these versions come with neither Tatin nor Cider, so you first have
 
 <https://tatin.dev/> provides instructions for how to install Tatin on 18.0 and 18.2.
 
-Once Tatin is available, installing Cider is easy and straightforward, just issue one of these commands:
+Once Tatin is available, installing Cider is easy and straightforward, just issue this command:
 
 ```
-]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES_32]
-]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES_64]
-]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES]
+]Tatin.InstallPackages [tatin]Cider <targetFolder>
+```
+
+`targetFolder` must be one of the following folders, here for version 18.2:
+
+```
+⍝ Windows
+C:\Users\<⎕AN>\Documents\Dyalog APL 18.2 Unicode Files\StartupSession\    ⍝ 32 bit
+C:\Users\<⎕AN>\Documents\Dyalog APL-64 18.2 Unicode Files\StartupSession\ ⍝ 64 bit
+C:\Users\<⎕AN>\Documents\Dyalog APL Files\StartupSession\                 ⍝ version agnostic
+
+⍝ Linux
+/home/<⎕AN>/dyalog.182U32.files/StartupSession/   ⍝ 32-bit
+/home/<⎕AN>/dyalog.182U64.files/StartupSession/   ⍝ 64-bit
+/home/<⎕AN>/dyalog.files/StartupSession/          ⍝ version agnostik
+
+⍝ Mac-OS
+/Users/<⎕AN>/dyalog.182U32.files/StartupSession/  ⍝ 32-bit
+/Users/<⎕AN>/dyalog.182U64.files/StartupSession/  ⍝ 64-bit
+/Users/<⎕AN>/dyalog.files/StartupSession/         ⍝ version agnostik
 ```
 
 It's your choice: either install into the correct folder of the Dyalog version you use (32- or 64 bit) or install into the version-agnostice folder, which will make it available to all suitable versions of Dyalog.[^tatin_version]
@@ -605,6 +622,7 @@ An example:
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
 
 [^tatin_version]: These alias names are understood by Tatin 0.100.2 and later
+
 
 
 
