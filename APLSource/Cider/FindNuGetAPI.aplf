@@ -1,7 +1,8 @@
-NuGet←FindNuGetAPI dummy
-⍝ Find a NuGet ns
-
-NuGet←{⊃0,⍨(9=⌊⎕NC ⍵)/⍵} '#.NuGet' '⎕SE.Dyalog.Nuget' '⎕SE.NuGet'
-:If 0≢NuGet
-    NuGet←⍎NuGet
-:EndIf
+ ref←FindNuGetAPI dummy;bool;list
+⍝ Tries to find a NuGet ns somewhere, and returns a ref to the first hit, otherwise ''
+ ref←''
+ list←'#.NuGet' '⎕SE.Dyalog.Nuget' '⎕SE.NuGet'
+ bool←9=⎕NC list
+ :If ∨/bool
+     ref←⍎⊃bool/list
+ :EndIf

@@ -14,7 +14,7 @@
  :If F.IsDir nuGetFolder
  :AndIf 0<≢list2←F.ListFiles nuGetFolder,'/*.csproj'
      p←verbose batch∘{⍺ PrintToSession ⍵}
-     NuGet←FindNuGetAPI ⍬
+ :AndIf 0<≢NuGet←FindNuGetAPI ⍬
      :If 2=⎕NC'ns'
          ns←⍎ns
      :EndIf

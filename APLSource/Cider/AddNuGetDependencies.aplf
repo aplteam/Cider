@@ -20,7 +20,7 @@
  :If 0<≢nuGetFolder
      nuGetFolder←FilesAndDirs.EnforceSlash nuGetFolder  ⍝ .NET requirement
      {}⎕MKDIR⍣(~⎕NEXISTS nuGetFolder)⊣nuGetFolder
-     'Unable to locate NuGet API'Assert 0≢NuGet←FindNuGetAPI ⍬
+     'Unable to locate NuGet API'Assert 0<≢NuGet←FindNuGetAPI ⍬
      msg←NuGet.Setup nuGetFolder
      msg Assert~∨/'error:'⍷⎕C msg
      list←''
