@@ -1,4 +1,4 @@
-:Class Cider_UC
+﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
@@ -518,8 +518,9 @@
               r,←⊂'                flag this can be avoided: the code is then loaded into the workspace with the'
               r,←⊂'                Link.Import method, meaning that changes are not tracked.'
               r,←⊂'                With -import the status of neither Git nor any installed Tatin packages is checked.'
-              r,←⊂'-alias=         In case you are going to work on a project frequently you may specify'
-              r,←⊂'                -alias=name for quicker access.'
+              r,←⊂'-alias=         In case you are going to work on a project frequently you may specify -alias=name '
+              r,←⊂'                for quicker access: rather than a path you can then specify just the [alias].'
+              r,←⊂'                Note that aliases are not case sensitive.'
               r,←⊂'                (In order to remove an alias use ]Cider.ListAliases -edit)'
               r,←⊂'-noPkgLoad      By default the Tatin packages from the installation folder(s) defined in the'
               r,←⊂'                config will be loaded. If you don''t want this specify -noPkgLoad'
@@ -630,13 +631,14 @@
               r,←⊂'                to accept an already existing config file.'
               r,←⊂'-noEdit:        With -noEdit you can prevent the user from being asked to edit the config file.'
               r,←⊂'-alias:         In case you are going to work on the new project frequently you may specify'
-              r,←⊂'                -alias=name'
+              r,←⊂'                -alias=name; from then on you can use the [alias] rather than the path.'
+              r,←⊂'                Note that aliases are not case sensitive.'
               r,←⊂'-batch          After a project has been created successfully, the user will be asked whether'
               r,←⊂'                she wants to open the project as well. You can enforce that without the user'
               r,←⊂'                being interrogated by setting the -batch flag. Mainly useful for test cases and'
               r,←⊂'                and possibly an automated build process.'
               r,←⊂'-ignoreUserExec Suppress execution of a user function defined in Cider''s config file on this occasion'
-              r,←⊂'Note that the alias is not case sensitive'
+              r,←⊂'                You don''t want to run a general user function in test suite, for example.'
           :Case ⎕C'CloseProject'
               r,←⊂'Breaks the Link between one or more projects and their associated files on disk.'
               r,←⊂''
@@ -1257,7 +1259,7 @@
 
     ∇ {r}←AutoLoadCider filename
       :If 0=⎕SE.⎕NC'Cider'
-          ⎕SE.Tatin.LoadDependencies filename'⎕SE'
+          {}⎕SE.Tatin.LoadDependencies filename'⎕SE'
       :EndIf
     ∇
 

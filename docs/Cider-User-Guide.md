@@ -49,65 +49,31 @@ In earlier versions you must install Cider yourself.
 
 #### Version 19.0
 
-Version 19.0 comes with both Tatin and Cider, but neither is active by default.
+Version 19.0 comes with both Tatin and Cider pre-installed, but neither is active by default.
 
-In order to activate them, the folder `[DYALOG]/Experimental/CiderTatin` needs to be copied into one of the following folders:
-
-##### Windows
+Use the user command `]Activate` to activate them. Start with
 
 ```
-C:\Users\<⎕AN>\Documents\Dyalog APL 19.0 Unicode Files\StartupSession\     ⍝ 32-bit
-C:\Users\<⎕AN>\Documents\Dyalog APL-64 19.0 Unicode Files\StartupSession\  ⍝ 64-bit
-C:\Users\<⎕AN>\Documents\Dyalog APL Files\StartupSession\                  ⍝ version agnostic
+]Activate -??
 ```
-
-
-It is up to the user to choose a target folder: either an appropriate version-specific folder (first or second) or a version-agnostic folder (third).
-
-Once the folder `CiderTatin/` is in place, any newly started version of Dyalog comes with the user commands `]Tatin.*` as well as `]Cider.*`; the APIs are both available via `⎕SE.Tatin` and `⎕SE.Cider`.
-
-##### Linux
-
-```
-/home/<⎕AN>/dyalog.190U32.files ⍝ 32-bit
-/home/<⎕AN>/dyalog.190U64.files ⍝ 64-bit
-/home/<⎕AN>/dyalog.files        ⍝ version agnostic
-```
-
-It is up to the user to choose a target folder: either an appropriate version-specific folder (first or second) or a version-agnostic folder (third).
-
-Note that your intended target directory might not exist yet.
-
-Once the folder `CiderTatin/` is in place, any newly started version of Dyalog comes with the user commands `]Tatin.*` as well as `]Cider.*`; the APIs are both available via `⎕SE.Tatin` and `⎕SE.Cider`.
-
-##### Mac OS
-
-```
-/Users/<⎕AN>/dyalog.190U32.files ⍝ 32-bit
-/Users/<⎕AN>/dyalog.190U64.files ⍝ 64-bit
-/Users/<⎕AN>/dyalog.files        ⍝ version agnostic
-```
-
-It is up to the user to choose a target folder: either an appropriate version-specific folder (first or second) or a version-agnostic folder (third).
-
-Note that your intended target directory might not exist yet.
-
-Once the folder `CiderTatin/` is in place, any newly started version of Dyalog comes with the user commands `]Tatin.*` as well as `]Cider.*`; the APIs are both available via `⎕SE.Tatin` and `⎕SE.Cider`.
-
 
 #### Version 18.0 and 18.2
 
-Unlike 19.0, these versions don't come with neither Tatin and Cider, so you first have to make sure that Tatin is installed and available.
+Unlike 19.0, these versions come with neither Tatin nor Cider, so you first have to make sure that Tatin is installed and available.
 
 <https://tatin.dev/> provides instructions for how to install Tatin on 18.0 and 18.2.
 
-Once Tatin is available, installing Cider is easy and straightforward, just issue this command:
+Once Tatin is available, installing Cider is easy and straightforward, just issue one of these commands:
 
 ```
-]Tatin.InstallPackages [tatin]Cider [PROGRAM_FILES_32]
-]Tatin.InstallPackages [tatin]Cider [PROGRAM_FILES_64]
-]Tatin.InstallPackages [tatin]Cider [PROGRAM_FILES]
+]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES_32]
+]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES_64]
+]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES]
 ```
+
+It's your choice: either install into the correct folder of the Dyalog version you use (32- or 64 bit) or install into the version-agnostice folder, which will make it available to all suitable versions of Dyalog.[^tatin_version]
+
+Note that `DYALOG_FILES` typically translates on Windows to `C:\Users\{⎕AN}\Documents\Dyalog APL Files` and on other platforms to something like `/home/{⎕AN}/dyalog.files"`.
 
 Once the folder `CiderTatin/` is in place, any newly started version of Dyalog is aware of the user commands `]Tatin.*` and `]Cider.*`.
 
@@ -118,7 +84,7 @@ The APIs are not available yet at this point, but they will become available onc
 ]Cider.Version
 ```
 
-If that is not good enough for you (because you want the API to be available right from the start) this article explains how to load stuff into `⎕SE` at a very early stage: <https://aplwiki.com/wiki/Dyalog_User_Commands>
+If that is not good enough for you (because you want or need the API to be available right from the start) this article explains how to load stuff into `⎕SE` at a very early stage: <https://aplwiki.com/wiki/Dyalog_User_Commands>
 
 ### Upgrading Cider
 
@@ -170,6 +136,19 @@ In all these cases it should be pretty obvious what `]Cider.CreateProject` will 
 However, when the namespace and source folder are _both not empty_ then the user will be asked whether the contents of the namespace should be deleted because that might well make sense. 
 
 If the user answers this question with "No" then an error is thrown.
+
+A> ### Aliases
+A>
+A> If you work frequently on a project, entering the (potentially long) path over and over again can be tiresome.
+A>
+A> In such cases you can assign an alias like this:
+A> ```
+A> ]Cider.CreateProject /path/2/project -alias=foo
+A> ```
+A> From now on you can open the project with:
+A> ```
+A> ]Cider.OpenProject [foo]
+A> ```
 
 #### Configuration parameters
 
@@ -278,7 +257,7 @@ Such a function may be niladic, monadic or ambivalent:
 
 ###### make
 
-Empty or an expression (relative to the project) that would create a new version of the project.
+Empty or an expression (relative to the project) that would create a new version.
 
 The purpose is to tell anybody not familiar with the project how to create a new version by entering:
 
@@ -624,4 +603,8 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
+[^tatin_version]: These alias names are understood by Tatin 0.100.2 and later
+
+
 

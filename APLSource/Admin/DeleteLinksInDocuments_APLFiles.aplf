@@ -1,7 +1,8 @@
  DeleteLinksInDocuments_APLFiles flag;hostingFolder;res;targetFolder
 ⍝ This function attempts to delete all CiderTatin links in all version-specific folders in $USERPROFILE\Documents\
 ⍝ The version-agnostic folder is left alone
-⍝ `flag` is an insurance against accidental calls
+⍝ `flag` is an insurance against accidental calls.
+⍝ See also `CreateLinksInDocuments_APLFiles`
  :If flag
      'This function requires Admin rights'⎕SIGNAL 11/⍨~##.Cider.APLTreeUtils2.IsRunningAsAdmin
      :If 'Win'≡3↑1⊃# ⎕WG'APLVersion'
@@ -22,11 +23,11 @@
          :If ##.Cider.F.IsSymbolicLink targetFolder
              ⎕NDELETE targetFolder
          :EndIf
-         targetFolder←hostingFolder,'/Dyalog APL-64 19.0 Unicode Files\CiderTatin\Cider'
+         targetFolder←hostingFolder,'/Dyalog APL-64 19.0 Unicode Files\StartupSession\CiderTatin\Cider'
          :If ##.Cider.F.IsSymbolicLink targetFolder
              ⎕NDELETE targetFolder
          :EndIf
-         targetFolder←hostingFolder,'/Dyalog APL 19.0 Unicode Files\CiderTatin\Cider'
+         targetFolder←hostingFolder,'/Dyalog APL 19.0 Unicode Files\StartupSession\CiderTatin\Cider'
          :If ##.Cider.F.IsSymbolicLink targetFolder
              ⎕NDELETE targetFolder
          :EndIf

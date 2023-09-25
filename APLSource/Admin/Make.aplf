@@ -17,7 +17,7 @@
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
      :If 0<≢cfg.userCommandScript
-         :If 1 M.YesOrNo'Install new version in %USERPROFILE%\Documents\Dyalog APL Files ?'
+         :If 1 M.YesOrNo'Install new version in ',({'%USERPROFILE%',⍵↓⍨¯2+1⍳⍨'Documents'⍷⍵}targetFolder),' ?'
              {}M.##.FilesAndDirs.RmDirByForce targetFolder
              res←⎕SE.Tatin.InstallPackages zipFilename targetFolder
              ⎕←'  New version installed: ',res

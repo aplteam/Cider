@@ -33,12 +33,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </ul></li>
 <li class="toc-entry toc-h3"><a href="#installation">2.2. Installation</a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#version-190">2.2.1. Version 19.0</a>
-<ul>
-<li class="toc-entry toc-h5"><a href="#windows">2.2.1.1. Windows</a></li>
-<li class="toc-entry toc-h5"><a href="#linux">2.2.1.2. Linux</a></li>
-<li class="toc-entry toc-h5"><a href="#mac-os">2.2.1.3. Mac OS</a></li>
-</ul></li>
+<li class="toc-entry toc-h4"><a href="#version-190">2.2.1. Version 19.0</a></li>
 <li class="toc-entry toc-h4"><a href="#version-180-and-182">2.2.2. Version 18.0 and 18.2</a></li>
 </ul></li>
 <li class="toc-entry toc-h3"><a href="#upgrading-cider">2.3. Upgrading Cider</a></li>
@@ -167,51 +162,22 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h4 data-id="Version-190">2.2.1. Version 19.0</h4>
 </a>
 </div>
-<p>Version 19.0 comes with both Tatin and Cider, but neither is active by default.</p>
-<p>In order to activate them, the folder <code>[DYALOG]/Experimental/CiderTatin</code> needs to be copied into one of the following folders:</p>
-<div class="h_tag">
-<a href="#windows" id="windows" class="autoheader_anchor">
-<h5 data-id="Windows">2.2.1.1. Windows</h5>
-</a>
-</div>
-<pre tabindex="0"><code>C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL 19.0 Unicode Files\StartupSession\     ⍝ 32-bit
-C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 19.0 Unicode Files\StartupSession\  ⍝ 64-bit
-C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\                  ⍝ version agnostic</code></pre>
-<p>It is up to the user to choose a target folder: either an appropriate version-specific folder (first or second) or a version-agnostic folder (third).</p>
-<p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
-<div class="h_tag">
-<a href="#linux" id="linux" class="autoheader_anchor">
-<h5 data-id="Linux">2.2.1.2. Linux</h5>
-</a>
-</div>
-<pre tabindex="0"><code>/home/&lt;⎕AN&gt;/dyalog.190U32.files ⍝ 32-bit
-/home/&lt;⎕AN&gt;/dyalog.190U64.files ⍝ 64-bit
-/home/&lt;⎕AN&gt;/dyalog.files        ⍝ version agnostic</code></pre>
-<p>It is up to the user to choose a target folder: either an appropriate version-specific folder (first or second) or a version-agnostic folder (third).</p>
-<p>Note that your intended target directory might not exist yet.</p>
-<p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
-<div class="h_tag">
-<a href="#mac-os" id="mac-os" class="autoheader_anchor">
-<h5 data-id="Mac-OS">2.2.1.3. Mac OS</h5>
-</a>
-</div>
-<pre tabindex="0"><code>/Users/&lt;⎕AN&gt;/dyalog.190U32.files ⍝ 32-bit
-/Users/&lt;⎕AN&gt;/dyalog.190U64.files ⍝ 64-bit
-/Users/&lt;⎕AN&gt;/dyalog.files        ⍝ version agnostic</code></pre>
-<p>It is up to the user to choose a target folder: either an appropriate version-specific folder (first or second) or a version-agnostic folder (third).</p>
-<p>Note that your intended target directory might not exist yet.</p>
-<p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog comes with the user commands <code>]Tatin.*</code> as well as <code>]Cider.*</code>; the APIs are both available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>.</p>
+<p>Version 19.0 comes with both Tatin and Cider pre-installed, but neither is active by default.</p>
+<p>Use the user command <code>]Activate</code> to activate them. Start with</p>
+<pre tabindex="0"><code>]Activate -??</code></pre>
 <div class="h_tag">
 <a href="#version-180-and-182" id="version-180-and-182" class="autoheader_anchor">
 <h4 data-id="Version-180-and-182">2.2.2. Version 18.0 and 18.2</h4>
 </a>
 </div>
-<p>Unlike 19.0, these versions don't come with neither Tatin and Cider, so you first have to make sure that Tatin is installed and available.</p>
+<p>Unlike 19.0, these versions come with neither Tatin nor Cider, so you first have to make sure that Tatin is installed and available.</p>
 <p><a href="https://tatin.dev/" class="external_link">https://tatin.dev/</a> provides instructions for how to install Tatin on 18.0 and 18.2.</p>
-<p>Once Tatin is available, installing Cider is easy and straightforward, just issue this command:</p>
-<pre tabindex="0"><code>]Tatin.InstallPackages [tatin]Cider [PROGRAM_FILES_32]
-]Tatin.InstallPackages [tatin]Cider [PROGRAM_FILES_64]
-]Tatin.InstallPackages [tatin]Cider [PROGRAM_FILES]</code></pre>
+<p>Once Tatin is available, installing Cider is easy and straightforward, just issue one of these command:</p>
+<pre tabindex="0"><code>]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES_32]
+]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES_64]
+]Tatin.InstallPackages [tatin]Cider [DYALOG_FILES]</code></pre>
+<p>It's you choice: either install into the correct folder of the Dyalog version you use (32- or 64 bit) or install into the version-agnostice folder, which will make it available to all versions of Dyalog.[<a href="#fnref5" class="footnote_link"><sup>5</sup></a>]</p>
+<p>Note that <code>DYALOG_FILES</code> typically translates on Windows to <code>C:\Users\{⎕AN}\Documents\Dyalog APL Files</code> and on other platforms to <code>/home/{⎕AN}/dyalog.files"</code>.</p>
 <p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog is aware of the user commands <code>]Tatin.*</code> and <code>]Cider.*</code>.</p>
 <p>The APIs are not available yet at this point, but they will become available once a user command is issued. For example, after issuing the following two commands the APIs will both be available via <code>⎕SE.Tatin</code> and <code>⎕SE.Cider</code>:</p>
 <pre tabindex="0"><code>]Tatin.Version
@@ -270,6 +236,15 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\               
 <p>In all these cases it should be pretty obvious what <code>]Cider.CreateProject</code> will do.</p>
 <p>However, when the namespace and source folder are <em>both not empty</em> then the user will be asked whether the contents of the namespace should be deleted because that might well make sense.</p>
 <p>If the user answers this question with “No” then an error is thrown.</p>
+<div class="leanpub_A">
+<h3>Aliases</h3>
+<p>If you work frequently on a project, entering the (potentially long) path over and over again can be tiresome.</p>
+<p>In such cases you can assign an alias like this:</p>
+<pre tabindex="0"><code>]Cider.CreateProject /path/2/project -alias=foo</code></pre>
+<p>From now on you can open the project with:</p>
+<pre tabindex="0"><code>]Cider.OpenProject [foo]</code></pre>
+</div>
+
 <div class="h_tag">
 <a href="#configuration-parameters" id="configuration-parameters" class="autoheader_anchor">
 <h4 data-id="Configuration-parameters">2.5.1. Configuration parameters</h4>
@@ -373,7 +348,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\               
 <h6 data-id="make">2.5.1.1.8. make</h6>
 </a>
 </div>
-<p>Empty or an expression (relative to the project) that would create a new version of the project.</p>
+<p>Empty or an expression (relative to the project) that would create a new version.</p>
 <p>The purpose is to tell anybody not familiar with the project how to create a new version by entering:</p>
 <pre tabindex="0"><code>      ]Cider.Make
 #.Cider.Admin.Make 1 ⍝ Execute this for creating a new version</code></pre>
@@ -675,6 +650,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL Files\StartupSession\               
 <li id="fnref2"><p>NuGet is all about .NET packages: <a href="https://en.wikipedia.org/wiki/NuGet" class="external_link">https://en.wikipedia.org/wiki/NuGet</a></p><a href="#fnref2" class="footnote_anchor"></a>
 <li id="fnref3"><p><em>LINK</em> is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <a href="https://github.com/dyalog/Link" class="external_link">https://github.com/dyalog/Link</a> and <a href="https://dyalog.github.io/link" class="external_link">https://dyalog.github.io/link</a></p><a href="#fnref3" class="footnote_anchor"></a>
 <li id="fnref4"><p>Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either <code>#._tatin</code> or <code>⎕SE._tatin</code></p><a href="#fnref4" class="footnote_anchor"></a>
+<li id="fnref5"><p>These alias names are understood by Tatin 0.100.2 and later</p><a href="#fnref5" class="footnote_anchor"></a>
 </ol>
 </div>
 </body>
