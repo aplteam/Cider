@@ -229,7 +229,7 @@
       r←newList[;1]~oldList[;1]
     ∇
 
-    ∇ r←UpdateCider dummy;allVersions;thisVersion;ind;noOf;targetFolder;tempFolder;res;q
+    ∇ r←UpdateCider dummy;allVersions;thisVersion;ind;noOf;targetFolder;tempFolder;res;q;folder
       allVersions←,⎕SE.Tatin.ListVersions'[Tatin]aplteam-Cider'
       thisVersion←'aplteam-Cider-',{⍵↑⍨¯1+⍵⍳'+'}P.Version
       ind←allVersions⍳⊂thisVersion
@@ -244,11 +244,17 @@
               tempFolder←P.##.F.GetTempSubDir'Cider'
               res←⎕SE.Tatin.InstallPackages('[tatin]aplteam-Cider')tempFolder
               targetFolder←⊃⎕NPARTS ##.SourceFile
-              {}P.##.F.RmDir targetFolder
+              {}P.##.F.RmDirByForce targetFolder
               3 ⎕MKDIR targetFolder
               targetFolder ⎕NMOVE⍠1⊣tempFolder,'/*'
               r←'Cider was successfully updated to version ',{1↓⍵/⍨2≤+\⍵='-'}⊃res
-              {}P.##.F.RmDir tempFolder
+              {}P.##.F.RmDirByForce tempFolder
+              :If folder←P.##.F.IsDir P.GetMyUCMDsFolder,'/Cider'
+                  q←'RemoveCiderFromMyUCMDs@There is a folder Cider/ in ',P.GetMyUCMDsFolder,'/',⎕UCS 13
+                  q,←'Shall this folder be removed?'
+              :AndIf 1 P.##.C.YesOrNo q
+                  {}P.##.F.RmDirByForce folder
+              :EndIf
           :Else
               r←'Cancelled by user'
           :EndIf
@@ -399,7 +405,7 @@
       :Else
           path←Args._1
       :EndIf
-      :If ']['≡¯1⌽path
+      :If ']['≡2↑¯1⌽path
       :AndIf '*'=¯1↑path~'[]'
           bool←~aliasDefs[;2]∊{⍵[;2]}P.ListOpenProjects 0
           bool←bool\(¯1↓path~'[]'){(⎕C(≢⍺)↑[2]⍵)∧.=⎕C ⍺}↑bool⌿aliasDefs[;1]

@@ -2,7 +2,7 @@
 ⍝ Tries to find a NuGet ns somewhere, and returns a ref to the first hit, otherwise ''
  ref←''
  list←'#.NuGet' '⎕SE.Dyalog.Nuget' '⎕SE.NuGet'
- bool←9=⎕NC list
+ bool←9=⌊⎕NC list
  :If ∨/bool
      ref←⍎⊃bool/list
  :EndIf
