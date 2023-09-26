@@ -13,6 +13,7 @@
  r,←⊂'GetCiderGlobalConfigHomeFolder'
  r,←⊂'GetMyUCMDsFolder'
  r,←⊂'GetNuGetDependencies'
+ r,←⊂'GetProgramFilesFolder'
  r,←⊂'GetProjectPath'
  r,←⊂'GetTatinDependencies'
  r,←⊂'HasDotNet'

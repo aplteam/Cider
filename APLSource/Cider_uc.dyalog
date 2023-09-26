@@ -249,7 +249,8 @@
               targetFolder ⎕NMOVE⍠1⊣tempFolder,'/*'
               r←'Cider was successfully updated to version ',{1↓⍵/⍨2≤+\⍵='-'}⊃res
               {}P.##.F.RmDirByForce tempFolder
-              :If folder←P.##.F.IsDir P.GetMyUCMDsFolder,'/Cider'
+              folder←P.GetMyUCMDsFolder,'/Cider'
+              :If P.##.F.IsDir folder
                   q←'RemoveCiderFromMyUCMDs@There is a folder Cider/ in ',P.GetMyUCMDsFolder,'/',⎕UCS 13
                   q,←'Shall this folder be removed?'
               :AndIf 1 P.##.C.YesOrNo q

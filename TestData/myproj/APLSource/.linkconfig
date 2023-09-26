@@ -1,1 +1,1 @@
-{  Settings: {    codeExtensions: [      "aplf",      "aplo",      "apln",      "aplc",      "apli",      "dyalog",      "apl",      "mipage",    ],    forceFilenames: 1,    typeExtensions: [      [        2,        "apla",      ],      [        3,        "aplf",      ],      [        4,        "aplo",      ],      [        9.1,        "apln",      ],      [        9.4,        "aplc",      ],      [        9.5,        "apli",      ],    ],    watch: "ns",  },}
+{  Settings: {    forceFilenames: 1,    watch: "ns",  },}
