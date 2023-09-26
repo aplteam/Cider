@@ -243,7 +243,7 @@
           :If 1 P.##.C.YesOrNo q
               tempFolder←P.##.F.GetTempSubDir'Cider'
               res←⎕SE.Tatin.InstallPackages('[tatin]aplteam-Cider')tempFolder
-              targetFolder←⊃⎕NPARTS ##.SourceFile
+              targetFolder←(1 P.GetProgramFilesFolder''),'/CiderTatin/Cider'
               {}P.##.F.RmDirByForce targetFolder
               3 ⎕MKDIR targetFolder
               targetFolder ⎕NMOVE⍠1⊣tempFolder,'/*'

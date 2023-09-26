@@ -1,4 +1,4 @@
-  r←{current}GetProgramFilesFolder postFix;version;aplVersion;OS
+ r←{current}GetProgramFilesFolder postFix;version;aplVersion;OS
 ⍝ Returns standard path for Dyalog's version-specific program files folder.\\
 ⍝ Works on all platforms but returns different results.\\
 ⍝ Under Windows typically:\\
@@ -6,7 +6,7 @@
 ⍝ ⍺ is optional and defaults to 0, meaning the version-agnostic folder is returned.
 ⍝ If ⍺←1, the folder associated with the currently running version of Dyalog is returned.
  current←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'current'
- OS←3↑# ⎕WG'APLVersion'
+ OS←3↑1⊃# ⎕WG'APLVersion'
  postFix←{(((~'/\'∊⍨⊃⍵)∧0≠≢⍵)/'/'),⍵}postFix
  aplVersion←# ⎕WG'APLVersion'
  :If current
