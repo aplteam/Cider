@@ -1,10 +1,20 @@
- r←GetCiderGlobalConfigFileContent;filename;json
+ r←GetCiderGlobalConfigFileContent;filename;json;qdmx
 ⍝ Returns a namespace with all settings (if any) in the (optional) global Cider config file.
 ⍝ Note that the file might not exist or be empty, in which case `⍬` is returned.
  r←⍬
  filename←GetCiderGlobalConfigFilename
  :If F.IsFile filename
-     json←F.NGET filename
+     :Trap 0
+         json←F.NGET filename
+     :Else
+         qdmx←⎕DMX
+         ('Reading Cider''s global configuration file "',filename,'" failed: ',2⊃qdmx.DM)Assert 0
+     :EndTrap
  :AndIf 0<≢json
-     r←⎕JSON⍠('Dialect' 'JSON5')⊣⊃json
+     :Trap 0
+         r←⎕JSON⍠('Dialect' 'JSON5')⊣⊃json
+     :Else
+         qdmx←⎕DMX
+         ('Reading Cider''s global configuration file "',filename,'" failed: ',2⊃qdmx.DM)Assert 0
+     :EndTrap
  :EndIf
