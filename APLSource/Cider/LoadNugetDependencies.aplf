@@ -1,6 +1,6 @@
  list←x LoadNuGetDependencies(folder ns);NuGet;p;verbose;batch;cfg;nuGetFolder;list;data;attr;names;name;list2;targetNamespace;buff
 ⍝ Load all NuGet dependencies from folder into `ns` (namspace).
-⍝ Returns the number
+⍝ Returns a list with the names of all loaded NuGet packages.
  (verbose batch)←2↑x,0
  list←''
  ('"',folder,'" is not a Cider project directory')Assert F.IsDir folder
