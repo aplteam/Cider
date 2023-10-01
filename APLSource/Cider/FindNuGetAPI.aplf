@@ -1,7 +1,7 @@
  ref←FindNuGetAPI dummy;bool;list
 ⍝ Tries to find a NuGet ns somewhere, and returns a ref to the first hit, otherwise ''
  ref←''
- list←'#.NuGet' '⎕SE.Dyalog.Nuget' '⎕SE.NuGet'
+ list←'#.NuGet' '⎕SE.Dyalog.NuGet' '⎕SE.NuGet'
  bool←9=⌊⎕NC list
  :If ∨/bool
      ref←⍎⊃bool/list

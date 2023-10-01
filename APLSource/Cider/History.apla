@@ -1,5 +1,5 @@
 (
- '* 0.36.1 ⋄ 2023-09-30'
+ '* 0.36.1 ⋄ 2023-10-01'
  '  * Bug fixes'
  '    * `GetCiderGlobalConfigFileContent` is now more robust and reports better messages'
  '    * Deleting everything in the editor windows when a new project is about to be created should'

@@ -1,4 +1,4 @@
-﻿:Class Cider_UC
+:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
@@ -880,9 +880,6 @@
           :Else
               filename ⎕NCOPY CiderConfig.HOME,'/cider.config.template'
           :EndIf
-      :EndIf
-      :If
-     
       :EndIf
       r←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
     ∇
