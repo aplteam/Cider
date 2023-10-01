@@ -1,4 +1,4 @@
-:Class Cider_UC
+﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
@@ -793,7 +793,10 @@
           CreateConfigFile filename namespace
       :EndIf
       :If ~noEditFlag
-          P.ProjectConfig filename
+          :If ¯1=P.ProjectConfig filename
+              1 ⎕NDELETE filename
+              r←'Cancelled by user' ⋄ →0
+          :EndIf
           config←⊃⎕NGET filename 1
           :If success←0<≢(∊config)~' '
               config←⎕JSON⍠('Dialect' 'JSON5')⊣¯1↓∊config,¨⎕UCS 10
@@ -855,6 +858,10 @@
       ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
       globalCiderConfigFilename←P.GetCiderGlobalConfigHomeFolder,'cider.config.template'
       :If 0=⎕NEXISTS globalCiderConfigFilename
+          ⍝ First attempt
+          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
+      :ElseIf ≢/{⊃⎕NGET ⍵}¨globalCiderConfigFilename(P.##.TatinVars.HOME,'/cider.config.template')
+          ⍝ Replace by the template if changed
           globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
       :EndIf
       config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃P.##.F.NGET globalCiderConfigFilename
@@ -864,8 +871,7 @@
       :EndIf
       ((~name∊⎕D,⎕A,'_∆⍙',⎕C ⎕A)/name)←'_'
       config.CIDER.projectSpace←⍕name
-      config←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config
-      (⊂config)P.##.F.NPUT filename
+      config P.##.Put_JSON5 filename
     ∇
 
     ∇ r←GetUserConfigFileTemplate;folder;filename

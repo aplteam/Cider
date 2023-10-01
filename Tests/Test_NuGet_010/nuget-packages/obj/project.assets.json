@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {
+    "net5.0": {
       "Clock/1.0.3": {
         "type": "package",
         "dependencies": {
@@ -23,27 +23,19 @@
           "System.Runtime.CompilerServices.Unsafe": "4.7.1"
         },
         "compile": {
-          "lib/net6.0/NodaTime.dll": {
-            "related": ".pdb;.xml"
-          }
+          "lib/netstandard2.0/NodaTime.dll": {}
         },
         "runtime": {
-          "lib/net6.0/NodaTime.dll": {
-            "related": ".pdb;.xml"
-          }
+          "lib/netstandard2.0/NodaTime.dll": {}
         }
       },
       "System.Runtime.CompilerServices.Unsafe/4.7.1": {
         "type": "package",
         "compile": {
-          "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {
-            "related": ".xml"
-          }
+          "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll": {
-            "related": ".xml"
-          }
+          "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
         }
       }
     }
@@ -125,7 +117,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net6.0": [
+    "net5.0": [
       "Clock >= 1.0.3",
       "NodaTime >= 3.1.9"
     ]
@@ -137,11 +129,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_194200686_0\\Test_NuGet_002\\nuget-packages\\nuget-packages.csproj",
-      "projectName": "nuget-packages",
-      "projectPath": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_194200686_0\\Test_NuGet_002\\nuget-packages\\nuget-packages.csproj",
+      "projectUniqueName": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_19474297_0\\Test_NuGet_004\\MyNugetPkgs\\MyNugetPkgs.csproj",
+      "projectName": "MyNugetPkgs",
+      "projectPath": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_19474297_0\\Test_NuGet_004\\MyNugetPkgs\\MyNugetPkgs.csproj",
       "packagesPath": "C:\\Users\\kai\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_194200686_0\\Test_NuGet_002\\nuget-packages\\obj\\",
+      "outputPath": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_19474297_0\\Test_NuGet_004\\MyNugetPkgs\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -152,15 +144,15 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net6.0"
+        "net5.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
+        "net5.0": {
+          "targetAlias": "net5.0",
           "projectReferences": {}
         }
       },
@@ -171,8 +163,8 @@
       }
     },
     "frameworks": {
-      "net6.0": {
-        "targetAlias": "net6.0",
+      "net5.0": {
+        "targetAlias": "net5.0",
         "dependencies": {
           "Clock": {
             "target": "Package",
@@ -189,8 +181,7 @@
           "net47",
           "net471",
           "net472",
-          "net48",
-          "net481"
+          "net48"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -199,7 +190,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.416\\RuntimeIdentifierGraph.json"
       }
     }
   }

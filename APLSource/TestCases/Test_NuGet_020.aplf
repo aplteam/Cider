@@ -1,0 +1,42 @@
+ R←Test_NuGet_020(stopFlag batchFlag);⎕TRAP;folder;parms;res;log;cals;success;tempDir;config;qdmx;expected
+⍝ Open a project and add some NuGet dependencies wrongly separated by a space
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
+
+ config←##.Cider.ReadProjectConfigFile tempDir
+ config.CIDER.dependencies.nuget←'MyNugetPkgs'
+ config ##.Cider.WriteProjectConfigFile tempDir
+
+ parms←##.Cider.CreateOpenParms''
+ parms.folder←tempDir
+ parms.noPkgLoad←0
+ parms.batch←1
+ parms.ignoreUserExec←1
+
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+
+ :Trap 11
+     {}##.Cider.AddNuGetDependencies'Clock NodaTime,SMTP'tempDir
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     expected←'Invalid package name(s): "Clock NodaTime"'
+     →T.GoToTidyUp expected≢qdmx.EM
+ :EndTrap
+
+ res←##.Cider.CloseProject tempDir
+ →T.GoToTidyUp res≠1
+
+ R←T._OK
+
+∆TidyUp:
+ res←∆LINK'Break' '#.TEMP'
+ FilesAndDirs.RmDir tempDir,'/..'
+⍝Done

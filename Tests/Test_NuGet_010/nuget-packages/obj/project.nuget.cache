@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Zw9oZXI9Yu+nKz3t/pP1OVuB9M7+Pm/qP70+sSBL0UmGNYSm8qiwfmFLO/7CZL9nCZk9DxgFCdaVnfimr5W2FA==",
+  "dgSpecHash": "aSB7tfhlGc1ThdgrZfGBKVekCbhQ5MOLjlze8EUthJSEK81RRB3du1HJijNmDZw2P0DKbjL672tjRA5F9Xj43w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_194200686_0\\Test_NuGet_002\\nuget-packages\\nuget-packages.csproj",
+  "projectFilePath": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_19474297_0\\Test_NuGet_004\\MyNugetPkgs\\MyNugetPkgs.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kai\\.nuget\\packages\\clock\\1.0.3\\clock.1.0.3.nupkg.sha512",
     "C:\\Users\\kai\\.nuget\\packages\\clockanalyser\\1.0.99\\clockanalyser.1.0.99.nupkg.sha512",

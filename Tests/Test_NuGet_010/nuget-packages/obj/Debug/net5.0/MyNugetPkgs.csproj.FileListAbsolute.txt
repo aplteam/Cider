@@ -1,0 +1,12 @@
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_19474297_0\Test_NuGet_004\MyNugetPkgs\bin\Debug\net5.0\MyNugetPkgs.deps.json
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_19474297_0\Test_NuGet_004\MyNugetPkgs\bin\Debug\net5.0\MyNugetPkgs.dll
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_19474297_0\Test_NuGet_004\MyNugetPkgs\bin\Debug\net5.0\ref\MyNugetPkgs.dll
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_19474297_0\Test_NuGet_004\MyNugetPkgs\bin\Debug\net5.0\MyNugetPkgs.pdb
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_19474297_0\Test_NuGet_004\MyNugetPkgs\obj\Debug\net5.0\MyNugetPkgs.csproj.AssemblyReference.cache
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_19474297_0\Test_NuGet_004\MyNugetPkgs\obj\Debug\net5.0\MyNugetPkgs.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_19474297_0\Test_NuGet_004\MyNugetPkgs\obj\Debug\net5.0\MyNugetPkgs.AssemblyInfoInputs.cache
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_19474297_0\Test_NuGet_004\MyNugetPkgs\obj\Debug\net5.0\MyNugetPkgs.AssemblyInfo.cs
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_19474297_0\Test_NuGet_004\MyNugetPkgs\obj\Debug\net5.0\MyNugetPkgs.csproj.CoreCompileInputs.cache
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_19474297_0\Test_NuGet_004\MyNugetPkgs\obj\Debug\net5.0\MyNugetPkgs.dll
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_19474297_0\Test_NuGet_004\MyNugetPkgs\obj\Debug\net5.0\ref\MyNugetPkgs.dll
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_19474297_0\Test_NuGet_004\MyNugetPkgs\obj\Debug\net5.0\MyNugetPkgs.pdb

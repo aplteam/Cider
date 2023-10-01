@@ -1,6 +1,8 @@
-﻿namespace nuget_packages;
+﻿using System;
 
-public class Class1
+namespace MyNugetPkgs
 {
-
+    public class Class1
+    {
+    }
 }

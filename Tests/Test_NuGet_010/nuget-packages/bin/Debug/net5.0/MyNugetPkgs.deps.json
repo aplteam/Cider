@@ -1,18 +1,18 @@
 {
   "runtimeTarget": {
-    "name": ".NETCoreApp,Version=v6.0",
+    "name": ".NETCoreApp,Version=v5.0",
     "signature": ""
   },
   "compilationOptions": {},
   "targets": {
-    ".NETCoreApp,Version=v6.0": {
-      "nuget-packages/1.0.0": {
+    ".NETCoreApp,Version=v5.0": {
+      "MyNugetPkgs/1.0.0": {
         "dependencies": {
           "Clock": "1.0.3",
           "NodaTime": "3.1.9"
         },
         "runtime": {
-          "nuget-packages.dll": {}
+          "MyNugetPkgs.dll": {}
         }
       },
       "Clock/1.0.3": {
@@ -32,7 +32,7 @@
           "System.Runtime.CompilerServices.Unsafe": "4.7.1"
         },
         "runtime": {
-          "lib/net6.0/NodaTime.dll": {
+          "lib/netstandard2.0/NodaTime.dll": {
             "assemblyVersion": "3.1.9.0",
             "fileVersion": "3.1.9.0"
           }
@@ -42,7 +42,7 @@
     }
   },
   "libraries": {
-    "nuget-packages/1.0.0": {
+    "MyNugetPkgs/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
