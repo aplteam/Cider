@@ -1,6 +1,7 @@
  {r}←ProjectConfig path;filename;ns;orig;flag;edit;data
 ⍝ Puts the contents of the file cider.config in "path" into the editor.
 ⍝ Returns 1 in case the file was modified and 0 otherwise.
+⍝ If the user deletes the contents of the edit window this is treated as cancellation, and ¯1 is returned.
  r←0
  :If '['∊path
      path←GetFolderFromAlias path
@@ -24,16 +25,20 @@
  :Repeat
      ns.⎕ED'cider_config'
      :If orig≢ns.cider_config
-     :AndIf 0<≢(∊ns.cider_config)~' '
-         :If 1 C.YesOrNo'Would you like to save your changes?'
-         :AndIf CheckJsonSyntax ns.cider_config
-             data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
-         :AndIf PerformConfigChecks data
-             (⊂ns.cider_config)⎕NPUT⍠('NEOL' 2)⊣filename 1
-             r←flag←1
+         :If 0=≢(∊ns.cider_config)~' '
+             r←¯1 ⍝ Cancelled by user
+             flag←1
          :Else
-             :If ~1 C.YesOrNo'Syntax check failed. Try again? (no=changes are lost)'
-                 flag←1
+             :If 1 C.YesOrNo'Would you like to save your changes?'
+             :AndIf CheckJsonSyntax ns.cider_config
+                 data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
+             :AndIf PerformConfigChecks data
+                 (⊂ns.cider_config)⎕NPUT⍠('NEOL' 2)⊣filename 1
+                 r←flag←1
+             :Else
+                 :If ~1 C.YesOrNo'Syntax check failed. Try again? (no=changes are lost)'
+                     flag←1
+                 :EndIf
              :EndIf
          :EndIf
      :Else

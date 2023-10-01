@@ -1,4 +1,9 @@
 (
+ '* 0.36.1 ⋄ 2023-09-30'
+ '  * Bug fixes'
+ '    * `GetCiderGlobalConfigFileContent` is now more robust and reports better messages'
+ '    * Deleting everything in the editor windows when a new project is about to be created should'
+ '      have been treated as "cancel the process" but wasn''t'
  '* 0.36.0 ⋄ 2023-09-23'
  '  * Documentation now in line with latest changes to the installatin routine'
  '* 0.35.0 ⋄ 2023-09-22'
