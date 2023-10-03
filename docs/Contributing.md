@@ -9,7 +9,7 @@
 
 ## Overview
 
-In ordert to contribute to Cider as a developer you need some pieces of information. This document, which at the moment is not much more than a stub, will provide this information.
+In ordert to contribute to Cider as a developer you need some pieces of information. 
 
 W> This document is work in progress
 
@@ -33,27 +33,27 @@ A couple of principles:
 * print useful messages if something goes wrong (though they do throw errors in case of missing or invalid parameters
 * They often do guess what the user is up to
 
-  For example, if no project is specified, they check whether there is a single Cider project open. If that's the case they act on that project. If multiple projects are open they question the user which one to act one.
+  For example, if no project is specified, they check whether there is a single Cider project open. If that's the case they act on that project. If multiple projects are open they question the user which one to act on.
 
 ## Developing
 
 ### Changing API functions
 
-When a user command is issed, the Cider script established a reference pointing to Cider in `⎕SE`, and uses that pointer to call any functions in the API.
+When a user command is issued, the Cider script establishes a reference pointing to Cider in `⎕SE`, and uses that pointer to call any functions in the API.
 
 When Cider is opened as a Cider project however, it asks the user whether a variable `DEVELOPMENT` should be established in the namespace `⎕SE.Cider`.
 
 If such a variable exists and its values is not 0, then Cider's user command script establishes a reference not to `⎕SE.Cider` but to `#.Cider.Cider`.
 
-The consequence of this is that when you change a function in the process of running it, it will be saved by Link, and your changes are preserved.
+The consequence of this is that when you change a function in the process of running it, it will be saved by Link _in the project_, and your changes are preserved.
 
-In order to remind you what's happening Cider print a warning the the session whenever a user command is executed:
+In order to remind you what's happening Cider prints a warning to the session whenever a user command is executed:
 
 ```
 *** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!
 ```
 
-However, `⎕SE.Cider.DEVELOPMENT` is set to 2 by the test suite if it was 1. This has the same consequences except that the warning is not printed, so the tests are not flooded by these warnings. 
+However, `⎕SE.Cider.DEVELOPMENT` is set to 2 by the test suite if it was 1. This has the same consequences except that the warnings are not printed, so the tests are not flooded by them. 
 
 The former value is re-established once the tests are done.
 
@@ -74,7 +74,7 @@ This setting ensures that when you make changes to a user command script then th
 
 *That means that after such a change the script in the project is not up-to-date anymore!*
 
-However, when a new version is build the code will check whether the two scripts differ, and if they do it will ask the user whether the the younger one should be copied over, ensuring that no code will be lost.
+However, when a new version is build the code will check whether the two scripts differ, and if they do it will ask the user whether the later one should be copied over, ensuring that no code will be lost.
 
 ## Running the test suite
 
@@ -97,6 +97,7 @@ You may ask Cider for how to build a new version:
 ```
 
 ... (more to come)
+
 
 
 
