@@ -1,8 +1,10 @@
 (
- '* 0.36.1 ⋄ 2023-10-01'
+ '* 0.37.0 ⋄ 2023-10-03'
+ '  * `]AddTatinDependencies` now loads the added dependencies as well'
  '  * Bug fixes'
+ '    * `AddTatinDependencies` prints now better mesages to the session'
  '    * `GetCiderGlobalConfigFileContent` is now more robust and reports better messages'
- '    * Deleting everything in the editor windows when a new project is about to be created should'
+ '    * Deleting everything in the editor window when a new project is about to be created should'
  '      have been treated as "cancel the process" but wasn''t'
  '* 0.36.0 ⋄ 2023-09-23'
  '  * Documentation now in line with latest changes to the installatin routine'

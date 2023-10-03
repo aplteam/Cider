@@ -5,7 +5,7 @@
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
      cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
-     targetFolder←(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\Dyalog APL Files\StartupSession\CiderTatin\Cider'
+     targetFolder←(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\Dyalog APL Files\CiderTatin\Cider'
      M.FetchLaterUserCommand cfg C targetFolder
      version←M.CompileVersionNumberPattern cfg
      M.RecreateFolder path

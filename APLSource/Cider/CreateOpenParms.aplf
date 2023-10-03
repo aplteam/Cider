@@ -13,7 +13,12 @@
  parms.noPkgLoad←0
  parms.verbose←GetGlobalVerboseDefault
  parms.batch←0
- parms.watch←(1+HasDotNet)⊃'ns' 'both'
+ :If 0=⎕SE.Link.⎕NC'Version'                          ⍝ There was no such function prior to Link 3
+ :OrIf 3=⌊⊃⊃(//)⎕VFI{⍵/⍨2>+\⍵='.'}⎕SE.Link.Version    ⍝ Version 3.x?
+     parms.watch←(1+HasDotNet)⊃'ns' 'both'
+ :Else
+     parms.watch←0
+ :EndIf
  parms.checkPackageVersions←0      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
  :If ~(⊂y)∊''⍬
  :AndIf 9=⎕NC'y'

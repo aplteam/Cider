@@ -1,6 +1,8 @@
 ﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 
+
+
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
     L←⎕SE.Link
@@ -262,7 +264,8 @@
       :EndIf
     ∇
 
-    ∇ r←AddTatinDependencies Args;path;packages;projectFolder;cfg;development;ref;flag;q
+    ∇ r←AddTatinDependencies Args;path;packages;projectFolder;cfg;development;ref;flag;q;list
+      r←''
       packages←Args._1
       projectFolder←Args._2
       development←0 Args.Switch'development'
@@ -281,20 +284,27 @@
       :Repeat
           :If 0=ref.⎕NC'tatin'
           :OrIf 0=≢ref.tatin
-              q←'No Tatin dependency folder defined for "dependencies',(development/'_dev'),'" - edit project config file?'
+              q←(2⊃⎕NPARTS projectFolder),': no Tatin dependency folder defined for "dependencies',(development/'_dev'),'" - edit project config file?'
               q←'EditProjectConfig@',q
               :If 1 P.##.C.YesOrNo q
                   P.ProjectConfig projectFolder
-                  cfg←P.ReadProjectConfigFile projectFolder
                   ref←cfg.CIDER.dependencies
               :Else
                   →0,≢r←'Cancelled by user'
               :EndIf
           :Else
-              flag←1
+              :If 1 P.##.C.YesOrNo(2⊃⎕NPARTS projectFolder),': sure you want to add dependencies to ',ref.tatin,'/ ?'
+                  flag←1
+              :Else
+                  r←'Cancelled by user' ⋄ →0
+              :EndIf
           :EndIf
       :Until flag
-      r←P.AddTatinDependencies packages projectFolder development
+      list←P.AddTatinDependencies packages projectFolder development
+      :If 0<≢list
+          {}⎕SE.Tatin.LoadDependencies(projectFolder,'/',ref.tatin)(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace))
+          r←⍪(⊂'Dependencies added (and loaded) to ',ref.tatin,':'),' ',¨list
+      :EndIf
     ∇
 
     ∇ r←ListNuGetDependencies Args;path
@@ -431,7 +441,9 @@
       parms.projectSpace←Args.projectSpace
       parms.parent←{(,0)≡,⍵:'' ⋄ ⍵}Args.parent
       parms.alias←⎕C''Args.Switch'alias'
-      parms.watch←⎕C Args.Switch'watch'
+      :If 0≢Args.watch
+          parms.watch←⎕C Args.Switch'watch'
+      :EndIf
       parms.suppressInit←Args.suppressInit
       parms.importFlag←Args.import
       parms.noPkgLoad←Args.noPkgLoad
@@ -536,7 +548,8 @@
               r,←⊂'                (In order to remove an alias use ]Cider.ListAliases -edit)'
               r,←⊂'-noPkgLoad      By default the Tatin packages from the installation folder(s) defined in the'
               r,←⊂'                config will be loaded. If you don''t want this specify -noPkgLoad'
-              r,←⊂'-watch          Defaults to "both" (if .NET is available) but may be "ns" or "dir" instead.'
+              r,←⊂'-watch          Defaults to "both" (if .NET is available) but may be "ns" or "dir" instead when Link 3'
+              r,←⊂'                is around. With Link 4 and later this is left to Link.'
               r,←⊂'                * "ns" means that changes in the workpace are saved on disk'
               r,←⊂'                * "dir" means that any changes on disk are brought into the WS'
               r,←⊂'                * "both" means that any changes in either "ns" or "dir" are reflected accordingly'
@@ -837,7 +850,9 @@
               parms.projectSpace←config.CIDER.projectSpace
               parms.parent←config.CIDER.parent
               parms.alias←{0≡⍵:'' ⋄ ⍵}Args.alias
-              parms.watch←config.LINK.watch
+              :If 0<config.⎕NC'LINK.watch'
+                  parms.watch←config.LINK.watch
+              :EndIf
               parms.ignoreUserExec←ignoreUserExec
               parms.batch←batch
               (success log)←P.OpenProject parms
@@ -865,7 +880,10 @@
           globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
       :EndIf
       config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃P.##.F.NGET globalCiderConfigFilename
-      config.LINK.watch←(1+P.HasDotNet)⊃'ns' 'both'
+      :If 0=⎕SE.Link.⎕NC'Version'                           ⍝ There was no such function prior to Link 3
+      :OrIf 3=⌊⊃⊃(//)⎕VFI{⍵/⍨2>+\⍵='.'}⎕SE.Link.Version    ⍝ Version 3.x?
+          config.LINK.watch←(1+P.HasDotNet)⊃'ns' 'both'
+      :EndIf
       :If (⊃name)∊'#⎕'
           name←{⍵↓⍨⍵⍳'.'}name
       :EndIf
