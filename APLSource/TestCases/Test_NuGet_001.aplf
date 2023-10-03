@@ -45,5 +45,5 @@
 
 ∆TidyUp:
  {}∆LINK'Break' '#.TEMP'
- FilesAndDirs.RmDir tempDir,'/..'    ⍝ Would be nice, but it does not work because the .NET DLL blocks this, and there is no way around this
+ FilesAndDirs.RmDir tempDir,'/..'    ⍝ Does not work: the .NET DLL blocks this; there is no way around this at the time of writing (October 2023)
 ⍝Done

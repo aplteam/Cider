@@ -5,7 +5,7 @@
 
 Cider offers some User commands that are useful to manage projects. In addition is also offers an API.
 
-It cooperates with [Tatin](https://github.com/aplteam.Cider "Link to Cider on GitHub") if available.
+It cooperates with [Tatin](https://github.com/aplteam.Cider "Link to Cider on GitHub").
 
 
 ## Requirements
@@ -14,25 +14,28 @@ Cider requires
 
 * Dyalog 18.0 Unicode or better 
 * Link 3.0.8 or better
-
-If Tatin packages are part of a project then Tatin is required as well.
+* The Tatin package manager (because Cider itself is a Tatin package)
 
 
 ## Overview
 
 These commands are available:
 
+* `]Cider.AddNuGetDependencies`
+* `]Cider.AddTatinDependencies`
 * `]Cider.CloseProject`
 * `]Cider.Config`
 * `]Cider.CreateProject`
 * `]Cider.Help`
 * `]Cider.ListAliases`
+* `]Cider.ListNuGetDependencies`
 * `]Cider.ListOpenProjects`
-* `]Cider.ListTatinPackages`
+* `]Cider.ListTatinDependencies`
 * `]Cider.Make`
 * `]Cider.OpenProject`
 * `]Cider.ProjectConfig`
 * `]Cider.RunTests`
+* `]UpdateCider`
 * `]Cider.Version`
 
 ## Documentation
@@ -48,23 +51,30 @@ Regarding the API there is a document "Cider-API-Reference.html" available.
 
 ## Installation
 
-From version 19.0 onwards Cider is part of a standard installation of Dyalog. Therefore you only have to worry about installing it with version 18.0 and 18.2. Cider does not run on earlier versions of Dyalog.
+In version 19.0 Cider is part of a standard installation of Dyalog, although it needs activation before it is available. Therefore you only have to worry about installing it with version 18.0 and 18.2. Cider does not run on earlier versions of Dyalog.
 
 With version 0.23 Cider became a Tatin package. That simplifies the installation process: all you need to do is issue this command:
 
 ```
-      ]Tatin.InstallPackages [tatin]Cider [MyUCMDs]
+      ]Tatin.InstallPackages [tatin]Cider <targetFolder>
 ```
 
-When a new instance of Dyalog is started `]Cider` will be available. For an instance that was already running when Cider was installed execute `]UReset`.
+If it is installed into a folder that is scanned for user command scripts by Dyalog, then when a new instance of Dyalog is started `]Cider` will be available. For an instance that was already running when Cider was installed execute `]UReset`.
+
+If it installed into a folder that is not scanned for user command scripts you need to add that folder to the `cmddir` parameter of SALT.
+
+Example:
+
+```
+]SALT.Settings cmddir ",C:\Users\<⎕AN>\Documents\Dyalog APL 18.2 Unicode Files"
+```
+
+_**Watch out for the `,` in front of the path: it means that the folder is added!_**
 
 However, the API only becomes available after any Cider user command was executed. `]Cider.Version` is enough for that.
 
 If that is not good enough for you, this article explains how to load user commands into `⎕SE` at a very early stage: <https://aplwiki.com/wiki/Dyalog_User_Commands>
 
-### Details
-
-`[MyUCMDs]` is an internal alias that refers to a folder `MyUCMDs/` which is, among others, scanned by Dyalog for user commands when a new instance is fired up.
 
 ## Methods
 
@@ -148,20 +158,42 @@ Requires one mandatory parameter: a folder that is going to be a project.
 
 Creates a file `cider.config` in that folder.
 
+### `Config`
+
+Allow the user to edit Cider's global config file                             .
+
  
 ### `Help`
 
 Offers the user to view selected or all HTML documents with her standard browser.
 
+### `AddNuGetDependencies`
+
+Use this to add NuGet dependencies
+
+### `AddTatinDependencies`
+
+Use this to add Tatin (and probably also load) Tatin dependencies.
+
 ### `ListOpenProjects`
 
 Lists the project spaces of all currently linked projects together with the fully qualified paths of all projects currently open.
 
+### `ListNuGetDependencies`
+
+Lists all NuGet dependencies of the project.
+
+### `ListTatinDependencies`
+
+Lists all Tatin dependencies of the project.
 
 ### `ListAliases`
 
 Lists all Cider aliases together with their folders.
 
+### `ProjectConfig`
+
+Puts a project's config file on display and allows the user to edit it.
 
 ### `Make`
 
@@ -178,12 +210,6 @@ Prints an APL statement to the session which, when executed, runs the project's 
 Returns a three-item-vector with "Name", "Version number" and "Version date".
 
 
-### `ViewConfig`
+### `UpdateCider`
 
-Puts the config file of a project on display. 
-
-By specifying the `-edit` flag the user might edit the file rather than just viewing it.
-
-
-
-
+Update Cider in case there is a later version available.
