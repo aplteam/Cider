@@ -24,14 +24,14 @@
           c.Name←'AddNuGetDependencies'
           c.Desc←'Add one or more NuGet packages as dependencies'
           c.Group←'Cider'
-          c.Parse←'1-2'
+          c.Parse←'1-2 -target='
           r,←c
      
           c←⎕NS''
           c.Name←'AddTatinDependencies'
           c.Desc←'Add one or more Tatin packages as dependencies'
           c.Group←'Cider'
-          c.Parse←'1-2 -development'
+          c.Parse←'1-2 -development -target='
           r,←c
      
           c←⎕NS''
@@ -197,10 +197,11 @@
       :EndIf
     ∇
 
-    ∇ r←AddNuGetDependencies Args;packages;projectFolder;cfg;ref;flag;q;oldList;newList
+    ∇ r←AddNuGetDependencies Args;packages;projectFolder;cfg;ref;flag;q;oldList;newList;targetNamespace;list;targetNS
     ⍝ Returns list of (newly) installed NuGet packages.
       packages←Args._1
       projectFolder←Args._2
+      targetNamespace←''Args.Switch'target'
       :If IsAlias projectFolder
           projectFolder←P.GetFolderFromAlias projectFolder
       :Else
@@ -208,6 +209,11 @@
       :EndIf
       cfg←P.ReadProjectConfigFile projectFolder
       ref←cfg.CIDER.dependencies
+      :If 0<≢targetNamespace
+          'There is already a target namespace defined; edit the project config file to change that'Assert~'='∊ref.nuget
+          ref.nuget,←'=',targetNamespace
+          cfg P.WriteProjectConfigFile projectFolder
+      :EndIf
       flag←0
       :Repeat
           :If 0=ref.⎕NC'nuget'
@@ -226,9 +232,82 @@
           :EndIf
       :Until flag
       oldList←P.ListNuGetDependencies projectFolder
-      {}P.AddNuGetDependencies packages projectFolder
+      list←P.AddNuGetDependencies packages projectFolder
+      r←(⍕≢list),' NuGet dependencies added'
+      targetNS←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}{⍵↓⍨⍵⍳'='}ref.nuget
+      targetNS ⎕NS''
+      :If 0<≢list
+      :AndIf 1 P.##.C.YesOrNo'LoadNuGetDependenciesAfterAdding@Would you like to (re-)load all NuGet dependencies?'
+          :If 0<≢oldList
+              :If 9=⎕NC targetNS
+                  ∘∘∘
+                  {}(⍎targetNS).{0=≢l←↓⎕NL 9:0 ⋄ 0=+/b←∨/¨'._tatin.'∘⍷¨⍕¨⍎¨l:0 ⋄ +/⎕EX¨b/l}⍬   ⍝ Delete all previous references
+              :EndIf
+          :EndIf
+          list←0 0 P.LoadNuGetDependencies projectFolder targetNS
+          r←r,(⎕UCS 13),(⍕≢list),' dependencies loaded'
+      :EndIf
       newList←P.ListNuGetDependencies projectFolder
       r←newList[;1]~oldList[;1]
+    ∇
+
+    ∇ r←AddTatinDependencies Args;path;packages;projectFolder;cfg;development;ref;flag;q;list;sourceFolder;targetNS;targetNamespace
+      r←''
+      packages←Args._1
+      projectFolder←Args._2
+      development←0 Args.Switch'development'
+      targetNamespace←''Args.Switch'target'
+      :If IsAlias projectFolder
+          projectFolder←P.GetFolderFromAlias projectFolder
+      :Else
+          projectFolder←GetProjectPath projectFolder
+      :EndIf
+      cfg←P.ReadProjectConfigFile projectFolder
+      :If development
+          ref←cfg.CIDER.dependencies_dev
+      :Else
+          ref←cfg.CIDER.dependencies
+      :EndIf
+      :If 0<≢targetNamespace
+          'There is already a target namespace defined; edit the project config file to change that'Assert~'='∊ref.tatin
+          ref.tatin,←'=',targetNamespace
+          cfg P.WriteProjectConfigFile projectFolder
+      :EndIf
+      flag←0
+      :Repeat
+          :If 0=ref.⎕NC'tatin'
+          :OrIf 0=≢ref.tatin
+              q←(2⊃⎕NPARTS projectFolder),': no Tatin dependency folder defined for "dependencies',(development/'_dev'),'" - edit project config file?'
+              q←'EditProjectConfig@',q
+              :If 1 P.##.C.YesOrNo q
+                  P.ProjectConfig projectFolder
+                  ref←cfg.CIDER.dependencies
+              :Else
+                  →0,≢r←'Cancelled by user'
+              :EndIf
+          :Else
+              q←(2⊃⎕NPARTS projectFolder),': add dependencies to ',ref.tatin,'/ ?'
+              :If 1 P.##.C.YesOrNo q
+                  flag←1
+              :Else
+                  r←'Cancelled by user' ⋄ →0
+              :EndIf
+          :EndIf
+      :Until flag
+      list←P.AddTatinDependencies packages projectFolder development
+      r←(⍕≢list),' Tatin dependencies added'
+      :If 0<≢list
+      :AndIf 1 P.##.C.YesOrNo'LoadTatinDependenciesAfterAdding@Would you like to (re-)load all Tatin dependencies?'
+          targetNS←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}{⍵↓⍨⍵⍳'='}ref.tatin
+          :If 9=⎕NC targetNS
+              {}(⍎targetNS).{0=≢l←↓⎕NL 9:0 ⋄ 0=+/b←∨/¨'._tatin.'∘⍷¨⍕¨⍎¨l:0 ⋄ +/⎕EX¨b/l}⍬   ⍝ Delete all previous references
+          :Else
+              targetNS ⎕NS''
+          :EndIf
+          sourceFolder←projectFolder,'/',{⍵↑⍨¯1+⍵⍳'='}ref.tatin
+          list←⎕SE.Tatin.LoadDependencies sourceFolder targetNS
+          r←r,(⎕UCS 13),(⍕≢list),' dependencies loaded'
+      :EndIf
     ∇
 
     ∇ r←UpdateCider dummy;allVersions;thisVersion;ind;noOf;targetFolder;tempFolder;res;q;folder
@@ -261,49 +340,6 @@
           :Else
               r←'Cancelled by user'
           :EndIf
-      :EndIf
-    ∇
-
-    ∇ r←AddTatinDependencies Args;path;packages;projectFolder;cfg;development;ref;flag;q;list
-      r←''
-      packages←Args._1
-      projectFolder←Args._2
-      development←0 Args.Switch'development'
-      :If IsAlias projectFolder
-          projectFolder←P.GetFolderFromAlias projectFolder
-      :Else
-          projectFolder←GetProjectPath projectFolder
-      :EndIf
-      cfg←P.ReadProjectConfigFile projectFolder
-      :If development
-          ref←cfg.CIDER.dependencies_dev
-      :Else
-          ref←cfg.CIDER.dependencies
-      :EndIf
-      flag←0
-      :Repeat
-          :If 0=ref.⎕NC'tatin'
-          :OrIf 0=≢ref.tatin
-              q←(2⊃⎕NPARTS projectFolder),': no Tatin dependency folder defined for "dependencies',(development/'_dev'),'" - edit project config file?'
-              q←'EditProjectConfig@',q
-              :If 1 P.##.C.YesOrNo q
-                  P.ProjectConfig projectFolder
-                  ref←cfg.CIDER.dependencies
-              :Else
-                  →0,≢r←'Cancelled by user'
-              :EndIf
-          :Else
-              :If 1 P.##.C.YesOrNo(2⊃⎕NPARTS projectFolder),': sure you want to add dependencies to ',ref.tatin,'/ ?'
-                  flag←1
-              :Else
-                  r←'Cancelled by user' ⋄ →0
-              :EndIf
-          :EndIf
-      :Until flag
-      list←P.AddTatinDependencies packages projectFolder development
-      :If 0<≢list
-          {}⎕SE.Tatin.LoadDependencies(projectFolder,'/',ref.tatin)(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace))
-          r←⍪(⊂'Dependencies added (and loaded) to ',ref.tatin,':'),' ',¨list
       :EndIf
     ∇
 
@@ -475,10 +511,10 @@
               r,←⊂']Cider.OpenProject [folder|alias] -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns|dir|both -verbose -batch'
           :Case ⎕C'AddTatinDependencies'
               r,←⊂'Add one or more Tatin dependencies'
-              r,←⊂']Cider.AddTatinDependency [packages] [projectpath] -development'
+              r,←⊂']Cider.AddTatinDependency [packages] [projectpath] -development -target='
           :Case ⎕C'AddNuGetDependencies'
               r,←⊂'Add one or more NuGet dependencies'
-              r,←⊂']Cider.AddNuGetDependencies [packages] [projectpath] -depFolder='
+              r,←⊂']Cider.AddNuGetDependencies [packages] [projectpath] -target='
           :Case ⎕C'ListNuGetDependencies'
               r,←⊂'List all NuGet dependencies'
               r,←⊂']Cider.ListNuGetDependencies [projectpath]'
@@ -567,11 +603,15 @@
               r,←⊂'user select in case there is more than one project open.'
               r,←⊂''
               r,←⊂'If the second argument is specified it must be one of:'
-              r,←⊂'* An [alias]'
+              r,←⊂'* A project [alias]'
               r,←⊂'* A path pointing to a Cider project'
               r,←⊂''
               r,←⊂'In case the project''s config file does not carry a definition for a NuGet dependency folder'
               r,←⊂'the user is given the oportunity to edit the config file.'
+              r,←⊂''
+              r,←⊂'-target=  Use this to specify a target namespace. This is added to the "dependencies" or the'
+              r,←⊂'          "dependencies_dev" parameter with a "=". If there is already such a target namespace'
+              r,←⊂'          an error is thrown; you need to edit the project''s config file in such a case.'
           :Case ⎕C'AddTatinDependencies'
               r,←⊂'Requires one mandatory argument: a comma-separated list of Tatin packages to be installed.'
               r,←⊂''
@@ -587,6 +627,9 @@
               r,←⊂''
               r,←⊂'-development   By default the packages are added as project dependencies. The -development'
               r,←⊂'               flag can be used to make it a development dependency instead.'
+              r,←⊂'-target=  Use this to specify a target namespace. This is added to the "dependencies" or the'
+              r,←⊂'          "dependencies_dev" parameter with a "=". If there is already such a target namespace'
+              r,←⊂'          an error is thrown; you need to edit the project''s config file in such a case.'
           :Case ⎕C'ListNuGetDependencies'
               r,←⊂'Lists all NuGet dependencies in the Nuget dependency folder.'
               r,←⊂''
@@ -699,10 +742,11 @@
               r,←⊂'The optional parameter must be the path to a folder holding a cider.config file (a project).'
               r,←⊂'In case no path is provided Cider will present all currently opened projects to the user for'
               r,←⊂'selecting one, except when there is only one project open anyway.'
-          :Case ⎕C'CiderUpdate'
+          :Case ⎕C'UpdateCider'
               r,←⊂'Checks whether there is a later version of Cider available.'
               r,←⊂'If there is no later version this is reported.'
               r,←⊂'Otherwise the user will be asked whether she wants to update to the new version.'
+              r,←⊂'The update is performed automatically.'
           :Case ⎕C'Help'
               r,←⊂'Cider comes with two HTML files with documentation. This user command offers to put'
               r,←⊂'one or both of them on display in the default browser.'
