@@ -1,4 +1,4 @@
- list←x LoadNuGetDependencies(folder ns);NuGet;p;verbose;batch;cfg;nuGetFolder;list;data;attr;names;name;list2;targetNamespace;buff;name_;nameList
+ list←x LoadNuGetDependencies(folder ns);NuGet;p;verbose;batch;cfg;nuGetFolder;list;data;attr;names;name;list2;targetNamespace;buff
 ⍝ Load all NuGet dependencies from folder into `ns` (namspace).
 ⍝ Returns a list with the names of all loaded NuGet packages.
  (verbose batch)←2↑x,0
@@ -27,13 +27,12 @@
      data←⎕XML⊃⎕NGET⊃list2
      attr←(data[;2]≡¨⊂'PackageReference')⌿data[;4]
      names←{2⊃⍵[⊃⍸⍵[;1]≡¨⊂'Include';]}¨attr
+     names←GetRealNuGetNames nuGetFolder names
      :For name :In names
-         nameList←{0<≢l←⍵.⎕NL-9:l ⋄ _←⎕DL 0.01 ⋄ ∇ ⍵}ns._dotnet
-         name_←nameList{((⎕C ⍺)⍳⊂⎕C ⍵)⊃⍺}name  ⍝ In APL the names are case sensitive
          :If 0=≢targetNamespace
              ns.{⍎⍵,'←_dotnet.',⍵}name
          :Else
-             targetNamespace ns.{⍎⍺,'.',⍵,'←_dotnet.',⍵}name_
+             targetNamespace ns.{⍎⍺,'.',⍵,'←_dotnet.',⍵}name
          :EndIf
          list,←⊂name
      :EndFor

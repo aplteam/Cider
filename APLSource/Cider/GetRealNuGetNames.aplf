@@ -1,0 +1,12 @@
+ names←GetRealNuGetNames(nuGetFolder names);list;list_id;names_id
+⍝ This is required because it is possible to load a package "NodaTime" by the name "nodatime", meaning
+⍝ that .NET uses in all meta data files the name "nodatime", but when you want to call it then
+⍝ "NodaTime" is required. APL on the other hand does not give us the real names with ⎕NL on .NET names.
+⍝ Therefore we have to establish the real names from their DLLs.
+⍝ Example:
+⍝ ('Clock'  'NodaTime')←GetRealNuGetNames '/path/2/NuGetFolder' ('clock' 'nodatime')
+ list←2⊃∘⎕NPARTS¨F.ListFiles nuGetFolder,'/published/*.dll'
+ list_id←⎕C list
+ names_id←⎕C names
+ names←list[list_id⍳names_id]
+⍝Done

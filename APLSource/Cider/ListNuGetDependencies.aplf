@@ -1,4 +1,4 @@
- r←ListNuGetDependencies projectFolder;NuGet;cfg;nuGetFolder
+ r←ListNuGetDependencies projectFolder;NuGet;cfg;nuGetFolder;list;list_id;r_id;b;folder
  r←0 2⍴''
  :If 0<≢NuGet←FindNuGetAPI''
      :If IsAlias projectFolder
@@ -8,8 +8,10 @@
      cfg←ReadProjectConfigFile projectFolder
      :If 0<≢nuGetFolder←⊃GetNuGetDependencyFolders cfg
          nuGetFolder←{~'='∊2⊃⎕NPARTS ⍵:⍵ ⋄ ⊃{⍺,{⍵↑⍨¯1+⍵⍳'='}⍵}/⎕NPARTS ⍵}nuGetFolder
-     :AndIf ⎕NEXISTS projectFolder,'/',nuGetFolder
-     :AndIf 0<≢F.ListFiles projectFolder,'/',nuGetFolder,'/*.csproj'
-         r←↑NuGet.Packages projectFolder,'/',nuGetFolder
+         folder←projectFolder,'/',nuGetFolder
+     :AndIf ⎕NEXISTS folder
+     :AndIf 0<≢F.ListFiles folder,'/*.csproj'
+         r←↑NuGet.Packages folder
      :EndIf
+     r[;1]←GetRealNuGetNames folder(r[;1])
  :EndIf
