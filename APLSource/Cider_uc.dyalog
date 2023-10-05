@@ -916,10 +916,10 @@
       globalCiderConfigFilename←P.GetCiderGlobalConfigHomeFolder,'cider.config.template'
       :If 0=⎕NEXISTS globalCiderConfigFilename
           ⍝ First attempt
-          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.##.TatinVars.HOME,'/cider.config.template'
-      :ElseIf ≢/{⊃⎕NGET ⍵}¨globalCiderConfigFilename(P.##.##.TatinVars.HOME,'/cider.config.template')
+          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
+      :ElseIf ≢/{⊃⎕NGET ⍵}¨globalCiderConfigFilename(P.##.TatinVars.HOME,'/cider.config.template')
           ⍝ Replace by the template if changed
-          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.##.TatinVars.HOME,'/cider.config.template'
+          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
       :EndIf
       config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃P.##.F.NGET globalCiderConfigFilename
       :If 0=⎕SE.Link.⎕NC'Version'                           ⍝ There was no such function prior to Link 3
