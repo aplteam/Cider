@@ -1,0 +1,4 @@
+ path←RemoveTargetDefinition def
+ ⍝ 'C:\Path\2\project' ← RemoveTargetDefinition 'C:\Path\2\project'
+ ⍝ 'C:\Path\2\project' ← RemoveTargetDefinition 'C:\Path\2\project=TestCases'
+ path←{⍵↑⍨¯1+⍵⍳'='}def

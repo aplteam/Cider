@@ -10,6 +10,6 @@
  :Else
      ref←cfg.CIDER.dependencies
  :EndIf
- targetFolder←projectFolder,'/',{⍵↑⍨¯1+⍵⍳'='}ref.tatin
+ targetFolder←projectFolder,'/',RemoveTargetDefinition ref.tatin
  r←⎕SE.Tatin.InstallPackages packageIDs targetFolder
 ⍝Done

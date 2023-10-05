@@ -8,7 +8,7 @@
  :For i :In ⍳≢reports
      report←i⊃reports
      :If 0<≢report
-         folder←{⍵↑⍨¯1+⍵⍳'='}i⊃folders
+         folder←RemoveTargetDefinition i⊃folders
          1 parms.batch p'Later versions in <',(AddSlash folder),'> :'
          1 parms.batch p ⎕FMT↑{(1⊃⍵),' ==> ',(2⊃⍵)}¨↓report
          :If ~updateFlag←2≡parms.checkPackageVersions

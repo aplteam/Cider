@@ -10,7 +10,7 @@
  cfg←ReadProjectConfigFile cfgFilename
  tatinFolders←GetTatinDependencyFolders cfg
  :If 0<≢tatinFolders
-     tatinFolders←{⍵↑⍨¯1+⍵⍳'='}¨tatinFolders
+     tatinFolders←RemoveTargetDefinition¨tatinFolders
      buildFolders←(⊂projectFolder,'/'),¨tatinFolders
      buildFilenames←buildFolders,¨⊂'/apl-buildlist.json'
      b←F.Exists¨buildFilenames
