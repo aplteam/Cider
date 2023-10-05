@@ -910,16 +910,21 @@
       :EndIf
     ∇
 
-    ∇ {name}←CreateConfigFile(filename name);config;globalCiderConfigFilename
+    ∇ {name}←CreateConfigFile(filename name);config;globalCiderConfigFilename;tatinVars
     ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"
       ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
       globalCiderConfigFilename←P.GetCiderGlobalConfigHomeFolder,'cider.config.template'
+      :If '#'=1⍴⍕P
+          tatinVars←P.##.##.TatinVars
+      :Else
+          tatinVars←P.##.TatinVars
+      :EndIf
       :If 0=⎕NEXISTS globalCiderConfigFilename
           ⍝ First attempt
-          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
-      :ElseIf ≢/{⊃⎕NGET ⍵}¨globalCiderConfigFilename(P.##.TatinVars.HOME,'/cider.config.template')
+          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)tatinVars.HOME,'/cider.config.template'
+      :ElseIf ≢/{⊃⎕NGET ⍵}¨globalCiderConfigFilename(tatinVars.HOME,'/cider.config.template')
           ⍝ Replace by the template if changed
-          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
+          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)tatinVars.HOME,'/cider.config.template'
       :EndIf
       config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃P.##.F.NGET globalCiderConfigFilename
       :If 0=⎕SE.Link.⎕NC'Version'                           ⍝ There was no such function prior to Link 3
@@ -938,6 +943,8 @@
     ⍝ Checks whether the user has already a personal config file template.
     ⍝ If not the generic Cider config file template is copied into the user's Cider home folder,
     ⍝ Eventually the template is returned.
+    ⎕trap←0'S'
+    ∘∘∘  ⍝TODO⍝  ⍝TODO⍝ 
       folder←P.GetCiderGlobalConfigHomeFolder
       filename←folder',/cider.config.template'
       :If ~P.##.F.Exists filename
@@ -1294,7 +1301,7 @@
     ⍝ Note that when the Cider project itself is about to be opened, the code is not yet available in #,
     ⍝ and even if it is as a left-over from earlier operations, it's potentially an outdated version.
     ⍝ Has side affects in case a ref to #.Cider is returned: prints a message and creates some essential refs.
-      :If {2≠⎕SE.Cider.⎕NC ⍵:0 ⋄ 0<⎕SE.Cider⍎⍵}'DEVELOPMENT'      ⍝ Does the developer really want this?
+      :If {2≠⎕SE.Cider.⎕NC ⍵:0 ⋄ 0<⎕SE.Cider⍎⍵}'DEVELOPMENT'    ⍝ Does the developer really want this?
       :AndIf 0<#.⎕NC'Cider'                                     ⍝ And is there no...
       :AndIf 0<#.Cider.⎕NC'Cider'                               ⍝ ... namespace #.Cider yet?
       :AndIf (⊂'#.Cider')∊(1↓⎕SE.Link.Status ⍬)[;1]             ⍝ And is that namespace LINKed?
