@@ -1,4 +1,4 @@
- R←Test_UC_052(stopFlag batchFlag);⎕TRAP;folder;res;log;cals;success;tempDir;config;msg;rc;stop;batch;package;cfg
+ R←Test_UC_052(stopFlag batchFlag);⎕TRAP;folder;res;log;cals;success;tempDir;config;msg;rc;stop;batch;package;cfg;ref
 ⍝ Open project, add a Tatin package to a non-default folder, load, call, list, close, re-open, close
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -18,9 +18,13 @@
  cfg ##.Cider.WriteProjectConfigFile tempDir
 
  package←##.CiderConfig.HOME,'/TestData/APLTreeUtils2/aplteam-APLTreeUtils2-1.2.0.zip,'
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←2 2⍴''
+ ref.YesOrNo_Answers[1;]←'AddTatinDeps@' 'y'
+ ref.YesOrNo_Answers[2;]←'LoadTatinDependenciesAfterAdding@' 'y'
  (rc msg res)←stop ∆UCMD'AddTatinDependencies ',package,' ',tempDir,' -development'
  Assert rc=0
- →T.GoToTidyUp'aplteam-APLTreeUtils2-1.2.0'≢∊res
+ →T.GoToTidyUp'aplteam-APLTreeUtils2-1.2.0'≢' '~⍨2⊃,res
 
  (rc msg res)←stop ∆UCMD'ListTatinDependencies ',tempDir
  Assert rc=0
@@ -42,6 +46,7 @@
  R←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  res←∆LINK'Break' '#.TEMP'
  FilesAndDirs.RmDir tempDir,'/..'   ⍝ Does not work: the .NET DLL blocks this; there is no way around this at the time of writing (October 2023)
 ⍝Done

@@ -29,17 +29,11 @@ The first version you can use Cider with is 18.0. This is because Cider is a Tat
 
 #### Tatin
 
-Cider relies on the [Tatin package manager](https://github.com/aplteam/Tatin "Link to Tatin on GitHub") because it is a Tatin package. With version 19.0 and later Tatin will optionally be available in `⎕SE` right from the start. With earlier versions (18.0 and 18.2) it's up to the user to take care of that.
+Cider relies on the [Tatin package manager](https://github.com/aplteam/Tatin "Link to Tatin on GitHub") because it is a Tatin package. With version 19.0 and later Cider and Tatin will optionally be both available in `⎕SE` right from the start. With earlier versions (18.0 and 18.2) it's up to the user to take care of that.
 
 If Tatin is not in `⎕SE` but available in the user's home folder then Cider will attempt to load it by executing the user command `]Tatin.Version` which should implicitly load Tatin into `⎕SE`.
 
 I> Note that Tatin will check whether Cider is available, and if so cooperate with it. However, Cider is not a requirement for using Tatin.
-
-#### Git
-
-If you use Git for version control management and you have the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") installed then Cider uses the package [`APLGit2`](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub") for communicating with Git. 
-
-For example, when a project carries a directory `.git/` then Cider knows that the project is version controlled with Git, and it therefore uses the API of `APLGit2` to display the Git status report for a project in the later stages of opening a project.
 
 ### Installation
 
@@ -49,9 +43,7 @@ In earlier versions you must install Cider yourself.
 
 #### Version 19.0
 
-Version 19.0 comes with both Tatin and Cider pre-installed, but neither is active by default.
-
-Use the user command `]Activate` to activate them. Start with
+Use the user command `]Activate` to activate both Cider and Tatin. Start with
 
 ```
 ]Activate -??
@@ -61,7 +53,7 @@ Use the user command `]Activate` to activate them. Start with
 
 Unlike 19.0, these versions come with neither Tatin nor Cider, so you first have to make sure that Tatin is installed and available.
 
-<https://tatin.dev/> provides instructions for how to install Tatin on 18.0 and 18.2.
+The document [Installing And Updating The Tatin Client](https://tatin.dev/Assets/docs/InstallingAndUpdatingTheTatinClient.html "Link to the document on https://tatin.dev") provides instructions for how to install Tatin on 18.0 and 18.2.
 
 Once Tatin is available, installing Cider is easy and straightforward, just issue this command:
 
@@ -72,32 +64,67 @@ Once Tatin is available, installing Cider is easy and straightforward, just issu
 `targetFolder` must be one of the following folders, here for version 18.2:
 
 ```
-⍝ Windows
-C:\Users\<⎕AN>\Documents\Dyalog APL 18.2 Unicode Files\StartupSession\    ⍝ 32 bit
-C:\Users\<⎕AN>\Documents\Dyalog APL-64 18.2 Unicode Files\StartupSession\ ⍝ 64 bit
-
-⍝ Linux
-/home/<⎕AN>/dyalog.182U32.files/StartupSession/   ⍝ 32-bit
-/home/<⎕AN>/dyalog.182U64.files/StartupSession/   ⍝ 64-bit
-
-
-⍝ Mac-OS
-/Users/<⎕AN>/dyalog.182U32.files/StartupSession/  ⍝ 32-bit
-/Users/<⎕AN>/dyalog.182U64.files/StartupSession/  ⍝ 64-bit
+  ⍝ Windows
+C:\Users\<⎕AN>\Documents\Dyalog APL 18.2 Unicode Files\CiderTatin\Cider    ⍝ 32 bit
+C:\Users\<⎕AN>\Documents\Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cider ⍝ 64 bit
+  ⍝ Linux
+/home/<⎕AN>/dyalog.182U64.files/CiderTatin/Cider/
+  ⍝ Mac OS
+/Users/<⎕AN>/dyalog.182U64.files/CiderTatin/Cider/
 ```
 
-I> For the time being you must not install into the version-agnostic folder because that would prevent `]Cider.UpdateCider` from working. This restriction is likely to be lifted in a later release.
+I> For the time being you must not install into the version-agnostic folder.
+I>
+I> It would prevent `]Cider.UpdateCider` from working. 
+I>
+I> This restriction is likely to be lifted in a later release.
 
-Once the folder `CiderTatin/` is in place, any newly started version of Dyalog is aware of the user commands `]Tatin.*` and `]Cider.*`.
+Once the folder `CiderTatin/` is in place, any newly started version of Dyalog is aware of the user commands `]Cider.*`.
 
-The APIs are not available yet at this point, but they will become available once a user command is issued. For example, after issuing the following two commands the APIs will both be available via `⎕SE.Tatin` and `⎕SE.Cider`:
+The API is not available yet at this point, but it will become available once a Cider user command is issued. For example, after issuing the following command the API will be available via `⎕SE.Cider`:
 
 ```
-]Tatin.Version
 ]Cider.Version
 ```
 
-If that is not good enough for you (because you want or need the API to be available right from the start) this article explains how to load stuff into `⎕SE` at a very early stage: <https://aplwiki.com/wiki/Dyalog_User_Commands>
+I> Note that for Dyalog's user command framework to be able to identify Cider's user command script the folder must be made known to SALT. However, since Cider requires Tatin to be available this must have been done already.
+I>
+I> You can check this by issuing the command 
+I>
+I> `]SALT.Settings cmddir`
+I>
+I> which lists all folders the user command framework will scan for user commands. The `CiderTatin/` folder must be among them, otherwise Tatin user commands would not be available.
+
+If that is not good enough for you, follow the instructions provided by the document [Installing And Updating The Tatin Client](https://tatin.dev/Assets/docs/InstallingAndUpdatingTheTatinClient.html#On-setupdyalog "Link to the document on https://tatin.dev") for how to achieve that for Tatin.
+
+All you have to do in addition to that is to add this function:
+
+```
+    ∇ {r}←path LoadCider debug;version;res;sep;paths;qdmx
+      r←0 0⍴''
+      :Trap debug/0
+          version←⊃(//)⎕VFI{⍵↑⍨¯1+⍵⍳'.'}2⊃# ⎕WG'APLVersion'
+          :If version<18
+              r←'Cider not loaded, only supported in Dyalog 18.0 and later'
+          :ElseIf 9=⎕SE.⎕NC'Cider'
+              ⍝ Already loaded (19.0)
+          :ElseIf 80≠⎕DR' '               ⍝ Not in "Classic"
+              r←'Cider not loaded: not compatible with Classic'
+          :Else
+              ⎕SE.⎕EX¨'_Cider' 'Cider'    ⍝ Paranoia
+              {}⎕SE.Tatin.LoadDependencies(path,'/Cider/')'⎕SE'
+          :EndIf
+      :Else
+          r←'>>> Attempt to load Cider failed with ',⎕DMX.EM
+      :EndTrap
+    ∇
+```
+
+The final step is to add this line to the `Setup` function:
+
+```
+ (GetProgramFilesFolder '/CiderTatin') LoadCider ⎕SE.SALTUtils.DEBUG
+```
 
 ### Upgrading Cider
 
@@ -109,13 +136,27 @@ You can update Cider to the latest version by issuing the following command:
     
 You must restart Dyalog in order to start using the new version.
 
+A> ### ]Cider.UpdateCider
+A>
+A> Note that due to a change of the target folder this command will only work when you use it to update version 0.37.0
+A>
+A> *In earlier versions of Cider the command cannot know about the new target folder and must therefore not be used.*
+A>
+A> For that reason you are advised to delete the `Cider/` folder from you `MyUCMDs/` folder (which means un-installing it) and then install again.
+
+#### Git
+
+If you use Git for version control management, and you have the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") installed, then Cider uses the package [`APLGit2`](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub") for communicating with Git. 
+
+For example, when a project carries a directory `.git/` then Cider knows that the project is version controlled with Git, and it therefore uses the API of `APLGit2` to display the Git status report for a project in the later stages of opening a project.
+
 ### Configuration
 
 #### Global configuration
 
 Cider may have a global configuration file that can be used to define settings that effect all projects. It's named is `cider.json`, and it is referred to as the _global_ Cider config file.
 
-This file, if it exists, it situated in a folder `.cider` that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be C:\Users\JohnDoe\.cider on Windows, on Linux it would be /home/JohnDoe/.cider etc.
+This file, if it exists, it situated in a folder `.cider` that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be `C:\Users\JohnDoe\.cider` on Windows, on Linux it would be `/home/JohnDoe/.cider` etc.
 
 This folder does not only host the global config file, it's also the place where the file with alias definitions (`aliase.txt`) is saved as well as the file `cider.config.template` that is used as a template when a new project is created.
 
@@ -616,3 +657,4 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+

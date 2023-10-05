@@ -1,8 +1,6 @@
 ﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 
-
-
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
     L←⎕SE.Link
@@ -197,7 +195,7 @@
       :EndIf
     ∇
 
-    ∇ r←AddNuGetDependencies Args;packages;projectFolder;cfg;ref;flag;q;oldList;newList;targetNamespace;list;targetNS
+    ∇ r←AddNuGetDependencies Args;packages;projectFolder;cfg;ref;flag;q;oldList;newList;targetNamespace;list;targetNS;list2
     ⍝ Returns list of (newly) installed NuGet packages.
       packages←Args._1
       projectFolder←Args._2
@@ -240,8 +238,8 @@
       :AndIf 1 P.##.C.YesOrNo'LoadNuGetDependenciesAfterAdding@Would you like to (re-)load all NuGet dependencies?'
           :If 0<≢oldList
               :If 9=⎕NC targetNS
-                  ∘∘∘
-                  {}(⍎targetNS).{0=≢l←↓⎕NL 9:0 ⋄ 0=+/b←∨/¨'._tatin.'∘⍷¨⍕¨⍎¨l:0 ⋄ +/⎕EX¨b/l}⍬   ⍝ Delete all previous references
+                  list2←,1↑[2]P.ListNuGetDependencies projectFolder
+                  {}(⍎targetNS).{l←⍵ ⋄ 0=≢l:0 ⋄ 0=≢l←(0<⎕NC↑l)/l:0 ⋄ 0=+/b←∨/¨'._tatin.'∘⍷¨⍕¨{6::'' ⋄ ⍎⍵}¨⍵:0 ⋄ +/⎕EX¨b/⍵}list2   ⍝ Delete all previous references
               :EndIf
           :EndIf
           list←0 0 P.LoadNuGetDependencies projectFolder targetNS
@@ -277,7 +275,7 @@
       :Repeat
           :If 0=ref.⎕NC'tatin'
           :OrIf 0=≢ref.tatin
-              q←(2⊃⎕NPARTS projectFolder),': no Tatin dependency folder defined for "dependencies',(development/'_dev'),'" - edit project config file?'
+              q←'EditPrjCfg@',(2⊃⎕NPARTS projectFolder),': no Tatin dependency folder defined for "dependencies',(development/'_dev'),'" - edit project config file?'
               q←'EditProjectConfig@',q
               :If 1 P.##.C.YesOrNo q
                   P.ProjectConfig projectFolder
@@ -286,7 +284,7 @@
                   →0,≢r←'Cancelled by user'
               :EndIf
           :Else
-              q←(2⊃⎕NPARTS projectFolder),': add dependencies to ',ref.tatin,'/ ?'
+              q←'AddTatinDeps@',(2⊃⎕NPARTS projectFolder),': add dependencies to ',ref.tatin,'/ ?'
               :If 1 P.##.C.YesOrNo q
                   flag←1
               :Else
@@ -295,7 +293,7 @@
           :EndIf
       :Until flag
       list←P.AddTatinDependencies packages projectFolder development
-      r←(⍕≢list),' Tatin dependencies added'
+      r←⍪(⊂(⍕≢list),' Tatin dependenc',((1+1<≢list)⊃'y' 'ies'),' added:'),' ',¨list
       :If 0<≢list
       :AndIf 1 P.##.C.YesOrNo'LoadTatinDependenciesAfterAdding@Would you like to (re-)load all Tatin dependencies?'
           targetNS←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}{⍵↓⍨⍵⍳'='}ref.tatin
@@ -306,7 +304,7 @@
           :EndIf
           sourceFolder←projectFolder,'/',{⍵↑⍨¯1+⍵⍳'='}ref.tatin
           list←⎕SE.Tatin.LoadDependencies sourceFolder targetNS
-          r←r,(⎕UCS 13),(⍕≢list),' dependencies loaded'
+          r←r⍪⊂'Dependenc',((1+1<≢list)⊃'y was' 'ies were'),' loaded'
       :EndIf
     ∇
 
@@ -918,10 +916,10 @@
       globalCiderConfigFilename←P.GetCiderGlobalConfigHomeFolder,'cider.config.template'
       :If 0=⎕NEXISTS globalCiderConfigFilename
           ⍝ First attempt
-          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
-      :ElseIf ≢/{⊃⎕NGET ⍵}¨globalCiderConfigFilename(P.##.TatinVars.HOME,'/cider.config.template')
+          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.##.TatinVars.HOME,'/cider.config.template'
+      :ElseIf ≢/{⊃⎕NGET ⍵}¨globalCiderConfigFilename(P.##.##.TatinVars.HOME,'/cider.config.template')
           ⍝ Replace by the template if changed
-          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.TatinVars.HOME,'/cider.config.template'
+          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)P.##.##.TatinVars.HOME,'/cider.config.template'
       :EndIf
       config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃P.##.F.NGET globalCiderConfigFilename
       :If 0=⎕SE.Link.⎕NC'Version'                           ⍝ There was no such function prior to Link 3
@@ -1061,7 +1059,7 @@
       :EndIf
     ∇
 
-    ∇ r←ShowHelp dummy;list;folder;flag;answer;msg;filenames
+    ∇ r←ShowHelp dummy;list;folder;answer;msg;filenames
       r←''
       folder←1⊃⎕NPARTS ##.SourceFile
       list←⊃⎕NINFO⍠('Wildcard' 1)⊣folder,'*'
@@ -1071,18 +1069,16 @@
           r←'No documentation found for Cider in ',folder
       :Else
           list←{⊃,/1↓⎕NPARTS ⍵}¨list
-          flag←0
-          :Repeat
-              msg←'Select document to be viewed:'
-              answer←msg 1 Select 2⊃∘⎕NPARTS¨list
-              :If 0<≢answer
-                  filenames←SanitizePath¨folder∘,¨list[answer]
-                  {}{⎕SE.UCMD'Open ',⍵}¨filenames
-                  flag←1
+          msg←'Select document to be viewed:'
+          answer←msg 1 Select 2⊃∘⎕NPARTS¨list
+          :If 0<≢answer
+              filenames←'"',¨'"',⍨¨SanitizePath¨folder∘,¨list[answer]
+              :Trap 0
+                  ⎕CMD¨filenames
               :Else
-                  flag←1
-              :EndIf
-          :Until flag
+                  ⎕←⍪filenames
+              :EndTrap
+          :EndIf
       :EndIf
     ∇
 
@@ -1302,8 +1298,8 @@
       :AndIf 0<#.⎕NC'Cider'                                     ⍝ And is there no...
       :AndIf 0<#.Cider.⎕NC'Cider'                               ⍝ ... namespace #.Cider yet?
       :AndIf (⊂'#.Cider')∊(1↓⎕SE.Link.Status ⍬)[;1]             ⍝ And is that namespace LINKed?
-          r←#.Cider.Cider
-          r.##.(C A F G)←r.(C A F G)
+          r←#.Cider.Cider.API
+          r.##.##.(C A F G)←r.##.(C A F G)
           :If 1=⎕SE.Cider.DEVELOPMENT
               ⎕←'*** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!'
           :EndIf

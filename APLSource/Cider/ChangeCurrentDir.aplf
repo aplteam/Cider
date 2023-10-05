@@ -1,0 +1,11 @@
+ {r}←ChangeCurrentDir path
+⍝ Checks whether the current dir is not identical with the project folder.
+⍝ If not then the user is asked whether she wants change the current dir to the project folder
+⍝ Returns 0 in case there was no change and 1 otherwise.
+ r←0
+ :If (F.AddTrailingSep F.PWD)≢F.AddTrailingSep'expand'F.NormalizePath path
+ :AndIf 0 CommTools.YesOrNo'ChangeCurrentDir@Would you like to change the current directory to ',path,' ?'
+     {}F.Cd path
+     ⎕←'The current directory is now ',F.PWD
+     r←1
+ :EndIf

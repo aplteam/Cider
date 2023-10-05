@@ -1,4 +1,4 @@
- list←AddNuGetDependencies(packages projectFolder);NuGet;msg;cfg;nuGetFolder;package;buff;targetNamespace;b
+ list←AddNuGetDependencies(packages projectFolder);NuGet;msg;cfg;nuGetFolder;package;buff;targetNamespace;b;qdmx
 ⍝ Add one or more NuGet packages to the NuGet-folder defined in the config file of `projectFolder`.
 ⍝ * `packages` must be either a nested vector with package names or a comma-separated list of package names
 ⍝ * `projectFolder` must carry a Cider config files used to establish the NuGet folder.\\
@@ -30,9 +30,16 @@
      :For package :In packages
          :Trap 99
              msg←NuGet.Add(⊂nuGetFolder),⊂package
-             :If ~∨/'error:'⍷⎕C msg
+             :If ∨/'error:'⍷⎕C msg
+                 1 PrintToSession msg
+             :elseIf 'Already registered:'{⍺≡(≢⍺)↑⍵}msg
+                 1 PrintToSession msg
+             :Else
                  list,←⊂package
              :EndIf
+         :Else
+             qdmx←⎕DMX
+             ('Could not add NuGet package "',package,'"; (',qdmx.EM,')')Assert 0
          :EndTrap
      :EndFor
  :EndIf

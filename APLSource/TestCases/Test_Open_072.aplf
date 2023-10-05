@@ -1,4 +1,4 @@
- R←Test_Open_072(stopFlag batchFlag);⎕TRAP;parms;success;log
+ R←Test_Open_072(stopFlag batchFlag);⎕TRAP;parms;success;log;ref
 ⍝ Open a project that has a package folder that contains no packages
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -11,8 +11,9 @@
  parms.watch←'ns'
  parms.ignoreUserExec←1
  parms.batch←1
- ##.Cider.CommTools.YesOrNo_Answers←1 2⍴'ReInstallMissingPkgs@' 'y'
- ##.Cider.CommTools.YesOrNo_Answers⍪←'LaterVersions@' 'y'
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ReInstallMissingPkgs@' 'y'
+ ref.YesOrNo_Answers⍪←'LaterVersions@' 'y'
  (success log)←##.Cider.OpenProject parms
  Assert success
  →T.GoToTidyUp∨/'ERROR'⍷log
@@ -21,7 +22,7 @@
  R←T._OK
 
 ∆TidyUp:
- ##.Cider.CommTools.Cleanup
+ ref.Cleanup
  Assert ⎕SE.Cider.CloseProject'#.TEMP.fooproj'
  #.⎕EX'TEMP'
 ⍝Done

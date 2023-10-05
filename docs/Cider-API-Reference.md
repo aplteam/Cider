@@ -40,6 +40,8 @@ Requires two arguments:
 
 2. A path to a project or a Cider alias
 
+Note that NuGet package names are not case sensitive when they are loaded, meaning that you can load `Clock` by the name `clock`. However, the correct name is returned, and required for using a package.
+
 
 ## AddTatinDependencies
 
@@ -51,7 +53,7 @@ Requires three arguments:
 
 2. A path to a project or a Cider alias
 
-3. A flag that decides whether `dependencies` or `dependencies_dev` is going to be the target.
+3. A flag that decides whether the folder the config parameter `dependencies` points to or the folder `dependencies_dev` points to is going to be the target.
 
 
 ## CloseProject
@@ -117,6 +119,22 @@ Niladic function that returns the path to the file that is used by Cider to mana
 Niladic function that returns the path to the `MyUCMDs/` folder.
 
 Note that this folder is created under Windows by the Dyalog installation routine, but not on other platforms.
+
+## GetProgramFilesFolder
+
+Ambivalent function that give you the path to the Dyalog files folder of either the currently running version of Dyalog or the version agnostic folder, depending on the left argument.
+
+Examples on Windows:
+
+```
+      Cider.GetProgramFilesFolder ''
+C:\Users\kai\Documents\Dyalog APL Files             ⍝ Version agnostic
+      Cider.GetProgramFilesFolder 'CiderTatin'
+C:\Users\kai\Documents\Dyalog APL Files/CiderTatin
+      1 Cider.GetProgramFilesFolder ''
+C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files
+```
+
 
 
 ## GetCiderGlobalConfigFileContent
@@ -347,6 +365,7 @@ This function takes a path to a Cider project as `⍵` and a namespace with Cide
 
    This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
 3. The version date in international date format: YYYY-MM-DD
+
 
 
 

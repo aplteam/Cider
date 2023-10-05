@@ -1,4 +1,4 @@
- R←Test_UC_051(stopFlag batchFlag);⎕TRAP;folder;res;log;cals;success;tempDir;config;msg;rc;stop;batch
+ R←Test_UC_051(stopFlag batchFlag);⎕TRAP;folder;res;log;cals;success;tempDir;config;msg;rc;stop;batch;ref
 ⍝ Open project, add 2 NuGet packages to non-default folder, load, call, list, close, re-open, close
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -16,7 +16,9 @@
  (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
  Assert rc=0
 
- (rc msg res)←stop ∆UCMD'AddNuGetDependencies Clock,NodaTime ',tempDir
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'LoadNuGetDependenciesAfterAdding@' 'y'
+ (rc msg res)←stop ∆UCMD'AddNuGetDependencies clock,NODATIME ',tempDir
  Assert rc=0
  →T.GoToTidyUp~'Clock' 'NodaTime'∆LazyMatch res
 
@@ -41,6 +43,7 @@
  R←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  res←∆LINK'Break' '#.TEMP'
  FilesAndDirs.RmDir tempDir,'/..'   ⍝ Does not work: the .NET DLL blocks this; there is no way around this at the time of writing (October 2023)
 ⍝Done
