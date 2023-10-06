@@ -1,4 +1,4 @@
- R←Test_Create_012(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc;qdmx;expected
+ R←Test_Create_012(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc;qdmx;expected;ref
 ⍝ Attempts to create and then open a project with a non-empty namespace and an empty folder
 ⍝ A config file is copied over in order to avoid user interaction
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
@@ -9,6 +9,8 @@
  #.Foo.⎕FX'r←TheAnswerIs' 'r←42'
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -noEdit -batch -ignoreUserExec'
  Assert 0=rc
@@ -21,8 +23,9 @@
  R←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  {}⎕SE.Link.Break'#.Foo'
- rc←⊃FilesAndDirs.RmDir tempDir
+ rc←⊃FilesAndDirs.RmDir tempDir,'/..'
  Assert rc∧.=0
  #.⎕EX'Foo'
 ⍝Done

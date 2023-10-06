@@ -15,5 +15,5 @@
  r←T._OK
 
 ∆TidyUp:
- FilesAndDirs.RmDir tempFolder
+ FilesAndDirs.RmDir tempFolder,'/..'
  ⍝Done

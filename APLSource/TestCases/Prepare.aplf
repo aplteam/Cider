@@ -27,5 +27,5 @@
      3 ⎕MKDIR testPath  ⍝
      T.codeCoverage←⎕NEW CodeCoverage(,⊂'#.',{⍵,'.',⍵}2↓⍕⎕THIS.##)
      T.codeCoverage.filename←testFilename
-     T.codeCoverage.ignore←'#.Cider.Cider.Cider.RunTests,#.Cider.Cider.Cider.RunMake'
  :EndIf
+ T.exec_after_each_test←(⍕⎕THIS),'.CheckTempDirForLeftOvers'

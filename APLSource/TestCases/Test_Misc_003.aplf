@@ -18,6 +18,7 @@
 
  parms←⎕NS''
  parms.folder←folder,'/Project1'
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp∨/'ERROR'⍷log
@@ -26,6 +27,7 @@
  R←T._OK
 
 ∆TidyUp:
+ ##.Cider.C.Cleanup
  cfg.ExecuteAfterProjectOpen←was
  (⊂⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣cfg)⎕NPUT filename 1
  res←∆LINK'Break' '#.TEMP'

@@ -1,4 +1,4 @@
- R←Test_Create_062(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc
+ R←Test_Create_062(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc;ref
 ⍝ Attempts to create and then open a project with an already existing config file that carries watch←'dir'
 ⍝ Was once a bug: in the opened project "watch" was then always the default rather than the setting.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
@@ -12,6 +12,8 @@
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.special-watch')
  ⎕DL 0.5
 
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -batch -ignoreUserExec'
  →T.GoToTidyUp 0≠rc
@@ -20,8 +22,9 @@
  R←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  {}⎕SE.Link.Break'#.SpecialWatch'
- (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir,'/..'
  msg Assert rc=0
  #.⎕EX'SpecialWatch'
 ⍝Done

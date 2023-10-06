@@ -1,4 +1,4 @@
- R←Test_UC_043(stopFlag batchFlag);⎕TRAP;tempDir;list;res;rc;row
+ R←Test_UC_043(stopFlag batchFlag);⎕TRAP;tempDir;list;res;rc;row;msg;ref
 ⍝ Create a project with two folders on `tatinFolder` of which one does not exist. Was once a bug.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -6,7 +6,10 @@
  tempDir←∆GetFolderInTempDir⊃⎕SI
  (tempDir,'/')⎕NCOPY⍠('Wildcard' 1)⊣∆GetTestPath(⊃⎕SI),'/*'
 
- {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -ignoreUserExec -batch'
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (rc msg res)←∆UCMD'CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -ignoreUserExec -batch'
+ Assert rc=0
  list←##.Cider.ListOpenProjects 0
  →T.GoToTidyUp~(⊂'#.Foo')∊list[;1]
  row←list[;1]⍳⊂'#.Foo'
@@ -15,9 +18,10 @@
  R←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  res←∆LINK'Break' '#.Foo'
  Assert res ∆StartsWith'Unlinked:'
  #.⎕EX'Foo'
- rc←FilesAndDirs.RmDir tempDir
+ rc←FilesAndDirs.RmDir tempDir,'/..'
  Assert 0=+/∊rc
 ⍝Done

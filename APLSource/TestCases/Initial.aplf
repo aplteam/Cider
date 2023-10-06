@@ -15,7 +15,8 @@
          :EndIf
      :EndIf
  :EndIf
- :If 0=⎕SE.Cider.DEVELOPMENT
+ :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'
+ :AndIf 0=⎕SE.Cider.DEVELOPMENT
      'Cider''s version number in # and ⎕SE diverge'Assert ⎕SE.Cider.Version≡##.Cider.Version
  :EndIf
  FilesAndDirs.RmDir FilesAndDirs.ListDirs FilesAndDirs.GetTempPath,'Cider-Tests*'  ⍝ Last test run might have left something behind because of the .NET-DLLs-don't-unload problem

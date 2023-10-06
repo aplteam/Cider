@@ -27,17 +27,19 @@ I> Note that in this document names stemming from the Cider configuration file a
 
 The first version you can use Cider with is 18.0. This is because Cider is a Tatin package, and Tatin runs under 18.0 or later.
 
+Cider requires (like Tatin) a Unicode version of APL.
+
 #### Tatin
 
 Cider relies on the [Tatin package manager](https://github.com/aplteam/Tatin "Link to Tatin on GitHub") because it is a Tatin package. With version 19.0 and later Cider and Tatin will optionally be both available in `⎕SE` right from the start. With earlier versions (18.0 and 18.2) it's up to the user to take care of that.
 
-If Tatin is not in `⎕SE` but available in the user's home folder then Cider will attempt to load it by executing the user command `]Tatin.Version` which should implicitly load Tatin into `⎕SE`.
+If Tatin is not in `⎕SE` but recognized as a user command then Cider will attempt to load it by executing the user command `]Tatin.Version` which will implicitly load the Tatin API into `⎕SE`.
 
 I> Note that Tatin will check whether Cider is available, and if so cooperate with it. However, Cider is not a requirement for using Tatin.
 
 ### Installation
 
-With version 19.0, Cider will be part of a default installation, though it won't be active: for that the user has to take action. 
+With version 19.0, Cider will be part of a default installation, though it won't be active by default: for that the user has to take action. 
 
 In earlier versions you must install Cider yourself.
 
@@ -75,8 +77,6 @@ C:\Users\<⎕AN>\Documents\Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cider ⍝
 
 I> For the time being you must not install into the version-agnostic folder.
 I>
-I> It would prevent `]Cider.UpdateCider` from working. 
-I>
 I> This restriction is likely to be lifted in a later release.
 
 Once the folder `CiderTatin/` is in place, any newly started version of Dyalog is aware of the user commands `]Cider.*`.
@@ -97,7 +97,7 @@ I> which lists all folders the user command framework will scan for user command
 
 If that is not good enough for you, follow the instructions provided by the document [Installing And Updating The Tatin Client](https://tatin.dev/Assets/docs/InstallingAndUpdatingTheTatinClient.html#On-setupdyalog "Link to the document on https://tatin.dev") for how to achieve that for Tatin.
 
-All you have to do in addition to that is to add this function:
+All you have to do in addition to that is to add this function to the `setup.dyalog` script:
 
 ```
     ∇ {r}←path LoadCider debug;version;res;sep;paths;qdmx
@@ -120,7 +120,7 @@ All you have to do in addition to that is to add this function:
     ∇
 ```
 
-The final step is to add this line to the `Setup` function:
+The final step is to add this line to the `Setup` function in the `setup.dyalog` script:
 
 ```
  (GetProgramFilesFolder '/CiderTatin') LoadCider ⎕SE.SALTUtils.DEBUG
@@ -138,7 +138,7 @@ You must restart Dyalog in order to start using the new version.
 
 A> ### ]Cider.UpdateCider
 A>
-A> Note that due to a change of the target folder this command will only work when you use it to update version 0.37.0
+A> Note that due to a change of the target folder this command will only work when you use it to update version 0.37.0 or later.
 A>
 A> *In earlier versions of Cider the command cannot know about the new target folder and must therefore not be used.*
 A>
@@ -158,11 +158,11 @@ Cider may have a global configuration file that can be used to define settings t
 
 This file, if it exists, it situated in a folder `.cider` that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be `C:\Users\JohnDoe\.cider` on Windows, on Linux it would be `/home/JohnDoe/.cider` etc.
 
-This folder does not only host the global config file, it's also the place where the file with alias definitions (`aliase.txt`) is saved as well as the file `cider.config.template` that is used as a template when a new project is created.
+This folder does not only host the global config file, it's also the place where the file with alias definitions (`aliase.txt`) is saved as well as the file `cider.config.template` which is used as a template (hence the name) whenever a new project is created.
 
 #### Project configuration
 
-Every Cider project has a configuration file called `cider.config` that is saved in the root of the project's folder.
+Every Cider project has a configuration file called `cider.config` which is saved in the root of the project's folder.
 
 When a new project is created, a copy of the file `cider.config.template` is copied from the global configuration folder (see above) into the root of the new project.
 
@@ -657,4 +657,5 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 

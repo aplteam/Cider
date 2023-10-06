@@ -17,7 +17,7 @@
          :If 0=+/(alias,'=')∘{⍺≡(≢⍺)↑⍵}¨data
              ind←({⍵↓⍨⍵⍳'='}¨data)⍳⊂folder
              :If ind≤≢data
-                 DropAliasRemoveTargetDefinition ind⊃data
+                 DropAlias RemoveTargetDefinition ind⊃data
                  data←⊃F.NGET ciderAliasFilename 1
              :EndIf
              (⊂data,⊂(⎕C alias),'=',folder)F.NPUT ciderAliasFilename 1

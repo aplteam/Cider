@@ -12,6 +12,7 @@
  parms.watch←'ns'
  parms.ignoreUserExec←1
  parms.batch←1
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (res log)←##.Cider.OpenProject parms
  →T.GoToTidyUp∨/'ERROR'⍷log
 
@@ -29,6 +30,7 @@
  R←T._OK
 
 ∆TidyUp:
+ ##.Cider.C.Cleanup
  res←∆LINK'Break' '#.TEMP'
  Assert res ∆StartsWith'Unlinked:'
  #.⎕EX'TEMP'

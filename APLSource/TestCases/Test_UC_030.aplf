@@ -1,11 +1,12 @@
- R←Test_UC_030(stopFlag batchFlag);⎕TRAP;res;mat2;mat1
+ R←Test_UC_030(stopFlag batchFlag);⎕TRAP;res;mat2;mat1;rc;msg
 ⍝ Exercise the user command `ListAlias` with -prune
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  mat1←##.Cider.GetAliasFileContent ⍬
  Delete_∆ALIAS_TEMP_FOLDER
- res←⎕SE.UCMD'Cider.ListAliases -prune -batch'
+ (rc msg res)←∆UCMD'ListAliases -prune -batch'
+ Assert rc=0
  mat2←##.Cider.GetAliasFileContent ⍬
  →T.PassesIf(+/~⎕NEXISTS mat1[;2])=-/≢¨mat1 mat2
 

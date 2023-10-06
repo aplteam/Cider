@@ -8,13 +8,17 @@
  parms.invalid←'Goo'
  parms.watch←'ns'
  parms.ignoreUserExec←1
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  :Trap 11
      {}##.Cider.OpenProject parms
-     →T.FailsIf 1
+     →T.GoToTidyUp 1
  :Else
      qdmx←⎕DMX
-     →T.PassesIf'Invalid parameter: invalid'≡qdmx.EM
+     →T.GoToTidyUp'Invalid parameter: invalid'≢qdmx.EM
  :EndTrap
 
  R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
 ⍝Done

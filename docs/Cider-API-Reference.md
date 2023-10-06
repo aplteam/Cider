@@ -53,7 +53,10 @@ Requires three arguments:
 
 2. A path to a project or a Cider alias
 
-3. A flag that decides whether the folder the config parameter `dependencies` points to or the folder `dependencies_dev` points to is going to be the target.
+3. A flag (`dev`) that decides which folder should be used for the installation
+
+   * 0 = the folder the config parameter `dependencies` points to 
+   * 1 = the folder the config parameter `dependencies_dev` points to 
 
 
 ## CloseProject
@@ -365,6 +368,7 @@ This function takes a path to a Cider project as `⍵` and a namespace with Cide
 
    This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
 3. The version date in international date format: YYYY-MM-DD
+
 
 
 

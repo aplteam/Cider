@@ -12,9 +12,9 @@
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←2 2⍴''
- ref.YesOrNo_Answers[1;]←'Project successfully created; open as well?' 'y'
- ref.YesOrNo_Answers[2;]←'TargetNotEmpty@' 'N'
+ ref.YesOrNo_Answers←1 2⍴'Project successfully created; open as well?' 'y'
+ ref.YesOrNo_Answers⍪←'TargetNotEmpty@' 'N'
+ ref.YesOrNo_Answers⍪←'ChangeCurrentDir@' 'n'
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -noEdit -ignoreUserExec'
 
@@ -24,9 +24,9 @@
  R←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  {}⎕SE.Link.Break'#.Foo'
- rc←⊃FilesAndDirs.RmDir tempDir
+ rc←⊃FilesAndDirs.RmDir tempDir,'/..'
  Assert rc∧.=0
  #.⎕EX'Foo'
- ref.Cleanup
 ⍝Done

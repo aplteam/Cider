@@ -1,4 +1,4 @@
- R←Test_OpenAndClose_003(stopFlag batchFlag);⎕TRAP;tempDir;list;res;rc
+ R←Test_OpenAndClose_003(stopFlag batchFlag);⎕TRAP;tempDir;list;res;rc;ref
 ⍝ Open a (new) project and then attempt to close a non-existing one (was once a bug)
 ⍝ The bug: closed ALL projects rather than none
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
@@ -7,7 +7,9 @@
  tempDir←∆GetFolderInTempDir⊃⎕SI
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
- {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig  -batch -ignoreUserExec'
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ {}∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig  -batch -ignoreUserExec'
 
  list←##.Cider.ListOpenProjects 0
  →T.GoToTidyUp 0≠##.Cider.CloseProject'DoesNotExist'
@@ -18,8 +20,8 @@
  R←T._OK
 
 ∆TidyUp:
- ∆LINK'Break' '#.Foo'  ⍝ We DO NOT check here because when everything is working fine then it's not linked anymore.
- rc←FilesAndDirs.RmDir tempDir
+ ref.Cleanup
+ rc←FilesAndDirs.RmDir tempDir,'/..'
  Assert 0=+/∊rc
  #.⎕EX'Foo'
 ⍝Done

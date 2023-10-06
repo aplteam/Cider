@@ -1,4 +1,4 @@
- R←Test_UC_040(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;config;res;rc
+ R←Test_UC_040(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;config;res;rc;msg;ref
 ⍝ Create a project from a folder without Linking a namespace; project space name defaults
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -8,7 +8,10 @@
  'Create!'FilesAndDirs.CheckPath sourceFolder
  (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
 
- res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -ignoreUserExec -batch'
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (rc msg res)←∆UCMD'CreateProject "',tempDir,'" -noEdit -ignoreUserExec -batch'
+ Assert rc=0
 
  list←FilesAndDirs.ListFiles tempDir
  →T.GoToTidyUp 1≠≢list
@@ -19,8 +22,10 @@
  R←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  res←∆LINK'Break'(#.⊃{⍺,'.',⍵}/config.CIDER.(parent projectSpace))
  Assert res ∆StartsWith'Unlinked:'
- rc←FilesAndDirs.RmDir tempDir
+ #.⎕EX⊃⎕SI
+ rc←FilesAndDirs.RmDir tempDir,'/..'
  Assert 0=+/∊rc
 ⍝Done

@@ -1,4 +1,4 @@
- r←Test_UC_002(stopFlag batchFlag);⎕TRAP;parms;res;log;rc;msg;result;tempDir
+ r←Test_UC_002(stopFlag batchFlag);⎕TRAP;parms;res;log;rc;msg;result;tempDir;ref;list
 ⍝ Exercise the user command "Config"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
@@ -7,8 +7,12 @@
  tempDir←∆GetFolderInTempDir⊃⎕SI
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
- {}⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig -batch -ignoreUserExec'
- {}⎕SE.UCMD'Cider.CloseProject #.Foo'
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (rc msg res)←∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -batch -ignoreUserExec'
+ Assert rc=0
+ (rc msg res)←∆UCMD'CloseProject #.Foo'
+ Assert rc=0
 
  parms←##.Cider.CreateOpenParms ⍬
  parms.folder←tempDir
@@ -16,6 +20,7 @@
  parms.parent←'#.Goo'
  parms.ignoreUserExec←1
  parms.batch←1
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (res log)←##.Cider.OpenProject parms
 
  →T.GoToTidyUp 0=≢list←##.Cider.ListOpenProjects 0
@@ -27,9 +32,10 @@
  r←T._OK
 
 ∆TidyUp:
- {}∆UCMD'CloseProject #.Foo.Goo'
+ ref.Cleanup
+ ##.Cider.C.Cleanup
  ∆LINK'Break' '#.Foo.Goo'  ⍝ We DO NOT check here because when everything is working fine then it's not linked anymore.
- rc←FilesAndDirs.RmDir tempDir
+ rc←FilesAndDirs.RmDir tempDir,'/..'
  Assert 0=+/∊rc
  #.⎕EX'Goo'
 ⍝Done

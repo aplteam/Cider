@@ -8,6 +8,8 @@
  tempDir←∆GetFolderInTempDir⊃⎕SI
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
 
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  stop←0
  (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
  Assert rc=0
@@ -18,7 +20,6 @@
  cfg ##.Cider.WriteProjectConfigFile tempDir
 
  package←##.CiderConfig.HOME,'/TestData/APLTreeUtils2/aplteam-APLTreeUtils2-1.2.0.zip,'
- ref←∆GetRefToCommTools
  ref.YesOrNo_Answers←2 2⍴''
  ref.YesOrNo_Answers[1;]←'AddTatinDeps@' 'y'
  ref.YesOrNo_Answers[2;]←'LoadTatinDependenciesAfterAdding@' 'y'
@@ -35,6 +36,8 @@
  →T.GoToTidyUp'Number of projects closed: 1'≢res
 
  #.TEMP.(⎕EX ⎕NL-⍳9)
+
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
  Assert rc=0
  →T.GoToTidyUp'Project successfully loaded and established in "#.TEMP"'≢res~⎕TC

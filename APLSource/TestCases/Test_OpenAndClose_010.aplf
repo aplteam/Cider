@@ -1,4 +1,4 @@
- R←Test_OpenAndClose_010(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;res;rc;cfg
+ R←Test_OpenAndClose_010(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;res;rc;cfg;ref;msg
 ⍝ Open a (new) project with all sorts of Init functions
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -13,7 +13,9 @@
  (⊂'Init' '∆INIT←1')FilesAndDirs.NPUT tempDir,'/APLSource/Init.aplf'
  (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
 
- res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" # -noEdit -acceptConfig -batch -ignoreUserExec'
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (rc msg res)←∆UCMD'CreateProject "',tempDir,'" # -noEdit -acceptConfig -batch -ignoreUserExec'
  Assert'Project successfully loaded and established in '{⍺≡(≢⍺)↑⍵}res
  list←FilesAndDirs.ListFiles tempDir
  →T.GoToTidyUp 1≠≢list
@@ -24,7 +26,7 @@
  #.⎕EX'Foo'
 
  (⊂'Init x' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
- res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -ignoreUserExec -batch'
+ (rc msg res)←∆UCMD'OpenProject "',tempDir,'" -ignoreUserExec -batch'
  Assert'Project successfully loaded and established in '{⍺≡(≢⍺)↑⍵}res
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
@@ -32,7 +34,7 @@
  #.⎕EX'Foo'
 
  (⊂'{x} Init y' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
- res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -ignoreUserExec -batch'
+ (rc msg res)←∆UCMD'OpenProject "',tempDir,'" -ignoreUserExec -batch'
  Assert'Project successfully loaded and established in '{⍺≡(≢⍺)↑⍵}res
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
@@ -40,7 +42,7 @@
  #.⎕EX'Foo'
 
  (⊂'{r}←Init y' 'r←∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
- res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -ignoreUserExec -batch'
+ (rc msg res)←∆UCMD'OpenProject "',tempDir,'" -ignoreUserExec -batch'
  Assert'Project successfully loaded and established in '{⍺≡(≢⍺)↑⍵}res
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
@@ -48,15 +50,16 @@
  #.⎕EX'Foo'
 
  (⊂'x Init y' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
- res←⎕SE.UCMD'Cider.OpenProject "',tempDir,'" -ignoreUserExec -batch -verbose'
+ (rc msg res)←∆UCMD'OpenProject "',tempDir,'" -ignoreUserExec -batch -verbose'
  →T.GoToTidyUp~∨/'Invalid function valence: is dyadic'⍷∊res
 
  R←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  res←∆LINK'Break' '#.Foo'
  Assert res ∆StartsWith'Unlinked:'
  #.⎕EX'Foo'
- rc←FilesAndDirs.RmDir tempDir
+ rc←FilesAndDirs.RmDir tempDir,'/..'
  Assert 0=+/∊rc
 ⍝Done

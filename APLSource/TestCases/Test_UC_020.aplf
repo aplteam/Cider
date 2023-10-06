@@ -1,4 +1,4 @@
- r←Test_UC_020(stopFlag batchFlag);⎕TRAP;cmd;rc;msg;result;stop
+ r←Test_UC_020(stopFlag batchFlag);⎕TRAP;cmd;rc;msg;result;stop;ref
 ⍝ Exercise OpenProject with all possible settings of -watch
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
@@ -7,6 +7,8 @@
  cmd←'OpenProject "',(∆GetTestPath⊃⎕SI),'" -parent=#.TEMP -ignoreUserExec -batch'
 
  stop←0
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (rc msg result)←stop ∆UCMD cmd,' -watch=ns'
  Assert rc=0
  →T.GoToTidyUp'ns'≢#.TEMP.Foo.CiderConfig.LINK.watch
@@ -32,6 +34,7 @@
  r←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
  #.⎕EX'TEMP'
 ⍝Done

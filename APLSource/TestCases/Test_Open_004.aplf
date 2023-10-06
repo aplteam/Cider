@@ -12,13 +12,17 @@
  parms.parentSpace←TEMP
  parms.watch←'ns'
  parms.ignoreUserExec←1
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  :Trap 0
      {}##.Cider.OpenProject parms
-     →T.FailsIf 1
+     →T.GoToTidyUp 1
  :Else
      qdmx←⎕DMX
-     →T.PassesIf'⍵ must not contain references'≡qdmx.EM
+     →T.GoToTidyUp'⍵ must not contain references'≢qdmx.EM
  :EndTrap
 
  R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
 ⍝Done

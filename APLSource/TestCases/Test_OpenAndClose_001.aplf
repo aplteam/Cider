@@ -1,4 +1,4 @@
- R←Test_OpenAndClose_001(stopFlag batchFlag);⎕TRAP;tempDir;list;sourceFolder1;projectFolder1;projectFolder2;sourceFolder2;aliase;rc;res;buff;msg
+ R←Test_OpenAndClose_001(stopFlag batchFlag);⎕TRAP;tempDir;list;sourceFolder1;projectFolder1;projectFolder2;sourceFolder2;aliase;rc;res;buff;msg;ref
 ⍝ Opens two (new) projects and then close both of them, one by alias and one by path. Uses `DropAlias`.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -9,6 +9,8 @@
  'Create!'FilesAndDirs.CheckPath sourceFolder1
  (projectFolder1,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
  #.⎕EX'Foo' ⋄ 'Foo'#.⎕NS''
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (rc msg buff)←∆UCMD'CreateProject "',projectFolder1,'" #.Foo -alias=test-case-alias-Foo -noEdit -acceptConfig -batch -ignoreUserExec'
  Assert rc=0
  #.Foo.⎕FX'r←Hello' 'r←''World'''
@@ -40,9 +42,10 @@
  R←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  ∆LINK'Break' '#.Foo'  ⍝ We DO NOT check here because when everything is working fine...
  ∆LINK'Break' '#.Goo'  ⍝ ... then it's not linked anymore.
- rc←FilesAndDirs.RmDir tempDir
+ rc←FilesAndDirs.RmDir tempDir,'/..'
  Assert 0=+/∊rc
  ⎕SE.Cider.DropAlias'test-case-alias-Foo' 'test-case-alias-Goo'
  #.⎕EX¨'Foo' 'Goo'

@@ -1,4 +1,4 @@
- r←Test_UC_005(stopFlag batchFlag);⎕TRAP;tempDir;res;rc;config
+ r←Test_UC_005(stopFlag batchFlag);⎕TRAP;tempDir;res;rc;config;msg;ref
 ⍝ Exercise the user command "CreateProject" with a path and a namespace name but without the flag
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
@@ -12,7 +12,10 @@
  config←∆GetJSON5 tempDir,'/cider.config'
  (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
 
- res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -batch -ignoreUserExec'
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (rc msg res)←∆UCMD'CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -batch -ignoreUserExec'
+ Assert rc=0
 
  →T.GoToTidyUp~∨/∨/¨'TheAnswerIs.aplf'∘⍷¨⊃('recursive' 1)FilesAndDirs.Dir tempDir,'/'
  →T.GoToTidyUp 42≢#.Foo.TheAnswerIs
@@ -20,8 +23,9 @@
  r←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  res←∆LINK'Break' '#.Foo'
  Assert res ∆StartsWith'Unlinked:'
- rc←FilesAndDirs.RmDir tempDir
+ rc←FilesAndDirs.RmDir tempDir,'/..'
  Assert 0=+/∊rc
 ⍝Done

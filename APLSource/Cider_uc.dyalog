@@ -249,7 +249,7 @@
       r←newList[;1]~oldList[;1]
     ∇
 
-    ∇ r←AddTatinDependencies Args;path;packages;projectFolder;cfg;development;ref;flag;q;list;sourceFolder;targetNS;targetNamespace
+    ∇ r←AddTatinDependencies Args;path;packages;projectFolder;cfg;development;ref;flag;q;list;sourceFolder;targetNS;targetNamespace;ref2;targetNS2;list2;sourceFolder2;noOf
       r←''
       packages←Args._1
       projectFolder←Args._2
@@ -293,7 +293,7 @@
           :EndIf
       :Until flag
       list←P.AddTatinDependencies packages projectFolder development
-      r←⍪(⊂(⍕≢list),' Tatin dependenc',((1+1<≢list)⊃'y' 'ies'),' added:'),' ',¨list
+      r←⍪(⊂(⍕≢list),' Tatin ',(development/'development-'),'dependenc',((1+1<≢list)⊃'y' 'ies'),' added:'),' ',¨list
       :If 0<≢list
       :AndIf 1 P.##.C.YesOrNo'LoadTatinDependenciesAfterAdding@Would you like to (re-)load all Tatin dependencies?'
           targetNS←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}{⍵↓⍨⍵⍳'='}ref.tatin
@@ -302,9 +302,23 @@
           :Else
               targetNS ⎕NS''
           :EndIf
-          sourceFolder←projectFolder,'/',{⍵↑⍨¯1+⍵⍳'='}ref.tatin
+          sourceFolder←projectFolder,'/',P.##.RemoveTargetDefinition ref.tatin
           list←⎕SE.Tatin.LoadDependencies sourceFolder targetNS
-          r←r⍪⊂'Dependenc',((1+1<≢list)⊃'y was' 'ies were'),' loaded'
+          ⍝ If ref points to def then ref2 doesn't and vice versa
+          ref2←(1+~development)⊃cfg.CIDER.(dependencies dependencies_dev)
+          targetNS2←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}{⍵↓⍨⍵⍳'='}ref2.tatin
+          :If targetNS≡targetNS2    ⍝  Only when "normal" dependencies and development dependencies go into the same namespace...
+              sourceFolder2←projectFolder,'/',P.##.RemoveTargetDefinition ref2.tatin
+              :If 0<≢P.##.F.ListDirs sourceFolder2
+                  list2←⎕SE.Tatin.LoadDependencies sourceFolder2 targetNS2          ⍝... do we need to (re-)load both
+                  noOf←+/≢¨list list2
+              :Else
+                  noOf←≢list
+              :EndIf
+          :Else
+              noOf←≢list
+          :EndIf
+          r←r⍪⊂(⍕noOf),' dependenc',((1+1<noOf)⊃'y was' 'ies were'),' loaded'
       :EndIf
     ∇
 
@@ -322,7 +336,7 @@
           :If 1 P.##.C.YesOrNo q
               tempFolder←P.##.F.GetTempSubDir'Cider'
               res←⎕SE.Tatin.InstallPackages('[tatin]aplteam-Cider')tempFolder
-              targetFolder←(1 P.GetProgramFilesFolder''),'/CiderTatin/Cider'
+              targetFolder←1 P.GetProgramFilesFolder'/CiderTatin/Cider'
               {}P.##.F.RmDirByForce targetFolder
               3 ⎕MKDIR targetFolder
               targetFolder ⎕NMOVE⍠1⊣tempFolder,'/*'
@@ -331,6 +345,13 @@
               folder←P.GetMyUCMDsFolder,'/Cider'
               :If P.##.F.IsDir folder
                   q←'RemoveCiderFromMyUCMDs@There is a folder Cider/ in ',P.GetMyUCMDsFolder,'/',⎕UCS 13
+                  q,←'Shall this folder be removed?'
+              :AndIf 1 P.##.C.YesOrNo q
+                  {}P.##.F.RmDirByForce folder
+              :EndIf
+              folder←1 P.GetProgramFilesFolder'/StartupSession/CiderTatin/Cider'
+              :If P.##.F.IsDir folder
+                  q←'RemoveCiderFromStartupSession@There is a folder Cider/ in ',('expand'P.##.F.NormalizePath folder,'\..'),'/',⎕UCS 13
                   q,←'Shall this folder be removed?'
               :AndIf 1 P.##.C.YesOrNo q
                   {}P.##.F.RmDirByForce folder
@@ -623,11 +644,11 @@
               r,←⊂'In case the project''s config file does not carry a definition for a Tatin dependency folder'
               r,←⊂'the user is given the oportunity to edit the config file.'
               r,←⊂''
-              r,←⊂'-development   By default the packages are added as project dependencies. The -development'
-              r,←⊂'               flag can be used to make it a development dependency instead.'
-              r,←⊂'-target=  Use this to specify a target namespace. This is added to the "dependencies" or the'
-              r,←⊂'          "dependencies_dev" parameter with a "=". If there is already such a target namespace'
-              r,←⊂'          an error is thrown; you need to edit the project''s config file in such a case.'
+              r,←⊂'-development  By default the packages are added as project dependencies. The -development'
+              r,←⊂'              flag can be used to make them development dependencies instead.'
+              r,←⊂'-target=      Use this to specify a target namespace. This is added to the "dependencies" or the'
+              r,←⊂'              "dependencies_dev" parameter with a "=". If there is already such a target namespace'
+              r,←⊂'              an error is thrown; you need to edit the project''s config file in such a case.'
           :Case ⎕C'ListNuGetDependencies'
               r,←⊂'Lists all NuGet dependencies in the Nuget dependency folder.'
               r,←⊂''
@@ -870,7 +891,7 @@
               :If 0=(⍎config.CIDER.parent).⎕NC config.CIDER.projectSpace
                   config.CIDER.projectSpace(⍎config.CIDER.parent).⎕NS''
               :Else
-                  :If 0<≢((⍎config.CIDER.parent)⍎config.CIDER.projectSpace).⎕NL⍳16
+                  :If 0<≢((⍎config.CIDER.parent)⍎config.CIDER.projectSpace).⎕NL 9~⍨⍳16
                       :If 1<≢list←⊃P.##.F.Dir projectFolder
                       :OrIf 'cider.config'≢{1≠≢⍵:0 ⋄ ⊃,/1↓⎕NPARTS⊃⍵}list
                           :If batch
@@ -937,24 +958,6 @@
       ((~name∊⎕D,⎕A,'_∆⍙',⎕C ⎕A)/name)←'_'
       config.CIDER.projectSpace←⍕name
       config P.##.Put_JSON5 filename
-    ∇
-
-    ∇ r←GetUserConfigFileTemplate;folder;filename
-    ⍝ Checks whether the user has already a personal config file template.
-    ⍝ If not the generic Cider config file template is copied into the user's Cider home folder,
-    ⍝ Eventually the template is returned.
-    ⎕trap←0'S'
-    ∘∘∘  ⍝TODO⍝  ⍝TODO⍝ 
-      folder←P.GetCiderGlobalConfigHomeFolder
-      filename←folder',/cider.config.template'
-      :If ~P.##.F.Exists filename
-          :If 0<##.⎕NC'TatinVars'
-              filename ⎕NCOPY ##.TatinVars.HOME,'/cider.config.template'
-          :Else
-              filename ⎕NCOPY CiderConfig.HOME,'/cider.config.template'
-          :EndIf
-      :EndIf
-      r←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
     ∇
 
     ∇ (opCode path)←OpenFileDialogBox caption;ref;res;filename

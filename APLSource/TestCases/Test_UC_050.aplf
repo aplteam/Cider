@@ -12,11 +12,12 @@
  tempDir←∆GetFolderInTempDir⊃⎕SI
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
 
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  stop←0
  (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
  Assert rc=0
 
- ref←∆GetRefToCommTools
  ref.YesOrNo_Answers←1 2⍴'LoadNuGetDependenciesAfterAdding@' 'y'
  (rc msg res)←stop ∆UCMD'AddNuGetDependencies Clock,NodaTime ',tempDir
  Assert rc=0

@@ -1,4 +1,4 @@
- R←Test_UC_041(stopFlag batchFlag);⎕TRAP;tempDir;list;res;rc;wasDir;row;ref
+ R←Test_UC_041(stopFlag batchFlag);⎕TRAP;tempDir;list;res;rc;wasDir;row;ref;msg
 ⍝ Create a project from the current directory without specifying a namespace name
 ⍝ Must remember the absolute path rather than the relative one.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
@@ -10,7 +10,8 @@
 
  ref←∆GetRefToCommTools
  ref.YesOrNo_Answers←1 2⍴'Sure you want to create the project' 'Y'
- {}⎕SE.UCMD'Cider.CreateProject "." -noEdit -batch -ignoreUserExec'
+ (rc msg res)←∆UCMD'CreateProject . -noEdit -batch -ignoreUserExec'
+ Assert rc=0
  list←##.Cider.ListOpenProjects 0
  →T.GoToTidyUp~(⊂'#.aaaa')∊list[;1]
  row←list[;1]⍳⊂'#.aaaa'
@@ -23,6 +24,6 @@
  {}FilesAndDirs.Cd wasDir
  res←∆LINK'Break' '#.aaaa'
  Assert res ∆StartsWith'Unlinked:'
- rc←FilesAndDirs.RmDir tempDir,'/..'
+ rc←FilesAndDirs.RmDir tempDir,'/../..'
  Assert 0=+/∊rc
 ⍝Done

@@ -13,6 +13,7 @@
  parms.batch←1
  filename←parms.folder,'/APLSource/Hello.aplf'
  (⊂'r←Hello' 'r←''World''')⎕NPUT filename 1
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
 
  (success log)←##.Cider.OpenProject parms
  Assert success
@@ -23,6 +24,7 @@
  R←T._OK
 
 ∆TidyUp:
+ ##.Cider.C.Cleanup
  {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
  (⊂'r←Hello' 'r←''World''')⎕NPUT filename 1
  #.⎕EX'TEMP'

@@ -13,6 +13,7 @@
  config.CIDER.dependencies.tatin←'tatin-packages'
  config ##.Cider.Put_JSON5 configfile
 
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  parms←##.Cider.CreateOpenParms''
  parms.folder←tempDir
  parms.batch←1
@@ -22,7 +23,7 @@
  →T.GoToTidyUp~success
  →T.GoToTidyUp∨/'ERROR'⍷log
 
- list←##.Cider.AddTatinDependencies'[tatin]APLTreeUtils2,[tatin]FilesAndDirs' tempDir 0
+ list←##.Cider.AddTatinDependencies'[tatin]APLTreeUtils2,[tatin]FilesAndDirs'tempDir 0
  →T.GoToTidyUp 2≠≢list
 
  res←##.Cider.CloseProject tempDir
@@ -42,6 +43,7 @@
  R←T._OK
 
 ∆TidyUp:
+ ##.Cider.C.Cleanup
  {}∆LINK'Break' '#.TEMP'
- FilesAndDirs.RmDir tempDir
+ FilesAndDirs.RmDir tempDir,'/..'
 ⍝Done

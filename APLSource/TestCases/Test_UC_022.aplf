@@ -1,4 +1,4 @@
- R←Test_UC_022(stopFlag batchFlag);⎕TRAP;r;res;folder;log
+ R←Test_UC_022(stopFlag batchFlag);⎕TRAP;r;res;folder;log;rc;msg;ref
 ⍝ Open a project and specify -projectSpace=
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -6,12 +6,16 @@
  'TEMP'#.⎕NS''
 
  folder←∆GetTestPath⊃⎕SI
- res←⎕SE.UCMD'Cider.OpenProject ',folder,' -projectSpace=TEMP -import -watch=ns -ignoreUserExec'
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (rc msg res)←∆UCMD'OpenProject ',folder,' -projectSpace=TEMP -import -watch=ns -ignoreUserExec'
+ Assert rc=0
  →T.PassesIf∨/'Project successfully imported and established in'⍷∊res
  →T.PassesIf'World'≡#.TEMP.Hello
 
  R←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  #.⎕EX'TEMP'
 ⍝Done

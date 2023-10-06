@@ -1,4 +1,4 @@
- R←Test_Create_061(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc
+ R←Test_Create_061(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc;ref
 ⍝ Attempts to create and then open a project with an invalid entry `tatinFolder` in config file
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -6,6 +6,8 @@
  tempDir←∆GetFolderInTempDir⊃⎕SI
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.invalid1')
 
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -ignoreUserExec'
  →T.GoToTidyUp 0=rc
@@ -14,7 +16,8 @@
  R←T._OK
 
 ∆TidyUp:
- rc←FilesAndDirs.RmDir tempDir
+ ref.Cleanup
+ rc←FilesAndDirs.RmDir tempDir,'/..'
  Assert 0=+/∊rc
  #.⎕EX'Invalid1'
 ⍝Done

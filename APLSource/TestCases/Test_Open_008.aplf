@@ -11,11 +11,16 @@
  parms.importFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
+
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (success log)←##.Cider.OpenProject parms
- →T.PassesIf success
- →T.PassesIf~∨/'ERROR'⍷log
- →T.PassesIf'World'≡#.TEMP.Hello
- →T.PassesIf 2=≢#.TEMP.⎕NL⍳16                 ⍝ We must not find any packages, just the function and CiderConfig
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+ →T.GoToTidyUp'World'≢#.TEMP.Hello
+ →T.GoToTidyUp 2≠≢#.TEMP.⎕NL⍳16                 ⍝ We must not find any packages, just the function and CiderConfig
 
  R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
 ⍝Done

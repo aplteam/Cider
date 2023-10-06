@@ -17,6 +17,7 @@
  parms.noPkgLoad←0
  parms.batch←1
  parms.ignoreUserExec←1
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
 
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
@@ -37,6 +38,7 @@
  R←T._OK
 
 ∆TidyUp:
+ ##.Cider.C.Cleanup
  res←∆LINK'Break' '#.TEMP'
  FilesAndDirs.RmDir tempDir,'/..'
 ⍝Done

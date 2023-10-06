@@ -3,4 +3,9 @@
 ⍝ this function returns a ref to Cider in either ⎕SE or #.
 ⍝ This is an important destinction in case the variables in CoommTools nees to be specified
 ⍝ to pretend a human being making decisions/selections.
- r←(1+{0=⍵.⎕NC'DEVELOPMENT':0 ⋄ 0<⍵.DEVELOPMENT}⎕SE.Cider)⊃⎕SE.Cider.##.C #.Cider.Cider.##.C
+ :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'
+ :AndIf 0<⎕SE.Cider.DEVELOPMENT
+     r←#.Cider.Cider.##.C
+ :Else
+     r←⎕SE.Cider.##.C
+ :EndIf

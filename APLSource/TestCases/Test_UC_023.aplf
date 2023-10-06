@@ -1,4 +1,4 @@
- R←Test_UC_023(stopFlag batchFlag);⎕TRAP;r;res;folder;log
+ R←Test_UC_023(stopFlag batchFlag);⎕TRAP;r;res;folder;log;msg;rc;ref
 ⍝ Open a project without loading any packages (-noPkgLoad flag)
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -6,11 +6,17 @@
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
 
  folder←∆GetTestPath⊃⎕SI
- res←⎕SE.UCMD'Cider.OpenProject ',folder,' -noPkgLoad -import -watch=ns -ignoreUserExec'
- →T.PassesIf∨/'Project successfully imported and established in'⍷∊res
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (rc msg res)←∆UCMD'OpenProject ',folder,' -noPkgLoad -import -watch=ns -ignoreUserExec'
+ Assert rc=0
+ →T.GoToTidyUp~∨/'Project successfully imported and established in'⍷∊res
 
- →T.PassesIf'World'≡#.TEMP.Hello
- →T.PassesIf 2=≢#.TEMP.⎕NL⍳16                 ⍝ We must not find any packages, just the function and CiderConfig
+ →T.GoToTidyUp'World'≢#.TEMP.Hello
+ →T.GoToTidyUp 2≠≢#.TEMP.⎕NL⍳16                 ⍝ We must not find any packages, just the function and CiderConfig
 
  R←T._OK
+
+∆TidyUp:
+ ref.Cleanup
 ⍝Done

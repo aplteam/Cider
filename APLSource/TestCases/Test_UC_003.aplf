@@ -1,4 +1,4 @@
- r←Test_UC_003(stopFlag batchFlag);⎕TRAP;tempDir;config;res;rc;ref
+ r←Test_UC_003(stopFlag batchFlag);⎕TRAP;tempDir;config;res;rc;ref;msg
 ⍝ Exercise the user command "CreateProject" with just a path but without the flag
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
@@ -11,7 +11,9 @@
 
  ref←∆GetRefToCommTools
  ref.YesOrNo_Answers←1 2⍴'Project successfully created; open as well?' 'y'
- res←⎕SE.UCMD'Cider.CreateProject "',tempDir,'" -noEdit -acceptConfig -ignoreUserExec -batch'
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (rc msg res)←∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -ignoreUserExec -batch'
+ Assert rc=0
 
  →T.GoToTidyUp~(⊂'#.Foo')∊{⍵[;1]}##.Cider.ListOpenProjects 0
 
@@ -22,6 +24,6 @@
  res←∆LINK'Break' '#.Foo'
  #.⎕EX'Foo'
  Assert res ∆StartsWith'Unlinked:'
- rc←FilesAndDirs.RmDir tempDir
+ rc←FilesAndDirs.RmDir tempDir,'/..'
  Assert 0=+/∊rc
 ⍝Done

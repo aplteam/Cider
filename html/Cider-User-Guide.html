@@ -131,13 +131,14 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 </a>
 </div>
 <p>The first version you can use Cider with is 18.0. This is because Cider is a Tatin package, and Tatin runs under 18.0 or later.</p>
+<p>Cider requires (like Tatin) a Unicode version of APL.</p>
 <div class="h_tag">
 <a href="#tatin" id="tatin" class="autoheader_anchor">
 <h4 data-id="Tatin">2.1.2. Tatin</h4>
 </a>
 </div>
 <p>Cider relies on the <a href="https://github.com/aplteam/Tatin" class="external_link" title="Link to Tatin on GitHub">Tatin package manager</a> because it is a Tatin package. With version 19.0 and later Cider and Tatin will optionally be both available in <code>⎕SE</code> right from the start. With earlier versions (18.0 and 18.2) it's up to the user to take care of that.</p>
-<p>If Tatin is not in <code>⎕SE</code> but available in the user's home folder then Cider will attempt to load it by executing the user command <code>]Tatin.Version</code> which should implicitly load Tatin into <code>⎕SE</code>.</p>
+<p>If Tatin is not in <code>⎕SE</code> but recognized as a user command then Cider will attempt to load it by executing the user command <code>]Tatin.Version</code> which will implicitly load the Tatin API into <code>⎕SE</code>.</p>
 <div class="leanpub">
 <img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information">
 <div>
@@ -150,7 +151,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h3 data-id="Installation">2.2. Installation</h3>
 </a>
 </div>
-<p>With version 19.0, Cider will be part of a default installation, though it won't be active: for that the user has to take action.</p>
+<p>With version 19.0, Cider will be part of a default installation, though it won't be active by default: for that the user has to take action.</p>
 <p>In earlier versions you must install Cider yourself.</p>
 <div class="h_tag">
 <a href="#version-190" id="version-190" class="autoheader_anchor">
@@ -180,7 +181,6 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cid
 <img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information">
 <div>
 <p>For the time being you must not install into the version-agnostic folder.</p>
-<p>It would prevent <code>]Cider.UpdateCider</code> from working.</p>
 <p>This restriction is likely to be lifted in a later release.</p>
 </div>
 </div>
@@ -199,7 +199,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cid
 </div>
 
 <p>If that is not good enough for you, follow the instructions provided by the document <a href="https://tatin.dev/Assets/docs/InstallingAndUpdatingTheTatinClient.html#On-setupdyalog" class="external_link" title="Link to the document on https://tatin.dev">Installing And Updating The Tatin Client</a> for how to achieve that for Tatin.</p>
-<p>All you have to do in addition to that is to add this function:</p>
+<p>All you have to do in addition to that is to add this function to the <code>setup.dyalog</code> script:</p>
 <pre tabindex="0"><code>    ∇ {r}←path LoadCider debug;version;res;sep;paths;qdmx
       r←0 0⍴''
       :Trap debug/0
@@ -218,7 +218,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cid
           r←'&gt;&gt;&gt; Attempt to load Cider failed with ',⎕DMX.EM
       :EndTrap
     ∇</code></pre>
-<p>The final step is to add this line to the <code>Setup</code> function:</p>
+<p>The final step is to add this line to the <code>Setup</code> function in the <code>setup.dyalog</code> script:</p>
 <pre tabindex="0"><code> (GetProgramFilesFolder '/CiderTatin') LoadCider ⎕SE.SALTUtils.DEBUG</code></pre>
 <div class="h_tag">
 <a href="#upgrading-cider" id="upgrading-cider" class="autoheader_anchor">
@@ -230,7 +230,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cid
 <p>You must restart Dyalog in order to start using the new version.</p>
 <div class="leanpub_A">
 <h3>]Cider.UpdateCider</h3>
-<p>Note that due to a change of the target folder this command will only work when you use it to update version 0.37.0</p>
+<p>Note that due to a change of the target folder this command will only work when you use it to update version 0.37.0 or later.</p>
 <p><em>In earlier versions of Cider the command cannot know about the new target folder and must therefore not be used.</em></p>
 <p>For that reason you are advised to delete the <code>Cider/</code> folder from you <code>MyUCMDs/</code> folder (which means un-installing it) and then install again.</p>
 </div>
@@ -254,13 +254,13 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cid
 </div>
 <p>Cider may have a global configuration file that can be used to define settings that effect all projects. It's named is <code>cider.json</code>, and it is referred to as the <em>global</em> Cider config file.</p>
 <p>This file, if it exists, it situated in a folder <code>.cider</code> that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be <code>C:\Users\JohnDoe\.cider</code> on Windows, on Linux it would be <code>/home/JohnDoe/.cider</code> etc.</p>
-<p>This folder does not only host the global config file, it's also the place where the file with alias definitions (<code>aliase.txt</code>) is saved as well as the file <code>cider.config.template</code> that is used as a template when a new project is created.</p>
+<p>This folder does not only host the global config file, it's also the place where the file with alias definitions (<code>aliase.txt</code>) is saved as well as the file <code>cider.config.template</code> which is used as a template (hence the name) whenever a new project is created.</p>
 <div class="h_tag">
 <a href="#project-configuration" id="project-configuration" class="autoheader_anchor">
 <h4 data-id="Project-configuration">2.4.2. Project configuration</h4>
 </a>
 </div>
-<p>Every Cider project has a configuration file called <code>cider.config</code> that is saved in the root of the project's folder.</p>
+<p>Every Cider project has a configuration file called <code>cider.config</code> which is saved in the root of the project's folder.</p>
 <p>When a new project is created, a copy of the file <code>cider.config.template</code> is copied from the global configuration folder (see above) into the root of the new project.</p>
 <div class="h_tag">
 <a href="#createproject" id="createproject" class="autoheader_anchor">

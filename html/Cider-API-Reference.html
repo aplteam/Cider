@@ -60,7 +60,11 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <ol start="1">
 <li>One or more packages as either a nested vector of character vectors or a comma-separated simple character vector</li>
 <li>A path to a project or a Cider alias</li>
-<li>A flag that decides whether the folder the config parameter <code>dependencies</code> points to or the folder <code>dependencies_dev</code> points to is going to be the target.</li>
+<li>A flag (<code>dev</code>) that decides which folder should be used for the installation
+<ul>
+<li>0 = the folder the config parameter <code>dependencies</code> points to</li>
+<li>1 = the folder the config parameter <code>dependencies_dev</code> points to</li>
+</ul></li>
 </ol>
 <div class="h_tag">
 <a href="#closeproject" id="closeproject" class="autoheader_anchor">

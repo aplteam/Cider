@@ -12,6 +12,7 @@
  parms.watch←'ns'
  parms.ignoreUserExec←1
  parms.batch←1
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (success log)←##.Cider.OpenProject parms
  →T.PassesIf success
  →T.GoToTidyUp∨/'ERROR'⍷log
@@ -40,6 +41,7 @@
 
 ∆TidyUp:
  ⍝ The aliase are removed by later test cases
+ ##.Cider.C.Cleanup
  res←∆LINK'Break' '#.TEMP'
  Assert res ∆StartsWith'Unlinked:'
  res←∆LINK'Break' '#.TEMP2'

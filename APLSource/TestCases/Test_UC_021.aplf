@@ -1,4 +1,4 @@
- R←Test_UC_021(stopFlag batchFlag);⎕TRAP;r;res;folder;log
+ R←Test_UC_021(stopFlag batchFlag);⎕TRAP;r;res;folder;log;rc;msg;ref
 ⍝ Open a project and specify -parent=
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -6,7 +6,10 @@
  'TEMP'#.⎕NS''
 
  folder←∆GetTestPath⊃⎕SI
- res←⎕SE.UCMD'Cider.OpenProject ',folder,' -parent=#.TEMP -import -watch=ns -ignoreUserExec'
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (rc msg res)←∆UCMD'OpenProject ',folder,' -parent=#.TEMP -import -watch=ns -ignoreUserExec'
+ Assert rc=0
  →T.GoToTidyUp~∨/'Project successfully imported and established in'⍷res
 
  →T.GoToTidyUp'World'≢#.TEMP.Foo.Hello
@@ -14,6 +17,7 @@
  R←T._OK
 
 ∆TidyUp:
+ ref.Cleanup
  {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
  #.⎕EX'TEMP'
 ⍝Done
