@@ -1,4 +1,8 @@
 (
+ '* 0.37.1 ⋄ 2023-10-07'
+ '  * Bug fix in `]Cider.UpdateCider`   '
+ '  * Documentation regarding the installation and upgrading procedure corrected'
+ '  * `Make` amended'
  '* 0.37.0 ⋄ 2023-10-03'
  '  * `]AddTatinDependencies` now loads the added dependencies as well'
  '  * Bug fixes'

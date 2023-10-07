@@ -35,7 +35,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <li class="toc-entry toc-h4"><a href="#version-190">2.2.1. Version 19.0</a></li>
 <li class="toc-entry toc-h4"><a href="#version-180-and-182">2.2.2. Version 18.0 and 18.2</a></li>
 </ul></li>
-<li class="toc-entry toc-h3"><a href="#upgrading-cider">2.3. Upgrading Cider</a>
+<li class="toc-entry toc-h3"><a href="#updating-cider">2.3. Updating Cider</a>
 <ul>
 <li class="toc-entry toc-h4"><a href="#git">2.3.1. Git</a></li>
 </ul></li>
@@ -158,34 +158,28 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <h4 data-id="Version-190">2.2.1. Version 19.0</h4>
 </a>
 </div>
-<p>Use the user command <code>]Activate</code> to activate both Cider and Tatin. Start with</p>
+<p>Use the user command <code>]Activate</code> to activate both Cider and Tatin. Start with:</p>
 <pre tabindex="0"><code>]Activate -??</code></pre>
 <div class="h_tag">
 <a href="#version-180-and-182" id="version-180-and-182" class="autoheader_anchor">
 <h4 data-id="Version-180-and-182">2.2.2. Version 18.0 and 18.2</h4>
 </a>
 </div>
-<p>Unlike 19.0, these versions come with neither Tatin nor Cider, so you first have to make sure that Tatin is installed and available.</p>
+<p>Unlike 19.0, these versions come with neither Tatin nor Cider, so you first have to make sure that Tatin is installed and available, because Cider is a Tatin package and is loaded as such.</p>
 <p>The document <a href="https://tatin.dev/Assets/docs/InstallingAndUpdatingTheTatinClient.html" class="external_link" title="Link to the document on https://tatin.dev">Installing And Updating The Tatin Client</a> provides instructions for how to install Tatin on 18.0 and 18.2.</p>
 <p>Once Tatin is available, installing Cider is easy and straightforward, just issue this command:</p>
 <pre tabindex="0"><code>]Tatin.InstallPackages [tatin]Cider &lt;targetFolder&gt;</code></pre>
 <p><code>targetFolder</code> must be one of the following folders, here for version 18.2:</p>
 <pre tabindex="0"><code>  ⍝ Windows
-C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL 18.2 Unicode Files\CiderTatin\Cider    ⍝ 32 bit
-C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cider ⍝ 64 bit
+  ⍝ 32 bit
+C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL 18.2 Unicode Files\SessionExtensions\CiderTatin\Cider
+  ⍝ 64 bit
+C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensions\CiderTatin\Cider
   ⍝ Linux
-/home/&lt;⎕AN&gt;/dyalog.182U64.files/CiderTatin/Cider/
+/home/&lt;⎕AN&gt;/dyalog.182U64.files/SessionExtensions/CiderTatin/Cider/
   ⍝ Mac OS
-/Users/&lt;⎕AN&gt;/dyalog.182U64.files/CiderTatin/Cider/</code></pre>
-<div class="leanpub">
-<img src="https://download.aplwiki.com/LeanPub/Images/information.png" alt="Information">
-<div>
-<p>For the time being you must not install into the version-agnostic folder.</p>
-<p>This restriction is likely to be lifted in a later release.</p>
-</div>
-</div>
-
-<p>Once the folder <code>CiderTatin/</code> is in place, any newly started version of Dyalog is aware of the user commands <code>]Cider.*</code>.</p>
+/Users/&lt;⎕AN&gt;/dyalog.182U64.files/SessionExtensions/CiderTatin/Cider/</code></pre>
+<p>Once the folder <code>SessionExtensions/CiderTatin/Cider</code> is in place, any newly started version of Dyalog is aware of the user commands <code>]Cider.*</code>.</p>
 <p>The API is not available yet at this point, but it will become available once a Cider user command is issued. For example, after issuing the following command the API will be available via <code>⎕SE.Cider</code>:</p>
 <pre tabindex="0"><code>]Cider.Version</code></pre>
 <div class="leanpub">
@@ -194,7 +188,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cid
 <p>Note that for Dyalog's user command framework to be able to identify Cider's user command script the folder must be made known to SALT. However, since Cider requires Tatin to be available this must have been done already.</p>
 <p>You can check this by issuing the command</p>
 <p><code>]SALT.Settings cmddir</code></p>
-<p>which lists all folders the user command framework will scan for user commands. The <code>CiderTatin/</code> folder must be among them, otherwise Tatin user commands would not be available.</p>
+<p>which lists all folders the user command framework will scan for user commands. The <code>SessionExtensions/CiderTatin/</code> folder must be among them, otherwise no Tatin user command would be available.</p>
 </div>
 </div>
 
@@ -219,10 +213,10 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cid
       :EndTrap
     ∇</code></pre>
 <p>The final step is to add this line to the <code>Setup</code> function in the <code>setup.dyalog</code> script:</p>
-<pre tabindex="0"><code> (GetProgramFilesFolder '/CiderTatin') LoadCider ⎕SE.SALTUtils.DEBUG</code></pre>
+<pre tabindex="0"><code> (GetProgramFilesFolder '/SessionExtensions/CiderTatin') LoadCider ⎕SE.SALTUtils.DEBUG</code></pre>
 <div class="h_tag">
-<a href="#upgrading-cider" id="upgrading-cider" class="autoheader_anchor">
-<h3 data-id="Upgrading-Cider">2.3. Upgrading Cider</h3>
+<a href="#updating-cider" id="updating-cider" class="autoheader_anchor">
+<h3 data-id="Updating-Cider">2.3. Updating Cider</h3>
 </a>
 </div>
 <p>You can update Cider to the latest version by issuing the following command:</p>
@@ -230,9 +224,14 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cid
 <p>You must restart Dyalog in order to start using the new version.</p>
 <div class="leanpub_A">
 <h3>]Cider.UpdateCider</h3>
-<p>Note that due to a change of the target folder this command will only work when you use it to update version 0.37.0 or later.</p>
+<p>Note that due to a change of the target folder this command will only work when you use it to update version 0.37.1 or later.</p>
+<h3>Versions prior to 0.37.0</h3>
 <p><em>In earlier versions of Cider the command cannot know about the new target folder and must therefore not be used.</em></p>
-<p>For that reason you are advised to delete the <code>Cider/</code> folder from you <code>MyUCMDs/</code> folder (which means un-installing it) and then install again.</p>
+<p>For that reason you are advised to delete the <code>Cider/</code> folder from you <code>MyUCMDs/</code> folder (which means un-installing it) and then install it into the correct folder.</p>
+<h3>Version 0.37.0</h3>
+<p>This version installed into the wrong folder, therefore <em>you must not use</em> <code>]CiderUpdateCider</code>!</p>
+<p>For that reason you are advised to install again into the correct folder.</p>
+<p>The next time you use <code>]Cider.UpdateCider</code> it will remove Cider from the wrong folder.</p>
 </div>
 
 <div class="h_tag">

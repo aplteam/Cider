@@ -45,7 +45,7 @@ In earlier versions you must install Cider yourself.
 
 #### Version 19.0
 
-Use the user command `]Activate` to activate both Cider and Tatin. Start with
+Use the user command `]Activate` to activate both Cider and Tatin. Start with:
 
 ```
 ]Activate -??
@@ -53,7 +53,7 @@ Use the user command `]Activate` to activate both Cider and Tatin. Start with
 
 #### Version 18.0 and 18.2
 
-Unlike 19.0, these versions come with neither Tatin nor Cider, so you first have to make sure that Tatin is installed and available.
+Unlike 19.0, these versions come with neither Tatin nor Cider, so you first have to make sure that Tatin is installed and available, because Cider is a Tatin package and is loaded as such.
 
 The document [Installing And Updating The Tatin Client](https://tatin.dev/Assets/docs/InstallingAndUpdatingTheTatinClient.html "Link to the document on https://tatin.dev") provides instructions for how to install Tatin on 18.0 and 18.2.
 
@@ -67,19 +67,17 @@ Once Tatin is available, installing Cider is easy and straightforward, just issu
 
 ```
   ⍝ Windows
-C:\Users\<⎕AN>\Documents\Dyalog APL 18.2 Unicode Files\CiderTatin\Cider    ⍝ 32 bit
-C:\Users\<⎕AN>\Documents\Dyalog APL-64 18.2 Unicode Files\CiderTatin\Cider ⍝ 64 bit
+  ⍝ 32 bit
+C:\Users\<⎕AN>\Documents\Dyalog APL 18.2 Unicode Files\SessionExtensions\CiderTatin\Cider
+  ⍝ 64 bit
+C:\Users\<⎕AN>\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensions\CiderTatin\Cider
   ⍝ Linux
-/home/<⎕AN>/dyalog.182U64.files/CiderTatin/Cider/
+/home/<⎕AN>/dyalog.182U64.files/SessionExtensions/CiderTatin/Cider/
   ⍝ Mac OS
-/Users/<⎕AN>/dyalog.182U64.files/CiderTatin/Cider/
+/Users/<⎕AN>/dyalog.182U64.files/SessionExtensions/CiderTatin/Cider/
 ```
 
-I> For the time being you must not install into the version-agnostic folder.
-I>
-I> This restriction is likely to be lifted in a later release.
-
-Once the folder `CiderTatin/` is in place, any newly started version of Dyalog is aware of the user commands `]Cider.*`.
+Once the folder `SessionExtensions/CiderTatin/Cider` is in place, any newly started version of Dyalog is aware of the user commands `]Cider.*`.
 
 The API is not available yet at this point, but it will become available once a Cider user command is issued. For example, after issuing the following command the API will be available via `⎕SE.Cider`:
 
@@ -93,7 +91,7 @@ I> You can check this by issuing the command
 I>
 I> `]SALT.Settings cmddir`
 I>
-I> which lists all folders the user command framework will scan for user commands. The `CiderTatin/` folder must be among them, otherwise Tatin user commands would not be available.
+I> which lists all folders the user command framework will scan for user commands. The `SessionExtensions/CiderTatin/` folder must be among them, otherwise no Tatin user command would be available.
 
 If that is not good enough for you, follow the instructions provided by the document [Installing And Updating The Tatin Client](https://tatin.dev/Assets/docs/InstallingAndUpdatingTheTatinClient.html#On-setupdyalog "Link to the document on https://tatin.dev") for how to achieve that for Tatin.
 
@@ -123,10 +121,10 @@ All you have to do in addition to that is to add this function to the `setup.dya
 The final step is to add this line to the `Setup` function in the `setup.dyalog` script:
 
 ```
- (GetProgramFilesFolder '/CiderTatin') LoadCider ⎕SE.SALTUtils.DEBUG
+ (GetProgramFilesFolder '/SessionExtensions/CiderTatin') LoadCider ⎕SE.SALTUtils.DEBUG
 ```
 
-### Upgrading Cider
+### Updating Cider
 
 You can update Cider to the latest version by issuing the following command:
 
@@ -138,11 +136,21 @@ You must restart Dyalog in order to start using the new version.
 
 A> ### ]Cider.UpdateCider
 A>
-A> Note that due to a change of the target folder this command will only work when you use it to update version 0.37.0 or later.
+A> Note that due to a change of the target folder this command will only work when you use it to update version 0.37.1 or later.
+A>
+A> ### Versions prior to 0.37.0
 A>
 A> *In earlier versions of Cider the command cannot know about the new target folder and must therefore not be used.*
 A>
-A> For that reason you are advised to delete the `Cider/` folder from you `MyUCMDs/` folder (which means un-installing it) and then install again.
+A> For that reason you are advised to delete the `Cider/` folder from you `MyUCMDs/` folder (which means un-installing it) and then install it into the correct folder.
+A>
+A> ### Version 0.37.0
+A>
+A> This version installed into the wrong folder, therefore *you must not use* `]CiderUpdateCider`!
+A>
+A> For that reason you are advised to install again into the correct folder. 
+A>
+A> The next time you use `]Cider.UpdateCider` it will remove Cider from the wrong folder.
 
 #### Git
 
@@ -657,5 +665,6 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
