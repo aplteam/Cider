@@ -98,10 +98,11 @@ If that is not good enough for you, follow the instructions provided by the docu
 All you have to do in addition to that is to add this function to the `setup.dyalog` script:
 
 ```
-    ∇ {r}←path LoadCider debug;version;res;sep;paths;qdmx
+    ∇ {r}←LoadCider debug;version;res;sep;path;qdmx
       r←0 0⍴''
       :Trap debug/0
           version←⊃(//)⎕VFI{⍵↑⍨¯1+⍵⍳'.'}2⊃# ⎕WG'APLVersion'
+          path←1 GetProgramFilesFolder '/SessionExtensions/CiderTatin/'
           :If version<18
               r←'Cider not loaded, only supported in Dyalog 18.0 and later'
           :ElseIf 9=⎕SE.⎕NC'Cider'
@@ -665,6 +666,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 

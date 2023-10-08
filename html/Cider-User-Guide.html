@@ -194,10 +194,11 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 
 <p>If that is not good enough for you, follow the instructions provided by the document <a href="https://tatin.dev/Assets/docs/InstallingAndUpdatingTheTatinClient.html#On-setupdyalog" class="external_link" title="Link to the document on https://tatin.dev">Installing And Updating The Tatin Client</a> for how to achieve that for Tatin.</p>
 <p>All you have to do in addition to that is to add this function to the <code>setup.dyalog</code> script:</p>
-<pre tabindex="0"><code>    ∇ {r}←path LoadCider debug;version;res;sep;paths;qdmx
+<pre tabindex="0"><code>    ∇ {r}←LoadCider debug;version;res;sep;path;qdmx
       r←0 0⍴''
       :Trap debug/0
           version←⊃(//)⎕VFI{⍵↑⍨¯1+⍵⍳'.'}2⊃# ⎕WG'APLVersion'
+          path←1 GetProgramFilesFolder '/SessionExtensions/CiderTatin/'
           :If version&lt;18
               r←'Cider not loaded, only supported in Dyalog 18.0 and later'
           :ElseIf 9=⎕SE.⎕NC'Cider'
