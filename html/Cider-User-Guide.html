@@ -84,10 +84,11 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}b
 <li class="toc-entry toc-h4"><a href="#7-loading-nuget-packages">2.6.7. 7. Loading NuGet packages</a></li>
 <li class="toc-entry toc-h4"><a href="#8-injecting-a-namespace-ciderconfig">2.6.8. 8. Injecting a namespace <code>CiderConfig</code></a></li>
 <li class="toc-entry toc-h4"><a href="#9-injecting-a-namespace-tatinvars">2.6.9. 9. Injecting a namespace <code>TatinVars</code></a></li>
-<li class="toc-entry toc-h4"><a href="#10-initialising-a-project">2.6.10. 10. Initialising a project (optional)</a></li>
-<li class="toc-entry toc-h4"><a href="#11-executing-user-specific-code">2.6.11. 11. Executing user-specific code</a></li>
-<li class="toc-entry toc-h4"><a href="#12-check-for-todo">2.6.12. 12. Check for <code>ToDo</code></a></li>
-<li class="toc-entry toc-h4"><a href="#13-git">2.6.13. 13. Git</a></li>
+<li class="toc-entry toc-h4"><a href="#9-changing-the-current-directory">2.6.10. 9. Changing the current directory</a></li>
+<li class="toc-entry toc-h4"><a href="#11-initialising-a-project">2.6.11. 11. Initialising a project (optional)</a></li>
+<li class="toc-entry toc-h4"><a href="#12-executing-user-specific-code">2.6.12. 12. Executing user-specific code</a></li>
+<li class="toc-entry toc-h4"><a href="#13-check-for-todo">2.6.13. 13. Check for <code>ToDo</code></a></li>
+<li class="toc-entry toc-h4"><a href="#14-git">2.6.14. 14. Git</a></li>
 </ul></li>
 </ul></li>
 <li class="toc-entry toc-h2"><a href="#misc">3. Misc</a>
@@ -582,8 +583,14 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>This allows a developer to access <code>TatinVars</code> as if it was loaded as a package while working on the project.</p>
 <p>Whether the project ends up as a package is determined by the presencse of a file <code>apl-package.json</code> in the root of the project.</p>
 <div class="h_tag">
-<a href="#10-initialising-a-project" id="10-initialising-a-project" class="autoheader_anchor">
-<h4 data-id="10-Initialising-a-project">2.6.10. 10. Initialising a project (optional)</h4>
+<a href="#9-changing-the-current-directory" id="9-changing-the-current-directory" class="autoheader_anchor">
+<h4 data-id="9-Changing-the-current-directory">2.6.10. 9. Changing the current directory</h4>
+</a>
+</div>
+<p>At this point Cider checks the current (or working) directory. If it's different from the project's directory the user is asked whether she wants to change the current directory to the project's directory.</p>
+<div class="h_tag">
+<a href="#11-initialising-a-project" id="11-initialising-a-project" class="autoheader_anchor">
+<h4 data-id="11-Initialising-a-project">2.6.11. 11. Initialising a project (optional)</h4>
 </a>
 </div>
 <p>Now there might well be demand for executing some code to initialise your project.</p>
@@ -595,8 +602,8 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <li>An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project</li>
 </ul>
 <div class="h_tag">
-<a href="#11-executing-user-specific-code" id="11-executing-user-specific-code" class="autoheader_anchor">
-<h4 data-id="11-Executing-user-specific-code">2.6.11. 11. Executing user-specific code</h4>
+<a href="#12-executing-user-specific-code" id="12-executing-user-specific-code" class="autoheader_anchor">
+<h4 data-id="12-Executing-user-specific-code">2.6.12. 12. Executing user-specific code</h4>
 </a>
 </div>
 <p>You might want to execute some general code (as opposed to project-specific code) after a project was loaded. “General” means that this code is executed whenever a project (any project!) is opened.</p>
@@ -612,15 +619,15 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>Another application could be to bring in non-Tatin dependencies defined in the <code>dependencies</code> and/or the <code>dependencies_dev</code> properties.</p>
 <p>Note that you may use the <code>ignoreUserExec</code> flag to tell <code>OpenProject</code> to ignore the global setting. This is certainly useful when Cider's test suite is executed.</p>
 <div class="h_tag">
-<a href="#12-check-for-todo" id="12-check-for-todo" class="autoheader_anchor">
-<h4 data-id="12-Check-for-ToDo">2.6.12. 12. Check for <code>ToDo</code></h4>
+<a href="#13-check-for-todo" id="13-check-for-todo" class="autoheader_anchor">
+<h4 data-id="13-Check-for-ToDo">2.6.13. 13. Check for <code>ToDo</code></h4>
 </a>
 </div>
 <p>Finally Cider checks whether there is a variables <code>ToDo</code> in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.</p>
 <p>You may use this to keep track of steps that need to be executed before the project can be commited or published etc.</p>
 <div class="h_tag">
-<a href="#13-git" id="13-git" class="autoheader_anchor">
-<h4 data-id="13-Git">2.6.13. 13. Git</h4>
+<a href="#14-git" id="14-git" class="autoheader_anchor">
+<h4 data-id="14-Git">2.6.14. 14. Git</h4>
 </a>
 </div>
 <p>If the project is managed by Git then Cider will report the current branch and its status.</p>

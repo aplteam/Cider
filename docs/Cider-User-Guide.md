@@ -527,7 +527,12 @@ This allows a developer to access `TatinVars` as if it was loaded as a package w
 Whether the project ends up as a package is determined by the presencse of a file `apl-package.json` in the root of the project.
 
 
-#### 10. Initialising a project (optional)
+#### 9. Changing the current directory
+
+At this point Cider checks the current (or working) directory. If it's different from the project's directory the user is asked whether she wants to change the current directory to the project's directory.
+
+
+#### 11. Initialising a project (optional)
 
 Now there might well be demand for executing some code to initialise your project.
 
@@ -541,7 +546,7 @@ Such a function may be niladic, monadic, ambivalent or dyadic:
 * An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project
 
 
-#### 11. Executing user-specific code
+#### 12. Executing user-specific code
 
 You might want to execute some general code (as opposed to project-specific code) after a project was loaded. "General" means that this code is executed whenever a project (any project!) is opened. 
 
@@ -568,14 +573,14 @@ Another application could be to bring in non-Tatin dependencies defined in the `
 Note that you may use the `ignoreUserExec` flag to tell `OpenProject` to ignore the global setting. This is certainly useful when Cider's test suite is executed.
 
 
-#### 12. Check for `ToDo`
+#### 13. Check for `ToDo`
 
 Finally Cider checks whether there is a variables `ToDo` in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.
 
 You may use this to keep track of steps that need to be executed before the project can be commited or published etc.
 
 
-#### 13. Git
+#### 14. Git
 
 If the project is managed by Git then Cider will report the current branch and its status.
 
@@ -666,6 +671,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 
