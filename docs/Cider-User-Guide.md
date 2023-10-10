@@ -145,9 +145,9 @@ A> *In earlier versions of Cider the command cannot know about the new target fo
 A>
 A> For that reason you are advised to delete the `Cider/` folder from you `MyUCMDs/` folder (which means un-installing it) and then install it into the correct folder.
 A>
-A> ### Version 0.37.0
+A> ### Versions 0.37.1 and 0.37.2
 A>
-A> This version installed into the wrong folder, therefore *you must not use* `]CiderUpdateCider`!
+A> These versions installed into the new folder but with one level missing, therefore *you must not use* `]CiderUpdateCider`!
 A>
 A> For that reason you are advised to install again into the correct folder. 
 A>
@@ -671,6 +671,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 

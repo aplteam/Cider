@@ -1,4 +1,4 @@
-﻿:Class Cider_UC
+:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
@@ -336,12 +336,13 @@
           :If 1 P.##.C.YesOrNo q
               tempFolder←P.##.F.GetTempSubDir'Cider'
               res←⎕SE.Tatin.InstallPackages('[tatin]aplteam-Cider')tempFolder
-              targetFolder←1 P.GetProgramFilesFolder'/CiderTatin/Cider'
+              targetFolder←1 P.GetProgramFilesFolder'/SessionExtensions/CiderTatin/Cider'
               {}P.##.F.RmDirByForce targetFolder
               3 ⎕MKDIR targetFolder
               targetFolder ⎕NMOVE⍠1⊣tempFolder,'/*'
-              r←'Cider was successfully updated to version ',{1↓⍵/⍨2≤+\⍵='-'}⊃res
+              ⎕←'Cider was successfully updated to version ',({1↓⍵/⍨2≤+\⍵='-'}⊃res),' in ',targetFolder
               {}P.##.F.RmDirByForce tempFolder
+     
               folder←P.GetMyUCMDsFolder,'/Cider'
               :If P.##.F.IsDir folder
                   q←'RemoveCiderFromMyUCMDs@There is a folder Cider/ in ',P.GetMyUCMDsFolder,'/',⎕UCS 13
@@ -349,9 +350,10 @@
               :AndIf 1 P.##.C.YesOrNo q
                   {}P.##.F.RmDirByForce folder
               :EndIf
-              folder←1 P.GetProgramFilesFolder'/StartupSession/CiderTatin/Cider'
+     
+              folder←1 P.GetProgramFilesFolder'/CiderTatin/Cider'
               :If P.##.F.IsDir folder
-                  q←'RemoveCiderFromStartupSession@There is a folder Cider/ in ',('expand'P.##.F.NormalizePath folder,'\..'),'/',⎕UCS 13
+                  q←'RemoveCiderFromProgramFiles@There is a folder Cider/ in ',('expand'P.##.F.NormalizePath folder,'\..'),'/',⎕UCS 13
                   q,←'Shall this folder be removed?'
               :AndIf 1 P.##.C.YesOrNo q
                   {}P.##.F.RmDirByForce folder

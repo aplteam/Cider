@@ -1,4 +1,6 @@
 (
+ '* 0.37.3 ⋄ 2023-10-10'
+ '  * Installation folder was missing the `SessionExtensions` level'
  '* 0.37.2 ⋄ 2023-10-08'
  '  * In the documentation the function `LoadCider` was wrong: no left argument (1) was passed to `GetProgramFilesFolder`'
  '  * `OpenProject` did not give any feedback if no argument was specfied, no aliases were defined and the current dir is not a project folder'
