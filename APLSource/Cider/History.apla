@@ -1,4 +1,10 @@
 (
+ '* 0.37.4 ⋄ 2023-10-13'
+ '  * Bug fixes'
+ '    * When attempting to open a package with NuGet dependencies in Dyalog priot 19.0 Cider kept silent over '
+ '      the fact that such a version does not support NuGet. It now prints a message to the session.'
+ '    * Reloading Tatin packages after using `AddTatinDependencies` sometimes failed.'
+ '    * ListTatinPackages now prints "No dependencies found" to the session rather than returning an empty matrix.'
  '* 0.37.3 ⋄ 2023-10-10'
  '  * Installation folder was missing the `SessionExtensions` level'
  '* 0.37.2 ⋄ 2023-10-08'

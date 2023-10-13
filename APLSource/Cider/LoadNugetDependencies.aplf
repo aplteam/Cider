@@ -14,26 +14,29 @@
  :If F.IsDir nuGetFolder
  :AndIf 0<≢list2←F.ListFiles nuGetFolder,'/*.csproj'
      p←verbose batch∘{⍺ PrintToSession ⍵}
- :AndIf 0<≢NuGet←FindNuGetAPI ⍬
-     :If 2=⎕NC'ns'
-         ns←⍎ns
-     :EndIf
-     '_dotnet'ns.⎕NS''
-     :If 0<≢targetNamespace
-         targetNamespace ns.⎕NS''
-     :EndIf
-     nuGetFolder←F.EnforceSlash nuGetFolder
-     ns._dotnet.⎕USING←NuGet.Using nuGetFolder
-     data←⎕XML⊃⎕NGET⊃list2
-     attr←(data[;2]≡¨⊂'PackageReference')⌿data[;4]
-     names←{2⊃⍵[⊃⍸⍵[;1]≡¨⊂'Include';]}¨attr
-     names←GetRealNuGetNames nuGetFolder names
-     :For name :In names
-         :If 0=≢targetNamespace
-             ns.{⍎⍵,'←_dotnet.',⍵}name
-         :Else
-             targetNamespace ns.{⍎⍺,'.',⍵,'←_dotnet.',⍵}name
+     :If 0=≢NuGet←FindNuGetAPI ⍬
+         1 PrintToSession'Could not load NuGet packages due to missing API'
+     :Else
+         :If 2=⎕NC'ns'
+             ns←⍎ns
          :EndIf
-         list,←⊂name
-     :EndFor
+         '_dotnet'ns.⎕NS''
+         :If 0<≢targetNamespace
+             targetNamespace ns.⎕NS''
+         :EndIf
+         nuGetFolder←F.EnforceSlash nuGetFolder
+         ns._dotnet.⎕USING←NuGet.Using nuGetFolder
+         data←⎕XML⊃⎕NGET⊃list2
+         attr←(data[;2]≡¨⊂'PackageReference')⌿data[;4]
+         names←{2⊃⍵[⊃⍸⍵[;1]≡¨⊂'Include';]}¨attr
+         names←GetRealNuGetNames nuGetFolder names
+         :For name :In names
+             :If 0=≢targetNamespace
+                 ns.{⍎⍵,'←_dotnet.',⍵}name
+             :Else
+                 targetNamespace ns.{⍎⍺,'.',⍵,'←_dotnet.',⍵}name
+             :EndIf
+             list,←⊂name
+         :EndFor
+     :EndIf
  :EndIf

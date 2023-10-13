@@ -1,4 +1,4 @@
-:Class Cider_UC
+﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
@@ -304,12 +304,13 @@
           :EndIf
           sourceFolder←projectFolder,'/',P.##.RemoveTargetDefinition ref.tatin
           list←⎕SE.Tatin.LoadDependencies sourceFolder targetNS
-          ⍝ If ref points to def then ref2 doesn't and vice versa
+          ⍝ If ref points to "dev" then ref2 doesn't and vice versa
           ref2←(1+~development)⊃cfg.CIDER.(dependencies dependencies_dev)
           targetNS2←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}{⍵↓⍨⍵⍳'='}ref2.tatin
           :If targetNS≡targetNS2    ⍝  Only when "normal" dependencies and development dependencies go into the same namespace...
               sourceFolder2←projectFolder,'/',P.##.RemoveTargetDefinition ref2.tatin
               :If 0<≢P.##.F.ListDirs sourceFolder2
+              :AndIf P.##.F.IsFile sourceFolder2,⎕SE._Tatin.Client.Reg.BuildListFilename
                   list2←⎕SE.Tatin.LoadDependencies sourceFolder2 targetNS2          ⍝... do we need to (re-)load both
                   noOf←+/≢¨list list2
               :Else
@@ -380,10 +381,13 @@
       :If 0=≢path←GetProjectPath Args._1
           ⎕←'Cancelled by user'
       :Else
-          r←P.ListTatinDependencies path
-          r←('Source' 'Package-ID' 'Principal' 'URL' '')⍪('' '' '' '' '')⍪r
-          (2⌷r)←(⊃¨⌈⌿≢¨r)⍴¨'-'
-          r←{w←⍵ ⋄ w[2;2⊃⍴w]←' ' ⋄ w}r
+          :If 0<≢r←P.ListTatinDependencies path
+              r←('Source' 'Package-ID' 'Principal' 'URL' '')⍪('' '' '' '' '')⍪r
+              (2⌷r)←(⊃¨⌈⌿≢¨r)⍴¨'-'
+              r←{w←⍵ ⋄ w[2;2⊃⍴w]←' ' ⋄ w}r
+          :Else
+              r←'No dependencies found'
+          :EndIf
       :EndIf
     ∇
 
