@@ -123,7 +123,7 @@
  :EndIf
  InjectConfigDataIntoProject config projectSpace_ parms.folder
  InjectTatinVars projectSpace_ parms.folder
- ChangeCurrentDir parms.folder
+ {}ChangeCurrentDir⍣(⊃~parms.batch)⊢parms.folder
  {}parms ExecProjectInitFunction⍣(~parms.suppressInit)⊣config projectSpace_
  {}ExecUserFunction⍣(~parms.ignoreUserExec)⊣config
  parms CheckOnToDo projectSpace_

@@ -1,1 +1,0 @@
- CheckPath←{⍺←⊢ ⋄ 1:shy←⍺ ##.CheckPath ⍵}

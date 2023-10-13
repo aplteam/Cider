@@ -181,7 +181,7 @@
       :EndIf
     ∇
 
-    ∇ r←Run(Cmd Args);folder;G;space;max;ns;msg;noOf
+    ∇ r←Run(Cmd Args);folder;G;space;max;ns;msg;noOf;noProjectSelected
       :Access Shared Public
       :If 0=⎕SE.⎕NC'APLGit2'
           {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)'⎕SE'
@@ -199,26 +199,33 @@
       :Else
           (r space folder)←GetSpaceAndFolder Cmd Args
       :EndIf
+      noProjectSelected←∧/space folder∊''⍬
       :Select ⎕C Cmd
       :Case ⎕C'Add'
+          →noProjectSelected/0
           r←Add space folder Args
       :Case ⎕C'AddGitIgnore'
+          →noProjectSelected/0
           r←AddGitIgnore folder
       :Case ⎕C'ChangeLog'
+          →noProjectSelected/0
           r←ChangeLog space folder Args
       :Case ⎕C'Commit'
+          →noProjectSelected/0
           r←Commit space folder Args
       :Case ⎕C'CompareCommits'
+          →noProjectSelected/0
           r←CompareCommits space folder Args
       :Case ⎕C'Diff'
+          →noProjectSelected/0
           r←Diff space folder Args
       :Case ⎕C'GetDefaultProject'
           r←GetDefaultProject ⍬
       :Case ⎕C'GetTagOfLatestRelease'
+          →noProjectSelected/0
           r←GetTagOfLatestRelease space folder Args
-      :Case ⎕C'GetTagOfLatestRelease'
-          r←GetTagOfLatestRelease Args
       :Case ⎕C'RefLog'
+          →noProjectSelected/0
           r←RefLog space folder Args
       :Case ⎕C'GoToGitHub'
           :If 0=⎕NC'space'
@@ -228,29 +235,38 @@
               r←space GoToGitHub Args
           :EndIf
       :Case ⎕C'Init'
+          →noProjectSelected/0
           r←Init space folder Args
       :Case ⎕C'IsDirty'
+          →noProjectSelected/0
           r←IsDirty space folder Args
       :Case ⎕C'IsGitProject'
+          →noProjectSelected/0
           r←IsGitProject space folder Args
       :Case ⎕C'ListBranches'
+          →noProjectSelected/0
           r←ListBranches space folder Args
       :Case ⎕C'Log'
+          →noProjectSelected/0
           r←Log space folder Args
       :Case ⎕C'NoOfUntrackedFiles'
+          →noProjectSelected/0
           r←NoOfUntrackedFiles folder
       :Case ⎕C'OpenGitShell'
           {}OpenGitShell space folder Args
           r←''
       :Case ⎕C'RefLog'
+          →noProjectSelected/0
           r←RefLog space folder Args
       :Case ⎕C'SetDefaultProject'
           r←G.SetDefaultProject{⍵/⍨0≠⍵}Args._1
       :Case ⎕C'Squash'
+          →noProjectSelected/0
           msg←''Args.Switch'm'
           noOf←⊃(//)⎕VFI(⍕(1+∧/Args._1∊⎕D)⊃Args.(_2 _1)),' +0'
           r←⍪folder Squash msg noOf
       :Case ⎕C'Status'
+          →noProjectSelected/0
           r←⍪Status space folder Args
       :Case ⎕C'Version'
           r←⎕SE.APLGit2.Version
