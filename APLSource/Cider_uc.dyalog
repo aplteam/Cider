@@ -1,4 +1,4 @@
-﻿:Class Cider_UC
+:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
@@ -324,6 +324,7 @@
     ∇
 
     ∇ r←UpdateCider dummy;allVersions;thisVersion;ind;noOf;targetFolder;tempFolder;res;q;folder
+      r←''
       allVersions←,⎕SE.Tatin.ListVersions'[Tatin]aplteam-Cider'
       thisVersion←'aplteam-Cider-',{⍵↑⍨¯1+⍵⍳'+'}P.Version
       ind←allVersions⍳⊂thisVersion
@@ -343,7 +344,6 @@
               targetFolder ⎕NMOVE⍠1⊣tempFolder,'/*'
               ⎕←'Cider was successfully updated to version ',({1↓⍵/⍨2≤+\⍵='-'}⊃res),' in ',targetFolder
               {}P.##.F.RmDirByForce tempFolder
-     
               folder←P.GetMyUCMDsFolder,'/Cider'
               :If P.##.F.IsDir folder
                   q←'RemoveCiderFromMyUCMDs@There is a folder Cider/ in ',P.GetMyUCMDsFolder,'/',⎕UCS 13
@@ -351,7 +351,6 @@
               :AndIf 1 P.##.C.YesOrNo q
                   {}P.##.F.RmDirByForce folder
               :EndIf
-     
               folder←1 P.GetProgramFilesFolder'/CiderTatin/Cider'
               :If P.##.F.IsDir folder
                   q←'RemoveCiderFromProgramFiles@There is a folder Cider/ in ',('expand'P.##.F.NormalizePath folder,'\..'),'/',⎕UCS 13

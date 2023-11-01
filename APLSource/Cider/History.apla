@@ -1,4 +1,7 @@
 (
+ '* 0.37.5 ⋄ 2023-11-01'
+ '  * Bug fixes'
+ '    * The user command ]UpdateCider signalled a VALUE ERROR in case it updated Cider sucessfully: missing explicit result.'
  '* 0.37.4 ⋄ 2023-10-13'
  '  * Bug fixes'
  '    * When attempting to open a package with NuGet dependencies in Dyalog priot 19.0 Cider kept silent over '
