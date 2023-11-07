@@ -1,5 +1,5 @@
  R←Test_OpenAndClose_002(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;rc;ref
-⍝ Open a (new) project and then close it by path
+⍝ Create and open a project and then close it by path
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -20,6 +20,7 @@
 
 ∆TidyUp:
  ref.Cleanup
+ {}⎕SE.Link.Break #.Foo
  rc←FilesAndDirs.RmDir tempDir,'/..'
  Assert 0=+/∊rc
 ⍝Done

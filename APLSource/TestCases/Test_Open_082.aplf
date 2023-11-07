@@ -1,4 +1,4 @@
- R←Test_Open_082(stopFlag batchFlag);⎕TRAP;parms;r;rc;tempDir;log;success
+ R←Test_Open_082(stopFlag batchFlag);⎕TRAP;parms;r;rc;tempDir;log;success;qdmx
 ⍝ Tries to open a project that has packages but the installed packages and the build list don't fit
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -15,10 +15,14 @@
  parms.batch←1
  ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  ##.Cider.C.YesOrNo_Answers⍪←1 2⍴'ReinstallBecauseOfInconsistency@' 'y'
- (success log)←##.Cider.OpenProject parms
- →T.GoToTidyUp∨/'ERROR'⍷log
- →T.GoToTidyUp'#._tatin.aplteam_Tester2_3_5_0.Tester2'≢⍕#.TEMP.fooproj.Tester2  ⍝ VALUE ERROR? Try again, but first execute stuff after ∆TidyUp
- →T.GoToTidyUp'#._tatin.aplteam_CodeCoverage_0_7_3.CodeCoverage'≢⍕#.TEMP.fooproj.CodeCoverage
+
+ :Trap 0
+     (success log)←##.Cider.OpenProject parms
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp~qdmx.EM ∆StartsWith'ERROR: loading Tatin packages from'
+ :EndTrap
 
  R←T._OK
 

@@ -1,4 +1,4 @@
- R←Test_Tatin_005(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc;log
+ R←Test_Tatin_005(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc;log;qdmx
 ⍝ Attempt to Open a project with Tatin packages via an absolute path (invalid)
 ⍝ Problem is reported but Cider carries on anyway
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
@@ -13,8 +13,13 @@
  parms.ignoreUserExec←1
  parms.batch←1
  ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
- (res log)←##.Cider.OpenProject parms
- →T.GoToTidyUp~∨/'ERROR:'⍷∊log
+ :Trap 0
+     (res log)←##.Cider.OpenProject parms
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp~∨/'ERROR:'⍷qdmx.EM
+ :EndTrap
 
  R←T._OK
 

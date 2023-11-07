@@ -2,7 +2,11 @@
 ⍝ Open a Cider project.\\
 ⍝ `y` must be one of:
 ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
-⍝  * A character vector holding the full path to a project
+⍝  * A character vector holding the full path to a project\\
+⍝ The function returns either FAILURE or SUCCESS. This refers to the principal operation: opening the project.
+⍝ However, if something like loading dependencies goes wrong then messages are printed to the session.\\
+⍝ In case `batch` is 1 things are different, however: in that case an error is thrown for all essential parts
+⍝ of the operation. That includes loading any dependencies but excludes non-essential stuff like a Git status report.
  successFlag←FAILURE ⋄ ∆LOG←''
  :If 80=⎕DR y
      parms←CreateOpenParms''
@@ -68,13 +72,14 @@
  :If parms.importFlag
      res←linkOptions ⎕SE.Link.Import projectSpace_ source                       ⍝ Get the code into the WS
      dmx←⎕DMX
-     ('LINK failed to import the code (,',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
+     ('LINK failed to import the code (,',dmx.EM,')')Assert~∨/'Error:'⍷res
      p'Code imported'
  :Else
      res←linkOptions ⎕SE.Link.Create projectSpace_ source                       ⍝ Get the code into the WS
      dmx←⎕DMX
-     ('LINK failed to load the code (',dmx.EM,')')⎕SIGNAL dmx.EN/⍨∨/'Error:'⍷res
+     ('LINK failed to load the code (',dmx.EM,')')Assert~∨/'Error:'⍷res
      :If ∨/'ERRORS ENCOUNTERED:'⍷res
+         res Assert 0=parms.batch
          (1 parms.batch)p res
      :EndIf
      (1 parms.batch)p ReportLinkSettings config
@@ -91,12 +96,15 @@
                  buff←''
                  buff,←⊂'ERROR: Checking Tatin package status in ',parms.folder
                  buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+                 buff Assert 0=parms.batch
                  (1 parms.batch)p buff
              :EndTrap
          :EndIf
          :Trap 0
              :If 0=parms.(verbose batch)LoadTatinDependencies config parms.folder(⍕projectSpace_)
-                 (1 parms.batch)p'Package folder ',parms.folder,' needs attention!'
+                 buff←'Package folder ',parms.folder,' needs attention!'
+                 buff Assert 0=parms.batch
+                 1 p buff
              :EndIf
          :Else
              ⎕SE._Tatin.Client.CloseConnections 1                               ⍝ Just in case...
@@ -104,6 +112,8 @@
              buff←''
              buff,←⊂'ERROR: loading Tatin packages from ',parms.folder
              buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+             buff←1↓⊃,/(⎕UCS 13),¨buff
+             buff Assert 0=parms.batch
              (1 parms.batch)p buff
          :EndTrap
      :EndIf
@@ -117,6 +127,7 @@
              buff←''
              buff,←⊂'ERROR: loading NuGet packages from ',parms.folder
              buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+             buff Assert 0=parms.batch
              (1 parms.batch)p buff
          :EndTrap
      :EndIf

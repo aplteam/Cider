@@ -9,7 +9,7 @@
 
  ref←∆GetRefToCommTools
  ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
- {}∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig  -batch -ignoreUserExec'
+ res←∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig  -batch -ignoreUserExec'
 
  list←##.Cider.ListOpenProjects 0
  →T.GoToTidyUp 0≠##.Cider.CloseProject'DoesNotExist'

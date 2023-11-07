@@ -36,15 +36,19 @@
                                  p'Packages in ',folder,' need attention!'
                              :EndIf
                          :ElseIf ∨/'Invalid entry:'⍷qdmx.EM
-                             q←'ReinstallBecauseOfInvalidPkg@There are invalid entries in the dependency list; re-install?'
-                             :If C.YesOrNo q
-                                 parms←⎕SE.Tatin.CreateReInstallParms
-                                 parms.batch←batch
-                                 parms ⎕SE.Tatin.ReInstallDependencies folder
-                                 →∆Retry
-                             :Else
-                                 p'Packages in ',folder,' need attention!'
+                             :If batch
                                  r←FAILURE
+                             :Else
+                                 q←'ReinstallBecauseOfInvalidPkg@There are invalid entries in the dependency list; re-install?'
+                                 :If C.YesOrNo q
+                                     parms←⎕SE.Tatin.CreateReInstallParms
+                                     parms.batch←batch
+                                     parms ⎕SE.Tatin.ReInstallDependencies folder
+                                     →∆Retry
+                                 :Else
+                                     p'Packages in ',folder,' need attention!'
+                                     r←FAILURE
+                                 :EndIf
                              :EndIf
                          :Else
                              p qdmx.EM

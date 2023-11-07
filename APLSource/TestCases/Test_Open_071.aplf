@@ -1,5 +1,5 @@
- R←Test_Open_071(stopFlag batchFlag);⎕TRAP;parms;success;log
-⍝ Open a project that has a variable that is syntactially incorrect, causing a warning
+ R←Test_Open_071(stopFlag batchFlag);⎕TRAP;parms;success;log;qdmx
+⍝ Open a project that has a variable that is syntactically incorrect, causing an error
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -13,15 +13,18 @@
  parms.ignoreUserExec←1
  parms.batch←1
  ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
- (success log)←##.Cider.OpenProject parms
- Assert success
- →T.GoToTidyUp~∨/,'1 import(s) failed:'⍷log
- →T.GoToTidyUp~∨/,'History.apla'⍷log
+ :Trap 0
+     (success log)←##.Cider.OpenProject parms
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp~∨/'ERRORS ENCOUNTERED:'⍷∊qdmx.EM
+ :EndTrap
 
  R←T._OK
 
 ∆TidyUp:
  ##.Cider.C.Cleanup
- Assert ⎕SE.Cider.CloseProject'#.TEMP.booproj'
+ {}⎕SE.Cider.CloseProject'#.TEMP.booproj'
  #.⎕EX'TEMP'
 ⍝Done

@@ -5,7 +5,7 @@
 ⍝ to pretend a human being making decisions/selections.
  :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'
  :AndIf 0<⎕SE.Cider.DEVELOPMENT
-     r←#.Cider.Cider.##.C
+     r←#.Cider.Cider.CommTools
  :Else
      r←⎕SE.Cider.##.C
  :EndIf
