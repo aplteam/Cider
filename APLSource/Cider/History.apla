@@ -1,5 +1,7 @@
 (
- '* 0.37.5 ⋄ 2023-11-01'
+ '* 0.37.6 ⋄ 2023-11-08'
+ '  * `CheckTargetNamespaceAndLinkFolder` improved in terms of error messages and better questions '
+ '* 0.37.5 ⋄ 2023-11-07'
  '  * Bug fixes'
  '    * The user command ]UpdateCider signalled a VALUE ERROR in case it updated Cider sucessfully: missing explicit result.'
  '* 0.37.4 ⋄ 2023-10-13'
