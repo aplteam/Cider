@@ -1,0 +1,5 @@
+C:\Users\abloc\Documents\GitHub\Cider\Tests\Test_NuGet_010\net6.0\nuget-packages\published\nuget-packages.dll
+C:\Users\abloc\Documents\GitHub\Cider\Tests\Test_NuGet_010\net6.0\nuget-packages\published\nuget-packages.deps.json
+C:\Users\abloc\Documents\GitHub\Cider\Tests\Test_NuGet_010\net6.0\nuget-packages\published\nuget-packages.pdb
+C:\Users\abloc\Documents\GitHub\Cider\Tests\Test_NuGet_010\net6.0\nuget-packages\published\Clock.dll
+C:\Users\abloc\Documents\GitHub\Cider\Tests\Test_NuGet_010\net6.0\nuget-packages\published\NodaTime.dll

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "ItIJCXZAOaIPy/zjdLbbnMwXbLTY1IucfbO6bnPCx6Jv2iLUbk6Quc9N9aR+X+MFuyp+AIt22gLb0CgPgOzitQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\abloc\\Documents\\GitHub\\Cider\\Tests\\Test_NuGet_010\\net6.0\\nuget-packages\\nuget-packages.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\abloc\\.nuget\\packages\\clock\\1.0.3\\clock.1.0.3.nupkg.sha512",
+    "C:\\Users\\abloc\\.nuget\\packages\\clockanalyser\\1.0.99\\clockanalyser.1.0.99.nupkg.sha512",
+    "C:\\Users\\abloc\\.nuget\\packages\\nodatime\\3.1.9\\nodatime.3.1.9.nupkg.sha512",
+    "C:\\Users\\abloc\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.7.1\\system.runtime.compilerservices.unsafe.4.7.1.nupkg.sha512"
+  ],
+  "logs": []
+}
