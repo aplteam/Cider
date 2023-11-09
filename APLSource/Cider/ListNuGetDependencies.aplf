@@ -13,7 +13,4 @@
      :AndIf 0<≢F.ListFiles folder,'/*.csproj'
          r←↑NuGet.Packages folder
      :EndIf
-     :If ⊃0<≢r
-         r[;1]←GetRealNuGetNames folder(r[;1])
-     :EndIf
  :EndIf
