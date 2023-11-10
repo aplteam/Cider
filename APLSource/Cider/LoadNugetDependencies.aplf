@@ -1,5 +1,6 @@
- list←x LoadNuGetDependencies(folder ns);NuGet;p;verbose;batch;cfg;nuGetFolder;list;data;attr;names;name;list2;targetNamespace;buff;dlls;assemblies;exported_namespaces;namespace;_dotnet_reflection
-⍝ Load all NuGet dependencies from folder into `ns` (namspace).
+ list←x LoadNuGetDependencies(folder ns);NuGet;p;verbose;batch;cfg;nuGetFolder;list;name;list2;targetNamespace;buff;dlls;assemblies;namespace;_dotnetReflection;exportedNamespaces
+⍝ Load all dotnet namespace exported by NuGet dependencies from
+⍝ folder into `ns` (namspace).
 ⍝ Returns a list with the names of all loaded NuGet packages.
  (verbose batch)←2↑x,0
  list←''
@@ -27,15 +28,17 @@
          :EndIf
          nuGetFolder←F.EnforceSlash nuGetFolder
          ns._dotnet.⎕USING←NuGet.Using nuGetFolder
-         data←⎕XML⊃⎕NGET⊃list2
-         attr←(data[;2]≡¨⊂'PackageReference')⌿data[;4]
-         names←{2⊃⍵[⊃⍸⍵[;1]≡¨⊂'Include';]}¨attr
-         _dotnet_reflection←⎕NS''
-         _dotnet_reflection.⎕USING←'System.Reflection,System.Runtime.dll'
+         _dotnetReflection←⎕NS''
+         _dotnetReflection.⎕USING←'System.Reflection,System.Runtime.dll'
+         ⍝ Determine path to dlls of principal dependencies
+         ⍝ Note: The last dll on the list is dropped since it is the dll for
+         ⍝ the 'cover' package created via the NuGet API
          dlls←¯1↓{¯1↑','(≠⊆⊢)⍵}¨ns._dotnet.⎕USING
-         assemblies←_dotnet_reflection.Assembly.LoadFile¨dlls
-         exported_namespaces←∪1⊃¨'.'(≠⊆⊢)¨⊃,/assemblies.GetExportedTypes.FullName
-         :For namespace :In exported_namespaces
+         assemblies←_dotnetReflection.Assembly.LoadFile¨dlls
+         ⍝ Copy all namespaces directly exposed by the principal dependencies
+         ⍝ to the _dotnet namespace
+         exportedNamespaces←∪1⊃¨'.'(≠⊆⊢)¨⊃,/assemblies.GetExportedTypes.FullName
+         :For namespace :In exportedNamespaces
              :If 0=≢targetNamespace
                  ns.{⍎⍵,'←_dotnet.',⍵}namespace
              :Else
