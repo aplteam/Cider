@@ -1,4 +1,0 @@
-C:\Users\kai\AppData\Local\Temp\Cider-Tests_114500498_0\Test_NuGet_001\nuget-packages\published\nuget-packages.dll
-C:\Users\kai\AppData\Local\Temp\Cider-Tests_114500498_0\Test_NuGet_001\nuget-packages\published\nuget-packages.deps.json
-C:\Users\kai\AppData\Local\Temp\Cider-Tests_114500498_0\Test_NuGet_001\nuget-packages\published\nuget-packages.pdb
-C:\Users\kai\AppData\Local\Temp\Cider-Tests_114500498_0\Test_NuGet_001\nuget-packages\published\Clock.dll
