@@ -35,8 +35,8 @@
          ⍝ the 'cover' package created via the NuGet API
          dlls←¯1↓{¯1↑','(≠⊆⊢)⍵}¨ns._dotnet.⎕USING
          assemblies←_dotnetReflection.Assembly.LoadFile¨dlls
-         ⍝ Copy all namespaces directly exposed by the principal dependencies
-         ⍝ to the _dotnet namespace
+         ⍝ Add references to namespaces directly exposed by the principal
+         ⍝ dependencies to the _dotnet namespace
          exportedNamespaces←∪1⊃¨'.'(≠⊆⊢)¨⊃,/assemblies.GetExportedTypes.FullName
          :For namespace :In exportedNamespaces
              :If 0=≢targetNamespace
