@@ -1,6 +1,7 @@
 (
- '* 0.37.6 ⋄ 2023-11-08'
+ '* 0.37.6 ⋄ 2023-12-15'
  '  * `CheckTargetNamespaceAndLinkFolder` improved in terms of error messages and better questions '
+ '  * Bug fix in `InjectTatinVars`: TatinVars was injected into the project root rather than the package root'
  '* 0.37.5 ⋄ 2023-11-07'
  '  * Bug fixes'
  '    * The user command ]UpdateCider signalled a VALUE ERROR in case it updated Cider sucessfully: missing explicit result.'
