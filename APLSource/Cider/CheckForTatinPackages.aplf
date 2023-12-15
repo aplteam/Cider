@@ -15,7 +15,7 @@
      :If C.YesOrNo'Tatin install folder',((1+1=+/bool)⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
          status←2
          parms←⎕SE.Tatin.CreateReInstallParms
-         parms.update←C.YesOrNo'Would you like to install later version, if available?'
+         parms.update←C.YesOrNo'Would you like to install later versions, if available?'
          folders←bool/folders
          :For this :In (⊂path,'/'),¨folders
              report←parms ⎕SE.Tatin.ReInstallDependencies this

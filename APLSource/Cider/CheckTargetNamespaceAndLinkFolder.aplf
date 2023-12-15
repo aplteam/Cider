@@ -17,8 +17,8 @@
      folderIsEmpty←0=≢⊃⎕NINFO⍠('Wildcard' 1)⊣parms.folder,'/',source,'/*'
  :EndIf
  :If ~nsIsEmpty∧~folderIsEmpty
- :OrIf ~folderIsEmpty∧~nsIsEmpty
- :OrIf ~folderIsEmpty∧nsIsEmpty
+ :AndIf ~folderIsEmpty∧~nsIsEmpty
+ :AndIf ~folderIsEmpty∧nsIsEmpty
      :If parms.batch
           ⍝ With `batch` being true there is nothing we can do but throw an error
          ('Both the target (',(⍕ref),') and the source folder are not empty')Assert 0
