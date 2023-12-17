@@ -3,10 +3,6 @@
  :If flag
      M←##.TestCases.MakeHelpers
      C←##.CiderConfig
-     :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'
-         developmentWas←⎕SE.Cider.DEVELOPMENT
-         ⎕SE.Cider.⎕EX'DEVELOPMENT'
-     :EndIf
      path←C.HOME,'/',C.CIDER.distributionFolder
      cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
      targetFolder←(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
@@ -26,9 +22,6 @@
              res←⎕SE.Tatin.InstallPackages zipFilename targetFolder
              ⎕←'  New version installed: ',res
          :EndIf
-     :EndIf
-     :If 0<⎕NC'developmentWas'
-         ⎕SE.Cider.DEVELOPMENT←developmentWas
      :EndIf
  :EndIf
  ⍝Done
