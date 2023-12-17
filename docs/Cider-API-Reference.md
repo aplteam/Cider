@@ -172,8 +172,6 @@ C:\Users\kai\Documents\Dyalog APL Files/CiderTatin
 C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files
 ```
 
-## GetProjectPath
-
 ## GetTatinDependencies
 
 Takes a namespace generated from a Cider project's configuration file as right argument and either `development` of `development_dev` as left argument.
