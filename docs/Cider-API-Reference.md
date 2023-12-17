@@ -8,9 +8,9 @@
 
 Although the API functions are similar to their user command equivalents, they are not identical. Also, the API offers more functions while there is no API equivalent for `]CreateProject`.
 
-While for the user commands the help provided by the `-?` syntax is sufficient, this document deals with the API.
+While for the user commands the help provided by the `-??` syntax is sufficient, this document deals with the API.
 
-Note that while `⎕SE._Cider` contains the Cider code , the API is available via `⎕SE.Cider`.
+Note that while the Cider package (code) is loaded into `⎕SE._Cider`, the API is available via `⎕SE.Cider`. The user is supposed to call functions in `⎕SE.Cider` but not in `⎕SE.Cider_`. 
 
 The API functions are ordered alphabetically.
 
@@ -117,11 +117,45 @@ Every record of that file contains two pieces of information: an alias and its a
 Niladic function that returns the path to the file that is used by Cider to manage alias names and their paths.
 
 
+## GetCiderGlobalConfigFileContent
+
+Reads Cider's global configuration file and returns a namespace with the settings if there is such a file. If there  is not, `⍬` is returned.
+
+The global configuration file is optional. If it exists it will hold user preferences.
+
+## GetCiderGlobalConfigFilename   
+
+Returns the name of Cider's global configuration file.
+
+## GetCiderGlobalConfigHomeFolder 
+
+Returns the folder that hosts Cider's global configuration file.
+
+On Windows, this is typically `C:/Users/<⎕AN>/.cider/`
+
+
+## GetCiderGlobalConfigFileContent
+
+Niladic function that returns the contents of the file returned by the `GetCidersConfigFilename` function as a namespace with variables.
+
+The file might not exist, or be empty. In either case the function returns `⍬`.
+
+For the time being the file may define `ExecuteAfterProjectOpen`.
+
+
 ## GetMyUCMDsFolder
 
 Niladic function that returns the path to the `MyUCMDs/` folder.
 
 Note that this folder is created under Windows by the Dyalog installation routine, but not on other platforms.
+
+
+## GetNuGetDependencies
+
+Takes a namespace generated from a Cider project's configuration file as right argument and either `development` of `development_dev` as left argument.
+
+Returns either the value of `nuget` in the given branch or an empty vector if `nuget` is not defined.
+
 
 ## GetProgramFilesFolder
 
@@ -138,15 +172,22 @@ C:\Users\kai\Documents\Dyalog APL Files/CiderTatin
 C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files
 ```
 
+## GetProjectPath
+
+## GetTatinDependencies
+
+Takes a namespace generated from a Cider project's configuration file as right argument and either `development` of `development_dev` as left argument.
+
+Returns either the value of `tatin` in the given branch or an empty vector if `tatin` is not defined.
 
 
-## GetCiderGlobalConfigFileContent
+## HasDotNet
 
-Niladic function that returns the contents of the file returned by the `GetCidersConfigFilename` function as a namespace with variables.
+```
+boolean←HasDotNet
+```
 
-The file might not exist, or be empty. In either case the function returns `⍬`.
-
-For the time being the file may define `ExecuteAfterProjectOpen`.
+Returns a 1 if either .NET Core or .NET is available and the bridge DLL was successfully loaded and 0 otherwise.
 
 
 ### ExecuteAfterProjectOpen
@@ -368,6 +409,8 @@ This function takes a path to a Cider project as `⍵` and a namespace with Cide
 
    This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
 3. The version date in international date format: YYYY-MM-DD
+
+
 
 
 
