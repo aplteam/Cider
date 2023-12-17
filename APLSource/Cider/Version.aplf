@@ -1,3 +1,4 @@
  r←Version
 ⍝ See als History
- r←'0.37.6+642'
+ r←(⎕JSON⍠('Dialect' 'JSON5')⊣TatinVars.CONFIG).version
+⍝Done

@@ -1,4 +1,4 @@
-﻿:Class Cider_UC
+:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
@@ -330,7 +330,7 @@
       ind←allVersions⍳⊂thisVersion
       noOf←≢allVersions
       :If ind=noOf
-          r←'Cider is up-to-date: ',P.Version
+          r←'Cider is up-to-date'
       :ElseIf ind>noOf
           r←'The currently running version of Cider appears to have no regular version number - updating is impossible'
       :Else

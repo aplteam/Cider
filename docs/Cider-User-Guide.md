@@ -343,6 +343,17 @@ Note that Cider cooperates with the package [`APLGit2`](https://github.com/aplte
 Some function of `APLGit2` must know the `owner` of a project on GitHub. Those functions will investigate project_url`: if that points to GitHub, the owner is established from its contents.
 
 
+###### tatinVars
+
+This property is optional, it may or may not exist. If it exists it must carry either `⎕THIS` or the name of a sub-namespace of the project.
+
+* `⎕THIS` has the same effect as if the property would not exist  at all.
+
+* Specifying a sub-namespace would tell Cider to inject `TatinVars` into that sub-namespace rather than the root of the project.
+
+For details see [Injecting a namespace TatinVars](#).
+
+
 ###### tests
 
 Empty or an expression (relative to the project) that would execute the test cases of the project.
@@ -417,7 +428,7 @@ Naturally, `OpenProject` is the most important command Cider offers. We discuss 
 
 Note that the contents of the file `cider.config` directs what exactly Cider is going to do when its principal method, `OpenProject`, is executed.
 
-#### 1. Creating a project space
+#### Creating a project space
 
 The first step carried out by `]Cider.OpenProject` is to create a namespace with the name `projectSpace` as a child of `parent`, when `parent` defaults to `#` but may be something like `⎕SE` or `#.Foo.Goo` etc.
 
@@ -429,7 +440,7 @@ The `parent` must exist while the `parentSpace` may or may not exist. If it does
 * In case neither the namespace nor the folder is empty the user is asked whether she wants the namespace to be emptied; if not an error is thrown.
 
 
-#### 2. Setting system variables
+#### Setting system variables
 
 In the next step `]Cider.OpenProject` is going to set at least two system variables defined in the config file in the `SYSVARS` section of the INI file: `⎕IO` and `⎕ML`.
 
@@ -448,7 +459,7 @@ A>
 A> That's another way to make sure that system variables are set as early as possible because LINK will establish the values of system variables defined in files before it attempts to bring code into the workspace.
 
 
-#### 3. Bringing the code into the workspace
+#### Bringing the code into the workspace
 
 In this step, all files with supported file extensions (See LINK's documentation for details) found in `source` and any subfolder are established in the workspace in `{parent}. {projectSpace}`.
 
@@ -470,7 +481,7 @@ A> You may set `watch` to "ns" or "dir" instead. Refer to the LINK documentation
 However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a link, you just want to bring the code into the workspace. This can be achieved by specifying the `-import` flag.
 
 
-#### 4. Check for empty package folders
+#### Check for empty package folders
 
 Cider now checks whether any of the Tatin installation folders --- as noted on the `dependencies` and `dependencies_dev` properties --- is empty apart from a dependency file and a build list.
 
@@ -485,7 +496,7 @@ A> Note that this is in line with the vast majority of other package managers.
 In case a Tatin installation folder defined in the Cider config file does not contain any packages but the two definition files, the user will be asked whether she wants to re-install the packages. 
 
 
-#### 5. Check for later packages versions
+#### Check for later packages versions
 
 In case the project has Tatin packages installed in one or more folders the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will only happen in case `importFlag` is 0.
 
@@ -494,14 +505,14 @@ However, note that this is only true if you've loaded the package(s) from a Tati
 If `]Cider.OpenProject` discovers later packages it will ask the user whether these packages shall be re-installed with the `-update` flag set. This will happen independently for each package installation folder.
 
 
-#### 6. Loading Tatin packages
+#### Loading Tatin packages
  
 Your application or tool might depend on one or more Tatin[^tatin] packages. By assigning a folder hosting Tatin packages to the `tatin` sub-key in `dependencies` and potentially `dependencies_dev` you can make sure that Cider will load[^load_tatin_pkgs] those installed packages into the root of your project or the assigned sub-namespace.
 
 See the config properties `dependencies` and `dependencies_dev` for details.
 
 
-#### 7. Loading NuGet packages
+#### Loading NuGet packages
  
 Your application or tool might depend on a NuGet[^nuget] package. By assigning a folder hosting NuGet packages to the `nuget` sub-key in `dependencies` you can make sure that Cider will load those installed packages into the root of your project or the assigned sub-namespace.
 
@@ -510,7 +521,7 @@ See the config property `dependencies` details.
 Note that NuGet packages can currently become part of your application, but they cannot be loaded as development tools. This restriction might be lifted in a later release.
 
 
-#### 8. Injecting a namespace `CiderConfig`
+#### Injecting a namespace `CiderConfig`
 
 In this step `]Cider.OpenProject` injects a namespace `CiderConfig` into the project space and...
 
@@ -518,21 +529,29 @@ In this step `]Cider.OpenProject` injects a namespace `CiderConfig` into the pro
 * adds a variable `HOME` that remembers the path the project was loaded from
 
 
-#### 9. Injecting a namespace `TatinVars`
+#### Injecting a namespace `TatinVars`
 
-If the project becomes eventually a package, Cider injects a namespace `TatinVars` which contains exactly the same stuff as if it were loaded as a package.
+Whether a project is going to be a package depends on the presence of a file `apl-package.json` in the root of the project.
+
+If such a file is present, Cider injects a namespace `TatinVars` which contains exactly the same stuff as if it were loaded as a package.
 
 This allows a developer to access `TatinVars` as if it was loaded as a package while working on the project.
 
-Whether the project ends up as a package is determined by the presencse of a file `apl-package.json` in the root of the project.
+A> ### Problems...
+A>
+A> What eventually will become a package might well be a sub-namespace of the project rather than the project itself. 
+A>
+A> If that is the case then injecting `TatinVars` into the root of the project would **_not_** give a developer the same conditions as if the package was loaded.
+A>
+A> This can be addressed by adding a property `tatinVars` into the `CIDER` section of the Cider config file, holding the name of a sub-namespace `TatinVars` should be injected into.
 
 
-#### 9. Changing the current directory
+#### Changing the current directory
 
 At this point Cider checks the current (or working) directory. If it's different from the project's directory the user is asked whether she wants to change the current directory to the project's directory.
 
 
-#### 11. Initialising a project (optional)
+#### Initialising a project (optional)
 
 Now there might well be demand for executing some code to initialise your project.
 
@@ -546,7 +565,7 @@ Such a function may be niladic, monadic, ambivalent or dyadic:
 * An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project
 
 
-#### 12. Executing user-specific code
+#### Executing user-specific code
 
 You might want to execute some general code (as opposed to project-specific code) after a project was loaded. "General" means that this code is executed whenever a project (any project!) is opened. 
 
@@ -573,14 +592,14 @@ Another application could be to bring in non-Tatin dependencies defined in the `
 Note that you may use the `ignoreUserExec` flag to tell `OpenProject` to ignore the global setting. This is certainly useful when Cider's test suite is executed.
 
 
-#### 13. Check for `ToDo`
+#### Check for `ToDo`
 
 Finally Cider checks whether there is a variables `ToDo` in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.
 
 You may use this to keep track of steps that need to be executed before the project can be commited or published etc.
 
 
-#### 14. Git
+#### Git
 
 If the project is managed by Git then Cider will report the current branch and its status.
 
@@ -671,6 +690,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 
