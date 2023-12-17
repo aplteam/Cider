@@ -16,6 +16,10 @@ The API functions are ordered alphabetically.
 
 ## AddAlias
 
+```
+{r}←AddAlias(folder alias)
+```
+
 Takes two parameters via the right argument:
 
 1. Fully qualified folder hosting a project
@@ -32,6 +36,10 @@ Returns an empty vector in case of success and an error message otherwise.
 
 ## AddNuGetDependencies
 
+```
+list←AddNuGetDependencies(packages projectFolder)
+```
+
 Installs NuGet packages in the (single) NuGet dependency folder defined in the projects configuration file.
 
 Requires two arguments:
@@ -44,6 +52,10 @@ Note that NuGet package names are not case sensitive when they are loaded, meani
 
 
 ## AddTatinDependencies
+
+```
+r←AddTatinDependencies(packageIDs projectFolder dev)
+```
 
 Installs Tatin packages in one of the Tatin dependency folders defined in the projects configuration file, by default in `dependencies.tatin`.
 
@@ -61,7 +73,11 @@ Requires three arguments:
 
 ## CloseProject
 
-Takes one ore more projects and closes them (read: breaks the link).
+```
+r←{list} CloseProject projects
+```
+
+Takes one ore more projects and closes them (read: break the link).
 
 The right argument must be either a simple character vector or a nested vector of character vectors. 
 
@@ -72,6 +88,10 @@ The optional left argument is relevant only for test cases.
 Returns the number of projects closed.
 
 ## CreateOpenParms
+
+```
+parms←CreateOpenParms dummy
+```
 
 A monadic function that returns a namespace with default parameters required by the `OpenProject` function. The right argument is ignored.
 
@@ -98,12 +118,20 @@ There is no API equivalent for the user command `]Cider.CreateProject`.
 
 ## DropAlias
 
+```
+{successFlag}←DropAlias alias
+```
+
 Takes an alias and removes it.
 
 
-## GetAliasFileContent
+## GetCiderAliasFileContent
 
-Niladic function that returns the contents of the file returned by the `GetCiderAliasFilename` function as an APL array:
+```
+r←{filename} GetCiderAliasFileContent dummy
+```
+
+Monadic function that returns the contents of the file returned by the `GetCiderAliasFilename` function as an APL array:
 
 ```
       ⎕SE.Cider.GetAliasFileContent
@@ -112,38 +140,59 @@ Niladic function that returns the contents of the file returned by the `GetCider
 
 Every record of that file contains two pieces of information: an alias and its associated path. The file might be empty.
 
-## GetAliasFilename
+
+## GetCiderAliasFilename
+
+```
+filename←GetCiderAliasFilename
+```
 
 Niladic function that returns the path to the file that is used by Cider to manage alias names and their paths.
 
 
 ## GetCiderGlobalConfigFileContent
 
+```
+r←GetCiderGlobalConfigFileContent
+```
+
 Reads Cider's global configuration file and returns a namespace with the settings if there is such a file. If there  is not, `⍬` is returned.
 
 The global configuration file is optional. If it exists it will hold user preferences.
 
-## GetCiderGlobalConfigFilename   
+### ExecuteAfterProjectOpen
+
+The user may specify a fully qualified function name, usually situated in `⎕SE`. This function will then be called after a project (any project!) was opened by Cider. 
+
+This can be used to, say, check the status of the project on GitLab or a similar platform, since Cider considers only GitHub, and requires the package [APLGit2](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub") for this.
+
+This setting defines the same function for all your Cider projects, which is why it is not part of the file `cider.config.template` but defined in Cider's global config file.
+
+## GetCiderGlobalConfigFilename  
+
+```
+filename←GetCiderGlobalConfigFilename
+``` 
 
 Returns the name of Cider's global configuration file.
 
 ## GetCiderGlobalConfigHomeFolder 
+
+```
+folder←GetCiderGlobalConfigHomeFolder
+```
 
 Returns the folder that hosts Cider's global configuration file.
 
 On Windows, this is typically `C:/Users/<⎕AN>/.cider/`
 
 
-## GetCiderGlobalConfigFileContent
-
-Niladic function that returns the contents of the file returned by the `GetCidersConfigFilename` function as a namespace with variables.
-
-The file might not exist, or be empty. In either case the function returns `⍬`.
-
-For the time being the file may define `ExecuteAfterProjectOpen`.
-
 
 ## GetMyUCMDsFolder
+
+```
+r←GetMyUCMDsFolder
+```
 
 Niladic function that returns the path to the `MyUCMDs/` folder.
 
@@ -152,14 +201,22 @@ Note that this folder is created under Windows by the Dyalog installation routin
 
 ## GetNuGetDependencies
 
-Takes a namespace generated from a Cider project's configuration file as right argument and either `development` of `development_dev` as left argument.
+```
+r←name GetNuGetDependencies config
+```
+
+Takes a namespace generated from a Cider project's configuration file as right argument and either "development" of "development_dev" as left argument.
 
 Returns either the value of `nuget` in the given branch or an empty vector if `nuget` is not defined.
 
 
 ## GetProgramFilesFolder
 
-Ambivalent function that give you the path to the Dyalog files folder of either the currently running version of Dyalog or the version agnostic folder, depending on the left argument.
+```
+r←{current}GetProgramFilesFolder postFix
+```
+
+Ambivalent function that returns the path to the Dyalog files folder of either the currently running version of Dyalog or the version agnostic folder, depending on the left argument.
 
 Examples on Windows:
 
@@ -168,13 +225,17 @@ Examples on Windows:
 C:\Users\kai\Documents\Dyalog APL Files             ⍝ Version agnostic
       Cider.GetProgramFilesFolder 'CiderTatin'
 C:\Users\kai\Documents\Dyalog APL Files/CiderTatin
-      1 Cider.GetProgramFilesFolder ''
+      1 Cider.GetProgramFilesFolder ''              ⍝ Version specific
 C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files
 ```
 
 ## GetTatinDependencies
 
-Takes a namespace generated from a Cider project's configuration file as right argument and either `development` of `development_dev` as left argument.
+```
+r←name GetTatinDependencies config
+```
+
+Takes a namespace generated from a Cider project's configuration file as right argument and either "development" of "development_dev" as left argument.
 
 Returns either the value of `tatin` in the given branch or an empty vector if `tatin` is not defined.
 
@@ -188,21 +249,22 @@ boolean←HasDotNet
 Returns a 1 if either .NET Core or .NET is available and the bridge DLL was successfully loaded and 0 otherwise.
 
 
-### ExecuteAfterProjectOpen
+## ListNuGetDependencies
 
-The user may specify a fully qualified function name, usually situated in `⎕SE`. This function will then be called after a project was opened by Cider. 
+```
+r←ListNuGetDependencies projectFolder
+```
 
-This can be used to, say, check the status of the project on GitLab or a similar platform, since Cider considers only GitHub, and requires the package [APLGit2](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub") for this.
+Lists all installed NuGet dependencies with "name" and "version".
 
-This setting defines the same function for all your Cider projects which is why it is not part of the file `cider.config.template` but defined in Cider's global config file.
+Note that there can be only one NuGet installation folder: currently you cannot have NuGet packages for development purposes. This restriction may be lifted in a future release.
 
-## GetCiderGlobalConfigFilename
-
-Niladic function that returns the path to the file with Cider's global configuration file.
-
-It's expected to be a folder `.cider` in the user's home directory on all platforms.
 
 ## ListOpenProjects
+
+```
+r←ListOpenProjects verboseFlag
+```
 
 Requires a Boolean as right argument ("verbose").
 
@@ -226,6 +288,10 @@ With the verbose flag set it returns 4 columns:
 
 ## ListTatinDependencies
 
+```
+r←ListTatinDependencies projectFolder
+```
+
 Until version 0.34.0 this was named `ListTatinPackages`.
 
 Lists all dependencies installed in the Tatin installation folders, if any. 
@@ -236,13 +302,11 @@ For every install folder these pieces of information are listed:
 * A Boolean indicating whether the package is a principal one or just a dependency
 * A URL where the package was loaded from
 
-## ListNuGetDependencies
-
-Lists all installed NuGet dependencies with "name" and "version".
-
-Note that there can be only one NuGet installation folder: currently you cannot have NuGet packages for development purposes. This restriction may be lifted in a future release.
-
 ## OpenProject
+
+```
+(successFlag ∆LOG)←OpenProject y
+```
 
 Opening a project means carrying out the following actions:
 
@@ -298,7 +362,7 @@ The alias under which you might want to access the project in the future.
 This is ignored in case...
 
 * the project does not sport any Tatin installation folder
-* [`importFlag`](# {style="color: red;"}) is 1; no check will take place then anyway
+* [`importFlag`](#) is 1; no check will take place then anyway
 
 By default this is an empty numeric vector (`⍬`), meaning that the user will be asked whether she wants Cider to check all principal packages for later versions, and if there are any found, whether she wants to update those packages. If the project carries more than one package folder the second question is asked independently for each Tatin installation folder.
 
@@ -376,6 +440,10 @@ A> This imposes a danger because those handlers set a Hold under some circumstan
 
 ## ProjectConfig
 
+```
+{r}←ProjectConfig path
+```
+
 Takes a path as `⍵`.
 
 Puts the config file found in `path` on display and allows the user to edit it.
@@ -383,6 +451,10 @@ Puts the config file found in `path` on display and allows the user to edit it.
 Asks for permission before writing changes back to file, and performs checks before writing it back to file.
 
 ## ReadProjectConfigFile
+
+```
+config←ReadProjectConfigFile projectFolder
+```
 
 This function takes a path to a Cider project as `⍵` and returns the contents of the config files as a namespace with variables.
 
@@ -393,6 +465,10 @@ Note that the function checks whether the sub-keys `dependency.tatin` and `depen
 
 ## WriteProjectConfigFile
 
+```
+{r}←config WriteProjectConfigFile path
+```
+
 This function takes a path to a Cider project as `⍵` and a namespace with Cider config variables as `⍺` and writes it the Cider config file.
 
 `path` may or may not come the actual filename `cider.config'
@@ -400,13 +476,16 @@ This function takes a path to a Cider project as `⍵` and a namespace with Cide
 
 ## Version
 
+```
+r←Version
+```
+
 `Version` returns a three-element vector with these pieces of information:
 
-1. The name, "Cider"
-2. The version number
+Returns the version number.
 
-   This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
-3. The version date in international date format: YYYY-MM-DD
+This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
+
 
 
 

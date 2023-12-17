@@ -1,5 +1,6 @@
 (
- '* 0.38.0 ⋄ 2023-12-15'
+ '* 0.38.0 ⋄ 2023-12-17'
+ '  * BREAKING CHANGE: API function `GetAliasFileContent` renamed: `GetCiderAliasFileContent`'
  '  * Optional property `tatinVars` added to the Cider config file and `InjectTatinVars` changed accordingly'
  '  * `CheckTargetNamespaceAndLinkFolder` improved in terms of error messages and better questions '
  '  * Bug fix in `InjectTatinVars`: TatinVars was injected into the project root rather than the package root'

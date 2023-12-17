@@ -2,8 +2,8 @@
 ⍝ With version 0.80.0 of Tatin the property "info_url" was renamed to "project_url".
 ⍝ Cider was amended accordingly with version 0.22.0.
 ⍝ This function takes a folder and searches for Cider config file in all sub folders.
-⍝ In every file found `info_url` is renamed to `project_url`.
-⍝ The names off all files that got changed are returned as a matrix.
+⍝ In every file found, `info_url` is renamed to `project_url`.
+⍝ The names of all files that got changed are returned as a matrix.
  ('Is not a directory: ',folder)Assert F.IsDir folder
  report←''
  RenameInfo_url_ folder

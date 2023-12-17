@@ -1,4 +1,4 @@
- r←{filename}GetAliasFileContent dummy;filename;buff
+ r←{filename}GetCiderAliasFileContent dummy;filename;buff
  r←0 2⍴''
  filename←{0<⎕NC ⍵:⍎⍵ ⋄ GetCiderAliasFilename}'filename'
  :If F.Exists filename

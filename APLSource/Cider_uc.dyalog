@@ -467,7 +467,7 @@
     ∇ r←OpenProject Args;path;parms;aliasDefs;bool;info;opCode;alias;log;success
       r←0 0⍴''
       Args.projectSpace←{(,0)≡,⍵:'' ⋄ ⍵}Args.projectSpace
-      aliasDefs←P.GetAliasFileContent ⍬
+      aliasDefs←P.GetCiderAliasFileContent ⍬
       :If 0≡Args._1
       :OrIf Args._1≡'[?]'
           :If 0=≢path←SelectFromAliases aliasDefs
@@ -806,7 +806,7 @@
     ∇
 
     ∇ r←ProcessAliases(prune edit batch);bool;flag
-      r←P.GetAliasFileContent ⍬
+      r←P.GetCiderAliasFileContent ⍬
       :If prune
           :If 0<≢r
               bool←⎕NEXISTS¨r[;2]
@@ -1066,7 +1066,7 @@
 
     ∇ r←TranslateAlias alias;aliase;row
       :If IsAlias alias
-          aliase←P.GetAliasFileContent ⍬
+          aliase←P.GetCiderAliasFileContent ⍬
           row←aliase[;1]⍳⊂alias~'[]'
           ('Unknown alias: ',alias)Assert row≤≢aliase
           r←2⊃aliase[row;]
@@ -1131,7 +1131,7 @@
           3 ⎕MKDIR 1⊃⎕NPARTS filename
           (⊂'')⎕NPUT filename
       :EndIf
-      aliases_←P.GetAliasFileContent ⍬
+      aliases_←P.GetCiderAliasFileContent ⍬
       :If 0<≢aliases←⍕aliases_
           aliases_←⊃¨{⍺,'=',⍵}/¨↓aliases_
           :Repeat
@@ -1190,7 +1190,7 @@
       r←⍬
       caption←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'caption'
       :If 0=≢data
-          data←P.GetAliasFileContent ⍬
+          data←P.GetCiderAliasFileContent ⍬
       :EndIf
       :If 0<≢data
           data[;1]←{'[',⍵,']'}¨data[;1]
@@ -1278,7 +1278,7 @@
               path←2⊃list[index;]
           :EndSelect
       :Else
-          aliasDefs←P.GetAliasFileContent ⍬
+          aliasDefs←P.GetCiderAliasFileContent ⍬
           path←y
           :If (⊂,path)∊,¨'[' '[?' '[?]'
               :If 0=≢path←SelectFromAliases aliasDefs

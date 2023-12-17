@@ -27,6 +27,7 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{font-s
 <h2 data-id="AddAlias">1. AddAlias</h2>
 </a>
 </div>
+<pre tabindex="0"><code>{r}←AddAlias(folder alias)</code></pre>
 <p>Takes two parameters via the right argument:</p>
 <ol start="1">
 <li>Fully qualified folder hosting a project</li>
@@ -43,6 +44,7 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{font-s
 <h2 data-id="AddNuGetDependencies">2. AddNuGetDependencies</h2>
 </a>
 </div>
+<pre tabindex="0"><code>list←AddNuGetDependencies(packages projectFolder)</code></pre>
 <p>Installs NuGet packages in the (single) NuGet dependency folder defined in the projects configuration file.</p>
 <p>Requires two arguments:</p>
 <ol start="1">
@@ -55,6 +57,7 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{font-s
 <h2 data-id="AddTatinDependencies">3. AddTatinDependencies</h2>
 </a>
 </div>
+<pre tabindex="0"><code>r←AddTatinDependencies(packageIDs projectFolder dev)</code></pre>
 <p>Installs Tatin packages in one of the Tatin dependency folders defined in the projects configuration file, by default in <code>dependencies.tatin</code>.</p>
 <p>Requires three arguments:</p>
 <ol start="1">
@@ -71,7 +74,8 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{font-s
 <h2 data-id="CloseProject">4. CloseProject</h2>
 </a>
 </div>
-<p>Takes one ore more projects and closes them (read: breaks the link).</p>
+<pre tabindex="0"><code>r←{list} CloseProject projects</code></pre>
+<p>Takes one ore more projects and closes them (read: break the link).</p>
 <p>The right argument must be either a simple character vector or a nested vector of character vectors.</p>
 <p>The projects can be specified as fully qualified namespace names, as aliase or as project paths, or a mixture of them.</p>
 <p>The optional left argument is relevant only for test cases.</p>
@@ -81,6 +85,7 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{font-s
 <h2 data-id="CreateOpenParms">5. CreateOpenParms</h2>
 </a>
 </div>
+<pre tabindex="0"><code>parms←CreateOpenParms dummy</code></pre>
 <p>A monadic function that returns a namespace with default parameters required by the <code>OpenProject</code> function. The right argument is ignored.</p>
 <pre tabindex="0"><code> alias                 ''
  checkPackageVersions  ⍬
@@ -105,111 +110,115 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{font-s
 <h2 data-id="DropAlias">7. DropAlias</h2>
 </a>
 </div>
+<pre tabindex="0"><code>{successFlag}←DropAlias alias</code></pre>
 <p>Takes an alias and removes it.</p>
 <div class="h_tag">
-<a href="#getaliasfilecontent" id="getaliasfilecontent" class="autoheader_anchor">
-<h2 data-id="GetAliasFileContent">8. GetAliasFileContent</h2>
+<a href="#getcideraliasfilecontent" id="getcideraliasfilecontent" class="autoheader_anchor">
+<h2 data-id="GetCiderAliasFileContent">8. GetCiderAliasFileContent</h2>
 </a>
 </div>
-<p>Niladic function that returns the contents of the file returned by the <code>GetCiderAliasFilename</code> function as an APL array:</p>
+<pre tabindex="0"><code>r←{filename} GetCiderAliasFileContent dummy</code></pre>
+<p>Monadic function that returns the contents of the file returned by the <code>GetCiderAliasFilename</code> function as an APL array:</p>
 <pre tabindex="0"><code>      ⎕SE.Cider.GetAliasFileContent
  cider  C:/T/Projects/Dyalog/Cider</code></pre>
 <p>Every record of that file contains two pieces of information: an alias and its associated path. The file might be empty.</p>
 <div class="h_tag">
-<a href="#getaliasfilename" id="getaliasfilename" class="autoheader_anchor">
-<h2 data-id="GetAliasFilename">9. GetAliasFilename</h2>
+<a href="#getcideraliasfilename" id="getcideraliasfilename" class="autoheader_anchor">
+<h2 data-id="GetCiderAliasFilename">9. GetCiderAliasFilename</h2>
 </a>
 </div>
+<pre tabindex="0"><code>filename←GetCiderAliasFilename</code></pre>
 <p>Niladic function that returns the path to the file that is used by Cider to manage alias names and their paths.</p>
 <div class="h_tag">
 <a href="#getciderglobalconfigfilecontent" id="getciderglobalconfigfilecontent" class="autoheader_anchor">
-<h2 data-id="GetCiderGlobalConfigFileContent">GetCiderGlobalConfigFileContent</h2>
+<h2 data-id="GetCiderGlobalConfigFileContent">10. GetCiderGlobalConfigFileContent</h2>
 </a>
 </div>
+<pre tabindex="0"><code>r←GetCiderGlobalConfigFileContent</code></pre>
 <p>Reads Cider's global configuration file and returns a namespace with the settings if there is such a file. If there is not, <code>⍬</code> is returned.</p>
 <p>The global configuration file is optional. If it exists it will hold user preferences.</p>
 <div class="h_tag">
-<a href="#getciderglobalconfigfilename" id="getciderglobalconfigfilename" class="autoheader_anchor">
-<h2 data-id="GetCiderGlobalConfigFilename">GetCiderGlobalConfigFilename</h2>
+<a href="#executeafterprojectopen" id="executeafterprojectopen" class="autoheader_anchor">
+<h3 data-id="ExecuteAfterProjectOpen">10.1. ExecuteAfterProjectOpen</h3>
 </a>
 </div>
+<p>The user may specify a fully qualified function name, usually situated in <code>⎕SE</code>. This function will then be called after a project (any project!) was opened by Cider.</p>
+<p>This can be used to, say, check the status of the project on GitLab or a similar platform, since Cider considers only GitHub, and requires the package <a href="https://github.com/aplteam/APLGit2" class="external_link" title="Link to APLGit2 on GitHub">APLGit2</a> for this.</p>
+<p>This setting defines the same function for all your Cider projects, which is why it is not part of the file <code>cider.config.template</code> but defined in Cider's global config file.</p>
+<div class="h_tag">
+<a href="#getciderglobalconfigfilename" id="getciderglobalconfigfilename" class="autoheader_anchor">
+<h2 data-id="GetCiderGlobalConfigFilename">11. GetCiderGlobalConfigFilename</h2>
+</a>
+</div>
+<pre tabindex="0"><code>filename←GetCiderGlobalConfigFilename</code></pre>
 <p>Returns the name of Cider's global configuration file.</p>
 <div class="h_tag">
 <a href="#getciderglobalconfighomefolder" id="getciderglobalconfighomefolder" class="autoheader_anchor">
 <h2 data-id="GetCiderGlobalConfigHomeFolder">12. GetCiderGlobalConfigHomeFolder</h2>
 </a>
 </div>
+<pre tabindex="0"><code>folder←GetCiderGlobalConfigHomeFolder</code></pre>
 <p>Returns the folder that hosts Cider's global configuration file.</p>
 <p>On Windows, this is typically <code>C:/Users/&lt;⎕AN&gt;/.cider/</code></p>
 <div class="h_tag">
-<a href="#getciderglobalconfigfilecontent-1" id="getciderglobalconfigfilecontent-1" class="autoheader_anchor">
-<h2 data-id="getciderglobalconfigfilecontent-1">GetCiderGlobalConfigFileContent</h2>
-</a>
-</div>
-<p>Niladic function that returns the contents of the file returned by the <code>GetCidersConfigFilename</code> function as a namespace with variables.</p>
-<p>The file might not exist, or be empty. In either case the function returns <code>⍬</code>.</p>
-<p>For the time being the file may define <code>ExecuteAfterProjectOpen</code>.</p>
-<div class="h_tag">
 <a href="#getmyucmdsfolder" id="getmyucmdsfolder" class="autoheader_anchor">
-<h2 data-id="GetMyUCMDsFolder">14. GetMyUCMDsFolder</h2>
+<h2 data-id="GetMyUCMDsFolder">13. GetMyUCMDsFolder</h2>
 </a>
 </div>
+<pre tabindex="0"><code>r←GetMyUCMDsFolder</code></pre>
 <p>Niladic function that returns the path to the <code>MyUCMDs/</code> folder.</p>
 <p>Note that this folder is created under Windows by the Dyalog installation routine, but not on other platforms.</p>
 <div class="h_tag">
 <a href="#getnugetdependencies" id="getnugetdependencies" class="autoheader_anchor">
-<h2 data-id="GetNuGetDependencies">15. GetNuGetDependencies</h2>
+<h2 data-id="GetNuGetDependencies">14. GetNuGetDependencies</h2>
 </a>
 </div>
-<p>Takes a namespace generated from a Cider project's configuration file as right argument and either <code>development</code> of <code>development_dev</code> as left argument.</p>
+<pre tabindex="0"><code>r←name GetNuGetDependencies config</code></pre>
+<p>Takes a namespace generated from a Cider project's configuration file as right argument and either “development” of “development_dev” as left argument.</p>
 <p>Returns either the value of <code>nuget</code> in the given branch or an empty vector if <code>nuget</code> is not defined.</p>
 <div class="h_tag">
 <a href="#getprogramfilesfolder" id="getprogramfilesfolder" class="autoheader_anchor">
-<h2 data-id="GetProgramFilesFolder">16. GetProgramFilesFolder</h2>
+<h2 data-id="GetProgramFilesFolder">15. GetProgramFilesFolder</h2>
 </a>
 </div>
-<p>Ambivalent function that give you the path to the Dyalog files folder of either the currently running version of Dyalog or the version agnostic folder, depending on the left argument.</p>
+<pre tabindex="0"><code>r←{current}GetProgramFilesFolder postFix</code></pre>
+<p>Ambivalent function that returns the path to the Dyalog files folder of either the currently running version of Dyalog or the version agnostic folder, depending on the left argument.</p>
 <p>Examples on Windows:</p>
 <pre tabindex="0"><code>      Cider.GetProgramFilesFolder ''
 C:\Users\kai\Documents\Dyalog APL Files             ⍝ Version agnostic
       Cider.GetProgramFilesFolder 'CiderTatin'
 C:\Users\kai\Documents\Dyalog APL Files/CiderTatin
-      1 Cider.GetProgramFilesFolder ''
+      1 Cider.GetProgramFilesFolder ''              ⍝ Version specific
 C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files</code></pre>
 <div class="h_tag">
 <a href="#gettatindependencies" id="gettatindependencies" class="autoheader_anchor">
-<h2 data-id="GetTatinDependencies">17. GetTatinDependencies</h2>
+<h2 data-id="GetTatinDependencies">16. GetTatinDependencies</h2>
 </a>
 </div>
-<p>Takes a namespace generated from a Cider project's configuration file as right argument and either <code>development</code> of <code>development_dev</code> as left argument.</p>
+<pre tabindex="0"><code>r←name GetTatinDependencies config</code></pre>
+<p>Takes a namespace generated from a Cider project's configuration file as right argument and either “development” of “development_dev” as left argument.</p>
 <p>Returns either the value of <code>tatin</code> in the given branch or an empty vector if <code>tatin</code> is not defined.</p>
 <div class="h_tag">
 <a href="#hasdotnet" id="hasdotnet" class="autoheader_anchor">
-<h2 data-id="HasDotNet">18. HasDotNet</h2>
+<h2 data-id="HasDotNet">17. HasDotNet</h2>
 </a>
 </div>
 <pre tabindex="0"><code>boolean←HasDotNet</code></pre>
 <p>Returns a 1 if either .NET Core or .NET is available and the bridge DLL was successfully loaded and 0 otherwise.</p>
 <div class="h_tag">
-<a href="#executeafterprojectopen" id="executeafterprojectopen" class="autoheader_anchor">
-<h3 data-id="ExecuteAfterProjectOpen">18.1. ExecuteAfterProjectOpen</h3>
+<a href="#listnugetdependencies" id="listnugetdependencies" class="autoheader_anchor">
+<h2 data-id="ListNuGetDependencies">18. ListNuGetDependencies</h2>
 </a>
 </div>
-<p>The user may specify a fully qualified function name, usually situated in <code>⎕SE</code>. This function will then be called after a project was opened by Cider.</p>
-<p>This can be used to, say, check the status of the project on GitLab or a similar platform, since Cider considers only GitHub, and requires the package <a href="https://github.com/aplteam/APLGit2" class="external_link" title="Link to APLGit2 on GitHub">APLGit2</a> for this.</p>
-<p>This setting defines the same function for all your Cider projects which is why it is not part of the file <code>cider.config.template</code> but defined in Cider's global config file.</p>
-<div class="h_tag">
-<a href="#getciderglobalconfigfilename-1" id="getciderglobalconfigfilename-1" class="autoheader_anchor">
-<h2 data-id="getciderglobalconfigfilename-1">GetCiderGlobalConfigFilename</h2>
-</a>
-</div>
-<p>Niladic function that returns the path to the file with Cider's global configuration file.</p>
-<p>It's expected to be a folder <code>.cider</code> in the user's home directory on all platforms.</p>
+<pre tabindex="0"><code>r←ListNuGetDependencies projectFolder</code></pre>
+<p>Lists all installed NuGet dependencies with “name” and “version”.</p>
+<p>Note that there can be only one NuGet installation folder: currently you cannot have NuGet packages for development purposes. This restriction may be lifted in a future release.</p>
 <div class="h_tag">
 <a href="#listopenprojects" id="listopenprojects" class="autoheader_anchor">
-<h2 data-id="ListOpenProjects">20. ListOpenProjects</h2>
+<h2 data-id="ListOpenProjects">19. ListOpenProjects</h2>
 </a>
 </div>
+<pre tabindex="0"><code>r←ListOpenProjects verboseFlag</code></pre>
 <p>Requires a Boolean as right argument (“verbose”).</p>
 <p>With 0 it returns a matrix with two columns:</p>
 <pre tabindex="0"><code>      ⎕SE.Cider.ListOpenProjects 0
@@ -239,9 +248,10 @@ C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files</code></pre>
 </table>
 <div class="h_tag">
 <a href="#listtatindependencies" id="listtatindependencies" class="autoheader_anchor">
-<h2 data-id="ListTatinDependencies">21. ListTatinDependencies</h2>
+<h2 data-id="ListTatinDependencies">20. ListTatinDependencies</h2>
 </a>
 </div>
+<pre tabindex="0"><code>r←ListTatinDependencies projectFolder</code></pre>
 <p>Until version 0.34.0 this was named <code>ListTatinPackages</code>.</p>
 <p>Lists all dependencies installed in the Tatin installation folders, if any.</p>
 <p>For every install folder these pieces of information are listed:</p>
@@ -251,17 +261,11 @@ C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files</code></pre>
 <li>A URL where the package was loaded from</li>
 </ul>
 <div class="h_tag">
-<a href="#listnugetdependencies" id="listnugetdependencies" class="autoheader_anchor">
-<h2 data-id="ListNuGetDependencies">22. ListNuGetDependencies</h2>
-</a>
-</div>
-<p>Lists all installed NuGet dependencies with “name” and “version”.</p>
-<p>Note that there can be only one NuGet installation folder: currently you cannot have NuGet packages for development purposes. This restriction may be lifted in a future release.</p>
-<div class="h_tag">
 <a href="#openproject" id="openproject" class="autoheader_anchor">
-<h2 data-id="OpenProject">23. OpenProject</h2>
+<h2 data-id="OpenProject">21. OpenProject</h2>
 </a>
 </div>
+<pre tabindex="0"><code>(successFlag ∆LOG)←OpenProject y</code></pre>
 <p>Opening a project means carrying out the following actions:</p>
 <ol start="1">
 <li>Creating the <code>projectSpace</code> (namespace) in <code>parent</code> if it does not already exist
@@ -293,7 +297,7 @@ C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files</code></pre>
 </ul>
 <div class="h_tag">
 <a href="#folder" id="folder" class="autoheader_anchor">
-<h3 data-id="folder">23.1. folder (mandatory)</h3>
+<h3 data-id="folder">21.1. folder (mandatory)</h3>
 </a>
 </div>
 <p>This must be one of:</p>
@@ -304,19 +308,19 @@ C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files</code></pre>
 <p>Note that this must <em>not</em> be empty but it <em>might</em> be <code>./</code> representing the current directory.</p>
 <div class="h_tag">
 <a href="#alias" id="alias" class="autoheader_anchor">
-<h3 data-id="alias">23.2. alias</h3>
+<h3 data-id="alias">21.2. alias</h3>
 </a>
 </div>
 <p>The alias under which you might want to access the project in the future.</p>
 <div class="h_tag">
 <a href="#checkpackageversions" id="checkpackageversions" class="autoheader_anchor">
-<h3 data-id="checkPackageVersions">23.3. checkPackageVersions</h3>
+<h3 data-id="checkPackageVersions">21.3. checkPackageVersions</h3>
 </a>
 </div>
 <p>This is ignored in case…</p>
 <ul>
 <li>the project does not sport any Tatin installation folder</li>
-<li><a href="#importflag" style="color: red;" class="bookmark_link"><code>importFlag</code></a> is 1; no check will take place then anyway</li>
+<li><a href="#importflag" class="bookmark_link"><code>importFlag</code></a> is 1; no check will take place then anyway</li>
 </ul>
 <p>By default this is an empty numeric vector (<code>⍬</code>), meaning that the user will be asked whether she wants Cider to check all principal packages for later versions, and if there are any found, whether she wants to update those packages. If the project carries more than one package folder the second question is asked independently for each Tatin installation folder.</p>
 <p>Instead one can set this parameter to these values:</p>
@@ -338,30 +342,30 @@ C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files</code></pre>
 </table>
 <div class="h_tag">
 <a href="#parent" id="parent" class="autoheader_anchor">
-<h3 data-id="parent">23.4. parent</h3>
+<h3 data-id="parent">21.4. parent</h3>
 </a>
 </div>
 <p>Defaults to <code>#</code> but might as be something like <code>⎕SE</code> or <code>#.Foo.Goo.Boo</code>. However, all namespaces listed must exist.</p>
 <div class="h_tag">
 <a href="#projectspace" id="projectspace" class="autoheader_anchor">
-<h3 data-id="projectSpace">23.5. projectSpace</h3>
+<h3 data-id="projectSpace">21.5. projectSpace</h3>
 </a>
 </div>
 <p>The name of the namespace the project is injected into. If this is empty it is going to be <code>#</code> or <code>⎕SE</code>, depending from where the function was called from.</p>
 <div class="h_tag">
 <a href="#flags" id="flags" class="autoheader_anchor">
-<h3 data-id="Flags">23.6. Flags</h3>
+<h3 data-id="Flags">21.6. Flags</h3>
 </a>
 </div>
 <div class="h_tag">
 <a href="#ignoreuserexec" id="ignoreuserexec" class="autoheader_anchor">
-<h4 data-id="ignoreUserExec">23.6.1. ignoreUserExec</h4>
+<h4 data-id="ignoreUserExec">21.6.1. ignoreUserExec</h4>
 </a>
 </div>
 <p>This flag is ignored in case Cider's own global config file defines not function on <code>ExecuteAfterProjectOpen</code>, but if there is a fully qualified function name defined then this flag can be used to prevent the function from execution with a particular call of <code>OpenProject</code>.</p>
 <div class="h_tag">
 <a href="#importflag" id="importflag" class="autoheader_anchor">
-<h4 data-id="importFlag">23.6.2. importFlag</h4>
+<h4 data-id="importFlag">21.6.2. importFlag</h4>
 </a>
 </div>
 <p>Defaults to 0 meaning that the code is not imported but linked.</p>
@@ -369,19 +373,19 @@ C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files</code></pre>
 <p>Note that this has implications on how Cider deals with Tatin packages, see there.</p>
 <div class="h_tag">
 <a href="#nopkgload" id="nopkgload" class="autoheader_anchor">
-<h4 data-id="noPkgLoad">23.6.3. noPkgLoad</h4>
+<h4 data-id="noPkgLoad">21.6.3. noPkgLoad</h4>
 </a>
 </div>
 <p>Defaults to 0, meaning that Cider will load Tatin packages by honoring the config file's <code>dependencies</code> and <code>dependencies_dev</code> parameters. However, there might be circumstances when you do not want packages to be loaded. This can be achieved by setting the <code>noPkgLoad</code> flag to 1.</p>
 <div class="h_tag">
 <a href="#quietflag" id="quietflag" class="autoheader_anchor">
-<h4 data-id="quietFlag">23.6.4. quietFlag</h4>
+<h4 data-id="quietFlag">21.6.4. quietFlag</h4>
 </a>
 </div>
 <p>Defaults to 0, meaning that the function prints messages to the session. If this is 1 then no messages are printed but what would have been printed is still returned as second element of the result of the function.</p>
 <div class="h_tag">
 <a href="#suppresslx" id="suppresslx" class="autoheader_anchor">
-<h4 data-id="suppressLX">23.6.5. suppressLX</h4>
+<h4 data-id="suppressLX">21.6.5. suppressLX</h4>
 </a>
 </div>
 <p>Defaults to 0, meaning that the projects initialisation function (if any) will be executed.</p>
@@ -389,7 +393,7 @@ C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files</code></pre>
 <p>An example might be an automated build process: that might need to open the project but without actually initialising it.</p>
 <div class="h_tag">
 <a href="#watch" id="watch" class="autoheader_anchor">
-<h3 data-id="watch">23.7. watch</h3>
+<h3 data-id="watch">21.7. watch</h3>
 </a>
 </div>
 <p>Defaults to “both”, meaning that changing any APL objects in the workspaces will result in Link updating the corresponding file on disk, and any change on disk will be reflected by changing the workspace.</p>
@@ -405,39 +409,39 @@ C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files</code></pre>
 
 <div class="h_tag">
 <a href="#projectconfig" id="projectconfig" class="autoheader_anchor">
-<h2 data-id="ProjectConfig">24. ProjectConfig</h2>
+<h2 data-id="ProjectConfig">22. ProjectConfig</h2>
 </a>
 </div>
+<pre tabindex="0"><code>{r}←ProjectConfig path</code></pre>
 <p>Takes a path as <code>⍵</code>.</p>
 <p>Puts the config file found in <code>path</code> on display and allows the user to edit it.</p>
 <p>Asks for permission before writing changes back to file, and performs checks before writing it back to file.</p>
 <div class="h_tag">
 <a href="#readprojectconfigfile" id="readprojectconfigfile" class="autoheader_anchor">
-<h2 data-id="ReadProjectConfigFile">25. ReadProjectConfigFile</h2>
+<h2 data-id="ReadProjectConfigFile">23. ReadProjectConfigFile</h2>
 </a>
 </div>
+<pre tabindex="0"><code>config←ReadProjectConfigFile projectFolder</code></pre>
 <p>This function takes a path to a Cider project as <code>⍵</code> and returns the contents of the config files as a namespace with variables.</p>
 <p><code>path</code> may or may not come the actual filename `cider.config'.</p>
 <p>Note that the function checks whether the sub-keys <code>dependency.tatin</code> and <code>dependency.nuget</code> are defined; if not they are created and the data is written to file.</p>
 <div class="h_tag">
 <a href="#writeprojectconfigfile" id="writeprojectconfigfile" class="autoheader_anchor">
-<h2 data-id="WriteProjectConfigFile">26. WriteProjectConfigFile</h2>
+<h2 data-id="WriteProjectConfigFile">24. WriteProjectConfigFile</h2>
 </a>
 </div>
+<pre tabindex="0"><code>{r}←config WriteProjectConfigFile path</code></pre>
 <p>This function takes a path to a Cider project as <code>⍵</code> and a namespace with Cider config variables as <code>⍺</code> and writes it the Cider config file.</p>
 <p><code>path</code> may or may not come the actual filename `cider.config'</p>
 <div class="h_tag">
 <a href="#version" id="version" class="autoheader_anchor">
-<h2 data-id="Version">27. Version</h2>
+<h2 data-id="Version">25. Version</h2>
 </a>
 </div>
+<pre tabindex="0"><code>r←Version</code></pre>
 <p><code>Version</code> returns a three-element vector with these pieces of information:</p>
-<ol start="1">
-<li>The name, “Cider”</li>
-<li>The version number
-<p>This can be just <code>1.2.3</code>,  but it may be something like <code>1.2.3-beta-1+113</code></p></li>
-<li>The version date in international date format: YYYY-MM-DD</li>
-</ol>
+<p>Returns the version number.</p>
+<p>This can be just <code>1.2.3</code>, but it may be something like <code>1.2.3-beta-1+113</code></p>
 
 <script>
 

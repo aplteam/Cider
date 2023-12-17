@@ -28,7 +28,7 @@
  →T.GoToTidyUp∨/'ERROR'⍷log
  Assert ⎕SE.Cider.CloseProject'[Firlefanz2]'
 
- aliase←⎕SE.Cider.GetAliasFileContent ⍬
+ aliase←⎕SE.Cider.GetCiderAliasFileContent ⍬
  →T.GoToTidyUp(⊂'firlefanz1')∊aliase[;1]
  →T.GoToTidyUp~(⊂'firlefanz2')∊aliase[;1]
 

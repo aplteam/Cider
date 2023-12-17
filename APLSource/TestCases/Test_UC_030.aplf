@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- mat1←##.Cider.GetAliasFileContent ⍬
+ mat1←##.Cider.GetCiderAliasFileContent ⍬
  Delete_∆ALIAS_TEMP_FOLDER
  (rc msg res)←∆UCMD'ListAliases -prune -batch'
  Assert rc=0

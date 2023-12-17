@@ -19,7 +19,7 @@
  (rc msg res)←∆UCMD'OpenProject [firlefanz1] -parent=#.TEMP -alias=Firlefanz2 -watch=ns -batch -ignoreUserExec'
  msg Assert 0=rc
 
- aliase←⎕SE.Cider.GetAliasFileContent ⍬
+ aliase←⎕SE.Cider.GetCiderAliasFileContent ⍬
 
  (rc msg res)←∆UCMD'CloseProject [firlefanz2]'
  msg Assert 0=rc
