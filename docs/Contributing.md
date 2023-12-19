@@ -11,13 +11,13 @@
 
 In ordert to contribute to Cider as a developer you need some pieces of information. 
 
-W> This document is work in progress
+W> This document is work in progress but useful nevertheless.
 
 ## Design
 
 ### The user commands and the API
 
-Cider consists of an API and a number of user commands.
+Cider consists of an API and a user command script.
 
 A couple of principles:
 
@@ -30,10 +30,10 @@ A couple of principles:
 
 **User commands...**
 
-* print useful messages if something goes wrong (though they do throw errors in case of missing or invalid parameters
+* print useful messages if something goes wrong (though they do throw errors in case of missing or invalid parameters)
 * They often do guess what the user is up to
 
-  For example, if no project is specified, they check whether there is a single Cider project open. If that's the case they act on that project. If multiple projects are open they question the user which one to act on.
+  For example, if no project is specified, they check whether there is a single Cider project open. If that's the case, they act on that project. If multiple projects are open they ask the user which one to act on.
 
 ## Developing
 
@@ -45,9 +45,9 @@ When Cider is opened as a Cider project however, it asks the user whether a vari
 
 If such a variable exists and its values is not 0, then Cider's user command script establishes a reference not to `⎕SE.Cider` but to `#.Cider.Cider`.
 
-The consequence of this is that when you change a function in the process of running it, it will be saved by Link _in the project_, and your changes are preserved.
+The consequence of this is that when you change a function in the process of running it, it will be saved by Link _in the project_, meaning your changes are preserved.
 
-In order to remind you what's happening Cider prints a warning to the session whenever a user command is executed:
+In order to remind you what's happening, Cider prints a warning to the session whenever a user command is executed:
 
 ```
 *** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!
@@ -59,7 +59,7 @@ The former value is re-established once the tests are done.
 
 ### Changing the script `Cider.dyalog`
 
-For the following to work you must put the following into `config.dcfg` (see the "Installation and Configuration Guide" of Dyalog for your OS for details):
+For the following to work you must put this into `config.dcfg` (see the "Installation and Configuration Guide" of Dyalog for your OS for details):
 
  
 ```
@@ -70,7 +70,7 @@ For the following to work you must put the following into `config.dcfg` (see the
 }
 ```
 
-This setting ensures that when you make changes to a user command script then those changes will be saved by Link, not as part of the project but in the folder is was loaded from by the user command framework.
+This setting ensures that when you make changes to a user command script, then those changes will be saved by Link, not as part of the project but in the folder is was loaded from by the user command framework.
 
 *That means that after such a change the script in the project is not up-to-date anymore!*
 
@@ -97,6 +97,7 @@ You may ask Cider for how to build a new version:
 ```
 
 ... (more to come)
+
 
 
 

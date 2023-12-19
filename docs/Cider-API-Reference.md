@@ -90,10 +90,10 @@ Returns the number of projects closed.
 ## CreateOpenParms
 
 ```
-parms←CreateOpenParms dummy
+parms←CreateOpenParms y
 ```
 
-A monadic function that returns a namespace with default parameters required by the `OpenProject` function. The right argument is ignored.
+A monadic function that returns a namespace with default parameters required by the `OpenProject` function. The right argument might be either an empty vector (which is ignored) or a namespace holding some of the parameters. In the latter case the values are copied over.
 
 
 ```
@@ -485,6 +485,7 @@ r←Version
 Returns the version number.
 
 This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
+
 
 
 

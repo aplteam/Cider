@@ -32,7 +32,7 @@
  list←FilesAndDirs.ListFiles projectFolder2
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
- aliase←##.Cider.GetCCiderAliasFileContent ⍬
+ aliase←##.Cider.GetCiderAliasFileContent ⍬
  →T.GoToTidyUp~∧/(⎕C'test-case-alias-Foo' 'test-case-alias-Goo')∊aliase[;1]
 
  →T.GoToTidyUp 1≠##.Cider.CloseProject'#.Foo'
