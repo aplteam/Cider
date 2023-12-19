@@ -1,7 +1,7 @@
 {
   api: "API",
   assets: "",
-  date: 20231218.092201,
+  date: 20231219.174815,
   description: "Utilities for doing gymnastics with files and directories",
   documentation: "",
   files: "",
@@ -21,5 +21,5 @@
   tags: "files,directories,copy,move,read,write,get,put",
   uri: "https://tatin.dev/",
   userCommandScript: "",
-  version: "5.6.0+153",
+  version: "5.6.1+154",
 }

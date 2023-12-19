@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If 1≠⊃1⊃2250⌶0
+ :If 1 1≢2250⌶0    ⍝ We need .NET Core and a successfully loaded .NET bridge
      R←T._NotApplicable ⋄ →0
  :EndIf
 

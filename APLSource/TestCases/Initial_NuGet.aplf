@@ -4,7 +4,8 @@
  :If ~r                 ⍝ ⎕se.NuGet not found and...
      info←'⎕SE.NuGet is not available, so the NuGet tests can not be executed.'  ⍝ ... so we inform the user
  :EndIf
- :Select ⊃1⊃rc←2250⌶0
+ rc←2250⌶0
+ :Select ⊃⊃rc
  :Case ¯1
      r←0
      info←'.NET interface is not supported.'
@@ -16,11 +17,11 @@
      info←'The .NET interface is configured to use .NET Framework - incompatible with NuGet.'
  :EndSelect
  :If 0=2⊃rc
+     r←0
      info←'Could not load the .NET bridge interface.'
  :EndIf
  :If ~ps.batchFlag
  :AndIf 0<≢info
      CommTools.Pause info,(⎕UCS 13),'Therefore the NuGet tests cannot be executed.'
-     r←0
  :EndIf
 ⍝Done
