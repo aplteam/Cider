@@ -303,7 +303,8 @@
           targetNS2←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}{⍵↓⍨⍵⍳'='}ref2.tatin
           :If targetNS≡targetNS2    ⍝  Only when "normal" dependencies and development dependencies go into the same namespace...
               sourceFolder2←projectFolder,'/',P.##.RemoveTargetDefinition ref2.tatin
-              :If 0<≢P.##.F.ListDirs sourceFolder2
+              :If P.##.F.IsDir sourceFolder2
+              :AndIf 0<≢P.##.F.ListDirs sourceFolder2
               :AndIf P.##.F.IsFile sourceFolder2,⎕SE._Tatin.Client.Reg.BuildListFilename
                   list2←⎕SE.Tatin.LoadDependencies sourceFolder2 targetNS2          ⍝... do we need to (re-)load both
                   noOf←+/≢¨list list2

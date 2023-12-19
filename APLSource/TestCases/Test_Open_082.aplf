@@ -14,15 +14,11 @@
  parms.ignoreUserExec←1
  parms.batch←1
  ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
- ##.Cider.C.YesOrNo_Answers⍪←1 2⍴'ReinstallBecauseOfInconsistency@' 'y'
+ ##.Cider.C.YesOrNo_Answers⍪←1 2⍴'ReinstallBecauseOfInconsistency@' 'n'
 
- :Trap 0
-     (success log)←##.Cider.OpenProject parms
-     →T.GoToTidyUp 1
- :Else
-     qdmx←⎕DMX
-     →T.GoToTidyUp~qdmx.EM ∆StartsWith'ERROR: loading Tatin packages from'
- :EndTrap
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp~∧/∨/¨'Packages in' 'need attention!'⍷¨⊂log
 
  R←T._OK
 
