@@ -1,4 +1,7 @@
 (
+ '* 0.38.1 ⋄ 2023-12-30'
+ '  * Bug fixes'
+ '    * OpenProject crashed when [?] was specified as argument but no aliase were defined'
  '* 0.38.0 ⋄ 2023-12-17'
  '  * BREAKING CHANGE: API function `GetAliasFileContent` renamed: `GetCiderAliasFileContent`'
  '  * Optional property `tatinVars` added to the Cider config file and `InjectTatinVars` changed accordingly'

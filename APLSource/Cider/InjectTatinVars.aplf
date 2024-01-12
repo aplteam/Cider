@@ -4,8 +4,8 @@
 ⍝ than the package!) by default, but you can inject a property `tatinVars` into the Cider config file
 ⍝ (as part of `CONFIG`) in order to overwrite this by specifying the name of a sub-namespace.
 ⍝ Whether the project is a going to be a package is determined by looking for a file ⎕se._Tatin.Registry.CFG_Name.
-⍝ In case `TatinVars` as injected a 1 is returned, otherwise a 0.
 ⍝ This allows a developer working on the project to access `TatinVars` as if it were loaded as a package.
+⍝ In case `TatinVars` is injected a 1 is returned, otherwise a 0.
  r←0
  :If ⎕NEXISTS folder,'/',⎕SE._Tatin.Registry.CFG_Name
      cfg←⎕SE._Tatin.Registry.ReadPackageConfigFile folder
