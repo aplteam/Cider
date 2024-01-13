@@ -376,9 +376,9 @@ However, until all supported versions of Link can deal with Link's own configura
 
 ###### watch
 
-Defaults to "both" but can be "ns" or "dir" as well. 
-
 Defines which source to track for changes, so the other can be synchronised.
+
+Defaults to "both" (namespace _and_ disk) and "ns" otherwise. Can also be "dir". 
 
 Note that for "both" and "dir" .NET or .NET Core is required. Under Windows this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not, the default for "watch" will be "ns".
 
@@ -691,6 +691,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 

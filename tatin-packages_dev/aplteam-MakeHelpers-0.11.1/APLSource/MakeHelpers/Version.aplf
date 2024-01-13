@@ -4,4 +4,4 @@
  json←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET TatinVars.HOME,'/apl-package.json'
  ns←⎕JSON⍠('Dialect' 'JSON5')⊣TatinVars.CONFIG
  'Version number in the package config file and in workspace differ?!'⎕SIGNAL 11/⍨json.version≢ns.version
- r←json.version
+ r←'Latest'json.version'2024-01-12'
