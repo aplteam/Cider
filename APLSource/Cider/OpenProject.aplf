@@ -65,7 +65,9 @@
  ('Source folder does not exist: ',parms.folder)Assert F.Exists parms.folder
  linkOptions←ExtractLinkOptions config                                          ⍝ Merge the default options with Cider's options
  :If 0≢parms.watch
-     config.LINK.watch←linkOptions.watch←parms.watch
+     config.LINK.watch←linkOptions.watch←parms.watch                            ⍝ Was specified by the user
+ :Else
+     parms.watch←(1+HasDotNet)⊃'ns' 'both'                                      ⍝ Default is "both" but for the time being only when .NET is available
  :EndIf
  p'Bringing in the source code...'
  projectSpace_←CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
