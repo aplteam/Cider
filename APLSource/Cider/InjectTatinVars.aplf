@@ -1,21 +1,29 @@
-  {r}←InjectTatinVars(projectRoot folder);cfg;ref
-⍝ When a package is loaded a namespace `TatinVars` is injected into the root of the package by Tatin.
-⍝ In case `projectSpace` is a Tatin package, Cider is injecting this into the root of the project (rather
-⍝ than the package!) by default, but you can inject a property `tatinVars` into the Cider config file
-⍝ (as part of `CONFIG`) in order to overwrite this by specifying the name of a sub-namespace.
-⍝ Whether the project is a going to be a package is determined by looking for a file ⎕se._Tatin.Registry.CFG_Name.
-⍝ This allows a developer working on the project to access `TatinVars` as if it were loaded as a package.
-⍝ In case `TatinVars` is injected a 1 is returned, otherwise a 0.
- r←0
+ msg←InjectTatinVars(projectRoot folder);cfg;ref
+⍝ When a package is loaded, a namespace `TatinVars` is injected into the root of the package by Tatin.
+⍝ When Cider opend a project, it injects such a namespace in the root of the project.
+⍝ However, more often than not a sub-namespace of the project will eventually become the package.
+⍝ In such a case you might want to have `TatinVars` in the root of the _**package**_.
+⍝ You can achieve that by injecting a property `tatinVars` into the Cider config file (as part of
+⍝ `CONFIG`) in order to specify a sub-namespace that will eventually become the package.
+⍝ Cider will then also inject a reference `TatinVars` into that sub-namespace, pointing to
+⍝ `TatinVars` in the root of the project. This allows a developer working on the project to access
+⍝ `TatinVars` as if it were loaded as a package.
+⍝ Whether a project is going to be a package is determined by the presence of a file "apl-package.json".
+⍝ `msg` should be empty but might be an error message in case "tatinVars" is specified but does not
+⍝ point to a sub-namespace in the project's root.
+ msg←''
  :If ⎕NEXISTS folder,'/',⎕SE._Tatin.Registry.CFG_Name
      cfg←⎕SE._Tatin.Registry.ReadPackageConfigFile folder
+     ⎕SE._Tatin.Client.EstablishStuffInTatinVars projectRoot cfg folder
      :If 0<projectRoot.CiderConfig.CIDER.⎕NC'tatinVars'
      :AndIf 0<≢projectRoot.CiderConfig.CIDER.tatinVars
-     :AndIf 9=projectRoot.⎕NC projectRoot.CiderConfig.CIDER.tatinVars
-         ref←projectRoot⍎projectRoot.CiderConfig.CIDER.tatinVars
-     :Else
-         ref←projectRoot
+         :If '⎕this'≢⎕C projectRoot.CiderConfig.CIDER.tatinVars
+             :If 9=projectRoot.⎕NC projectRoot.CiderConfig.CIDER.tatinVars
+                 ref←projectRoot⍎projectRoot.CiderConfig.CIDER.tatinVars
+                 ref.TatinVars←projectRoot.TatinVars
+             :Else
+                 msg←'"tatinVars" does not point to a sub-namespace in the project''s root'
+             :EndIf
+         :EndIf
      :EndIf
-     ⎕SE._Tatin.Client.EstablishStuffInTatinVars ref cfg folder
-     r←1
  :EndIf

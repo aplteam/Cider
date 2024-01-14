@@ -1,7 +1,7 @@
  parms←CreateOpenParms y;list;b;l
 ⍝ Creates a namespace with all parameters one might pass to `OpenProject`.\\
 ⍝ `y` might be an empty vector or a namespace with some such parameters.
-⍝ Any parameters passed this way overwrite defaults.
+⍝ Any parameters passed this way overwrites any defaults.
  parms←(1⊃1↓⎕RSI,⎕THIS).⎕NS''      ⍝ Create namespace where we got called from
  parms.folder←''
  parms.projectSpace←''

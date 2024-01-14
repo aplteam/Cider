@@ -1,4 +1,4 @@
- (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder
+ (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg
 ⍝ Open a Cider project.\\
 ⍝ `y` must be one of:
 ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
@@ -135,7 +135,8 @@
      :EndIf
  :EndIf
  InjectConfigDataIntoProject config projectSpace_ parms.folder
- InjectTatinVars projectSpace_ parms.folder
+ msg←InjectTatinVars projectSpace_ parms.folder
+ 1 p msg
  {}ChangeCurrentDir⍣(⊃~parms.batch)⊢parms.folder
  {}parms ExecProjectInitFunction⍣(~parms.suppressInit)⊣config projectSpace_
  {}ExecUserFunction⍣(~parms.ignoreUserExec)⊣config

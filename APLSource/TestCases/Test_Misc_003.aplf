@@ -1,5 +1,5 @@
  R←Test_Misc_003(stopFlag batchFlag);⎕TRAP;folder;parms;list;filename;cfg;was;rc;success;log;res
-⍝ Exercise the OpenProject function with ExecuteAfterProjectOpen set
+⍝ Exercise the OpenProject function with ExecuteAfterProjectOpen
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

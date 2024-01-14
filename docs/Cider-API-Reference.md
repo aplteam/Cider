@@ -308,7 +308,7 @@ For every install folder these pieces of information are listed:
 (successFlag ∆LOG)←OpenProject y
 ```
 
-Opening a project means carrying out the following actions:
+Opens a project means carrying out the following actions:
 
 1. Creating the `projectSpace` (namespace) in `parent` if it does not already exist
 
@@ -318,14 +318,16 @@ Opening a project means carrying out the following actions:
 4. Loading all Tatin packages from the Tatin installation folders defined by `dependencies:tatin` and `dependencies_dev:tatin`
 4. Loading all NuGet packages from the NuGet installation folder defined by `dependencies:nuget`
 5. Injecting a namespace `CiderConfig` into the root of the project and populating it with the contents of the configuration file as an APL array
-6. Adding a variable `HOME` to `CiderConfig` that carries a path to where the project was loaded from
-7. Executing the project-specific function noted on `init`, usually to initialize the project
-8. Executing a non-project-specific function defined in Cider's own configuration file
+6. Injecting a namespace `TatinVars` into the root of the project, and a ref pointing to that `TatinVars` (with the same name) in case the optional parameter "tatinVars" in the Cider Config section `CIDER` is defined and points to a sub-namespace in the project's root.
+7. Possibly changing the current directory to the project path if this is the first and only Cider project
+7. Adding a variable `HOME` to `CiderConfig` that carries a path to where the project was loaded from
+8. Executing the project-specific function noted on `init`, usually to initialize the project
+9. Executing a non-project-specific function defined in Cider's own configuration file
 
    This can be used for carrying out the same user-specific actions after a project was opened.
 
-9. Checking for a variable `ToDo` in the root of the project, and putting it on display (with `⎕ED`) in case it exists
-10. Checking the Git status of the project, if it is managed byGit
+10. Checking for a variable `ToDo` in the root of the project, and putting it on display (with `⎕ED`) in case it exists
+11. Checking the Git status of the project, if it is managed byGit
 
 `OpenProject` requires on of the following two options as right argument:
 
@@ -485,6 +487,7 @@ r←Version
 Returns the version number.
 
 This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
+
 
 
 
