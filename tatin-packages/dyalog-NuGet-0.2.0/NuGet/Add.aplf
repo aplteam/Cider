@@ -1,0 +1,37 @@
+ r←Add args;newpkgs;AP;add;name;version;prefix;pkgs;p;newv;new;old;oldv;project_dir;v;bad;i;same;z
+ ⍝ ⊃args: project_dir
+ ⍝ 1↓args: new packages, either 'name' or 'name/version'
+ ⍝ e.g. Add 'c:\tmp\clocktest\ 'Clock'
+
+ args←,⊆args
+ project_dir←⊃args
+ ('directory not found: ',project_dir)⎕SIGNAL(⎕NEXISTS project_dir)↓11
+
+ newpkgs←1↓args
+ new←(¯1+p←newpkgs⍳¨'/')↑¨newpkgs
+ newv←p↓¨newpkgs
+
+ (old oldv)←↓⍉↑pkgs←Packages project_dir
+
+ i←⍸(new∊old)∧0=≢¨newv    ⍝ Actually already registered and version not specified
+ newv[i]←oldv[old⍳new[i]] ⍝ Update to existing version
+
+ same←⍸new∊old            ⍝ Already registered
+ same←(⍳≢new)∊(newv[same]≡oldv[old⍳new[same]])/i ⍝ With the same version
+ ⍝ research suggests the following is wrong, just "dotnet add" again to change version
+ ⍝:If 0≠≢i←i/⍨newv[i]≢oldv[old⍳new[i]]
+ ⍝    ('already registered with a different version: ',,⍕pkgs[old⍳new[i]])⎕SIGNAL 11
+ ⍝:EndIf
+
+ bad←0⍨¨new
+ :For i :In ⍸~same
+     add←(i⊃new),(0≠≢v)/' --version ',v←i⊃newv
+     z←⍪r←⎕CMD 'dotnet add ',project_dir,' package ',add
+     bad[i]←∨/'error:'⍷∊r
+ :EndFor
+
+r←(~bad∨same) bad same/¨⊂new
+:If 0≠≢⊃r ⍝ Publish if something was added
+    z←Publish  project_dir ⍝ Returns contents of published folder
+:EndIf
+r←2↓∊(0≠≢¨r)/', Added/Updated: ' ', Error: ' ', Already registered: ',¨⍕¨r
