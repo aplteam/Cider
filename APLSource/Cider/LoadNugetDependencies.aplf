@@ -1,4 +1,4 @@
- list←x LoadNuGetDependencies(folder ns);NuGet;p;verbose;batch;cfg;nuGetFolder;list;name;list2;targetNamespace;buff;dlls;assemblies;namespace;_dotnetReflection;exportedNamespaces
+ list←x LoadNuGetDependencies(folder ns);p;verbose;batch;cfg;nuGetFolder;list;name;list2;targetNamespace;buff;dlls;assemblies;namespace;_dotnetReflection;exportedNamespaces
 ⍝ Load all dotnet namespace exported by NuGet dependencies from
 ⍝ folder into `ns` (namspace).
 ⍝ Returns a list with the names of all loaded NuGet packages.
@@ -15,35 +15,31 @@
  :If F.IsDir nuGetFolder
  :AndIf 0<≢list2←F.ListFiles nuGetFolder,'/*.csproj'
      p←verbose batch∘{⍺ PrintToSession ⍵}
-     :If 0=≢NuGet←FindNuGetAPI ⍬
-         1 PrintToSession'Could not load NuGet packages due to missing API'
-     :Else
-         list←1⌷⍉↑NuGet.Packages nuGetFolder
-         :If 2=⎕NC'ns'
-             ns←⍎ns
-         :EndIf
-         '_dotnet'ns.⎕NS''
-         :If 0<≢targetNamespace
-             targetNamespace ns.⎕NS''
-         :EndIf
-         nuGetFolder←F.EnforceSlash nuGetFolder
-         ns._dotnet.⎕USING←NuGet.Using nuGetFolder
-         _dotnetReflection←⎕NS''
-         _dotnetReflection.⎕USING←'System.Reflection,System.Runtime.dll'
-         ⍝ Determine path to dlls of principal dependencies
-         ⍝ Note: The last dll on the list is dropped since it is the dll for
-         ⍝ the 'cover' package created via the NuGet API
-         dlls←¯1↓{¯1↑','(≠⊆⊢)⍵}¨ns._dotnet.⎕USING
-         assemblies←_dotnetReflection.Assembly.LoadFile¨dlls
-         ⍝ Add references to namespaces directly exposed by the principal
-         ⍝ dependencies to the _dotnet namespace
-         exportedNamespaces←∪1⊃¨'.'(≠⊆⊢)¨⊃,/assemblies.GetExportedTypes.FullName
-         :For namespace :In exportedNamespaces
-             :If 0=≢targetNamespace
-                 ns.{⍎⍵,'←_dotnet.',⍵}namespace
-             :Else
-                 targetNamespace ns.{⍎⍺,'.',⍵,'←_dotnet.',⍵}namespace
-             :EndIf
-         :EndFor
+     list←1⌷⍉↑NuGet.Packages nuGetFolder
+     :If 2=⎕NC'ns'
+         ns←⍎ns
      :EndIf
+     '_dotnet'ns.⎕NS''
+     :If 0<≢targetNamespace
+         targetNamespace ns.⎕NS''
+     :EndIf
+     nuGetFolder←F.EnforceSlash nuGetFolder
+     ns._dotnet.⎕USING←NuGet.Using nuGetFolder
+     _dotnetReflection←⎕NS''
+     _dotnetReflection.⎕USING←'System.Reflection,System.Runtime.dll'
+     ⍝ Determine path to dlls of principal dependencies
+     ⍝ Note: The last dll on the list is dropped since it is the dll for
+     ⍝ the 'cover' package created via the NuGet API
+     dlls←¯1↓{¯1↑','(≠⊆⊢)⍵}¨ns._dotnet.⎕USING
+     assemblies←_dotnetReflection.Assembly.LoadFile¨dlls
+     ⍝ Add references to namespaces directly exposed by the principal
+     ⍝ dependencies to the _dotnet namespace
+     exportedNamespaces←∪1⊃¨'.'(≠⊆⊢)¨⊃,/assemblies.GetExportedTypes.FullName
+     :For namespace :In exportedNamespaces
+         :If 0=≢targetNamespace
+             ns.{⍎⍵,'←_dotnet.',⍵}namespace
+         :Else
+             targetNamespace ns.{⍎⍺,'.',⍵,'←_dotnet.',⍵}namespace
+         :EndIf
+     :EndFor
  :EndIf

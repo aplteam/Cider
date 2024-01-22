@@ -1,4 +1,4 @@
- list←AddNuGetDependencies(packages projectFolder);NuGet;msg;cfg;nuGetFolder;package;buff;targetNamespace;b;qdmx
+ list←AddNuGetDependencies(packages projectFolder);msg;cfg;nuGetFolder;package;buff;targetNamespace;b;qdmx
 ⍝ Add one or more NuGet packages to the NuGet-folder defined in the config file of `projectFolder`.
 ⍝ * `packages` must be either a nested vector with package names or a comma-separated list of package names
 ⍝ * `projectFolder` must carry a Cider config files used to establish the NuGet folder.\\
@@ -23,7 +23,6 @@
  :If 0<≢nuGetFolder
      nuGetFolder←FilesAndDirs.EnforceSlash nuGetFolder  ⍝ .NET requirement
      {}⎕MKDIR⍣(~⎕NEXISTS nuGetFolder)⊣nuGetFolder
-     'Unable to locate NuGet API'Assert 0<≢NuGet←FindNuGetAPI ⍬
      msg←NuGet.Setup nuGetFolder
      msg Assert~∨/'error:'⍷⎕C msg
      list←''

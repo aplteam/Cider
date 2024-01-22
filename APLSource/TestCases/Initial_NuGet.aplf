@@ -1,9 +1,6 @@
  r←{x}Initial_NuGet ps;info
- r←≢##.Cider.FindNuGetAPI ⍬
+ r←1
  info←''
- :If 0=r                 ⍝ ⎕se.NuGet not found and...
-     info←'⎕SE.NuGet is not available, so the NuGet tests can not be executed.'  ⍝ ... so we inform the user
- :EndIf
  :Select ⊃1⊃2250⌶0
  :Case ¯1
      r←0

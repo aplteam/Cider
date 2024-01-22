@@ -1,3 +1,0 @@
- ref←FindNuGetAPI dummy
-⍝ Tries to find a NuGet ns somewhere, and returns a ref to the first hit, otherwise ''
- ref←NuGet

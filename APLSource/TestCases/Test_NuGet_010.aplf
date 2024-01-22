@@ -4,7 +4,7 @@
  R←T._Failed
 
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
- tfm←1⊃(##.Cider.FindNuGetAPI ⍬).GetDotNetIDS ⍬
+ tfm←1⊃##.Cider.NuGet.GetDotNetIDS ⍬
  folder←(∆GetTestPath⊃⎕SI),'/',tfm
  tempDir←∆GetFolderInTempDir⊃⎕SI
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
