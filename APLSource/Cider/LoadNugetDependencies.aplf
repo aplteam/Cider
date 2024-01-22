@@ -24,13 +24,11 @@
          targetNamespace ns.⎕NS''
      :EndIf
      nuGetFolder←F.EnforceSlash nuGetFolder
-     ns._dotnet.⎕USING←NuGet.Using nuGetFolder
+     ns._dotnet.⎕USING←'{includePrimary : 0}'NuGet.Using nuGetFolder
      _dotnetReflection←⎕NS''
      _dotnetReflection.⎕USING←'System.Reflection,System.Runtime.dll'
      ⍝ Determine path to dlls of principal dependencies
-     ⍝ Note: The last dll on the list is dropped since it is the dll for
-     ⍝ the 'cover' package created via the NuGet API
-     dlls←¯1↓{¯1↑','(≠⊆⊢)⍵}¨ns._dotnet.⎕USING
+     dlls←{¯1↑','(≠⊆⊢)⍵}¨ns._dotnet.⎕USING
      assemblies←_dotnetReflection.Assembly.LoadFile¨dlls
      ⍝ Add references to namespaces directly exposed by the principal
      ⍝ dependencies to the _dotnet namespace
