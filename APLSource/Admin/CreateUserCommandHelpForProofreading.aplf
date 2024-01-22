@@ -1,0 +1,16 @@
+ CreateUserCommandHelpForProofreading;cmdList;help2;help3
+⍝ Compiles all the help into a single file for easier proof-reading
+ cmdList←⎕SE.UCMD'Cider -??'
+ cmdList←(⎕UCS 13)(≠⊆⊢)cmdList
+ cmdList←(⍸∨/¨'CIDER:'∘⍷¨cmdList)↓cmdList
+ cmdList←(+/∧\(↑cmdList)[;1 2]∧.=' ')↑cmdList
+ cmdList←##.Cider.APLTreeUtils2.DLB cmdList
+ cmdList←{⍵↑⍨¨⍵⍳¨' '}cmdList
+ help2←{⎕SE.UCMD ⍵}¨cmdList,¨⊂' -??'
+ help2←{1<≡⍵:⍵ ⋄ (⎕UCS 13)(≠⊆⊢)⍵}¨help2
+ help2←{⍵↓⍨(⊃⍵)∧.='─'}¨help2
+ (1⊃¨help2)←(⊂'### '),¨1⊃¨help2
+ help2←('# Cider Help' '## Level 2'),⊃,/help2
+ help3←{⎕SE.UCMD ⍵}¨cmdList,¨⊂' -???'
+∘∘∘   ⍝TODO⍝  ⍝TODO⍝ Work in progress
+⍝Done

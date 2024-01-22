@@ -3,10 +3,10 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- mat1←##.Cider.GetAliasFileContent ⍬
+ mat1←##.Cider.GetCiderAliasFileContent ⍬
  Assert 2=+/⊃∨/∨/¨'test-project-1' 'test-project-2'⍷¨⊂⍕mat1
  ##.Cider.DropAlias'test-project-1'
- mat2←##.Cider.GetAliasFileContent ⍬
+ mat2←##.Cider.GetCiderAliasFileContent ⍬
  →T.PassesIf(¯1+≢mat1)=≢mat2
  →T.PassesIf 1=+/⊃∨/∨/¨'test-project-1' 'test-project-2'⍷¨⊂⍕mat2
 

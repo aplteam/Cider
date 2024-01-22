@@ -2,7 +2,7 @@
 ⍝ Exercise a number of Get* functions
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
 
- res←##.Cider.GetAliasFileContent ⍬
+ res←##.Cider.GetCiderAliasFileContent ⍬
  →T.PassesIf 0<≢res
  res←##.Cider.GetCiderAliasFilename
  →T.PassesIf∨/'/aliase.txt'⍷FilesAndDirs.EnforceSlash res

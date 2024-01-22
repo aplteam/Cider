@@ -1,4 +1,4 @@
- ref←CheckTargetNamespaceAndLinkFolder(ref parms source);nsIsEmpty;folderIsEmpty
+ ref←CheckTargetNamespaceAndLinkFolder(ref parms source);nsIsEmpty;folderIsEmpty;nc
 ⍝ 1. In case `ref` does not point to a namespace or a script but the name is already taken
 ⍝ 2. In case the namespace `ref` and the folder are both empty no action is taken
 ⍝ 3. In case only the namespace `ref` is empty no action is taken
@@ -7,30 +7,27 @@
 ⍝    whether she wants the namespace to be recreated; if not an error is thrown.
 ⍝ When `batch` is set however, then either the namepace or the folder or both must
 ⍝ be empty, otherwise an error is thrown.
- :If (⎕NC⊂⍕ref)∊9.1 9.4 9.5
-     nsIsEmpty←0=≢' '~¨⍨↓ref.⎕NL⍳16
-     'Cannot open, is already loaded as a package'Assert'_tatin'≢{⍵↑⍨¯1+⍵⍳'.'}{⍵↓⍨⍵⍳'.'}⍕ref
-     :If 0=F.Exists parms.folder,'/',source
-         folderIsEmpty←1
-     :Else
-         folderIsEmpty←0=≢⊃⎕NINFO⍠('Wildcard' 1)⊣parms.folder,'/',source,'/*'
-     :EndIf
-     :If nsIsEmpty∧~folderIsEmpty
-     :OrIf folderIsEmpty∧~nsIsEmpty
-     :OrIf folderIsEmpty∧nsIsEmpty
-         :Return
-     :EndIf
+ nc←⎕NC⊂⍕ref
+ ('The name "',(⍕ref),'" is already in use (name class=',(⍕nc),')')Assert nc∊9.1 9.4 9.5
+ nsIsEmpty←0=≢' '~¨⍨↓ref.⎕NL⍳16
+ 'Cannot open, is already loaded as a package'Assert'_tatin'≢{⍵↑⍨¯1+⍵⍳'.'}{⍵↓⍨⍵⍳'.'}⍕ref
+ :If 0=F.Exists parms.folder,'/',source
+     folderIsEmpty←1
+ :Else
+     folderIsEmpty←0=≢⊃⎕NINFO⍠('Wildcard' 1)⊣parms.folder,'/',source,'/*'
+ :EndIf
+ :If ~nsIsEmpty∧~folderIsEmpty
+ :AndIf ~folderIsEmpty∧~nsIsEmpty
+ :AndIf ~folderIsEmpty∧nsIsEmpty
      :If parms.batch
           ⍝ With `batch` being true there is nothing we can do but throw an error
          ('Both the target (',(⍕ref),') and the source folder are not empty')Assert 0
      :Else
-         :If C.YesOrNo'Target "',(⍕ref),'" is not empty - recreate?'
+         :If C.YesOrNo'RecreateTargetNS@Target namepsace "',(⍕ref),'" is not empty - re-create?'
              ⎕EX⍕ref                                 ⍝ It might be a class, so we first delete it...
              ref←⍎(⍕ref)({⍎⍵↑⍨¯1+⍵⍳'.'}⍕ref).⎕NS''   ⍝ ... and then we re-create it
          :Else
-             'Both the target and the source folder are not empty'Assert 0
+             'Both the target namespace and the source folder are not empty'Assert 0
          :EndIf
      :EndIf
- :Else
-     ('The name "',(⍕ref),'" is already in use')Assert 0
  :EndIf

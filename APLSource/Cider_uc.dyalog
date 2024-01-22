@@ -1,11 +1,10 @@
-:Class Cider_UC
+﻿:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
     MinimumVersionOfDyalog←'18.0'
     L←⎕SE.Link
     configFilename←'cider.config'
-
     ∇ r←List;c ⍝ this function usually returns 1 or more namespaces (here only 1)
       :Access Shared Public
       r←⍬
@@ -124,7 +123,6 @@
           r,←c
       :EndIf
     ∇
-
     ∇ r←Run(Cmd Args);folder;P;⎕TRAP;aplVersion
       :Access Shared Public
       r←0 0⍴''
@@ -169,7 +167,6 @@
           ∘∘∘ ⍝ Huh?!
       :EndSelect
     ∇
-
     ∇ r←RunTests Args;config;path;list;index
       r←''
       :If 0=≢path←GetProjectPath Args._1
@@ -180,7 +177,6 @@
           :EndIf
       :EndIf
     ∇
-
     ∇ r←Make Args;config;path;list;index;home
       r←''
       :If 0=≢path←GetProjectPath Args._1
@@ -194,7 +190,6 @@
           :EndIf
       :EndIf
     ∇
-
     ∇ r←AddNuGetDependencies Args;packages;projectFolder;cfg;ref;flag;q;oldList;newList;targetNamespace;list;targetNS;list2
     ⍝ Returns list of (newly) installed NuGet packages.
       packages←Args._1
@@ -242,13 +237,12 @@
                   {}(⍎targetNS).{l←⍵ ⋄ 0=≢l:0 ⋄ 0=≢l←(0<⎕NC↑l)/l:0 ⋄ 0=+/b←∨/¨'._tatin.'∘⍷¨⍕¨{6::'' ⋄ ⍎⍵}¨⍵:0 ⋄ +/⎕EX¨b/⍵}list2   ⍝ Delete all previous references
               :EndIf
           :EndIf
-          list←0 0 P.LoadNuGetDependencies projectFolder targetNS
+          list←0 0 P.##.LoadNuGetDependencies projectFolder targetNS
           r←r,(⎕UCS 13),(⍕≢list),' dependencies loaded'
       :EndIf
       newList←P.ListNuGetDependencies projectFolder
       r←newList[;1]~oldList[;1]
     ∇
-
     ∇ r←AddTatinDependencies Args;path;packages;projectFolder;cfg;development;ref;flag;q;list;sourceFolder;targetNS;targetNamespace;ref2;targetNS2;list2;sourceFolder2;noOf
       r←''
       packages←Args._1
@@ -309,7 +303,8 @@
           targetNS2←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}{⍵↓⍨⍵⍳'='}ref2.tatin
           :If targetNS≡targetNS2    ⍝  Only when "normal" dependencies and development dependencies go into the same namespace...
               sourceFolder2←projectFolder,'/',P.##.RemoveTargetDefinition ref2.tatin
-              :If 0<≢P.##.F.ListDirs sourceFolder2
+              :If P.##.F.IsDir sourceFolder2
+              :AndIf 0<≢P.##.F.ListDirs sourceFolder2
               :AndIf P.##.F.IsFile sourceFolder2,⎕SE._Tatin.Client.Reg.BuildListFilename
                   list2←⎕SE.Tatin.LoadDependencies sourceFolder2 targetNS2          ⍝... do we need to (re-)load both
                   noOf←+/≢¨list list2
@@ -322,7 +317,6 @@
           r←r⍪⊂(⍕noOf),' dependenc',((1+1<noOf)⊃'y was' 'ies were'),' loaded'
       :EndIf
     ∇
-
     ∇ r←UpdateCider dummy;allVersions;thisVersion;ind;noOf;targetFolder;tempFolder;res;q;folder
       r←''
       allVersions←,⎕SE.Tatin.ListVersions'[Tatin]aplteam-Cider'
@@ -363,7 +357,6 @@
           :EndIf
       :EndIf
     ∇
-
     ∇ r←ListNuGetDependencies Args;path
     ⍝ List all NuGet dependencies
       r←''
@@ -373,7 +366,6 @@
           r←'No dependencies found'
       :EndIf
     ∇
-
     ∇ r←ListTatinDependencies Args;path
     ⍝ List all Tatin dependencies
       r←0 5⍴''
@@ -389,7 +381,6 @@
           :EndIf
       :EndIf
     ∇
-
     ∇ r←Config Args;_Cider;filename;json
       r←'No action taken'
       filename←P.GetCiderGlobalConfigFilename
@@ -413,7 +404,6 @@
           r←'File not found: ','expand'P.##.F.NormalizePath filename
       :EndIf
     ∇
-
     ∇ r←ProjectConfig Args;list;path;index
       r←''
       :If 0=≢path←GetProjectPath Args._1
@@ -424,7 +414,6 @@
           :EndIf
       :EndIf
     ∇
-
     ∇ r←CreateProject Args;folder;msg;namespace
       :If 0=≢Args._1
           folder←''
@@ -448,7 +437,6 @@
           :EndIf
       :EndIf
     ∇
-
     ∇ r←ListAliases Args
       :If Args.edit
           :If 0=≢r←EditAliasFile ⍬
@@ -458,16 +446,14 @@
           r←ProcessAliases Args.(prune edit batch)
       :EndIf
     ∇
-
     ∇ r←ListOpenProjects Args
       r←P.ListOpenProjects Args.verbose
       r(AddTitles)←'Namespace name' 'Path',Args.verbose/'No. of objects' 'Alias'
     ∇
-
     ∇ r←OpenProject Args;path;parms;aliasDefs;bool;info;opCode;alias;log;success
       r←0 0⍴''
       Args.projectSpace←{(,0)≡,⍵:'' ⋄ ⍵}Args.projectSpace
-      aliasDefs←P.GetAliasFileContent ⍬
+      aliasDefs←P.GetCiderAliasFileContent ⍬
       :If 0≡Args._1
       :OrIf Args._1≡'[?]'
           :If 0=≢path←SelectFromAliases aliasDefs
@@ -524,7 +510,6 @@
           r←'Attempt to open the project failed'
       :EndIf
     ∇
-
     ∇ r←level Help Cmd;ref;⎕TRAP
       :Access Shared Public
       r←''
@@ -780,7 +765,6 @@
           r,←⊂'There is no additional help available'
       :EndSelect
     ∇
-
     ∇ r←AtLeastVersion min;currentVersion
       :Access Public Shared
       ⍝ Returns 1 if the currently running version is at least `min`.\\
@@ -792,21 +776,17 @@
       'Right argument must be length 1'⎕SIGNAL 11/⍨1≠≢min
       r←⊃min≤currentVersion
     ∇
-
     Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),11}
-
     ∇ r←r AddTitles titles
     ⍝ `r` is a matrix with data. `titles` is put on top of that matrix, followed by a row with `-` matching the lengths of each title
       r←⍉↑(⊂¨titles),¨' ',¨↓⍉r
       r[2;]←(≢¨r[1;])⍴¨'-'
     ∇
-
     ∇ path←AddSlash path
       path,←(~(¯1↑path)∊'/\')/'/'
     ∇
-
     ∇ r←ProcessAliases(prune edit batch);bool;flag
-      r←P.GetAliasFileContent ⍬
+      r←P.GetCiderAliasFileContent ⍬
       :If prune
           :If 0<≢r
               bool←⎕NEXISTS¨r[;2]
@@ -839,7 +819,6 @@
           :EndIf
       :EndIf
     ∇
-
     ∇ r←{namespace}CreateProject_(folder acceptFlag noEditFlag batch ignoreUserExec);filename;success;config;projectFolder;parms;list;log
       :Access Public Shared
       r←''
@@ -936,22 +915,17 @@
           r←'*** No action taken'
       :EndIf
     ∇
-
     ∇ {name}←CreateConfigFile(filename name);config;globalCiderConfigFilename;tatinVars
     ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"
       ('The folder already hosts a file "',configFilename,'"')Assert~⎕NEXISTS filename
       globalCiderConfigFilename←P.GetCiderGlobalConfigHomeFolder,'cider.config.template'
-      :If '#'=1⍴⍕P
-          tatinVars←P.##.##.TatinVars
-      :Else
-          tatinVars←P.##.TatinVars
-      :EndIf
+      tatinVars←P.##.TatinVars
       :If 0=⎕NEXISTS globalCiderConfigFilename
           ⍝ First attempt
           globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)tatinVars.HOME,'/cider.config.template'
       :ElseIf ≢/{⊃⎕NGET ⍵}¨globalCiderConfigFilename(tatinVars.HOME,'/cider.config.template')
           ⍝ Replace by the template if changed
-          globalCiderConfigFilename(⎕NCOPY P.##.F.ExecNfunction)tatinVars.HOME,'/cider.config.template'
+          globalCiderConfigFilename(⎕NCOPY⍠('IfExists' 'Replace')P.##.F.ExecNfunction)tatinVars.HOME,'/cider.config.template'
       :EndIf
       config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃P.##.F.NGET globalCiderConfigFilename
       :If 0=⎕SE.Link.⎕NC'Version'                           ⍝ There was no such function prior to Link 3
@@ -965,7 +939,6 @@
       config.CIDER.projectSpace←⍕name
       config P.##.Put_JSON5 filename
     ∇
-
     ∇ (opCode path)←OpenFileDialogBox caption;ref;res;filename
     ⍝ opCodes:
     ⍝ ¯1 = Cancelled by user
@@ -988,7 +961,6 @@
           :EndIf
       :EndIf
     ∇
-
 
     ∇ r←CloseProject Args;list;bool;row;invalid;noop;report;projectID;buff;ind
       r←''
@@ -1063,10 +1035,9 @@
           :EndIf
       :EndIf
     ∇
-
     ∇ r←TranslateAlias alias;aliase;row
       :If IsAlias alias
-          aliase←P.GetAliasFileContent ⍬
+          aliase←P.GetCiderAliasFileContent ⍬
           row←aliase[;1]⍳⊂alias~'[]'
           ('Unknown alias: ',alias)Assert row≤≢aliase
           r←2⊃aliase[row;]
@@ -1074,7 +1045,6 @@
           r←alias
       :EndIf
     ∇
-
     ∇ r←ShowHelp dummy;list;folder;answer;msg;filenames
       r←''
       folder←1⊃⎕NPARTS ##.SourceFile
@@ -1097,7 +1067,6 @@
           :EndIf
       :EndIf
     ∇
-
     ∇ (rc msg)←CheckConfig json;dmx
     ⍝ Reads the config file and performs basic checks on it
     ⍝ Returns:
@@ -1123,7 +1092,6 @@
       :EndIf
       rc←0≠≢msg
     ∇
-
     ∇ {r}←EditAliasFile dummy;filename;data_;Local;aliases;b;report;buff;b2;b3;flag;b4;b5;aliases_;b6
       r←''
       filename←P.GetCiderAliasFilename
@@ -1131,7 +1099,7 @@
           3 ⎕MKDIR 1⊃⎕NPARTS filename
           (⊂'')⎕NPUT filename
       :EndIf
-      aliases_←P.GetAliasFileContent ⍬
+      aliases_←P.GetCiderAliasFileContent ⍬
       :If 0<≢aliases←⍕aliases_
           aliases_←⊃¨{⍺,'=',⍵}/¨↓aliases_
           :Repeat
@@ -1183,14 +1151,12 @@
           r←'There are no aliases defined in ',filename
       :EndIf
     ∇
-
     YesOrNo←{⍺←⊢ ⋄ ⍺ P.##.C.YesOrNo ⍵}
-
     ∇ r←{caption}SelectFromAliases data;row
       r←⍬
       caption←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'caption'
       :If 0=≢data
-          data←P.GetAliasFileContent ⍬
+          data←P.GetCiderAliasFileContent ⍬
       :EndIf
       :If 0<≢data
           data[;1]←{'[',⍵,']'}¨data[;1]
@@ -1199,7 +1165,6 @@
           r←row⊃data[;2]
       :EndIf
     ∇
-
     ∇ index←{caption}SelectOneItem options;flag;answer;question;index;bool;value
     ⍝ Presents `options` as a numbered list and allows the user to select exactly one of them.\\
     ⍝ If the user aborts `index` is `⍬`.
@@ -1236,9 +1201,7 @@
       :Until flag
       index←{1<≢⍵:⍵ ⋄ ⊃⍵}index
     ∇
-
     Select←{⍺←⊢ ⋄ ⍺ P.##.C.Select ⍵}
-
     ∇ {r}←PerformConfigChecks config;buff;namespace;path
       r←0
       :If 0<≢buff←config.CIDER.dependencies.tatin
@@ -1256,7 +1219,6 @@
           :EndIf
       :EndIf
     ∇
-
     ∇ path←{verb}GetProjectPath y;list;index;aliasDefs;bool;alias;info
     ⍝ `y` is typically a user command parameter but might also be a path or an alias, even with a wildcard.
     ⍝ If needs must this function consults the user.
@@ -1278,7 +1240,7 @@
               path←2⊃list[index;]
           :EndSelect
       :Else
-          aliasDefs←P.GetAliasFileContent ⍬
+          aliasDefs←P.GetCiderAliasFileContent ⍬
           path←y
           :If (⊂,path)∊,¨'[' '[?' '[?]'
               :If 0=≢path←SelectFromAliases aliasDefs
@@ -1304,7 +1266,6 @@
           :EndIf
       :EndIf
     ∇
-
     ∇ r←GetRefToCiderCode(cmd arg)
     ⍝ Checks whether it makes sense to execute code in #.Cider rather than in ⎕SE.Cider
     ⍝ Note that when the Cider project itself is about to be opened, the code is not yet available in #,
@@ -1323,7 +1284,6 @@
           r←⎕SE.Cider
       :EndIf
     ∇
-
     ∇ path←SanitizePath path;UNCflag
     ⍝ Use this to convert any \\ or // to /, and any \ to /
       :If 0<≢path
@@ -1335,7 +1295,6 @@
           :EndIf
       :EndIf
     ∇
-
     ∇ {r}←CheckAPLversion dummy;aplVersion
     ⍝ Check whether the currently running version of Dyalog fulfills the requirements
       r←0
@@ -1345,13 +1304,11 @@
           'Version 18 must be at least on build number 44280, otherwise Link won''t work as expected'⎕SIGNAL 11
       :EndIf
     ∇
-
     ∇ {r}←AutoLoadCider filename
       :If 0=⎕SE.⎕NC'Cider'
           {}⎕SE.Tatin.LoadDependencies filename'⎕SE'
       :EndIf
     ∇
-
     ∇ {r}←AutoLoadTatin dummy
     ⍝ In case the Tatin API is not yet available it is forced by executing the user command ]Tatin.Version
       r←0
@@ -1363,9 +1320,7 @@
           :EndTrap
       :EndIf
     ∇
-
     ∇ r←IsAlias path
       r←']['≡2↑¯1⌽path
     ∇
-
 :EndClass

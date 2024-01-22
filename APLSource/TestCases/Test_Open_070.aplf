@@ -18,7 +18,7 @@
  (success log)←##.Cider.OpenProject parms
  Assert success
  →T.GoToTidyUp∨/'ERROR'⍷log
- defs←##.Cider.GetAliasFileContent ⍬
+ defs←##.Cider.GetCiderAliasFileContent ⍬
  →T.GoToTidyUp~(⊂'foo')∊defs[;1]
 
  R←T._OK

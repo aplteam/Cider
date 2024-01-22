@@ -25,6 +25,7 @@
                      p(⍕noOf),' Tatin package',((1<noOf)/'s'),' loaded'
                  :Else
                      qdmx←⎕DMX
+                     ⎕SE._Tatin.Client.CloseConnections 1
                      :If 998=qdmx.EN
                          :If ∧/∨/¨'The build list in ' ' not installed:'⍷¨⊂qdmx.EM
                              q←'ReinstallBecauseOfInconsistency@The installed packages don''t fit the dependency/build list file(s); re-install?'
