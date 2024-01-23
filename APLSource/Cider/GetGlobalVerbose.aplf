@@ -1,4 +1,4 @@
- r←GetGlobalVerboseDefault;globalUserConfig
+ r←GetGlobalVerbose;globalUserConfig
 ⍝ Checks whether Cider's global configuration file carries a value for `verbose`,
 ⍝ and if so, returns its value.
  r←0

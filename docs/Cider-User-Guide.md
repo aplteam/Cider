@@ -162,11 +162,44 @@ For example, when a project carries a directory `.git/` then Cider knows that th
 
 #### Global configuration
 
-Cider may have a global configuration file that can be used to define settings that effect _all_ projects. It's named is `cider.json`, and it is referred to as the _global_ Cider config file.
+Cider may have a global configuration file that can be used to define settings that effect _all_ projects. It's named is `cider.json`.
 
 This file, if it exists, it situated in a folder `.cider` that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be `C:\Users\JohnDoe\.cider` on Windows, on Linux it would be `/home/JohnDoe/.cider`, and on the Mac it would be `/Users/JohnDoe/.cider`.
 
 This folder does not only host the global config file, it's also the place where the file with alias definitions (`aliase.txt`) is saved as well as the file `cider.config.template` which is used as a template (hence the name) whenever a new project is created.
+
+##### AskForDirChange
+
+You may define `AskForDirChange` and assign one of the following values:
+
+0 = Don't do anything at all regarding the current directory<br>
+1 = If it's the first project in the current WS then change the directory<br>
+2 = If it's the first project in the current WS then ask the user whether she wants to change the current directory
+
+If no such value is defined then Cider behaves as if it is defined with the value 1.
+
+##### ExecuteAfterProjectOpen
+
+If defined and not empty it must be the fully qualfied path to a function. That function will be executed by Cider after the project was opened.
+
+The function must accept a right argument. This will be a namespace holding the information from the project's config file.
+
+The function may or may not return a result, but it will be ignored.
+
+##### ReportGitStatus
+
+By default Cider reports the Git status of a project by putting it into an edit window if the working tree is not clean.
+
+If you don't want this you can inject `ReportGitStatus` into the global config file and assign one of the following values:
+
+0 = Don't report the Git status <br>
+1 = Report the Git status in a read-only edit window (the default) <br>
+2 = Report the Git status by printing it to the session <br>
+3 = Ask the user what to do <br>
+
+##### verbose
+
+Boolean that defaults to 0. This means that Cider provides only really important messages. If you want Cider to be verbose (some would say: chatty) in this respect, set `verbose` to 1.
 
 #### Project configuration
 
@@ -212,7 +245,7 @@ A> ```
 A> ]Cider.OpenProject [foo]
 A> ```
 
-#### Configuration parameters
+#### Project configuration parameters
 
 The Cider configuration file comes with four sections:
 
@@ -689,6 +722,11 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
+
+
+
+
 
 
 

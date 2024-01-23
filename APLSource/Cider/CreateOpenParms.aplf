@@ -11,7 +11,7 @@
  parms.ignoreUserExec←0
  parms.importFlag←0
  parms.noPkgLoad←0
- parms.verbose←GetGlobalVerboseDefault
+ parms.verbose←GetGlobalVerbose
  parms.batch←0
  parms.watch←0
  parms.checkPackageVersions←0      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update

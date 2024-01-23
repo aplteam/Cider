@@ -142,6 +142,6 @@
  {}ExecUserFunction⍣(~parms.ignoreUserExec)⊣config
  parms CheckOnToDo projectSpace_
  successFlag←SUCCESS
- CheckForGit parms.folder config parms
+ CheckForGit⍣(⊃~parms.batch)⊢parms.folder config parms
  p'Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,,{(,'#')≡,⍵:'"' ⋄ '.',⍵,'"'}parms.projectSpace
 ⍝Done

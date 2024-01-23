@@ -1,0 +1,8 @@
+ r←GetGlobalAskForDirChange;globalUserConfig
+⍝ Checks whether Cider's global configuration file carries a value for `AskForDirChange`,
+⍝ and if so, returns its value. If not a 1 is returned.
+ r←1
+ :If ⍬≢globalUserConfig←GetCiderGlobalConfigFileContent
+ :AndIf 2=globalUserConfig.⎕NC'AskForDirChange'
+     r←globalUserConfig.AskForDirChange
+ :EndIf

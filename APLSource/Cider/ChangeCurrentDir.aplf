@@ -1,11 +1,31 @@
- {r}←ChangeCurrentDir path
-⍝ Checks whether the current dir is not identical with the project folder.
-⍝ If not then the user is asked whether she wants change the current dir to the project folder
-⍝ Returns 0 in case there was no change and 1 otherwise.
- r←0
- :If (F.AddTrailingSep F.PWD)≢F.AddTrailingSep'expand'F.NormalizePath path
- :AndIf 0 CommTools.YesOrNo'ChangeCurrentDir@Would you like to change the current directory to ',path,' ?'
-     {}F.Cd path
-     ⎕←'The current directory is now ',F.PWD
-     r←1
+ {r}←{dry}ChangeCurrentDir path;flag
+⍝ Might change the current directory.
+⍝ First condition is that the current project is the first one opened in the WS.
+⍝ If that's the case then the current dir is changed to the project's dir if Cider's global config file
+⍝ does not carry an entry `GetGlobalAskForDirChange`.
+⍝ If it does then it depends on its value:
+⍝ 0 = No action is taken
+⍝ 1 = The dir is changed
+⍝ 2 = The user is asked whether she wants to change the dir
+⍝ Returns 1 in case the dir was changed, otherwise 0.
+ r←flag←0
+ dry←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'dry'
+ :If 1=≢⎕SE.Cider.ListOpenProjects 0
+     :Select ⊃GetGlobalAskForDirChange
+     :Case 0
+         :Return   ⍝ No action!
+     :Case 1
+         flag←1
+     :Case 2
+         :If (F.AddTrailingSep F.PWD)≢F.AddTrailingSep'expand'F.NormalizePath path
+             flag←1 CommTools.YesOrNo'ChangeCurrentDir@Change Dir:   would you like to change the current directory to ',path,' ?'
+         :EndIf
+     :EndSelect
+     :If flag
+         :If ~dry
+             {}F.Cd path
+         :EndIf
+         ⎕←'The current directory is now ',F.PWD
+         r←~dry
+     :EndIf
  :EndIf

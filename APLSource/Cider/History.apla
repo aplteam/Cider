@@ -1,5 +1,7 @@
 (
- '* 0.39.0 ⋄ 2024-01-14'
+ '* 0.39.0 ⋄ 2024-01-22'
+ '  * New global config parameter introduced: `AskForDirChange`'
+ '  * New global config parameter introduced: `ReportGitStatus` '
  '  * The config property "tatinVars", when present, was used to establish which sub-namspace of a project'
  '    would eventually become a package. This was used in order to inject the namespace `TatinVars` into that'
  '    sub-namespace rather than the root of the project.'
