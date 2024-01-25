@@ -1,11 +1,13 @@
- R←Test_NuGet_010(stopFlag batchFlag);⎕TRAP;folder;parms;res;log;cals;success;tempDir;tfm
+ R←Test_NuGet_010(stopFlag batchFlag);⎕TRAP;folder;parms;res;log;cals;success;tempDir
 ⍝ Open a project that has already two NuGet dependencies
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
- tfm←1⊃##.Cider.NuGet.GetDotNetIDS ⍬
- folder←(∆GetTestPath⊃⎕SI),'/',tfm
+ ⍝TODO⍝  tfm←1⊃##.Cider.NuGet.GetDotNetIDS ⍬
+ folder←(∆GetTestPath⊃⎕SI),'/'
+⍝ json←⊃FilesAndDirs.NGET folder,'cider.config'
+⍝ cfg←⎕JSON⍠('Dialect' 'JSON5')⊢json
  tempDir←∆GetFolderInTempDir⊃⎕SI
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
 

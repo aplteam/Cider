@@ -1,0 +1,5 @@
+C:\T\Projects\Dyalog\Cider\Tests\Test_NuGet_010\nuget-packages\published\nuget-packages.dll
+C:\T\Projects\Dyalog\Cider\Tests\Test_NuGet_010\nuget-packages\published\nuget-packages.deps.json
+C:\T\Projects\Dyalog\Cider\Tests\Test_NuGet_010\nuget-packages\published\nuget-packages.pdb
+C:\T\Projects\Dyalog\Cider\Tests\Test_NuGet_010\nuget-packages\published\Clock.dll
+C:\T\Projects\Dyalog\Cider\Tests\Test_NuGet_010\nuget-packages\published\NodaTime.dll

@@ -31,7 +31,7 @@
              msg←NuGet.Add(⊂nuGetFolder),⊂package
              :If ∨/'error:'⍷⎕C msg
                  1 PrintToSession msg
-             :elseIf 'Already registered:'{⍺≡(≢⍺)↑⍵}msg
+             :ElseIf 'Already registered:'{⍺≡(≢⍺)↑⍵}msg
                  1 PrintToSession msg
              :Else
                  list,←⊂package
