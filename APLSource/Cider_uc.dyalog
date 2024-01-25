@@ -397,7 +397,7 @@
               :AndIf json≢_Cider.config
               :AndIf YesOrNo'Would you like to save your changes on disk?'
                   (⊂_Cider.config)P.##.F.NPUT filename 1
-                  r←'File edited and changed saved to disk'
+                  r←'File edited and changes saved to disk'
               :EndIf
           :EndIf
       :Else
@@ -651,7 +651,7 @@
               r,←⊂'Takes a path to a project or a project alias as (optional) argument.'
               r,←⊂'If no argument is provided the command looks for open Cider projects.'
           :Case ⎕C'Config'
-              r,←⊂'Puts the content of Cider''s global config into the editor and allows the user to change it.'
+              r,←⊂'Puts the content of Cider''s global config file into the editor and allows the user to change it.'
               r,←⊂'By specifying the -print flag you can force the user command to print the content of the file'
               r,←⊂'to the session rather than putting it into ⎕ED.'
               r,←⊂''

@@ -1,7 +1,7 @@
  parms←CreateOpenParms y;list;b;l
 ⍝ Creates a namespace with all parameters one might pass to `OpenProject`.\\
 ⍝ `y` might be an empty vector or a namespace with some such parameters.
-⍝ Any parameters passed this way overwrite defaults.
+⍝ Any parameters passed this way overwrites any defaults.
  parms←(1⊃1↓⎕RSI,⎕THIS).⎕NS''      ⍝ Create namespace where we got called from
  parms.folder←''
  parms.projectSpace←''
@@ -11,14 +11,9 @@
  parms.ignoreUserExec←0
  parms.importFlag←0
  parms.noPkgLoad←0
- parms.verbose←GetGlobalVerboseDefault
+ parms.verbose←GetGlobalVerbose
  parms.batch←0
- :If 0=⎕SE.Link.⎕NC'Version'                          ⍝ There was no such function prior to Link 3
- :OrIf 3=⌊⊃⊃(//)⎕VFI{⍵/⍨2>+\⍵='.'}⎕SE.Link.Version    ⍝ Version 3.x?
-     parms.watch←(1+HasDotNet)⊃'ns' 'both'
- :Else
-     parms.watch←0
- :EndIf
+ parms.watch←0
  parms.checkPackageVersions←0      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
  :If ~(⊂y)∊''⍬
  :AndIf 9=⎕NC'y'

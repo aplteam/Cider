@@ -1,0 +1,62 @@
+ r←Test_Misc_016(stopFlag batchFlag);⎕TRAP;b;folder;parms;log;success;msg;rc;res;en;cfg;body;pkgCfg;name;ref
+⍝ Test the "tatinVars" property
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ name←⊃⎕SI
+ folder←∆GetFolderInTempDir name
+ FilesAndDirs.MkDir folder,'/APLSource/Project'
+ FilesAndDirs.MkDir folder,'/APLSource/Tests'
+ :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'
+ :AndIf 0<⎕SE.Cider.DEVELOPMENT
+     ##.Cider.CommTools.YesOrNo_Answers←1 2⍴'OpenAsWell@' 'n'
+ :Else
+     ⎕SE.Cider.##.CommTools.YesOrNo_Answers←1 2⍴'OpenAsWell@' 'n'
+ :EndIf
+ (rc msg res)←∆UCMD'CreateProject ',folder,' -noEdit -ignoreUserExec'
+ msg Assert rc=0
+ cfg←∆GetJSON5 folder,'/cider.config'
+ body←'r←Hello' 'r←42'
+ (⊂body)⎕NPUT(folder,'/APLSource/Project/Hello.aplf')
+ body←'r←RunTest' 'r←1'
+ (⊂body)⎕NPUT(folder,'/APLSource/Tests/RunTest.aplf')
+ pkgCfg←folder ⎕SE.Tatin.InitPackageConfig ⍬
+ pkgCfg.name←'Foo'
+ pkgCfg.group←'Goo'
+ pkgCfg←pkgCfg ⎕SE.Tatin.InitialisePackage folder
+ parms←##.Cider.CreateOpenParms''
+ parms.batch←1
+ parms.ignoreUserExec←1
+ parms.folder←folder
+ ##.Cider.CommTools.YesOrNo_Answers←1 2⍴'OpenAsWell@' 'n'
+ (success log)←##.Cider.OpenProject parms
+ ref←⍎'#.',name
+ Assert 9=#.⎕NC name
+ Assert 42≡ref.Project.Hello
+ Assert 1≡ref.Tests.RunTest
+ →T.GoToTidyUp 9≠ref.⎕NC'TatinVars'
+ Assert 1=##.Cider.CloseProject⍕ref
+ #.⎕EX name
+ cfg.CIDER.tatinVars←'Project'
+ cfg #.Cider.Cider.Put_JSON5 folder,'/cider.config'
+ (success log)←##.Cider.OpenProject parms
+ ref←⍎'#.',name
+ Assert 9=#.⎕NC name
+ →T.GoToTidyUp 0≠ref.⎕NC'TatinVars'
+ →T.GoToTidyUp 9≠ref.Project.⎕NC'TatinVars'
+ →T.GoToTidyUp 0=≢#.Test_Misc_016.Project.TatinVars.HOME
+
+ r←T._OK
+
+∆TidyUp:
+ {}##.Cider.CloseProject⍕ref
+ #.⎕EX name
+ ⎕EX'#.Test_Misc_016'
+ :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'
+ :AndIf 0<⎕SE.Cider.DEVELOPMENT
+     ##.Cider.CommTools.Cleanup
+ :Else
+     ⎕SE.Cider.##.CommTools.Cleanup
+ :EndIf
+ (rc en msg)←FilesAndDirs.RmDir folder
+ msg Assert rc=0
+⍝Done

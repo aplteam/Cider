@@ -21,6 +21,8 @@ The two most important commands of Cider's user commands are `CreateProject` and
 
 I> Note that in this document names stemming from the Cider configuration file are shown `like this`.
 
+Note that a Cider project may or may not contain a single Tatin package. It is **_not_** designed to keep multiple packages. O course a project can have multiple Tatin packages as dependencies, that is a different matter.
+
 ### Requirements
 
 #### APL Version
@@ -160,11 +162,44 @@ For example, when a project carries a directory `.git/` then Cider knows that th
 
 #### Global configuration
 
-Cider may have a global configuration file that can be used to define settings that effect _all_ projects. It's named is `cider.json`, and it is referred to as the _global_ Cider config file.
+Cider may have a global configuration file that can be used to define settings that effect _all_ projects. It's named is `cider.json`.
 
 This file, if it exists, it situated in a folder `.cider` that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be `C:\Users\JohnDoe\.cider` on Windows, on Linux it would be `/home/JohnDoe/.cider`, and on the Mac it would be `/Users/JohnDoe/.cider`.
 
 This folder does not only host the global config file, it's also the place where the file with alias definitions (`aliase.txt`) is saved as well as the file `cider.config.template` which is used as a template (hence the name) whenever a new project is created.
+
+##### AskForDirChange
+
+You may define `AskForDirChange` and assign one of the following values:
+
+0 = Don't do anything at all regarding the current directory<br>
+1 = If it's the first project in the current WS then change the directory<br>
+2 = If it's the first project in the current WS then ask the user whether she wants to change the current directory
+
+If no such value is defined then Cider behaves as if it is defined with the value 1.
+
+##### ExecuteAfterProjectOpen
+
+If defined and not empty it must be the fully qualfied path to a function. That function will be executed by Cider after the project was opened.
+
+The function must accept a right argument. This will be a namespace holding the information from the project's config file.
+
+The function may or may not return a result, but it will be ignored.
+
+##### ReportGitStatus
+
+By default Cider reports the Git status of a project by putting it into an edit window if the working tree is not clean.
+
+If you don't want this you can inject `ReportGitStatus` into the global config file and assign one of the following values:
+
+0 = Don't report the Git status <br>
+1 = Report the Git status in a read-only edit window (the default) <br>
+2 = Report the Git status by printing it to the session <br>
+3 = Ask the user what to do <br>
+
+##### verbose
+
+Boolean that defaults to 0. This means that Cider provides only really important messages. If you want Cider to be verbose (some would say: chatty) in this respect, set `verbose` to 1.
 
 #### Project configuration
 
@@ -210,7 +245,7 @@ A> ```
 A> ]Cider.OpenProject [foo]
 A> ```
 
-#### Configuration parameters
+#### Project configuration parameters
 
 The Cider configuration file comes with four sections:
 
@@ -346,7 +381,7 @@ This property is optional, it may or may not exist. If it exists it must carry e
 
 * `⎕THIS` has the same effect as if the property would not exist  at all
 
-* Specifying a sub-namespace would tell Cider to inject `TatinVars` into that sub-namespace rather than the root of the project
+* Specifying a sub-namespace would tell Cider to inject a reference `TatinVars` into that sub-namespace pointing to `TatinVars` in the root the project
 
 For details see [Injecting a namespace TatinVars](#).
 
@@ -376,9 +411,9 @@ However, until all supported versions of Link can deal with Link's own configura
 
 ###### watch
 
-Defaults to "both" but can be "ns" or "dir" as well. 
-
 Defines which source to track for changes, so the other can be synchronised.
+
+Defaults to "both" (namespace _and_ disk) and "ns" otherwise. Can also be "dir". 
 
 Note that for "both" and "dir" .NET or .NET Core is required. Under Windows this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not, the default for "watch" will be "ns".
 
@@ -530,17 +565,13 @@ In this step `]Cider.OpenProject` injects a namespace `CiderConfig` into the pro
 
 Whether a project is going to be a package depends on the presence of a file `apl-package.json` in the root of the project.
 
-If such a file is present, Cider injects a namespace `TatinVars` which contains exactly the same stuff as if it were loaded as a package.
+If such a file is present, Cider injects a namespace `TatinVars` into the root of the project, containing exactly the same pieces of information as if it were loaded as a package. This allows a developer to access `TatinVars` as if it was loaded as a package while working on the project.
 
-This allows a developer to access `TatinVars` as if it was loaded as a package while working on the project.
+However, a programmer would expect a namespace `TatinVars` in the root of the _package_. That might be the root of a project, but it might as well be a _sub-namespace_ of the project. In fact, that is more likely.
 
-A> ### Problems...
-A>
-A> What eventually will become a package might well be a sub-namespace of the project rather than the project itself. 
-A>
-A> If that is the case then injecting `TatinVars` into the root of the project would **_not_** give a developer the same conditions as if the package was loaded.
-A>
-A> This can be addressed by adding the optional property `tatinVars` into the `CIDER` section of the Cider config file, holding the name of a sub-namespace `TatinVars` should be injected into.
+This can be addressed by adding the optional property "tatinVars" into the `CIDER` section of the Cider config file, holding the name of a sub-namespace that will eventually become the package. 
+
+If a property "tatinVars" does exist and points to a sub-namespace, then Cider will create a reference `TatinVars` in that namespace that points to `TatinVars` in the root of the project.
 
 
 #### Changing the current directory
@@ -691,6 +722,14 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
+
+
+
+
+
+
+
 
 
 

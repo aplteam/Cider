@@ -1,4 +1,4 @@
- (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder
+ (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg
 ⍝ Open a Cider project.\\
 ⍝ `y` must be one of:
 ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
@@ -65,7 +65,9 @@
  ('Source folder does not exist: ',parms.folder)Assert F.Exists parms.folder
  linkOptions←ExtractLinkOptions config                                          ⍝ Merge the default options with Cider's options
  :If 0≢parms.watch
-     config.LINK.watch←linkOptions.watch←parms.watch
+     config.LINK.watch←linkOptions.watch←parms.watch                            ⍝ Was specified by the user
+ :Else
+     parms.watch←(1+HasDotNet)⊃'ns' 'both'                                      ⍝ Default is "both" but for the time being only when .NET is available
  :EndIf
  p'Bringing in the source code...'
  projectSpace_←CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
@@ -133,12 +135,13 @@
      :EndIf
  :EndIf
  InjectConfigDataIntoProject config projectSpace_ parms.folder
- InjectTatinVars projectSpace_ parms.folder
+ msg←InjectTatinVars projectSpace_ parms.folder
+ 1 p msg
  {}ChangeCurrentDir⍣(⊃~parms.batch)⊢parms.folder
  {}parms ExecProjectInitFunction⍣(~parms.suppressInit)⊣config projectSpace_
  {}ExecUserFunction⍣(~parms.ignoreUserExec)⊣config
  parms CheckOnToDo projectSpace_
  successFlag←SUCCESS
- CheckForGit parms.folder config parms
+ CheckForGit⍣(⊃~parms.batch)⊢parms.folder config parms
  p'Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,,{(,'#')≡,⍵:'"' ⋄ '.',⍵,'"'}parms.projectSpace
 ⍝Done

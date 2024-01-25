@@ -1,8 +1,0 @@
- r←GetGlobalVerboseDefault;globalUserConfig
-⍝ Checks whether Cider's global configuration file carries a value for `verbose`,
-⍝ and if so, returns its value.
- r←0
- :If ⍬≢globalUserConfig←GetCiderGlobalConfigFileContent
- :AndIf 2=globalUserConfig.⎕NC'verbose'
-     r←globalUserConfig.verbose
- :EndIf
