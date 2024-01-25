@@ -3,7 +3,6 @@
  successFlag←⍬
  report←''
  tatinFolders←('dependencies' 'dependencies_dev'GetTatinDependencies¨⊂config)~⊂''
- ⍝TODO⍝  ⍝TODO⍝ Add checks on NuGet?!
  :For i :In ⍳≢tatinFolders
      tatinFolder←i⊃tatinFolders
      this←i⊃'dependencies' 'dependencies_dev'

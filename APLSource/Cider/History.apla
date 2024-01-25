@@ -1,5 +1,6 @@
 (
- '* 0.39.0 ⋄ 2024-01-22'
+ '* 0.39.0 ⋄ 2024-01-25'
+ '  * NuGet interface improved (tx Alexander Block)'
  '  * New global config parameter introduced: `AskForDirChange`'
  '  * New global config parameter introduced: `ReportGitStatus` '
  '  * The config property "tatinVars", when present, was used to establish which sub-namspace of a project'

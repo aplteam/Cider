@@ -4,10 +4,7 @@
  R←T._Failed
 
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
- ⍝TODO⍝  tfm←1⊃##.Cider.NuGet.GetDotNetIDS ⍬
  folder←(∆GetTestPath⊃⎕SI),'/'
-⍝ json←⊃FilesAndDirs.NGET folder,'cider.config'
-⍝ cfg←⎕JSON⍠('Dialect' 'JSON5')⊢json
  tempDir←∆GetFolderInTempDir⊃⎕SI
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
 

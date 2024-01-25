@@ -41,7 +41,7 @@
  (success log)←##.Cider.OpenProject parms
  ref←⍎'#.',name
  Assert 9=#.⎕NC name
- →T.GoToTidyUp 0≠ref.⎕NC'TatinVars'
+ →T.GoToTidyUp 9≠ref.⎕NC'TatinVars'
  →T.GoToTidyUp 9≠ref.Project.⎕NC'TatinVars'
  →T.GoToTidyUp 0=≢#.Test_Misc_016.Project.TatinVars.HOME
 
