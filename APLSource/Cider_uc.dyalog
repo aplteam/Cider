@@ -1,4 +1,4 @@
-﻿:Class Cider_UC
+:Class Cider_UC
 ⍝ User Command class for the project manager "Cider"
 
     ⎕IO←1 ⋄ ⎕ML←1 ⋄ ⎕WX←3
@@ -337,6 +337,7 @@
               3 ⎕MKDIR targetFolder
               targetFolder ⎕NMOVE⍠1⊣tempFolder,'/*'
               ⎕←'Cider was successfully updated to version ',({1↓⍵/⍨2≤+\⍵='-'}⊃res),' in ',targetFolder
+              ⎕←'The workspace has not been updated, please start a new session.'
               {}P.##.F.RmDirByForce tempFolder
               folder←P.GetMyUCMDsFolder,'/Cider'
               :If P.##.F.IsDir folder
@@ -756,7 +757,7 @@
               r,←⊂'Checks whether there is a later version of Cider available.'
               r,←⊂'If there is no later version this is reported.'
               r,←⊂'Otherwise the user will be asked whether she wants to update to the new version.'
-              r,←⊂'The update is performed automatically.'
+              r,←⊂'The update is performed automatically though the current WS will stay on the old version.'
           :Case ⎕C'Help'
               r,←⊂'Cider comes with two HTML files with documentation. This user command offers to put'
               r,←⊂'one or both of them on display in the default browser.'
