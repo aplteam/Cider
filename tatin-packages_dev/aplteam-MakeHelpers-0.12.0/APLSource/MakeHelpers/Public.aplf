@@ -5,7 +5,6 @@
  r,←⊂'CopyBetter'
  r,←⊂'CopyTo'
  r,←⊂'CreateAPI'
- r,←⊂'CreateAPIfromCFG'
  r,←⊂'CreateStandAloneExeParms'
  r,←⊂'CreateZipFile'
  r,←⊂'CR'

@@ -26,7 +26,7 @@
      r.FileVersion←''
  :EndIf
  r.FileDescription←''
- r.ProductVersion←2⊃#.⍎r.ProjectName,'.Version'
+ r.ProductVersion←{1=≡⍵:⍵ ⋄ 2⊃⍵}#.⍎r.ProjectName,'.Version'   ⍝ Backwards compatability
  r.CompanyName←'YourCompany'        ⍝ Not shown by Windows Explorer anyway
  r.Comments←''                      ⍝ Not shown by Windows Explorer anyway
  r.Commandline←''                   ⍝ Any commandline parameters to be passed on

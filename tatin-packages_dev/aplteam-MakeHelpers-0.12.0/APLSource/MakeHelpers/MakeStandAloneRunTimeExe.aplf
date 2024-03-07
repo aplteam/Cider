@@ -16,6 +16,9 @@
  'Right argument is not a parameter space'⎕SIGNAL 11/⍨9.1≠⎕NC⊂,'p'
  'Parameter space does not provide a filename'⎕SIGNAL 11/⍨0=p.⎕NC'Filename'
  '"Filename" is empty'⎕SIGNAL 11/⍨0=≢p.Filename
+ :If 0<≢p.Icon
+     'Not found: icon file'Assert FilesAndDirs.IsFile p.Icon
+ :EndIf
  counter←success←0
  RUNTIME←8×p.RunTime
  details←0 2⍴''
@@ -24,6 +27,7 @@
  details⍪←'CompanyName'p.CompanyName           ⍝ Not shown by Windows Explorer anyway
  details⍪←'Comments'p.Comments                 ⍝ Not shown by Windows Explorer anyway
  details⍪←'ProductName'p.ProjectName
+ details←,¨details
  :If 0<(⍎'#.',p.ProjectName).⎕NC'Version'
      version←#.⍎p.ProjectName,'.Version'
      :If 1<≡version

@@ -10,7 +10,7 @@
      :EndIf
      isDir←~isFile
      :If 0<+/isDir
-         {}F.RmDirByForce isDir/list
+         {}F.RmDirByForce¨isDir/list
      :EndIf
  :EndIf
 ⍝Done

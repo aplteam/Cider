@@ -1,7 +1,7 @@
 {
   api: "API",
   assets: "",
-  date: 20240112.19513,
+  date: 20240115.201319,
   description: "Collections of helpers for building an application",
   documentation: "",
   files: "",
@@ -21,5 +21,5 @@
   tags: "build,make",
   uri: "https://tatin.dev/",
   userCommandScript: "APLSource/MakeHelpers_UC.dyalog",
-  version: "0.11.1+199",
+  version: "0.12.0+205",
 }
