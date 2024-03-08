@@ -1,0 +1,8 @@
+ r←GetSourceFilename calledFrom
+ :If 0<##.⎕NC'SourceFile'
+     r←##.SourceFilename
+ :ElseIf 0<calledFrom.##.⎕NC'SourceFile'
+     r←calledFrom.##.SourceFile
+ :Else
+     'Cannot find "SourceFile"?!'Assert 0
+ :EndIf

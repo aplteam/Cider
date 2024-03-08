@@ -1,0 +1,8 @@
+ {r}←CheckAPLversion dummy;aplVersion
+⍝ Check whether the currently running version of Dyalog fulfills the requirements
+ r←0
+ ('Cider needs at least version ',MinimumVersionOfDyalog,' of Dyalog APL')Assert AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
+ :If 18={⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'.'}aplVersion←2⊃'.'⎕WG'aplversion'
+ :AndIf 44280>⊃(//)⎕VFI 3⊃'.'(≠⊆⊢)aplVersion  ⍝ 44280 has essential ⎕FIX fix for Link to work
+     'Version 18 must be at least on build number 44280, otherwise Link won''t work as expected'⎕SIGNAL 11
+ :EndIf

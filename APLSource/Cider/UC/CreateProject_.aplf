@@ -1,0 +1,94 @@
+ r←{namespace}CreateProject_(folder acceptFlag noEditFlag batch ignoreUserExec);filename;success;config;projectFolder;parms;list;log
+ r←''
+ :If 0≡folder
+     folder←⊃1 ⎕NPARTS''
+     :If ~0 YesOrNo'Sure that you to convert ',folder,' into a project?'
+         :Return
+     :EndIf
+ :EndIf
+ :If (⊂,folder)∊,¨'.' './'
+     folder←⊃1 ⎕NPARTS'./'
+     :If ~YesOrNo'Sure you want to create the project in ',folder,' ?'
+         :Return
+     :EndIf
+ :EndIf
+ filename←(AddSlash folder),configFilename
+ :If 0=⎕NC'namespace'
+ :OrIf 0=≢namespace
+     namespace←{{⍵↑⍨1+-⌊/(⌽⍵)⍳'/\'}¯1↓⍵}1⊃1 ⎕NPARTS filename
+ :EndIf
+ :If acceptFlag
+     ('The -acceptConfig flag was set but no file "',configFilename,'" was found')Assert ⎕NEXISTS filename
+ :Else
+     :If ~⎕NEXISTS folder
+         'Invalid path: parent must exist'Assert{0=≢⍵:1 ⋄ ⎕NEXISTS ⍵}1⊃⎕NPARTS{⍵↓⍨-(¯1↑⍵)∊'/\'}folder  ⍝ Parent folder must exist
+         folder←∊1 ⎕NPARTS folder
+         :If 1 YesOrNo'"',folder,'" does not exist yet - create?'
+             ⎕MKDIR folder
+         :Else
+             r←'Cancelled by user' ⋄ →0
+         :EndIf
+     :EndIf
+     CreateConfigFile filename namespace
+ :EndIf
+ :If ~noEditFlag
+     :If ¯1=P.ProjectConfig filename
+         1 ⎕NDELETE filename
+         r←'Cancelled by user' ⋄ →0
+     :EndIf
+     config←⊃⎕NGET filename 1
+     :If success←0<≢(∊config)~' '
+         config←⎕JSON⍠('Dialect' 'JSON5')⊣¯1↓∊config,¨⎕UCS 10
+     :Else
+         ⎕NDELETE filename
+         :Return
+     :EndIf
+ :Else
+     success←1
+     config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
+     PerformConfigChecks config
+ :EndIf
+ :If success
+     :If namespace≢⍬
+         projectFolder←1⊃⎕NPARTS filename
+         :If 0=(⍎config.CIDER.parent).⎕NC config.CIDER.projectSpace
+             config.CIDER.projectSpace(⍎config.CIDER.parent).⎕NS''
+         :Else
+             :If 0<≢((⍎config.CIDER.parent)⍎config.CIDER.projectSpace).⎕NL 9~⍨⍳16
+                 :If 1<≢list←⊃P.##.F.Dir projectFolder
+                 :OrIf 'cider.config'≢{1≠≢⍵:0 ⋄ ⊃,/1↓⎕NPARTS⊃⍵}list
+                     :If batch
+                      ⍝In batch mode there is nothing we can do but throw an error
+                         'Both the target namespace and the source folder are not empty'Assert 0
+                     :Else
+                         :If YesOrNo'TargetNotEmpty@Target namespace "',(config.CIDER.parent,'.',config.CIDER.projectSpace),'" is not empty. Delete contents?'
+                             ((⍎config.CIDER.parent)⍎config.CIDER.projectSpace).{⎕EX ⎕NL⍳16}⍬
+                         :Else
+                             'Both the target namespace and the source folder are not empty'Assert 0
+                         :EndIf
+                     :EndIf
+                 :EndIf
+             :EndIf
+         :EndIf
+     :AndIf {⍵:1 ⋄ 1 YesOrNo'OpenAsWell@Project successfully created; open as well?' ⋄ 1}batch
+         parms←P.CreateOpenParms ⍬
+         parms.folder←projectFolder
+         parms.projectSpace←config.CIDER.projectSpace
+         parms.parent←config.CIDER.parent
+         parms.alias←{0≡⍵:'' ⋄ ⍵}Args.alias
+         :If 0<config.⎕NC'LINK.watch'
+             parms.watch←config.LINK.watch
+         :EndIf
+         parms.ignoreUserExec←ignoreUserExec
+         parms.batch←batch
+         (success log)←P.OpenProject parms
+         :If success
+             r←{⍵↑⍨-(⎕UCS 13)⍳⍨1↓⌽⍵}log
+         :Else
+             r←'Project created but not opened'
+         :EndIf
+     :EndIf
+ :Else
+     ⎕NDELETE filename
+     r←'*** No action taken'
+ :EndIf

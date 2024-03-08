@@ -1,0 +1,8 @@
+ r←ListNuGetDependencies Args;path
+    ⍝ List all NuGet dependencies
+ r←''
+ :If 0=≢path←GetProjectPath Args._1
+     ⎕←'Cancelled by user'
+ :ElseIf 0=≢r←P.ListNuGetDependencies path
+     r←'No dependencies found'
+ :EndIf

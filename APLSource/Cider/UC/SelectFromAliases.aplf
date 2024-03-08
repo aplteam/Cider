@@ -1,0 +1,12 @@
+ r←{caption}SelectFromAliases data;row
+ r←⍬
+ caption←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'caption'
+ :If 0=≢data
+     data←P.GetCiderAliasFileContent ⍬
+ :EndIf
+ :If 0<≢data
+     data[;1]←{'[',⍵,']'}¨data[;1]
+     caption←'Select project to be opened',({0=≢⍵:⍵ ⋄ ' ',⍵,' '}caption),':'
+ :AndIf ⍬≢row←'Select project to be opened:'SelectOneItem↓⎕FMT data
+     r←row⊃data[;2]
+ :EndIf

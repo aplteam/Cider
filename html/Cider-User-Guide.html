@@ -63,7 +63,7 @@ window.matchMedia("print").addEventListener("change", evt => {
 </ul></li>
 <li class="toc-entry toc-h3"><a href="#updating-cider">2.3. Updating Cider</a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#git">Git</a></li>
+<li class="toc-entry toc-h4"><a href="#git">2.3.1. Git</a></li>
 </ul></li>
 <li class="toc-entry toc-h3"><a href="#configuration">2.4. Configuration</a>
 <ul>
@@ -121,7 +121,7 @@ window.matchMedia("print").addEventListener("change", evt => {
 <li class="toc-entry toc-h4"><a href="#initialising-a-project">2.6.11. Initialising a project (optional)</a></li>
 <li class="toc-entry toc-h4"><a href="#executing-user-specific-code">2.6.12. Executing user-specific code</a></li>
 <li class="toc-entry toc-h4"><a href="#check-for-todo">2.6.13. Check for <code>ToDo</code></a></li>
-<li class="toc-entry toc-h4"><a href="#git-1">Git</a></li>
+<li class="toc-entry toc-h4"><a href="#git-status">2.6.14. Git status</a></li>
 </ul></li>
 </ul></li>
 <li class="toc-entry toc-h2"><a href="#misc">3. Misc</a>
@@ -291,7 +291,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 
 <div class="h_tag">
 <a href="#git" id="git" class="autoheader_anchor">
-<h4 data-id="Git">Git</h4>
+<h4 data-id="Git">2.3.1. Git</h4>
 </a>
 </div>
 <p>a href="https://github.com/aplteam/APLGit2" class="external_link" title="Link to APLGit2 on GitHub"><code> If you use Git for version control management, and you have the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") installed, then Cider uses the package [</code>APLGit2`</a> for communicating with Git<</p>
@@ -727,8 +727,8 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <li>you name it</li>
 </ul>
 <div class="h_tag">
-<a href="#git-1" id="git-1" class="autoheader_anchor">
-<h4 data-id="git-1">Git</h4>
+<a href="#git-status" id="git-status" class="autoheader_anchor">
+<h4 data-id="Git-status">2.6.14. Git status</h4>
 </a>
 </div>
 <p>If the project is managed by Git then Cider will report the current branch and its status.</p>
@@ -756,6 +756,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>A second (optional) argument, if specified, must be either a path to a Cider project or a Cider project alias.</p>
 <p>If the second argument is omitted, Cider acts on any open project. If there are multiple projects open, the user is asked which one she wants to act on.</p>
 <p>Note that NuGet packages cannot be added to a Cider project as development tools; this restriction is likely to be lifted in a later release.</p>
+<p>Note that on Windows, adding NuGet packages requires Dyalog APL to be configured for .NET rather than .NET Framework. See <a href="https://docs.dyalog.com/latest/dotNET%20Differences.pdf" class="external_link">https://docs.dyalog.com/latest/dotNET%20Differences.pdf</a> for details.</p>
 <div class="h_tag">
 <a href="#listtatindependencies" id="listtatindependencies" class="autoheader_anchor">
 <h3 data-id="ListTatinDependencies">3.3. ListTatinDependencies</h3>

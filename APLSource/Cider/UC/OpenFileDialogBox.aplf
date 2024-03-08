@@ -1,0 +1,21 @@
+ (opCode path)←OpenFileDialogBox caption;ref;res;filename
+⍝ opCodes:
+⍝ ¯1 = Cancelled by user
+⍝  1 = File found
+⍝  0 = File not found
+ opCode←¯1
+ path←''
+ ref←⎕NEW⊂'FileBox'
+ ref.Caption←caption
+ ref.(onFileBoxOK onFileBoxCancel)←1
+ ref.File←'cider.config'
+ res←ref.Wait
+ :If 'FileBoxOK'≡2⊃res
+     opCode←1
+ :AndIf 0<≢ref.File
+     :If ⎕NEXISTS filename←⊃,/ref.(Directory File)
+         path←⊃1 ⎕NPARTS filename
+     :Else
+         opCode←0
+     :EndIf
+ :EndIf

@@ -1,0 +1,25 @@
+ (rc msg)←CheckConfig json;dmx
+⍝ Reads the config file and performs basic checks on it
+⍝ Returns:
+⍝  0 in case all is fine
+⍝  1 in case something is wrong. In this case `msg` is not empty and carries a message
+ msg←''
+ :If 0=json.CIDER.⎕NC'projectSpace'
+     msg←'"projectSpace" is missing in the [Cider] section'
+ :ElseIf '?'∊json.CIDER.projectSpace
+ :OrIf 0=≢json.CIDER.projectSpace
+     msg←'"projectSpace" is not defined properly in the [Cider] section'
+ :ElseIf ∨/'#⎕'∊json.CIDER.projectSpace
+     msg←'"projectSpace" carries either a "#" or a "⎕" but must not'
+ :ElseIf 0∨.≠{⊃(⎕NS'').⎕NC ⍵}¨⊆{'.'(≠⊆⊢)⍵}json.CIDER.projectSpace
+     msg←'"projectSpace" is not the name of a namespace (like "foo" or "foo.goo")'
+ :ElseIf 0=json.CIDER.⎕NC'parent'
+     msg←'"parent" is not defined in the [Cider] section'
+ :ElseIf ~{('#'=1⍴⍵)∨('⎕SE'≡1 ⎕C 3⍴⍵)}json.CIDER.parent
+     msg←'"parent" starts with neither "#" nor "⎕SE"'
+ :ElseIf {('#'=1⍴⍵)∨('⎕SE'≡1 ⎕C 3⍴⍵)}json.CIDER.parent
+ :AndIf 0∨.≠{⊃(⎕NS'').⎕NC ⍵}¨⊆1↓{'.'(≠⊆⊢)⍵}json.CIDER.parent
+     msg←'"parent" is not a proper definition (like "#" or "⎕SE" or "#.foo" etc.)'
+ :EndIf
+ rc←0≠≢msg
+⍝Done

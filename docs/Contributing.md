@@ -35,15 +35,42 @@ A couple of principles:
 
   For example, if no project is specified, they check whether there is a single Cider project open. If that's the case, they act on that project. If multiple projects are open they ask the user which one to act on.
 
+
 ## Developing
+
+### General
+
+The user command script does not carry any of Cider's "business logic", it just works out whether it should execute code in `⎕SE` or in `#`, and then calls functions in either `⎕se.Cider.##.UC` (the default) or in `#.Cider.Cider.UC` (trace & develop).
+
+I> See the discussion of the `DEVELOPMENT` variable further down for details
+
+While the API functions live in `⎕SE.Cider` (and call stuff in `⎕SE.Cider.##`), the user command functions live in `⎕SE.Cider.##.UC`.
+
+### Changing the user command script
+
+In the unlikely event that the user command script needs changing, Link will record any changes only if you have specified 
+
+```
+   DYALOGSTARTUPKEEPLINK : 1,
+```
+
+in a dyalog configuration file, otherwise changes are **_not_** recorded. 
+
+I> Regarding `DYALOGSTARTUPKEEPLINK`, see the "Installation and Configuration Guide" of Dyalog for your OS for details.
+
+Make sure that you change the script either in the location it is started from or in the project, but not both. When you create a new version of Cider it will check whether the two versions are identical (when no action is taken) or not, when it will suggest to copy over the version that carries the latest changes.
+
+### Changing the user command functions
+
+The user command script calls functions in `#.Cider.UC` when developing (`⎕SE.Cider.##.UC` otherwise). Because that namespace is part of the project, with `DEVELOPMENT>0` changes are recorded, so developing is easy.
 
 ### Changing API functions
 
-When a user command is issued, the Cider script establishes a reference pointing to Cider in `⎕SE`, and uses that pointer to call any functions in the API.
+When a user command is issued, the Cider user command script calls a function in the `UC` namespace (see above), which will eventually call an API function in (with `DEVELOPMENT>0`) in `#.Cider.Cider` (`⎕SE.Cider` otherwise).
 
-When Cider is opened as a Cider project however, it asks the user whether a variable `DEVELOPMENT` should be established in the namespace `⎕SE.Cider`.
+When Cider is opened as a Cider project, the user will be asked whether a variable `DEVELOPMENT` with a value greate than 0 should be established in the namespace `⎕SE.Cider`.
 
-If such a variable exists and its values is not 0, then Cider's user command script establishes a reference not to `⎕SE.Cider` but to `#.Cider.Cider`.
+If such a variable exists and its values is not 0, then Cider establishes a reference not to `⎕SE.Cider` but to `#.Cider.Cider`.
 
 The consequence of this is that when you change a function in the process of running it, it will be saved by Link _in the project_, meaning your changes are preserved.
 
@@ -53,28 +80,9 @@ In order to remind you what's happening, Cider prints a warning to the session w
 *** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!
 ```
 
-However, `⎕SE.Cider.DEVELOPMENT` is set to 2 by the test suite if it was 1. This has the same consequences except that the warnings are not printed, so the tests are not flooded by them. 
+However, `⎕SE.Cider.DEVELOPMENT` is set to 2 by the test suite if it was 1. This has the same consequences except that the warnings are not printed, so the tests are not flooding the session window. 
 
 The former value is re-established once the tests are done.
-
-### Changing the script `Cider.dyalog`
-
-For the following to work you must put this into `config.dcfg` (see the "Installation and Configuration Guide" of Dyalog for your OS for details):
-
- 
-```
-{
-    Settings: {    
-        DYALOGSTARTUPKEEPLINK : 0,
-    }
-}
-```
-
-This setting ensures that when you make changes to a user command script, then those changes will be saved by Link, not as part of the project but in the folder is was loaded from by the user command framework.
-
-*That means that after such a change the script in the project is not up-to-date anymore!*
-
-However, when a new version is build the code will check whether the two scripts differ, and if they do it will ask the user whether the later one should be copied over, ensuring that no code will be lost.
 
 ## Running the test suite
 
@@ -97,6 +105,7 @@ You may ask Cider for how to build a new version:
 ```
 
 ... (more to come)
+
 
 
 

@@ -1,0 +1,8 @@
+ r←ListAliases Args
+ :If Args.edit
+     :If 0=≢r←EditAliasFile ⍬
+         r←ProcessAliases 0 0 0
+     :EndIf
+ :Else
+     r←ProcessAliases Args.(prune edit batch)
+ :EndIf

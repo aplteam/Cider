@@ -1,0 +1,33 @@
+ r←ProcessAliases(prune edit batch);bool;flag
+ r←P.GetCiderAliasFileContent ⍬
+ :If prune
+     :If 0<≢r
+         bool←⎕NEXISTS¨r[;2]
+     :AndIf ~∧/bool
+         flag←0
+         :Repeat
+             :If batch
+                 ⎕←'Pruning Cider aliases:'
+                 ⎕←' ',' ',(~bool)⌿r
+             :OrIf 1 YesOrNo'Sure you want to prune ',((1+1<+/~bool)⊃'this' 'these'),'?'
+                 :If 0=≢r←bool⌿r
+                     ⎕NDELETE P.GetCiderAliasFilename
+                 :Else
+                     (⊂⊃¨{⍺,'=',⍵}/¨↓r)⎕NPUT P.GetCiderAliasFilename 1
+                 :EndIf
+                 flag←1
+             :Else
+                 flag←1
+                 r←0 2⍴''
+                 :If ~batch
+                     ⎕←'Nothing done'
+                 :EndIf
+             :EndIf
+         :Until flag
+     :Else
+         :If ~batch
+             ⎕←'Nothing to prune'
+         :EndIf
+         r←0 2⍴''
+     :EndIf
+ :EndIf

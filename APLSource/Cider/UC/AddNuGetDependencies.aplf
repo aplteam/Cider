@@ -1,0 +1,53 @@
+ r←AddNuGetDependencies Args;packages;projectFolder;cfg;ref;flag;q;oldList;newList;targetNamespace;list;targetNS;list2
+⍝ Returns list of (newly) installed NuGet packages.
+ packages←Args._1
+ projectFolder←Args._2
+ targetNamespace←''Args.Switch'target'
+ :If IsAlias projectFolder
+     projectFolder←P.GetFolderFromAlias projectFolder
+ :Else
+     projectFolder←GetProjectPath projectFolder
+ :EndIf
+ cfg←P.ReadProjectConfigFile projectFolder
+ ref←cfg.CIDER.dependencies
+ :If 0<≢targetNamespace
+     'There is already a target namespace defined; edit the project config file to change that'Assert~'='∊ref.nuget
+     ref.nuget,←'=',targetNamespace
+     cfg P.WriteProjectConfigFile projectFolder
+ :EndIf
+ flag←0
+ :Repeat
+     :If 0=ref.⎕NC'nuget'
+     :OrIf 0=≢ref.nuget
+         q←'No NuGet dependency folder defined for "dependencies" - edit project config file?'
+         q←'EditProjectConfig@',q
+         :If 1 P.##.C.YesOrNo q
+             P.ProjectConfig projectFolder
+             cfg←P.ReadProjectConfigFile projectFolder
+             ref←cfg.CIDER.dependencies
+         :Else
+             →0,≢r←'Cancelled by user'
+         :EndIf
+     :Else
+         flag←1
+     :EndIf
+ :Until flag
+ oldList←P.ListNuGetDependencies projectFolder
+ list←P.AddNuGetDependencies packages projectFolder
+ r←(⍕≢list),' NuGet dependencies added'
+ targetNS←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}{⍵↓⍨⍵⍳'='}ref.nuget
+ targetNS ⎕NS''
+ :If 0<≢list
+ :AndIf 1 P.##.C.YesOrNo'LoadNuGetDependenciesAfterAdding@Would you like to (re-)load all NuGet dependencies?'
+     :If 0<≢oldList
+         :If 9=⎕NC targetNS
+             list2←,1↑[2]P.ListNuGetDependencies projectFolder
+             {}(⍎targetNS).{l←⍵ ⋄ 0=≢l:0 ⋄ 0=≢l←(0<⎕NC↑l)/l:0 ⋄ 0=+/b←∨/¨'._tatin.'∘⍷¨⍕¨{6::'' ⋄ ⍎⍵}¨⍵:0 ⋄ +/⎕EX¨b/⍵}list2   ⍝ Delete all previous references
+         :EndIf
+     :EndIf
+     list←0 0 P.##.LoadNuGetDependencies projectFolder targetNS
+     r←r,(⎕UCS 13),(⍕≢list),' dependencies loaded'
+ :EndIf
+ newList←P.ListNuGetDependencies projectFolder
+ r←newList[;1]~oldList[;1]
+⍝Done

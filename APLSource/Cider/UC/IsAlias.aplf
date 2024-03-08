@@ -1,0 +1,2 @@
+ r←IsAlias path
+ r←']['≡2↑¯1⌽path

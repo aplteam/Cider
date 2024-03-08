@@ -1,0 +1,59 @@
+ r←OpenProject Args;path;parms;aliasDefs;bool;info;opCode;alias;log;success
+ r←0 0⍴''
+ Args.projectSpace←{(,0)≡,⍵:'' ⋄ ⍵}Args.projectSpace
+ aliasDefs←P.GetCiderAliasFileContent ⍬
+ :If 0≡Args._1
+ :OrIf Args._1≡'[?]'
+     :If 0=≢path←SelectFromAliases aliasDefs
+         r←'???'
+         :Return
+     :EndIf
+ :Else
+     path←Args._1
+ :EndIf
+ :If ']['≡2↑¯1⌽path
+ :AndIf '*'=¯1↑path~'[]'
+     bool←~aliasDefs[;2]∊{⍵[;2]}P.ListOpenProjects 0
+     bool←bool\(¯1↓path~'[]'){(⎕C(≢⍺)↑[2]⍵)∧.=⎕C ⍺}↑bool⌿aliasDefs[;1]
+     :Select +/bool
+     :Case 0
+         :Return
+     :Case 1
+         (alias path)←aliasDefs[bool⍳1;]
+         :If 0=1 YesOrNo'Sure you want to open "',path,'" ?'
+             :Return
+         :EndIf
+     :Else
+         info←'(',((⍕+/bool),' of ',(⍕≢aliasDefs)),')'
+         :If 0=≢path←info SelectFromAliases bool⌿aliasDefs
+             :Return
+         :EndIf
+     :EndSelect
+ :EndIf
+ path←⎕C⍣(']['≡¯1⌽path)⊣path
+ parms←P.CreateOpenParms''
+ parms.folder←path
+ parms.projectSpace←Args.projectSpace
+ parms.parent←{(,0)≡,⍵:'' ⋄ ⍵}Args.parent
+ parms.alias←⎕C''Args.Switch'alias'
+ :If 0≢Args.watch
+     parms.watch←⎕C Args.Switch'watch'
+ :EndIf
+ parms.suppressInit←Args.suppressInit
+ parms.importFlag←Args.import
+ parms.noPkgLoad←Args.noPkgLoad
+ parms.ignoreUserExec←Args.ignoreUserExec
+ parms.verbose←0 Args.Switch'verbose'
+ parms.batch←0 Args.Switch'batch'
+ parms.checkPackageVersions←⍬
+ (success log)←P.OpenProject parms
+ :If Args.verbose
+     r←log
+     :If success
+         r,←(⎕UCS 13),{⍵↑⍨-(⎕UCS 13)⍳⍨1↓⌽⍵}log
+     :EndIf
+ :ElseIf success
+     r←{⍵↑⍨-(⎕UCS 13)⍳⍨1↓⌽⍵}log
+ :Else
+     r←'Attempt to open the project failed'
+ :EndIf

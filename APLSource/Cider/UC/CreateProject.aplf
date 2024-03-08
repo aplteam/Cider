@@ -1,0 +1,22 @@
+ r←CreateProject Args;folder;msg;namespace
+ :If 0=≢Args._1
+     folder←''
+ :Else
+     folder←Args._1
+ :EndIf
+ :If 0=≢Args._2
+ :OrIf 0≡Args._2
+     namespace←''
+ :Else
+     namespace←Args._2
+     :If '#'≠⊃namespace
+         namespace←(⊃{⍵↓⍨+/∧\'⎕'=⊃¨⍵}⎕NSI),'.',namespace
+         ('Is not a namespace: ',namespace)Assert 9=⎕NC namespace
+     :EndIf
+ :EndIf
+ r←namespace CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.batch)(Args.ignoreUserExec)
+ :If 0≢Args.alias
+     :If 0<≢msg←P.AddAlias folder Args.alias
+         r,←(⎕UCS 13)msg
+     :EndIf
+ :EndIf

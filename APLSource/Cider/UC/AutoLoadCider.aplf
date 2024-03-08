@@ -1,0 +1,4 @@
+ {r}←AutoLoadCider filename
+ :If 0=⎕SE.⎕NC'Cider'
+     {}⎕SE.Tatin.LoadDependencies filename'⎕SE'
+ :EndIf

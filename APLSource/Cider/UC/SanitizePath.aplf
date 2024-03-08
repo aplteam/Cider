@@ -1,0 +1,10 @@
+ path←SanitizePath path;UNCflag
+⍝ Use this to convert any \\ or // to /, and any \ to /
+ :If 0<≢path
+     UNCflag←'\\'≡2↑path
+     ((path='\')/path)←'\'
+     path←(~'//'⍷path)/path
+     :If UNCflag
+         path←'\\',1↓path
+     :EndIf
+ :EndIf

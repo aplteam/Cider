@@ -1,0 +1,4 @@
+ r←ListOpenProjects Args
+ r←P.ListOpenProjects Args.verbose
+ r(AddTitles)←'Namespace name' 'Path',Args.verbose/'No. of objects' 'Alias'
+⍝Done

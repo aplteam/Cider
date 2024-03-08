@@ -1,0 +1,9 @@
+ r←ProjectConfig Args;list;path;index
+ r←''
+ :If 0=≢path←GetProjectPath Args._1
+     →0,≢⎕←'Cancelled by user'
+ :Else
+     :If P.ProjectConfig path
+         r←'Changed: ',path,'/cider.config; changes are NOT reflected in the workspace!'
+     :EndIf
+ :EndIf

@@ -1,0 +1,10 @@
+ {r}←AutoLoadTatin dummy
+⍝ In case the Tatin API is not yet available it is forced by executing the user command ]Tatin.Version
+ r←0
+ :If 0=⎕SE.⎕NC'Tatin'
+     :Trap 6
+         {}⎕SE.UCMD'Tatin.Version'
+     :Else
+         'Tatin is not available and cannot be loaded into ⎕SE, therefore Cider won''t work'Assert 0
+     :EndTrap
+ :EndIf

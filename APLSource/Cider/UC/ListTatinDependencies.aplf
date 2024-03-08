@@ -1,0 +1,14 @@
+ r←ListTatinDependencies Args;path
+    ⍝ List all Tatin dependencies
+ r←0 5⍴''
+ :If 0=≢path←GetProjectPath Args._1
+     ⎕←'Cancelled by user'
+ :Else
+     :If 0<≢r←P.ListTatinDependencies path
+         r←('Source' 'Package-ID' 'Principal' 'URL' '')⍪('' '' '' '' '')⍪r
+         (2⌷r)←(⊃¨⌈⌿≢¨r)⍴¨'-'
+         r←{w←⍵ ⋄ w[2;2⊃⍴w]←' ' ⋄ w}r
+     :Else
+         r←'No dependencies found'
+     :EndIf
+ :EndIf

@@ -1,0 +1,46 @@
+ path←{verb}GetProjectPath y;list;index;aliasDefs;bool;alias;info
+⍝ `y` is typically a user command parameter but might also be a path or an alias, even with a wildcard.
+⍝ If needs must this function consults the user.
+⍝ If `y` is realt a path this function returns it unchanged.
+ path←''
+ verb←{0<⎕NC ⍵:⍎⍵ ⋄ 'open'}'verb'
+ 'Left argument must not be a namespace'Assert 326≠⎕DR y          ⍝ Old syntax is not permitted any longer
+ :If (⊂y)∊0 ''⍬                                                   ⍝ Might be 0 in case something like Args._1 was passed
+     list←P.ListOpenProjects 0
+     :Select ≢list
+     :Case 0
+         'No open projects found'Assert 0                          ⍝ Nothing we can do here
+     :Case 1
+         path←⊃list[1;2]                                           ⍝ There is just one open project
+     :Else
+         :If 0=≢index←'Select a Cider project:'Select↓⎕FMT list    ⍝ Let the user select one of the open projects
+             :Return
+         :EndIf
+         path←2⊃list[index;]
+     :EndSelect
+ :Else
+     aliasDefs←P.GetCiderAliasFileContent ⍬
+     path←y
+     :If (⊂,path)∊,¨'[' '[?' '[?]'
+         :If 0=≢path←SelectFromAliases aliasDefs
+             :Return
+         :EndIf
+     :ElseIf '['=1⍴path
+     :AndIf '*'=¯1↑path~'[]'
+         bool←(¯1↓path~'[]'){(⎕C(≢⍺)↑[2]⍵)∧.=⎕C ⍺}↑aliasDefs[;1]
+         :Select +/bool
+         :Case 0
+             :Return
+         :Case 1
+             (alias path)←aliasDefs[bool⍳1;]
+             :If 0=1 YesOrNo'Sure you want to ',verb,' "',path,'" ?'
+                 :Return
+             :EndIf
+         :Else
+             info←'(',((⍕+/bool),' of ',(⍕≢aliasDefs)),')'
+             :If 0=≢path←info SelectFromAliases bool⌿aliasDefs
+                 :Return
+             :EndIf
+         :EndSelect
+     :EndIf
+ :EndIf

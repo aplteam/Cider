@@ -1,0 +1,116 @@
+ r←List;c
+ r←⍬
+ :If AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
+
+     c←⎕NS''
+     c.Name←'OpenProject'
+     c.Desc←'Load all source files into the WS and keep it linked by default'
+     c.Group←'Cider'
+     c.Parse←'1s -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns dir both -verbose -batch'
+     r,←c
+
+     c←⎕NS''
+     c.Name←'AddNuGetDependencies'
+     c.Desc←'Add one or more NuGet packages as dependencies'
+     c.Group←'Cider'
+     c.Parse←'1-2 -target='
+     r,←c
+
+     c←⎕NS''
+     c.Name←'AddTatinDependencies'
+     c.Desc←'Add one or more Tatin packages as dependencies'
+     c.Group←'Cider'
+     c.Parse←'1-2 -development -target='
+     r,←c
+
+     c←⎕NS''
+     c.Name←'Config'
+     c.Desc←'Allow the user to edit Cider''s config file'
+     c.Group←'Cider'
+     c.Parse←'-print'
+     r,←c
+
+     c←⎕NS''
+     c.Name←'ListOpenProjects'
+     c.Desc←'List all currently open projects'
+     c.Group←'Cider'
+     c.Parse←'0 -verbose'
+     r,←c
+
+     c←⎕NS''
+     c.Name←'ListAliases'
+     c.Desc←'List all defined aliases with their folders'
+     c.Group←'Cider'
+     c.Parse←'0 -prune -edit -batch'
+     r,←c
+
+     c←⎕NS''
+     c.Name←'ListNuGetDependencies'
+     c.Desc←'List NuGet packages installed as dependencies'
+     c.Group←'Cider'
+     c.Parse←'1s'
+     r,←c
+
+     c←⎕NS''
+     c.Name←'ListTatinDependencies'
+     c.Desc←'List Tatin packages installed as dependencies'
+     c.Group←'Cider'
+     c.Parse←'1s'
+     r,←c
+
+     c←⎕NS''
+     c.Name←'CreateProject'
+     c.Desc←'Makes the given folder a project folder'
+     c.Group←'Cider'
+     c.Parse←'2s -alias= -acceptConfig -noEdit -batch -ignoreUserExec'
+     r,←c
+
+     c←⎕NS''
+     c.Name←'CloseProject'
+     c.Desc←'Breaks the Link between the workspace and the files on disk'
+     c.Group←'Cider'
+     c.Parse←'-all'
+     r,←c
+
+     c←⎕NS''
+     c.Name←'RunTests'
+     c.Desc←'Executes the project''s test suite (if any)'
+     c.Group←'Cider'
+     c.Parse←'1s'
+     r,←c
+
+     c←⎕NS''
+     c.Name←'UpdateCider'
+     c.Desc←'Tries to update Cider'
+     c.Group←'Cider'
+     c.Parse←''
+     r,←c
+
+     c←⎕NS''
+     c.Name←'Make'
+     c.Desc←'Build a new version of the project'
+     c.Group←'Cider'
+     c.Parse←'1s'
+     r,←c
+
+     c←⎕NS''
+     c.Name←'Help'
+     c.Desc←'Offers to put the HTML files on display'
+     c.Group←'Cider'
+     c.Parse←'0'
+     r,←c
+
+     c←⎕NS''
+     c.Name←'ProjectConfig'
+     c.Desc←'Puts the config file of a project on display'
+     c.Group←'Cider'
+     c.Parse←'1s'
+     r,←c
+
+     c←⎕NS''
+     c.Name←'Version'
+     c.Desc←'Returns name, version number and version date as a three-element vector'
+     c.Group←'Cider'
+     c.Parse←'0'
+     r,←c
+ :EndIf

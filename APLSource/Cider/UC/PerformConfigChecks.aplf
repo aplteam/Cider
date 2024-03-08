@@ -1,0 +1,16 @@
+ {r}←PerformConfigChecks config;buff;namespace;path
+ r←0
+ :If 0<≢buff←config.CIDER.dependencies.tatin
+     :If '='∊buff
+         'Invalid config parameter ("dependencies.tatin" has more than one "=")'Assert 1='='+.=buff
+         (path namespace)←'='(≠⊆⊢)buff
+         'Invalid config parameter ("dependencies.tatin")'Assert 0=(⎕NS'').{⎕NC ⍵}namespace
+     :EndIf
+ :EndIf
+ :If 0<≢buff←config.CIDER.dependencies_dev.tatin
+     :If '='∊buff
+         'Invalid config parameter ("dependencies_dev.tatin" has more than one "=")'Assert 1='='+.=buff
+         (path namespace)←'='(≠⊆⊢)buff
+         'Invalid config parameter ("dependencies_dev.tatin")'Assert 0=(⎕NS'').{⎕NC ⍵}namespace
+     :EndIf
+ :EndIf

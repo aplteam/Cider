@@ -631,7 +631,7 @@ You may use this to keep track ...
 * you name it
 
 
-#### Git
+#### Git status
 
 If the project is managed by Git then Cider will report the current branch and its status.
 
@@ -661,6 +661,7 @@ If the second argument is omitted, Cider acts on any open project. If there are 
 
 Note that NuGet packages cannot be added to a Cider project as development tools; this restriction is likely to be lifted in a later release.
 
+Note that on Windows, adding NuGet packages requires Dyalog APL to be configured for .NET rather than .NET Framework. See <https://docs.dyalog.com/latest/dotNET%20Differences.pdf> for details.
 
 ### ListTatinDependencies
 
@@ -722,6 +723,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 

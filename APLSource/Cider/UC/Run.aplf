@@ -1,0 +1,43 @@
+ r←Run(Cmd Args);folder;P;⎕TRAP;aplVersion
+ r←0 0⍴''
+ CheckAPLversion ⍬
+ AutoLoadTatin ⍬
+ SourceFile←GetSourceFilename ⊃⎕RSI
+ ⍝TODO⍝  AutoLoadCider⊃⎕NPARTS SourceFile
+ P←GetRefToCiderCode Cmd Args
+ :Select ⎕C Cmd
+ :Case ⎕C'OpenProject'
+     r←OpenProject Args
+ :Case ⎕C'ListOpenProjects'
+     r←ListOpenProjects Args
+ :Case ⎕C'ListNuGetDependencies'
+     r←ListNuGetDependencies Args
+ :Case ⎕C'ListTatinDependencies'
+     r←ListTatinDependencies Args
+ :Case ⎕C'AddTatinDependencies'
+     r←AddTatinDependencies Args
+ :Case ⎕C'AddNuGetDependencies'
+     r←AddNuGetDependencies Args
+ :Case ⎕C'ListAliases'
+     r←ListAliases Args
+ :Case ⎕C'CreateProject'
+     r←CreateProject Args
+ :Case ⎕C'CloseProject'
+     r←CloseProject Args
+ :Case ⎕C'ProjectConfig'
+     r←ProjectConfig Args
+ :Case ⎕C'RunTests'
+     r←RunTests Args
+ :Case ⎕C'Make'
+     r←Make Args
+ :Case ⎕C'Config'
+     r←Config Args
+ :Case ⎕C'UpdateCider'
+     r←UpdateCider Args
+ :Case ⎕C'Version'
+     r←P.Version
+ :Case ⎕C'Help'
+     r←ShowHelp ⍬
+ :Else
+     ∘∘∘ ⍝ Huh?!
+ :EndSelect
