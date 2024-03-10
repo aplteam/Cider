@@ -1,4 +1,4 @@
- list←x LoadNuGetDependencies(folder ns);p;verbose;batch;cfg;nuGetFolder;list;name;list2;targetNamespace;buff;dlls;assemblies;namespace;_dotnetReflection;exportedNamespaces;using_opts
+ list←x LoadNuGetDependencies(folder ns);p;verbose;batch;cfg;nuGetFolder;list;name;list2;targetNamespace;buff;dlls;assemblies;namespace;_dotnetReflection;exportedNamespaces
 ⍝ Load all dotnet namespace exported by NuGet dependencies from
 ⍝ folder into `ns` (namspace).
 ⍝ Returns a list with the names of all loaded NuGet packages.
@@ -24,8 +24,7 @@
          targetNamespace ns.⎕NS''
      :EndIf
      nuGetFolder←F.EnforceSlash nuGetFolder
-     using_opts←⎕JSON'{"includePrimary" : 0}'
-     ns._dotnet.⎕USING←using_opts NuGet.Using nuGetFolder
+     ns._dotnet.⎕USING←'(includePrimary : 0)'NuGet.Using nuGetFolder
      _dotnetReflection←⎕NS''
      _dotnetReflection.⎕USING←'System.Reflection,System.Runtime.dll'
      ⍝ Determine path to dlls of principal dependencies
