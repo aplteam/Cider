@@ -1,4 +1,4 @@
- r←CloseProject Args;list;bool;row;invalid;noop;report;projectID;buff;ind
+  r←CloseProject Args;list;bool;row;invalid;noop;report;projectID;buff;ind
  r←''
  report←1
  :If 0=≢Args.Arguments
@@ -6,7 +6,10 @@
          ⎕←'There are no open Cider projects that could be closed'
          :Return
      :Else
-         :If 1=noop
+         :If Args.all
+             {}P.CloseProject¨list[;1]
+             r←1↓⊃,/(⎕UCS 13),¨list[;1]
+         :ElseIf 1=noop
              :If 1 YesOrNo'Sure you want to close the project <',(⊃list[1;]),'>?'
                  r←buff←P.CloseProject ⍬
              :Else

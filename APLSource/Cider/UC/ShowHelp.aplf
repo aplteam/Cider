@@ -1,6 +1,6 @@
  r←ShowHelp dummy;list;folder;answer;msg;filenames
  r←''
- folder←1⊃⎕NPARTS ##.SourceFile
+ folder←1⊃⎕NPARTS SourceFile
  list←⊃⎕NINFO⍠('Wildcard' 1)⊣folder,'*'
  folder←⊃(∨/'aplteam-Cider'⍷↑list)/list
  folder,←'/html/'

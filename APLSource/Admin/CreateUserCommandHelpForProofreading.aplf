@@ -1,16 +1,46 @@
- CreateUserCommandHelpForProofreading;cmdList;help2;help3
+ filename←CreateUserCommandHelpForProofreading userCommand;cmdList;help2;help3;html;help1
 ⍝ Compiles all the help into a single file for easier proof-reading
- cmdList←⎕SE.UCMD'Cider -??'
+ cmdList←⎕SE.UCMD userCommand,' -??'
  cmdList←(⎕UCS 13)(≠⊆⊢)cmdList
- cmdList←(⍸∨/¨'CIDER:'∘⍷¨cmdList)↓cmdList
+ cmdList←(⍸∨/¨((1 ⎕C userCommand),':')∘⍷¨cmdList)↓cmdList
  cmdList←(+/∧\(↑cmdList)[;1 2]∧.=' ')↑cmdList
  cmdList←##.Cider.APLTreeUtils2.DLB cmdList
  cmdList←{⍵↑⍨¨⍵⍳¨' '}cmdList
- help2←{⎕SE.UCMD ⍵}¨cmdList,¨⊂' -??'
- help2←{1<≡⍵:⍵ ⋄ (⎕UCS 13)(≠⊆⊢)⍵}¨help2
+ help1←{⎕SE.UCMD ⍵}¨(⊂userCommand,'.'),¨cmdList,¨⊂' -?'
+ help1←{1<≡⍵:⍵ ⋄ (⎕UCS 13)##.Cider.APLTreeUtils2.Split ⍵}¨help1
+ help1←{⍵[3 5]}¨help1
+ help1←⊃,/help1
+ help1←{'<p>',⍵,'</p>'}¨help1
+ help1←(⊂'<h2> Level 1</h2>'),help1
+ help2←{⎕SE.UCMD ⍵}¨(⊂userCommand,'.'),¨cmdList,¨⊂' -??'
+ help2←{1<≡⍵:⍵ ⋄ (⎕UCS 13)##.Cider.APLTreeUtils2.Split ⍵}¨help2
  help2←{⍵↓⍨(⊃⍵)∧.='─'}¨help2
- (1⊃¨help2)←(⊂'### '),¨1⊃¨help2
- help2←('# Cider Help' '## Level 2'),⊃,/help2
- help3←{⎕SE.UCMD ⍵}¨cmdList,¨⊂' -???'
-∘∘∘   ⍝TODO⍝  ⍝TODO⍝ Work in progress
+ help2←1↓¨help2
+ (1⊃¨help2)←(⊂'<h3>'),¨(1⊃¨help2),¨⊂'</h3>'
+ help2←(⊂'<h2> Level 2</h2>'),⊃,/{⍵[1],(⊂'<pre><code>'),(2↓⍵),⊂'</code></pre>'}¨help2
+ help3←{⎕SE.UCMD ⍵}¨(⊂userCommand,'.'),¨cmdList,¨⊂' -???'
+ help3←{1<≡⍵:⍵ ⋄ (⎕UCS 13)##.Cider.APLTreeUtils2.Split ⍵}¨help3
+ help3←{⍵↓⍨(⊃⍵)∧.='─'}¨help3
+ help3←1↓¨help3
+ (1⊃¨help3)←(⊂'<h3>'),¨(1⊃¨help3),¨⊂'</h3>'
+ help3←(⊂'<h2> Level 3</h2>'),⊃,/{⍵[1],(⊂'<pre><code>'),(2↓⍵),⊂'</code></pre>'}¨help3
+ html←''
+ html,←⊂'<html lang="en">'
+ html,←⊂'<head>'
+ html,←⊂'<title>',userCommand,'</title>'
+ html,←⊂'<meta charset="UTF-8">'
+ html,←⊂'<style>'
+ html,←⊂'h3 {margin-bottom: 0px; margin-top: 0px;}'
+ html,←⊂'pre {margin-top: -10px; margin-bottom: 0px;}'
+ html,←⊂'</style>'
+ html,←⊂'</head>'
+ html,←⊂'<body style="font-family:''APL385 Unicode''">'
+ html,←⊂'<h1>User commands for ',userCommand,'</h1>'
+ html,←help1
+ html,←help2
+ html,←help3
+ html,←⊂'</body>'
+ html,←⊂'</html>'
+ filename←'html'##.Cider.F.GetTempFilename2'Proofread_',userCommand
+ (⊂html)⎕NPUT filename 1
 ⍝Done

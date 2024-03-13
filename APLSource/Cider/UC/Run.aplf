@@ -3,7 +3,6 @@
  CheckAPLversion ⍬
  AutoLoadTatin ⍬
  SourceFile←GetSourceFilename ⊃⎕RSI
- ⍝TODO⍝  AutoLoadCider⊃⎕NPARTS SourceFile
  P←GetRefToCiderCode Cmd Args
  :Select ⎕C Cmd
  :Case ⎕C'OpenProject'
