@@ -1,10 +1,11 @@
 (
- '* 0.40.0 ⋄ 2024-03-13'
+ '* 0.40.0 ⋄ 2024-03-15'
  '  * The user command interface has been slimmed: the "business logic" has been removed from the script and'
  '    been transformed into an ordinary namespace saved in `APLSource/`.'
  '  * The communication between Cider and the user in case Cider is opening itself has been improved.'
  '    This includes changes to the documentation.'
- '  * Bug fixes'
+ '  * Bug fixes        '
+ '    * `LoadNuGetDependencies` used a now invalid syntax for specifying a namespace'
  '    * User command `]UpdateCider` now tells the user that the WS had not been updated '
  '    * Outdated comments in `GetProgramFilesFolder` fixed.'
  '    * ]CloseProject did not honour the -all flag'

@@ -1,0 +1,12 @@
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\bin\Release\net8.0\_nuget-packages.deps.json
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\bin\Release\net8.0\_nuget-packages.dll
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\bin\Release\net8.0\_nuget-packages.pdb
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\obj\Release\net8.0\_nuget-packages.csproj.AssemblyReference.cache
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\obj\Release\net8.0\_nuget-packages.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\obj\Release\net8.0\_nuget-packages.AssemblyInfoInputs.cache
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\obj\Release\net8.0\_nuget-packages.AssemblyInfo.cs
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\obj\Release\net8.0\_nuget-packages.csproj.CoreCompileInputs.cache
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\obj\Release\net8.0\_nuget-packages.dll
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\obj\Release\net8.0\refint\_nuget-packages.dll
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\obj\Release\net8.0\_nuget-packages.pdb
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\obj\Release\net8.0\ref\_nuget-packages.dll

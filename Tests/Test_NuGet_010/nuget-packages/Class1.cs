@@ -1,4 +1,4 @@
-﻿namespace nuget_packages;
+﻿namespace _nuget_packages;
 
 public class Class1
 {

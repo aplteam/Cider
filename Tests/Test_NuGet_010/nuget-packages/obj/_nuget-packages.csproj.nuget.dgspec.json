@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\T\\Projects\\Dyalog\\Cider\\Tests\\Test_NuGet_010\\nuget-packages\\nuget-packages.csproj": {}
+    "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_85022571_0\\Test_NuGet_002\\nuget-packages\\_nuget-packages.csproj": {}
   },
   "projects": {
-    "C:\\T\\Projects\\Dyalog\\Cider\\Tests\\Test_NuGet_010\\nuget-packages\\nuget-packages.csproj": {
+    "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_85022571_0\\Test_NuGet_002\\nuget-packages\\_nuget-packages.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\T\\Projects\\Dyalog\\Cider\\Tests\\Test_NuGet_010\\nuget-packages\\nuget-packages.csproj",
-        "projectName": "nuget-packages",
-        "projectPath": "C:\\T\\Projects\\Dyalog\\Cider\\Tests\\Test_NuGet_010\\nuget-packages\\nuget-packages.csproj",
+        "projectUniqueName": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_85022571_0\\Test_NuGet_002\\nuget-packages\\_nuget-packages.csproj",
+        "projectName": "_nuget-packages",
+        "projectPath": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_85022571_0\\Test_NuGet_002\\nuget-packages\\_nuget-packages.csproj",
         "packagesPath": "C:\\Users\\kai\\.nuget\\packages\\",
-        "outputPath": "C:\\T\\Projects\\Dyalog\\Cider\\Tests\\Test_NuGet_010\\nuget-packages\\obj\\",
+        "outputPath": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_85022571_0\\Test_NuGet_002\\nuget-packages\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\kai\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -50,7 +46,7 @@
             },
             "NodaTime": {
               "target": "Package",
-              "version": "[3.1.10, )"
+              "version": "[3.1.11, )"
             }
           },
           "imports": [
@@ -69,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.103/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

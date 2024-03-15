@@ -1,0 +1,5 @@
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\published\_nuget-packages.dll
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\published\_nuget-packages.deps.json
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\published\_nuget-packages.pdb
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\published\Clock.dll
+C:\Users\kai\AppData\Local\Temp\Cider-Tests_85022571_0\Test_NuGet_002\nuget-packages\published\NodaTime.dll

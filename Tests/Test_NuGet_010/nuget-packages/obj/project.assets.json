@@ -17,7 +17,7 @@
       "ClockAnalyser/1.0.99": {
         "type": "package"
       },
-      "NodaTime/3.1.10": {
+      "NodaTime/3.1.11": {
         "type": "package",
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "4.7.1"
@@ -76,10 +76,10 @@
         "tools/uninstall.ps1"
       ]
     },
-    "NodaTime/3.1.10": {
-      "sha512": "56V8ELg9Az1S0Nij44xILAtfUQs3WTLIwbTQTuWZxL8EagsfUkkPAoWxv/HyZccmfaUEqFHfHiAuqfj/NfbfrA==",
+    "NodaTime/3.1.11": {
+      "sha512": "AYSiCHp1PLzWKVf7hEL3MJ0q9kzOWMNIaTVysXk4XKrDBzK5PF2wpd4LsAl+EIQ2Hbvu+vw4oFaexcXzCuY1lQ==",
       "type": "package",
-      "path": "nodatime/3.1.10",
+      "path": "nodatime/3.1.11",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -89,7 +89,7 @@
         "lib/netstandard2.0/NodaTime.dll",
         "lib/netstandard2.0/NodaTime.pdb",
         "lib/netstandard2.0/NodaTime.xml",
-        "nodatime.3.1.10.nupkg.sha512",
+        "nodatime.3.1.11.nupkg.sha512",
         "nodatime.nuspec"
       ]
     },
@@ -127,28 +127,23 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "Clock >= 1.0.3",
-      "NodaTime >= 3.1.10"
+      "NodaTime >= 3.1.11"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\kai\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\kai\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\T\\Projects\\Dyalog\\Cider\\Tests\\Test_NuGet_010\\nuget-packages\\nuget-packages.csproj",
-      "projectName": "nuget-packages",
-      "projectPath": "C:\\T\\Projects\\Dyalog\\Cider\\Tests\\Test_NuGet_010\\nuget-packages\\nuget-packages.csproj",
+      "projectUniqueName": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_85022571_0\\Test_NuGet_002\\nuget-packages\\_nuget-packages.csproj",
+      "projectName": "_nuget-packages",
+      "projectPath": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_85022571_0\\Test_NuGet_002\\nuget-packages\\_nuget-packages.csproj",
       "packagesPath": "C:\\Users\\kai\\.nuget\\packages\\",
-      "outputPath": "C:\\T\\Projects\\Dyalog\\Cider\\Tests\\Test_NuGet_010\\nuget-packages\\obj\\",
+      "outputPath": "C:\\Users\\kai\\AppData\\Local\\Temp\\Cider-Tests_85022571_0\\Test_NuGet_002\\nuget-packages\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
         "C:\\Users\\kai\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -180,7 +175,7 @@
           },
           "NodaTime": {
             "target": "Package",
-            "version": "[3.1.10, )"
+            "version": "[3.1.11, )"
           }
         },
         "imports": [
@@ -199,7 +194,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.103/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
