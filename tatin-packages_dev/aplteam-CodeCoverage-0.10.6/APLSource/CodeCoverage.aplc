@@ -54,11 +54,13 @@
 
     ∇ r←Version
       :Access Public Shared
-      r←'CodeCoverage' '0.10.5+52' '2024-01-12'
+      r←'CodeCoverage' '0.10.6+52' '2024-03-13'
     ∇
 
     ∇ History
-      :Access Public Shared   
+      :Access Public Shared
+    ⍝ * 0.10.6 from 2024-01-30      
+    ⍝   * Neither `#` nor `⎕SE` were allowed 
     ⍝ * 0.10.5 from 2024-01-12
     ⍝   * Link to `Tester2` in the documentation corrected
     ⍝ * 0.10.4 from 2024-01-12
@@ -139,8 +141,10 @@
           'Must be character vector'⎕SIGNAL 11/⍨' '≠1↑0⍴v
           ('Has invalid characters',b/v)⎕SIGNAL 11/⍨∨/b←~v∊APL_Chars,',⎕#.'
           v2←','(≠⊆⊢),v
-          :If ∨/~b←0<⎕NC↑v2
-              11 ⎕SIGNAL⍨'Unknown names: ',⊃{⍺,',',⍵}/(~b)/v2
+          :If ~v2∊,¨'#' '⎕SE'
+              :If ∨/~b←0<⎕NC↑v2
+                  11 ⎕SIGNAL⍨'Unknown names: ',⊃{⍺,',',⍵}/(~b)/v2
+              :EndIf
           :EndIf
           _watch←v2
         ∇
