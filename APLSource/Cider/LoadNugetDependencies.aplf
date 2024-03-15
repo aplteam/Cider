@@ -24,7 +24,7 @@
          targetNamespace ns.⎕NS''
      :EndIf
      nuGetFolder←F.EnforceSlash nuGetFolder
-     ns._dotnet.⎕USING←'{includePrimary : 0}'NuGet.Using nuGetFolder
+     ns._dotnet.⎕USING←'(includePrimary : 0)'NuGet.Using nuGetFolder
      _dotnetReflection←⎕NS''
      _dotnetReflection.⎕USING←'System.Reflection,System.Runtime.dll'
      ⍝ Determine path to dlls of principal dependencies
