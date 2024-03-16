@@ -29,6 +29,10 @@
      _dotnetReflection.⎕USING←'System.Reflection,System.Runtime.dll'
      ⍝ Determine path to dlls of principal dependencies
      dlls←{¯1↑','(≠⊆⊢)⍵}¨ns._dotnet.⎕USING
+     ⍝ If any of these dlls doesn't exists, they all should be recreated
+     :If ~∨/⎕NEXISTS ⊃¨dlls
+        NuGet.Publish nuGetFolder
+     :EndIf
      assemblies←_dotnetReflection.Assembly.LoadFile¨dlls
      ⍝ Add references to namespaces directly exposed by the principal
      ⍝ dependencies to the _dotnet namespace
