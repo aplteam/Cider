@@ -1,4 +1,4 @@
-  r←CloseProject Args;list;bool;row;invalid;noop;report;projectID;buff;ind
+ r←CloseProject Args;list;bool;row;invalid;noop;report;projectID;buff;ind;noOf
  r←''
  report←1
  :If 0=≢Args.Arguments
@@ -43,7 +43,8 @@
  :EndIf
  :If 0<≢r
      :If ' '=1↑0⍴∊r
-         r←'These projects were closed: ',(⎕UCS 13),r
+         noOf←1+r+.=⎕UCS 13
+         r←((1+1<noOf)⊃'This' 'These'),' project',((1<noOf)/'s'),((1+1<noOf)⊃' was' ' were'),' closed: ',(⎕UCS 13),r
      :Else
          r←'Number of projects closed: ',⍕r
      :EndIf

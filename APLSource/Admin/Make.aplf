@@ -6,6 +6,12 @@
      path←C.HOME,'/',C.CIDER.distributionFolder
      cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
      targetFolder←(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\Dyalog APL-64 19.0 Unicode Files\SessionExtensions\CiderTatin\Cider'
+     :If 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
+         targetFolder←(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
+     :AndIf 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
+     :AndIf ~1 M.##.CommTools.YesOrNo'Could not find the user command script in the user''s home folder anywhere - continue?'
+         :Return
+     :EndIf
      M.FetchLaterUserCommand cfg C targetFolder
      version←M.CompileVersionNumberPattern cfg
      M.RecreateFolder path
@@ -18,6 +24,7 @@
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
      :If 0<≢cfg.userCommandScript
+
          :If 1 M.YesOrNo'Install new version in ',({'%USERPROFILE%',⍵↓⍨¯2+1⍳⍨'Documents'⍷⍵}targetFolder),' ?'
              {}M.##.FilesAndDirs.RmDirByForce targetFolder
              res←⎕SE.Tatin.InstallPackages zipFilename targetFolder

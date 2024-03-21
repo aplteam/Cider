@@ -1,5 +1,6 @@
 (
- '* 0.40.0 ⋄ 2024-03-15'
+ '* 0.40.0 ⋄ 2024-03-21'
+ '  * New global parameter `CheckForDropboxConflicts` introduced. '
  '  * The user command interface has been slimmed: the "business logic" has been removed from the script and'
  '    been transformed into an ordinary namespace saved in `APLSource/`.'
  '  * The communication between Cider and the user in case Cider is opening itself has been improved.'

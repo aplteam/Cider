@@ -18,7 +18,7 @@
          3 ⎕MKDIR targetFolder
          targetFolder ⎕NMOVE⍠1⊣tempFolder,'/*'
          ⎕←'Cider was successfully updated to version ',({1↓⍵/⍨2≤+\⍵='-'}⊃res),' in ',targetFolder
-         ⎕←'The workspace has not been updated, please start a new session.'
+         ⎕←'The workspace has not been updated, please restart APL.'
          {}P.##.F.RmDirByForce tempFolder
          folder←P.GetMyUCMDsFolder,'/Cider'
          :If P.##.F.IsDir folder

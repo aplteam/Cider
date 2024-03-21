@@ -23,6 +23,10 @@ I> Note that in this document names stemming from the Cider configuration file a
 
 Note that a Cider project may or may not contain a single Tatin package. It is **_not_** designed to keep multiple packages. O course a project can have multiple Tatin packages as dependencies, that is a different matter.
 
+A> ### Additional features
+A> 
+A> Cider offers more than is outlined here as "the solution", but you need to configure these extra features. See [Global configuration](#) for details.
+
 ### Requirements
 
 #### APL Version
@@ -152,6 +156,22 @@ A> => For that reason you are advised to install again into the correct folder.
 A> =>
 A> => The next time you use `]Cider.UpdateCider` it will remove Cider from the wrong folder.
 
+
+#### When updating goes wrong
+
+Debugging is the process of removing bugs from code, while programming is how you introduce them in the first place.
+
+There is always the possibility that the update process is itself buggy. Calling it again usually does not help, so you need an escape route.
+
+
+
+!> 18.2 and 18.0
+=> The easiest way to recover it by uninstalling and then installing Cider again.
+!> 19.0 and later
+=> 1. Execute `]DeActivate tatin` --- that removes Cider.
+=> 2. Execute `]Activate cider` --- that brings the version of Cider back that your installation originally came with.
+=> 3. Execute `]Cider.UpdateCider` --- that will try to update to the latest version.
+
 #### Git
 `
 If you use Git for version control management, and you have the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") installed, then Cider uses the package [`APLGit2`](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub") for communicating with Git. 
@@ -177,6 +197,17 @@ You may define `AskForDirChange` and assign one of the following values:
 2 = If it's the first project in the current WS then ask the user whether she wants to change the current directory
 
 If no such value is defined then Cider behaves as if it is defined with the value 1.
+
+##### CheckForDropboxConflicts
+
+This is an optional flag. 
+
+If you don't use Dropbox skip this topic.
+
+
+If `CheckForDropboxConflicts` is defined and has the value 1, then both `]OpenProject` and `]CloseProject` will check whether the project has files that contain the string "conflicted copy" and report such files to the session.
+
+In case Dropbox cannot figure out what the last version is, it will create such a file. Dropbox leaves it to the user to compare such a file manually and solve the conflict somehow. Because Dropbox does not actually tell you about such files, Cider does it for you if you configure it accordingly.
 
 ##### ExecuteAfterProjectOpen
 
@@ -723,6 +754,8 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
+
 
 
 

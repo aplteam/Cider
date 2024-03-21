@@ -1,0 +1,10 @@
+ {r}←CheckForDropboxConflicts path;dmx;list
+⍝ Checks whether there are any Dropbox files indicating conflictes, and if so print them to the session.
+⍝ Returns 0 in case there are not any such conflict files, otherwise the number of files found.
+ :If GetGlobalDropbox
+ :AndIf 0<r←≢list←'recursive'F.ListFiles path,'/*conflicted copy*'
+     ⎕←' ********** The project has conflicting files! ************'
+     ⎕←' *** PATH: ',path
+     ⎕←' ',' ',↑(1+≢path)↓¨list
+     ⎕←' **********************************************************'
+ :EndIf

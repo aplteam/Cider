@@ -63,16 +63,18 @@ window.matchMedia("print").addEventListener("change", evt => {
 </ul></li>
 <li class="toc-entry toc-h3"><a href="#updating-cider">2.3. Updating Cider</a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#git">2.3.1. Git</a></li>
+<li class="toc-entry toc-h4"><a href="#when-updating-goes-wrong">2.3.1. When updating goes wrong</a></li>
+<li class="toc-entry toc-h4"><a href="#git">2.3.2. Git</a></li>
 </ul></li>
 <li class="toc-entry toc-h3"><a href="#configuration">2.4. Configuration</a>
 <ul>
 <li class="toc-entry toc-h4"><a href="#global-configuration">2.4.1. Global configuration</a>
 <ul>
 <li class="toc-entry toc-h5"><a href="#askfordirchange">2.4.1.1. AskForDirChange</a></li>
-<li class="toc-entry toc-h5"><a href="#executeafterprojectopen">2.4.1.2. ExecuteAfterProjectOpen</a></li>
-<li class="toc-entry toc-h5"><a href="#reportgitstatus">2.4.1.3. ReportGitStatus</a></li>
-<li class="toc-entry toc-h5"><a href="#verbose">2.4.1.4. verbose</a></li>
+<li class="toc-entry toc-h5"><a href="#checkfordropboxconflicts">2.4.1.2. CheckForDropboxConflicts</a></li>
+<li class="toc-entry toc-h5"><a href="#executeafterprojectopen">2.4.1.3. ExecuteAfterProjectOpen</a></li>
+<li class="toc-entry toc-h5"><a href="#reportgitstatus">2.4.1.4. ReportGitStatus</a></li>
+<li class="toc-entry toc-h5"><a href="#verbose">2.4.1.5. verbose</a></li>
 </ul></li>
 <li class="toc-entry toc-h4"><a href="#project-configuration">2.4.2. Project configuration</a></li>
 </ul></li>
@@ -156,6 +158,11 @@ window.matchMedia("print").addEventListener("change", evt => {
 </div>
 
 <p>Note that a Cider project may or may not contain a single Tatin package. It is <strong><em>not</em></strong> designed to keep multiple packages. O course a project can have multiple Tatin packages as dependencies, that is a different matter.</p>
+<div class="leanpub_A">
+<h3>Additional features</h3>
+<p>Cider offers more than is outlined here as “the solution”, but you need to configure these extra features. See <a href="#global-configuration" class="bookmark_link">Global configuration</a> for details.</p>
+</div>
+
 <div class="h_tag">
 <a href="#requirements" id="requirements" class="autoheader_anchor">
 <h3 data-id="Requirements">2.1. Requirements</h3>
@@ -290,8 +297,43 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 </div>
 
 <div class="h_tag">
+<a href="#when-updating-goes-wrong" id="when-updating-goes-wrong" class="autoheader_anchor">
+<h4 data-id="When-updating-goes-wrong">2.3.1. When updating goes wrong</h4>
+</a>
+</div>
+<p>Debugging is the process of removing bugs from code, while programming is how you introduce them in the first place.</p>
+<p>There is always the possibility that the update process is itself buggy. Calling it again usually does not help, so you need an escape route.</p>
+<div class="accordion">
+<div>
+<details>
+<summary>
+18.2 and 18.0
+</summary>
+<div class="accordion-content">
+<hr>
+<p>The easiest way to recover it by uninstalling and then installing Cider again.</p>
+</div>
+</details>
+</div>
+<div>
+<details>
+<summary>
+19.0 and later
+</summary>
+<div class="accordion-content">
+<hr>
+<ol start="1">
+<li>Execute <code>]DeActivate tatin</code> — that removes Cider.</li>
+<li>Execute <code>]Activate cider</code> — that brings the version of Cider back that your installation originally came with.</li>
+<li>Execute <code>]Cider.UpdateCider</code> — that will try to update to the latest version.</li>
+</ol>
+</div>
+</details>
+</div>
+</div>
+<div class="h_tag">
 <a href="#git" id="git" class="autoheader_anchor">
-<h4 data-id="Git">2.3.1. Git</h4>
+<h4 data-id="Git">2.3.2. Git</h4>
 </a>
 </div>
 <p>a href="https://github.com/aplteam/APLGit2" class="external_link" title="Link to APLGit2 on GitHub"><code> If you use Git for version control management, and you have the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") installed, then Cider uses the package [</code>APLGit2`</a> for communicating with Git<</p>
@@ -318,8 +360,17 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>0 = Don't do anything at all regarding the current directory<br> 1 = If it's the first project in the current WS then change the directory<br> 2 = If it's the first project in the current WS then ask the user whether she wants to change the current directory</p>
 <p>If no such value is defined then Cider behaves as if it is defined with the value 1.</p>
 <div class="h_tag">
+<a href="#checkfordropboxconflicts" id="checkfordropboxconflicts" class="autoheader_anchor">
+<h5 data-id="CheckForDropboxConflicts">2.4.1.2. CheckForDropboxConflicts</h5>
+</a>
+</div>
+<p>This is an optional flag.</p>
+<p>If you don't use Dropbox skip this topic.</p>
+<p>If <code>CheckForDropboxConflicts</code> is defined and has the value 1, then both <code>]OpenProject</code> and <code>]CloseProject</code> will check whether the project has files that contain the string “conflicted copy” and report such files to the session.</p>
+<p>In case Dropbox cannot figure out what the last version is, it will create such a file. Dropbox leaves it to the user to compare such a file manually and solve the conflict somehow. Because Dropbox does not actually tell you about such files, Cider does it for you if you configure it accordingly.</p>
+<div class="h_tag">
 <a href="#executeafterprojectopen" id="executeafterprojectopen" class="autoheader_anchor">
-<h5 data-id="ExecuteAfterProjectOpen">2.4.1.2. ExecuteAfterProjectOpen</h5>
+<h5 data-id="ExecuteAfterProjectOpen">2.4.1.3. ExecuteAfterProjectOpen</h5>
 </a>
 </div>
 <p>If defined and not empty it must be the fully qualfied path to a function. That function will be executed by Cider after the project was opened.</p>
@@ -327,7 +378,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>The function may or may not return a result, but it will be ignored.</p>
 <div class="h_tag">
 <a href="#reportgitstatus" id="reportgitstatus" class="autoheader_anchor">
-<h5 data-id="ReportGitStatus">2.4.1.3. ReportGitStatus</h5>
+<h5 data-id="ReportGitStatus">2.4.1.4. ReportGitStatus</h5>
 </a>
 </div>
 <p>By default Cider reports the Git status of a project by putting it into an edit window if the working tree is not clean.</p>
@@ -335,7 +386,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>0 = Don't report the Git status <br> 1 = Report the Git status in a read-only edit window (the default) <br> 2 = Report the Git status by printing it to the session <br> 3 = Ask the user what to do <br></p>
 <div class="h_tag">
 <a href="#verbose" id="verbose" class="autoheader_anchor">
-<h5 data-id="verbose">2.4.1.4. verbose</h5>
+<h5 data-id="verbose">2.4.1.5. verbose</h5>
 </a>
 </div>
 <p>Boolean that defaults to 0. This means that Cider provides only really important messages. If you want Cider to be verbose (some would say: chatty) in this respect, set <code>verbose</code> to 1.</p>

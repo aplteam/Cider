@@ -31,5 +31,6 @@
                  r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
              :EndIf
          :EndFor
+         {}CheckForDropboxConflicts¨list[;2]
      :EndIf
  :EndIf

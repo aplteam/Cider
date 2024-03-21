@@ -1,0 +1,8 @@
+ r←GetGlobalDropbox;globalUserConfig
+⍝ Checks whether Cider's global configuration file carries a value for `CheckForDropboxConflicts`,
+⍝ and if so, returns its value. If it doesn't, a 0 is returned.
+ r←0
+ :If ⍬≢globalUserConfig←GetCiderGlobalConfigFileContent
+ :AndIf 2=globalUserConfig.⎕NC'CheckForDropboxConflicts'
+     r←globalUserConfig.CheckForDropboxConflicts
+ :EndIf

@@ -1,5 +1,6 @@
- filename←CreateUserCommandHelpForProofreading userCommand;cmdList;help2;help3;html;help1
+ filename←CreateUserCommandHelpForProofreading userCommand;cmdList;help2;help3;html;help1;EscapeSpecialChars
 ⍝ Compiles all the help into a single file for easier proof-reading
+ EscapeSpecialChars←{'<'⎕R'\&lt;'⊣'>'⎕R'\&gt;'⊣'\&'⎕R'&amp;'⊣⍵}
  cmdList←⎕SE.UCMD userCommand,' -??'
  cmdList←(⎕UCS 13)(≠⊆⊢)cmdList
  cmdList←(⍸∨/¨((1 ⎕C userCommand),':')∘⍷¨cmdList)↓cmdList
@@ -10,18 +11,21 @@
  help1←{1<≡⍵:⍵ ⋄ (⎕UCS 13)##.Cider.APLTreeUtils2.Split ⍵}¨help1
  help1←{⍵[3 5]}¨help1
  help1←⊃,/help1
+ help1←EscapeSpecialChars help1
  help1←{'<p>',⍵,'</p>'}¨help1
  help1←(⊂'<h2> Level 1</h2>'),help1
  help2←{⎕SE.UCMD ⍵}¨(⊂userCommand,'.'),¨cmdList,¨⊂' -??'
  help2←{1<≡⍵:⍵ ⋄ (⎕UCS 13)##.Cider.APLTreeUtils2.Split ⍵}¨help2
  help2←{⍵↓⍨(⊃⍵)∧.='─'}¨help2
  help2←1↓¨help2
+ help2←EscapeSpecialChars¨help2
  (1⊃¨help2)←(⊂'<h3>'),¨(1⊃¨help2),¨⊂'</h3>'
  help2←(⊂'<h2> Level 2</h2>'),⊃,/{⍵[1],(⊂'<pre><code>'),(2↓⍵),⊂'</code></pre>'}¨help2
  help3←{⎕SE.UCMD ⍵}¨(⊂userCommand,'.'),¨cmdList,¨⊂' -???'
  help3←{1<≡⍵:⍵ ⋄ (⎕UCS 13)##.Cider.APLTreeUtils2.Split ⍵}¨help3
  help3←{⍵↓⍨(⊃⍵)∧.='─'}¨help3
  help3←1↓¨help3
+ help3←EscapeSpecialChars¨help3
  (1⊃¨help3)←(⊂'<h3>'),¨(1⊃¨help3),¨⊂'</h3>'
  help3←(⊂'<h2> Level 3</h2>'),⊃,/{⍵[1],(⊂'<pre><code>'),(2↓⍵),⊂'</code></pre>'}¨help3
  html←''
@@ -34,7 +38,7 @@
  html,←⊂'pre {margin-top: -10px; margin-bottom: 0px;}'
  html,←⊂'</style>'
  html,←⊂'</head>'
- html,←⊂'<body style="font-family:''APL385 Unicode''">'
+ html,←⊂'<body style="font-family:''APL385 Unicode'';font-size: 14px;">'
  html,←⊂'<h1>User commands for ',userCommand,'</h1>'
  html,←help1
  html,←help2
