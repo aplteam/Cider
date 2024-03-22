@@ -1,4 +1,4 @@
-  r←level Help Cmd;ref;⎕TRAP
+ r←level Help Cmd;ref;⎕TRAP
  r←''
  :Select level
  :Case 0
@@ -29,7 +29,7 @@
          r,←⊂']Cider.CreateProject <folder> [<project-namespace>] -alias= -acceptConfig -noEdit -batch -ignoreUserExec'
      :Case ⎕C'CloseProject'
          r,←⊂'Break the Link between one or more project spaces and their associated files on disk'
-         r,←⊂']Cider.CloseProject [<namespace-name>|alias-name] -all'
+         r,←⊂']Cider.CloseProject [<namespace-name>|alias-name] -all -fast'
      :Case ⎕C'Help'
          r,←⊂'Put the HTML help files on display'
          r,←⊂']Cider.Help'
@@ -218,8 +218,11 @@
          r,←⊂''
          r,←⊂'Multiple projects must be separated by spaces or by commas.'
          r,←⊂''
-         r,←⊂' * In case a particular project was specified a Boolean is reported, 1 indicating success'
+         r,←⊂' * In case a particular project was specified, a Boolean is reported, 1 indicating success'
          r,←⊂' * Otherwise the closed projects are reported in detail'
+         r,←⊂''
+         r,←⊂'-fast  Use this to tell CloseProject that is should not perform any checks, see global Cider'
+         r,←⊂'       config parameter `CheckForDropboxConflicts`.'
      :Case ⎕C'ProjectConfig'
          r,←⊂'Puts the config file of a project on display.'
          r,←⊂'By specifying the -edit flag the user might edit the file rather then just viewing it.'

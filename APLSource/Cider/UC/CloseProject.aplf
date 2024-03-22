@@ -1,6 +1,7 @@
- r←CloseProject Args;list;bool;row;invalid;noop;report;projectID;buff;ind;noOf
+ r←CloseProject Args;list;bool;row;invalid;noop;report;projectID;ind;noOf;fast
  r←''
  report←1
+ fast←Args.Switch'fast'
  :If 0=≢Args.Arguments
      :If 0=noop←≢list←P.ListOpenProjects 0   ⍝ noop ←→ NoOf Open Projects
          ⎕←'There are no open Cider projects that could be closed'
@@ -11,13 +12,13 @@
              r←1↓⊃,/(⎕UCS 13),¨list[;1]
          :ElseIf 1=noop
              :If 1 YesOrNo'Sure you want to close the project <',(⊃list[1;]),'>?'
-                 r←buff←P.CloseProject ⍬
+                 r←fast P.CloseProject ⍬
              :Else
                  r←'Cancelled by user' ⋄ →0
              :EndIf
          :Else
              :If 0<≢ind←'Select Cider project(s) to be closed' 1 Select list[;1]
-                 r←+/P.CloseProject list[ind;1]
+                 r←+/(~fast)P.CloseProject list[ind;1]
                  'Something went wrong'Assert r=≢ind
                  r←1↓∊(⎕UCS 13),¨↓⎕FMT list[ind;]
              :EndIf
@@ -39,7 +40,7 @@
      :If 1∊invalid
          ('Not an open Cider project: ',⊃{⍺,',',⍵}/invalid/projectID)Assert∧/~invalid
      :EndIf
-     r←+/list∘P.CloseProject¨projectID
+     r←+/(⊂(~fast)list)P.CloseProject¨projectID
  :EndIf
  :If 0<≢r
      :If ' '=1↑0⍴∊r

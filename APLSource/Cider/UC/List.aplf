@@ -69,7 +69,7 @@
      c.Name←'CloseProject'
      c.Desc←'Breaks the Link between the workspace and the files on disk'
      c.Group←'Cider'
-     c.Parse←'-all'
+     c.Parse←'-all -fast'
      r,←c
 
      c←⎕NS''

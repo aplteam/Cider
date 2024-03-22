@@ -74,7 +74,7 @@ Requires three arguments:
 ## CloseProject
 
 ```
-r←{list} CloseProject projects
+r←{x} CloseProject projects
 ```
 
 Takes one ore more projects and closes them (read: break the link).
@@ -83,9 +83,19 @@ The right argument must be either a simple character vector or a nested vector o
 
 The projects can be specified as fully qualified namespace names, as aliase or as project paths, or a mixture of them.
 
-The optional left argument is relevant only for test cases.
+Via the optional left argument the user can specify two arguments:
 
-Returns the number of projects closed.
+* A list of projects as returned by `ListProjects`.
+
+  Usually the user won't specify such a list, but the user command may.
+
+* A flag `checks` that defaults to 1, meaning that potentially checks are performed. See `CheckForDropboxConflicts` for an example.
+
+  You may suppress such checks by passing a 0 as left argument.
+
+You may specify any of them or both, in any order.
+
+Returns the number of projects closed as result.
 
 ## CreateOpenParms
 
@@ -351,13 +361,24 @@ The function returns a two-element vector:
 This must be one of:
 
 * A path pointing to a folder that carries a file `cider.config`
-* An alias like `[aliasname]`
+* An alias like `[aliasname]`; see also `alias`
 
 Note that this must _not_ be empty but it _might_ be `./` representing the current directory.
 
 ### alias
 
 The alias under which you might want to access the project in the future.
+
+Special syntax: if `alias` is just a `.` (dot), then the last part of the path becomes the alias. Example:
+
+```
+p←Cider.CreateOpenParms
+p.folder←'/path/2/projects/foo'
+p.alias←'.'
+⍝ `foo` becomes the (new) alias
+```
+
+If you specify an alias on `folder` but also on `alias`, then Cider expects the alias on `folder` to be defined, and will use that one to open the project. It will then overwrite the former alias with the one defined on `alias`.
 
 ### checkPackageVersions
 
@@ -487,6 +508,7 @@ r←Version
 Returns the version number.
 
 This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
+
 
 
 

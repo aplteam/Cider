@@ -1,4 +1,4 @@
- r←{list}CloseProject projects;list;project;ind;res
+ r←{x}CloseProject projects;list;project;ind;res;list;checks
 ⍝ Simply breaks the Link between a project and its folder on disk.
 ⍝ In case ⍵ is empty ALL projects are closed.
 ⍝ `projects` may be one of:
@@ -7,9 +7,23 @@
 ⍝ 3. One or more alias names like `[my-alias]`
 ⍝ 4. One or more paths of currently open projects
 ⍝ 5. A mixture of 2, 3 and 4
+⍝ `x` can be a Boolean that defaults to 1, meaning "perform checks, if any"; see "CheckForDropboxConflicts"
+⍝ A 0 would therefore prevent checks from being performed.
 ⍝ Returns the number of projects closed.
  r←0
- list←{0=⎕NC ⍵:ListOpenProjects 1 ⋄ ⍎⍵}'list'
+ checks←1
+ :If 0=⎕NC'x'
+     list←ListOpenProjects 1
+ :Else
+     :If 3=|≡x
+         (list checks)←{⍵[⍒{' '=⊃1↑0⍴⊃⍵}¨⍵]}x
+     :ElseIf ' '=1↑0⍴⊃x
+         list←x
+     :Else
+         checks←x
+         list←ListOpenProjects 1
+     :EndIf
+ :EndIf
  :If 0<≢list
      :If 0=≢projects
          res←{⎕SE.Link.Break ⍵}¨list
@@ -31,6 +45,8 @@
                  r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
              :EndIf
          :EndFor
-         {}CheckForDropboxConflicts¨list[;2]
+         :If checks
+             {}CheckForDropboxConflicts¨list[;2]
+         :EndIf
      :EndIf
  :EndIf
