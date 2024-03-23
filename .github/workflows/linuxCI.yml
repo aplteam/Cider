@@ -1,0 +1,55 @@
+name: Linux CI
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      -main
+
+jobs:
+  linux:
+    name: "CI - Linux - Dyalog APL ${{ matrix.dyalogVersion }} with .NET ${{ matrix.dotnetVersion }}"
+    runs-on: ubuntu-latest
+    timeout-minutes:
+      10
+    strategy:
+      matrix:
+        include:
+          - dyalogVersion: "19.0"
+            dotnetVersion: "8.x"
+      fail-fast: false
+    steps:
+      - name: Install Dyalog APL
+        run: |
+          DEBFILE=`curl -o - -s https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=docker.metafile | awk -v v="${{ matrix.dyalogVersion }}" '$0~v && /deb/ {print $3}'`
+          curl -o /tmp/dyalog.deb ${DEBFILE}
+          sudo dpkg -i /tmp/dyalog.deb
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnetVersion }}
+      - name: Activate Tatin and Cider
+        run: LX="⎕SE.UCMD 'Tools.Activate all' ⋄ ⎕OFF" dyalog -b -s
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Tatin dependencies
+        run:  LX="⎕SE.UCMD 'Tatin.Version' ⋄ ⎕SE.Tatin.(CreateReInstallParms ReInstallDependencies './tatin-dependencies_dev') ⋄ ⎕OFF" dyalog -b -s 
+      - name: Run tests
+        run: |
+          runTest="⎕PW←500" 
+          runTest="${runTest} ⋄ ⎕SE.UCMD 'Cider.Version'"
+          runTest="${runTest} ⋄ ⎕SE.Cider.DEVELOPMENT←1"
+          runTest="${runTest} ⋄ opts←⎕NS '' ⋄ opts.(batch checkPackageVersions folder)←1 0 '.'"
+          runTest="${runTest} ⋄ ⎕SE.Cider.OpenProject opts"
+          runTest="${runTest} ⋄ #.Cider.TestCases.RunTestsForCI ⋄ ⎕OFF 1"
+          LX="${runTest}" dyalog -b -s
+      - name: Upload code coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: ./TestResults/CodeCoverage.html

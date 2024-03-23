@@ -11,17 +11,17 @@
  flag←0
  :If ⎕NEXISTS testPath
      :If ⎕NEXISTS testFilename,'.profile'
-         ind←('Code Coverage' 0 1)CommTools.Select'Append' 'Replace' 'Neither'
+         ind←('CodeCoverageExists@Code Coverage' 0 1)CommTools.Select'Append' 'Replace' 'Neither'
          →(3=ind)/0
          flag←1
          :If 2=ind
              1 CodeCoverage.DeleteFiles testFilename
          :EndIf
      :Else
-         flag←0 CommTools.YesOrNo'Code coverage?'
+         flag←0 CommTools.YesOrNo'CodeCoverage@Code coverage?'
      :EndIf
  :Else
-     flag←0 CommTools.YesOrNo'Code coverage?'
+     flag←0 CommTools.YesOrNo'CodeCoverage@Code coverage?'
  :EndIf
  :If flag
      3 ⎕MKDIR testPath  ⍝
