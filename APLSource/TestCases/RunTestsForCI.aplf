@@ -1,0 +1,22 @@
+ RunTestsForCI;rc;log
+    ⍝ Runs all test with the batch flag on and the debug flag off,
+    ⍝ prints the messages from the test run
+    ⍝ and closes the APL session with return code 0 if the test run
+    ⍝ was successful and return code 1 if not.\\
+    ⍝ This test runner function is meant to be used for a CI
+    ⍝ pipeline.
+
+ ⍝ Always produce code coverage report
+ CommTools.YesOrNo_Answers←1 2⍴'CodeCoverage@' 'y'
+ ⍝ Always replace a code coverage report if it is already present
+ CommTools.Select_Choices←1 2⍴'CodeCoverageExists@' 2
+ Prepare
+ (rc log)←T.RunBatchTests 0
+ ⎕←↑log
+
+ :If 0<≢T.codeCoverage
+     {}CodeCoverage.ProcessData T.codeCoverage.filename
+     {}1 CodeCoverage.CreateReport T.codeCoverage.filename
+ :EndIf
+
+ ⎕OFF rc
