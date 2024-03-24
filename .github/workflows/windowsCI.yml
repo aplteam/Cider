@@ -1,0 +1,64 @@
+name: Windows CI
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      -main
+
+env:
+    DYALOG_NETCORE: 1 
+
+jobs:
+  linux:
+    name: "CI - Windows - Dyalog APL 19.0 with .NET 8.x"
+    runs-on: windows-latest
+    timeout-minutes:
+      10
+    steps:
+      - name: Install Dyalog APL
+        run: |
+            $downloadLinks = (Invoke-WebRequest https://www.dyalog.com/download-zone.htm?p=download).Links.href
+            $winDownloadLink = $downloadLinks | Where-Object { $_ -match "19\.0.*Windows" }
+            $winDownloadLink -match "download\.dyalog\.com.*" > $null
+            $winDownloadLink = $matches[0]
+            $client = New-Object System.Net.WebClient
+            $client.DownloadFile("https:\\$($winDownloadLink)", ".\windows_64_19.0.48959_unicode.zip")
+            Expand-Archive -Force .\windows_64_19.0.48959_unicode.zip .\windows_64_19.0.48959_unicode
+            cd .\windows_64_19.0.48959_unicode
+            $curPath = (Get-Location).ToString()
+            $msiPath = "$($curPath)\setup_64_unicode.msi"
+            $logFile = "$($curPath)\install_log.txt"
+            $MSIArguments = @("ALLUSERS=1", "/passive", "FROMGUI=1", "/i $($msiPath)", "/qn", "/norestart", "/L*v $($logFile)" )
+            Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.x"
+      - name: Activate Tatin and Cider
+        run: |
+            C:
+            cd "C:\\Program Files\\Dyalog\\Dyalog APL-64 19.0 Unicode" 
+            .\dyalog.exe -b -s LX="⎕SE.UCMD 'Tools.Activate all' ⋄ ⎕OFF"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run tests
+        run: |
+          runTest="⎕PW←500" 
+          runTest="${runTest} ⋄ ⎕SE.UCMD 'Cider.Version'"
+          runTest="${runTest} ⋄ ⎕SE.Cider.DEVELOPMENT←1"
+          runTest="${runTest} ⋄ opts←⎕NS '' ⋄ opts.(batch checkPackageVersions folder)←1 0 '.'"
+          runTest="${runTest} ⋄ ⎕SE.Cider.OpenProject opts"
+          runTest="${runTest} ⋄ #.Cider.TestCases.RunTestsForCI ⋄ ⎕OFF 1"
+          LX="${runTest}" "C:\\Program Files\\Dyalog\\Dyalog APL-64 19.0 Unicode\\dyalog.exe" -b -s
+        shell: bash
+      - name: Upload code coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: .\TestResults\CodeCoverage.html
