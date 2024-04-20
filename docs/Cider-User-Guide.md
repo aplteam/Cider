@@ -624,8 +624,8 @@ The function should not return a result. If it does anyway it should be shy. Any
 
 Such a function may be niladic, monadic, ambivalent or dyadic:
 
-* A non-niladic function receives a namespace with the project configuration as right argument 
-* An ambivalent or dyadic function receives a path as left argument: this is the home folder of the project
+* A monadic function receives a namespace with the project configuration as right argument 
+* A dyadic or ambivalent function receives in addition the parameter space passed to `OpenProject`
 
 
 #### Executing user-specific code
@@ -677,7 +677,7 @@ If the project was opened (rather than imported!) **_and_** the project is versi
 
 Cider offers helpers that are useful in particular circumstances.
 
-#### Check for Dropbox conflicts
+### Check for Dropbox conflicts
 
 At this stage Cider would perform a check for any Dropbox conflicts if the project was opened rather than imported **_and_** the global configuration parameter 
 
@@ -766,6 +766,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 
