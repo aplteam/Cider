@@ -34,7 +34,7 @@
  #.TEMP.(⎕EX ⎕NL-⍳9)
  (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
  Assert rc=0
- →T.GoToTidyUp'Project successfully loaded and established in "#.TEMP"'≢res~⎕TC
+ →T.GoToTidyUp'Project successfully opened and established in "#.TEMP"'≢res~⎕TC
  →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
  →T.GoToTidyUp~∧/'Julian' 'Gregorian'∊⍕¨#.TEMP.NodaTime.CalendarSystem.⎕NL-2
 

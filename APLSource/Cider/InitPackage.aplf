@@ -3,6 +3,6 @@
  CreateRefs
  :If 0
      ⎕TRAP←0 'S'
-     ∘∘∘   ⍝TODO⍝
+     ∘∘∘
  :EndIf
 ⍝Done

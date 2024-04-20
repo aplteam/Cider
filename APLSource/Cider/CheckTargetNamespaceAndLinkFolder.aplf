@@ -23,7 +23,7 @@
           ⍝ With `batch` being true there is nothing we can do but throw an error
          ('Both the target (',(⍕ref),') and the source folder are not empty')Assert 0
      :Else
-         :If C.YesOrNo'RecreateTargetNS@Target namepsace "',(⍕ref),'" is not empty - re-create?'
+         :If C.YesOrNo'RecreateTargetNS@Target namespace "',(⍕ref),'" is not empty - re-create?'
              ⎕EX⍕ref                                 ⍝ It might be a class, so we first delete it...
              ref←⍎(⍕ref)({⍎⍵↑⍨¯1+⍵⍳'.'}⍕ref).⎕NS''   ⍝ ... and then we re-create it
          :Else

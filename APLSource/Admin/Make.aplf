@@ -1,13 +1,14 @@
  Make flag;M;C;path;zipFilename;res;version;cfg;parms;folder1;folder2;targetFolder;developmentWas;noOf
 ⍝ "Make" a new version of this project
  :If flag
+     'Runs only on Windows'Assert'Win'≡##.A.GetOperatingSystem ⍬
      M←##.TestCases.MakeHelpers
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
      cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
-     targetFolder←(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\Dyalog APL-64 19.0 Unicode Files\SessionExtensions\CiderTatin\Cider'
+     targetFolder←(2⊃4070⌶0),'\SessionExtensions\CiderTatin\Cider'
      :If 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
-         targetFolder←(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
+         targetFolder←(⊃1 ⎕NPARTS 2⊃4070⌶0),'Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
      :AndIf 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
      :AndIf ~1 M.##.CommTools.YesOrNo'Could not find the user command script in the user''s home folder anywhere - continue?'
          :Return
@@ -24,12 +25,8 @@
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
      :If 0<≢cfg.userCommandScript
-
-         :If 1 M.YesOrNo'Install new version in ',({'%USERPROFILE%',⍵↓⍨¯2+1⍳⍨'Documents'⍷⍵}targetFolder),' ?'
-             {}M.##.FilesAndDirs.RmDirByForce targetFolder
-             res←⎕SE.Tatin.InstallPackages zipFilename targetFolder
-             ⎕←'  New version installed: ',res
-         :EndIf
+         ⎕←'In order to (re-)install Cider execute:'
+         ⎕←'#.Cider.Admin.InstallCider'
      :EndIf
  :EndIf
  ⍝Done

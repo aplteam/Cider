@@ -89,7 +89,7 @@ Via the optional left argument the user can specify two arguments:
 
   Usually the user won't specify such a list, but the user command may.
 
-* A flag `checks` that defaults to 1, meaning that potentially checks are performed. See `CheckForDropboxConflicts` for an example.
+* A flag `checks` that defaults to 1, meaning that potentially checks are performed. See `CheckForDropboxConflicts` in Cider's _User Guide > Global configuration > CheckForDropboxConflicts_ for an example.
 
   You may suppress such checks by passing a 0 as left argument.
 
@@ -108,6 +108,7 @@ A monadic function that returns a namespace with default parameters required by 
 
 ```
  alias                 ''      
+ batch                 0
  checkPackageVersions  ⍬
  folder                ''  
  ignoreUserExec        0
@@ -117,6 +118,7 @@ A monadic function that returns a namespace with default parameters required by 
  projectSpace          ''  
  quietFlag             0 
  suppressInit          0
+ verbose               0
  watch                 ['ns'|'both']  ⍝ depending on the availability of .NET 
 ```
 
@@ -451,6 +453,8 @@ You may also set this to "dir", when changes on the file system will be brought 
 
 Other settings of `watch` will result in an error.
 
+Note that `CreateOpenParms` will assign a `0` to `watch. That allows recognizing whether the user has set this; eventually 0 will become "both", the default.
+
 A> ### `watch←'both'|'dir'`
 A>
 A> In order to detect changes on the file system Link uses a File System Watcher, something that is available only under Windows.
@@ -508,6 +512,9 @@ r←Version
 Returns the version number.
 
 This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
+
+
+
 
 
 

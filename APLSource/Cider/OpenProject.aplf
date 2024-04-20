@@ -1,4 +1,4 @@
-(successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg
+ (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag
 ⍝ Open a Cider project.\\
 ⍝ `y` must be one of:
 ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
@@ -87,7 +87,7 @@
      (1 parms.batch)p ReportLinkSettings config
  :EndIf
  :If 0=parms.noPkgLoad
-     pkgStatus←parms CheckForTatinPackages  config
+     pkgStatus←parms CheckForTatinPackages config
      :If 0<pkgStatus
          :If 0=parms.importFlag
              :Trap 0
@@ -137,12 +137,13 @@
  InjectConfigDataIntoProject config projectSpace_ parms.folder
  msg←InjectTatinVars projectSpace_ parms.folder
  1 p msg
- {}ChangeCurrentDir⍣(⊃~parms.batch)⊢parms.folder
- {}parms ExecProjectInitFunction⍣(~parms.suppressInit)⊣config projectSpace_
- {}ExecUserFunction⍣(~parms.ignoreUserExec)⊣config
- parms CheckOnToDo projectSpace_
+ flag←(0=parms.batch)∧(0=parms.importFlag)
+ {}ChangeCurrentDir⍣flag⊢parms.folder
+ {}parms ExecProjectInitFunction⍣(0=parms.suppressInit)⊢config projectSpace_
+ {}ExecUserFunction⍣((0=parms.importFlag)∧0=parms.ignoreUserExec)⊣config
+ {}parms CheckOnToDo⍣flag⊣projectSpace_
  successFlag←SUCCESS
- {}CheckForGit⍣(⊃~parms.batch)⊢parms.folder config parms
- {}CheckForDropboxConflicts⍣(⊃~parms.batch)⊢parms.folder
- p'Project successfully ',((1+parms.importFlag)⊃'loaded' 'imported'),' and established in "',parms.parent,,{(,'#')≡,⍵:'"' ⋄ '.',⍵,'"'}parms.projectSpace
+ {}CheckForGit⍣flag⊢parms.folder config parms
+ {}CheckForDropboxConflicts⍣flag⊢parms.folder
+ p'Project successfully ',((1+parms.importFlag)⊃'opened' 'imported'),' and established in "',parms.parent,,{(,'#')≡,⍵:'"' ⋄ '.',⍵,'"'}parms.projectSpace
 ⍝Done

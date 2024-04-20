@@ -40,7 +40,7 @@
  ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
  Assert rc=0
- →T.GoToTidyUp'Project successfully loaded and established in "#.TEMP"'≢res~⎕TC
+ →T.GoToTidyUp'Project successfully opened and established in "#.TEMP"'≢res~⎕TC
  →T.GoToTidyUp~(⊂#.TEMP.APLTreeUtils2.GetOperatingSystem ⍬)∊'Win' 'Mac' 'Lin'
 
  (rc msg res)←∆UCMD'CloseProject ',tempDir

@@ -182,7 +182,7 @@ For example, when a project carries a directory `.git/` then Cider knows that th
 
 #### Global configuration
 
-Cider may have a global configuration file that can be used to define settings that effect _all_ projects. It's named is `cider.json`.
+Cider may have a global configuration file that can be used to define settings that effect _all_ projects. It's name is `config.json`.
 
 This file, if it exists, it situated in a folder `.cider` that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be `C:\Users\JohnDoe\.cider` on Windows, on Linux it would be `/home/JohnDoe/.cider`, and on the Mac it would be `/Users/JohnDoe/.cider`.
 
@@ -205,9 +205,9 @@ This is an optional flag.
 If you don't use Dropbox skip this topic.
 
 
-If `CheckForDropboxConflicts` is defined and has the value 1, then both `]OpenProject` and `]CloseProject` will check whether the project has files that contain the string "conflicted copy" and report such files to the session.
+If `CheckForDropboxConflicts` is defined and has the value 1, then both `]OpenProject` and `]CloseProject` will check whether the project has files that contain the string "conflicted copy", and report such files to the session.
 
-In case Dropbox cannot figure out what the last version is, it will create such a file. Dropbox leaves it to the user to compare such a file manually and solve the conflict somehow. Because Dropbox does not actually tell you about such files, Cider does it for you if you configure it accordingly.
+Background: in case Dropbox cannot figure out what the last version of a file is, it will create such a file. Dropbox leaves it to the user to compare such a file manually and solve the conflict somehow. The problem is that Dropbox does not actually tell you about such files, therefore Cider does it for you if you configure Cider accordingly.
 
 ##### ExecuteAfterProjectOpen
 
@@ -227,6 +227,8 @@ If you don't want this you can inject `ReportGitStatus` into the global config f
 1 = Report the Git status in a read-only edit window (the default) <br>
 2 = Report the Git status by printing it to the session <br>
 3 = Ask the user what to do <br>
+
+No matter what the global config parameter `ReportGitStatus` is saying, if a project is not version-controlled by Git (read: has no `.git/` folder in the root of the project folder) or `batch` is 1, no Git status is reported.
 
 ##### verbose
 
@@ -371,7 +373,7 @@ However, note that you cannot have a sub-key `nuget` in `dependencies_dev` for t
 
 ###### init
 
-If not empty this must be the name of a function within `projectSpace`. The function will be executed after a project was opened. 
+If not empty this must be the name of a function within `projectSpace`. The function will be executed after a project was opened or imported.
 
 Such a function should not return a result; if it does anyway it should be shy.
 
@@ -607,14 +609,16 @@ If a property "tatinVars" does exist and points to a sub-namespace, then Cider w
 
 #### Changing the current directory
 
-At this point Cider checks the current (or working) directory. If it's different from the project's directory, the user is asked whether she wants to change the current directory to the project's directory.
+If the project was opened (rather than imported!) **_and_** `batch` is 0, then Cider checks at this point the current (or working) directory. If it's different from the project's directory, the user is asked whether she wants to change the current directory to the project's directory.
 
 
-#### Initialising a project (optional)
+#### Initialising a project
 
-Now there might well be demand for executing some code to initialise your project.
+There might well be demand for executing some code to initialise your project.
 
-This can be achieved by assigning the name of a function to `init`. This must again be relative to the root of your project.
+This can be achieved by assigning the name of a function to `init`. The name must be relative to the root of your project.
+
+The function will be executed if `suppressInit` is 0; whether the project was opened or imported does not matter. 
 
 The function should not return a result. If it does anyway it should be shy. Any result would be ignored.
 
@@ -626,7 +630,9 @@ Such a function may be niladic, monadic, ambivalent or dyadic:
 
 #### Executing user-specific code
 
-You might want to execute some general code (as opposed to project-specific code) after a project was loaded. "General" means that this code is executed whenever a project (any project!) is opened. 
+You might want to execute some general code (as opposed to project-specific code) after a project was opened (rather than imported). "General" means that this code is executed whenever a project (any project!) is opened. 
+
+You can suppress the execution of such a function by setting `ignoreUserExec` to 1.
 
 This can be achieved by specifying the fully qualified name of a function that must be monadic, most likely in `⎕SE`. A namespace with the configuration data of the project is passed as the right argument.
 
@@ -653,7 +659,7 @@ Note that you may use the `ignoreUserExec` flag to tell `OpenProject` to ignore 
 
 #### Check for `ToDo`
 
-Finally Cider checks whether there is a variables `ToDo` in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.
+If the project was opened (rather than imported!) **_and_** `batch` is 0, then Cider checks whether there is a variables `ToDo` in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.
 
 You may use this to keep track ...
 
@@ -664,12 +670,18 @@ You may use this to keep track ...
 
 #### Git status
 
-If the project is managed by Git then Cider will report the current branch and its status.
+If the project was opened (rather than imported!) **_and_** the project is version-controlled by Git **_and_** `batch` is 0 **_and_** the global configuration parameter `ReportGitStatus` is greater than 0, then Cider will report the current branch and its status. 
 
 
 ## Misc
 
 Cider offers helpers that are useful in particular circumstances.
+
+#### Check for Dropbox conflicts
+
+At this stage Cider would perform a check for any Dropbox conflicts if the project was opened rather than imported **_and_** the global configuration parameter 
+
+The check is only performed the `batch` parameter is 0
 
 
 ### AddTatinDependencies
@@ -754,6 +766,11 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
+
+
+
+
 
 
 

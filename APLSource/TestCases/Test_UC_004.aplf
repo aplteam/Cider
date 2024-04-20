@@ -16,7 +16,7 @@
  ref.YesOrNo_Answers⍪←'ChangeCurrentDir@' 'n'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -ignoreUserExec -batch'
  Assert rc=0
- 'You did not just press <enter>!'Assert∨/'Project successfully loaded and established in'⍷res
+ 'You did not just press <enter>!'Assert∨/'Project successfully opened and established in'⍷res
  →T.GoToTidyUp~(⊂'#.Foo')∊{⍵[;1]}##.Cider.ListOpenProjects 0
 
  r←T._OK

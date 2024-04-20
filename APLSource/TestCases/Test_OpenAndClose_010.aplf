@@ -14,9 +14,11 @@
  (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
- (rc msg res)←∆UCMD'CreateProject "',tempDir,'" # -noEdit -acceptConfig -batch -ignoreUserExec'
- Assert'Project successfully loaded and established in '{⍺≡(≢⍺)↑⍵}res
+ ref.YesOrNo_Answers←0 2⍴''
+ ref.YesOrNo_Answers⍪←'ChangeCurrentDir@' 'n'
+ ref.YesOrNo_Answers⍪←'OpenAsWell@' 'y'
+ (rc msg res)←∆UCMD'CreateProject "',tempDir,'" # -noEdit -acceptConfig -ignoreUserExec'
+ Assert'Project successfully opened and established in '{⍺≡(≢⍺)↑⍵}res
  list←FilesAndDirs.ListFiles tempDir
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
@@ -27,7 +29,7 @@
 
  (⊂'Init x' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
  (rc msg res)←∆UCMD'OpenProject "',tempDir,'" -ignoreUserExec -batch'
- Assert'Project successfully loaded and established in '{⍺≡(≢⍺)↑⍵}res
+ Assert'Project successfully opened and established in '{⍺≡(≢⍺)↑⍵}res
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
  Assert res ∆StartsWith'Unlinked:'
@@ -35,7 +37,7 @@
 
  (⊂'{x} Init y' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
  (rc msg res)←∆UCMD'OpenProject "',tempDir,'" -ignoreUserExec -batch'
- Assert'Project successfully loaded and established in '{⍺≡(≢⍺)↑⍵}res
+ Assert'Project successfully opened and established in '{⍺≡(≢⍺)↑⍵}res
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
  Assert res ∆StartsWith'Unlinked:'
@@ -43,7 +45,7 @@
 
  (⊂'{r}←Init y' 'r←∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
  (rc msg res)←∆UCMD'OpenProject "',tempDir,'" -ignoreUserExec -batch'
- Assert'Project successfully loaded and established in '{⍺≡(≢⍺)↑⍵}res
+ Assert'Project successfully opened and established in '{⍺≡(≢⍺)↑⍵}res
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
  Assert res ∆StartsWith'Unlinked:'

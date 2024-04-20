@@ -11,10 +11,10 @@
  parms.ignoreUserExec←0
  parms.importFlag←0
  parms.noPkgLoad←0
- parms.verbose←GetGlobalVerbose
- parms.batch←0
- parms.watch←0
- parms.checkPackageVersions←0      ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
+ parms.verbose←GetGlobalVerbose     ⍝ Effects messaging
+ parms.batch←0                      ⍝ A 1 has an affect on messaging and which steps are performed after opening the project
+ parms.watch←0                      ⍝ 0 allows recognizing whether the user has set this; eventually 0 will become "both", the default.
+ parms.checkPackageVersions←0       ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
  :If ~(⊂y)∊''⍬
  :AndIf 9=⎕NC'y'
      :If 9=y.⎕NC'projectSpace'

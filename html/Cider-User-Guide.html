@@ -120,7 +120,7 @@ window.matchMedia("print").addEventListener("change", evt => {
 <li class="toc-entry toc-h4"><a href="#injecting-a-namespace-ciderconfig">2.6.8. Injecting a namespace <code>CiderConfig</code></a></li>
 <li class="toc-entry toc-h4"><a href="#injecting-a-namespace-tatinvars">2.6.9. Injecting a namespace <code>TatinVars</code></a></li>
 <li class="toc-entry toc-h4"><a href="#changing-the-current-directory">2.6.10. Changing the current directory</a></li>
-<li class="toc-entry toc-h4"><a href="#initialising-a-project">2.6.11. Initialising a project (optional)</a></li>
+<li class="toc-entry toc-h4"><a href="#initialising-a-project">2.6.11. Initialising a project</a></li>
 <li class="toc-entry toc-h4"><a href="#executing-user-specific-code">2.6.12. Executing user-specific code</a></li>
 <li class="toc-entry toc-h4"><a href="#check-for-todo">2.6.13. Check for <code>ToDo</code></a></li>
 <li class="toc-entry toc-h4"><a href="#git-status">2.6.14. Git status</a></li>
@@ -128,11 +128,12 @@ window.matchMedia("print").addEventListener("change", evt => {
 </ul></li>
 <li class="toc-entry toc-h2"><a href="#misc">3. Misc</a>
 <ul>
+<li class="toc-entry toc-h4"><a href="#check-for-dropbox-conflicts">3.0.1. Check for Dropbox conflicts</a></li>
+</ul></li>
 <li class="toc-entry toc-h3"><a href="#addtatindependencies">3.1. AddTatinDependencies</a></li>
 <li class="toc-entry toc-h3"><a href="#addnugetdependencies">3.2. AddNuGetDependencies</a></li>
 <li class="toc-entry toc-h3"><a href="#listtatindependencies">3.3. ListTatinDependencies</a></li>
 <li class="toc-entry toc-h3"><a href="#listnugetdependencies">3.4. ListNuGetDependencies</a>
-</li></ul></li>
 </ul>
 </div>
 </nav>
@@ -348,7 +349,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <h4 data-id="Global-configuration">2.4.1. Global configuration</h4>
 </a>
 </div>
-<p>Cider may have a global configuration file that can be used to define settings that effect <em>all</em> projects. It's named is <code>cider.json</code>.</p>
+<p>Cider may have a global configuration file that can be used to define settings that effect <em>all</em> projects. It's name is <code>config.json</code>.</p>
 <p>This file, if it exists, it situated in a folder <code>.cider</code> that lives in the user's home folder on all platforms. For example, for a user JohnDoe the path would be <code>C:\Users\JohnDoe\.cider</code> on Windows, on Linux it would be <code>/home/JohnDoe/.cider</code>, and on the Mac it would be <code>/Users/JohnDoe/.cider</code>.</p>
 <p>This folder does not only host the global config file, it's also the place where the file with alias definitions (<code>aliase.txt</code>) is saved as well as the file <code>cider.config.template</code> which is used as a template (hence the name) whenever a new project is created.</p>
 <div class="h_tag">
@@ -366,8 +367,8 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 </div>
 <p>This is an optional flag.</p>
 <p>If you don't use Dropbox skip this topic.</p>
-<p>If <code>CheckForDropboxConflicts</code> is defined and has the value 1, then both <code>]OpenProject</code> and <code>]CloseProject</code> will check whether the project has files that contain the string “conflicted copy” and report such files to the session.</p>
-<p>In case Dropbox cannot figure out what the last version is, it will create such a file. Dropbox leaves it to the user to compare such a file manually and solve the conflict somehow. Because Dropbox does not actually tell you about such files, Cider does it for you if you configure it accordingly.</p>
+<p>If <code>CheckForDropboxConflicts</code> is defined and has the value 1, then both <code>]OpenProject</code> and <code>]CloseProject</code> will check whether the project has files that contain the string “conflicted copy”, and report such files to the session.</p>
+<p>Background: in case Dropbox cannot figure out what the last version of a file is, it will create such a file. Dropbox leaves it to the user to compare such a file manually and solve the conflict somehow. The problem is that Dropbox does not actually tell you about such files, therefore Cider does it for you if you configure Cider accordingly.</p>
 <div class="h_tag">
 <a href="#executeafterprojectopen" id="executeafterprojectopen" class="autoheader_anchor">
 <h5 data-id="ExecuteAfterProjectOpen">2.4.1.3. ExecuteAfterProjectOpen</h5>
@@ -384,6 +385,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>By default Cider reports the Git status of a project by putting it into an edit window if the working tree is not clean.</p>
 <p>If you don't want this you can inject <code>ReportGitStatus</code> into the global config file and assign one of the following values:</p>
 <p>0 = Don't report the Git status <br> 1 = Report the Git status in a read-only edit window (the default) <br> 2 = Report the Git status by printing it to the session <br> 3 = Ask the user what to do <br></p>
+<p>No matter what the global config parameter <code>ReportGitStatus</code> is saying, if a project is not version-controlled by Git (read: has no <code>.git/</code> folder in the root of the project folder) or <code>batch</code> is 1, no Git status is reported.</p>
 <div class="h_tag">
 <a href="#verbose" id="verbose" class="autoheader_anchor">
 <h5 data-id="verbose">2.4.1.5. verbose</h5>
@@ -522,7 +524,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <h6 data-id="init">2.5.1.1.7. init</h6>
 </a>
 </div>
-<p>If not empty this must be the name of a function within <code>projectSpace</code>. The function will be executed after a project was opened.</p>
+<p>If not empty this must be the name of a function within <code>projectSpace</code>. The function will be executed after a project was opened or imported.</p>
 <p>Such a function should not return a result; if it does anyway it should be shy.</p>
 <p>Such a function may be niladic, monadic or ambivalent:</p>
 <ul>
@@ -734,14 +736,15 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <h4 data-id="Changing-the-current-directory">2.6.10. Changing the current directory</h4>
 </a>
 </div>
-<p>At this point Cider checks the current (or working) directory. If it's different from the project's directory, the user is asked whether she wants to change the current directory to the project's directory.</p>
+<p>If the project was opened (rather than imported!) <strong><em>and</em></strong> <code>batch</code> is 0, then Cider checks at this point the current (or working) directory. If it's different from the project's directory, the user is asked whether she wants to change the current directory to the project's directory.</p>
 <div class="h_tag">
 <a href="#initialising-a-project" id="initialising-a-project" class="autoheader_anchor">
-<h4 data-id="Initialising-a-project">2.6.11. Initialising a project (optional)</h4>
+<h4 data-id="Initialising-a-project">2.6.11. Initialising a project</h4>
 </a>
 </div>
-<p>Now there might well be demand for executing some code to initialise your project.</p>
-<p>This can be achieved by assigning the name of a function to <code>init</code>. This must again be relative to the root of your project.</p>
+<p>There might well be demand for executing some code to initialise your project.</p>
+<p>This can be achieved by assigning the name of a function to <code>init</code>. The name must be relative to the root of your project.</p>
+<p>The function will be executed if <code>suppressInit</code> is 0; whether the project was opened or imported does not matter.</p>
 <p>The function should not return a result. If it does anyway it should be shy. Any result would be ignored.</p>
 <p>Such a function may be niladic, monadic, ambivalent or dyadic:</p>
 <ul>
@@ -753,7 +756,8 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <h4 data-id="Executing-user-specific-code">2.6.12. Executing user-specific code</h4>
 </a>
 </div>
-<p>You might want to execute some general code (as opposed to project-specific code) after a project was loaded. “General” means that this code is executed whenever a project (any project!) is opened.</p>
+<p>You might want to execute some general code (as opposed to project-specific code) after a project was opened (rather than imported). “General” means that this code is executed whenever a project (any project!) is opened.</p>
+<p>You can suppress the execution of such a function by setting <code>ignoreUserExec</code> to 1.</p>
 <p>This can be achieved by specifying the fully qualified name of a function that must be monadic, most likely in <code>⎕SE</code>. A namespace with the configuration data of the project is passed as the right argument.</p>
 <p>The function may or may not return a result, but when it does the result will be discarded.</p>
 <p>The fully qualified name of the function must go into the file that is returned by the function <code>GetCiderGlobalConfigFilename</code> which is available only via the API, not as a user command. This is the global Cider config file, not a Cider project config file.</p>
@@ -770,7 +774,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <h4 data-id="Check-for-ToDo">2.6.13. Check for <code>ToDo</code></h4>
 </a>
 </div>
-<p>Finally Cider checks whether there is a variables <code>ToDo</code> in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.</p>
+<p>If the project was opened (rather than imported!) <strong><em>and</em></strong> <code>batch</code> is 0, then Cider checks whether there is a variables <code>ToDo</code> in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.</p>
 <p>You may use this to keep track …</p>
 <ul>
 <li>of steps that need to be executed before the project can be commited or published etc.</li>
@@ -782,13 +786,20 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <h4 data-id="Git-status">2.6.14. Git status</h4>
 </a>
 </div>
-<p>If the project is managed by Git then Cider will report the current branch and its status.</p>
+<p>If the project was opened (rather than imported!) <strong><em>and</em></strong> the project is version-controlled by Git <strong><em>and</em></strong> <code>batch</code> is 0 <strong><em>and</em></strong> the global configuration parameter <code>ReportGitStatus</code> is greater than 0, then Cider will report the current branch and its status.</p>
 <div class="h_tag">
 <a href="#misc" id="misc" class="autoheader_anchor">
 <h2 data-id="Misc">3. Misc</h2>
 </a>
 </div>
 <p>Cider offers helpers that are useful in particular circumstances.</p>
+<div class="h_tag">
+<a href="#check-for-dropbox-conflicts" id="check-for-dropbox-conflicts" class="autoheader_anchor">
+<h4 data-id="Check-for-Dropbox-conflicts">3.0.1. Check for Dropbox conflicts</h4>
+</a>
+</div>
+<p>At this stage Cider would perform a check for any Dropbox conflicts if the project was opened rather than imported <strong><em>and</em></strong> the global configuration parameter</p>
+<p>The check is only performed the <code>batch</code> parameter is 0</p>
 <div class="h_tag">
 <a href="#addtatindependencies" id="addtatindependencies" class="autoheader_anchor">
 <h3 data-id="AddTatinDependencies">3.1. AddTatinDependencies</h3>

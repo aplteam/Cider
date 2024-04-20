@@ -1,0 +1,13 @@
+ r←GetUserHomPath;os
+⍝ Returns the user's HOME path on the current operating system, like
+⍝ /home/<⎕an>  on Linux
+ :Select os←APLTreeUtils2.GetOperatingSystem ⍬
+ :Case 'Win'
+     r←¯1↓⊃1 ⎕NPARTS ¯1↓⊃1 ⎕NPARTS 2⊃4070⌶0
+ :Case 'Lin'
+     r←'/home/',⎕AN
+ :Case 'Mac'
+     r←'/Users/',⎕AN
+ :Else
+     ('<',os,'> is not a supported operating system')⎕SIGNAL 11
+ :EndSelect
