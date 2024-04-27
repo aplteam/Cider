@@ -24,9 +24,6 @@
      M.CreateAPI #.Cider.Cider ##.Cider.Public cfg.api
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
-     :If 0<≢cfg.userCommandScript
-         ⎕←'In order to (re-)install Cider execute:'
-         ⎕←'#.Cider.Admin.InstallCider'
-     :EndIf
+     #.Cider.Admin.InstallCider
  :EndIf
  ⍝Done

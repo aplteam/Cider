@@ -1,5 +1,5 @@
 (
- '* 0.40.0 ⋄ 2024-04-20'
+ '* 0.40.0 ⋄ 2024-04-21'
  '  * New global parameter `CheckForDropboxConflicts` introduced. '
  '  * The user command interface has been slimmed: the "business logic" has been removed from the script and'
  '    been transformed into an ordinary namespace saved in `APLSource/`.'
