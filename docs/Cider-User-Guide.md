@@ -708,11 +708,20 @@ Note that on Windows, adding NuGet packages requires Dyalog APL to be configured
 
 ### ListTatinDependencies
 
+This user command serves two different purposes: 
+
+* Checking the origin of the packages a project relies on
+* Report the precise versions of dependencies 
+
+The first one is the default, for the second you need to specify the `-full` flag.
+
+#### Check the origin of dependencies
+
 Checking dependencies before publishing to the principal Tatin Registry is a good idea, in particular when one uses several Tatin Registries like a personal one, a company Registry and https://tatin.dev
 
-In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev. However, when the package **is** published on tatin.dev then you most likely don't want your projecty to depend on release candidates anymore.
+In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev. However, when the package is eventually published on tatin.dev, then you most likely don't want your projecty to depend on release candidates anymore.
 
-The function `ListTatinDependencies` puts all build lists from all Tatin install folders of a given project on display, making it easy to check.
+The function `ListTatinDependencies` compiles a report from the build lists from all Tatin install folders of a given project on display, making it easy to check.
 
 The following example was created in a workspace where the project `Cider` was opened. Because it was the only open project at that time, it acted on it.
 
@@ -746,6 +755,37 @@ The following example was created in a workspace where the project `Cider` was o
  tatin-packages_dev/   aplteam-DotNetZip-2.0.2                0  https://tatin.dev/   
 ```
 
+#### Check the precise versions of dependencies
+
+This is useful for finding out why a particular package (typically an old one) is requested at all.
+
+For this specifify the `-full` flag:
+
+```
+]listTatinDependencies -full
+--- Select package install folder to report on: ---
+   1. tatin-packages     
+   2. tatin-packages_dev 
+
+Select one item (q=quit) :1
+
+aplteam-APLTreeUtils2-1.4.0 
+aplteam-FilesAndDirs-5.7.1  
+ aplteam-OS-3.1.1           
+ aplteam-APLTreeUtils2-1.4.0
+aplteam-CommTools-1.7.1     
+aplteam-APLGit2-0.15.4      
+ aplteam-APLTreeUtils2-1.2.2
+ aplteam-FilesAndDirs-5.5.1 
+ aplteam-GitHubAPIv3-0.7.0  
+ dyalog-HttpCommand-5.2.0   
+ aplteam-CommTools-1.7.0    
+ aplteam-OS-3.1.1           
+dyalog-NuGet-0.2.1          
+```
+
+This shows that the package `APLGit2` requests older versions of `APLTreeUtils2`, `FilesAndDirs` and `CommTools` than Cider would eventually use, information that is not easily available by other means.
+
 ### ListNuGetDependencies                                                   
 
 This lists all installed NuGet dependencies.
@@ -766,6 +806,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 

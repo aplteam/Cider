@@ -1,4 +1,0 @@
- r←Version;v
-⍝ See also `History`
- v←(⎕JSON⍠('Dialect' 'JSON5')⊣TatinVars.CONFIG).version
- r←'MarkAPL'v'2024-01-11'

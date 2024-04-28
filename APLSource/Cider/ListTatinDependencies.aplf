@@ -1,6 +1,6 @@
  r←ListTatinDependencies projectFolder;cfgFilename;cfg;buildFilenames;buildLists;b;tatinFolders;buildFolders
-⍝ `y` must point to a project, either as alias ([]) or as a projectFolder.
-⍝ The actualt Tatin dependency folders are established from the project config file.
+⍝ `y` must point to a project, either as alias ([]) or as a project folder.
+⍝ The actual Tatin dependency folders are established from the project config file.
  r←0 5⍴''
  :If IsAlias projectFolder
      projectFolder←GetFolderFromAlias2 projectFolder
@@ -15,7 +15,7 @@
      buildFilenames←buildFolders,¨⊂'/apl-buildlist.json'
      b←F.Exists¨buildFilenames
  :AndIf 0<≢buildFilenames←b/buildFilenames
-     '"dependencies" and "dependencies_dev" do not point to existing folders'Assert∨/b
+     'Build files do not point to existing folders'Assert∨/b
      buildLists←{⎕JSON⍠('Dialect' 'JSON5')⊣⊃F.NGET ⍵}¨buildFilenames
      r←⍉∘↑¨(⊂¨' ',¨¨buildLists.packageID),¨buildLists.(principal url)
      r←(⊂¨b/tatinFolders,¨'/'),¨r

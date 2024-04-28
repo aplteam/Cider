@@ -1,0 +1,17 @@
+ r←{level}ListTatinDependenciesFull_ dependencyFilenames;deps;folder;this;filename
+⍝ `dependencyFilenames` must stem from a package installation folder.
+⍝ Reads the file and investigates all dependencies recursively
+ r←⍬
+ level←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'level'
+ deps←⊃⎕NGET dependencyFilenames 1
+ deps←(0<≢¨deps)/deps                           ⍝ Remove empty lines
+ deps←(~';'∊¨deps)/deps                         ⍝ Remove comment lines
+ folder←⊃⎕NPARTS dependencyFilenames
+ :For this :In deps
+     filename←folder,this,'/apl-dependencies.txt'
+     r,←⊂level this
+     :If ⎕NEXISTS filename
+         r,←(level+1)ListTatinDependenciesFull_ filename
+     :EndIf
+ :EndFor
+⍝Done

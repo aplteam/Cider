@@ -24,6 +24,6 @@
      M.CreateAPI #.Cider.Cider ##.Cider.Public cfg.api
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
-     #.Cider.Admin.InstallCider
+     1 #.Cider.Admin.InstallCider 1
  :EndIf
  ⍝Done

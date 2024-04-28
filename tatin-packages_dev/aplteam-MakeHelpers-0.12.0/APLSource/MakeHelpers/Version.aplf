@@ -1,6 +1,0 @@
- r←Version;⎕IO;⎕ML;ns;json
-⍝ See also `History`
- ⎕ML←1 ⋄ ⎕IO←1
- json←⊃⎕NGET TatinVars.HOME,'/apl-package.json'
- ns←⎕JSON⍠('Dialect' 'JSON5')⊣json
- r←ns.version
