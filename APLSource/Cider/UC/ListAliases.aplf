@@ -3,6 +3,9 @@
      :If 0=≢r←EditAliasFile ⍬
          r←ProcessAliases 0 0 0
      :EndIf
+ :ElseIf 0≢Args.scan
+ :AndIf 0<≢Args.scan
+     r←ScanFolder Args.scan
  :Else
      r←ProcessAliases Args.(prune edit batch)
  :EndIf

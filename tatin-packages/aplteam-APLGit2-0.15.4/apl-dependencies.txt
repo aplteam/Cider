@@ -1,6 +1,0 @@
-aplteam-APLTreeUtils2-1.2.2
-aplteam-FilesAndDirs-5.5.1
-aplteam-GitHubAPIv3-0.7.0
-dyalog-HttpCommand-5.2.0
-aplteam-CommTools-1.7.0
-aplteam-OS-3.1.1

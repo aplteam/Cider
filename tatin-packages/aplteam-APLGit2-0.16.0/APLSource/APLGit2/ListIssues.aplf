@@ -1,0 +1,32 @@
+ r←{verbose}ListIssues(username repoName);GH;qdmx;ns
+ ⍝ Returns a list of all open issues but no Pull Requests.\\
+ ⍝ "username" is expected to be the GitHub username. It's the equivalent of "group" in Tatin.\\
+ ⍝ "repoName" must be the name of the repository you want to get the issues for.\\
+ ⍝ Note that both "username" and "repoName" are not case senstitive.\\
+ ⍝ * By default just "title" and "number" are returned.
+ ⍝ * With verbose=1, "udated_at", "labels" and "assignees" are also returned.
+ ⍝ * With verbose=2, "body" is also returned.
+ verbose←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'verbose'
+ 'Both "username" and "repoName" must not be empty'U.Assert 0∧.<≢¨username repoName
+ GH←⎕NEW GitHubAPIv3(,⊂username)
+ :Trap 0
+     ns←GH.GetAllIssues repoName
+ :Else
+     qdmx←⎕DMX
+     U.ErrNo ⎕SIGNAL⍨qdmx.EM
+ :EndTrap
+ r←ns.∆QuickView GH
+ r←{(⍵[;1]≢¨⊂'state')⌿⍵}¨r                                  ⍝ "State" is not meaningful here
+ r←BeautifyDateTime¨r
+ :Select ⊃verbose
+ :Case 0
+     r←{(~⍵[;1]∊'assignees' 'labels' 'updated_at')⌿⍵}¨r     ⍝ This is the default
+ :Case 1
+     ⍝ No action required
+ :Case 2
+     r{⍺⍪'body'⍵}←¨ns.body
+ :Else
+     ∘∘∘                                                    ⍝ Huh?!
+ :EndSelect
+ r←↑r
+⍝Done

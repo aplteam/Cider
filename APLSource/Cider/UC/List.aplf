@@ -41,7 +41,7 @@
      c.Name←'ListAliases'
      c.Desc←'List all defined aliases with their folders'
      c.Group←'Cider'
-     c.Parse←'0 -prune -edit -batch'
+     c.Parse←'0 -prune -edit -batch -scan='
      r,←c
 
      c←⎕NS''

@@ -1,0 +1,40 @@
+ r←ScanFolder folder;aliase;bool;msg;newAliase;noOf;subFolder;subFolders
+⍝ Scans "folder"; every sub-folder as well as sub-folders within those may become a probject folder and
+⍝ will be put into an edit window that allows the user to remove unwanted stuff. The remaining sub folders
+⍝ will be added as aliases, with the name of the sub folder becoming the alias.
+ ('Not found: ',folder)Assert ⎕NEXISTS folder
+ aliase←P.GetCiderAliasFileContent ⍬
+ noOf←0
+ :If 0<≢subFolders←P.##.F.ListDirs folder
+     bool←~⎕NEXISTS subFolders,¨⊂'/Cider.config'
+     subFolders←bool/subFolders
+     newAliase←aliase ScanFolder_ folder
+     :For subFolder :In subFolders
+         newAliase⍪←aliase ScanFolder_ subFolder
+     :EndFor
+     :If 0<≢newAliase
+         newAliase←newAliase[⍋↑newAliase[;1];]
+         msg←((⎕PW-1)⍴'-'),CR
+         msg,←'Next you will be be shown the list of potential new aliases in an edit window.',CR
+         msg,←'Delete the rows you don''t want to be added as aliases.'
+         P.##.CommTools.Pause msg
+         newAliase←⍕newAliase
+         ⎕ED'newAliase'
+         newAliase←↓newAliase
+         newAliase←(0<≢¨newAliase~¨' ')/newAliase
+         newAliase←{w←P.##.A.DLB ⍵ ⋄ a←(¯1+w⍳' ')↑w ⋄ a(P.##.A.DLB P.##.A.DTB(1+≢a)↓⍵)}¨newAliase
+         newAliase←↑newAliase
+         bool←⎕NEXISTS newAliase[;2],¨⊂'/Cider.config'
+         :If 0<≢newAliase←bool⌿newAliase   ⍝ Insurance against user typos
+             {}{P.AddAlias ⍵}¨↓⌽newAliase
+             noOf←≢newAliase
+             r←(⍕noOf),' aliase added'
+         :Else
+             r←'No action taken.' ⋄ →0
+         :EndIf
+         r←'No projects found in ',folder,' and any of its sub folders.' ⋄ →0
+     :EndIf
+ :Else
+     r←'No Cider projects found in <',folder,'>'
+ :End
+⍝Done

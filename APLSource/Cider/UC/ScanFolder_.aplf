@@ -1,0 +1,15 @@
+ r←aliase ScanFolder_ folder;bool;newAliase;subFolders
+ r←0 2⍴⍬
+ :If 0<≢subFolders←P.##.F.ListDirs folder
+     bool←⎕NEXISTS subFolders,¨⊂'/Cider.config'
+ :AndIf 0<≢subFolders←bool/subFolders
+     newAliase←⎕C 2⊃¨⎕NPARTS subFolders
+     :If 0∊bool←~newAliase∊aliase[;1]
+         ⎕←'Ignored because these aliases have already been defined:'
+         ⎕←' ',' ',(~bool)⌿newAliase,[1.6]subFolders
+     :EndIf
+     :If 0<≢subFolders←bool/subFolders
+     :AndIf 0<≢subFolders←('⍝'≠⊃¨P.##.A.DMB subFolders)/subFolders
+         r←(⎕C 2⊃¨⎕NPARTS subFolders),[1.5]subFolders
+     :EndIf
+ :EndIf

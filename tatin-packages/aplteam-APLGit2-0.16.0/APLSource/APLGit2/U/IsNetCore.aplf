@@ -1,0 +1,2 @@
+ r←IsNetCore
+ r←1 1≡2↑2250⌶0 ⍝ 2250⌶0 is now the preferred mechanism to establish .NET availability

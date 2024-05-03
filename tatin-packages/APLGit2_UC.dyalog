@@ -247,7 +247,6 @@
           →noProjectSelected/0
           r←ListBranches space folder Args
       :Case ⎕C'Log'
-          →noProjectSelected/0
           r←Log space folder Args
       :Case ⎕C'NoOfUntrackedFiles'
           →noProjectSelected/0
@@ -313,8 +312,13 @@
 
     ∇ {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;flag;exe;parms;qdmx;name;default;hash1_;msg;rc;hash2_;buff
       (hash1 hash2)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
+      :If (,'.')≡,hash1
+          'Argument is invalid'Assert 0=≢hash2
+      :EndIf
+      'Argument is invalid'Assert(,'.')≢hash2
       buff←folder G.CompareCommits hash1 hash2
-      (filename1 filename2 hash1 hash2)←4↑buff,'' '' ⍝ Because old versions of CompareCommit did not return the hashes
+      (filename1 filename2 hash1 hash2)←4↑buff,'' ''    ⍝ Because old versions of CompareCommit did not return the hashes
+      (hash1 hash2)←{⍵↑⍨¨8⌊≢¨⍵}hash1 hash2              ⍝ Short version suffices
       :If 0<+/⎕NEXISTS filename1 filename2
           :If Args.files
               ⎕←filename1 filename2
@@ -331,11 +335,17 @@
               :AndIf 0<≢exe
                   parms←⎕SE.CompareFiles.ComparisonTools.⍎'CreateParmsFor',name
                   parms.(file1 file2)←filename1 filename2
-                  (rc msg hash1_)←folder G.##.U.RunGitCommand'show ',hash1,' -q'
-                  parms.caption1←({⍵↓⍨⍵⍳' '}1⊃hash1_),' from ',{⍵↓⍨⍵⍳' '}3⊃hash1_
-                  (rc msg hash2_)←folder G.##.U.RunGitCommand'show ',hash1,' -q'
-                  parms.caption2←({⍵↓⍨⍵⍳' '}1⊃hash2_),' from ',{⍵↓⍨⍵⍳' '}3⊃hash2_
+                  :If (,'.')≡hash1
+                      parms.caption1←'Working area'
+                  :Else
+                      (rc msg hash1_)←folder G.##.U.RunGitCommand'show ',hash1,' -q'
+                      parms.caption1←(hash1,{⍵↓⍨⍵⍳' '}{⍵↓⍨⍵⍳' '}1⊃hash1_),' from ',{⍵↓⍨⍵⍳' '}3⊃hash1_
+                  :EndIf
+                  (rc msg hash2_)←folder G.##.U.RunGitCommand'show ',hash2,' -q'
+                  msg Assert rc=0
+                  parms.caption2←(hash2,{⍵↓⍨⍵⍳' '}{⍵↓⍨⍵⍳' '}1⊃hash2_),' from ',{⍵↓⍨⍵⍳' '}3⊃hash2_
                   {}⎕SE.CompareFiles.Compare parms
+                  ⎕DL 1.2×{0=⍵.⎕NC'edit1':0 ⋄ 0=⍵.(edit1+edit2)}parms ⍝ Avoild deletion/early deletion
                   ⎕NDELETE filename1 filename2
                   (filename1 filename2)←⊂''
               :Else
@@ -615,27 +625,25 @@
               r,←⊂''
               r,←AddLevel3HelpInfo'Commit'
           :Case ⎕C'CompareCommits'
-              r,←⊂'Compare changes between two commits.'
+              r,←⊂'Compare changes between two commits or a commit and the working area.'
               r,←⊂''
               r,←⊂'You may specify none, one or two hashes as argument:'
               r,←⊂' * No argument means "compare last commit with the most recent ancestor'
               r,←⊂' * One argument means "compare last commit with the given commit"'
               r,←⊂' * Two arguments mean "compare those commits with each other"'
+              r,←⊂'Special syntax: If only a "." is passed as argument, the last commit is compared with the'
+              r,←⊂'working area. You must not specify a hash together with the ".".'
               r,←⊂''
-              r,←⊂'If the user command ]CompareFiles and its API are available then this is used'
-              r,←⊂'for the comparison. Otherwise the names of two files are printed to session.'
-              r,←⊂'These files are generated in the temporary folder of the current OS.'
-              r,←⊂''
-              r,←⊂'-files     If the user command ]CompareFiles is available but you want to get just the'
-              r,←⊂'           filenames specify this modifier'
-              r,←⊂'-use=      If the user command ]CompareFiles is available then you can use this to'
-              r,←⊂'           specify the comparison utility to be used. Must be either a name or a "?".'
-              r,←⊂'           See ]CompareFiles for details.'
-              r,←⊂'-project=  Use this to specify a particular project with -project=[ProjectName|ProjectFolder]'
+              r,←⊂'If the user command ]CompareFiles and its API is available then this is used'
+              r,←⊂'for the comparison. Otherwise the names of two files are printed to the session.'
               r,←⊂''
               r,←⊂' * If there is just one open Cider project it is taken'
               r,←⊂' * If there are several open Cider projects the user is interrogated'
-              r,←⊂' * You may specify a particular project with -project=[ProjectName|ProjectFolder]'
+              r,←⊂' * If you do not use Cider, or if there are no open Cider projects use -project=, see there'
+              r,←⊂''
+              r,←⊂'-files     If you just want to get filenames printed to ⎕SE specify this modifier'
+              r,←⊂'-use=      Use this to specify a particular comparison utility; see ]CompareFiles for details.'
+              r,←⊂'-project=  Use this to specify a particular project with -project=[ProjectName|ProjectFolder]'
           :Case ⎕C'CurrentBranch'
               r,←⊂'Returns the name of the current branch'
               r,←⊂''
@@ -652,6 +660,10 @@
           :Case ⎕C'GoToGitHub'
               r,←⊂'Opens project in your default browser as, say:'
               r,←⊂'https://github.com/aplteam/APLGit2'
+              r,←⊂''
+              r,←⊂'If no argument is provided, the user command looks for any open Cider projects.'
+              r,←⊂' * If there is just one open, it acts on it'
+              r,←⊂' * If there are several Cider projects open, the user will be questioned'
               r,←⊂''
               r,←⊂'The required project can be specified in a number of ways:'
               r,←⊂' * A URL like https://github.com/aplteam.APLGit2'
