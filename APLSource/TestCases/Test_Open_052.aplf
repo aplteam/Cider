@@ -25,7 +25,7 @@
 
 ∆TidyUp:
  ##.Cider.C.Cleanup
- {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ {}(~parms.batch)⎕SE.Cider.CloseProject'#.TEMP.Foo'
  (⊂'r←Hello' 'r←''World''')⎕NPUT filename 1
  #.⎕EX'TEMP'
 ⍝Done

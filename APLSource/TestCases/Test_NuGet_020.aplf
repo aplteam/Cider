@@ -32,7 +32,7 @@
      →T.GoToTidyUp expected≢qdmx.EM
  :EndTrap
 
- res←##.Cider.CloseProject tempDir
+ res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
 
  R←T._OK

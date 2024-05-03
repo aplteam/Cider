@@ -25,7 +25,7 @@
 
 ∆TidyUp:
  ##.Cider.C.Cleanup
- Assert ⎕SE.Cider.CloseProject'[foo]'
+ Assert (~parms.batch)⎕SE.Cider.CloseProject'[foo]'
  #.⎕EX'TEMP'
  defs←(defs[;1]≢¨⊂'foo')⌿defs
  (⊂⊃¨{⍺,'=',⍵}/¨↓defs)⎕NPUT ##.Cider.GetCiderAliasFilename 1

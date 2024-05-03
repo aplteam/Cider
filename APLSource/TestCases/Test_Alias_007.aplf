@@ -11,7 +11,7 @@
  (rc msg res)←∆UCMD'OpenProject ',folder,' -parent=#.TEMP -alias=Firlefanz1 -watch=ns -batch -ignoreUserExec'
  msg Assert 0=rc
 
- (rc msg res)←∆UCMD'CloseProject [firlefanz1]'
+ (rc msg res)←∆UCMD'CloseProject [firlefanz1] -fast'
  msg Assert 0=rc
  →T.GoToTidyUp'Number of projects closed: 1'≢res
  #.⎕EX'TEMP' ⋄ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
@@ -21,7 +21,7 @@
 
  aliase←⎕SE.Cider.GetCiderAliasFileContent ⍬
 
- (rc msg res)←∆UCMD'CloseProject [firlefanz2]'
+ (rc msg res)←∆UCMD'CloseProject [firlefanz2] -fast'
  msg Assert 0=rc
  →T.GoToTidyUp'Number of projects closed: 1'≢res
 
@@ -32,7 +32,7 @@
 
 ∆TidyUp:
  ref.Cleanup
- {}∆UCMD'CloseProject [firlefanz2]'
+ {}∆UCMD'CloseProject [firlefanz2] -fast'
  ⎕SE.Cider.DropAlias'firlefanz1'  ⍝ Just in case
  Assert ⎕SE.Cider.DropAlias'firlefanz2'
 ⍝Done

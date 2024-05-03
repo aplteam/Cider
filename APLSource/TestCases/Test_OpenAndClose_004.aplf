@@ -47,7 +47,7 @@
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
 
- →T.GoToTidyUp 3≠##.Cider.CloseProject'#.Foo' '[test-case-alias-Goo]' '[Does not exist]'projectFolder3
+ →T.GoToTidyUp 3≠0 ##.Cider.CloseProject'#.Foo' '[test-case-alias-Goo]' '[Does not exist]'projectFolder3
 
  R←T._OK
 

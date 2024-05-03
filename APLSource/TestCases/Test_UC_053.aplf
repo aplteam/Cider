@@ -29,7 +29,7 @@
  Assert rc=0
  →T.GoToTidyUp~4≤≢res   ⍝ Two data rows + two for pimping + dependencies
 
- (rc msg res)←∆UCMD'CloseProject ',tempDir
+ (rc msg res)←∆UCMD'CloseProject ',tempDir,' -fast'
  Assert rc=0
  →T.GoToTidyUp'Number of projects closed: 1'≢res
 
@@ -42,7 +42,7 @@
  →T.GoToTidyUp 9≠#.TEMP.⎕NC'FilesAndDirs'
  →T.GoToTidyUp 9≠#.TEMP.TestCases.⎕NC'Tester2'
 
- (rc msg res)←∆UCMD'CloseProject ',tempDir
+ (rc msg res)←∆UCMD'CloseProject ',tempDir,' -fast'
  Assert rc=0
 
  R←T._OK

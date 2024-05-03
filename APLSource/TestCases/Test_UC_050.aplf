@@ -27,7 +27,7 @@
  Assert rc=0
  →T.GoToTidyUp 2≠≡res
 
- (rc msg res)←∆UCMD'CloseProject ',tempDir
+ (rc msg res)←∆UCMD'CloseProject ',tempDir,' fast'
  Assert rc=0
  →T.GoToTidyUp'Number of projects closed: 1'≢res
 
@@ -38,7 +38,7 @@
  →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
  →T.GoToTidyUp~∧/'Julian' 'Gregorian'∊⍕¨#.TEMP.NodaTime.CalendarSystem.⎕NL-2
 
- (rc msg res)←∆UCMD'CloseProject ',tempDir
+ (rc msg res)←∆UCMD'CloseProject ',tempDir,' -fast'
  Assert rc=0
 
  R←T._OK

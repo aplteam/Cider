@@ -31,7 +31,7 @@
  Assert rc=0
  →T.GoToTidyUp 3≠≢res   ⍝ One data row, two for pimping
 
- (rc msg res)←∆UCMD'CloseProject ',tempDir
+ (rc msg res)←∆UCMD'CloseProject ',tempDir,' -fast'
  Assert rc=0
  →T.GoToTidyUp'Number of projects closed: 1'≢res
 
@@ -43,7 +43,7 @@
  →T.GoToTidyUp'Project successfully opened and established in "#.TEMP"'≢res~⎕TC
  →T.GoToTidyUp~(⊂#.TEMP.APLTreeUtils2.GetOperatingSystem ⍬)∊'Win' 'Mac' 'Lin'
 
- (rc msg res)←∆UCMD'CloseProject ',tempDir
+ (rc msg res)←∆UCMD'CloseProject ',tempDir,' -fast'
  Assert rc=0
 
  R←T._OK

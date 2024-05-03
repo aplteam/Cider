@@ -12,9 +12,9 @@
  res←∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig  -batch -ignoreUserExec'
 
  list←##.Cider.ListOpenProjects 0
- →T.GoToTidyUp 0≠##.Cider.CloseProject'DoesNotExist'
+ →T.GoToTidyUp 0≠0 ##.Cider.CloseProject'DoesNotExist'
  →T.GoToTidyUp list≢##.Cider.ListOpenProjects 0
- →T.GoToTidyUp 1≠##.Cider.CloseProject'#.Foo'
+ →T.GoToTidyUp 1≠0 ##.Cider.CloseProject'#.Foo'
  →T.GoToTidyUp(≢list)≢1+≢##.Cider.ListOpenProjects 0
 
  R←T._OK

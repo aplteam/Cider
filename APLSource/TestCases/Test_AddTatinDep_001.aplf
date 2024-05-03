@@ -26,7 +26,7 @@
  list←##.Cider.AddTatinDependencies'[tatin]APLTreeUtils2,[tatin]FilesAndDirs'tempDir 0
  →T.GoToTidyUp 2≠≢list
 
- res←##.Cider.CloseProject tempDir
+ res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
 
  #.TEMP.(⎕EX ⎕NL-⍳9)
@@ -37,7 +37,7 @@
  {}#.TEMP.APLTreeUtils2.GetOperatingSystem ⍬
  {}#.TEMP.FilesAndDirs.PWD
 
- res←##.Cider.CloseProject tempDir
+ res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
 
  R←T._OK

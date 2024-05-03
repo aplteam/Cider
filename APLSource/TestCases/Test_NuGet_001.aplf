@@ -31,7 +31,7 @@
  {}0 1 ##.Cider.LoadNuGetDependencies tempDir #.TEMP
  →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
 
- res←##.Cider.CloseProject tempDir
+ res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
 
  #.TEMP.(⎕EX ⎕NL-⍳9)
@@ -39,7 +39,7 @@
  →T.GoToTidyUp~success
  →T.GoToTidyUp∨/'ERROR'⍷log
  →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
- res←##.Cider.CloseProject tempDir
+ res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
 
  R←T._OK

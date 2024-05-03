@@ -24,6 +24,6 @@
 
 ∆TidyUp:
  ##.Cider.C.Cleanup
- {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ {}0 ⎕SE.Cider.CloseProject'#.TEMP.Foo'
  #.⎕EX'TEMP'
 ⍝Done

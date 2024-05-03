@@ -39,7 +39,7 @@
 
 ∆TidyUp:
  ##.Cider.C.Cleanup
- {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ {}0 ⎕SE.Cider.CloseProject'#.TEMP.Foo'
  (⊂'r←Hello' 'r←''World''')⎕NPUT filename 1
  #.⎕EX'TEMP'
 ⍝Done

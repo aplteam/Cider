@@ -23,7 +23,7 @@
 
 ∆TidyUp:
  ##.Cider.C.Cleanup
- {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ {}(~parms.batch)⎕SE.Cider.CloseProject'#.TEMP.Foo'
  #.⎕EX'TEMP'
  defs←(defs[;1]≢¨⊂'foo')⌿defs
  (⊂⊃¨{⍺,'=',⍵}/¨↓defs)⎕NPUT ##.Cider.GetCiderAliasFilename 1

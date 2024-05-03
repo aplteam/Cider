@@ -26,7 +26,7 @@
 ∆TidyUp:
  ##.Cider.C.Cleanup
  (⎕PW ⎕PP ⎕FR)←PW PP FR
- {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ {}(~parms.batch)⎕SE.Cider.CloseProject'#.TEMP.Foo'
  #.⎕EX'TEMP'
  #.⎕EX parms.folder
 ⍝Done

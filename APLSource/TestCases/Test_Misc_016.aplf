@@ -34,7 +34,7 @@
  Assert 42≡ref.Project.Hello
  Assert 1≡ref.Tests.RunTest
  →T.GoToTidyUp 9≠ref.⎕NC'TatinVars'
- Assert 1=##.Cider.CloseProject⍕ref
+ Assert 1=(~parms.batch)##.Cider.CloseProject⍕ref
  #.⎕EX name
  cfg.CIDER.tatinVars←'Project'
  cfg #.Cider.Cider.Put_JSON5 folder,'/cider.config'
@@ -48,7 +48,7 @@
  r←T._OK
 
 ∆TidyUp:
- {}##.Cider.CloseProject⍕ref
+ {}(~parms.batch)##.Cider.CloseProject⍕ref
  #.⎕EX name
  ⎕EX'#.Test_Misc_016'
  :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'

@@ -36,7 +36,7 @@
  →T.GoToTidyUp 2≠≡res
  →T.GoToTidyUp~'Clock' 'NodaTime'∆LazyMatch res[;1]
 
- res←##.Cider.CloseProject tempDir
+ res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
 
  #.TEMP.(⎕EX ⎕NL-⍳9)
@@ -46,7 +46,7 @@
  →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
  →T.GoToTidyUp~∧/'Julian' 'Gregorian'∊⍕¨#.TEMP.NodaTime.CalendarSystem.⎕NL-2
 
- res←##.Cider.CloseProject tempDir
+ res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
 
  R←T._OK

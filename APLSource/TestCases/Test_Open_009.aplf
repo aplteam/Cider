@@ -22,6 +22,6 @@
 
 ∆TidyUp:
  ##.Cider.C.Cleanup
- {}##.Cider.CloseProject(⍕⎕THIS),'.TEMP'
+ {}(~parms.batch)##.Cider.CloseProject(⍕⎕THIS),'.TEMP'
  ⎕EX'TEMP'
 ⍝Done

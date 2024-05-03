@@ -36,7 +36,7 @@
  →T.GoToTidyUp 2≠≡res
  →T.GoToTidyUp~(⊂'Parquet.Net')∆LazyMatch res[;1]
 
- res←##.Cider.CloseProject tempDir
+ res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
 
  #.TEMP.(⎕EX ⎕NL-⍳9)
@@ -46,7 +46,7 @@
  →T.GoToTidyUp~9.6≡⎕NC ⊂'#.TEMP.Utils.Parquet.ParquetException'
  →T.GoToTidyUp~9.6≡⎕NC ⊂'#.TEMP.Utils.Parquet.ParquetActor'
 
- res←##.Cider.CloseProject tempDir
+ res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
 
  R←T._OK

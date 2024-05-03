@@ -12,20 +12,20 @@
  (rc msg result)←stop ∆UCMD cmd,' -watch=ns'
  Assert rc=0
  →T.GoToTidyUp'ns'≢#.TEMP.Foo.CiderConfig.LINK.watch
- {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ {}0 ⎕SE.Cider.CloseProject'#.TEMP.Foo'
 
  :If ##.Cider.HasDotNet
      #.⎕EX'TEMP' ⋄ 'TEMP'#.⎕NS''
      (rc msg result)←stop ∆UCMD cmd,' -watch=dir'
      Assert rc=0
      →T.GoToTidyUp'dir'≢#.TEMP.Foo.CiderConfig.LINK.watch
-     {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+     {}0 ⎕SE.Cider.CloseProject'#.TEMP.Foo'
 
      #.⎕EX'TEMP' ⋄ 'TEMP'#.⎕NS''
      (rc msg result)←stop ∆UCMD cmd,' -watch=both'
      Assert rc=0
      →T.GoToTidyUp'both'≢#.TEMP.Foo.CiderConfig.LINK.watch
-     {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+     {}0 ⎕SE.Cider.CloseProject'#.TEMP.Foo'
  :EndIf
 
  (rc msg result)←stop ∆UCMD cmd,' -watch=firlefanz'
@@ -35,6 +35,6 @@
 
 ∆TidyUp:
  ref.Cleanup
- {}⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ {}0 ⎕SE.Cider.CloseProject'#.TEMP.Foo'
  #.⎕EX'TEMP'
 ⍝Done

@@ -35,9 +35,9 @@
  aliase←##.Cider.GetCiderAliasFileContent ⍬
  →T.GoToTidyUp~∧/(⎕C'test-case-alias-Foo' 'test-case-alias-Goo')∊aliase[;1]
 
- →T.GoToTidyUp 1≠##.Cider.CloseProject'#.Foo'
- →T.GoToTidyUp 1≠##.Cider.CloseProject'[test-case-alias-Goo]'
- →T.GoToTidyUp 0≠##.Cider.CloseProject'[Does not exist]'
+ →T.GoToTidyUp 1≠0 ##.Cider.CloseProject'#.Foo'
+ →T.GoToTidyUp 1≠0 ##.Cider.CloseProject'[test-case-alias-Goo]'
+ →T.GoToTidyUp 0≠0 ##.Cider.CloseProject'[Does not exist]'
 
  R←T._OK
 

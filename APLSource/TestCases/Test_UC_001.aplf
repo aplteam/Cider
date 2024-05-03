@@ -13,7 +13,7 @@
  ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -batch -ignoreUserExec'
  Assert rc=0
- (rc msg res)←∆UCMD'CloseProject #.Foo'
+ (rc msg res)←∆UCMD'CloseProject #.Foo -fast'
  Assert rc=0
 
  parms←##.Cider.CreateOpenParms ⍬
@@ -27,7 +27,7 @@
 
  →T.GoToTidyUp 0=≢list←##.Cider.ListOpenProjects 0
 
- (rc msg result)←∆UCMD'CloseProject #.Goo.Foo'
+ (rc msg result)←∆UCMD'CloseProject #.Goo.Foo -fast'
  msg Assert rc=0
  →T.GoToTidyUp'Number of projects closed: 1'≢result
 

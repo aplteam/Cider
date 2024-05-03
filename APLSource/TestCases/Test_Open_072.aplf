@@ -23,6 +23,6 @@
 
 ∆TidyUp:
  ##.Cider.C.Cleanup
- Assert ⎕SE.Cider.CloseProject'#.TEMP.fooproj'
+ Assert (~parms.batch)⎕SE.Cider.CloseProject'#.TEMP.fooproj'
  #.⎕EX'TEMP'
 ⍝Done
