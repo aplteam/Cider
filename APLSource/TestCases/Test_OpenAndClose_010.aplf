@@ -17,7 +17,7 @@
  ref.YesOrNo_Answers←0 2⍴''
  ref.YesOrNo_Answers⍪←'ChangeCurrentDir@' 'n'
  ref.YesOrNo_Answers⍪←'OpenAsWell@' 'y'
- (rc msg res)←∆UCMD'CreateProject "',tempDir,'" # -noEdit -acceptConfig -ignoreUserExec'
+ (rc msg res)←∆UCMD'CreateProject "',tempDir,'" # -noEdit -acceptConfig -ignoreUserExec -batch'
  Assert'Project successfully opened and established in '{⍺≡(≢⍺)↑⍵}res
  list←FilesAndDirs.ListFiles tempDir
  →T.GoToTidyUp 1≠≢list

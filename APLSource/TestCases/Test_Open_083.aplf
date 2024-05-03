@@ -11,7 +11,7 @@
  parms.parent←'#.TEMP'
  parms.watch←'ns'
  parms.ignoreUserExec←1
-
+ parms.batch←1
  ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  :Trap 11
      {}##.Cider.OpenProject parms

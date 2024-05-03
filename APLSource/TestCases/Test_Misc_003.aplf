@@ -18,6 +18,7 @@
 
  parms←⎕NS''
  parms.folder←folder,'/Project1'
+ parms.batch←1
  ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success

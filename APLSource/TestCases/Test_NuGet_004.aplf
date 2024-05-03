@@ -46,7 +46,7 @@
  →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Utils.Clock.⎕NL-2
  →T.GoToTidyUp~∧/'Julian' 'Gregorian'∊⍕¨#.TEMP.Utils.NodaTime.CalendarSystem.⎕NL-2
 
- res←##.Cider.CloseProject tempDir
+ res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
 
  R←T._OK

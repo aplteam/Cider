@@ -11,6 +11,7 @@
  parms.importFlag←1
  parms.watch←'ns'
  parms.ignoreUserExec←1
+ parms.batch←1
 
  ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (success log)←##.Cider.OpenProject parms
