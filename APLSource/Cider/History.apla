@@ -1,5 +1,5 @@
 (
- '* 0.40.0 ⋄ 2024-05-03'
+ '* 0.40.0 ⋄ 2024-05-05'
  '  * The user command `]ListTatinDependencies` now has two new flags: `-full` and `-raw`'
  '  * `]ListAlias` has a new flag `-scan=` which allows you to add all/some sub folders and their sub-folders (maximum '
  '    one level deep) of a given folder as aliases.'
@@ -25,6 +25,8 @@
  '    * Outdated comments in `GetProgramFilesFolder` fixed'
  '    * `]CloseProject` did not honour the `-all` flag'
  '    * The documentation claimed that Cider''s global config filename is "cider.json" when it is actually "config.json"'
+ '    * `CreateProject` now checks for a valid APL name and throws an error if not fulfilled'
+ '    * `CloseProject` might have carried out unnecessary check functions'
  '* 0.39.0 ⋄ 2024-01-25'
  '  * NuGet interface improved (tx Alexander Block)'
  '  * New global config parameter introduced: `AskForDirChange`'

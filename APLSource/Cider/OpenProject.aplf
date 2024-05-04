@@ -143,7 +143,7 @@
  {}ExecUserFunction⍣((0=parms.importFlag)∧0=parms.ignoreUserExec)⊣config
  {}parms CheckOnToDo⍣flag⊣projectSpace_
  successFlag←SUCCESS
- {}CheckForGit⍣flag⊢parms.folder config parms
  {}CheckForDropboxConflicts⍣flag⊢parms.folder
+ {}CheckForGit⍣flag⊢parms.folder config parms
  p'Project successfully ',((1+parms.importFlag)⊃'opened' 'imported'),' and established in "',parms.parent,,{(,'#')≡,⍵:'"' ⋄ '.',⍵,'"'}parms.projectSpace
 ⍝Done

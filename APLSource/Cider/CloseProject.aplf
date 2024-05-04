@@ -1,9 +1,9 @@
- r←{x}CloseProject projects;list;project;ind;res;list;checks
+ r←{x}CloseProject projects;list;project;ind;res;list;checks;closed
 ⍝ Simply breaks the Link between a project and its folder on disk.
 ⍝ In case ⍵ is empty ALL projects are closed.
 ⍝ `projects` may be one of:
 ⍝ 1. Empty vector (=close all)
-⍝ 2. One or more projectName like `#.Foo`
+⍝ 2. One or more project names like `#.Foo`
 ⍝ 3. One or more alias names like `[my-alias]`
 ⍝ 4. One or more paths of currently open projects
 ⍝ 5. A mixture of 2, 3 and 4
@@ -29,6 +29,7 @@
          res←{⎕SE.Link.Break ⍵}¨list
          r←+/{'Unlinked: '{⍺≡(≢⍺)↑⍵}⍵}¨res[;1]
      :Else
+         closed←''
          list[;2]←F.NormalizePath list[;2]
          projects←⊆projects
          :For project :In projects
@@ -43,10 +44,11 @@
              :If (≢list)≥ind
                  res←⎕SE.Link.Break 1⊃list[ind;]
                  r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
+                 closed,←list[ind;2]
              :EndIf
          :EndFor
          :If checks
-             {}CheckForDropboxConflicts¨list[;2]
+             {}CheckForDropboxConflicts¨closed
          :EndIf
      :EndIf
  :EndIf

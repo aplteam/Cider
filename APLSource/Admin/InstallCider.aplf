@@ -4,6 +4,7 @@
 ⍝ `flag` is insurance against accidental call.
 ⍝ `batch` defaults to 0. If it is 1 then no questions are asked.
  r←''
+ batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
  C←##.Cider
  aplVersion←# ⎕WG'APLVersion'
  selectFlag←0
@@ -14,13 +15,13 @@
          selectFlag←1
      :EndIf
  :Case 'Lin'
-     :If ~⎕NEXISTS installFolder←if1←'/home/',⎕AN,'/.dyalog/dyalog.files/SessionExtensions/CiderTatin/Cider'
-     :AndIf ~⎕NEXISTS installFolder←if2←'/home/',⎕AN,'/.dyalog/','dyalog.',('.'~⍨{⍵/⍨2>+\⍵='.'}2⊃aplVersion),'U',(¯2↑1⊃aplVersion),'.files/SessionExtensions/CiderTatin/Cider'
+     :If ~⎕NEXISTS installFolder←if1←'/home/',⎕AN,'/dyalog.files/SessionExtensions/CiderTatin/Cider'
+     :AndIf ~⎕NEXISTS installFolder←if2←'/home/',⎕AN,'/','dyalog.',('.'~⍨{⍵/⍨2>+\⍵='.'}2⊃aplVersion),'U',(¯2↑1⊃aplVersion),'.files/SessionExtensions/CiderTatin/Cider'
          selectFlag←1
      :EndIf
  :Case 'Mac'
-     :If ~⎕NEXISTS installFolder←if1←'/Users/',⎕AN,'/.dyalog/dyalog.files/SessionExtensions/CiderTatin/Cider'
-     :AndIf ~⎕NEXISTS installFolder←if2←'/Users/',⎕AN,'/.dyalog/','dyalog.',('.'~⍨{⍵/⍨2>+\⍵='.'}2⊃aplVersion),'U',(¯2↑1⊃aplVersion),'.files/SessionExtensions/CiderTatin/Cider'
+     :If ~⎕NEXISTS installFolder←if1←'/Users/',⎕AN,'/dyalog.files/SessionExtensions/CiderTatin/Cider'
+     :AndIf ~⎕NEXISTS installFolder←if2←'/Users/',⎕AN,'/','dyalog.',('.'~⍨{⍵/⍨2>+\⍵='.'}2⊃aplVersion),'U',(¯2↑1⊃aplVersion),'.files/SessionExtensions/CiderTatin/Cider'
          selectFlag←1
      :EndIf
  :Else

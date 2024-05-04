@@ -18,7 +18,7 @@
          :AndIf 0<≢ind←'SelectPkgFolder@Select package install folder to report on:'Select tatinFolders
              :If 0<≢r←P.##.ListTatinDependenciesFull path,'/',ind⊃tatinFolders
                  :If ~raw
-                     r←⊃,/(⎕UCS 13),¨(r[;1]⍴¨' '),¨r[;2]
+                     r←⊃,/CR,¨(r[;1]⍴¨' '),¨r[;2]
                  :EndIf
              :EndIf
          :Else

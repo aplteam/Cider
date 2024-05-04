@@ -17,6 +17,7 @@
  :OrIf 0=≢namespace
      namespace←{{⍵↑⍨1+-⌊/(⌽⍵)⍳'/\'}¯1↓⍵}1⊃1 ⎕NPARTS filename
  :EndIf
+ ('Not a valid APL name: <',namespace,'>')Assert ¯1≠⎕NC namespace
  :If acceptFlag
      ('The -acceptConfig flag was set but no file "',configFilename,'" was found')Assert ⎕NEXISTS filename
  :Else
