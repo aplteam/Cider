@@ -7,8 +7,9 @@
  :If IsAlias projectFolder
      projectFolder←P.GetFolderFromAlias projectFolder
  :Else
-     projectFolder←GetProjectPath projectFolder
+     projectFolder←'GetProjectPathForAddingTatinPkgs@Which project would you like to add Tatin packages to?'GetProjectPath projectFolder
  :EndIf
+ →(0=≢projectFolder)/0
  cfg←P.ReadProjectConfigFile projectFolder
  :If development
      ref←cfg.CIDER.dependencies_dev

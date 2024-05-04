@@ -6,8 +6,9 @@
  :If IsAlias projectFolder
      projectFolder←P.GetFolderFromAlias projectFolder
  :Else
-     projectFolder←GetProjectPath projectFolder
+     projectFolder←'GetProjectPathForAddingNuGetPkgs@Which project would you like to add NuGet packages to?'GetProjectPath projectFolder
  :EndIf
+ →(0=≢projectFolder)/0
  cfg←P.ReadProjectConfigFile projectFolder
  ref←cfg.CIDER.dependencies
  :If 0<≢targetNamespace

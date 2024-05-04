@@ -121,17 +121,21 @@
      :EndIf
      :If 0<config.⎕NC'CIDER.dependencies.nuget'
      :AndIf 0<≢config.CIDER.dependencies.nuget
-         :Trap 11
-             {}parms.(verbose batch)LoadNuGetDependencies parms.folder projectSpace_
+         :If {(0<1⊃⍵)∧2⊃⍵}2250⌶0
+             :Trap 11
+                 {}parms.(verbose batch)LoadNuGetDependencies parms.folder projectSpace_
+             :Else
+                 ⎕SE._Tatin.Client.CloseConnections 1                               ⍝ Just in case...
+                 qdmx←⎕DMX
+                 buff←''
+                 buff,←⊂'ERROR: loading NuGet packages from ',parms.folder
+                 buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
+                 buff Assert 0=parms.batch
+                 (1 parms.batch)p buff
+             :EndTrap
          :Else
-             ⎕SE._Tatin.Client.CloseConnections 1                               ⍝ Just in case...
-             qdmx←⎕DMX
-             buff←''
-             buff,←⊂'ERROR: loading NuGet packages from ',parms.folder
-             buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
-             buff Assert 0=parms.batch
-             (1 parms.batch)p buff
-         :EndTrap
+             p'Cannot load NuGet packages: .NET is not available'
+         :EndIf
      :EndIf
  :EndIf
  InjectConfigDataIntoProject config projectSpace_ parms.folder

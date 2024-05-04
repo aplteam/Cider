@@ -1,9 +1,9 @@
- path←{verb}GetProjectPath y;list;index;aliasDefs;bool;alias;info
+ path←{caption}GetProjectPath y;list;index;aliasDefs;bool;alias;info
 ⍝ `y` is typically a user command parameter but might also be a path or an alias, even with a wildcard.
 ⍝ If needs must this function consults the user.
-⍝ If `y` is realt a path this function returns it unchanged.
+⍝ If `y` is a path this function returns it unchanged.
  path←''
- verb←{0<⎕NC ⍵:⍎⍵ ⋄ 'open'}'verb'
+ caption←{0<⎕NC ⍵:⍎⍵ ⋄ 'Select a Cider project:'}'caption'
  'Left argument must not be a namespace'Assert 326≠⎕DR y          ⍝ Old syntax is not permitted any longer
  :If (⊂y)∊0 ''⍬                                                   ⍝ Might be 0 in case something like Args._1 was passed
      list←P.ListOpenProjects 0
@@ -13,7 +13,7 @@
      :Case 1
          path←⊃list[1;2]                                           ⍝ There is just one open project
      :Else
-         :If 0=≢index←'Select a Cider project:'Select↓⎕FMT list    ⍝ Let the user select one of the open projects
+         :If 0=≢index←caption Select↓⎕FMT list    ⍝ Let the user select one of the open projects
              :Return
          :EndIf
          path←2⊃list[index;]
@@ -33,7 +33,7 @@
              :Return
          :Case 1
              (alias path)←aliasDefs[bool⍳1;]
-             :If 0=1 YesOrNo'Sure you want to ',verb,' "',path,'" ?'
+             :If 0=1 YesOrNo'Sure you want to open "',path,'" ?'
                  :Return
              :EndIf
          :Else
