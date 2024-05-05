@@ -9,7 +9,9 @@
  :Else
      projectFolder←'GetProjectPathForAddingTatinPkgs@Which project would you like to add Tatin packages to?'GetProjectPath projectFolder
  :EndIf
- →(0=≢projectFolder)/0
+ :If 0=≢projectFolder
+     r←'Cancelled by user' ⋄ →0
+ :EndIf
  cfg←P.ReadProjectConfigFile projectFolder
  :If development
      ref←cfg.CIDER.dependencies_dev
@@ -34,7 +36,7 @@
              →0,≢r←'Cancelled by user'
          :EndIf
      :Else
-         q←'AddTatinDeps@',(2⊃⎕NPARTS projectFolder),': add dependencies to ',ref.tatin,'/ ?'
+         q←'AddTatinDeps@',(2⊃⎕NPARTS projectFolder),': add dependencies to the folder ',({⍵↑⍨¯1+⍵⍳'='}ref.tatin),'/'
          :If 1 P.##.C.YesOrNo q
              flag←1
          :Else

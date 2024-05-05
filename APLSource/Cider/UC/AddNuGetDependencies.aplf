@@ -8,7 +8,9 @@
  :Else
      projectFolder←'GetProjectPathForAddingNuGetPkgs@Which project would you like to add NuGet packages to?'GetProjectPath projectFolder
  :EndIf
- →(0=≢projectFolder)/0
+ :If 0=≢projectFolder
+     r←'Cancelled by user' ⋄ →0
+ :EndIf
  cfg←P.ReadProjectConfigFile projectFolder
  ref←cfg.CIDER.dependencies
  :If 0<≢targetNamespace
