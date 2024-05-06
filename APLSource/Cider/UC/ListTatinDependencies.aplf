@@ -15,10 +15,15 @@
          cfg←P.##.ReadProjectConfigFile cfgFilename
          :If 0<≢tatinFolders←P.##.GetTatinDependencyFolders cfg
              tatinFolders←P.##.RemoveTargetDefinition¨tatinFolders
-         :AndIf 0<≢ind←'SelectPkgFolder@Select package install folder to report on:'Select tatinFolders
-             :If 0<≢r←P.##.ListTatinDependenciesFull path,'/',ind⊃tatinFolders
-                 :If ~raw
-                     r←⊃,/CR,¨(r[;1]⍴¨' '),¨r[;2]
+             ind←1
+             :If 1=≢tatinFolders
+             :OrIf 0<≢ind←'SelectPkgFolder@Select package install folder to report on:'Select tatinFolders
+                 :If 0<≢r←P.##.ListTatinDependenciesFull path,'/',ind⊃tatinFolders
+                     :If ~raw
+                         r←⊃,/CR,¨(r[;1]⍴¨' '),¨r[;2]
+                     :EndIf
+                 :Else
+                     r←'No dependencies found'
                  :EndIf
              :EndIf
          :Else
