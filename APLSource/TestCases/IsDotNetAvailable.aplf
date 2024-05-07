@@ -1,0 +1,9 @@
+ r←IsDotNetAvailable
+⍝ Checks whether .NET (rather than .NET framework) is available at all.
+ :Trap 11   ⍝ On Linux and Mac-OS, a DOMAIN ERROR will occur if .NET is not installed
+     :If 0=r←∨/'.NETCore'⍷∊⎕CMD'dotnet --list-runtimes'
+         r←∨/'\dotnet\'⍷∊⎕CMD'dotnet --list-sdks'
+     :EndIf
+ :Else
+     r←0
+ :Endtrap

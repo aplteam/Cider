@@ -36,7 +36,10 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{margin
 <li class="toc-entry toc-h3"><a href="#changing-the-user-command-functions">3.3. Changing the user command functions</a></li>
 <li class="toc-entry toc-h3"><a href="#changing-api-functions">3.4. Changing API functions</a></li>
 </ul></li>
-<li class="toc-entry toc-h2"><a href="#running-the-test-suite">4. Running the test suite</a></li>
+<li class="toc-entry toc-h2"><a href="#running-the-test-suite">4. Running the test suite</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#nuget-tests">4.1. NuGet tests</a></li>
+</ul></li>
 <li class="toc-entry toc-h2"><a href="#building-a-new-version">5. Building a new version</a>
 </ul>
 </div>
@@ -46,14 +49,7 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{margin
 <h2 data-id="Overview">1. Overview</h2>
 </a>
 </div>
-<p>In ordert to contribute to Cider as a developer you need some pieces of information.</p>
-<div class="leanpub">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg" role="img" aria-label=[title]" width="20px" height="20px" viewBox="0 0 20 20" preserveAspectRatio="xMidYMid meet"><title>Warning</title><g transform="translate(0,20) scale(0.1,-0.1)" fill="#000000" stroke="none"><path d="M177 166 c-3 -8 -34 -18 -74 -25 -101 -17 -103 -19 -103 -52 0 -16 4 -29 9 -29 5 0 11 -10 13 -22 2 -19 10 -24 41 -26 28 -2 37 1 37 12 0 12 7 14 33 10 17 -4 37 -13 43 -20 21 -26 24 -15 24 76 0 82 -9 112 -23 76z m3 -80 l0 -44 -77 17 c-97 20 -104 40 -23 57 98 21 100 20 100 -30z m-105 -46 c3 -6 -3 -10 -14 -10 -12 0 -21 5 -21 10 0 6 6 10 14 10 8 0 18 -4 21 -10z"/></g></svg>
-<div>
-<p>This document is work in progress but useful nevertheless.</p>
-</div>
-</div>
-
+<p>In order to contribute to Cider as a developer you need some pieces of information.</p>
 <div class="h_tag">
 <a href="#design" id="design" class="autoheader_anchor">
 <h2 data-id="Design">2. Design</h2>
@@ -76,7 +72,7 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{margin
 <ul>
 <li>print useful messages if something goes wrong (though they do throw errors in case of missing or invalid parameters)</li>
 <li>They often do guess what the user is up to
-<p>For example, if no project is specified, they check whether there is a single Cider project open. If that's the case, they act on that project. If multiple projects are open they ask the user which one to act on.</p></li>
+<p>For example, if no project is specified, they check whether there is a single Cider project open. If that's the case, they act on that project. If multiple projects are open, they will ask the user which one to act on.</p></li>
 </ul>
 <div class="h_tag">
 <a href="#developing" id="developing" class="autoheader_anchor">
@@ -88,7 +84,7 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{margin
 <h3 data-id="General">3.1. General</h3>
 </a>
 </div>
-<p>The user command script does not carry any of Cider's “business logic”, it just works out whether it should execute code in <code>⎕SE</code> or in <code>#</code>, and then calls functions in either <code>⎕se.Cider.##.UC</code> (the default) or in <code>#.Cider.Cider.UC</code> (trace &amp; develop).</p>
+<p>The user command script does not carry out any of Cider's “business logic”, it just works out whether it should execute code in <code>⎕SE</code> or in <code>#</code>, and then calls functions in either <code>⎕se.Cider.##.UC</code> (the default) or in <code>#.Cider.Cider.UC</code> (trace &amp; develop).</p>
 <div class="leanpub">
 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="[title]" width="20px" height="20px" viewBox="0 0 20 20" preserveAspectRatio="xMidYMid meet"><title>Information</title><g transform="translate(0,20) scale(0.1,-0.1)" fill="#000000" stroke="none"><path d="M0 100 l0 -100 105 0 105 0 0 100 0 100 -105 0 -105 0 0 -100z m190 0 l0 -80 -85 0 -85 0 0 80 0 80 85 0 85 0 0 -80z"/><path d="M90 140 c0 -5 7 -10 15 -10 8 0 15 5 15 10 0 6 -7 10 -15 10 -8 0 -15 -4 -15 -10z"/> <path d="M90 80 c0 -20 5 -30 15 -30 10 0 15 10 15 30 0 20 -5 30 -15 30 -10 0 -15 -10 -15 -30z"/></g></svg>
 <div>
@@ -102,7 +98,8 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{margin
 <h3 data-id="Changing-the-user-command-script">3.2. Changing the user command script</h3>
 </a>
 </div>
-<p>In the unlikely event that the user command script needs changing, Link will record any changes only if you have specified</p>
+<p>The user command script is a thin cover that directs calls to (usually) <code>⎕SE.Cider.UC</code>. It is therefore pretty unlikely that there will every be a need for changing that script.</p>
+<p>In the unlikely event that the user command script needs changing anyway, Link will record any changes only if you have specified</p>
 <pre tabindex="0"><code>   DYALOGSTARTUPKEEPLINK : 1,</code></pre>
 <p>in a dyalog configuration file, otherwise changes are <strong><em>not</em></strong> recorded.</p>
 <div class="leanpub">
@@ -118,19 +115,19 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{margin
 <h3 data-id="Changing-the-user-command-functions">3.3. Changing the user command functions</h3>
 </a>
 </div>
-<p>The user command script calls functions in <code>#.Cider.UC</code> when developing (<code>⎕SE.Cider.##.UC</code> otherwise). Because that namespace is part of the project, with <code>DEVELOPMENT&gt;0</code> changes are recorded, so developing is easy.</p>
+<p>The user command script calls functions in <code>#.Cider.UC</code> when developing and in <code>⎕SE.Cider.##.UC</code> otherwise. Because that namespace is part of the project, with <code>DEVELOPMENT&gt;0</code> changes are recorded, so developing is easy.</p>
 <div class="h_tag">
 <a href="#changing-api-functions" id="changing-api-functions" class="autoheader_anchor">
 <h3 data-id="Changing-API-functions">3.4. Changing API functions</h3>
 </a>
 </div>
-<p>When a user command is issued, the Cider user command script calls a function in the <code>UC</code> namespace (see above), which will eventually call an API function in (with <code>DEVELOPMENT&gt;0</code>) in <code>#.Cider.Cider</code> (<code>⎕SE.Cider</code> otherwise).</p>
-<p>When Cider is opened as a Cider project, the user will be asked whether a variable <code>DEVELOPMENT</code> with a value greate than 0 should be established in the namespace <code>⎕SE.Cider</code>.</p>
+<p>When a user command is issued, the Cider user command script calls a function in the <code>UC</code> namespace (see above), which will eventually call an API function in <code>#.Cider.Cider</code> (with <code>DEVELOPMENT&gt;0</code>) or in <code>⎕SE.Cider</code></p>
+<p>When Cider is opened as a Cider project, the user will be asked whether a variable <code>DEVELOPMENT</code> with a value greater than 0 should be established in the namespace <code>⎕SE.Cider</code>.</p>
 <p>If such a variable exists and its values is not 0, then Cider establishes a reference not to <code>⎕SE.Cider</code> but to <code>#.Cider.Cider</code>.</p>
 <p>The consequence of this is that when you change a function in the process of running it, it will be saved by Link <em>in the project</em>, meaning your changes are preserved.</p>
 <p>In order to remind you what's happening, Cider prints a warning to the session whenever a user command is executed:</p>
 <pre tabindex="0"><code>*** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!</code></pre>
-<p>However, <code>⎕SE.Cider.DEVELOPMENT</code> is set to 2 by the test suite if it was 1. This has the same consequences except that the warnings are not printed, so the tests are not flooding the session window.</p>
+<p>However, <code>⎕SE.Cider.DEVELOPMENT</code> is set to 2 by the test suite in case it was 1. This has the same consequences except that the warnings are not printed, so the tests are not flooding the session window with those warnings.</p>
 <p>The former value is re-established once the tests are done.</p>
 <div class="h_tag">
 <a href="#running-the-test-suite" id="running-the-test-suite" class="autoheader_anchor">
@@ -139,7 +136,14 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{margin
 </div>
 <p>You may ask Cider for how to run the test cases:</p>
 <pre tabindex="0"><code>]Cider.RunTests</code></pre>
-<p>…. (more to come)</p>
+<p>That gives you a statement that will execute all tests, and report to the session. That includes tests that will attempt to interact with the user.</p>
+<p>If you need to execute the test suite in batch mode (no reporting to the session, and returning a single boolean indicating success (1) or failure (0)) you must run:</p>
+<pre tabindex="0"><code>#.Cider.TestCases.RunTestsInBatchMode</code></pre>
+<div class="h_tag">
+<a href="#nuget-tests" id="nuget-tests" class="autoheader_anchor">
+<h3 data-id="NuGet-tests">4.1. NuGet tests</h3>
+</a>
+</div>
 <div class="h_tag">
 <a href="#building-a-new-version" id="building-a-new-version" class="autoheader_anchor">
 <h2 data-id="Building-a-new-version">5. Building a new version</h2>
@@ -147,7 +151,9 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{margin
 </div>
 <p>You may ask Cider for how to build a new version:</p>
 <pre tabindex="0"><code>]Cider.Make</code></pre>
-<p>… (more to come)</p>
+<p>Before executing that statement you should check both <code>#.Cider.Cider.Version</code> and <code>#.Cider.Cider.History</code> for being up-to-date.</p>
+<p>Cider's <code>Admin.Make</code> function will create a new version and save it as a ZIP file in the <code>Dist/</code> folder within the project folder.</p>
+<p>In a final step it will install the new version where it has been previosuly installed, or ask the user whether it should install into the version-specific or the version-agnostic folder for Dyalog files on your operating system.</p>
 
 <script>
 

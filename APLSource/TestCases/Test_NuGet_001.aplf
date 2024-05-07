@@ -4,20 +4,7 @@
  R←T._Failed
 
  tempFolder←∆GetFolderInTempDir⊃⎕SI
- parms←APLProcess.CreateParms
- parms.Exe←1⊃2 ⎕NQ #'GetCommandLineArgs' 'DYALOG'
- parms.OutputFilename←(739⌶0),'/',(⊃⎕SI),'.txt'
- parms.CommandLineArgs,←'path=''',tempFolder,''''
- parms.CommandLineArgs,←' fns=∆',(⊃⎕SI)
- parms.CommandLineArgs,←' codeCoverageFile=''',(T.codeCoverage.filename~''''),''''
- parms.CommandLineArgs,←' DYALOG_NETCORE=1'
- parms.WorkspaceName←##.CiderConfig.HOME,'/Tests/ExecTestCase.dws'
- parms.WindowsStyle←'Normal'
- :If 0
-     parms.SessionFile←1            ⍝ Only for development/debugging
-     parms.CommandLineArgs,←' -x'
- :EndIf
-
+ parms←∆NuGetTestProcessParms(⊃⎕SI)tempFolder
  I←⎕NEW APLProcess(,⊂parms)
  R←I.ExitCode
 

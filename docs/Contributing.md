@@ -9,9 +9,7 @@
 
 ## Overview
 
-In ordert to contribute to Cider as a developer you need some pieces of information. 
-
-W> This document is work in progress but useful nevertheless.
+In order to contribute to Cider as a developer you need some pieces of information. 
 
 ## Design
 
@@ -33,14 +31,14 @@ A couple of principles:
 * print useful messages if something goes wrong (though they do throw errors in case of missing or invalid parameters)
 * They often do guess what the user is up to
 
-  For example, if no project is specified, they check whether there is a single Cider project open. If that's the case, they act on that project. If multiple projects are open they ask the user which one to act on.
+  For example, if no project is specified, they check whether there is a single Cider project open. If that's the case, they act on that project. If multiple projects are open, they will ask the user which one to act on.
 
 
 ## Developing
 
 ### General
 
-The user command script does not carry any of Cider's "business logic", it just works out whether it should execute code in `⎕SE` or in `#`, and then calls functions in either `⎕se.Cider.##.UC` (the default) or in `#.Cider.Cider.UC` (trace & develop).
+The user command script does not carry out any of Cider's "business logic", it just works out whether it should execute code in `⎕SE` or in `#`, and then calls functions in either `⎕se.Cider.##.UC` (the default) or in `#.Cider.Cider.UC` (trace & develop).
 
 I> See the discussion of the `DEVELOPMENT` variable further down for details
 
@@ -48,7 +46,9 @@ While the API functions live in `⎕SE.Cider` (and call stuff in `⎕SE.Cider.##
 
 ### Changing the user command script
 
-In the unlikely event that the user command script needs changing, Link will record any changes only if you have specified 
+The user command script is a thin cover that directs calls to (usually) `⎕SE.Cider.UC`. It is therefore pretty unlikely that there will every be a need for changing that script.
+
+In the unlikely event that the user command script needs changing anyway, Link will record any changes only if you have specified 
 
 ```
    DYALOGSTARTUPKEEPLINK : 1,
@@ -62,13 +62,13 @@ Make sure that you change the script either in the location it is started from o
 
 ### Changing the user command functions
 
-The user command script calls functions in `#.Cider.UC` when developing (`⎕SE.Cider.##.UC` otherwise). Because that namespace is part of the project, with `DEVELOPMENT>0` changes are recorded, so developing is easy.
+The user command script calls functions in `#.Cider.UC` when developing and in `⎕SE.Cider.##.UC` otherwise. Because that namespace is part of the project, with `DEVELOPMENT>0` changes are recorded, so developing is easy.
 
 ### Changing API functions
 
-When a user command is issued, the Cider user command script calls a function in the `UC` namespace (see above), which will eventually call an API function in (with `DEVELOPMENT>0`) in `#.Cider.Cider` (`⎕SE.Cider` otherwise).
+When a user command is issued, the Cider user command script calls a function in the `UC` namespace (see above), which will eventually call an API function in `#.Cider.Cider` (with `DEVELOPMENT>0`) or in `⎕SE.Cider`
 
-When Cider is opened as a Cider project, the user will be asked whether a variable `DEVELOPMENT` with a value greate than 0 should be established in the namespace `⎕SE.Cider`.
+When Cider is opened as a Cider project, the user will be asked whether a variable `DEVELOPMENT` with a value greater than 0 should be established in the namespace `⎕SE.Cider`.
 
 If such a variable exists and its values is not 0, then Cider establishes a reference not to `⎕SE.Cider` but to `#.Cider.Cider`.
 
@@ -80,7 +80,7 @@ In order to remind you what's happening, Cider prints a warning to the session w
 *** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!
 ```
 
-However, `⎕SE.Cider.DEVELOPMENT` is set to 2 by the test suite if it was 1. This has the same consequences except that the warnings are not printed, so the tests are not flooding the session window. 
+However, `⎕SE.Cider.DEVELOPMENT` is set to 2 by the test suite in case it was 1. This has the same consequences except that the warnings are not printed, so the tests are not flooding the session window with those warnings.
 
 The former value is re-established once the tests are done.
 
@@ -92,7 +92,16 @@ You may ask Cider for how to run the test cases:
 ]Cider.RunTests
 ```
 
-.... (more to come)
+That gives you a statement that will execute all tests, and report to the session. That includes tests that will attempt to interact with the user.
+
+If you need to execute the test suite in batch mode (no reporting to the session, and returning a single boolean indicating success (1) or failure (0)) you must run:
+
+```
+#.Cider.TestCases.RunTestsInBatchMode
+```
+
+
+### NuGet tests
 
 
 
@@ -104,7 +113,12 @@ You may ask Cider for how to build a new version:
 ]Cider.Make
 ```
 
-... (more to come)
+Before executing that statement you should check both `#.Cider.Cider.Version` and `#.Cider.Cider.History` for being up-to-date.
+
+Cider's `Admin.Make` function will create a new version and save it as a ZIP file in the `Dist/` folder within the project folder.
+
+In a final step it will install the new version where it has been previosuly installed, or ask the user whether it should install into the version-specific or the version-agnostic folder for Dyalog files on your operating system.
+
 
 
 
