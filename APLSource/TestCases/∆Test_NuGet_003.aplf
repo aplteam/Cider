@@ -1,0 +1,54 @@
+ R←∆Test_NuGet_003(stopFlag batchFlag);⎕TRAP;folder;parms;res;log;tempDir;success;config;list
+⍝ Open a project which has a Tatin dependency, add a NuGet package, close and reopen
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+
+ folder←∆GetTestPath⊃⎕SI
+ tempDir←∆TEMP_PATH
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
+
+ config←##.Cider.ReadProjectConfigFile tempDir
+ config.CIDER.dependencies.nuget←'My-nuget-packages'   ⍝ Overwrite the default
+ config ##.Cider.WriteProjectConfigFile tempDir
+
+ parms←##.Cider.CreateOpenParms''
+ parms.folder←tempDir
+ parms.noPkgLoad←0
+ parms.batch←1
+ parms.ignoreUserExec←1
+
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+ list←##.Cider.AddNuGetDependencies'Clock'tempDir
+ →T.GoToTidyUp~(⊂'Clock')∆LazyMatch list
+
+ config←##.Cider.Get_JSON5 tempDir,'/cider.config'
+ {}0 1 ##.Cider.LoadNuGetDependencies tempDir #.TEMP
+ →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
+
+ res←(~parms.batch)##.Cider.CloseProject tempDir
+ →T.GoToTidyUp res≠1
+
+ #.TEMP.(⎕EX ⎕NL-⍳9)
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+ →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
+
+ res←##.Cider.ListTatinDependencies tempDir
+ →T.GoToTidyUp 3≠≢res
+
+ res←##.Cider.ListNuGetDependencies tempDir
+ →T.GoToTidyUp 1≠≢res
+
+ res←(~parms.batch)##.Cider.CloseProject tempDir
+ →T.GoToTidyUp res≠1
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
+ {}∆LINK'Break' '#.TEMP'
+⍝Done

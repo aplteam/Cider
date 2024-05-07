@@ -1,0 +1,10 @@
+ ExecBatchTest;⎕TRAP;T
+⍝ Called via ⎕LX when a test needs to run in a separate process.
+⍝ Requires some parameters defined on the command line:
+⍝  * fns=  specifies the function to be called
+⍝  * path= specifies the folder folder to act an
+⍝ ⎕OFF in case the test succeded, otherwise it returns one of T.ListSymbolicNames.
+
+ T←⎕NEW Tester2 ⎕THIS
+ ⎕TRAP←0 'S'
+ ∘∘∘

@@ -1,8 +1,10 @@
-R←Test_NuGet_002(stopFlag batchFlag);⎕TRAP;parms;I;tempFolder;msg;rc
-⍝ Open a project, add two NuGet dependencies, load, call, list, close, re-open, close
+ R←∆Test_NuGet_010(stopFlag batchFlag);⎕TRAP;folder;tempFolder;parms;I;rc;msg
+⍝ Open a project that has already two NuGet dependencies
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ folder←(∆GetTestPath⊃⎕SI),'/'
  tempFolder←∆GetFolderInTempDir⊃⎕SI
  parms←APLProcess.CreateParms
  parms.Exe←1⊃2 ⎕NQ #'GetCommandLineArgs' 'DYALOG'

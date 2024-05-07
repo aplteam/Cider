@@ -1,58 +1,27 @@
- R←Test_NuGet_004(stopFlag batchFlag);⎕TRAP;folder;parms;res;log;cals;success;tempDir;config;list
+ R←Test_NuGet_004(stopFlag batchFlag);⎕TRAP;parms;I;tempFolder;msg;rc
 ⍝ Open a project, add two NuGet dependencies with a target namespace, load, call, list, close, re-open, close
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
- folder←∆GetTestPath⊃⎕SI
- tempDir←∆GetFolderInTempDir⊃⎕SI
- tempDir ⎕NCOPY⍠1⊢folder,'/*'
+ tempFolder←∆GetFolderInTempDir⊃⎕SI
+ parms←APLProcess.CreateParms
+ parms.Exe←1⊃2 ⎕NQ #'GetCommandLineArgs' 'DYALOG'
+ parms.OutputFilename←(739⌶0),'/',(⊃⎕SI),'.txt'
+ parms.CommandLineArgs,←'path=''',tempFolder,''''
+ parms.CommandLineArgs,←' fns=∆',(⊃⎕SI)
+ parms.CommandLineArgs,←' codeCoverageFile=''',(T.codeCoverage.filename~''''),''''
+ parms.CommandLineArgs,←' DYALOG_NETCORE=1'
+ parms.WorkspaceName←##.CiderConfig.HOME,'/Tests/ExecTestCase.dws'
+ parms.WindowsStyle←'Normal'
+ :If 0
+     parms.SessionFile←1            ⍝ Only for development/debugging
+     parms.CommandLineArgs,←' -x'
+ :EndIf
 
- config←##.Cider.ReadProjectConfigFile tempDir
- config.CIDER.dependencies.nuget←'MyNugetPkgs=Utils'
- config ##.Cider.WriteProjectConfigFile tempDir
-
- parms←##.Cider.CreateOpenParms''
- parms.folder←tempDir
- parms.noPkgLoad←0
- parms.batch←1
- parms.ignoreUserExec←1
-
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
- (success log)←##.Cider.OpenProject parms
- →T.GoToTidyUp~success
- →T.GoToTidyUp∨/'ERROR'⍷log
-
- list←##.Cider.AddNuGetDependencies'Clock,NodaTime'tempDir
- →T.GoToTidyUp~'Clock' 'NodaTime'∆LazyMatch list
-
- list←0 1 ##.Cider.LoadNuGetDependencies tempDir #.TEMP
- →T.GoToTidyUp~'Clock' 'NodaTime'∆LazyMatch list
-
- →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Utils.Clock.⎕NL-2
- →T.GoToTidyUp~∧/'Julian' 'Gregorian'∊⍕¨#.TEMP.Utils.NodaTime.CalendarSystem.⎕NL-2
-
- res←##.Cider.ListNuGetDependencies tempDir
- →T.GoToTidyUp 2≠≡res
- →T.GoToTidyUp~'Clock' 'NodaTime'∆LazyMatch res[;1]
-
- res←(~parms.batch)##.Cider.CloseProject tempDir
- →T.GoToTidyUp res≠1
-
- #.TEMP.(⎕EX ⎕NL-⍳9)
- (success log)←##.Cider.OpenProject parms
- →T.GoToTidyUp~success
- →T.GoToTidyUp∨/'ERROR'⍷log
- →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Utils.Clock.⎕NL-2
- →T.GoToTidyUp~∧/'Julian' 'Gregorian'∊⍕¨#.TEMP.Utils.NodaTime.CalendarSystem.⎕NL-2
-
- res←(~parms.batch)##.Cider.CloseProject tempDir
- →T.GoToTidyUp res≠1
-
- R←T._OK
+ I←⎕NEW APLProcess(,⊂parms)
+ R←I.ExitCode
 
 ∆TidyUp:
- ##.Cider.C.Cleanup
- res←∆LINK'Break' '#.TEMP'
- FilesAndDirs.RmDir tempDir,'/..'   ⍝ Does not work: the .NET DLL blocks this; there is no way around this at the time of writing (October 2023)
+ (rc msg)←FilesAndDirs.RmDirByForce tempFolder
+ msg Assert 0=rc
 ⍝Done

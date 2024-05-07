@@ -1,7 +1,8 @@
- Init;json;cfg;buildNo;body
+ {parms}Init ns;json;cfg;buildNo;body
 ⍝ Initialize the project as part of Cider opening itself.
  CreateRefs
  :If 0=⎕SE.Cider.⎕NC'DEVELOPMENT'
+ :AndIf ~parms.batch
  :AndIf 1 C.YesOrNo'Set DEVELOPMENT←1 in ⎕SE.Cider? (Allows executing user command code in # rather than ⎕SE)'
      ⎕SE.Cider.DEVELOPMENT←1
  :EndIf

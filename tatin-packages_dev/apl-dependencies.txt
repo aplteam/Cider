@@ -4,3 +4,4 @@ aplteam-CodeCoverage-0.10.6
 aplteam-Tester2-3.7.0
 aplteam-CommTools-1.7.1
 aplteam-MakeHelpers-0.13.0
+aplteam-APLProcess-0.7.0
