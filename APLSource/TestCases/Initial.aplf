@@ -19,5 +19,6 @@
  :AndIf 0=⎕SE.Cider.DEVELOPMENT
      'Cider''s version number in # and ⎕SE diverge'Assert ⎕SE.Cider.Version≡##.Cider.Version
  :EndIf
-⍝ T.exec_before_each_test←T.exec_after_each_test←'#.WS_Check'
+ ⍝T.exec_before_each_test←T.exec_after_each_test←'#.FnsName1'
+ ⍝T.exec_after_each_test←T.exec_after_each_test←'#.FnsName2'
 ⍝Done

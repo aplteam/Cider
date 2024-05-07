@@ -3,7 +3,6 @@
 ⍝ folder into `ns` (namspace).
 ⍝ Returns a list with the names of all loaded NuGet packages.
  (verbose batch)←2↑x,0
- 'Cannot load NuGet packages because .NET is not available'Assert 1=1⊃2250⌶0
  list←''
  ('"',folder,'" is not a Cider project directory')Assert F.IsDir folder
  cfg←ReadProjectConfigFile folder
@@ -15,6 +14,11 @@
  :EndIf
  :If F.IsDir nuGetFolder
  :AndIf 0<≢list2←F.ListFiles nuGetFolder,'/*.csproj'
+     :If 1≠1⊃2250⌶0
+         Frame'Cannot load NuGet packages because .NET is not available'
+         list←''
+         :Return
+     :EndIf
      p←verbose batch∘{⍺ PrintToSession ⍵}
      list←1⌷⍉↑NuGet.Packages nuGetFolder
      :If 2=⎕NC'ns'

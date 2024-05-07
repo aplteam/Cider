@@ -27,7 +27,11 @@
              :EndIf
          :EndIf
      :Else
-         flag←0 CommTools.YesOrNo'Code coverage?'
+         :If batch
+             flag←0
+         :Else
+             flag←0 CommTools.YesOrNo'Code coverage?'
+         :EndIf
      :EndIf
  :Else
      flag←0 CommTools.YesOrNo'Code coverage?'
