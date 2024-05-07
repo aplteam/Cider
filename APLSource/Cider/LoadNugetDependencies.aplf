@@ -3,6 +3,7 @@
 ⍝ folder into `ns` (namspace).
 ⍝ Returns a list with the names of all loaded NuGet packages.
  (verbose batch)←2↑x,0
+ 'Cannot load NuGet packages because .NET is not available'Assert 1=1⊃2250⌶0
  list←''
  ('"',folder,'" is not a Cider project directory')Assert F.IsDir folder
  cfg←ReadProjectConfigFile folder
@@ -30,8 +31,8 @@
      ⍝ Determine path to dlls of principal dependencies
      dlls←{¯1↑','(≠⊆⊢)⍵}¨ns._dotnet.⎕USING
      ⍝ If any of these dlls doesn't exists, they all should be recreated
-     :If ~∨/⎕NEXISTS ⊃¨dlls
-        NuGet.Publish nuGetFolder
+     :If ~∨/⎕NEXISTS⊃¨dlls
+         NuGet.Publish nuGetFolder
      :EndIf
      assemblies←_dotnetReflection.Assembly.LoadFile¨dlls
      ⍝ Add references to namespaces directly exposed by the principal
