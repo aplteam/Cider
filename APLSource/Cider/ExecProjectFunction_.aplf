@@ -20,7 +20,7 @@
              qdmx←⎕DMX
              (1 parms.batch)p'Executing "init" crashed: ',qdmx.EM
          :EndTrap
-     :Case ¯2               ⍝ Ambivalent
+     :CaseList 2 ¯2               ⍝ Ambivalent, dyadic
          fns←projectSpace.⍎init
          :Trap 0
              parms fns config

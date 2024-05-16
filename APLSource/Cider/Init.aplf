@@ -1,4 +1,4 @@
- {parms}Init ns;json;cfg;buildNo;body
+ parms Init ns;json;cfg;buildNo;body
 ⍝ Initialize the project as part of Cider opening itself.
  CreateRefs
  :If 0=⎕SE.Cider.⎕NC'DEVELOPMENT'
