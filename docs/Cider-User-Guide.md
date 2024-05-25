@@ -172,11 +172,11 @@ There is always the possibility that the update process is itself buggy. Calling
 => 2. Execute `]Activate cider` --- that brings the version of Cider back that your installation originally came with.
 => 3. Execute `]Cider.UpdateCider` --- that will try to update to the latest version.
 
-#### Git
-`
-If you use Git for version control management, and you have the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") installed, then Cider uses the package [`APLGit2`](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub") for communicating with Git. 
+### Git
 
-For example, when a project carries a directory `.git/` then Cider knows that the project is version controlled with Git, and it therefore uses the API of `APLGit2` to display the Git status report for a project in the later stages of opening a project.
+If you use Git for version control management, and you have the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") installed, then Cider uses the package [`APLGit2`](https://github.com/aplteam/APLGit2 "Link to APLGit2 on GitHub") to communicate with Git. 
+
+For example, when a project carries a directory `.git/`, then Cider knows that the project is version controlled with Git, and it therefore uses the API of `APLGit2` to display the Git status report for a project in the later stages of opening a project.
 
 ### Configuration
 
@@ -808,6 +808,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 

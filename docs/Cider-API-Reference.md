@@ -196,7 +196,7 @@ folder←GetCiderGlobalConfigHomeFolder
 
 Returns the folder that hosts Cider's global configuration file.
 
-On Windows, this is typically `C:/Users/<⎕AN>/.cider/`
+On Windows, this is typically `C:/Users/<⎕AN>/.cider/config.json`
 
 
 
@@ -512,6 +512,7 @@ r←Version
 Returns the version number.
 
 This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
+
 
 
 

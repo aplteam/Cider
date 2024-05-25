@@ -34,7 +34,7 @@ window.matchMedia("print").addEventListener("change", evt => {
 
 
 </script>
-
+<meta name="author" content="kai">
 </head>
 <body>
 <div class="h_tag">
@@ -64,66 +64,66 @@ window.matchMedia("print").addEventListener("change", evt => {
 <li class="toc-entry toc-h3"><a href="#updating-cider">2.3. Updating Cider</a>
 <ul>
 <li class="toc-entry toc-h4"><a href="#when-updating-goes-wrong">2.3.1. When updating goes wrong</a></li>
-<li class="toc-entry toc-h4"><a href="#git">2.3.2. Git</a></li>
 </ul></li>
-<li class="toc-entry toc-h3"><a href="#configuration">2.4. Configuration</a>
+<li class="toc-entry toc-h3"><a href="#git">2.4. Git</a></li>
+<li class="toc-entry toc-h3"><a href="#configuration">2.5. Configuration</a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#global-configuration">2.4.1. Global configuration</a>
+<li class="toc-entry toc-h4"><a href="#global-configuration">2.5.1. Global configuration</a>
 <ul>
-<li class="toc-entry toc-h5"><a href="#askfordirchange">2.4.1.1. AskForDirChange</a></li>
-<li class="toc-entry toc-h5"><a href="#checkfordropboxconflicts">2.4.1.2. CheckForDropboxConflicts</a></li>
-<li class="toc-entry toc-h5"><a href="#executeafterprojectopen">2.4.1.3. ExecuteAfterProjectOpen</a></li>
-<li class="toc-entry toc-h5"><a href="#reportgitstatus">2.4.1.4. ReportGitStatus</a></li>
-<li class="toc-entry toc-h5"><a href="#verbose">2.4.1.5. verbose</a></li>
+<li class="toc-entry toc-h5"><a href="#askfordirchange">2.5.1.1. AskForDirChange</a></li>
+<li class="toc-entry toc-h5"><a href="#checkfordropboxconflicts">2.5.1.2. CheckForDropboxConflicts</a></li>
+<li class="toc-entry toc-h5"><a href="#executeafterprojectopen">2.5.1.3. ExecuteAfterProjectOpen</a></li>
+<li class="toc-entry toc-h5"><a href="#reportgitstatus">2.5.1.4. ReportGitStatus</a></li>
+<li class="toc-entry toc-h5"><a href="#verbose">2.5.1.5. verbose</a></li>
 </ul></li>
-<li class="toc-entry toc-h4"><a href="#project-configuration">2.4.2. Project configuration</a></li>
+<li class="toc-entry toc-h4"><a href="#project-configuration">2.5.2. Project configuration</a></li>
 </ul></li>
-<li class="toc-entry toc-h3"><a href="#createproject">2.5. CreateProject</a>
+<li class="toc-entry toc-h3"><a href="#createproject">2.6. CreateProject</a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#project-configuration-parameters">2.5.1. Project configuration parameters</a>
+<li class="toc-entry toc-h4"><a href="#project-configuration-parameters">2.6.1. Project configuration parameters</a>
 <ul>
-<li class="toc-entry toc-h5"><a href="#cider">2.5.1.1. CIDER</a>
+<li class="toc-entry toc-h5"><a href="#cider">2.6.1.1. CIDER</a>
 <ul>
-<li class="toc-entry toc-h6"><a href="#distributionfolder">2.5.1.1.1. distributionFolder</a></li>
-<li class="toc-entry toc-h6"><a href="#parent">2.5.1.1.2. parent</a></li>
-<li class="toc-entry toc-h6"><a href="#projectspace">2.5.1.1.3. projectSpace</a></li>
-<li class="toc-entry toc-h6"><a href="#source">2.5.1.1.4. source</a></li>
-<li class="toc-entry toc-h6"><a href="#dependencies">2.5.1.1.5. dependencies</a></li>
-<li class="toc-entry toc-h6"><a href="#dependencies_dev">2.5.1.1.6. dependencies_dev</a></li>
-<li class="toc-entry toc-h6"><a href="#init">2.5.1.1.7. init</a></li>
-<li class="toc-entry toc-h6"><a href="#make">2.5.1.1.8. make</a></li>
-<li class="toc-entry toc-h6"><a href="#project_url">2.5.1.1.9. project_url</a></li>
-<li class="toc-entry toc-h6"><a href="#tatinvars">2.5.1.1.10. tatinVars</a></li>
-<li class="toc-entry toc-h6"><a href="#tests">2.5.1.1.11. tests</a></li>
+<li class="toc-entry toc-h6"><a href="#distributionfolder">2.6.1.1.1. distributionFolder</a></li>
+<li class="toc-entry toc-h6"><a href="#parent">2.6.1.1.2. parent</a></li>
+<li class="toc-entry toc-h6"><a href="#projectspace">2.6.1.1.3. projectSpace</a></li>
+<li class="toc-entry toc-h6"><a href="#source">2.6.1.1.4. source</a></li>
+<li class="toc-entry toc-h6"><a href="#dependencies">2.6.1.1.5. dependencies</a></li>
+<li class="toc-entry toc-h6"><a href="#dependencies_dev">2.6.1.1.6. dependencies_dev</a></li>
+<li class="toc-entry toc-h6"><a href="#init">2.6.1.1.7. init</a></li>
+<li class="toc-entry toc-h6"><a href="#make">2.6.1.1.8. make</a></li>
+<li class="toc-entry toc-h6"><a href="#project_url">2.6.1.1.9. project_url</a></li>
+<li class="toc-entry toc-h6"><a href="#tatinvars">2.6.1.1.10. tatinVars</a></li>
+<li class="toc-entry toc-h6"><a href="#tests">2.6.1.1.11. tests</a></li>
 </ul></li>
-<li class="toc-entry toc-h5"><a href="#link">2.5.1.2. LINK</a>
+<li class="toc-entry toc-h5"><a href="#link">2.6.1.2. LINK</a>
 <ul>
-<li class="toc-entry toc-h6"><a href="#watch">2.5.1.2.1. watch</a></li>
+<li class="toc-entry toc-h6"><a href="#watch">2.6.1.2.1. watch</a></li>
 </ul></li>
-<li class="toc-entry toc-h5"><a href="#sysvars">2.5.1.3. SYSVARS</a>
+<li class="toc-entry toc-h5"><a href="#sysvars">2.6.1.3. SYSVARS</a>
 <ul>
-<li class="toc-entry toc-h6"><a href="#io">2.5.1.3.1. io</a></li>
-<li class="toc-entry toc-h6"><a href="#ml">2.5.1.3.2. ml</a></li>
+<li class="toc-entry toc-h6"><a href="#io">2.6.1.3.1. io</a></li>
+<li class="toc-entry toc-h6"><a href="#ml">2.6.1.3.2. ml</a></li>
 </ul></li>
-<li class="toc-entry toc-h5"><a href="#user">2.5.1.4.  USER</a></li>
+<li class="toc-entry toc-h5"><a href="#user">2.6.1.4.  USER</a></li>
 </ul></li>
 </ul></li>
-<li class="toc-entry toc-h3"><a href="#openproject">2.6. OpenProject</a>
+<li class="toc-entry toc-h3"><a href="#openproject">2.7. OpenProject</a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#creating-a-project-space">2.6.1. Creating a project space</a></li>
-<li class="toc-entry toc-h4"><a href="#setting-system-variables">2.6.2. Setting system variables</a></li>
-<li class="toc-entry toc-h4"><a href="#bringing-the-code-into-the-workspace">2.6.3. Bringing the code into the workspace</a></li>
-<li class="toc-entry toc-h4"><a href="#check-for-empty-package-folders">2.6.4. Check for empty package folders</a></li>
-<li class="toc-entry toc-h4"><a href="#check-for-later-packages-versions">2.6.5. Check for later packages versions</a></li>
-<li class="toc-entry toc-h4"><a href="#loading-tatin-packages">2.6.6. Loading Tatin packages</a></li>
-<li class="toc-entry toc-h4"><a href="#loading-nuget-packages">2.6.7. Loading NuGet packages</a></li>
-<li class="toc-entry toc-h4"><a href="#injecting-a-namespace-ciderconfig">2.6.8. Injecting a namespace <code>CiderConfig</code></a></li>
-<li class="toc-entry toc-h4"><a href="#injecting-a-namespace-tatinvars">2.6.9. Injecting a namespace <code>TatinVars</code></a></li>
-<li class="toc-entry toc-h4"><a href="#changing-the-current-directory">2.6.10. Changing the current directory</a></li>
-<li class="toc-entry toc-h4"><a href="#initialising-a-project">2.6.11. Initialising a project</a></li>
-<li class="toc-entry toc-h4"><a href="#executing-user-specific-code">2.6.12. Executing user-specific code</a></li>
-<li class="toc-entry toc-h4"><a href="#check-for-todo">2.6.13. Check for <code>ToDo</code></a></li>
-<li class="toc-entry toc-h4"><a href="#git-status">2.6.14. Git status</a></li>
+<li class="toc-entry toc-h4"><a href="#creating-a-project-space">2.7.1. Creating a project space</a></li>
+<li class="toc-entry toc-h4"><a href="#setting-system-variables">2.7.2. Setting system variables</a></li>
+<li class="toc-entry toc-h4"><a href="#bringing-the-code-into-the-workspace">2.7.3. Bringing the code into the workspace</a></li>
+<li class="toc-entry toc-h4"><a href="#check-for-empty-package-folders">2.7.4. Check for empty package folders</a></li>
+<li class="toc-entry toc-h4"><a href="#check-for-later-packages-versions">2.7.5. Check for later packages versions</a></li>
+<li class="toc-entry toc-h4"><a href="#loading-tatin-packages">2.7.6. Loading Tatin packages</a></li>
+<li class="toc-entry toc-h4"><a href="#loading-nuget-packages">2.7.7. Loading NuGet packages</a></li>
+<li class="toc-entry toc-h4"><a href="#injecting-a-namespace-ciderconfig">2.7.8. Injecting a namespace <code>CiderConfig</code></a></li>
+<li class="toc-entry toc-h4"><a href="#injecting-a-namespace-tatinvars">2.7.9. Injecting a namespace <code>TatinVars</code></a></li>
+<li class="toc-entry toc-h4"><a href="#changing-the-current-directory">2.7.10. Changing the current directory</a></li>
+<li class="toc-entry toc-h4"><a href="#initialising-a-project">2.7.11. Initialising a project</a></li>
+<li class="toc-entry toc-h4"><a href="#executing-user-specific-code">2.7.12. Executing user-specific code</a></li>
+<li class="toc-entry toc-h4"><a href="#check-for-todo">2.7.13. Check for <code>ToDo</code></a></li>
+<li class="toc-entry toc-h4"><a href="#git-status">2.7.14. Git status</a></li>
 </ul></li>
 </ul></li>
 <li class="toc-entry toc-h2"><a href="#misc">3. Misc</a>
@@ -338,19 +338,19 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 </div>
 <div class="h_tag">
 <a href="#git" id="git" class="autoheader_anchor">
-<h4 data-id="Git">2.3.2. Git</h4>
+<h3 data-id="Git">2.4. Git</h3>
 </a>
 </div>
-<p>a href="https://github.com/aplteam/APLGit2" class="external_link" title="Link to APLGit2 on GitHub"><code> If you use Git for version control management, and you have the [Git Bash](https://git-scm.com/downloads "Link to the Git Bash download page") installed, then Cider uses the package [</code>APLGit2`</a> for communicating with Git<</p>
-<p>For example, when a project carries a directory <code>.git/</code> then Cider knows that the project is version controlled with Git, and it therefore uses the API of <code>APLGit2</code> to display the Git status report for a project in the later stages of opening a project.</p>
+<p>If you use Git for version control management, and you have the <a href="https://git-scm.com/downloads" class="external_link" title="Link to the Git Bash download page">Git Bash</a> installed, then Cider uses the package <a href="https://github.com/aplteam/APLGit2" class="external_link" title="Link to APLGit2 on GitHub"><code>APLGit2</code></a> to communicate with Git.</p>
+<p>For example, when a project carries a directory <code>.git/</code>, then Cider knows that the project is version controlled with Git, and it therefore uses the API of <code>APLGit2</code> to display the Git status report for a project in the later stages of opening a project.</p>
 <div class="h_tag">
 <a href="#configuration" id="configuration" class="autoheader_anchor">
-<h3 data-id="Configuration">2.4. Configuration</h3>
+<h3 data-id="Configuration">2.5. Configuration</h3>
 </a>
 </div>
 <div class="h_tag">
 <a href="#global-configuration" id="global-configuration" class="autoheader_anchor">
-<h4 data-id="Global-configuration">2.4.1. Global configuration</h4>
+<h4 data-id="Global-configuration">2.5.1. Global configuration</h4>
 </a>
 </div>
 <p>Cider may have a global configuration file that can be used to define settings that effect <em>all</em> projects. It's name is <code>config.json</code>.</p>
@@ -358,7 +358,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>This folder does not only host the global config file, it's also the place where the file with alias definitions (<code>aliase.txt</code>) is saved as well as the file <code>cider.config.template</code> which is used as a template (hence the name) whenever a new project is created.</p>
 <div class="h_tag">
 <a href="#askfordirchange" id="askfordirchange" class="autoheader_anchor">
-<h5 data-id="AskForDirChange">2.4.1.1. AskForDirChange</h5>
+<h5 data-id="AskForDirChange">2.5.1.1. AskForDirChange</h5>
 </a>
 </div>
 <p>You may define <code>AskForDirChange</code> and assign one of the following values:</p>
@@ -366,7 +366,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>If no such value is defined then Cider behaves as if it is defined with the value 1.</p>
 <div class="h_tag">
 <a href="#checkfordropboxconflicts" id="checkfordropboxconflicts" class="autoheader_anchor">
-<h5 data-id="CheckForDropboxConflicts">2.4.1.2. CheckForDropboxConflicts</h5>
+<h5 data-id="CheckForDropboxConflicts">2.5.1.2. CheckForDropboxConflicts</h5>
 </a>
 </div>
 <p>This is an optional flag.</p>
@@ -375,7 +375,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>Background: in case Dropbox cannot figure out what the last version of a file is, it will create such a file. Dropbox leaves it to the user to compare such a file manually and solve the conflict somehow. The problem is that Dropbox does not actually tell you about such files, therefore Cider does it for you if you configure Cider accordingly.</p>
 <div class="h_tag">
 <a href="#executeafterprojectopen" id="executeafterprojectopen" class="autoheader_anchor">
-<h5 data-id="ExecuteAfterProjectOpen">2.4.1.3. ExecuteAfterProjectOpen</h5>
+<h5 data-id="ExecuteAfterProjectOpen">2.5.1.3. ExecuteAfterProjectOpen</h5>
 </a>
 </div>
 <p>If defined and not empty it must be the fully qualfied path to a function. That function will be executed by Cider after the project was opened.</p>
@@ -383,7 +383,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>The function may or may not return a result, but it will be ignored.</p>
 <div class="h_tag">
 <a href="#reportgitstatus" id="reportgitstatus" class="autoheader_anchor">
-<h5 data-id="ReportGitStatus">2.4.1.4. ReportGitStatus</h5>
+<h5 data-id="ReportGitStatus">2.5.1.4. ReportGitStatus</h5>
 </a>
 </div>
 <p>By default Cider reports the Git status of a project by putting it into an edit window if the working tree is not clean.</p>
@@ -392,20 +392,20 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>No matter what the global config parameter <code>ReportGitStatus</code> is saying, if a project is not version-controlled by Git (read: has no <code>.git/</code> folder in the root of the project folder) or <code>batch</code> is 1, no Git status is reported.</p>
 <div class="h_tag">
 <a href="#verbose" id="verbose" class="autoheader_anchor">
-<h5 data-id="verbose">2.4.1.5. verbose</h5>
+<h5 data-id="verbose">2.5.1.5. verbose</h5>
 </a>
 </div>
 <p>Boolean that defaults to 0. This means that Cider provides only really important messages. If you want Cider to be verbose (some would say: chatty) in this respect, set <code>verbose</code> to 1.</p>
 <div class="h_tag">
 <a href="#project-configuration" id="project-configuration" class="autoheader_anchor">
-<h4 data-id="Project-configuration">2.4.2. Project configuration</h4>
+<h4 data-id="Project-configuration">2.5.2. Project configuration</h4>
 </a>
 </div>
 <p>Every Cider project has a configuration file called <code>cider.config</code>, which is saved in the root of the project's folder.</p>
 <p>When a new project is created, a copy of the file <code>cider.config.template</code> is copied from the global configuration folder (see above) into the root of the new project.</p>
 <div class="h_tag">
 <a href="#createproject" id="createproject" class="autoheader_anchor">
-<h3 data-id="CreateProject">2.5. CreateProject</h3>
+<h3 data-id="CreateProject">2.6. CreateProject</h3>
 </a>
 </div>
 <p>With <code>]Cider.CreateProject</code> any folder that does not yet host a file <code>cider.config</code> can be transformed into a Cider project. (You may specify the <code>-acceptConfig</code> flag to override this default behaviour and make Cider accept an already existing file <code>cider.config</code>)</p>
@@ -439,7 +439,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 
 <div class="h_tag">
 <a href="#project-configuration-parameters" id="project-configuration-parameters" class="autoheader_anchor">
-<h4 data-id="Project-configuration-parameters">2.5.1. Project configuration parameters</h4>
+<h4 data-id="Project-configuration-parameters">2.6.1. Project configuration parameters</h4>
 </a>
 </div>
 <p>The Cider configuration file comes with four sections:</p>
@@ -452,20 +452,20 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>We will discuss the settings in each section in detail.</p>
 <div class="h_tag">
 <a href="#cider" id="cider" class="autoheader_anchor">
-<h5 data-id="CIDER">2.5.1.1. CIDER</h5>
+<h5 data-id="CIDER">2.6.1.1. CIDER</h5>
 </a>
 </div>
 <p>This section discusses the Cider-specific parameters in alphabetical order.</p>
 <div class="h_tag">
 <a href="#distributionfolder" id="distributionfolder" class="autoheader_anchor">
-<h6 data-id="distributionFolder">2.5.1.1.1. distributionFolder</h6>
+<h6 data-id="distributionFolder">2.6.1.1.1. distributionFolder</h6>
 </a>
 </div>
 <p>There is no default. If it is not empty it is supposed to be a folder, usually relative to the root of the project. Tatin's <code>BuildPackage</code> function would use this property in order to save the resulting ZIP file in this folder in case no specific target folder was specified.</p>
 <p>If you create all your package ZIP files always in the same sub-folder of any project, then you can define this in Cider's project config template file in order to make sure that it will always default to that folder name: Tatin's <code>BuildPackage</code> function, when not provided with a target folder, would check whether the project is managed by Cider and has a non-empty property <code>distributionFolder</code> defined, and if so take that as the target folder.</p>
 <div class="h_tag">
 <a href="#parent" id="parent" class="autoheader_anchor">
-<h6 data-id="parent">2.5.1.1.2. parent</h6>
+<h6 data-id="parent">2.6.1.1.2. parent</h6>
 </a>
 </div>
 <p>Defaults to <code>#</code> but can be something like <code>⎕SE</code> or <code>#.MyNamespace1.MyNamespace2</code> etc.</p>
@@ -474,7 +474,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <pre tabindex="0"><code>]Cider.OpenProject {path} -parent=#.MyProjects</code></pre>
 <div class="h_tag">
 <a href="#projectspace" id="projectspace" class="autoheader_anchor">
-<h6 data-id="projectSpace">2.5.1.1.3. projectSpace</h6>
+<h6 data-id="projectSpace">2.6.1.1.3. projectSpace</h6>
 </a>
 </div>
 <p>The name of a namespace that will host the project. <em>Must</em> be set by the user in the config file.</p>
@@ -482,14 +482,14 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <pre tabindex="0"><code>]Cider.OpenProject {path} -projectspace=Foo</code></pre>
 <div class="h_tag">
 <a href="#source" id="source" class="autoheader_anchor">
-<h6 data-id="source">2.5.1.1.4. source</h6>
+<h6 data-id="source">2.6.1.1.4. source</h6>
 </a>
 </div>
 <p>Defaults to <code>APLSource</code>: a subfolder that hosts the code. That's where the code lives, relative to the project folder.</p>
 <p>This might be empty, for example when the project is just a single script (class or namespace).</p>
 <div class="h_tag">
 <a href="#dependencies" id="dependencies" class="autoheader_anchor">
-<h6 data-id="dependencies">2.5.1.1.5. dependencies</h6>
+<h6 data-id="dependencies">2.6.1.1.5. dependencies</h6>
 </a>
 </div>
 <p>This carries two sub-keys: “tatin” and “nuget”. This is how the template config file looks like:</p>
@@ -513,7 +513,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 
 <div class="h_tag">
 <a href="#dependencies_dev" id="dependencies_dev" class="autoheader_anchor">
-<h6 data-id="dependencies_dev">2.5.1.1.6. dependencies_dev</h6>
+<h6 data-id="dependencies_dev">2.6.1.1.6. dependencies_dev</h6>
 </a>
 </div>
 <p>In principle this is the same as <code>dependencies</code>, but it regards dependencies that are only required for development and testing, not for producing the final result, be it a package or an application.</p>
@@ -525,7 +525,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>However, note that you cannot have a sub-key <code>nuget</code> in <code>dependencies_dev</code> for the time being. This restriction is likely to be lifted in a future release.</p>
 <div class="h_tag">
 <a href="#init" id="init" class="autoheader_anchor">
-<h6 data-id="init">2.5.1.1.7. init</h6>
+<h6 data-id="init">2.6.1.1.7. init</h6>
 </a>
 </div>
 <p>If not empty this must be the name of a function within <code>projectSpace</code>. The function will be executed after a project was opened or imported.</p>
@@ -537,7 +537,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 </ul>
 <div class="h_tag">
 <a href="#make" id="make" class="autoheader_anchor">
-<h6 data-id="make">2.5.1.1.8. make</h6>
+<h6 data-id="make">2.6.1.1.8. make</h6>
 </a>
 </div>
 <p>Empty or an expression (relative to the project) that would create a new version.</p>
@@ -548,7 +548,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>However, if the first non-white space character of <code>make</code> is a <code>]</code>, its definition would just be printed to the session together with a comment because then it's obviously a user command.</p>
 <div class="h_tag">
 <a href="#project_url" id="project_url" class="autoheader_anchor">
-<h6 data-id="project_url">2.5.1.1.9. project_url</h6>
+<h6 data-id="project_url">2.6.1.1.9. project_url</h6>
 </a>
 </div>
 <p>If not empty this is expected to be a URL pointing to, say, a GitHub project. For information only.</p>
@@ -556,7 +556,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>Some function of <code>APLGit2</code> must know the <code>owner</code> of a project on GitHub. Those functions will investigate <code>project_url</code>: if that points to GitHub, the owner is established from its contents.</p>
 <div class="h_tag">
 <a href="#tatinvars" id="tatinvars" class="autoheader_anchor">
-<h6 data-id="tatinVars">2.5.1.1.10. tatinVars</h6>
+<h6 data-id="tatinVars">2.6.1.1.10. tatinVars</h6>
 </a>
 </div>
 <p>This property is optional, it may or may not exist. If it exists it must carry either <code>⎕THIS</code> or the name of a sub-namespace of the project.</p>
@@ -567,7 +567,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>For details see <a href="#injecting-a-namespace-tatinvars" class="bookmark_link">Injecting a namespace TatinVars</a>.</p>
 <div class="h_tag">
 <a href="#tests" id="tests" class="autoheader_anchor">
-<h6 data-id="tests">2.5.1.1.11. tests</h6>
+<h6 data-id="tests">2.6.1.1.11. tests</h6>
 </a>
 </div>
 <p>Empty or an expression (relative to the project) that would execute the test cases of the project.</p>
@@ -578,7 +578,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>However, if the first non-white space character of <code>tests</code> is a <code>]</code> (making it a user command rather than a function call) its definition would just be printed to the session together with a comment because then it's obviously a user command.</p>
 <div class="h_tag">
 <a href="#link" id="link" class="autoheader_anchor">
-<h5 data-id="LINK">2.5.1.2. LINK</h5>
+<h5 data-id="LINK">2.6.1.2. LINK</h5>
 </a>
 </div>
 <p>These are LINK parameters which are passed on to LINK when Cider brings the APL code into the WS with LINK.</p>
@@ -586,7 +586,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>However, until all supported versions of Link can deal with Link's own configuration file, Cider will save non-defaults values in a Cider project config file.</p>
 <div class="h_tag">
 <a href="#watch" id="watch" class="autoheader_anchor">
-<h6 data-id="watch">2.5.1.2.1. watch</h6>
+<h6 data-id="watch">2.6.1.2.1. watch</h6>
 </a>
 </div>
 <p>Defines which source to track for changes, so the other can be synchronised.</p>
@@ -594,26 +594,26 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>Note that for “both” and “dir” .NET or .NET Core is required. Under Windows this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not, the default for “watch” will be “ns”.</p>
 <div class="h_tag">
 <a href="#sysvars" id="sysvars" class="autoheader_anchor">
-<h5 data-id="SYSVARS">2.5.1.3. SYSVARS</h5>
+<h5 data-id="SYSVARS">2.6.1.3. SYSVARS</h5>
 </a>
 </div>
 <p>This section allows you to define system variables. <code>⎕IO</code> and <code>⎕ML</code> should always be defined here.</p>
 <p>You may add other <code>⎕</code>-variables here like, say, <code>⎕CT</code> as “ct” etc.</p>
 <div class="h_tag">
 <a href="#io" id="io" class="autoheader_anchor">
-<h6 data-id="io">2.5.1.3.1. io</h6>
+<h6 data-id="io">2.6.1.3.1. io</h6>
 </a>
 </div>
 <p>Defaults to 1.</p>
 <div class="h_tag">
 <a href="#ml" id="ml" class="autoheader_anchor">
-<h6 data-id="ml">2.5.1.3.2. ml</h6>
+<h6 data-id="ml">2.6.1.3.2. ml</h6>
 </a>
 </div>
 <p>Defaults to 1.</p>
 <div class="h_tag">
 <a href="#user" id="user" class="autoheader_anchor">
-<h5 data-id="USER">2.5.1.4.  USER</h5>
+<h5 data-id="USER">2.6.1.4.  USER</h5>
 </a>
 </div>
 <p>This section allows you to specify your own project-specific values; its contents (if any) is ignored by Cider.</p>
@@ -627,14 +627,14 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <pre tabindex="0"><code>#.MyProject.CiderConfig.USER.Foo</code></pre>
 <div class="h_tag">
 <a href="#openproject" id="openproject" class="autoheader_anchor">
-<h3 data-id="OpenProject">2.6. OpenProject</h3>
+<h3 data-id="OpenProject">2.7. OpenProject</h3>
 </a>
 </div>
 <p>Naturally, <code>OpenProject</code> is the most important command Cider offers. We discuss all its actions in detail.</p>
 <p>Note that the contents of the file <code>cider.config</code> directs what exactly Cider is going to do when its principal method, <code>OpenProject</code>, is executed.</p>
 <div class="h_tag">
 <a href="#creating-a-project-space" id="creating-a-project-space" class="autoheader_anchor">
-<h4 data-id="Creating-a-project-space">2.6.1. Creating a project space</h4>
+<h4 data-id="Creating-a-project-space">2.7.1. Creating a project space</h4>
 </a>
 </div>
 <p>The first step carried out by <code>]Cider.OpenProject</code> is to create a namespace with the name <code>projectSpace</code> as a child of <code>parent</code>, when <code>parent</code> defaults to <code>#</code>, but may be something like <code>⎕SE</code> or <code>#.Foo.Goo</code> etc.</p>
@@ -647,7 +647,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 </ul>
 <div class="h_tag">
 <a href="#setting-system-variables" id="setting-system-variables" class="autoheader_anchor">
-<h4 data-id="Setting-system-variables">2.6.2. Setting system variables</h4>
+<h4 data-id="Setting-system-variables">2.7.2. Setting system variables</h4>
 </a>
 </div>
 <p>In the next step <code>]Cider.OpenProject</code> is going to set at least two system variables defined in the config file in the <code>SYSVARS</code> section of the INI file: <code>⎕IO</code> and <code>⎕ML</code>.</p>
@@ -663,7 +663,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 
 <div class="h_tag">
 <a href="#bringing-the-code-into-the-workspace" id="bringing-the-code-into-the-workspace" class="autoheader_anchor">
-<h4 data-id="Bringing-the-code-into-the-workspace">2.6.3. Bringing the code into the workspace</h4>
+<h4 data-id="Bringing-the-code-into-the-workspace">2.7.3. Bringing the code into the workspace</h4>
 </a>
 </div>
 <p>In this step, all files with supported file extensions (See LINK's documentation for details) found in <code>source</code> and any subfolder are established in the workspace in <code>{parent}. {projectSpace}</code>.</p>
@@ -680,7 +680,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a Link, you just want to bring the code into the workspace. This can be achieved by specifying the <code>-import</code> flag.</p>
 <div class="h_tag">
 <a href="#check-for-empty-package-folders" id="check-for-empty-package-folders" class="autoheader_anchor">
-<h4 data-id="Check-for-empty-package-folders">2.6.4. Check for empty package folders</h4>
+<h4 data-id="Check-for-empty-package-folders">2.7.4. Check for empty package folders</h4>
 </a>
 </div>
 <p>Cider now checks whether any of the Tatin installation folders — as noted on the <code>dependencies</code> and <code>dependencies_dev</code> properties — is empty apart from a dependency file and a build list.</p>
@@ -694,7 +694,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>In case a Tatin installation folder defined in the Cider config file does not contain any packages but the two definition files, the user will be asked whether she wants to re-install the packages.</p>
 <div class="h_tag">
 <a href="#check-for-later-packages-versions" id="check-for-later-packages-versions" class="autoheader_anchor">
-<h4 data-id="Check-for-later-packages-versions">2.6.5. Check for later packages versions</h4>
+<h4 data-id="Check-for-later-packages-versions">2.7.5. Check for later packages versions</h4>
 </a>
 </div>
 <p>In case the project has Tatin packages installed in one or more folders, the user will be asked whether she wants Cider to check for any later versions of any of the principal packages. This will only happen in case <code>importFlag</code> is 0.</p>
@@ -702,14 +702,14 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>If <code>]Cider.OpenProject</code> discovers later packages it will ask the user whether these packages shall be re-installed. This will happen independently for each package installation folder.</p>
 <div class="h_tag">
 <a href="#loading-tatin-packages" id="loading-tatin-packages" class="autoheader_anchor">
-<h4 data-id="Loading-Tatin-packages">2.6.6. Loading Tatin packages</h4>
+<h4 data-id="Loading-Tatin-packages">2.7.6. Loading Tatin packages</h4>
 </a>
 </div>
 <p>Your application or tool might depend on one or more Tatin[<a href="#fnref1" class="footnote_link"><sup>1</sup></a>] packages. By assigning a folder hosting Tatin packages to the <code>tatin</code> sub-key in <code>dependencies</code>, and potentially also <code>dependencies_dev</code>, you can make sure that Cider will load[<a href="#fnref4" class="footnote_link"><sup>4</sup></a>] those installed packages into the root of your project or the assigned sub-namespace.</p>
 <p>See the config properties <code>dependencies</code> and <code>dependencies_dev</code> for details.</p>
 <div class="h_tag">
 <a href="#loading-nuget-packages" id="loading-nuget-packages" class="autoheader_anchor">
-<h4 data-id="Loading-NuGet-packages">2.6.7. Loading NuGet packages</h4>
+<h4 data-id="Loading-NuGet-packages">2.7.7. Loading NuGet packages</h4>
 </a>
 </div>
 <p>Your application or tool might depend on a NuGet[<a href="#fnref2" class="footnote_link"><sup>2</sup></a>] package. By assigning a folder hosting NuGet packages to the <code>nuget</code> sub-key in <code>dependencies</code> you can make sure that Cider will load those installed packages into the root of your project or the assigned sub-namespace.</p>
@@ -717,7 +717,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>Note that NuGet packages can currently become part of your application, but they cannot be loaded as development tools. This restriction is likely to be lifted in a later release.</p>
 <div class="h_tag">
 <a href="#injecting-a-namespace-ciderconfig" id="injecting-a-namespace-ciderconfig" class="autoheader_anchor">
-<h4 data-id="Injecting-a-namespace-CiderConfig">2.6.8. Injecting a namespace <code>CiderConfig</code></h4>
+<h4 data-id="Injecting-a-namespace-CiderConfig">2.7.8. Injecting a namespace <code>CiderConfig</code></h4>
 </a>
 </div>
 <p>In this step <code>]Cider.OpenProject</code> injects a namespace <code>CiderConfig</code> into the project space and…</p>
@@ -727,7 +727,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 </ul>
 <div class="h_tag">
 <a href="#injecting-a-namespace-tatinvars" id="injecting-a-namespace-tatinvars" class="autoheader_anchor">
-<h4 data-id="Injecting-a-namespace-TatinVars">2.6.9. Injecting a namespace <code>TatinVars</code></h4>
+<h4 data-id="Injecting-a-namespace-TatinVars">2.7.9. Injecting a namespace <code>TatinVars</code></h4>
 </a>
 </div>
 <p>Whether a project is going to be a package depends on the presence of a file <code>apl-package.json</code> in the root of the project.</p>
@@ -737,13 +737,13 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>If a property “tatinVars” does exist and points to a sub-namespace, then Cider will create a reference <code>TatinVars</code> in that namespace that points to <code>TatinVars</code> in the root of the project.</p>
 <div class="h_tag">
 <a href="#changing-the-current-directory" id="changing-the-current-directory" class="autoheader_anchor">
-<h4 data-id="Changing-the-current-directory">2.6.10. Changing the current directory</h4>
+<h4 data-id="Changing-the-current-directory">2.7.10. Changing the current directory</h4>
 </a>
 </div>
 <p>If the project was opened (rather than imported!) <strong><em>and</em></strong> <code>batch</code> is 0, then Cider checks at this point the current (or working) directory. If it's different from the project's directory, the user is asked whether she wants to change the current directory to the project's directory.</p>
 <div class="h_tag">
 <a href="#initialising-a-project" id="initialising-a-project" class="autoheader_anchor">
-<h4 data-id="Initialising-a-project">2.6.11. Initialising a project</h4>
+<h4 data-id="Initialising-a-project">2.7.11. Initialising a project</h4>
 </a>
 </div>
 <p>There might well be demand for executing some code to initialise your project.</p>
@@ -758,7 +758,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>Note that such a function will be executed no matter whether the project was opened or imported.</p>
 <div class="h_tag">
 <a href="#executing-user-specific-code" id="executing-user-specific-code" class="autoheader_anchor">
-<h4 data-id="Executing-user-specific-code">2.6.12. Executing user-specific code</h4>
+<h4 data-id="Executing-user-specific-code">2.7.12. Executing user-specific code</h4>
 </a>
 </div>
 <p>You might want to execute some general code (as opposed to project-specific code) after a project was opened (rather than imported). “General” means that this code is executed whenever a project (any project!) is opened.</p>
@@ -776,7 +776,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <p>Note that you may use the <code>ignoreUserExec</code> flag to tell <code>OpenProject</code> to ignore the global setting. This is certainly useful when Cider's test suite is executed.</p>
 <div class="h_tag">
 <a href="#check-for-todo" id="check-for-todo" class="autoheader_anchor">
-<h4 data-id="Check-for-ToDo">2.6.13. Check for <code>ToDo</code></h4>
+<h4 data-id="Check-for-ToDo">2.7.13. Check for <code>ToDo</code></h4>
 </a>
 </div>
 <p>If the project was opened (rather than imported!) <strong><em>and</em></strong> <code>batch</code> is 0, then Cider checks whether there is a variables <code>ToDo</code> in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.</p>
@@ -788,7 +788,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 </ul>
 <div class="h_tag">
 <a href="#git-status" id="git-status" class="autoheader_anchor">
-<h4 data-id="Git-status">2.6.14. Git status</h4>
+<h4 data-id="Git-status">2.7.14. Git status</h4>
 </a>
 </div>
 <p>If the project was opened (rather than imported!) <strong><em>and</em></strong> the project is version-controlled by Git <strong><em>and</em></strong> <code>batch</code> is 0 <strong><em>and</em></strong> the global configuration parameter <code>ReportGitStatus</code> is greater than 0, then Cider will report the current branch and its status.</p>

@@ -1,7 +1,7 @@
  Make flag;M;C;path;zipFilename;res;version;cfg;parms;folder1;folder2;targetFolder;developmentWas;noOf
 ⍝ "Make" a new version of this project
  :If flag
-     'Runs only on Windows'Assert'Win'≡##.A.GetOperatingSystem ⍬
+     'Runs only on Windows'Assert'Win'≡##.Cider.APLTreeUtils2.GetOperatingSystem ⍬
      M←##.TestCases.MakeHelpers
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
