@@ -1,22 +1,20 @@
  r←Config Args;_Cider;filename;json
+⍝ Called eventually by ]Cider.Config
+
  r←'No action taken'
  filename←P.GetCiderGlobalConfigFilename
- :If P.##.F.IsFile filename
-     json←⊃P.##.F.NGET filename
-     :If Args.Switch'print'
-         r←'--- Conder Config File: ',('expand'P.##.F.NormalizePath filename),' ---',⎕UCS 10
-         r,←json
-     :Else
-         _Cider←⎕NS''
-         _Cider.config←json
-         _Cider.⎕ED'config'
-         :If 0<≢_Cider.config
-         :AndIf json≢_Cider.config
-         :AndIf YesOrNo'Would you like to save your changes on disk?'
-             (⊂_Cider.config)P.##.F.NPUT filename 1
-             r←'File edited and changes saved to disk'
-         :EndIf
-     :EndIf
+ json←⊃P.##.F.NGET filename
+ :If Args.Switch'print'
+     r←'--- Conder Config File: ',('expand'P.##.F.NormalizePath filename),' ---',⎕UCS 10
+     r,←json
  :Else
-     r←'File not found: ','expand'P.##.F.NormalizePath filename
+     _Cider←⎕NS''
+     _Cider.config←json
+     _Cider.⎕ED'config'
+     :If 0<≢_Cider.config
+     :AndIf json≢_Cider.config
+     :AndIf YesOrNo'Would you like to save your changes on disk?'
+         (⊂_Cider.config)P.##.F.NPUT filename 1
+         r←'File edited and changes saved to disk'
+     :EndIf
  :EndIf

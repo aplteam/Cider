@@ -1,5 +1,16 @@
- filename←GetCiderGlobalConfigFilename;folder
+ filename←GetCiderGlobalConfigFilename;folder;txt
 ⍝ Returns the name of the Cider config file.
 ⍝ As a side effect it creates the file with defaults if it does not yet exist.
  folder←GetCiderGlobalConfigHomeFolder
- filename←folder,'config.json'
+ :If ~⎕NEXISTS filename←folder,'config.json'
+     ⍝ Create a global Cider config file with default entries (all comments)
+     txt←''
+     txt,←⊂,'{'
+     txt,←⊂,'  // AskForDirChange: 1,'
+     txt,←⊂,'  // CheckForDropboxConflicts: 1,'
+     txt,←⊂,'  // ExecuteAfterProjectOpen: "⎕SE.Path.To.Function",'
+     txt,←⊂,'  // ReportGitStatus: 1,'
+     txt,←⊂,'  // verbose: 1,'
+     txt,←⊂,'}'
+     (⊂txt)⎕NPUT filename
+ :EndIf

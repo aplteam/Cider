@@ -1,6 +1,7 @@
 (
  '* 0.40.2 ⋄ 2024-05-25'
  '  * Bug fixes'
+ '    * The global Cider config file was not handled/created correctly'
  '    * Problem in the document "Cider-User-Guide" fixed '
  '* 0.40.1 ⋄ 2024-05-21'
  '  * NuGet-related test cases are now executed in their own, independent process'

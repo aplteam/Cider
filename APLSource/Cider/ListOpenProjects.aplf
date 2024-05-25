@@ -2,6 +2,7 @@
  '⍵ must be a Boolean'Assert(⊂verboseFlag)∊0 1
  r←(0(2+2×verboseFlag))⍴''
  res←⎕SE.Link.Status''
+ ({1=≡,⍵:⍵ ⋄ 1↓⊃,/(⎕UCS 13),¨⍵}res)Assert~∨/'ERRORS ENCOUNTERED:'⍷∊res
  :If 'No active links'≢res
      :If 0<≢res←(∧/'Namespace' 'Files'∊res[1;])↓res   ⍝ Will become superfluous with a proper Link API but don't do damage
          'Link demands a Resync!'Assert~∨/'Link.Resync required'⍷∊res
