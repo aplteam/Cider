@@ -14,6 +14,10 @@
          tempFolder←P.##.F.GetTempSubDir'Cider'
          res←⎕SE.Tatin.InstallPackages('[tatin]aplteam-Cider')tempFolder
          targetFolder←1 P.GetProgramFilesFolder'/SessionExtensions/CiderTatin/Cider'
+         :If 0=⎕NEXISTS targetFolder    ⍝ If there is no version-specific folder...
+             ⍝ ... we check for a version-agnostic folder:
+             targetFolder←0 P.GetProgramFilesFolder'/SessionExtensions/CiderTatin/Cider'
+         :EndIf
          {}P.##.F.RmDirByForce targetFolder
          3 ⎕MKDIR targetFolder
          targetFolder ⎕NMOVE⍠1⊣tempFolder,'/*'
