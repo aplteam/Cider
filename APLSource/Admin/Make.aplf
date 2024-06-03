@@ -1,7 +1,10 @@
- Make flag;M;C;path;zipFilename;res;version;cfg;parms;folder1;folder2;targetFolder;developmentWas;noOf
-⍝ "Make" a new version of this project
+ {batch}Make flag;M;C;path;zipFilename;res;version;cfg;parms;folder1;folder2;targetFolder;developmentWas;noOf
+⍝ "Make" a new version of this project.
+⍝ If called by a program rather executed by a human specify a 1 as left arguments: not questions are asked, but
+⍝ Cider won't be installed as a user command then.
  :If flag
      'Runs only on Windows'Assert'Win'≡##.Cider.APLTreeUtils2.GetOperatingSystem ⍬
+     batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
      M←##.TestCases.MakeHelpers
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
@@ -24,6 +27,9 @@
      M.CreateAPI #.Cider.Cider ##.Cider.Public cfg.api
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
-     ⎕←'   ',4↓#.Cider.Admin.InstallCider 1
+
+     :If 0=batch
+         ⎕←'   ',4↓0 #.Cider.Admin.InstallCider 1
+     :EndIf
  :EndIf
  ⍝Done

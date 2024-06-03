@@ -117,11 +117,18 @@ Before executing that statement you should check both `#.Cider.Cider.Version` an
 
 Cider's `Admin.Make` function will create a new version and save it as a ZIP file in the `Dist/` folder within the project folder.
 
-In a final step it will install the new version where it has been previosuly installed, or ask the user whether it should install into the version-specific or the version-agnostic folder for Dyalog files on your operating system.
+In a final step it will ask whether the new version should be installed as a user command. 
+
+If the answer is "yes" it will install Cider into the folder where it has previously been installed, or, if it has not been previously installed, ask the user whether it should be installed into the version-specific or the version-agnostic folder for Dyalog files on your operating system.
 
 
+## Making a new version ready for Dyalog
 
+In order to make a new version available for Dyalog for bundling purposes, Cider needs to be installed from the `[tatin]` Registry in a first step. In a second and last step, the contents of the installation folder needs to be zipped into a file with the name
 
+```
+Installed-aplteam-Cider-<major>.<minor>.<patch>
+```
 
-
+That file needs to go onto the release page for that version where Dyalog can fetch and process it.
 
