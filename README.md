@@ -5,7 +5,7 @@
 
 Cider offers some User commands that are useful for managing projects. In addition it also offers an API.
 
-It cooperates with [Tatin](https://github.com/aplteam.Cider).
+It cooperates with [Tatin](https://github.com/aplteam/Tatin "Link to the Tatin repository on GitHub").
 
 
 ## Requirements
