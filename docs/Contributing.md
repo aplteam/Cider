@@ -130,5 +130,12 @@ In order to make a new version available for Dyalog for bundling purposes, Cider
 Installed-aplteam-Cider-<major>.<minor>.<patch>
 ```
 
+There is a function available that executes both steps; it requires a 1 to be passed as right argument:
+
+```
+#.Cider.Admin.MakeZipForDyalog 1
+```
+
 That file needs to go onto the release page for that version where Dyalog can fetch and process it.
+
 

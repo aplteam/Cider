@@ -1,8 +1,9 @@
 (
- '* 0.40.1 ⋄ 2024-06-03'
+ '* 0.40.1 ⋄ 2024-06-06'
  '  * NuGet-related test cases are now executed in their own, independent process'
  '  * Error messages for `Init` functions of a project improved'
- '  * Bug fixes        '
+ '  * Bug fixes'
+ '    * Some bugs fixed in AddTatinDependencies        '
  '    * ]UpdateCider did not check for a version-agnostic installation in case there is not version-specific one '
  '    * `]ListDependencies` asked which package folder to act on even if there was only one'
  '    * `]ListDependencies -full` did not say anything if there are no dependencies'

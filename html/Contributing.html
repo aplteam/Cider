@@ -163,6 +163,8 @@ html{-webkit-text-size-adjust:100%;}body{margin:0;}main{display:block;}h1{margin
 </div>
 <p>In order to make a new version available for Dyalog for bundling purposes, Cider needs to be installed from the <code>[tatin]</code> Registry in a first step. In a second and last step, the contents of the installation folder needs to be zipped into a file with the name</p>
 <pre tabindex="0"><code>Installed-aplteam-Cider-&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</code></pre>
+<p>There is a function available that executes both steps; it requires a 1 to be passed as right argument:</p>
+<pre tabindex="0"><code>#.Cider.Admin.MakeZipForDyalog 1</code></pre>
 <p>That file needs to go onto the release page for that version where Dyalog can fetch and process it.</p>
 
 <script>

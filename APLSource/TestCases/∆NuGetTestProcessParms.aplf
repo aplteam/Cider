@@ -4,7 +4,9 @@
  parms.OutputFilename←(739⌶0),'/',name,'.txt'
  parms.CommandLineArgs,←'path=''',folder,''''
  parms.CommandLineArgs,←' fns=∆',name
- parms.CommandLineArgs,←' codeCoverageFile=''',(T.codeCoverage.filename~''''),''''
+ :If 0<T.⎕NC'codeCoverage'
+     parms.CommandLineArgs,←' codeCoverageFile=''',(T.codeCoverage.filename~''''),''''
+ :EndIf
  parms.CommandLineArgs,←' DYALOG_NETCORE=1'
  parms.WorkspaceName←##.CiderConfig.HOME,'/Tests/ExecTestCase.dws'
  parms.WindowsStyle←'Normal'
