@@ -3,7 +3,7 @@
 
 # Cider Project Manager
 
-Cider offers some User commands that are useful for managing projects. In addition it also offers an API.
+Cider offers some User commands useful for managing projects. It also offers an API.
 
 It cooperates with [Tatin](https://github.com/aplteam/Tatin "Link to the Tatin repository on GitHub").
 
@@ -13,7 +13,7 @@ It cooperates with [Tatin](https://github.com/aplteam/Tatin "Link to the Tatin r
 Cider requires 
 
 * Dyalog 18.0 Unicode or better 
-* Link 3.0.8 or better
+* Link 3.0.8 or better (part of a standard Dyalog installation from 18.2 onwards)
 * The Tatin package manager (because Cider itself is a Tatin package)
 
 
@@ -40,18 +40,21 @@ These commands are available:
 
 ## Documentation
 
-In this document only `OpenProject` is discussed in detail because that is the main command.
+Only `OpenProject` is discussed in detail in this document because it is the main command.
 
 For all other commands only basic information is provided, but there is a document "Cider-User-Guide.html" available that discusses all features in detail.
 
 The user command help is also pretty exhaustive.
 
-Regarding the API, the document "Cider-API-Reference.html" is available.
+A User Guide is available as an HTML document, see [Cider-User-Guide.html](https://html-preview.github.io/?url=https://github.com/aplteam/Cider/blob/main/html/Cider-User-Guide.html target=_blank).
 
+Regarding the API, the document [Cider-API-Reference.html](https://html-preview.github.io/?url=https://github.com/aplteam/Cider/blob/main/html/Cider-API-Reference.html target=_blank) is available.
 
 ## Installation
 
 In version 19.0 Cider is part of a standard installation of Dyalog, although it needs activation before it is available. Therefore you only have to worry about installing it with versions 18.0 and 18.2. Cider does not run on earlier versions of Dyalog.
+
+Cider can be activated with `]Activate Cider` (after first activating Tatin in a similar way because Tatin is required by Cider) or by activating Cider and Tatin in one step with `]Activate all`.
 
 With version 0.23 Cider became a Tatin package. That simplifies the installation process: all you need to do is issue this command:
 
@@ -115,7 +118,8 @@ Once a folder is established that holds a Cider config file, the user command pe
 1. Inject a namespace `TatinVars` in case the project ends up as a package
 1. Check whether the project's config file does carry a non-empty value for `init`. If that's the case, it must be a function that is then called by Cider, typically for initializing the project
 1. If there is a variable `ToDo` in the root of the project, and the variable is not empty, then this variable is printed to the session
-1. If the project is managed by Git, then Cider executes the `git status` command on the project folder and puts the result on view
+1. Cider can check for Dropbox conflicts at this stage (configurable)
+1. If the project is managed by Git, then Cider executes the `git status` command on the project folder and puts the result on view (configurable)
 
 Notes:
 
@@ -212,4 +216,4 @@ Returns a three-item-vector with "Name", "Version number" and "Version date".
 
 ### `UpdateCider`
 
-Update Cider in case a later version is available.
+Update Cider in case a later version is available as a package on [https://tatin.dev](https://tatin.dev target=_blank).
