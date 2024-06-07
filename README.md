@@ -42,11 +42,9 @@ These commands are available:
 
 Only `OpenProject` is discussed in detail in this document because it is the main command.
 
-For all other commands only basic information is provided, but there is a document "Cider-User-Guide.html" available that discusses all features in detail.
+For all other commands only basic information is provided. A comprehensive User Guide is available as an HTML document, see [Cider-User-Guide.html](https://html-preview.github.io/?url=https://github.com/aplteam/Cider/blob/main/html/Cider-User-Guide.html).
 
 The user command help is also pretty exhaustive.
-
-A User Guide is available as an HTML document, see [Cider-User-Guide.html](https://html-preview.github.io/?url=https://github.com/aplteam/Cider/blob/main/html/Cider-User-Guide.html).
 
 Regarding the API, the document [Cider-API-Reference.html](https://html-preview.github.io/?url=https://github.com/aplteam/Cider/blob/main/html/Cider-API-Reference.html) is available.
 
