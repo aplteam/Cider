@@ -46,9 +46,9 @@ For all other commands only basic information is provided, but there is a docume
 
 The user command help is also pretty exhaustive.
 
-A User Guide is available as an HTML document, see [Cider-User-Guide.html](https://html-preview.github.io/?url=https://github.com/aplteam/Cider/blob/main/html/Cider-User-Guide.html target=_blank).
+A User Guide is available as an HTML document, see [Cider-User-Guide.html](https://html-preview.github.io/?url=https://github.com/aplteam/Cider/blob/main/html/Cider-User-Guide.html).
 
-Regarding the API, the document [Cider-API-Reference.html](https://html-preview.github.io/?url=https://github.com/aplteam/Cider/blob/main/html/Cider-API-Reference.html target=_blank) is available.
+Regarding the API, the document [Cider-API-Reference.html](https://html-preview.github.io/?url=https://github.com/aplteam/Cider/blob/main/html/Cider-API-Reference.html) is available.
 
 ## Installation
 
@@ -74,7 +74,7 @@ Example:
 
 _**Watch out for the `,` in front of the path: it means that the folder is added!_**
 
-However, the API only becomes available after any Cider user command is executed. `]Cider.Version` is enough for that.
+However, the API only becomes available after executing any Cider user command. `]Cider.Version` is enough for that.
 
 If that is not good enough for you, this article explains how to load user commands into `⎕SE` at a very early stage: <https://aplwiki.com/wiki/Dyalog_User_Commands>
 
@@ -216,4 +216,4 @@ Returns a three-item-vector with "Name", "Version number" and "Version date".
 
 ### `UpdateCider`
 
-Update Cider in case a later version is available as a package on [https://tatin.dev](https://tatin.dev target=_blank).
+Update Cider in case a later version is available as a package on [https://tatin.dev](https://tatin.dev).
