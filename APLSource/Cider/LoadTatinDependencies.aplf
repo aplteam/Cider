@@ -52,9 +52,12 @@
                                  :EndIf
                              :EndIf
                          :Else
-                             p qdmx.EM
+                             1 0 PrintToSession qdmx.EM
                              r←FAILURE
                          :EndIf
+                     :Else
+                         1 0 PrintToSession qdmx.EM
+                         r←FAILURE
                      :EndIf
                  :EndTrap
              :Else
