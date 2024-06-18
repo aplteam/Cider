@@ -10,12 +10,12 @@
  parms.folder←'[foo]'
 
  :Trap 11
-     ({⍵}#.Cider.Cider.GetFolderFromAlias)parms
+     {}({⍵}#.Cider.Cider.GetFolderFromAlias)parms
      →T.FailsIf 1
  :Else
      qdmx←⎕DMX
      →T.PassesIf 11=qdmx.EN
-     →T.PassesIf '"foo" is not a valid alias'≡qdmx.EM
+     →T.PassesIf'"foo" is not a valid alias'≡qdmx.EM
  :EndTrap
 
  r←T._OK

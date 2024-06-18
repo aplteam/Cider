@@ -80,6 +80,7 @@
      res←linkOptions ⎕SE.Link.Create projectSpace_ source                       ⍝ Get the code into the WS
      dmx←⎕DMX
      ('LINK failed to load the code (',dmx.EM,')')Assert~∨/'Error:'⍷res
+     ('LINK failed to load the code from <(',source,'>')Assert~∨/'Unknown Debug options in'⍷res
      :If ∨/'ERRORS ENCOUNTERED:'⍷res
          res Assert 0=parms.batch
          (1 parms.batch)p res

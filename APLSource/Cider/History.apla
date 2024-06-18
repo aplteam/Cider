@@ -1,5 +1,5 @@
 (
- '* 0.40.1 ⋄ 2024-06-08'
+ '* 0.40.1 ⋄ 2024-06-18'
  '  * NuGet-related test cases are now executed in their own, independent process'
  '  * Error messages for `Init` functions of a project improved'
  '  * Bug fixes        '
@@ -11,7 +11,8 @@
  '    * The documentation claimed that a project initalisation function can be dyadic, but the code only accepted'
  '      niladic, monadic and ambivalent functions.'
  '    * The global Cider config file was not handled/created correctly'
- '    * Problem in the document "Cider-User-Guide" fixed '
+ '    * Problem in the document "Cider-User-Guide" fixed'
+ '    * `OpenProject` did not detect a Link error caused by an invalid config file '
  '    * Some minor fixes '
  '* 0.40.0 ⋄ 2024-05-05'
  '  * The user command `]ListTatinDependencies` now has two new flags: `-full` and `-raw`'

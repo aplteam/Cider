@@ -1,3 +1,3 @@
  r←Version
 ⍝ See also `History`
- r←'0.40.1-beta-11+671'
+ r←'0.40.1+671'
