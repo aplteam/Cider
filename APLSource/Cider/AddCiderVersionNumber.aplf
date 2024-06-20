@@ -1,0 +1,3 @@
+ cfg←AddCiderVersionNumber cfg
+⍝ Either adds Cider's version number to the config file or overwrites it
+ cfg.CIDER.cider_version←{⍵↑⍨¯1+⍵⍳'+'}Version

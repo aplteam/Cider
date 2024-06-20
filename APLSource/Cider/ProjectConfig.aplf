@@ -33,6 +33,7 @@
              :AndIf CheckJsonSyntax ns.cider_config
                  data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
              :AndIf PerformConfigChecks data
+                 ns.cider_config←AddCiderVersionNumber ns.cider_config
                  (⊂ns.cider_config)⎕NPUT⍠('NEOL' 2)⊣filename 1
                  r←flag←1
              :Else

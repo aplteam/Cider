@@ -253,11 +253,15 @@ I> You may change this file and make amendments that suit your needs.
 I>
 I> However, when a new version of Cider is installed the template config file *might* come with new or renamed or removed properties, and those would not make it into the template file in `.cider/cider.config` in your home directory: watch the release notes for this.
 
+Starting with version 0.41.0, when Cider writes a config file to disk is adds (to old config files) or updates the Cider version number. The purpose of this is that one can see which version of Cider was used to write the file.
+
 Note that `]Cider.CreateProject` deals differently with the possible combinations of namespace and source folder:
 
 * The namespace and the source folder are both empty
 * The namespace is empty and the source folder is not
 * The source folder is empty and the namespace is not
+
+"Empty" and non-existing have the same meaning/effect here.
 
 In all these cases it should be pretty obvious what `]Cider.CreateProject` will do.
 
@@ -808,6 +812,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 

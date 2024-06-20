@@ -55,6 +55,7 @@
      :If batch
          r←installFolder
      :Else
+         ⎕SE.SALTUtils.ResetUCMDcache ¯1
          r←'*** Cider installed in ',installFolder
      :EndIf
  :EndIf

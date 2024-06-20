@@ -419,12 +419,14 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 </div>
 </div>
 
+<p>Starting with version 0.41.0, when Cider writes a config file to disk is adds (to old config files) or updates the Cider version number. The purpose of this is that one can see which version of Cider was used to write the file.</p>
 <p>Note that <code>]Cider.CreateProject</code> deals differently with the possible combinations of namespace and source folder:</p>
 <ul>
 <li>The namespace and the source folder are both empty</li>
 <li>The namespace is empty and the source folder is not</li>
 <li>The source folder is empty and the namespace is not</li>
 </ul>
+<p>“Empty” and non-existing have the same meaning/effect here.</p>
 <p>In all these cases it should be pretty obvious what <code>]Cider.CreateProject</code> will do.</p>
 <p>However, when the namespace and source folder are <em>both not empty</em> then the user will be asked whether the contents of the namespace should be deleted because that might well make sense.</p>
 <p>If the user answers this question with “No” then an error is thrown.</p>
