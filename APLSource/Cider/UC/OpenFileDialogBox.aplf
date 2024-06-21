@@ -8,7 +8,7 @@
  ref←⎕NEW⊂'FileBox'
  ref.Caption←caption
  ref.(onFileBoxOK onFileBoxCancel)←1
- ref.File←'cider.config'
+ ref.File←##.ConfigFilename
  res←ref.Wait
  :If 'FileBoxOK'≡2⊃res
      opCode←1

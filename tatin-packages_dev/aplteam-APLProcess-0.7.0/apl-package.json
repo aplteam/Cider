@@ -4,6 +4,7 @@
   date: 20231001.045851,
   description: "Start an APL process from within Dyalog APL",
   documentation: "",
+  exclude: "",
   files: "",
   group: "aplteam",
   io: 1,

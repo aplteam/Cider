@@ -4,6 +4,7 @@
   date: 20240404.082054,
   description: "Utilities for doing gymnastics with files and directories",
   documentation: "",
+  exclude: "",
   files: "",
   group: "aplteam",
   io: 0,

@@ -1,0 +1,21 @@
+ parms←{parms_}CreateCreateProjectParms folder;list;b;l
+⍝ Creates a namespace with all parameters one might pass to `CreateProject`.\\
+⍝ `folder` must point to the folder hosting the project to be created.
+⍝ `parms_`, if specified, must be a namespace with some such parameters.
+⍝ Parameters passed this way take precedence.
+ parms_←{0<⎕NC ⍵:⍎⍵ ⋄ ⍬}'parms_'
+ parms←(1⊃1↓⎕RSI,⎕THIS).⎕NS''      ⍝ Create namespace where we got called from
+ parms.folder←folder
+ parms.acceptConfig←0
+ parms.ignoreUserExec←0
+ parms.namespace←''
+ :If ~(⊂parms_)∊''⍬
+     '⍺ must not contain references'Assert 0=≢parms_.⎕NL 9
+     (b{0=+/b:'' ⋄ 'Invalid parameter: ',⊃{⍺,',',⍵}/⍺/⍵}l)Assert 0=+/b←~(l←' '~⍨¨↓parms_.⎕NL 2)∊' '~⍨¨↓parms.⎕NL 2
+     :If 0<≢list←' '~⍨¨↓parms_.⎕NL 2
+         parms⍎¨list{' '=1↑0⍴⍵:⍺,'←''',⍵,'''' ⋄ ⍵≡⍬:⍺,'←⍬' ⋄ ⍺,'←',⍕⍵}¨parms_.{⍎⍵}¨list
+     :EndIf
+ :EndIf
+ 'Must not be empty: "folder"'Assert 0<≢parms.folder
+ ('Is not a folder: ',parms.folder)Assert F.IsDir parms.folder
+⍝Done

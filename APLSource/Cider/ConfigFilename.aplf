@@ -1,2 +1,2 @@
- r←configFilename
+ r←ConfigFilename
  r←'cider.config'

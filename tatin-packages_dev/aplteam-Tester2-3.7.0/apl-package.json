@@ -4,6 +4,7 @@
   date: 20240303.0801,
   description: "Dyalog APL test framework",
   documentation: "",
+  exclude: "",
   files: "",
   group: "aplteam",
   io: 1,

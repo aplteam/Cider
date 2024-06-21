@@ -1,6 +1,6 @@
  {r}←config WriteProjectConfigFile path;path2
 ⍝ Writes project configuration "config" to file.\\
 ⍝ `path` may or may not carry the filename as such.
- path2←'cider.config'{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}path
+ path2←ConfigFilename{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}path
  r←config Put_JSON5 path2
 ⍝Done

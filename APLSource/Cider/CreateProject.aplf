@@ -1,0 +1,21 @@
+ {r}←CreateProject parms;filename;config;projectFolder;list
+⍝ Create a project according to what's specified in parms.
+⍝ Returns always ''. Throws errors in case the project cannot be created
+ parms←parms CreateCreateProjectParms ⍬
+ r←''
+ filename←(AddSlash parms.folder),'cider.config'
+ :If 0=≢parms.namespace
+     parms.namespace←{{⍵↑⍨1+-⌊/(⌽⍵)⍳'/\'}¯1↓⍵}1⊃1 ⎕NPARTS filename
+ :EndIf
+ :If ~(⊂,1 ⎕C parms.namespace)∊,¨'#' '⎕SE'
+     ('Not a valid APL name: <',parms.namespace,'>')Assert ¯1≠⎕NC parms.namespace
+ :EndIf
+ :If ~⎕NEXISTS parms.folder
+     'Invalid folder: parent must exist'Assert{0=≢⍵:1 ⋄ ⎕NEXISTS ⍵}1⊃⎕NPARTS{⍵↓⍨-(¯1↑⍵)∊'/\'}parms.folder  ⍝ Parent folder must exist
+     parms.folder←∊1 ⎕NPARTS parms.folder
+     ⎕MKDIR parms.folder
+ :EndIf
+ CreateConfigFile filename parms.namespace
+ config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
+ ('Invalid config file: ',filename)Assert 0 PerformConfigChecks config
+⍝Done

@@ -3,7 +3,7 @@
 ⍝ `projectFolder` may or may not carry the filename as such.
 ⍝ Check the config file for some entries and adds them if they are missing. In such a
 ⍝ case the config file is also written back to file.
- projectFolder2←'cider.config'{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}projectFolder
+ projectFolder2←ConfigFilename{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}projectFolder
  config←Get_JSON5 projectFolder2
  saveFlag←0
  :If 0=config.CIDER.dependencies.⎕NC'tatin'

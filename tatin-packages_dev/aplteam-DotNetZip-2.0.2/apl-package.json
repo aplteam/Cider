@@ -4,6 +4,7 @@
   date: 20220531.123346,
   description: "Zipping and unzipping with.NET Core on all major platforms",
   documentation: "",
+  exclude: "",
   files: "",
   group: "aplteam",
   io: 1,

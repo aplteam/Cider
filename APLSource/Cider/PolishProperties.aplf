@@ -55,7 +55,7 @@
      f3←1
  :EndIf
  :If f1∨f2∨f3
-     config Put_JSON5(F.AddTrailingSep parms.folder),'cider.config'
+     config Put_JSON5(F.AddTrailingSep parms.folder),ConfigFilename
      p'Modified file "cider.config" saved in ',parms.folder
  :EndIf
  :If errorFlag

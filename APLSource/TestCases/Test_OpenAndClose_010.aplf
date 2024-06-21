@@ -21,7 +21,7 @@
  Assert'Project successfully opened and established in '{⍺≡(≢⍺)↑⍵}res
  list←FilesAndDirs.ListFiles tempDir
  →T.GoToTidyUp 1≠≢list
- →T.GoToTidyUp'cider.config'≢⊃,/1↓⎕NPARTS 1⊃list
+ →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
  Assert res ∆StartsWith'Unlinked:'

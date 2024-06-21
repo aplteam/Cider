@@ -4,6 +4,7 @@
   date: 20240129.060735,
   description: "Converts Markdown to HTML5",
   documentation: "",
+  exclude: "",
   files: "",
   group: "aplteam",
   io: 1,

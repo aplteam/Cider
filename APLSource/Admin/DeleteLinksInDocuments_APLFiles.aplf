@@ -32,6 +32,6 @@
              ⎕NDELETE targetFolder
          :EndIf
      :Else
-         ∘∘∘ ⍝ Not implemented (yet?!)  ⍝TODO⍝
+         ∘∘∘ ⍝ Not implemented (yet?!)
      :EndIf
  :EndIf

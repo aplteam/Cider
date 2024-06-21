@@ -4,6 +4,7 @@
   date: 20230612.055539,
   description: "Zipping and unzipping with .NET on Windows and zip/unzip on other platforms",
   documentation: "",
+  exclude: "",
   files: "",
   group: "aplteam",
   io: 1,

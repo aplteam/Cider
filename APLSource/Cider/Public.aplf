@@ -5,6 +5,8 @@
  r,←⊂'AddTatinDependencies'
  r,←⊂'CloseProject'
  r,←⊂'CreateOpenParms'
+ r,←⊂'CreateCreateProjectParms'
+ r,←⊂'CreateProject'
  r,←⊂'DropAlias'
  r,←⊂'GetCiderAliasFileContent'
  r,←⊂'GetCiderAliasFilename'

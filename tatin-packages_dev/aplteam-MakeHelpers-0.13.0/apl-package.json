@@ -4,6 +4,7 @@
   date: 20240406.063333,
   description: "Collections of helpers for building an application",
   documentation: "",
+  exclude: "",
   files: "",
   group: "aplteam",
   io: 1,

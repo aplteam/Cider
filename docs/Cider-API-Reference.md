@@ -6,7 +6,7 @@
 
 # Cider's API --- Syntax Reference
 
-Although the API functions are similar to their user command equivalents, they are not identical. Also, the API offers more functions while there is no API equivalent for `]CreateProject`.
+Although the API functions are similar to their user command equivalents, they are not identical. Also, the API offers more functions.
 
 While for the user commands the help provided by the `-??` syntax is sufficient, this document deals with the API.
 
@@ -97,6 +97,31 @@ You may specify any of them or both, in any order.
 
 Returns the number of projects closed as result.
 
+## CreateCreateProjectParms
+
+```
+parms←{parms} CreateCreateProjectParms folder
+```
+
+An ambivalent function that returns a namespace with default parameters required by the [`CreateProject`](#)function. 
+
+The mandatory right argument must be the folder where the project lives.
+
+The optional left argument might be a namespace holding some of the parameters. The values are copied then over.
+
+These are the parameters:
+
+```
+ acceptConfig    0         
+ folder          /path/2/project
+ ignoreUserExec  0         
+ namespace       '' 
+```
+
+`namespace` defaults to the last part in `folder`.
+
+For the meaning of the other parameters refer to `]Cider.CreatePoject -??`.
+
 ## CreateOpenParms
 
 ```
@@ -110,7 +135,7 @@ A monadic function that returns a namespace with default parameters required by 
  alias                 ''      
  batch                 0
  checkPackageVersions  ⍬
- folder                ''  
+ folder                  ''  
  ignoreUserExec        0
  importFlag            0
  noPkgLoad             0
@@ -126,7 +151,13 @@ This is useful for creating a namespace with the defaults, set required paramete
 
 ## CreateProject
 
-There is no API equivalent for the user command `]Cider.CreateProject`.
+```
+r←CreateProject parms
+```
+
+`parms` is typically create by calling [`CreateCreateProjectParms`](#). 
+
+This function can be used to create a project under program control.
 
 ## DropAlias
 
@@ -512,6 +543,8 @@ r←Version
 Returns the version number.
 
 This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
+
+
 
 
 

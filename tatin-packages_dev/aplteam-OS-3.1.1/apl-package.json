@@ -4,6 +4,7 @@
   date: 20230508.172522,
   description: "OS-related tools for all major platforms",
   documentation: "",
+  exclude: "",
   files: "",
   group: "aplteam",
   io: 1,

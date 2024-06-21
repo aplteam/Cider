@@ -7,8 +7,8 @@
      path←GetFolderFromAlias path
      ('Alias "',path,'" not found')Assert 0<≢path
  :EndIf
- :If 'cider.config'{⍺≡⎕C(-≢⍺)↑⍵}path
- :AndIf (¯1↑(-≢'cider.config')↓path)∊'/\'
+ :If ConfigFilename{⍺≡⎕C(-≢⍺)↑⍵}path
+ :AndIf (¯1↑(-≢ConfigFilename)↓path)∊'/\'
      filename←path
  :Else
      filename←path,'/cider.config'
