@@ -329,9 +329,11 @@ With the user command, this can be overwritten temporarily with, say:
 
 ###### source
 
-Defaults to `APLSource`: a subfolder that hosts the code. That's where the code lives, relative to the project folder. 
+Defaults to `APLSource`: a subfolder that hosts all APL code. Its relative to the project folder. 
 
-This might be empty, for example when the project is just a single script (class or namespace).
+This might be empty, for example when the project is just a single script (class or namespace) that lives in the root of the project.
+
+Note that this might be different from Tatin `source` parameter, which might point to a sub-folder of Cider's `source` hosting just the code that is a package. Cider's `source` might also contain test cases, development tools and whatnot.
 
 ###### dependencies
 
@@ -812,6 +814,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 
