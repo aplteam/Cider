@@ -1,0 +1,37 @@
+ R←Test_UC_047(stopFlag batchFlag);⎕TRAP;res;msg;rc;folder;parms;tempDir;success;log;stop;expected
+⍝ Exercise ]Cider.AddTatinDependencies without loading
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
+
+ parms←##.Cider.CreateOpenParms''
+ parms.folder←∊⎕NPARTS tempDir
+ parms.noPkgLoad←0
+ parms.batch←1
+ parms.ignoreUserExec←1
+
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+
+ stop←0
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'AddTatinDeps@' 'y'
+ ##.Cider.C.YesOrNo_Answers⍪←'LoadTatinDependenciesAfterAdding@' 'n'
+ (rc msg res)←stop ∆UCMD'AddTatinDependencies FilesAndDirs,APLTreeUtils2 "',tempDir,'"'
+ →T.GoToTidyUp rc≠0
+ →T.GoToTidyUp 0≠≢msg
+ expected←'2 Tatin dependencies added:' 'aplteam-FilesAndDirs-5.7.1' 'aplteam-APLTreeUtils2-1.4.0'
+ →T.GoToTidyUp expected≢APLTreeUtils2.DLB,res
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
+ {}∆LINK'Break' '#.TEMP'
+ FilesAndDirs.RmDir tempDir,'/..'
+⍝Done

@@ -1,0 +1,46 @@
+ R←∆Test_UC_050(stopFlag batchFlag);⎕TRAP;folder;res;log;cals;success;tempDir;config;msg;rc;stop;batch;Cleanup;ref
+⍝ Open project, add 2 NuGet packages to default folder, load, call, list, close, re-open, close
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+ tempDir←∆TEMP_PATH
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
+
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ stop←0
+ (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
+ Assert rc=0
+
+ ref.YesOrNo_Answers←1 2⍴'LoadNuGetDependenciesAfterAdding@' 'y'
+ (rc msg res)←stop ∆UCMD'AddNuGetDependencies Clock,NodaTime ',tempDir
+ Assert rc=0
+ →T.GoToTidyUp 2≠+/'Clock' 'NodaTime'{0<≢('\b',⍺,'\b')⎕S 0⊣⍵}¨⊂res
+
+ (rc msg res)←stop ∆UCMD'ListNuGetDependencies ',tempDir
+ Assert rc=0
+ →T.GoToTidyUp 2≠≡res
+
+ ref.YesOrNo_Answers⍪←1 2⍴'Do you wish to )CLEAR the workspace?' 'y'
+ (rc msg res)←∆UCMD'CloseProject ',tempDir,' -fast'
+ Assert rc=0
+ →T.GoToTidyUp~∨/'Number of projects closed: 1'∊res
+
+ #.TEMP.(⎕EX ⎕NL-⍳9)
+ (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
+ Assert rc=0
+ →T.GoToTidyUp'Project successfully opened and established in "#.TEMP"'≢res~⎕TC
+ →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
+ →T.GoToTidyUp~∧/'Julian' 'Gregorian'∊⍕¨#.TEMP.NodaTime.CalendarSystem.⎕NL-2
+
+ (rc msg res)←∆UCMD'CloseProject ',tempDir,' -fast'
+ Assert rc=0
+
+ R←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ res←∆LINK'Break' '#.TEMP'
+⍝Done

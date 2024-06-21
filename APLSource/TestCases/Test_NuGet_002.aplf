@@ -1,5 +1,6 @@
 R←Test_NuGet_002(stopFlag batchFlag);⎕TRAP;parms;I;tempFolder;msg;rc
 ⍝ Open a project, add two NuGet dependencies, load, call, list, close, re-open, close
+⍝ The real test function (∆Test_NuGet_002) is executed in its own APL process
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

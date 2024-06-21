@@ -1,8 +1,10 @@
 (
- '* 0.41.0 ⋄ 2024-06-20'
+ '* 0.41.0 ⋄ 2024-06-21'
  '  * API functions `CreateProject` and `CreateCreateProjectParms` added '
  '  * Cider now adds its own version number to a project config file whenever it is written to disk'
  '  * Cider''s "Make" now re-creates the UCMD cache'
+ '  * Test cases added for ]addTatinDependencies'
+ '  * NuGet-related test cases of the UC-group improved'
  '* 0.40.1 ⋄ 2024-06-18'
  '  * NuGet-related test cases are now executed in their own, independent process'
  '  * Error messages for `Init` functions of a project improved'

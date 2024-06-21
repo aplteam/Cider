@@ -1,0 +1,35 @@
+ R←∆Test_UC_045(stopFlag batchFlag);⎕TRAP;res;msg;rc;folder;parms;tempDir;success;log
+⍝ Exercise ]Cider.AddNuGetDependencies and ListNuGetDependencies
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+ tempDir←∆TEMP_PATH
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
+
+ parms←##.Cider.CreateOpenParms''
+ parms.folder←∊⎕NPARTS tempDir
+ parms.noPkgLoad←0
+ parms.batch←1
+ parms.ignoreUserExec←1
+
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+
+ {}##.Cider.AddNuGetDependencies'Clock,NodaTime'tempDir   ⍝ Clock is already installed
+
+ (rc msg res)←∆UCMD'ListNuGetDependencies "',tempDir,'"'
+ →T.GoToTidyUp rc≠0
+ →T.GoToTidyUp 0≠≢msg
+ →T.GoToTidyUp 2≠≢res
+ →T.GoToTidyUp 2≠2⊃⍴res
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
+ {}∆LINK'Break' '#.TEMP'
+⍝Done
