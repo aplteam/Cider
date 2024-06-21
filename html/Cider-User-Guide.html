@@ -487,8 +487,9 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <h6 data-id="source">2.6.1.1.4. source</h6>
 </a>
 </div>
-<p>Defaults to <code>APLSource</code>: a subfolder that hosts the code. That's where the code lives, relative to the project folder.</p>
-<p>This might be empty, for example when the project is just a single script (class or namespace).</p>
+<p>Defaults to <code>APLSource</code>: a subfolder that hosts all APL code. Its relative to the project folder.</p>
+<p>This might be empty, for example when the project is just a single script (class or namespace) that lives in the root of the project.</p>
+<p>Note that this might be different from Tatin <code>source</code> parameter, which might point to a sub-folder of Cider's <code>source</code> hosting just the code that is a package. Cider's <code>source</code> might also contain test cases, development tools and whatnot.</p>
 <div class="h_tag">
 <a href="#dependencies" id="dependencies" class="autoheader_anchor">
 <h6 data-id="dependencies">2.6.1.1.5. dependencies</h6>
