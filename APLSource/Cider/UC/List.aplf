@@ -104,7 +104,7 @@
      c.Name←'ProjectConfig'
      c.Desc←'Puts the config file of a project on display'
      c.Group←'Cider'
-     c.Parse←'1s'
+     c.Parse←'1s -edit'
      r,←c
 
      c←⎕NS''
