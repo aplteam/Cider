@@ -1,4 +1,8 @@
 (
+ '* 0.41.1 ⋄ 2024-06-27'
+ '  * On Linux and Mac-OS, the folder /home/<⎕AN> is no longer hard coded but established with '
+ '    2 ⎕NQ ''.'' ''GetEnvironment'' ''HOME'''
+ '  * NuGet-related test cases optimized '
  '* 0.41.0 ⋄ 2024-06-21'
  '  * API functions `CreateProject` and `CreateCreateProjectParms` added '
  '  * Cider now adds its own version number to a project config file whenever it is written to disk'

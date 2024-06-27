@@ -1,9 +1,14 @@
- r←IsDotNetAvailable
+ r←IsDotNetAvailable;res;parms;I
 ⍝ Checks whether .NET (rather than .NET framework) is available at all.
- :Trap 11   ⍝ On Linux and Mac-OS, a DOMAIN ERROR will occur if .NET is not installed
-     :If 0=r←∨/'.NETCore'⍷∊⎕CMD'dotnet --list-runtimes'
-         r←∨/'\dotnet\'⍷∊⎕CMD'dotnet --list-sdks'
+⍝ We cannot do this in the current APL session on Windows because that might use .NET Framework but
+⍝ .NET might still be available, so we start a process which will exit with 125 for "yes", 126 for "no"
+⍝ and "123" for "error".
+ :If 'Win'≡APLTreeUtils2.GetOperatingSystem ⍬
+     :If 0=r←1 1≡2↑2250⌶0  ⍝ The current APL ight already be configured for .NET
+         parms←∆NuGetTestProcessParms ⍬ ⍬
+         I←⎕NEW APLProcess(,⊂parms)
+         r←125=I.ExitCode
      :EndIf
  :Else
-     r←0
- :Endtrap
+     r←1 1≡2↑2250⌶0
+ :EndIf

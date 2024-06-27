@@ -21,10 +21,13 @@
              info←'Could not load the .NET bridge interface.'
          :EndIf
      :EndIf
+ :Else
+     info←'.NET is not available, therefore the NuGet tests cannot be executed.'
  :EndIf
  :If 0=netcore
  :AndIf ~ps.batchFlag
  :AndIf 0<≢info
      CommTools.Pause info,(⎕UCS 13),'Therefore the NuGet tests cannot be executed.'
+     r←0
  :EndIf
 ⍝Done

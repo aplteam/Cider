@@ -3,6 +3,10 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
+:If ~IsDotNetAvailable
+     R←T._NotApplicable ⋄ →0
+ :EndIf
+
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI
  tempDir←∆GetFolderInTempDir⊃⎕SI
