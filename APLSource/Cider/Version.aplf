@@ -1,3 +1,7 @@
  r←Version
 ⍝ See also `History`
+<<<<<<< HEAD
  r←'0.41.0+671'
+=======
+ r←'0.41.1+671'
+>>>>>>> dev

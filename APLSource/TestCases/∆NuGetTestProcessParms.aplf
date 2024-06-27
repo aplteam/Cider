@@ -1,9 +1,15 @@
  parms←∆NuGetTestProcessParms(name folder)
  parms←APLProcess.CreateParms
  parms.Exe←1⊃2 ⎕NQ #'GetCommandLineArgs' 'DYALOG'
- parms.OutputFilename←(739⌶0),'/',name,'.txt'
- parms.CommandLineArgs,←'path=''',folder,''''
- parms.CommandLineArgs,←' fns=∆',name
+ :If 0<≢name
+     parms.OutputFilename←(739⌶0),'/',name,'.txt'
+ :EndIf
+ :If 0<≢folder
+     parms.CommandLineArgs,←'path=''',folder,''''
+ :EndIf
+ :If 0<≢name
+     parms.CommandLineArgs,←' fns=∆',name
+ :EndIf
  :If 0<T.⎕NC'codeCoverage'
      parms.CommandLineArgs,←' codeCoverageFile=''',(T.codeCoverage.filename~''''),''''
  :EndIf
