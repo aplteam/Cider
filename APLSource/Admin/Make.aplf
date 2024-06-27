@@ -26,8 +26,8 @@
      Assert 3=noOf
      M.CreateAPI #.Cider.Cider ##.Cider.Public cfg.api
      zipFilename←⎕SE.Tatin.BuildPackage parms
+     MakeZipForDyalog 1
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
-
      :If 0=batch
          ⎕←'   ',4↓0 #.Cider.Admin.InstallCider 1
      :EndIf
