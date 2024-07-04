@@ -1,0 +1,29 @@
+ r←ProcessLinkOptions(parms config);path;filename;msg
+ r←⎕NS''
+ path←config.CIDER.source{0=≢⍺:⍵ ⋄ ⍵,'/',⍺}parms.folder
+ filename←(F.AddTrailingSep path),'.linkconfig'
+ :If F.IsFile filename
+     :If 0≢parms.watch
+         r.watch←parms.watch                     ⍝ Was specified by the user, and that takes (temporarily) precendence
+     :EndIf
+     :If 9=config.⎕NC'LINK'
+     :AndIf 0<≢config.LINK.⎕NL⍳16
+     :AndIf 0=parms.batch
+         msg←''
+         msg,←⊂'There is a file .linkconfig in:'
+         msg,←⊂F.EnforceSlash path
+         msg,←⊂'but there is also a non-empty "Link" section in Cider''s config file'
+         msg,←⊂'which will be ignored because of the .linkconfig file.'
+         msg,←⊂'Consider deleting the "Link" section from Cider''s config file!'
+         Box Frame msg
+     :EndIf
+ :Else
+     r←ExtractLinkOptions config                 ⍝ Merge the default options with Cider's options
+     :If 0≢parms.watch
+         config.LINK.watch←parms.watch           ⍝ Was specified by the user, and that takes (temporarily) precendence
+     :ElseIf 2=r.⎕NC'watch'
+         parms.watch←r.watch
+     :Else
+         parms.watch←(1+HasDotNet)⊃'ns' 'both'   ⍝ Default is "both" but for the time being only when .NET is available
+     :EndIf
+ :EndIf

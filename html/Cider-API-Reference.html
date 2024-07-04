@@ -434,6 +434,7 @@ p.alias←'.'
 <p>Defaults to “both”, meaning that changing any APL objects in the workspaces will result in Link updating the corresponding file on disk, and any change on disk will be reflected by changing the workspace.</p>
 <p>You may instead set this to “ns”, which forces Link to write changes in the WS to disk but ignore changes on the file system.</p>
 <p>You may also set this to “dir”, when changes on the file system will be brought into the WS while changes in the WS are <em>not</em> saved to disk.</p>
+<p>Specify “none” if all changes should be ignored.</p>
 <p>Other settings of <code>watch</code> will result in an error.</p>
 <p>Note that <code>CreateOpenParms</code> will assign a <code>0</code> to `watch. That allows recognizing whether the user has set this; eventually 0 will become “both”, the default.</p>
 <div class="leanpub_A">

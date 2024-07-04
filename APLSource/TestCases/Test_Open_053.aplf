@@ -1,0 +1,31 @@
+ R←Test_Open_053(stopFlag batchFlag);⎕TRAP;parms;qdmx;filename;success;log
+⍝ Open a project with watch=none
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ 'TEMP'#.⎕NS''
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←∆GetTestPath⊃⎕SI
+ parms.parent←'#.TEMP'
+ parms.watch←'none'
+ parms.ignoreUserExec←1
+ parms.batch←1
+ filename←parms.folder,'/APLSource/Hello.aplf'
+ (⊂'r←Hello' 'r←''World''')⎕NPUT filename 1
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+
+ (success log)←##.Cider.OpenProject parms
+ Assert success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+
+ →T.GoToTidyUp'none'≢#.TEMP.Foo.CiderConfig.LINK.watch
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
+ {}(~parms.batch)⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ (⊂'r←Hello' 'r←''World''')⎕NPUT filename 1
+ #.⎕EX'TEMP'
+⍝Done

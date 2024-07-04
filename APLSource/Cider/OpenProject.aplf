@@ -17,7 +17,7 @@
  '"folder" must be specified'Assert 0<parms.⎕NC'folder'
  '"folder" must be specified'Assert 0<≢parms.folder
  '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
- '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both' 0
+ '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both' 'none' 0
  p←{⍺←parms.(verbose batch) ⋄ ⍺ PrintToSession ⍵}
  parms←(p GetFolderFromAlias)parms
  ('Folder does not exist: ',parms.folder)Assert F.Exists parms.folder
@@ -63,12 +63,7 @@
  configFilename HandleSysVars config
  source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source           ⍝ For linking we are only interested in the code folder
  ('Source folder does not exist: ',parms.folder)Assert F.Exists parms.folder
- linkOptions←ExtractLinkOptions config                                          ⍝ Merge the default options with Cider's options
- :If 0≢parms.watch
-     config.LINK.watch←linkOptions.watch←parms.watch                            ⍝ Was specified by the user
- :Else
-     parms.watch←(1+HasDotNet)⊃'ns' 'both'                                      ⍝ Default is "both" but for the time being only when .NET is available
- :EndIf
+ linkOptions←ProcessLinkOptions parms config
  p'Bringing in the source code...'
  projectSpace_←CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
  :If parms.importFlag
@@ -85,8 +80,9 @@
          res Assert 0=parms.batch
          (1 parms.batch)p res
      :EndIf
-     (1 parms.batch)p ReportLinkSettings config
  :EndIf
+ (1 parms.batch)p'watch'ReportLinkSettings linkOptions
+ 1 p parms.batch ReportWatch res
  :If 0=parms.noPkgLoad
      pkgStatus←parms CheckForTatinPackages config
      :If 0<pkgStatus

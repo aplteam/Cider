@@ -1,8 +1,16 @@
- {r}←ReportLinkSettings cfg;list
+ {r}←{ignore}ReportLinkSettings linkOptions;list;defaults;ind;b;list2
 ⍝ Report all Link settings (if any) that differ from their default
-⍝ `cfg` is a namespace representing a project's Cider config file.
  r←''
- list←' '~⍨¨↓cfg.LINK.⎕NL 2
- :If 0<≢list
-     r←cfg∘{'LINK:',⍵,'=',⍕⍺.LINK⍎⍵}¨list
+ ignore←{2=⎕NC ⍵:⍎⍵ ⋄ ''}'ignore'
+ :If ~(⊂linkOptions)∊''⍬
+     list←' '~⍨¨↓linkOptions.⎕NL 2
+     list←list~⊆ignore
+     :If 0<≢list
+         defaults←⎕SE.Link.U.DefaultOpts ⍬
+         list2←' '~⍨¨↓defaults.⎕NL 2
+         ind←list2⍳list
+         (list ind)←(ind≤≢list2)∘/¨list ind
+     :AndIf ∨/b←(linkOptions.⍎¨list)≢¨defaults.⍎¨list2[ind] ⍝ Where does the actual value differ from the default?
+         r←linkOptions.{⍵,'=',⍎⍵}¨b/list
+     :EndIf
  :EndIf

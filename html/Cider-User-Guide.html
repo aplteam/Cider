@@ -586,15 +586,18 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 </div>
 <p>These are LINK parameters which are passed on to LINK when Cider brings the APL code into the WS with LINK.</p>
 <p>Note that this is a temporary solution: LINK should have its own config files for this, and will get them with Link 4.0.</p>
-<p>However, until all supported versions of Link can deal with Link's own configuration file, Cider will save non-defaults values in a Cider project config file.</p>
+<p>However, until all supported versions of Link can deal with Link's own configuration file, Cider will save non-default values in a Cider project config file.</p>
+<p>If there is a Link config file by the name <code>.linkconfig</code>, then any definition in the “Link” section of the Cider config file is ignored. A message will remind the user of deleting the “Link” section from the Cider config file.</p>
+<p>Cider will look for the file in what <a href="#source" class="bookmark_link"><code>source</code></a> defines. If <code>source</code> is empty then it is the root of the project.</p>
 <div class="h_tag">
 <a href="#watch" id="watch" class="autoheader_anchor">
 <h6 data-id="watch">2.6.1.2.1. watch</h6>
 </a>
 </div>
 <p>Defines which source to track for changes, so the other can be synchronised.</p>
-<p>Defaults to “both” (namespace <em>and</em> disk) and “ns” otherwise. Can also be “dir”.</p>
+<p>Defaults to “both” (namespace <em>and</em> disk) and “ns” otherwise. Can also be “dir” and “none”.</p>
 <p>Note that for “both” and “dir” .NET or .NET Core is required. Under Windows this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not, the default for “watch” will be “ns”.</p>
+<p>“watch” is a very important parameter; that's why Cider will always report the setting. Other Link settings are only reported when they diverge from the default.</p>
 <div class="h_tag">
 <a href="#sysvars" id="sysvars" class="autoheader_anchor">
 <h5 data-id="SYSVARS">2.6.1.3. SYSVARS</h5>

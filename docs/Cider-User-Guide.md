@@ -446,15 +446,21 @@ These are LINK parameters which are passed on to LINK when Cider brings the APL 
 
 Note that this is a temporary solution: LINK should have its own config files for this, and will get them with Link 4.0. 
 
-However, until all supported versions of Link can deal with Link's own configuration file, Cider will save non-defaults values in a Cider project config file.
+However, until all supported versions of Link can deal with Link's own configuration file, Cider will save non-default values in a Cider project config file.
+
+If there is a Link config file by the name `.linkconfig`, then any definition in the "Link" section of the Cider config file is ignored. A message will remind the user of deleting the "Link" section from the Cider config file.
+
+Cider will look for the file in what [`source`](#) defines. If `source` is empty then it is the root of the project.
 
 ###### watch
 
 Defines which source to track for changes, so the other can be synchronised.
 
-Defaults to "both" (namespace _and_ disk) and "ns" otherwise. Can also be "dir". 
+Defaults to "both" (namespace _and_ disk) and "ns" otherwise. Can also be "dir" and "none". 
 
 Note that for "both" and "dir" .NET or .NET Core is required. Under Windows this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not, the default for "watch" will be "ns".
+
+"watch" is a very important parameter; that's why Cider will always report the setting. Other Link settings are only reported when they diverge from the default.
 
 ##### SYSVARS
 
@@ -814,6 +820,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 

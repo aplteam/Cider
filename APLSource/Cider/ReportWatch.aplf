@@ -1,0 +1,15 @@
+ r←batchFlag ReportWatch msgs
+⍝ "msgs" is what was return by Link's `Create` or `Import` function.
+⍝ Returns the setting of Link's "watch" parameter.
+⍝ Because it is so important it is always reported, even when it carries the default.
+ r←''
+ :If ~batchFlag
+     r←'Link parameter "watch" is <'
+     r,←,{
+         ∨/'←→'⍷⍵:'both'
+         ∨/'←'⍷⍵:'dir'
+         ∨/'→'⍷⍵:'ns'
+         'none'
+     }msgs
+     r,←,'>'
+ :EndIf

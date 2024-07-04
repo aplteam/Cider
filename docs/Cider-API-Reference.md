@@ -482,6 +482,8 @@ You may instead set this to "ns", which forces Link to write changes in the WS t
 
 You may also set this to "dir", when changes on the file system will be brought into the WS while changes in the WS are _not_ saved to disk.
 
+Specify "none" if all changes should be ignored.
+
 Other settings of `watch` will result in an error.
 
 Note that `CreateOpenParms` will assign a `0` to `watch. That allows recognizing whether the user has set this; eventually 0 will become "both", the default.
@@ -543,6 +545,7 @@ r←Version
 Returns the version number.
 
 This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
+
 
 
 
