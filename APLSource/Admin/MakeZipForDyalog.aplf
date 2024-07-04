@@ -6,7 +6,7 @@
      list←F.ListFiles path,'/*.zip'
      ID←2⊃⎕NPARTS⊃¯1↑list
      :If ID≢⊃¯1↑⎕SE.Tatin.ListVersions'[tatin]aplteam-Cider'
-         ##.Cider.(Box Frame)'Note that he version ',ID,' is not yet available on [tatin]!'
+         ##.Cider.(Box Frame)'Note that the version ',ID,' is not yet available on [tatin]!'
      :EndIf
      tempFolder←F.GetTempSubDir'NewCiderVersion'
      {}⎕SE.Tatin.InstallPackages(⊃list)tempFolder

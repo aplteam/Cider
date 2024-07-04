@@ -29,7 +29,7 @@
  :EndIf
 
  (rc msg result)←stop ∆UCMD cmd,' -watch=firlefanz'
- →T.GoToTidyUp~∨/'invalid value for modifier <watch> (must be ONE of "ns dir both")'⍷msg
+ →T.GoToTidyUp~∨/'invalid value for modifier <watch> (must be ONE of "ns dir both none")'⍷msg
 
  r←T._OK
 
