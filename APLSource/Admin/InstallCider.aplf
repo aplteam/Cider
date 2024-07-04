@@ -42,6 +42,7 @@
      :EndIf
  :EndIf
  ZIPs←C.FilesAndDirs.ListFiles ##.CiderConfig.HOME,'/Dist/*.zip'
+ ZIPs←{⍵/⍨'Installed-'{⍺∘≢¨(≢⍺)↑¨{2⊃⎕NPARTS ⍵}¨⍵}⍵}ZIPs
  Assert 1=≢ZIPs
  zipFilename←⊃ZIPs
  :If batch

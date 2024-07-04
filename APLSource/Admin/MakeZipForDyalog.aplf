@@ -3,10 +3,13 @@
  :If flag
      C←##.CiderConfig ⋄ F←##.Cider.FilesAndDirs
      path←C.HOME,'/',C.CIDER.distributionFolder
-     list←⎕SE.Tatin.ListVersions'[tatin]aplteam-cider'
-     ID←⊃¯1↑list
+     list←F.ListFiles path,'/*.zip'
+     ID←2⊃⎕NPARTS⊃¯1↑list
+     :If ID≢⊃¯1↑⎕SE.Tatin.ListVersions'[tatin]aplteam-Cider'
+         ##.Cider.(Box Frame)'Note that he version ',ID,' is not yet available on [tatin]!'
+     :EndIf
      tempFolder←F.GetTempSubDir'NewCiderVersion'
-     {}⎕SE.Tatin.InstallPackages('[tatin]',ID)tempFolder
+     {}⎕SE.Tatin.InstallPackages(⊃list)tempFolder
      zipFilename←path,'/Installed-',ID,'.zip'
      {}tempFolder ##.TestCases.MakeHelpers.##.ZipArchive.ZipFolder zipFilename
      {}F.RmDirByForce tempFolder
