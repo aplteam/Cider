@@ -1,0 +1,6 @@
+(
+ 'Checks whether there is a later version of Cider available.'
+ 'If there is no later version this is reported.'
+ 'Otherwise the user will be asked whether she wants to update to the new version.'
+ 'The update is performed automatically though the current WS will stay on the old version.'
+)
