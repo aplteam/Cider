@@ -59,9 +59,10 @@
      ('Unkown: ',Cmd)Assert 2=ref.⎕NC Cmd
      r←ref⍎Cmd
  :Case 2
-     ref←help.level_2
-     path←(⍕ref),'.',Cmd  ⍝ for editing the vars
-     :If 2=ref.⎕NC Cmd
+     :If 0<help.⎕NC'level_2'
+         ref←help.level_2
+         path←(⍕ref),'.',Cmd  ⍝ for editing the vars
+     :AndIf 2=ref.⎕NC Cmd
          r←ref⍎Cmd
      :Else
          r,←⊂'There is no additional help available'
