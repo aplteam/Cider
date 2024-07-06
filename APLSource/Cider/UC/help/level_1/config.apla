@@ -1,8 +1,0 @@
-(
- 'Puts the content of Cider''s global config file into the editor and allows the user to change it.'
- 'By specifying the -print flag you can force the user command to print the content of the file'
- 'to the session rather than putting it into ⎕ED.'
- ''
- 'You may change the data, but those changes will only be written to the file if you confirm that.'
- 'Note that changing the config file does not affect the currently running instance of Cider.'
-)
