@@ -16,6 +16,7 @@
  parms.ignoreUserExec←1
  parms.batch←1
  filename←parms.folder,'/APLSource/Hello.aplf'
+ {}'Create!'FilesAndDirs.CheckPath parms.folder,'/APLSource'
  (⊂'r←Hello' 'r←''World''')⎕NPUT filename 1
  ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
 
