@@ -8,7 +8,7 @@
  '* A project [alias]'
  '* A path pointing to a Cider project'
  ''
- 'In case the project''s config file does not carry a definition for a NuGet dependency folder'
+ 'In case the project''s config file does not carry a definition for a NuGet dependency folder,'
  'the user is given the oportunity to edit the config file.'
  ''
  '-target=  Use this to specify a target namespace. This is added to the "dependencies" or the'

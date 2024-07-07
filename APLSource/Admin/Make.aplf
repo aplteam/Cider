@@ -23,7 +23,7 @@
      parms.targetPath←path
      parms.version←version
      noOf←M.ConvertMarkdownToHtml5(⊂C.HOME,'/'),¨'docs/' 'html/'
-     Assert 3=noOf
+     Assert 4=noOf
      M.CreateAPI #.Cider.Cider ##.Cider.Public cfg.api
      zipFilename←⎕SE.Tatin.BuildPackage parms
      MakeZipForDyalog 1
