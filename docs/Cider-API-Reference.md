@@ -81,7 +81,7 @@ Takes one ore more projects and closes them (read: break the link).
 
 The right argument must be either a simple character vector or a nested vector of character vectors. 
 
-The projects can be specified as fully qualified namespace names, as aliase or as project paths, or a mixture of them.
+The projects can be specified as fully qualified namespace names, as aliases or as project paths, or a mixture of them.
 
 Via the optional left argument the user can specify two arguments:
 
@@ -545,6 +545,7 @@ r←Version
 Returns the version number.
 
 This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
+
 
 
 

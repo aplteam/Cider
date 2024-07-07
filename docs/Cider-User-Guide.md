@@ -205,9 +205,9 @@ This is an optional flag.
 If you don't use Dropbox skip this topic.
 
 
-If `CheckForDropboxConflicts` is defined and has the value 1, then both `]OpenProject` and `]CloseProject` will check whether the project has files that contain the string "conflicted copy", and report such files to the session.
+If `CheckForDropboxConflicts` is defined and has the value 1, then both `]OpenProject` and `]CloseProject` will check whether the project has files were the name contains the string "conflicted copy", and report such files to the session.
 
-Background: in case Dropbox cannot figure out what the last version of a file is, it will create such a file. Dropbox leaves it to the user to compare such a file manually and solve the conflict somehow. The problem is that Dropbox does not actually tell you about such files, therefore Cider does it for you if you configure Cider accordingly.
+Background: in case Dropbox cannot figure out what the last version of a file is, it will create such a file. Dropbox leaves it to the user to compare such a file manually and solve the conflict somehow. The problem is that Dropbox does not actually tell you about such files, it just silently creates them. Therefore Cider does it for you if you configure Cider accordingly.
 
 ##### ExecuteAfterProjectOpen
 
@@ -820,6 +820,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 

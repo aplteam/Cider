@@ -1,5 +1,5 @@
- r←{x}CloseProject projects;list;project;ind;res;list;checks;closed
-⍝ Simply breaks the Link between a project and its folder on disk.
+  r←{x}CloseProject projects;list;project;ind;res;list;checks;closed
+⍝ Breaks the Link between a project and its folder on disk, and potentially execute a check functon afterwards.
 ⍝ In case ⍵ is empty ALL projects are closed.
 ⍝ `projects` may be one of:
 ⍝ 1. Empty vector (=close all)
@@ -7,8 +7,9 @@
 ⍝ 3. One or more alias names like `[my-alias]`
 ⍝ 4. One or more paths of currently open projects
 ⍝ 5. A mixture of 2, 3 and 4
-⍝ `x` can be a Boolean that defaults to 1, meaning "perform checks, if any"; see "CheckForDropboxConflicts"
-⍝ A 0 would therefore prevent checks from being performed.
+⍝ `x` can be a Boolean that defaults to 1, meaning "perform checks, if any"; see "CheckForDropboxConflicts" as
+⍝ an example.
+⍝ A 0 as left argument would therefore prevent checks from being performed.
 ⍝ Returns the number of projects closed.
  r←0
  checks←1

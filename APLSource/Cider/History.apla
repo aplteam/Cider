@@ -1,4 +1,6 @@
 (
+ '* 0.42.1 ⋄ 2024-07-??'
+ '  * Documentation of `CloseProject` and `CheckForDropBoxConflicts` polished.'
  '* 0.42.0 ⋄ 2024-07-06'
  '  * Help page for `OpenProject` improved'
  '  * -??? help page for `OpenProject` added'
