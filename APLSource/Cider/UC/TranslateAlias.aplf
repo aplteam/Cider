@@ -1,7 +1,7 @@
  r←TranslateAlias alias;aliase;row
  :If IsAlias alias
      aliase←P.GetCiderAliasFileContent ⍬
-     row←aliase[;1]⍳⊂alias~'[]'
+     row←aliase[;1]⍳⊂⎕C alias~'[]'
      ('Unknown alias: ',alias)Assert row≤≢aliase
      r←2⊃aliase[row;]
  :Else
