@@ -1,6 +1,10 @@
 (
  '* 0.42.1 ⋄ 2024-07-??'
+ '  * Cider now comes with Release Notes.'
  '  * Documentation of `CloseProject` and `CheckForDropBoxConflicts` polished.'
+ '  * The ]Cider.Config file now prints the content of Cider''s global config file to the session, and there'
+ '    is now an -edit flag but no -print flag anymore. That brings it in line with sinilar functions/commands'
+ '    in both Cider and Tatin.'
  '  * Bug fixes'
  '    * `CloseProject` failed on a non-lowercase alias name'
  '* 0.42.0 ⋄ 2024-07-06'

@@ -3,11 +3,8 @@
 
  r←'No action taken'
  filename←P.GetCiderGlobalConfigFilename
- json←⊃P.##.F.NGET filename
- :If Args.Switch'print'
-     r←'--- Conder Config File: ',('expand'P.##.F.NormalizePath filename),' ---',⎕UCS 10
-     r,←json
- :Else
+ json←⊃P.##.F.NGET filename 1
+ :If Args.Switch'edit'
      _Cider←⎕NS''
      _Cider.config←json
      _Cider.⎕ED'config'
@@ -17,4 +14,6 @@
          (⊂_Cider.config)P.##.F.NPUT filename 1
          r←'File edited and changes saved to disk'
      :EndIf
+ :Else
+     r←⍪(⊂'--- Cider Config File: ',('expand'P.##.F.NormalizePath filename),' ---'),json
  :EndIf

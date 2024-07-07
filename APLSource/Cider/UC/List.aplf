@@ -25,9 +25,9 @@
 
      c←⎕NS''
      c.Name←'Config'
-     c.Desc←'Allow the user to edit Cider''s config file'
+     c.Desc←'Prints Cider''s config file to the session, and allow the user to edit it'
      c.Group←'Cider'
-     c.Parse←'-print'
+     c.Parse←'-edit'
      r,←c
 
      c←⎕NS''
