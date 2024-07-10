@@ -1,8 +1,10 @@
- {r}←ProjectConfig path;filename;ns;orig;flag;edit;data
+ {r}←{editFlag}ProjectConfig path;filename;ns;orig;flag;edit;data
 ⍝ Puts the contents of the file cider.config in "path" into the editor.
+⍝ If `editFlag` is 0 it's running in read-only mode.
 ⍝ Returns 1 in case the file was modified and 0 otherwise.
 ⍝ If the user deletes the contents of the edit window this is treated as cancellation, and ¯1 is returned.
  r←0
+ editFlag←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'editFlag'
  :If '['∊path
      path←GetFolderFromAlias path
      ('Alias "',path,'" not found')Assert 0<≢path
@@ -19,29 +21,33 @@
  orig←ns.cider_config←⊃F.NGET filename 1
  :If ~CheckJsonSyntax ns.cider_config
  :OrIf ~0 PerformConfigChecks ⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
-     orig←'' ⍝ This can happen in case the user edited the file with a externalm editor and introduced a mistake
+     orig←'' ⍝ This can happen in case the user edited the file with an external editor and introduced a mistake
  :EndIf
  flag←0
- :Repeat
-     ns.⎕ED'cider_config'
-     :If orig≢ns.cider_config
-         :If 0=≢(∊ns.cider_config)~' '
-             r←¯1 ⍝ Cancelled by user
-             flag←1
-         :Else
-             :If 1 C.YesOrNo'SaveChanges@Would you like to save your changes?'
-             :AndIf CheckJsonSyntax ns.cider_config
-                 data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
-             :AndIf PerformConfigChecks data
-                 data Put_JSON5 filename
-                 r←flag←1
+ :If editFlag
+     :Repeat
+         ns.⎕ED'cider_config'
+         :If orig≢ns.cider_config
+             :If 0=≢(∊ns.cider_config)~' '
+                 r←¯1 ⍝ Cancelled by user
+                 flag←1
              :Else
-                 :If ~1 C.YesOrNo'Syntax check failed. Try again? (no=changes are lost)'
-                     flag←1
+                 :If 1 C.YesOrNo'SaveChanges@Would you like to save your changes?'
+                 :AndIf CheckJsonSyntax ns.cider_config
+                     data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
+                 :AndIf PerformConfigChecks data
+                     data Put_JSON5 filename
+                     r←flag←1
+                 :Else
+                     :If ~1 C.YesOrNo'Syntax check failed. Try again? (no=changes are lost)'
+                         flag←1
+                     :EndIf
                  :EndIf
              :EndIf
+         :Else
+             flag←1
          :EndIf
-     :Else
-         flag←1
-     :EndIf
- :Until flag
+     :Until flag
+ :Else
+     r←↑ns.cider_config
+ :EndIf

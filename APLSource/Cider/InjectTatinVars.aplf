@@ -1,14 +1,14 @@
  msg←InjectTatinVars(projectRoot folder);cfg;ref
 ⍝ When a package is loaded, a namespace `TatinVars` is injected into the root of the package by Tatin.
 ⍝ When Cider opens a project that carries a file apl-package.json in the projects's root folder, it
-⍝ injects such a namespace in the root of the project.\\
+⍝ injects such a namespace in the root of the project by default.\\
 ⍝ However, more often than not a sub-namespace of the project will eventually become the package.
-⍝ In such a case you might want to have `TatinVars` in the root of the _**package**_ folder.\\
+⍝ In such a case you might want to have `TatinVars` in the root of the _**package**_ namespace.\\
 ⍝ You can achieve that by injecting a property `tatinVars` into the Cider config file (as part of
 ⍝ `CONFIG`) in order to specify a sub-namespace that will eventually become the package.
-⍝ Cider will then also inject a reference `TatinVars` into that sub-namespace, pointing to
-⍝ `TatinVars` in the root of the project. This allows a developer to access `TatinVars` while working
-⍝ on the project as if it were loaded as a package.\\
+⍝ Cider will then inject `TatinVars` into that sub-namespace rather than the root of the project,
+⍝ This allows a developer to access `TatinVars` while working on the project as if it were loaded
+⍝ as a package.\\
 ⍝ `msg` should be empty but might be an error message in case "tatinVars" is specified but does not
 ⍝ point to a sub-namespace in the project's root.
  msg←''
@@ -21,6 +21,7 @@
              :If 9=projectRoot.⎕NC projectRoot.CiderConfig.CIDER.tatinVars
                  ref←projectRoot⍎projectRoot.CiderConfig.CIDER.tatinVars
                  ref.TatinVars←projectRoot.TatinVars
+                 projectRoot.⎕EX'TatinVars' ⍝ Policy change in 2024-07
              :Else
                  msg←'"tatinVars" does not point to a sub-namespace in the project''s root'
              :EndIf

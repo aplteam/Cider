@@ -2,7 +2,7 @@
 ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"
  ('The folder already hosts a file "',ConfigFilename,'"')Assert~⎕NEXISTS filename
  globalCiderConfigFilename←GetCiderGlobalConfigHomeFolder,'cider.config.template'
- tatinVars←##.TatinVars
+ tatinVars←TatinVars
  :If 0=⎕NEXISTS globalCiderConfigFilename
      ⍝ First attempt
      globalCiderConfigFilename(⎕NCOPY F.ExecNfunction)tatinVars.HOME,'/cider.config.template'

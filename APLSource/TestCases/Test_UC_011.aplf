@@ -1,4 +1,4 @@
- r←Test_UC_011(stopFlag batchFlag);⎕TRAP;msg;rc;res;stop;ref
+ r←Test_UC_011(stopFlag batchFlag);⎕TRAP;msg;rc;res;stop;ref;noOf
 ⍝ Exercise ]Cider.Help
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
@@ -10,7 +10,8 @@
      r←T._NoBatchTest ⋄ →0
  :EndIf
 
- CommTools.Pause'This test needs you: it will display 3 HTML files with your default browser'
+ noOf←⍕≢##.F.ListFiles ##.CiderConfig.HOME,'/html/*.html'
+ CommTools.Pause'This test needs you: it will display ',noOf,' HTML files with your default browser'
 
  ref←∆GetRefToCommTools
  ref.Select_Choices←1 2⍴'Select document to be viewed:' 'a'
@@ -19,7 +20,7 @@
  (rc msg res)←stop ∆UCMD'Help'
  →T.GoToTidyUp 0≠rc
  →T.GoToTidyUp 0≠≢msg
- →T.GoToTidyUp 0=1 CommTools.YesOrNo'Did the three HTML files show?'
+ →T.GoToTidyUp 0=1 CommTools.YesOrNo'Did the ',noOf,' HTML files show?'
 
  r←T._OK
 

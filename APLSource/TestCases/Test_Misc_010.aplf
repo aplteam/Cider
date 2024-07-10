@@ -1,4 +1,4 @@
- r←Test_Misc_010(stopFlag batchFlag);⎕TRAP;buff;filename
+ r←Test_Misc_010(stopFlag batchFlag);⎕TRAP;buff;filename;res;ns;expected
 ⍝ Exercise ProjectConfig
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  :If batchFlag
@@ -11,7 +11,11 @@
 
  filename←##.CiderConfig.HOME,'/cider.config'
  buff←⊃⎕NGET filename
- ##.Cider.ProjectConfig ##.CiderConfig.HOME
+ res←##.Cider.ProjectConfig ##.CiderConfig.HOME
+ ns←⎕JSON⍠('Dialect' 'JSON5')⊢res
  (⊂buff)⎕NPUT filename 1 ⍝ Paranoia
+ expected←'CIDER' 'LINK' 'SYSVARS' 'USER'
+ →T.PassesIf expected≡' '~¨⍨↓ns.⎕NL 9
 
  r←T._OK
+⍝Done
