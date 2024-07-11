@@ -4,7 +4,6 @@
   date: 20240605.104238,
   description: "Monitors which parts of an application got actually executed",
   documentation: "",
-  exclude: "",
   files: "",
   group: "aplteam",
   io: 1,

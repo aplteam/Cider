@@ -1,0 +1,36 @@
+ R←Test_UC_044(stopFlag batchFlag);⎕TRAP;tempDir;list;rc;wasDir;row;res;ref;msg
+⍝ Create a project and requires the user to close the edit window on the config file
+⍝ Must remember the absolute path rather than the relative one.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If batchFlag
+     R←T._NoBatchTest ⋄ →0
+ :EndIf
+
+ CommTools.Pause'This test requires you to close the edit window without making any changes'
+
+ tempDir←(∆GetFolderInTempDir⊃⎕SI),'/aaaa'
+ 3 ⎕MKDIR tempDir
+ wasDir←FilesAndDirs.Cd tempDir
+
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'Sure you want to create the project in' 'y'
+ (rc msg res)←∆UCMD'CreateProject "./" #.HOO -batch -ignoreUserExec'
+ Assert rc=0
+ list←##.Cider.ListOpenProjects 0
+ →T.GoToTidyUp~(⊂'#.HOO')∊list[;1]
+ row←list[;1]⍳⊂'#.HOO'
+ →T.GoToTidyUp~{'/'=1⍴⍵:1 ⋄ ':'∊⍵}2⊃list[row;]
+
+ R←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ {}FilesAndDirs.Cd wasDir
+ res←∆LINK'Break' '#.HOO'
+ Assert res ∆StartsWith'Unlinked:'
+ rc←FilesAndDirs.RmDir tempDir,'/../..'
+ Assert 0=+/∊rc
+ #.⎕EX'HOO'
+⍝Done

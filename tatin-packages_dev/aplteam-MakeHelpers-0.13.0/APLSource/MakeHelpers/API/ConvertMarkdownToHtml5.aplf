@@ -1,1 +1,0 @@
- ConvertMarkdownToHtml5←{⍺←⊢ ⋄ 1:shy←⍺ ##.ConvertMarkdownToHtml5 ⍵}

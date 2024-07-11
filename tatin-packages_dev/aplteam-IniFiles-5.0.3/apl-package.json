@@ -4,7 +4,6 @@
   date: 20220413.144352,
   description: "Allows instantiating good old INI files in APL; comes with extended syntax supporting APL-like data structures",
   documentation: "",
-  exclude: "",
   files: "",
   group: "aplteam",
   io: 1,

@@ -3,5 +3,5 @@ aplteam-FilesAndDirs-5.7.1
 aplteam-CodeCoverage-0.10.7
 aplteam-Tester2-3.7.0
 aplteam-CommTools-1.7.1
-aplteam-MakeHelpers-0.13.0
+aplteam-MakeHelpers-0.14.0
 aplteam-APLProcess-0.7.0

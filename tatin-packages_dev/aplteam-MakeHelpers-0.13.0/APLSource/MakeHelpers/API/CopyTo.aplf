@@ -1,1 +1,0 @@
- CopyTo←{⍺←⊢ ⋄ 1:shy←⍺ ##.CopyTo ⍵}

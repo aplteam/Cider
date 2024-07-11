@@ -1,1 +1,0 @@
- PutPackageCfg←{1:shy←##.PutPackageCfg ⍵}

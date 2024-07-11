@@ -4,7 +4,6 @@
   date: 20231210.133211,
   description: "General utilities required by most members of the APLTree library",
   documentation: "",
-  exclude: "",
   files: "",
   group: "aplteam",
   io: 1,

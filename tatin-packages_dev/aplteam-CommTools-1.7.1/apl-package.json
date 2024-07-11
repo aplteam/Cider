@@ -4,7 +4,6 @@
   date: 20231104.11033,
   description: "Communication tools for interactions in the session: YesOrNo and Select",
   documentation: "",
-  exclude: "",
   files: "",
   group: "aplteam",
   io: 1,

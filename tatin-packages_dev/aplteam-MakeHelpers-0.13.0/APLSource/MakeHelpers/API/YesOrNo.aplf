@@ -1,1 +1,0 @@
- YesOrNo←{⍺←⊢ ⋄ ⍺ ##.YesOrNo ⍵}

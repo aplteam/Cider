@@ -1,1 +1,0 @@
- GetProjectCfg←{##.GetProjectCfg ⍵}

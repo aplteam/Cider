@@ -35,7 +35,7 @@
      P.##.CreateConfigFile filename namespace
  :EndIf
  :If ~noEditFlag
-     :If ¯1=P.ProjectConfig filename
+     :If ¯1=1 P.ProjectConfig filename
          1 ⎕NDELETE filename
          r←'Cancelled by user' ⋄ →0
      :EndIf

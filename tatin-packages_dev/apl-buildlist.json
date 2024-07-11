@@ -1,17 +1,17 @@
 {
   packageID: [
     "aplteam-Tester2-3.7.0",
-    "aplteam-MakeHelpers-0.13.0",
+    "aplteam-MakeHelpers-0.14.0",
     "aplteam-FilesAndDirs-5.7.1",
     "aplteam-CommTools-1.7.1",
     "aplteam-CodeCoverage-0.10.7",
     "aplteam-APLTreeUtils2-1.4.0",
     "aplteam-APLProcess-0.7.0",
-    "aplteam-ZipArchive-1.1.0",
+    "aplteam-ZipArchive-1.2.0",
     "aplteam-OS-3.1.1",
-    "aplteam-MarkAPL-12.1.1",
+    "aplteam-MarkAPL-12.1.2",
     "aplteam-IniFiles-5.0.3",
-    "aplteam-DotNetZip-2.0.2",
+    "aplteam-DotNetZip-2.1.0",
   ],
   principal: [
     1,
