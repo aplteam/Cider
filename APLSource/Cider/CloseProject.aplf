@@ -43,10 +43,11 @@
              :If ind>≢list
                  ind←list[;2]⍳⊂F.NormalizePath project
              :EndIf
-             ('Cannot close "',project,'"')Assert(≢list)≥ind
-             res←⎕SE.Link.Break 1⊃list[ind;]
-             r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
-             closed,←list[ind;2]
+             :If ind≤≢list
+                 res←⎕SE.Link.Break 1⊃list[ind;]
+                 r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
+                 closed,←list[ind;2]
+             :EndIf
          :EndFor
          :If checks
              {}CheckForDropboxConflicts¨closed
