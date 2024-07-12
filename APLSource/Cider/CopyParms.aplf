@@ -1,0 +1,5 @@
+ cfg←cfg CopyParms parms
+⍝ Copy anything from "parms" to "cfg" that is not a default or undefined
+ cfg.CIDER.parent←parms.parent
+ cfg.CIDER.projectSpace←parms.projectSpace
+⍝Done

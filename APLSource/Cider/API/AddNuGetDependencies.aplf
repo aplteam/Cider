@@ -1,1 +1,1 @@
- AddNuGetDependencies←{##.AddNuGetDependencies ⍵}
+AddNuGetDependencies←{##.AddNuGetDependencies ⍵}

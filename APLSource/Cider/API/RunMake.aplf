@@ -1,1 +1,1 @@
- RunMake←{##.RunMake ⍵}
+RunMake←{##.RunMake ⍵}

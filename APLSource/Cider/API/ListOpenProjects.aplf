@@ -1,1 +1,1 @@
- ListOpenProjects←{##.ListOpenProjects ⍵}
+ListOpenProjects←{##.ListOpenProjects ⍵}

@@ -1,1 +1,1 @@
- GetNuGetDependencies←{⍺←⊢ ⋄ ⍺ ##.GetNuGetDependencies ⍵}
+GetNuGetDependencies←{⍺←⊢ ⋄ ⍺ ##.GetNuGetDependencies ⍵}

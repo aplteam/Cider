@@ -1,1 +1,1 @@
- DropAlias←{1:shy←##.DropAlias ⍵}
+DropAlias←{##.DropAlias ⍵}

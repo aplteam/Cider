@@ -1,1 +1,1 @@
- ReadProjectConfigFile←{##.ReadProjectConfigFile ⍵}
+ReadProjectConfigFile←{##.ReadProjectConfigFile ⍵}

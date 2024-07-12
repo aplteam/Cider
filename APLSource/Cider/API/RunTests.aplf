@@ -1,1 +1,1 @@
- RunTests←{##.RunTests ⍵}
+RunTests←{##.RunTests ⍵}

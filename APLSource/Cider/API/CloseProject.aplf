@@ -1,1 +1,1 @@
- CloseProject←{⍺←⊢ ⋄ ⍺ ##.CloseProject ⍵}
+CloseProject←{⍺←⊢ ⋄ ⍺ ##.CloseProject ⍵}

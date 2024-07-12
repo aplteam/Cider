@@ -1,1 +1,1 @@
- GetProgramFilesFolder←{⍺←⊢ ⋄ ⍺ ##.GetProgramFilesFolder ⍵}
+GetProgramFilesFolder←{⍺←⊢ ⋄ ⍺ ##.GetProgramFilesFolder ⍵}

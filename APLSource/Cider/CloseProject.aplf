@@ -1,4 +1,4 @@
-  r←{x}CloseProject projects;list;project;ind;res;list;checks;closed
+ r←{x}CloseProject projects;list;project;ind;res;list;checks;closed
 ⍝ Breaks the Link between a project and its folder on disk, and potentially execute a check functon afterwards.
 ⍝ In case ⍵ is empty ALL projects are closed.
 ⍝ `projects` may be one of:
@@ -34,6 +34,7 @@
          list[;2]←F.NormalizePath list[;2]
          projects←⊆projects
          :For project :In projects
+             project←⍕project
              :If ∧/'[]'∊project
                  ind←list[;4]⍳⊂⎕C project~'[]'
              :Else
@@ -42,11 +43,10 @@
              :If ind>≢list
                  ind←list[;2]⍳⊂F.NormalizePath project
              :EndIf
-             :If (≢list)≥ind
-                 res←⎕SE.Link.Break 1⊃list[ind;]
-                 r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
-                 closed,←list[ind;2]
-             :EndIf
+             ('Cannot close "',project,'"')Assert(≢list)≥ind
+             res←⎕SE.Link.Break 1⊃list[ind;]
+             r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
+             closed,←list[ind;2]
          :EndFor
          :If checks
              {}CheckForDropboxConflicts¨closed

@@ -1,1 +1,1 @@
- Remove_githubUsername←{##.Remove_githubUsername ⍵}
+Remove_githubUsername←{##.Remove_githubUsername ⍵}

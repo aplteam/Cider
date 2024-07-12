@@ -11,6 +11,7 @@
  '    * `CreateConfigFile` crashed on `##.tatinVars` when it should have addressed `tatinVars` instead.'
  '      As a result the policy was changed: it does NOT inject `TatinVars` into the root of the project anymore'
  '      in case the `tatinVars` propery is not empty. '
+ '    * The API-function `CloseProject` failed when a ref was passed as a project'
  '    * `CloseProject` failed on a non-lowercase alias name'
  '* 0.42.0 ⋄ 2024-07-06'
  '  * Help page for `OpenProject` improved'

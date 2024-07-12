@@ -1,4 +1,4 @@
- (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag
+(successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag
 ⍝ Open a Cider project.\\
 ⍝ `y` must be one of:
 ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
@@ -40,6 +40,7 @@
  configFilename←parms.folder,'/cider.config'
  ('No file "cider.config" found in ',parms.folder)Assert F.Exists configFilename
  config←ReadProjectConfigFile configFilename
+ config(CopyParms)←parms
  :If 0=≢parms.projectSpace                                                      ⍝ Was it specified as argument?
  :AndIf 0=≢parms.projectSpace←config.CIDER.projectSpace                         ⍝ Nope, so the config file rules...
      parms.projectSpace←'#'                                                     ⍝ ... but only is it is not empty

@@ -1,1 +1,1 @@
- CreateProject←{1:shy←##.CreateProject ⍵}
+CreateProject←{##.CreateProject ⍵}
