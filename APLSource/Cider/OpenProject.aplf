@@ -52,7 +52,7 @@
      projectSpace_←⍎parms.parent                                                ⍝ Is either # or ⎕SE
  :Else
      :If ~(,⊂1 ⎕C parms.parent)∊,¨'#' '⎕SE'
-         ('Namespace <',parms.parent,' does not exist')Assert 9=⎕NC parms.parent
+         ('Namespace <',parms.parent,'> does not exist')Assert 9=⎕NC parms.parent
      :EndIf
      projectSpace_←⍎parms.projectSpace(⍎parms.parent).⎕NS''                     ⍝ Create project space from "parent" to avoid problems
  :EndIf

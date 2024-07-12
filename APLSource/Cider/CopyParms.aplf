@@ -1,5 +1,13 @@
  cfg←cfg CopyParms parms
 ⍝ Copy anything from "parms" to "cfg" that is not a default or undefined
- cfg.CIDER.parent←parms.parent
- cfg.CIDER.projectSpace←parms.projectSpace
+ :If 0<≢parms.parent
+     cfg.CIDER.parent←parms.parent
+ :EndIf
+ :If 0<≢parms.projectSpace
+     cfg.CIDER.projectSpace←parms.projectSpace
+ :EndIf
+ :If ' '=1↑0⍴parms.watch
+ :AndIf 0<≢parms.watch
+     cfg.LINK.watch←parms.watch
+ :EndIf
 ⍝Done
