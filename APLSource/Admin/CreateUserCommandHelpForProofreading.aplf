@@ -1,12 +1,10 @@
- filename←CreateUserCommandHelpForProofreading userCommand;cmdList;help2;help3;html;help1;EscapeSpecialChars
+ filename←CreateUserCommandHelpForProofreading userCommand;cmdList;help2;help3;html;help1;EscapeSpecialChars;A
 ⍝ Compiles all the help into a single file for easier proof-reading
+ A←##.Cider.A
  EscapeSpecialChars←{'<'⎕R'\&lt;'⊣'>'⎕R'\&gt;'⊣'\&'⎕R'&amp;'⊣⍵}
- cmdList←⎕SE.UCMD userCommand,' -??'
- cmdList←(⎕UCS 13)(≠⊆⊢)cmdList
- cmdList←(⍸∨/¨((1 ⎕C userCommand),':')∘⍷¨cmdList)↓cmdList
- cmdList←(+/∧\(↑cmdList)[;1 2]∧.=' ')↑cmdList
- cmdList←##.Cider.APLTreeUtils2.DLB cmdList
- cmdList←{⍵↑⍨¨⍵⍳¨' '}cmdList
+ ⎕SE.UCMD'cmdList←Cider -? -'
+ cmdList←⊃¨' 'A.Split¨A.DMB ¯2↓2↓(⎕UCS 13)A.Split cmdList
+ cmdList/⍨←0=⊃∘⎕NC¨cmdList
  help1←{⎕SE.UCMD ⍵}¨(⊂userCommand,'.'),¨cmdList,¨⊂' -?'
  help1←{1<≡⍵:⍵ ⋄ (⎕UCS 13)##.Cider.APLTreeUtils2.Split ⍵}¨help1
  help1←{⍵[3 5]}¨help1
