@@ -19,7 +19,7 @@ status←parms CheckForTatinPackages config;folders;list;bool;report;this;parms;
          :If parms.batch
              parms2.quiet←1
          :Else
-             parms2.update←C.YesOrNo'Would you like to install later versions, if available?'
+             parms2.update←C.YesOrNo'Would you like to install later versions, if available (NOT later major versions) ?'
          :EndIf
          folders←bool/folders
          :For this :In (⊂parms.folder,'/'),¨folders
