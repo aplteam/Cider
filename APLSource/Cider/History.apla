@@ -1,6 +1,8 @@
 (
- '* 0.42.2 ⋄ 2024-07-25'
- '  * Typo in `TestCases.Prepare` fixed'
+ '* 0.42.2 ⋄ 2024-08-04'
+ '  * Bug fixes'
+ '    * OpenProject printed wrong messages to session in case of -verbose'
+ '    * Typo in `TestCases.Prepare` fixed'
  '* 0.42.1 ⋄ 2024-07-12'
  '  * Cider now comes with Release Notes.'
  '  * Documentation of `CloseProject` and `CheckForDropBoxConflicts` polished.'

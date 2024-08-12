@@ -48,10 +48,7 @@
  parms.checkPackageVersions←⍬
  (success log)←P.OpenProject parms
  :If Args.verbose
-     r←log
-     :If success
-         r,←(⎕UCS 13),{⍵↑⍨-(⎕UCS 13)⍳⍨1↓⌽⍵}log
-     :EndIf
+     r←''
  :ElseIf success
      r←{⍵↑⍨-(⎕UCS 13)⍳⍨1↓⌽⍵}log
  :Else

@@ -47,7 +47,7 @@
           c.Name←'Commit'
           c.Desc←'Performs a commit on the current branch'
           c.Group←'APLGit2'
-          c.Parse←'1s -m= -add'
+          c.Parse←'1s -m= -add -amend'
           c._Project←1
           r,←c
      
@@ -84,14 +84,6 @@
           r,←c
      
           c←⎕NS''
-          c.Name←'GoToGitHub'
-          c.Desc←'For a project "Foo/Goo" this opens https://github.com/Foo/Goo'
-          c.Group←'APLGit2'
-          c.Parse←'1s'
-          c._Project←1
-          r,←c
-     
-          c←⎕NS''
           c.Name←'Init'
           c.Desc←'Initialises a folder for managing it by Git'
           c.Group←'APLGit2'
@@ -119,7 +111,7 @@
           c.Name←'Log'
           c.Desc←'Shows the commit logs'
           c.Group←'APLGit2'
-          c.Parse←'2s -verbose'
+          c.Parse←'2s -verbose -name= -commit='
           c._Project←1
           r,←c
      
@@ -227,13 +219,6 @@
       :Case ⎕C'RefLog'
           →noProjectSelected/0
           r←RefLog space folder Args
-      :Case ⎕C'GoToGitHub'
-          :If 0=⎕NC'space'
-          :OrIf 0=≢space
-              r←GoToGitHub Args
-          :Else
-              r←space GoToGitHub Args
-          :EndIf
       :Case ⎕C'Init'
           →noProjectSelected/0
           r←Init space folder Args
@@ -295,6 +280,8 @@
       parms.verbose←args.verbose
       parms.max←¯1
       parms.since←''
+      parms.name←''args.Switch'name'
+      parms.commit←''args.Switch'commit'
       parms(ProcessLogParms)←(1+0≡args._2)⊃args.(_2 _1)
       r←parms G.Log folder
     ∇
@@ -320,11 +307,11 @@
       (filename1 filename2 hash1 hash2)←4↑buff,'' ''    ⍝ Because old versions of CompareCommit did not return the hashes
       (hash1 hash2)←{⍵↑⍨¨8⌊≢¨⍵}hash1 hash2              ⍝ Short version suffices
       :If 0<+/⎕NEXISTS filename1 filename2
-          :If Args.files
+          :If args.files
               ⎕←filename1 filename2
           :Else
               :If flag←9=⎕SE.⎕NC'CompareFiles'
-                  default←''Args.Switch'use'
+                  default←''args.Switch'use'
                   :Trap 911
                       (exe name)←⎕SE.CompareFiles.EstablishCompareEXE default
                   :Else
@@ -355,18 +342,18 @@
       :EndIf
     ∇
 
-    ∇ (r space folder)←GetSpaceAndFolder(Cmd Args)
+    ∇ (r space folder)←GetSpaceAndFolder(Cmd args)
       r←0 0⍴''
       space←folder←''
       :If ~(⊂Cmd)∊'GetDefaultProject' 'SetDefaultProject' 'Version'
           :If ({⍵⊃⍨⍸⍵.Name≡¨⊂Cmd}List)._Project
-          :AndIf 0≢Args._1
-              (space folder)←GetSpaceAndFolder_ Args._1
-              ('Project <',Args._1,'> not found on disk')Assert 0<≢folder
-          :ElseIf 2=Args.⎕NC'project'
-          :AndIf (,0)≢,Args.project
-          :AndIf 0<≢Args.project
-              (space folder)←GetSpaceAndFolder_ Args.project
+          :AndIf 0≢args._1
+              (space folder)←GetSpaceAndFolder_ args._1
+              ('Project <',args._1,'> not found on disk')Assert 0<≢folder
+          :ElseIf 2=args.⎕NC'project'
+          :AndIf (,0)≢,args.project
+          :AndIf 0<≢args.project
+              (space folder)←GetSpaceAndFolder_ args.project
           :Else
               (space folder)←G.EstablishProject''
           :EndIf
@@ -376,7 +363,7 @@
               :Else
                   r←'No project provided/selected'
               :EndIf
-          :ElseIf ~(⊂Cmd)∊'GoToGitHub' 'OpenGitShell'
+          :ElseIf ~(⊂Cmd)∊,⊂'OpenGitShell'
               ('<',folder,'> not found on disk')Assert ⎕NEXISTS folder
           :EndIf
       :EndIf
@@ -398,15 +385,6 @@
       r←0 0⍴''
     ∇
 
-    ∇ r←{space}GoToGitHub args
-      'Not a URL on GitHub'Assert 0<≢args._1
-      :If 0=⎕NC'space'
-          r←⎕SE.APLGit2.GoToGitHub args._1
-      :Else
-          r←⎕SE.APLGit2.GoToGitHub space
-      :EndIf
-    ∇
-
     ∇ r←ChangeLog(space folder args);msg;name;⎕TRAP
       name←args._1
       :If ~(⊃name)∊'#⎕'
@@ -416,12 +394,8 @@
       r←folder ⎕SE.APLGit2.ChangeLog name
     ∇
 
-    ∇ r←GoToGithub(space folder args);msg
-      r←⎕SE.APLGit2.GoToGithub folder msg
-    ∇
-
     ∇ r←Init(space folder args)
-      'This folder is already managed by Git'Assert~⎕SE.APLGit2.IsGitProject folder
+      ('This folder is already managed by Git: ',folder)Assert~⎕SE.APLGit2.IsGitProject folder
       :If args.quiet
       :OrIf ⎕SE.CommTools.YesOrNo'Sure that you want to make ',folder,' a Git-managed folder?'
           r←args.quiet ⎕SE.APLGit2.Init folder
@@ -474,9 +448,13 @@
           :EndIf
       :EndIf
       :If ⎕SE.APLGit2.IsDirty folder
-          :If (,0)≢,Args.m
-          :AndIf 0<≢Args.m
-              msg←Args.m
+          :If 0 args.Switch'amend'
+              'You must not specify both -amend and -m='Assert 0=≢''args.Switch'm'
+              r←⍪1 ⎕SE.APLGit2.Commit folder
+              :Return
+          :ElseIf (,0)≢,args.m
+          :AndIf 0<≢args.m
+              msg←args.m
           :Else
               flag←0
               :Repeat
@@ -508,7 +486,7 @@
     ∇
 
     ∇ r←Status(space folder args);short
-      short←Args.Switch'short'
+      short←args.Switch'short'
       r←short G.Status folder
     ∇
 
@@ -542,7 +520,7 @@
           :Case ⎕C'ChangeLog <apl-name> -project='
               r,←⊂']APLGit2.ChangeLog <filter> -project='
           :Case ⎕C'Commit'
-              r,←⊂']APLGit2.Commit [space|folder] -m= -add'
+              r,←⊂']APLGit2.Commit [space|folder] -m= -add -amend'
           :Case ⎕C'CompareCommits'
               r,←⊂']APLGit2.CompareCommits [hash1] [hash2] -project= -use=[name|?] -view'
           :Case ⎕C'CurrentBranch'
@@ -553,8 +531,6 @@
               r,←⊂']GetDefaultProject'
           :Case ⎕C'GetTagOfLatestRelease'
               r,←⊂']APLGit2.GetTagOfLatestRelease [space|folder]'
-          :Case ⎕C'GoToGitHub'
-              r,←⊂']APLGit2.OpenGitHub [space|folder|<group>/<project-name>|[alias]]'
           :Case ⎕C'Init'
               r,←⊂']APLGit2.Init [folder] -quiet'
           :Case ⎕C'IsDirty'
@@ -564,7 +540,7 @@
           :Case ⎕C'ListBranches'
               r,←⊂']APLGit2.ListBranches [space|folder] -a -r'
           :Case ⎕C'Log'
-              r,←⊂']APLGit2.Log [space|folder] -since= -verbose -max='
+              r,←⊂']APLGit2.Log [space|folder] -since= -verbose -max= -name='
           :Case ⎕C'NoOfUntrackedFiles'
               r,←⊂']APLGit2.NoOfUntrackedFiles [space|folder]'
           :Case ⎕C'OpenGitShell'
@@ -613,12 +589,16 @@
               r,←⊂'There should not be any untracked files, but if there are anyway the user will be asked'
               r,←⊂'whether she wants to add additions, changes & deletions first, read execute: "add -A"'
               r,←⊂''
-              r,←⊂'-add  When the project is dirty then without the -add flag the user will be questioned'
-              r,←⊂'      whether a "git add -A" command should be issued first. -add tells the user command'
-              r,←⊂'      to do that in any case, without questioning the user.'
+              r,←⊂'-add    When the project is dirty then without the -add flag the user will be questioned'
+              r,←⊂'        whether a "git add -A" command should be issued first. -add tells the user command'
+              r,←⊂'        to do that in any case, without questioning the user.'
+              r,←⊂'-m=     If this is specified it is accepted as the message.'
+              r,←⊂'        If it is not specified then the command will open an edit window for the message,'
+              r,←⊂'        accept when -amend was specified'
+              r,←⊂'-amend  If this is specified -m= is ignored. This adds changes to the latest commit, in'
+              r,←⊂'        case you forgot something minor after having commited.'
+              r,←⊂'        Never to be used when the last commit was already pushed!'
               r,←⊂''
-              r,←⊂'-m=   If this is specified it is accepted as the message.'
-              r,←⊂'      If it is not specified then the command will open an edit window for the message.'
               r,←⊂''
               r,←⊂'Note that a message is epected for the "main" (or the now deprecated "master") branch but'
               r,←⊂'the user will be asked if there is none anyway. Empty messages will become "...".'
@@ -657,21 +637,6 @@
           :Case ⎕C'GetDefaultProject'
               r,←⊂'Returns the namespace and the folder if there is a default project defined.'
               r,←⊂'See also ]APLGit2.SetDefaultProject'
-          :Case ⎕C'GoToGitHub'
-              r,←⊂'Opens project in your default browser as, say:'
-              r,←⊂'https://github.com/aplteam/APLGit2'
-              r,←⊂''
-              r,←⊂'If no argument is provided, the user command looks for any open Cider projects.'
-              r,←⊂' * If there is just one open, it acts on it'
-              r,←⊂' * If there are several Cider projects open, the user will be questioned'
-              r,←⊂''
-              r,←⊂'The required project can be specified in a number of ways:'
-              r,←⊂' * A URL like https://github.com/aplteam.APLGit2'
-              r,←⊂' * A group and a project name like aplteam-APLGit2'
-              r,←⊂' * A fully qualified namespace name of an opened Cider project like'
-              r,←⊂'   #.APLGit2'
-              r,←⊂' * A Cider alias of an opened Cider project like [git]'
-              r,←AddLevel3HelpInfo'GoToGitHub'
           :Case ⎕C'Init'
               r,←⊂'Useful to initialize a folder for being managed by Git.'
               r,←⊂''
@@ -694,7 +659,7 @@
               r,←⊂'Returns the tag number of the latest release.'
               r,←⊂'Drafts are ignored.'
               r,←⊂''
-              r,←⊂'-verbose   If specified the date of the commit and the caption of the release are returned as well.'
+              r,←⊂'-verbose   If specified the date of the commit & the caption of the release are returned as well'
           :Case ⎕C'ListBranches'
               r,←⊂'List all branches, by default local ones.'
               r,←⊂''
@@ -703,19 +668,21 @@
               r,←⊂' * -r stands for "remote": list just remote branches'
               r,←AddLevel3HelpInfo'ListBranches'
           :Case ⎕C'Log'
-              r,←⊂'Shows a list with all commits in an edit window, by default with --oneline, but watch out'
-              r,←⊂'for -verbose.'
+              r,←⊂'Shows a list of all commits with ⎕ED, by default with --oneline, but check -verbose.'
               r,←⊂''
-              r,←⊂'If you need to specify a folder (rather than on acting on open Cider projects) then you must'
-              r,←⊂'specify the folder as the first argument.'
+              r,←⊂'If you need to specify a folder (rather than acting on an open Cider project), then the folder'
+              r,←⊂'must be the first argument.'
               r,←⊂''
-              r,←⊂'You may specify instead or in addition an integer or a date; see below for details.'
+              r,←⊂'Instead or in addition, you may specify an integer or a date; see below for details.'
               r,←⊂''
-              r,←⊂' * Without an argument or just a folder/alias the full log is printed'
-              r,←⊂' * An integer is interpreted as "max number of log entries"'
-              r,←⊂' * Alternatively one can specify "YYYY-MM-DD" which is treated as "since.'
+              r,←⊂' * Without an argument or just a folder/alias, the full log is printed'
+              r,←⊂' * An integer is interpreted as the "max number of log entries" to be listed'
+              r,←⊂' * Alternatively one can specify "YYYY-MM-DD" which is treated as "since"'
               r,←⊂''
-              r,←⊂'-verbose By default a short report is provided. Overwrite with -verbose for a detailed report'
+              r,←⊂'-verbose  By default a short report is provided. Overwrite with -verbose for a detailed report.'
+              r,←⊂'-name=    Use this to specify the full name of an APL object. This reduces the list to commits'
+              r,←⊂'          that changed the given APL object.'
+              r,←⊂'-commit=  Use this to list all commits up to (but not including) the given commit.'
               r,←AddLevel3HelpInfo'Log'
           :Case ⎕C'NoOfUntrackedFiles'
               r,←⊂'Returns the number of untracked files.'
@@ -735,7 +702,7 @@
               r,←⊂'the old value of a reference.'
               r,←⊂''
               r,←⊂'-all   If you want all records then specifiy the -all flag.'
-              r,←⊂'-max   If you want a specific number then specify the max= modifier.'
+              r,←⊂'-max=  If you want a specific number then specify the max= modifier.'
           :Case ⎕C'SetDefaultProject'
               r,←⊂'Use this to specify a default project.'
               r,←⊂'Commands that require a project will act on the default project in case it was set.'
@@ -762,7 +729,7 @@
           :Select ⎕C Cmd
           :CaseList ⎕C¨'Add' ''
               r,←AddProjectOptions 1
-          :CaseList ⎕C¨'Commit' 'CurrentBranch' 'Diff' 'GoToGitHub' 'IsDirty' 'IsGitProject' 'ListBranches' 'Log' 'OpenGitShell' 'Status'
+          :CaseList ⎕C¨'Commit' 'CurrentBranch' 'Diff' 'IsDirty' 'IsGitProject' 'ListBranches' 'Log' 'OpenGitShell' 'Status'
               r,←AddProjectOptions 0
           :Else
               r,←⊂'There is no additional help available'
@@ -781,13 +748,14 @@
       r←''
       r,←⊂'The ]APLGit2.* user commands are particularly useful when used in conjunction with the project'
       r,←⊂'manager Cider, but they can be used without Cider as well, though you must then specify the'
-      r,←⊂'folder you wish the user command to act on. APLGit2 does not accept URLs pointing to GitHub,'
-      r,←⊂'it works only locally.'
+      r,←⊂'folder you wish the user command to act on.'
+      r,←⊂''
+      r,←⊂'Note that APLGit2 does not accept URLs pointing to GitHub, it works only locally.'
       r,←⊂''
       r,←⊂'By default a user command will act on the currently opened Cider project if there is just one.'
-      r,←⊂'If there are multiple open Cider projects the user will be asked which one to act on.'
+      r,←⊂'If there are multiple open Cider projects, the user will be asked which one to act on.'
       r,←⊂''
-      r,←⊂'Once a default project got established and there are several Cider projects opened the user will'
+      r,←⊂'Once a default project got established, and there are several Cider projects opened, the user will'
       r,←⊂'be asked if she wants to act on the default project. If she refuses, a list with all opened Cider'
       r,←⊂'projects will be presented to her.'
       :If flag

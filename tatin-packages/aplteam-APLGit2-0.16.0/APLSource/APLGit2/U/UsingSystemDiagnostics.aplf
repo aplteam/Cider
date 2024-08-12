@@ -1,4 +1,0 @@
- r←UsingSystemDiagnostics;⎕IO
- ⎕IO←1
- r←(1+IsNetCore)⊃'System,System.dll' 'System,System.Diagnostics.Process'
- r←(1+IsNetCore)⊃'System,System.dll' 'System,System.Diagnostics'
