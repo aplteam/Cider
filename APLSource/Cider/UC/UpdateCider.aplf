@@ -5,7 +5,7 @@
  ind←allVersions⍳⊂thisVersion
  noOf←≢allVersions
  :If ind=noOf
-     r←'Cider is up-to-date'
+     r←'There is no later version available than ',P.Version
  :ElseIf ind>noOf
      r←'The currently running version of Cider appears to have no regular version number - updating is impossible'
  :Else
