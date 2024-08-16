@@ -1,4 +1,4 @@
- {r}←EditAliasFile dummy;filename;data_;Local;aliases;b;report;buff;b2;b3;flag;b4;b5;aliases_;b6
+ {r}←EditAliasFile dummy;filename;data_;Local;aliases;b;report;buff;b2;b3;flag;b4;b5;aliases_;b6;firstFlag
  r←''
  filename←P.GetCiderAliasFilename
  :If ~⎕NEXISTS filename
@@ -8,7 +8,14 @@
  aliases_←P.GetCiderAliasFileContent ⍬
  :If 0<≢aliases←⍕aliases_
      aliases_←⊃¨{⍺,'=',⍵}/¨↓aliases_
+     firstFlag←1
      :Repeat
+         :If ~firstFlag
+         :AndIf ~1 ##.CommTools.YesOrNo'AliasProbplem@There is a problem; would you like to fix it? ("N" looses changes!)'
+             r←'Cancelled by user'
+             :Return
+         :EndIf
+         firstFlag←0
          ⎕ED'aliases'
          :If 0=≢' '~⍨∊aliases
              :If ##.CommTools.YesOrNo'DeleteAllAliase@Sure you want to delete all aliases?'
@@ -23,6 +30,7 @@
          aliases←{⍵↓⍨+/∧\' '=⍵}¨aliases
          aliases←↑{⍵{((⍵-1)↑⍺)(⍵↓⍺)}⍵⍳' '}¨aliases
          aliases[;2]←aliases[;2]~¨'"'
+         aliases[;2]←{'/'@(⍸⍵='\')⊢⍵}¨aliases[;2]
          aliases[;2]←{⍵↓⍨-+/∧\' '=⌽⍵}∘{⍵↓⍨+/∧\' '=⍵}¨aliases[;2]
          aliases←⊃¨{⍺,'=',⍵}/¨↓aliases
          flag←0
