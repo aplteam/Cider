@@ -1,9 +1,12 @@
 (
- '* 0.42.2 ⋄ 2024-08-12'
+ '* 0.42.2 ⋄ 2024-08-15'
  '  * Bug fixes'
  '    * OpenProject printed wrong messages to session in case of -verbose'
  '    * Typo in `TestCases.Prepare` fixed'
  '    * Question regarding package updates clarified'
+ '    * Editing the list of aliases refused to accept the perfectly legal character "_"'
+ '    * Deleting all aliase by removing all contents from the edit window did not work '
+ '    * Packages updated'
  '* 0.42.1 ⋄ 2024-07-12'
  '  * Cider now comes with Release Notes.'
  '  * Documentation of `CloseProject` and `CheckForDropBoxConflicts` polished.'

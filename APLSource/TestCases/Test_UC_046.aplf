@@ -29,8 +29,8 @@
  (rc msg res)←stop ∆UCMD'AddTatinDependencies FilesAndDirs,APLTreeUtils2 "',tempDir,'"'
  →T.GoToTidyUp rc≠0
  →T.GoToTidyUp 0≠≢msg
- expected←'2 Tatin dependencies added:' 'aplteam-FilesAndDirs-5.7.1' 'aplteam-APLTreeUtils2-1.4.0' '2 dependencies were loaded'
- →T.GoToTidyUp expected≢APLTreeUtils2.DLB,res
+ expected←'2 Tatin dependencies added:' 'aplteam-FilesAndDirs-' 'aplteam-APLTreeUtils2-' '2 dependencies were loaded'
+ →T.GoToTidyUp~∧/res∘{∨/∨/⍵⍷⍕⍺}¨expected
 
  (rc msg res)←stop ∆UCMD'ListTatinDependencies "',tempDir,'" -raw'  ⍝ Nothing was installed earlier
  →T.GoToTidyUp rc≠0

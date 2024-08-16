@@ -1,1 +1,1 @@
-ProjectConfig←{⍺←⊢ ⋄ ⍺ ##.ProjectConfig ⍵}
+ProjectConfig←{⍺←⊢ ⋄ 1:shy←⍺ ##.ProjectConfig ⍵}

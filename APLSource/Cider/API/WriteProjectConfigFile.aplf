@@ -1,1 +1,1 @@
-WriteProjectConfigFile←{⍺←⊢ ⋄ ⍺ ##.WriteProjectConfigFile ⍵}
+WriteProjectConfigFile←{⍺←⊢ ⋄ 1:shy←⍺ ##.WriteProjectConfigFile ⍵}

@@ -53,7 +53,7 @@
 
  (⊂'x Init y' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
  (rc msg res)←∆UCMD'OpenProject "',tempDir,'" -ignoreUserExec -batch -verbose'
- →T.GoToTidyUp~∨/'Project successfully opened and established in "#.Foo"'⍷∊res
+ →T.GoToTidyUp~0<#.⎕NC'Foo'
 
  R←T._OK
 

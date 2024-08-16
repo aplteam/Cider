@@ -10,11 +10,21 @@
      aliases_←⊃¨{⍺,'=',⍵}/¨↓aliases_
      :Repeat
          ⎕ED'aliases'
+         :If 0=≢' '~⍨∊aliases
+             :If ##.CommTools.YesOrNo'DeleteAllAliase@Sure you want to delete all aliases?'
+                 (⊂'')⎕NPUT filename 1
+             :Else
+                 r←'Cancelled by user, nothing has changed'
+             :EndIf
+             :Return
+         :EndIf
          aliases←{'⍝'∊⍵:⍵↑⍨¯1+⍵⍳'⍝' ⋄ ⍵}¨↓aliases   ⍝ Cider might inject comments to highlight problems, see below.
          aliases←(aliases∨.≠¨' ')⌿aliases
-         aliases←{b←' '=⍵ ⋄ ⍵/⍨~(∧\b)∨(⌽∧\⌽b)∨'  '⍷⍵}¨aliases
-         aliases←{' '(≠⊆⊢)⍵}¨aliases
-         aliases←⊃¨{⍺,'=',⍵}/¨aliases
+         aliases←{⍵↓⍨+/∧\' '=⍵}¨aliases
+         aliases←↑{⍵{((⍵-1)↑⍺)(⍵↓⍺)}⍵⍳' '}¨aliases
+         aliases[;2]←aliases[;2]~¨'"'
+         aliases[;2]←{⍵↓⍨-+/∧\' '=⌽⍵}∘{⍵↓⍨+/∧\' '=⍵}¨aliases[;2]
+         aliases←⊃¨{⍺,'=',⍵}/¨↓aliases
          flag←0
          :If aliases≢aliases_
              aliases_/⍨←({⍵↑⍨¨⍵⍳¨'='}aliases_)∊{⍵↑⍨¨⍵⍳¨'='}aliases   ⍝ Get rid of deleted ones
@@ -23,7 +33,7 @@
                  (b/report)←⊂' ⍝ Does not carry exactly one "="'
              :EndIf
              buff←↑{'='(≠⊆⊢)⍵}¨(~b)/aliases
-             :If ∨/b2←~{∧/⍵∊⎕A,(⎕C ⎕A),⎕D,'-'}¨buff[;1]
+             :If ∨/b2←~{∧/⍵∊⎕A,(⎕C ⎕A),⎕D,'-_'}¨buff[;1]
                  b3←(~b)\b2
                  (b3/report){'⍝'∊⍺:⍺,'; ',⍵ ⋄ ⍺,' ⍝ ',⍵}←⊂'An alias must consist of nothing but A-Z, a-z, 0-9 and a hyphen'
              :EndIf
