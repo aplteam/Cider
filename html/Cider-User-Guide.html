@@ -719,8 +719,21 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 </a>
 </div>
 <p>Your application or tool might depend on a NuGet[<a href="#fnref2" class="footnote_link"><sup>2</sup></a>] package. By assigning a folder hosting NuGet packages to the <code>nuget</code> sub-key in <code>dependencies</code> you can make sure that Cider will load those installed packages into the root of your project or the assigned sub-namespace.</p>
+<div class="collapsible">
+<details>
+<summary>
+On NuGet packages
+</summary>
+<div class="collapsible-content">
+<hr>
+<p>Note that for the time being the ability to load NuGet packages is most useful for loading you own NuGet packages written in C#.</p>
+<p>Beyong that it depends on whether the package uses <a href="https://learn.microsoft.com/en-us/dotnet/standard/generics/" class="external_link">generics</a>. Many packages do, and that makes them unusable for the time being, because Dyalog's .NET interface does not support generics right now.</p>
+<p>However, this restriction of the .NET interface is likely to be lifted in a future release.</p>
+</div>
+</details>
+</div>
 <p>See the config property <code>dependencies</code> details.</p>
-<p>Note that NuGet packages can currently become part of your application, but they cannot be loaded as development tools. This restriction is likely to be lifted in a later release.</p>
+<p>Note that NuGet packages can currently become part of your application, but they cannot be loaded as development tools. This restriction is likely to be lifted in a later release of Tatin.</p>
 <div class="h_tag">
 <a href="#injecting-a-namespace-ciderconfig" id="injecting-a-namespace-ciderconfig" class="autoheader_anchor">
 <h4 data-id="Injecting-a-namespace-CiderConfig">2.7.8. Injecting a namespace <code>CiderConfig</code></h4>

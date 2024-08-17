@@ -593,9 +593,16 @@ See the config properties `dependencies` and `dependencies_dev` for details.
  
 Your application or tool might depend on a NuGet[^nuget] package. By assigning a folder hosting NuGet packages to the `nuget` sub-key in `dependencies` you can make sure that Cider will load those installed packages into the root of your project or the assigned sub-namespace.
 
+!> On NuGet packages
+=> Note that for the time being the ability to load NuGet packages is most useful for loading you own NuGet packages written in C#. 
+=>
+=> Beyong that it depends on whether the package uses [generics](https://learn.microsoft.com/en-us/dotnet/standard/generics/). Many packages do, and that makes them unusable for the time being, because Dyalog's .NET interface does not support generics right now.
+=>
+=> However, this restriction of the .NET interface is likely to be lifted in a future release.
+
 See the config property `dependencies` details.
 
-Note that NuGet packages can currently become part of your application, but they cannot be loaded as development tools. This restriction is likely to be lifted in a later release.
+Note that NuGet packages can currently become part of your application, but they cannot be loaded as development tools. This restriction is likely to be lifted in a later release of Tatin.
 
 
 #### Injecting a namespace `CiderConfig`
@@ -820,6 +827,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 

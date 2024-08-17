@@ -103,7 +103,9 @@ If you need to execute the test suite in batch mode (no reporting to the session
 
 ### NuGet tests
 
+Note that running the NuGet tests requires .NET (rather than .NET Framework) to be used by Dyalog.
 
+The test cases check that and don't execute in case .NET is not available.
 
 ## Building a new version
 
@@ -137,5 +139,6 @@ There is a function available that executes both steps; it requires a 1 to be pa
 ```
 
 That file needs to go onto the release page for that version where Dyalog can fetch and process it.
+
 
 
