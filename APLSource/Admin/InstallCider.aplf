@@ -6,57 +6,59 @@
 ⍝ If `batch` is 0 (the default) a message is returned via `r` reporting success, otherwise the
 ⍝ path to the installation folder is returned.
  r←''
- batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
- C←##.Cider
- aplVersion←# ⎕WG'APLVersion'
- selectFlag←0
- :Select os←C.APLTreeUtils2.GetOperatingSystem ⍬
- :Case 'Win'
-     :If ~⎕NEXISTS installFolder←if1←(2⊃4070⌶0),'\SessionExtensions\CiderTatin\Cider'
-     :AndIf ~⎕NEXISTS installFolder←if2←(1⊃⎕NPARTS 2⊃4070⌶0),'Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
-         selectFlag←1
-     :EndIf
- :Case 'Lin'
-     :If ~⎕NEXISTS installFolder←if1←(2 ⎕NQ'.' 'GetEnvironment' 'HOME'),'/dyalog.files/SessionExtensions/CiderTatin/Cider'
-     :AndIf ~⎕NEXISTS installFolder←if2←(2 ⎕NQ'.' 'GetEnvironment' 'HOME'),'/','dyalog.',('.'~⍨{⍵/⍨2>+\⍵='.'}2⊃aplVersion),'U',(¯2↑1⊃aplVersion),'.files/SessionExtensions/CiderTatin/Cider'
-         selectFlag←1
-     :EndIf
- :Case 'Mac'
-     :If ~⎕NEXISTS installFolder←if1←(2 ⎕NQ'.' 'GetEnvironment' 'HOME'),'/dyalog.files/SessionExtensions/CiderTatin/Cider'
-     :AndIf ~⎕NEXISTS installFolder←if2←(2 ⎕NQ'.' 'GetEnvironment' 'HOME'),'/','dyalog.',('.'~⍨{⍵/⍨2>+\⍵='.'}2⊃aplVersion),'U',(¯2↑1⊃aplVersion),'.files/SessionExtensions/CiderTatin/Cider'
-         selectFlag←1
-     :EndIf
- :Else
-     0 Assert⍨'OS <',os,'> is not supported'
- :EndSelect
- :If selectFlag
-     ind←'Into which folder?'C.CommTools.Select'Version specific' 'Version agnostic'
-     :If 0=≢ind
-         ⎕←'Cancelled by user' ⋄ →0
-     :ElseIf ind=1
-         installFolder←if1
-     :ElseIf ind=2
-         installFolder←if2
+ :If flag
+     batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
+     C←##.Cider
+     aplVersion←# ⎕WG'APLVersion'
+     selectFlag←0
+     :Select os←C.APLTreeUtils2.GetOperatingSystem ⍬
+     :Case 'Win'
+         :If ~⎕NEXISTS installFolder←if1←(2⊃4070⌶0),'\SessionExtensions\CiderTatin\Cider'
+         :AndIf ~⎕NEXISTS installFolder←if2←(1⊃⎕NPARTS 2⊃4070⌶0),'Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
+             selectFlag←1
+         :EndIf
+     :Case 'Lin'
+         :If ~⎕NEXISTS installFolder←if1←(2 ⎕NQ'.' 'GetEnvironment' 'HOME'),'/dyalog.files/SessionExtensions/CiderTatin/Cider'
+         :AndIf ~⎕NEXISTS installFolder←if2←(2 ⎕NQ'.' 'GetEnvironment' 'HOME'),'/','dyalog.',('.'~⍨{⍵/⍨2>+\⍵='.'}2⊃aplVersion),'U',(¯2↑1⊃aplVersion),'.files/SessionExtensions/CiderTatin/Cider'
+             selectFlag←1
+         :EndIf
+     :Case 'Mac'
+         :If ~⎕NEXISTS installFolder←if1←(2 ⎕NQ'.' 'GetEnvironment' 'HOME'),'/dyalog.files/SessionExtensions/CiderTatin/Cider'
+         :AndIf ~⎕NEXISTS installFolder←if2←(2 ⎕NQ'.' 'GetEnvironment' 'HOME'),'/','dyalog.',('.'~⍨{⍵/⍨2>+\⍵='.'}2⊃aplVersion),'U',(¯2↑1⊃aplVersion),'.files/SessionExtensions/CiderTatin/Cider'
+             selectFlag←1
+         :EndIf
      :Else
-         ∘∘∘  ⍝ Huh?!
+         0 Assert⍨'OS <',os,'> is not supported'
+     :EndSelect
+     :If selectFlag
+         ind←'Into which folder?'C.CommTools.Select'Version specific' 'Version agnostic'
+         :If 0=≢ind
+             ⎕←'Cancelled by user' ⋄ →0
+         :ElseIf ind=1
+             installFolder←if1
+         :ElseIf ind=2
+             installFolder←if2
+         :Else
+             ∘∘∘  ⍝ Huh?!
+         :EndIf
      :EndIf
- :EndIf
- ZIPs←C.FilesAndDirs.ListFiles ##.CiderConfig.HOME,'/Dist/*.zip'
- ZIPs←{⍵/⍨'Installed-'{⍺∘≢¨(≢⍺)↑¨{2⊃⎕NPARTS ⍵}¨⍵}⍵}ZIPs
- Assert 1=≢ZIPs
- zipFilename←⊃ZIPs
- :If batch
-     q←'Install:',(⎕UCS 13),('  ',zipFilename),(⎕UCS 13),'into:',(⎕UCS 13),'  ',installFolder,' ?'
- :OrIf C.CommTools.YesOrNo q
-     {}##.Cider.FilesAndDirs.RmDir installFolder
-     3 ⎕MKDIR installFolder
-     res←⎕SE.Tatin.InstallPackages(⊃ZIPs)installFolder
-     Assert 1=≢res
-     Assert(1⊃res)≡(2⊃⎕NPARTS zipFilename)
+     ZIPs←C.FilesAndDirs.ListFiles ##.CiderConfig.HOME,'/Dist/*.zip'
+     ZIPs←{⍵/⍨'Installed-'{⍺∘≢¨(≢⍺)↑¨{2⊃⎕NPARTS ⍵}¨⍵}⍵}ZIPs
+     Assert 1=≢ZIPs
+     zipFilename←⊃ZIPs
      :If batch
-         r←installFolder
-     :Else
-         ⎕SE.SALTUtils.ResetUCMDcache ¯1
-         r←'*** Cider installed in ',installFolder
+         q←'Install:',(⎕UCS 13),('  ',zipFilename),(⎕UCS 13),'into:',(⎕UCS 13),'  ',installFolder,' ?'
+     :OrIf C.CommTools.YesOrNo q
+         {}##.Cider.FilesAndDirs.RmDir installFolder
+         3 ⎕MKDIR installFolder
+         res←⎕SE.Tatin.InstallPackages(⊃ZIPs)installFolder
+         Assert 1=≢res
+         Assert(1⊃res)≡(2⊃⎕NPARTS zipFilename)
+         :If batch
+             r←installFolder
+         :Else
+             ⎕SE.SALTUtils.ResetUCMDcache ¯1
+             r←'*** Cider installed in ',installFolder
+         :EndIf
      :EndIf
  :EndIf

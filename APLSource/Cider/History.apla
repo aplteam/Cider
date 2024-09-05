@@ -1,7 +1,8 @@
 (
- '* 0.42.3 ⋄ 2024-08-17'
+ '* 0.42.3 ⋄ 2024-09-05'
  '  * Bug fixes'
  '    * Documentation amanded'
+ '    * `CheckForDropBoxConflict` crashed on a path that consisted of nothing but spaces  '
  '* 0.42.2 ⋄ 2024-08-16'
  '  * Bug fixes'
  '    * OpenProject printed wrong messages to session in case of -verbose'
