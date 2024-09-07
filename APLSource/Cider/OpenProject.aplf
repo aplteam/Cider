@@ -1,4 +1,4 @@
-(successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag
+ (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag
 ⍝ Open a Cider project.\\
 ⍝ `y` must be one of:
 ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
@@ -82,8 +82,12 @@
          (1 parms.batch)p res
      :EndIf
  :EndIf
- (1 parms.batch)p'watch'ReportLinkSettings linkOptions
- 1 p parms.batch ReportWatch res
+ ⍝ --- Change of strategy: "watch is now handled like any other parameter: ---
+ ⍝ Only reported when it is not set to the default.
+ ⍝ (1 parms.batch)p 'watch'ReportLinkSettings linkOptions    ⍝ Exclude "watch"
+ ⍝ 1 p parms.batch ReportWatch res                           ⍝ Always
+ ⍝ ---------------------------------------------------------------------------
+ (1 parms.batch)p ReportLinkSettings linkOptions
  :If 0=parms.noPkgLoad
      pkgStatus←parms CheckForTatinPackages config
      :If 0<pkgStatus

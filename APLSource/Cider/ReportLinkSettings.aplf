@@ -11,6 +11,6 @@
          ind←list2⍳list
          (list ind)←(ind≤≢list2)∘/¨list ind
      :AndIf ∨/b←(linkOptions.⍎¨list)≢¨defaults.⍎¨list2[ind] ⍝ Where does the actual value differ from the default?
-         r←linkOptions.{⍵,'=',⍎⍵}¨b/list
+         r←(⊂'Non-default Link parameters:'),' ',¨linkOptions.{⍵,'=',⍕⍎⍵}¨b/list
      :EndIf
  :EndIf

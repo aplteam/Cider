@@ -7,10 +7,10 @@
      txt←''
      txt,←⊂,'{'
      txt,←⊂,'  // AskForDirChange: 1,'
-     txt,←⊂,'  // CheckForDropboxConflicts: 1,'
-     txt,←⊂,'  // ExecuteAfterProjectOpen: "⎕SE.Path.To.Function",'
+     txt,←⊂,'  // CheckForDropboxConflicts: 0,'
+     txt,←⊂,'  // ExecuteAfterProjectOpen: "",'   ⍝ ⎕SE.Path2Function for example
      txt,←⊂,'  // ReportGitStatus: 1,'
-     txt,←⊂,'  // verbose: 1,'
+     txt,←⊂,'  // verbose: 0,'
      txt,←⊂,'}'
      (⊂txt)⎕NPUT filename
  :EndIf

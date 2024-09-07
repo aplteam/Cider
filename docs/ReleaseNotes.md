@@ -14,10 +14,13 @@ In short, when compatability is affected.
 
 This document does not come with a complete list of fixes, added features etc. Consult [Cider on GitHub](https://github.com/aplteam/Cider/releases) for that.
 
-## Version 0.42.3 from 2024-09-05
+## Version 0.42.4 from 2024-09-07
 
 Just bug fixes
 
+## Version 0.42.3 from 2024-09-05
+
+Just bug fixes
 
 ## Version 0.42.2 from 2024-08-04
 
@@ -33,6 +36,7 @@ Just bug fixes
 * The `]Cider.ProjectConfig` user command does not have a `-print` flag anymore but an `-edit` flag instead, and by default it prints the content of Cider's global config file to the session.
  
   That brings this user command syntactially in line with another Cider user command (`Config`) and similar Tatin user commands.
+
 
 
 

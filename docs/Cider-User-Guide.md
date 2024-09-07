@@ -234,6 +234,8 @@ No matter what the global config parameter `ReportGitStatus` is saying, if a pro
 
 Boolean that defaults to 0. This means that Cider provides only really important messages. If you want Cider to be verbose (some would say: chatty) in this respect, set `verbose` to 1.
 
+Note that you can enforce verbose by specifying the `-verbose` flag with the `]Cider.OpenProject` user command no matter what the global parameter is saying.
+
 #### Project configuration
 
 Every Cider project has a configuration file called `cider.config`, which is saved in the root of the project's folder.
@@ -827,6 +829,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 

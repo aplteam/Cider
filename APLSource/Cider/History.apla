@@ -1,4 +1,9 @@
 (
+ '* 0.42.4 ⋄ 2024-09-07'
+ '  * Bug fixes'
+ '    * `GetCiderGlobalConfigFilename` created a global Cider config file with the wrong defaults'
+ '    * `CheckForDropboxConflicts` did not honour the "verbose" config parameter as intended'
+ '    * Report of Link non-default parameters was distorted  '
  '* 0.42.3 ⋄ 2024-09-05'
  '  * Bug fixes'
  '    * Documentation amanded'
