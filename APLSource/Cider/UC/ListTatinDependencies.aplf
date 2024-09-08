@@ -1,4 +1,4 @@
- r←ListTatinDependencies Args;path;full;cfgFilename;cfg;tatinFolders;ind;raw
+ r←ListTatinDependencies Args;path;full;cfgFilename;cfg;tatinFolders;ind;raw;list;path2;buildFilename;buff
 ⍝ List all Tatin dependencies
  r←''
  :If 0=≢path←GetProjectPath Args._1
@@ -11,28 +11,42 @@
              path←GetFolderFromAlias2 path
          :EndIf
          cfgFilename←path,'/cider.config'
-         'No Cider config file found'Assert P.##.F.Exists cfgFilename
-         cfg←P.##.ReadProjectConfigFile cfgFilename
-         :If 0<≢tatinFolders←P.##.GetTatinDependencyFolders cfg
-             tatinFolders←P.##.RemoveTargetDefinition¨tatinFolders
-             ind←1
-             :If 1=≢tatinFolders
-             :OrIf 0<≢ind←'SelectPkgFolder@Select package install folder to report on:'Select tatinFolders
-                 :If 0<≢r←P.##.ListTatinDependenciesFull path,'/',ind⊃tatinFolders
-                     :If ~raw
-                         r←⊃,/CR,¨(r[;1]⍴¨' '),¨r[;2]
+         :If P.##.F.Exists cfgFilename
+             cfg←P.##.ReadProjectConfigFile cfgFilename
+             :If 0<≢tatinFolders←P.##.GetTatinDependencyFolders cfg
+                 tatinFolders←P.##.RemoveTargetDefinition¨tatinFolders
+                 ind←1
+                 :If 1=≢tatinFolders
+                 :OrIf 0<≢ind←'SelectPkgFolder@Select package install folder to report on:'Select tatinFolders
+                     :If 0<≢r←P.##.ListTatinDependenciesFull path,'/',ind⊃tatinFolders
+                         :If ~raw
+                             r←⊃,/CR,¨(r[;1]⍴¨' '),¨r[;2]
+                         :EndIf
+                     :Else
+                         r←'No dependencies found'
                      :EndIf
-                 :Else
-                     r←'No dependencies found'
                  :EndIf
+             :Else
+                 r←'No dependencies found'
              :EndIf
          :Else
-             r←'No dependencies found'
+             list←P.##.F.ListDirs path
+             :For path2 :In list
+                 buildFilename←path2,'/apl-buildlist.json'
+                 :If ⎕NEXISTS buildFilename
+                     :If 0<≢buff←P.##.ListTatinDependenciesFull path2
+                         :If ~raw
+                             buff←⊃,/CR,¨(buff[;1]⍴¨' '),¨buff[;2]
+                         :EndIf
+                         r,←buff
+                     :EndIf
+                 :EndIf
+             :EndFor
          :EndIf
      :Else
          :If 0<≢r←P.ListTatinDependencies path
              :If ~raw
-                 r←('Source' 'Package-ID' 'Principal' 'URL' '')⍪('' '' '' '' '')⍪r
+                 r←('Source' 'Package-ID' 'Principal' 'URL' '?')⍪('' '' '' '' '')⍪r
                  (2⌷r)←(⊃¨⌈⌿≢¨r)⍴¨'-'
                  r←{w←⍵ ⋄ w[2;2⊃⍴w]←' ' ⋄ w}r
              :EndIf

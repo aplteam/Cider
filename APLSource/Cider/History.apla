@@ -1,4 +1,6 @@
 (
+ '* 0.43.0 ⋄ 2024-09-08'
+ '  * `ListTatinDependencies` now accepts the path to a package installationm folder as well'
  '* 0.42.4 ⋄ 2024-09-07'
  '  * Bug fixes'
  '    * `GetCiderGlobalConfigFilename` created a global Cider config file with the wrong defaults'
