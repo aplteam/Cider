@@ -1,0 +1,2 @@
+ bool←HasOpenCiderProjects projects
+ bool←projects[;2]∨.=2

@@ -1,0 +1,4 @@
+ r←GetBookmark_ID parms
+⍝ Returns an ID that can be used as a bookmark ID.
+ r←'bookmark_',¯5↑'00000',⍕parms.bookmarkCounter
+⍝Done

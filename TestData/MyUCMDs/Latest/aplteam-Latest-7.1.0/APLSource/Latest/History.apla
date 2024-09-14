@@ -1,0 +1,13 @@
+(
+ '* 7.1.0 from 2024-08-16'
+ '  * Arguments streamlined:'
+ '    * The hyphen after a single date is now optional, meaning a single date it interpreted as'
+ '      "from then till now"'
+ '    * Dates can now also be entered as 2024-08-16 (rather than 20240816)'
+ '    * 204-01-01-2024-08-16 is understood '
+ '* 7.0.1 from 2024-01-21'
+ '  * Bug fixes: '
+ '    * Latest could only deal with newer versions of Link, when `Status` returns a 4-column matrix.'
+ '      Older versions returned a three-column matrix. '
+ '    * `Version` should use the package config file but didn''t'
+)

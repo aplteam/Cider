@@ -1,0 +1,3 @@
+ {parms}←IncrementBookMarkCounter parms
+ parms.bookmarkCounter+←1
+⍝Done

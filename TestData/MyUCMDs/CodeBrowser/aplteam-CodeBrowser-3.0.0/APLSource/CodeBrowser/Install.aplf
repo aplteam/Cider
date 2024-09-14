@@ -1,0 +1,4 @@
+ Install
+⍝ Checks whether the packages required by CodeBrowser are already installed in the standard folder for
+⍝ packages required by any Dyalog user command.
+ ∘∘∘

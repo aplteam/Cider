@@ -1,0 +1,76 @@
+ (r name)←links FetchData(path recursive stats allFiles noOf pathFlag name);path;noOf;dates;buff;ind
+ :If pathFlag
+     path←'expand'F.NormalizePath path,F.CurrentSep
+     :If F.IsDir path
+         r←⍉⊃('recursive'recursive)('type'(0 1 3))F.Dir path
+         →(0=≢r)/0
+         r←(r[;1]=2)⌿r                 ⍝ Only regular files
+         :If allFiles
+             r←(~{≢'[/\\]\.git[/\\]'⎕S 0⊣⍵}¨r[;0])⌿r
+         :Else
+             r←(({2⊃⎕NPARTS ⍵}¨r[;0])∊GetExtensions)⌿r
+         :EndIf
+         r[;2]←↓A.FormatDateTime⊃r[;2]
+         r←r[⍋⊃r[;2];0 2]
+         :If stats
+             r←{⍺(≢⍵)}⌸10↑¨r[;1]
+         :Else
+             :If 0=allFiles
+                 :If ⍬≡noOf
+                 :ElseIf 0≢noOf
+                     :If 2=≢noOf
+                     :AndIf 2=≡noOf
+                         dates←↑∘A.ToNum¨'-'~⍨¨10↑¨r[;1]
+                         r←((dates≤↑1⊃noOf)∧(dates≥↑0⊃noOf))⌿r
+                     :ElseIf ¯1=×noOf
+                         buff←10↑¨r[;1]  ⍝ YYYY-MM-DD
+                         r←(buff∊noOf{(⍺⌊≢⍵)↑⍵}⌽∪⌽buff)⌿r
+                     :ElseIf 8=≢⍕noOf ⍝ Is it a date (yyyymmdd)?
+                         r←(noOf={↑↑(//)⎕VFI ⍵}¨↓(⊃r[;1])[;0 1 2 3 5 6 8 9])⌿r
+                     :Else
+                         r←(-noOf⌊≢r)↑r
+                     :EndIf
+                 :EndIf
+             :EndIf
+             :If 0=+/≢¨r[;0]
+                 r←0 2⍴''
+             :EndIf
+             :If 0<≢r
+                 :If pathFlag
+                     :If (⊂path)∊'./' '.\'
+                         r[;0]←(1+≢F.PWD)↓¨r[;0]
+                     :EndIf
+                 :ElseIf allFiles
+                     r[;0]←(≢path){∧/~'/\'∊⍵:⍵ ⋄ ⍺↓⍵}¨r[;0]
+                 :EndIf
+                 :If 0<≢links
+                 :AndIf (⊂name)∊links[;0]
+                     ind←links[;0]⍳⊂name
+                     r[;0]←⎕SE.Link.GetItemName∘F.EnforceSlash¨r[;0]
+                 :Else
+                     r[;0]←(≢path)↓¨r[;0]
+                 :EndIf
+             :EndIf
+         :EndIf
+         r←(0<≢¨r[;0])⌿r
+     :Else
+         r←0 0⍴''
+     :EndIf
+ :ElseIf ((,'#')≡,path)∨(('⎕SE')≡1 ⎕C,path)∨9=⎕NC path
+     :If stats
+         noOf←999999
+     :EndIf
+     :If (,'#')≡,path
+         r←List noOf 1
+     :Else
+         r←path List noOf 1
+     :EndIf
+     name←path
+     :If stats
+         r←{⍺(≢⍵)}⌸10↑¨r[;1]
+     :ElseIf 0=recursive
+         r←(~'.'∊¨(1+≢path)↓¨r[;0])⌿r
+     :EndIf
+ :Else
+     r←''
+ :EndIf

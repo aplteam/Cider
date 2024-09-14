@@ -1,0 +1,6 @@
+ {r}←Init dummy
+ r←⍬
+ :If 0=⎕NC'A'
+     A←APLTreeUtils2 ⋄ F←FilesAndDirs
+ :EndIf
+⍝Done

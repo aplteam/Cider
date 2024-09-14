@@ -1,0 +1,7 @@
+ r←List;res;⎕TRAP
+ r←⎕NS''
+ r.Group←'TOOLS'
+ r.Name←'CompareFiles'
+ r.Parse←'2s -edit1 -edit2 -caption1= -caption2= -use= -save -version -config -editconfig'
+ r.Desc←'Compare two files with each other.'
+⍝Done

@@ -1,0 +1,46 @@
+ (exe name)←{force}EstablishCompareEXE use;ind;exes;names;default;saveFlag;i
+⍝ Tries to establish which exe/name to use for the comparison.\\
+⍝  * If `use` is not empty it is used.
+⍝  * Otherwise CONFIG.Default is checked: if it is not empty it is used.
+⍝  * If neither is set then a list with all available utilities is compiled.
+⍝    * If that list has just just one item it is used unless use is "?".
+⍝    * Otherwise the user is interrogated, unless `force` is 1 (default is 0) when the first item is returned.
+ exe←name←''
+ force←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'force'
+ {}Init⍣(⊃0=⎕NC'CONFIG')⊢⍬
+ (exes names default)←GetFromConfig'EXEs' 'Names' 'Default'
+ :If 'Win'≡A.GetOperatingSystem ⍬
+     exes←{'.exe'≡⎕C ¯4↑⍵:⍵ ⋄ ⍵,'.exe'}¨exes
+ :EndIf
+ 'No comparison utility available/defined'Assert 0<≢exes
+ (exes names)←DropUnknownUtilities exes names
+ 'No comparison utility found'Assert 0<≢exes
+ saveFlag←0
+ :If 0<≢use
+ :AndIf (,'?')≢,use
+     ('Comparison utility "',use,'" is not available')Assert(⊂⎕C use)∊⎕C names
+     ind←(⎕C names)⍳⊂⎕C use
+     (exe name)←ind∘⊃¨exes names
+ :ElseIf 0<≢default
+ :AndIf (,'?')≢,use
+     ind←(⎕C names)⍳⊂⎕C default
+     'Default definition in configuration file is invalid'Assert ind≤≢exes
+     (exe name)←ind⊃¨exes names
+ :Else
+     :If force
+         (exe name)←1⊃¨exes names
+     :Else                              ⍝ We need to interrogate the user
+         :If 0<≢i←⍸names≡¨⊂default
+             names[i]←⊂(i⊃names),' *'
+         :EndIf
+         ind←'Select your preferred comparison utility'CommTools.Select names
+         →(0=≢ind)/0                    ⍝ She changed her mind: nothing selected
+         (exe name)←ind⊃¨exes names
+         saveFlag←0 CommTools.YesOrNo'Do want to make this change permanent?'
+     :EndIf
+ :EndIf
+ :If saveFlag
+     ⍎'CONFIG.',(A.GetOperatingSystem ⍬),'.Default←''',name,''''
+     CONFIG WriteJSON5 GetConfigFilename
+ :EndIf
+⍝Done

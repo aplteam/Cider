@@ -1,0 +1,65 @@
+ r←Run(Cmd Args);fn1;fn2;fn3;parms;stdOut;rc;stdErr;orig1;orig2;orig3;exe;name
+ r←''
+ :If 0=⎕SE.⎕NC'CompareFiles'
+     {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)⎕SE
+ :EndIf
+ C←GetRefToCompareFiles ⍬
+ CT←C.##.ComparisonTools
+ C.##.Init ⍬
+ :If 0 Args.Switch'version'
+     r←C.Version
+ :ElseIf 0 Args.Switch'config'
+     r←C.##.F.NormalizePath C.##.GetConfigFilename
+ :ElseIf 0 Args.Switch'editconfig'
+     r←C.##.EditConfigFile ⍬
+ :Else
+     :If (,0)≢,Args.use        ⍝ "use" can be expected...
+     :AndIf 0<≢Args.use        ⍝ ... to be the name of a comparison utility (or "?")...
+     :AndIf 0 0≡Args.(_1 _2)   ⍝ ... and there are no filenames specified
+         (exe name)←C.Use Args.use
+         :Return
+     :EndIf
+     :If 0=≢Args.Arguments
+         r←{(path name)←⍵ ⋄ 'Currently ',name,' would be used, and loaded from ',path}C.EstablishCompareEXE{0≡⍵:'' ⋄ ⍵}Args.use
+         :Return
+     :EndIf
+     'Please specify two files'⎕SIGNAL 2/⍨2≠≢Args.Arguments
+     '⍵[1] is not a file'Assert ⎕NEXISTS Args._1
+     '⍵[2] is not a file'Assert ⎕NEXISTS Args._2
+     :If ≡/LowercaseIfWindows¨Args._1 Args._2
+         'Comparing a file with itself makes no sense'⎕SIGNAL 911
+     :EndIf
+     (exe name)←C.EstablishCompareEXE{0≡⍵:'' ⋄ ⍵}Args.use
+     →(0=≢exe)/0
+     ('Missing: function "CreateParmsFor',({⍵↑⍨¯1+⍵⍳' '}name),'"')Assert 3=C.##.ComparisonTools.⎕NC'CreateParmsFor',{⍵↑⍨¯1+⍵⍳' '}name
+     parms←C.ComparisonTools.⍎'CreateParmsFor',{⍵↑⍨¯1+⍵⍳' '}name
+     parms.use←exe
+     parms.name←{⍵↑⍨¯1+⍵⍳' '}name
+     parms.file1←'Please select first filename'GetFilename Args._1
+     →(0=≢parms.file1)/0
+     parms.file2←'Please select second filename'GetFilename Args._2
+     →(0=≢parms.file2)/0
+     parms.(file1 file2)←{'expand'C.##.FilesAndDirs.NormalizePath ⍵}¨parms.(file1 file2)
+     parms.(caption1 caption2)←parms.(file1 file2){0≡⍵:⍺ ⋄ ⍵}¨Args.(caption1 caption2)
+     (orig1 orig2)←ReadFile¨parms.(file1 file2)
+     :If 2=parms.⎕NC'edit1'
+     :AndIf parms.edit1≠Args.edit1
+         parms.edit1←Args.edit1
+     :EndIf
+     :If 2=parms.⎕NC'edit1'
+     :AndIf parms.edit2≠Args.edit2
+         parms.edit2←Args.edit2
+     :EndIf
+     parms.saveFlag←Args.save
+     (rc stdOut stdErr)←C.Compare parms
+     stdOut Assert rc=0
+     r←2⍴0
+     :If 0<≢parms.file1
+     :AndIf parms.edit1
+         r[1]←orig1≢ReadFile parms.file1
+     :EndIf
+     :If 0<≢parms.file2
+     :AndIf parms.edit2
+         r[2]←orig2≢ReadFile parms.file2
+     :EndIf
+ :EndIf

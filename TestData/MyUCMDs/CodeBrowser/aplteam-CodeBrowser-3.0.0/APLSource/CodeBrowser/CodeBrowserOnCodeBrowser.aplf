@@ -1,0 +1,11 @@
+ {r}←CodeBrowserOnCodeBrowser filename;parms;C
+ r←⍬
+ C←#.CodeBrowser.CodeBrowser
+ parms←C.CreateParms''
+ parms.lines←¯1
+ parms.filename←filename
+ parms.footer←'Created ',(A.FormatDateTime ⎕TS),' by ',⎕AN
+ parms.caption←'CodeBrowser on itself'
+ parms.showParms←1
+ {}parms C.Run C
+⍝Done

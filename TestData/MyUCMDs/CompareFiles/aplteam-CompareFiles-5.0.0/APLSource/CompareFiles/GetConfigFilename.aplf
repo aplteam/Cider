@@ -1,0 +1,2 @@
+ configFilename←GetConfigFilename
+ configFilename←GetPathToConfig,'comparefiles-config.json5'

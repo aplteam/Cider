@@ -1,0 +1,43 @@
+ (rc out err)←BeyondCompare parms;cmd;result;flagChar
+⍝ Function for the comparison utility BeyondCompare
+ flagChar←(1+'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬)⊃'-' '/'
+ :If 0=parms.⎕NC'use'
+     parms.use←⊃##.EstablishCompareEXE parms.name
+ :EndIf
+ cmd←'"',(parms.use~'"'),'" '
+ :If 0<≢parms.file1
+     cmd,←'"',(parms.file1~'"'),'"'
+ :EndIf
+ :If 0<≢parms.file2
+     cmd,←' "',(parms.file2~'"'),'"'
+ :EndIf
+ :If 0=≢parms.caption1
+     cmd,←' ',flagChar,'title1="',(⊃,/1↓⎕NPARTS parms.file1),'"'
+ :Else
+     cmd,←' ',flagChar,'title1="',(parms.caption1~'"'),'"'
+ :EndIf
+ :If 0=≢parms.caption2
+     cmd,←' ',flagChar,'title2="',(⊃,/1↓⎕NPARTS parms.file2),'"'
+ :Else
+     cmd,←' ',,flagChar,'title2="',(parms.caption2~'"'),'"'
+ :EndIf
+ :If 0=+/parms.(edit1 edit2)
+     cmd,←' ',flagChar,'ro1 ',flagChar,'ro2'
+ :Else
+     :If 0=parms.edit1
+         cmd,←' ',flagChar,'ro1'
+     :EndIf
+     :If 0=parms.edit2
+         cmd,←' ',flagChar,'ro2'
+     :EndIf
+ :EndIf
+ result←(parms.(0=edit1+edit2))##.RunProcess cmd
+ :If parms.(0>edit1+edit2)
+     (rc out err)←result.(ExitCode StdOut ExitCode)
+     :If rc∊0 1 2 11 12 13 14 101
+         rc←0
+     :EndIf
+ :Else
+     rc←0 ⋄ out←err←''
+ :EndIf
+⍝Done

@@ -1,0 +1,5 @@
+ n←CreateTextTabChildren n;∆;ref;list
+ n(CreateCaption)←n.TextSubForm
+ n(CreateFooter)←n.TextSubForm n.caption
+ n(CreateInfo)←n.TextSubForm n.footer
+⍝Done

@@ -1,0 +1,3 @@
+ n←Init dummy
+ n←⎕NS''
+ n.(∆vgap ∆hgap)←15

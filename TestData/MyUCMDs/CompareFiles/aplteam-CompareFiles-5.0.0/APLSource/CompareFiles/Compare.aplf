@@ -1,0 +1,13 @@
+ r←{exe}Compare parms
+ :If 0=⎕NC'A'
+     Init ⍬
+ :EndIf
+ :If 0=parms.⎕NC'saveFlag'
+     parms.saveFlag←0
+ :EndIf
+ :If 0=parms.⎕NC'use'
+     parms.(use name)←parms.saveFlag EstablishCompareEXE parms.name
+ :EndIf
+ ('No function found for comparison tool "',parms.name,'"')Assert 3=ComparisonTools.⎕NC parms.name
+ r←⍎'ComparisonTools.',parms.name,' parms'
+⍝Done

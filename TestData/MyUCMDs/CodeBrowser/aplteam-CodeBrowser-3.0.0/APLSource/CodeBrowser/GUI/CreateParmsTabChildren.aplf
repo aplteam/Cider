@@ -1,0 +1,9 @@
+ n←CreateParmsTabChildren n;∆;ref
+ n(CreateFilename)←n.ParmsSubForm
+ n(CreateCssFilename)←n.filename n.ParmsSubForm
+ n(CreateToBeProcessed)←n.ParmsSubForm n.linkCssFile
+ n(CreatePrintParms)←n.processFns.## n.ParmsSubForm
+ n(CreateLang)←n.ParmsSubForm n.processFns.##
+ n(CreateLines)←n.ParmsSubForm n.lang_label
+ n(CreateOtherParms)←n.ParmsSubForm n.lines
+⍝Done

@@ -1,0 +1,14 @@
+ r←level CollectVariable(ref name parms collect i);no;info;caption
+ r←''
+ no←⍕2+level
+ r,←⊂'<div ',(collect MakeID(⍕ref),'.',name),'>'
+ caption←MakeBreadCrumb collect.remove RemoveLevels⍕ref
+ r,←⊂'<p class="caption">',(⍕i),'. ',caption,'.',name,'</p>'
+ r,←⊂'</div>'
+ :Trap 6
+     info←'Rank: ',(⍕⍴⍴ref.⍎name),'; Shape: ',({0∊⍴⍵:'⍬' ⋄ ⍕⍵}⍴ref.⍎name),'; Depth: ',(⍕≡ref.⍎name),'; Data Representation: ',⍕⎕DR ref.⍎name
+     r,←⊂'<pre><code>',info,'</code></pre>'
+ :Else  ⍝ This may well fail because the variable is now hidden (CodeBrowser on CodeBrowser)
+     r←''
+ :EndTrap
+⍝Done

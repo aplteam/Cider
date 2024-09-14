@@ -1,0 +1,27 @@
+ (html flag)←HandleContainers(ref width flag lists parms collect);html;these;recursiveMsg
+ html←''
+ :If 0<≢lists.containers←' '~¨⍨↓ref.⎕NL 9
+ :AndIf 0<≢lists.containers←({16::1 ⋄ 0⊣⎕SRC ⍵}¨ref.⍎¨lists.containers)/lists.containers
+ :AndIf 0<≢lists.containers←(~(ref.⍎¨lists.containers)∊parms.ignore)/lists.containers
+ :AndIf 0<≢lists.containers←(ref≠ref.⍎¨lists.containers)/lists.containers
+ :AndIf 0<≢lists.containers←((~'['∊¨⍕¨ref.⍎¨lists.containers))/lists.containers
+ :AndIf 0<≢lists.containers←(~(these←ref.⍎¨lists.containers)∊collect.namespaces)/lists.containers
+     lists←RemoveGuiInstances lists ref parms
+ :AndIf 0<≢lists.containers
+     lists←RemoveEmptyContainers lists ref parms
+ :AndIf 0<≢lists.containers
+     lists←RemoveTatinPackages lists ref parms
+ :AndIf 0<≢lists.containers
+     collect.namespaces,←these
+     flag←{0⊣html,←⊂'<nav class="sub">'}⍣1⊣1
+     html,←⊂'<div class="toclist">'
+     recursiveMsg←(~collect.hasMainMenu)/' (not scanned)'
+     html,←⊂'<p><b>Sub namespace',((1<⍴lists.containers)/'s'),': ',(⍕⊃⍴lists.containers),'</b>',recursiveMsg,'</p>'
+     html,←⊂'<div>'
+     :If parms.recursive
+         html,←⊃,/ref{(no name)←⍵ ⋄ ⊂'<div style="width:',width,'em;"><a ',(collect MakeBookmarkRef(⍕⍺),'.',name),'>',(⍕no),'. ',name,'</a></div>'}¨(⍳≢lists.containers),¨⊂¨lists.containers
+     :Else
+         html,←lists.containers{('<div style="width:',width,'em;">'),(⍕⍵),'. ',⍺,'</div>'}¨⍳≢lists.containers
+     :EndIf
+     html,←'</div>' '</div>'
+ :EndIf

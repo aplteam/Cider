@@ -1,0 +1,24 @@
+ r←LoadUserDefinedComparisonUtilities path;list;names;res;qdmx;into;parms;into2
+⍝ Checks whether there are comparison utilities in the path that hold the config file that need to be loaded into ⎕SE.\\
+⍝ Returns 1 in case something was loaded and 0 otherwise
+ r←0
+ :If 0<≢list←F.ListFiles path,'/*.aplf'
+     names←{2⊃⎕NPARTS ⍵}¨list
+     into←⎕SE.CompareFiles.ComparisonTools
+     into2←⎕SE.CompareFiles.##.ComparisonTools
+ :AndIf ~∧/3=⊃∘into.⎕NC¨names
+     into←⍕into
+     path←{⍵↓⍨¯1×∨/'/\'∊¯1↑⍵}path
+     :Trap 0
+         parms←⎕NS''
+         parms.overwrite←1
+         res←parms ⎕SE.Link.Import into2 path
+         Assert'Imported: '{⍺≡(≢⍺)↑⍵}res
+         r←1
+         (⍎into)EstablishAPIForNewFunctions names
+     :Else
+         qdmx←⎕DMX
+         qdmx.EM Assert 0
+     :EndTrap
+ :EndIf
+⍝Done

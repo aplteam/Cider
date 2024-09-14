@@ -1,0 +1,5 @@
+ IsScripted←{
+⍝ Returns a 1 for classes, interfaces and scripted namespaces and 0 otherwise.
+     11 16::0
+     1⊣⎕SRC ⍵
+ }

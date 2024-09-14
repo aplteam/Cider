@@ -1,0 +1,6 @@
+ n←n CreateScanTabChildren namespaces
+ n(CreateNamespaces)←n.ScanSubForm namespaces
+ n(CreateToBeIgnored)←n.ScanSubForm n.recursive
+ n(CreateIgnoreGuiInstances)←n.ScanSubForm n.ignoreEmptyNamespaces
+ n(CreateTatinPackages)←n.ScanSubForm n.processGuiInstances
+⍝Done

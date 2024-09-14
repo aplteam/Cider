@@ -1,0 +1,17 @@
+ n←n CreateLines(parent sibling);∆;ref
+ ∆←⊂'Label'
+ ∆,←⊂'Caption' '&L&ines:'
+ ∆,←⊂'Posn'(sibling.Posn[1],n.∆vgap+2⊃+⌿↑sibling.(Posn Size))
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ ref←⍎'lines_label'parent.⎕WC ∆
+
+ ∆←⊂'Edit'
+ ∆,←⊂'Posn'((⊃+⌿↑ref.(Posn Size)),ref.Posn[2])
+ ∆,←⊂'FieldType' 'Numeric'
+ ∆,←⊂'Size'(21 50)
+ ∆,←⊂'Value'n.∆Parms.lines
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('How many lines are displayed per object.' '¯1 means "all lines".')
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ n.lines←⍎'lines'parent.⎕WC ∆
+⍝Done

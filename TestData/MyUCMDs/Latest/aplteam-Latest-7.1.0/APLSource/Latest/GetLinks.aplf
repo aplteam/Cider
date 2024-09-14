@@ -1,0 +1,23 @@
+ (op path name list)←GetLinks includeQSE;ind
+⍝ op is 1 if the user has cancelled, ohtherwise 0.
+ path←name←''
+ op←0
+ :If 2=⍴⍴list←1↓⎕SE.Link.Status''               ⍝ Otherwise it is a message rather than a real result
+     list←list[;0,(4=1⊃⍴list)⊃1 2]              ⍝ Because LINK changed number of column between versions
+     :If ~includeQSE
+         list←('⎕SE.'∘≢¨1 ⎕C 4↑¨list[;0])⌿list
+     :EndIf
+ :AndIf 0<≢list                                 ⍝ Once Link gets a real API...
+     ('No LINKs detected')⎕SIGNAL 11/⍨0=≢list
+     :If 1<≢list
+         :If 0<≢ind←'SelectLINK@Select LINKed namespace ]Latest should act on'CommTools.Select↓⎕FMT list
+             (name path)←list[ind-1;]
+         :Else
+             op←1
+         :EndIf
+     :Else
+         (name path)←list[0;]
+     :EndIf
+ :Else
+     list←''
+ :EndIf

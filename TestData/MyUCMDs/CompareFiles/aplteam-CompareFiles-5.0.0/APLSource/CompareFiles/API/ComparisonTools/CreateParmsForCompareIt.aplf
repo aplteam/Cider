@@ -1,0 +1,2 @@
+ ns←CreateParmsForCompareIt
+ ns←##.##.ComparisonTools.CreateParmsForCompareIt

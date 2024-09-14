@@ -1,0 +1,5 @@
+ (html flag)←html OpenNavSub flag
+ :If flag
+     html,←⊂'<nav class="sub">'
+     flag←0
+ :EndIf

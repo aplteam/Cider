@@ -1,0 +1,19 @@
+ n←CreateTabControlAndChildren n;∆
+ ∆←⊂'TabControl'
+ ∆,←⊂'Size'(n.∆Form.Size-70 20)
+ ∆,←⊂'Posn'(0 10)
+ ∆,←⊂'Attach'('Top' 'Left' 'Bottom' 'Right')
+ n.TabCtrl←⍎'tabctrl'n.∆Form.⎕WC ∆
+
+ ∆←⊂'TabButton'
+ ∆,←⊂'Caption' 'Scan'
+ n.Scan←⍎'tabbtnScan'n.TabCtrl.⎕WC ∆
+
+ ∆←⊂'TabButton'
+ ∆,←⊂'Caption' 'Parameters'
+ n.Parms←⍎'tabbtnParms'n.TabCtrl.⎕WC ∆
+
+ ∆←⊂'TabButton'
+ ∆,←⊂'Caption' 'Text'
+ n.Text←⍎'tabbtnText'n.TabCtrl.⎕WC ∆
+⍝Done

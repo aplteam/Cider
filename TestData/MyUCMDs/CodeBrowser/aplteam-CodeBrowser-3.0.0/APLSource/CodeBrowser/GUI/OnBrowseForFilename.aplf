@@ -1,0 +1,20 @@
+ OnBrowseForFilename msg;parms;fb;n;res;path;filename;extension
+ n←GetRefTo_n⊃msg
+ (path filename extension)←⎕NPARTS n.filename.Text
+ filename←filename,extension
+ parms←filename CreateFileBoxParms n
+ :If 0∊⍴path
+     parms.path←##.F.PWD
+ :Else
+     parms.path←path
+ :EndIf
+ parms←filename CreateFileBoxParms n
+ parms.caption←'Save HTML file'
+ parms.fileMode←'Write'
+ parms.filters←('*.HTML' 'HTML files')('*.HTM' 'HTML files')
+ fb←CreateFileBox parms
+ res←DQ fb.∆Form
+ :If ~0∊⍴fb.∆result
+     n.filename.Text←fb.∆result
+ :EndIf
+⍝Done

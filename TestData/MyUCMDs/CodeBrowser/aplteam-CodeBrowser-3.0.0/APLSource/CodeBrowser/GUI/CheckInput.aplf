@@ -1,0 +1,51 @@
+ (success msg)←CheckInput n;list;bool
+ success←0
+ msg←''
+
+ :If 0∊⍴∊list←PolishNamespaceList n.namespaces.Text
+     ShowInStatusbar'Nothing to scan?!'
+     →SetFocusTo n.Scan n.namespaces
+ :EndIf
+ bool←list∊,¨'#' '⎕SE'
+ :If 1∊bool←~{(⍵∊,¨'#' '⎕SE')∨9.1=⎕NC∘⊂¨⍵}list
+     ShowInStatusbar'Scan: not a namespace: ',⊃{⍺,',',⍵}/bool/list
+     →SetFocusTo n.Scan n.namespaces
+ :EndIf
+ n.namespaces.Text←⊃{⍺,', ',⍵}/list
+
+ :If ~0∊⍴list←n.toBeIgnored.Text
+     ((list=',')/list)←' '
+     list←##.A.DMB list
+     list←∪' '##.A.Split list
+     :If 1∊bool←~{((,'#')∘≡¨⍵)∨9=⎕NC¨⍵}list
+         ShowInStatusbar'To be ignored: not a namespace: ',⊃{⍺,',',⍵}/bool/list
+         →SetFocusTo n.Scan n.toBeIgnored
+     :EndIf
+     n.toBeIgnored.Text←⊃{⍺,',',⍵}/list
+ :EndIf
+
+ :If ~0∊⍴n.filename.Text
+ :AndIf 0=##.F.IsFile n.filename.Text
+ :AndIf ~CreateNativeFile n.filename.Text
+     ShowInStatusbar'HTML filename is invalid (not pointing to a file)'
+     →SetFocusTo n.Parms n.filename
+ :EndIf
+
+ :If ~0∊⍴n.cssFilename.Text
+ :AndIf 0=##.F.IsFile n.cssFilename.Text
+     ShowInStatusbar'CSS filename is invalid (not pointing to a file)'
+     →SetFocusTo n.Parms n.cssFilename
+ :EndIf
+
+ :If 0=+/n.(processFns processOpr processScripts processVars).State
+     ShowInStatusbar'Nothing to be processed?!'
+     →SetFocusTo n.Parms n.processFns
+ :EndIf
+
+ :If (0=n.lines.Value)∨n.lines.Value<¯1
+     ShowInStatusbar'"Lines" must be either a positive integer or ¯1'
+     →SetFocusTo n.Parms n.lines
+ :EndIf
+
+ success←1
+⍝Done

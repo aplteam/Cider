@@ -1,0 +1,41 @@
+ {r}←Make flag;⎕IO;⎕ML;pathToSource;targetPath;M;A;F;name;projName;parms;myUCMDsFolder;toFolder
+⍝ Version 4.0.0 ⋄ 2022-08-23
+ r←⍬
+ ⎕IO←1 ⋄ ⎕ML←1
+ :If flag
+     ∘∘∘
+     pathToSource←(⎕SE.UCMD'GetAcreProjectPath'),'_Source/'
+     targetPath←'Dist/'
+     myUCMDsFolder←(⊃⎕SH'echo %userprofile%'),'/Documents/MyUCMDs/'
+     ⎕CY myUCMDsFolder,'/Maker/Maker.dws'
+     M←#.Make.Maker ⋄ A←M.A ⋄ F←M.F
+     _SomethingHasChange←10
+⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
+     name←'CodeBrowser'
+     ⎕WSID←'expand'F.NormalizePath(⊃A.SplitPath ⎕WSID),'../',name,'.dws'
+     F.PolishCurrentDir
+     M.RecreateFolder targetPath
+     3 ⎕MKDIR targetPath,'/',name,'/APLSource'
+     :If ⎕NEXISTS myUCMDsFolder,name,'/',name,'_uc.dyalog'
+         M.CopyBetter(myUCMDsFolder,name,'/',name,'_uc.dyalog')('./APLSource/',name,'_uc.dyalog')'User command version' 'APL Code'
+     :EndIf
+     parms←⎕SE.Cider.CreateOpenParms ⍬
+     parms.folder←'./'
+     parms.projectSpace←name
+     parms.parent←'#'
+     parms.quietFlag←1
+     Assert ⎕SE.Cider.OpenProject parms
+     {}M.IncreaseBuildID2'#.',name,'.',name,'.Version'
+     CodeBrowserOnCodeBrowser targetPath,name,'/CodeBrowser_CodeReview.html'
+     1 #.CodeBrowser.CodeBrowser.Admin.CreateAPI 1
+     (targetPath,name,'/APLSource/')⎕NCOPY⍠('Wildcard' 1)⊣'./APLSource/',name,'/*'
+     (targetPath,name,'/')⎕NCOPY'./APLSource/',name,'_uc.dyalog'
+     (targetPath,name,'/')⎕NCOPY'./Files/codebrowser_styles.css'
+     (targetPath,name,'/')⎕NCOPY'./packages/'
+     ((⍎'#.',name,'.',name,'.Version')M.CreateZipFile)name targetPath
+     :If 1 M.U.YesOrNo'Copy the user command to MyUCMDs?'
+         toFolder←myUCMDsFolder,name,'/'
+         F.RmDir toFolder
+         toFolder ⎕NCOPY targetPath,name
+     :EndIf
+ :EndIf

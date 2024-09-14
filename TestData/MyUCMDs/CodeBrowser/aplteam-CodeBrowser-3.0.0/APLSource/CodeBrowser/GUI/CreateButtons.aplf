@@ -1,0 +1,38 @@
+ n←CreateButtons n;∆
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Push'
+ ∆,←⊂'Caption' '&Done'
+ ∆,←⊂'Size'(⍬ 120)
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('Create the HTML page, close the GUI and' 'print the HTML filename to the session')
+ ∆,←⊂'Attach'(4⍴'Bottom' 'Left')
+ n.OK←⍎'ok'n.∆Form.⎕WC ∆
+ n.∆Buttons←n.OK
+ n.OK.Posn[1]←n.∆Form.Size[1]-n.OK.Size[1]+(⌊0.5×n.∆vgap)+n.StatusMsg.##.Size[1]
+ n.OK.Posn[2]←n.∆hgap
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Push'
+ ∆,←⊂'Caption' 'Cancel'
+ ∆,←⊂'Size'(⍬ 120)
+ ∆,←⊂'Attach'(4⍴'Bottom' 'Left')
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('Close the GUI without taking any action')
+ n.Cancel←⍎'cancel'n.∆Form.⎕WC ∆
+ n.∆Buttons,←n.Cancel
+ n.Cancel.Posn[1]←n.OK.Posn[1]
+ n.Cancel.Posn[2]←n.∆hgap+2⊃AddPosnAndSize n.OK
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Push'
+ ∆,←⊂'Caption' '&Preview'
+ ∆,←⊂'Size'(⍬ 120)
+ ∆,←⊂'Attach'(4⍴'Bottom' 'Left')
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('Put what''s defined on display' 'with the default browser.')
+ n.Preview←⍎'preview'n.∆Form.⎕WC ∆
+ n.∆Buttons,←n.Preview
+ n.Preview.Posn[1]←n.OK.Posn[1]
+ n.Preview.Posn[2]←n.∆hgap+2⊃AddPosnAndSize n.Cancel
+ n.Preview.onSelect←'OnPreview'
+⍝Done

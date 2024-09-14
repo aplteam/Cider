@@ -1,0 +1,39 @@
+ r←{y}GetSubNamespaces ref;list;level;bool
+ level←0
+ :If 0=⎕NC'y'
+     ⎕SHADOW'parms'
+     parms←CreateParms''
+ :ElseIf 326=⎕DR y
+     ⎕SHADOW'parms'
+     parms←y
+ :Else
+     level←y
+ :EndIf
+ r←⊂level ref
+ :If 0≠≢list←' '~¨⍨↓ref.⎕NL 9.1 9.2                                 ⍝ All namespaces
+ :AndIf 0≠≢list←(ref.{((⍕⎕THIS),'.',⍵)≡⍕⍎⍵}¨list)/list              ⍝ We are not interested in refs pointing elsewhere
+     list←ref.⍎¨list                                                ⍝ Make them refs
+     list~←ref,{0=≢⊃,/⍵:⍵ ⋄ ⍎¨⍵}MassageNameLists parms.ignore       ⍝ Remove any self references and those to be ignored
+ :AndIf 0≠≢list
+     :If parms.ignoreTatinPkgs
+     :AndIf 0<≢parms.namespaces
+     :AndIf ∧/parms.namespaces≢¨⊂'_tatin'
+         list←(~(⍕¨list)∊'#._tatin' '⎕SE._tatin')/list              ⍝ Remove Tatin packages
+     :EndIf
+ :AndIf 0≠≢list
+ :AndIf 0≠≢list←(~'['∊¨⍕¨list)/list                                 ⍝ Remove unnamed namespaces and instances
+ :AndIf 0≠≢list←({16::1 ⋄ 0⊣⎕SRC ⍵}¨list)/list                      ⍝ Remove scripted ones
+     :If 0∊bool←'Namespace'∘≡¨ref.{⍵ ⎕WG'Type'}¨list
+         :If parms.processGuiInstances
+             bool∨←(~bool)\ref.{⍵ ⎕WG'KeepOnClose'}¨(~bool)/list
+         :EndIf
+         list←bool/list
+     :EndIf
+ :AndIf 0≠≢list
+     :If parms.ignoreEmpty
+         list←({0≠≢⍵.⎕NL⍳16}¨list)/list
+     :EndIf
+ :AndIf 0≠≢list
+     r←((⊂level,ref),⊃,/(1+level)GetSubNamespaces¨list)~⊂''
+ :EndIf
+⍝Done

@@ -1,0 +1,39 @@
+ (rc out err)←WinMerge parms;cmd;result
+⍝ Function for the comparison utility WinMerge
+ :If 0=parms.⎕NC'use'
+     parms.use←⊃##.EstablishCompareEXE parms.name
+ :EndIf
+ cmd←'"',(parms.use~'"'),'" '
+ :If 0<≢parms.file1
+     cmd,←'"',(parms.file1~'"'),'"'
+ :EndIf
+ :If 0<≢parms.file2
+     cmd,←' "',(parms.file2~'"'),'"'
+ :EndIf
+ cmd,←' -m Full'
+ cmd,←' /s-'
+ cmd,←' /u'
+ cmd,←' /e'
+ :If ~parms.edit1
+     cmd,←' /wl'
+ :EndIf
+ :If ~parms.edit2
+     cmd,←' /wr'
+ :EndIf
+ :If 0=≢parms.caption1
+     cmd,←' /dl "',(⊃,/1↓⎕NPARTS parms.file1),'"'
+ :Else
+     cmd,←' /dl "',(parms.caption1~'"'),'"'
+ :EndIf
+ :If 0=≢parms.caption2
+     cmd,←' /dr "',(⊃,/1↓⎕NPARTS parms.file2),'"'
+ :Else
+     cmd,←' /dr "',(parms.caption2~'"'),'"'
+ :EndIf
+ result←(parms.(0=edit1+edit2))##.RunProcess cmd
+ :If parms.(0<edit1+edit2)
+     (rc out err)←result.(ExitCode StdOut ExitCode)
+ :Else
+     rc←0 ⋄ out←err←''
+ :EndIf
+⍝Done

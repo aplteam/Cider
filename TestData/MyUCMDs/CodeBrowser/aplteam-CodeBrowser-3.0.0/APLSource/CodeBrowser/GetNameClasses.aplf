@@ -1,0 +1,3 @@
+ r←GetNameClasses parms
+ r←parms.(processVars processFunctions processOperators processScripts)/2 3 4 9
+⍝Done

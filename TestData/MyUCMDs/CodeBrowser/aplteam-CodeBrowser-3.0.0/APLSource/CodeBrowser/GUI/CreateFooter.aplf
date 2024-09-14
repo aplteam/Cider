@@ -1,0 +1,16 @@
+ n←n CreateFooter(parent above);∆;ref
+ ∆←⊂'Label'
+ ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑above.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Caption' '&Footer:'
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+ ref←⍎'footer_label'parent.⎕WC ∆
+
+ ∆←⊂'Edit'
+ ∆,←⊂'Posn'((⊃+⌿↑ref.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+ ∆,←⊂'Size'(⍬(parent.Size[2]-2×n.∆hgap))
+ ∆,←⊂'Text'n.∆Parms.footer
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('The footer may be a single line or several lines with ⋄ used as separators.' 'There is no default.')
+ n.footer←⍎'footer'parent.⎕WC ∆
+⍝Done

@@ -1,0 +1,10 @@
+ {r}←into EstablishAPIForNewFunctions list;this
+ r←⍬
+ :For this :In list
+     :If ∨/'CreateParmsFor'⍷this
+         Assert' '=1↑0⍴into.⎕FX('ns←',this)('ns←##.##.ComparisonTools.',this)
+     :Else
+         Assert' '=1↑0⍴into.⎕FX,⊂this,'←{##.##.ComparisonTools.',this,' ⍵}'
+     :EndIf
+ :EndFor
+⍝Done

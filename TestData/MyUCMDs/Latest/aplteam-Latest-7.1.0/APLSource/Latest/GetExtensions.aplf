@@ -1,0 +1,3 @@
+ r←GetExtensions
+ r←'.apla' '.aplf' '.aplo' '.apln' '.aplc' '.apli'      ⍝ Common standard
+ r,←'.dyalog' '.dyapp'                                  ⍝ Now deprecated, but we still need to support them

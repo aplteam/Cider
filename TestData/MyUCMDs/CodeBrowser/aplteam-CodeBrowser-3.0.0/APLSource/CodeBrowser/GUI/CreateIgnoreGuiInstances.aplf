@@ -1,0 +1,11 @@
+ n←n CreateIgnoreGuiInstances(parent above);∆
+ ∆←⊂'Button'
+ ∆,←⊂'Caption' 'Ignore &GUI instances'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'State'(~n.∆Parms.processGuiInstances)
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'left')
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('GUI instances with' 'KeepOnClose←0' 'are ignored in any case')
+ ∆,←⊂'Posn'((⊃+⌿↑above.(Posn Size)),n.∆hgap+2)
+ n.processGuiInstances←⍎'processGuiInstances'parent.⎕WC ∆
+⍝Done

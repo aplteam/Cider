@@ -1,0 +1,27 @@
+ n←n CreateToBeIgnored(parent above);∆;ref
+ ∆←⊂'Label'
+ ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑above.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Caption' 'To be ignored:'
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+ ref←⍎'ignored_label'parent.⎕WC ∆
+
+ ∆←⊂'Edit'
+ ∆,←⊂'Posn'(((2+⌈n.∆vgap÷2)+⊃↑+⌿⊃ref.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Font'n.∆APL_Font
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+ ∆,←⊂'Size'(⍬(parent.Size[2]-2×n.∆hgap))
+ ∆,←⊂'FontObj'n.∆APL_Font
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('Specify namespaces and scripts that you want to be ignored.' 'Specify fully qualified names. Use spaces or commata as separators.')
+ n.toBeIgnored←⍎'tobeignored'parent.⎕WC ∆
+ n.toBeIgnored.Size[1]-←5
+
+ ∆←⊂'Button'
+ ∆,←⊂'Caption' '&Ignore empty namespaces'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'State'n.∆Parms.ignoreEmpty
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'left')
+ ∆,←⊂'Tip'('If this is not ticked empty namespaces will be listed')
+ ∆,←⊂'Posn'(((⌈n.∆vgap÷2)+⊃+⌿↑n.toBeIgnored.(Posn Size)),n.∆hgap+2)
+ n.ignoreEmptyNamespaces←⍎'ignoreEmpty'parent.⎕WC ∆
+⍝Done

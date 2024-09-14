@@ -1,0 +1,15 @@
+ (op path name)←allFiles SelectLink links;ind;link
+⍝ If there is just one LINK established open: that's it!
+⍝ If there are multiple LINKs open: ask user
+⍝ If there is no LINKs established: return ''
+⍝ `op` is 1 if the user cancelled, otherwise 0
+ path←name←link←''
+ op←0
+ :If 1=≢links
+     (name path)←links[0;0 1]
+ :ElseIf 1<≢links
+     ind←¯1+'Please select a LINKed namespace'CommTools.Select↓⎕FMT links
+     →(op←0=≢ind)/0
+     (name path)←links[ind;0 1]
+ :EndIf
+⍝Done

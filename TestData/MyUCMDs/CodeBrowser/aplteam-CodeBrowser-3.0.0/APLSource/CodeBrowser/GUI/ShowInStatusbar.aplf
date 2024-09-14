@@ -1,0 +1,3 @@
+ {r}←ShowInStatusbar msg
+ n.StatusMsg.Text←msg
+⍝Done

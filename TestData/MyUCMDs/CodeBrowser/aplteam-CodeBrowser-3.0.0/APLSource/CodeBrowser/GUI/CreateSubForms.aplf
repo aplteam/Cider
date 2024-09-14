@@ -1,0 +1,31 @@
+ n←CreateSubForms n;∆
+ ∆←⊂'SubForm'
+ ∆,←⊂'TabObj'n.Scan
+ ∆,←⊂'Coord' 'Prop'
+ ∆,←⊂'Posn'(0 0)
+ ∆,←⊂'Size'(100 100)
+ ∆,←⊂'EdgeStyle' 'Dialog'
+ ∆,←⊂'Attach'('Top' 'Left' 'Bottom' 'Right')
+ n.ScanSubForm←⍎'subformScan'n.TabCtrl.⎕WC ∆
+ n.ScanSubForm.Coord←'Pixel'
+
+ ∆←⊂'SubForm'
+ ∆,←⊂'TabObj'n.Parms
+ ∆,←⊂'Coord' 'Prop'
+ ∆,←⊂'Posn'(0 0)
+ ∆,←⊂'Size'(100 100)
+ ∆,←⊂'EdgeStyle' 'Dialog'
+ ∆,←⊂'Attach'('Top' 'Left' 'Bottom' 'Right')
+ n.ParmsSubForm←⍎'subformParms'n.TabCtrl.⎕WC ∆
+ n.ParmsSubForm.Coord←'Pixel'
+
+ ∆←⊂'SubForm'
+ ∆,←⊂'TabObj'n.Text
+ ∆,←⊂'Coord' 'Prop'
+ ∆,←⊂'Posn'(0 0)
+ ∆,←⊂'Size'(100 100)
+ ∆,←⊂'EdgeStyle' 'Dialog'
+ ∆,←⊂'Attach'('Top' 'Left' 'Bottom' 'Right')
+ n.TextSubForm←⍎'subformText'n.TabCtrl.⎕WC ∆
+ n.TextSubForm.Coord←'Pixel'
+⍝Done

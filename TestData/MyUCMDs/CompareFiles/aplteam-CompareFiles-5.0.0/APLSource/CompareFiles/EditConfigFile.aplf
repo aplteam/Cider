@@ -1,0 +1,27 @@
+ r←EditConfigFile dummy;filename;json;JSON;data;qdmx;orig
+ filename←GetConfigFilename
+ ('Config file not found: ',filename)Assert ⎕NEXISTS filename
+ JSON←orig←⊃⎕NGET filename 1
+ r←''
+∆Edit:
+ ⎕ED'JSON'
+ :If 0=≢(∊JSON)~' '
+     r←'Cancelled by user'
+ :ElseIf orig≡JSON
+     r←'No change detected'
+ :Else
+     :Trap 0
+         {}0 ⎕JSON⍠('Dialect' 'JSON5')⊣∊JSON   ⍝ Syntax check
+     :Else
+         qdmx←⎕DMX
+         :If 1 CommTools.YesOrNo qdmx.Message,(⎕UCS 13),'Would you like to try to fix the problem?'
+             →∆Edit
+         :Else
+             r←'Cancelled by user' ⋄ →0
+         :EndIf
+     :EndTrap
+     {}(⊂JSON)⎕NPUT filename 1
+     ⎕EX'CONFIG'
+     EstablishConfig filename
+ :EndIf
+⍝Done

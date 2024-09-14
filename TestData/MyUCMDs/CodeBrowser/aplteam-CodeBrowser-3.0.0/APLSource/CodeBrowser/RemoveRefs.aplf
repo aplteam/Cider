@@ -1,0 +1,6 @@
+ list←parent RemoveRefs list;bool
+⍝ Remove scripts that are just references.
+ :If 0<+/bool←9=parent.⎕NC list        ⍝ Only those are potentially refs
+     bool←bool∧bool\parent.{((⍕⎕THIS),'.',⍵)≡⍕⍎⍵}¨↓bool⌿list
+     list←bool⌿list
+ :EndIf

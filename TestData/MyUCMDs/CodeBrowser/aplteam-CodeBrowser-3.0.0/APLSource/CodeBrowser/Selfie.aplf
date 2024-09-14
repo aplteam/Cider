@@ -1,0 +1,12 @@
+ r←Selfie dummy;parms
+⍝ Create an HTML document of CodeBrowser itself.
+ parms←CreateParms''
+ parms.caption←'CodeBrowser'
+ parms.info←'Contains the CodeBrowser code without the test cases.'
+ parms.showParms←1
+ parms.footer←'Created by ',⎕AN,' on ',A.FormatDateTime ⎕TS
+ parms.twoSidedPrint←1
+ parms.filename←F.GetTempPath ,'/',⎕AN,'_CodeBrowser_CodeReview.html'
+ parms.viewInBrowser←1
+ r←parms Run (⍕⎕THIS)
+⍝Done

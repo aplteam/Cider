@@ -1,0 +1,34 @@
+ n←n CreateInfo(parent above);∆;ref;tip
+ ∆←⊂'Label'
+ ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑above.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Caption' '&Info:'
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+ ref←⍎'info_label'parent.⎕WC ∆
+
+ ∆←⊂'Edit'
+ ∆,←⊂'Posn'((⊃+⌿↑ref.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Attach'('Top' 'Left' 'Bottom' 'Right')
+ ∆,←⊂'Size'(⍬(parent.Size[2]-2×n.∆hgap))
+ ∆,←⊂'Text'n.∆Parms.info
+ ∆,←⊂'Style' 'Multi'
+ ∆,←⊂'TipObj'n.∆Tip
+ tip←⊂'"Info" goes right after the "Caption".'
+ tip,←⊂'There is no default, so if you leave this'
+ tip,←⊂'empty then there will be no "Info".'
+ ∆,←⊂'Tip'tip
+ n.info←⍎'info'parent.⎕WC ∆
+ n.info.onKeyPress←'OnKeyPressInInfo'
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'Caption' '"Info" is &HTML'
+ ∆,←⊂'TipObj'n.∆Tip
+ tip←⊂'Use this in case you want "Info" to be left alone (normally "<" etc. would be translated).'
+ tip,←⊂'This allows you to transform Markdown to HTML and then insert that HTML as "Info".'
+ ∆,←⊂'Tip'tip
+ ∆,←⊂'Posn'(((⌈n.∆vgap÷2)+⊃+⌿↑n.info.(Posn Size)),n.∆hgap)
+ ∆,←⊂'State'n.∆Parms.infoIsHTML
+ ∆,←⊂'Attach'(4⍴'Bottom' 'Left')
+ n.infoIsHtml←⍎'infoIsHtml'parent.⎕WC ∆
+ n.infoIsHtml.Posn[2]+←2
+⍝Done

@@ -1,0 +1,31 @@
+ {r}←{parms}Init dummy;buff;configFilename;flag;ind;path;sourceFilename;uff
+⍝ Initialize the project as part of opening "CompareFiles" as a project but not loading it as a package
+ r←⍬
+ A←APLTreeUtils2 ⋄ F←FilesAndDirs
+ :If ~⎕NEXISTS path←GetPathToConfig
+     3 ⎕MKDIR path
+ :EndIf
+ :If ~⎕NEXISTS path,'comparefiles-config.json5'
+     ⍝ The user command has not been properly installed yet
+     :If 0=##.⎕NC'CiderConfig'  ⍝ Package?!
+         configFilename←TatinVars.HOME,'/comparefiles-config.json5'
+     :Else  ⍝ Opened as a Cider Project
+         configFilename←##.CiderConfig.HOME,'/',iniFilename
+     :EndIf
+     path ⎕NCOPY⍠('IfExists' 'Replace')⊢configFilename
+ :EndIf
+ :If LoadUserDefinedComparisonUtilities GetPathToConfig
+ :OrIf 0=⎕NC'CONFIG'
+     configFilename←GetConfigFilename
+     buff←ReadJSON5 configFilename
+     'CONFIG'⎕NS buff  ⍝ Overcome the fact that ⎕JSON always creates in #!
+ :EndIf
+ :If 0<⎕SE.⎕NC'CompareFiles'
+ :AndIf 0=⎕SE.CompareFiles.⎕NC'DEVELOPMENT'
+     :If 0<⎕NC'parms'
+     :AndIf ~parms.batch
+     :AndIf 1 C.YesOrNo'Set DEVELOPMENT←1 in ⎕SE.CompareFiles? (Allows executing user command code in # rather than ⎕SE)'
+         ⎕SE.CompareFiles.DEVELOPMENT←1
+     :EndIf
+ :EndIf
+ ⍝Done

@@ -1,0 +1,20 @@
+ r←level CollectFnsAndOpr(ref name parms collect i);body;no;caption;target
+ r←''
+ :If ¯3≠≡body←(⎕UCS 13)A.Split ref.⎕VR name
+     body←ExchangeHtmlSpecialChars body
+     r,←⊂'<div class="bookmarktarget" ',(collect MakeID(⍕ref),'.',name),'>'
+     r,←⊂'<div id="',(GetBookmark_ID parms),'" class="code_block">'
+     caption←MakeBreadCrumb collect.remove RemoveLevels⍕ref
+     r,←⊂'<button title="Hide" class="accordion expanded">Hide</button>'
+     target←'bookmark_',¯5↑'00000',⍕parms.bookmarkCounter-1
+     r,←⊂'<button title="Brings previous object to the top" onClick="jump2bookmark(''',target,''')">Previous</button>'
+     target←'bookmark_',¯5↑'00000',⍕parms.bookmarkCounter+1
+     r,←⊂'<button title="Brings next object to the top" onClick="jump2bookmark(''',target,''')">Next</button>'
+     r,←⊂'<p class="caption">',(⍕i),'. ',caption,'.',name,' (',(⍕¯1+≢body),' lines)</p>'
+     r,←⊂'<div class="accordion-content">'
+     (1⊃body)←'<pre><code>',1⊃body
+     r,←body,⊂'</code></pre>'
+     r,←'</div>' '</div>' '</div>'
+     IncrementBookMarkCounter parms
+ :EndIf
+⍝Done

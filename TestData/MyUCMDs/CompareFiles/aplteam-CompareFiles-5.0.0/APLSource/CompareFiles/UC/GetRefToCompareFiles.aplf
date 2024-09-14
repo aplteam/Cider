@@ -1,0 +1,19 @@
+ C←GetRefToCompareFiles dummy;ind;linkList;flag;EndIf
+ :If 0<⎕NC'⎕SE.Link'
+ :AndIf 2=⍴⍴linkList←⎕SE.Link.Status''
+ :AndIf 0<≢linkList←1↓linkList
+     ind←linkList[;1]⍳⊂'#.CompareFiles'
+ :AndIf (≢linkList)≥ind
+     :If 0=⎕SE.CompareFiles.⎕NC'DEVELOPMENT'
+         flag←1 ⎕SE.CompareFiles.##.CommTools.YesOrNo'Execute code in #.CompareFiles rather than ⎕SE.CompareFiles?'
+     :Else
+         flag←0<⎕SE.CompareFiles.DEVELOPMENT
+     :EndIf
+     :If flag
+         C←#.CompareFiles.CompareFiles.API
+     :Else
+         C←⎕SE.CompareFiles
+     :EndIf
+ :Else
+     C←⎕SE.CompareFiles
+ :EndIf

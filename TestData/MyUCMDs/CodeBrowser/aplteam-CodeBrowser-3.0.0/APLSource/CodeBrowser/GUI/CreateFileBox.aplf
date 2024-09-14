@@ -1,0 +1,26 @@
+ n←CreateFileBox parms;n;∆;path
+⍝ Builds up a `FileBox` control which will remain invisible until it is `⎕DQ`ed.\\
+⍝ Returns an `n` namepsace.
+ n←⎕NS''
+ ∆←''
+ ∆,←⊂'Caption'parms.caption
+ ∆,←⊂'Style' 'Single'
+ ∆,←⊂'Filters'parms.filters
+ ∆,←⊂'FileMode'parms.fileMode
+ ∆,←⊂'Index'(parms.index-1)
+ path←parms.path
+ ((path='/')/path)←'\'
+ ∆,←⊂'Directory'path
+ :If 0∊⍴parms.file
+     ∆,←⊂'File'(↑,/1↓⎕NPARTS path)
+ :Else
+     ∆,←⊂'File'(↑,/1↓⎕NPARTS parms.file)
+ :EndIf
+ n.∆Form←parms.parent.⎕NEW'FileBox'∆
+ n.∆Form.⎕DF'[FileBox]'
+ n.∆Form.onFileBoxOK←'OnSelectOkButtonInFileBox'
+ n.∆Form.onFileBoxCancel←'OnSelectCancelButtonInFileBox'
+ n.∆parms←parms
+ n.∆result←''
+ n.∆Form.n←n
+⍝Done

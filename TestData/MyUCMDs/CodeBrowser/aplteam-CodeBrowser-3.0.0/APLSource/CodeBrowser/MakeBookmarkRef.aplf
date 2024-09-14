@@ -1,0 +1,4 @@
+ r←collect MakeBookmarkRef path
+ path←collect.remove RemoveLevels path
+ r←'href="#',path,'"'
+⍝Done

@@ -1,0 +1,8 @@
+ lists←RemoveEmptyContainers(lists ref parms);bool;list
+⍝ Remove all empty containers unless parms.ignoreEmpty is 0.
+ :If parms.ignoreEmpty
+     list←ref.⍎¨lists.containers
+     :If 0∊bool←{~0∊⍴⍵.⎕NL⍳16}¨list
+         lists.containers←bool/lists.containers
+     :EndIf
+ :EndIf

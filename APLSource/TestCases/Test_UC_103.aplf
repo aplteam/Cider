@@ -1,0 +1,16 @@
+ R←Test_UC_103(stopFlag batchFlag);⎕TRAP;rc;msg;res;stop;path
+⍝ List all dependencies of a given installation folder with -full and -raw
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ path←##.CiderConfig.HOME,'/TestData/MyUCMDs'
+ stop←0
+ (rc msg res)←stop ∆UCMD'ListTatinDependencies "',path,'" -raw -full'
+ Assert rc=0
+ →T.PassesIf 0<≢res
+ →T.PassesIf 2=⍴⍴res
+ →T.PassesIf∧/res[;1]∊0 1
+ →T.PassesIf∧/res[;1]∊0 1
+ →T.PassesIf∧/{2≤⍵+.='-'}¨res[;2]
+
+⍝Done

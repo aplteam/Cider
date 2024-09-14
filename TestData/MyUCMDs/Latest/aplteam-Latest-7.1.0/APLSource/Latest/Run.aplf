@@ -1,0 +1,60 @@
+ (r name)←Run(path recursive stats allFiles noOf includeQSE);F;A;linkList;pathFlag;path;dates;buff;cancelled;caption;ind
+⍝ Handles the following cases:
+⍝ * Investigate any LINKed namespaces
+⍝ * Investigate the workspace (simple namespace or #/⎕SE)
+⍝ * Investigate the current directory / any given path
+ ⎕IO←0 ⋄ ⎕ML←3
+ A←APLTreeUtils2 ⋄ F←FilesAndDirs
+ r←name←linkList←''
+ pathFlag←0
+ :If 0=≢path                            ⍝ Only true if we deal with a LINK
+     (cancelled path name linkList)←GetLinks includeQSE
+     →cancelled/0
+     :If 0=≢path
+         path←F.PWD,F.CurrentSep
+         ('Is not a folder: ',path)⎕SIGNAL 6/⍨~F.IsDir path
+     :AndIf ~CommTools.YesOrNo'Are you sure you want to act on ',path,' ?'
+         name←''
+         :Return
+     :EndIf
+     pathFlag←1
+ :Else
+     :If ∨/'/\'∊path
+         'Is not a directory'⎕SIGNAL 6/⍨~F.IsDir path
+     :Else
+         :If 2=⍴⍴linkList←⎕SE.Link.Status''
+         :OrIf 'No active links'≢∊linkList
+             linkList←1↓linkList
+             :If (⊂path)∊linkList[;0]
+                 ind←linkList[;0]⍳⊂path
+                 name←path
+                 path←2⊃linkList[ind;]
+                 pathFlag←1
+             :ElseIf 0<≢path
+                 ind←F.EnforceSlash¨(linkList[;1])⍳⊂F.EnforceSlash path
+                 :If ind=≢linkList
+                     :If ~(⊂1 ⎕C,path)∊,¨'#' '⎕SE'
+                         'First argument is neither a directory nor a namespace'⎕SIGNAL 6/⍨~9=⎕NC path
+                     :EndIf
+                 :EndIf
+             :Else
+                 (cancelled path name)←allFiles SelectLink linkList
+                 →cancelled/0
+             :EndIf
+         :EndIf
+     :EndIf
+ :EndIf
+ :If 0=≢path
+     path←F.PWD,F.CurrentSep
+ :EndIf
+ :If 0=≢name
+ :AndIf ~(1⍴path)∊'#⎕'                 ⍝ True if it's a folder path
+     path←('expand'F.NormalizePath path),F.CurrentSep
+     ('Is not a folder: ',path)⎕SIGNAL 6/⍨~F.IsDir path
+     pathFlag←1
+ :EndIf
+ :If noOf≡0
+     noOf←¯1
+ :EndIf
+ (r name)←linkList FetchData path recursive stats allFiles noOf pathFlag name
+⍝Done

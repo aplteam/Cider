@@ -1,0 +1,11 @@
+ n←n CreateTatinPackages(parent above);∆
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'Caption' 'Ignore &Tatin packages'
+ ∆,←⊂'Posn'((⊃+⌿↑above.(Posn Size)),n.∆hgap)
+ ∆,←⊂'State'n.∆Parms.ignoreTatinPkgs
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('Ignores (⎕SE|#)._tatin')
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ n.ignoreTatinPkgs←⍎'ignoreTatinPkgs'parent.⎕WC ∆
+⍝Done

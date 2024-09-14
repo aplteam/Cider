@@ -1,0 +1,9 @@
+ MassageNameLists←{
+⍝ (⊂'#.abc') ←→ MassageNameLists '#.abc'
+⍝ ('#.abc' '#.x' '#.y') ←→ MassageNameLists '#.abc  #.x , #.y'
+⍝ ('#.abc' '#.x' '#.y') ←→ MassageNameLists #.abc  #.x #.y'
+     1<|≡⍵:⍕¨⍵
+     r←⍕,⍵
+     ((','=r)/r)←' '
+     ' 'A.Split A.DMB r
+ }

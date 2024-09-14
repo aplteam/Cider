@@ -1,0 +1,38 @@
+ n←n CreateCssFilename(above parent);∆;ref
+ ∆←⊂'Label'
+ ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑above.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Caption' '&CSS filename:'
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+ ref←⍎'cssfile_label'parent.⎕WC ∆
+
+ ∆←⊂'Edit'
+ ∆,←⊂'Posn'(((2+⌈n.∆vgap÷2)+⊃↑+⌿⊃ref.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+ ∆,←⊂'Size'(⍬(parent.Size[2]-2×n.∆hgap))
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('The name of the CSS file to be used.' 'Change this only if you have created your own CSS file.')
+ ∆,←⊂'Text'n.∆Parms.cssfilename
+ n.cssFilename←⍎'cssfile'parent.⎕WC ∆
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Push'
+ ∆,←⊂'Caption' '...'
+ ∆,←⊂'Posn'((n.cssFilename.Posn[1])⍬)
+ ∆,←⊂'Size'((n.cssFilename.Size[1])⍬)
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('Browse for the CSS file to be used')
+ ∆,←⊂'Attach'('Top' 'Right' 'Top' 'Right')
+ n.selectDirCssFile←⍎'selectDirFilename'parent.⎕WC ∆
+ n.selectDirCssFile.onSelect←'OnBrowseForCssFile'
+ n.selectDirCssFile.Posn[2]←n.TabCtrl.Size[2]-n.∆hgap+n.selectDirCssFile.Size[2]
+ n.cssFilename.Size[2]-←2+n.selectDirCssFile.Size[2]
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'Caption' 'Link the CSS file rather than emebedd'
+ ∆,←⊂'Posn'((2+n.∆vgap+⊃↑+⌿⊃n.cssFilename.(Posn Size)),n.∆hgap)
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('Linking can be very useful for changing the CSS')
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+ n.linkCssFile←⍎'linkCssFile'parent.⎕WC ∆
+⍝Done

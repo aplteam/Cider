@@ -1,0 +1,29 @@
+ filename←{x}Run namespaces;refs;parms
+⍝ Collects the code and variables in the (non-scripted) namespaces listed in `namespaces` and
+⍝ compiles an HTML page with the code in it.\\
+⍝ `namespaces` must be a text vector with fully qualified namespace name(s). You can use either
+⍝ a space or a comma as separator.\\
+⍝ `x` is optional. If provided it must be one of:\\
+⍝ * A parameter space, typically created with `CreateParms`
+⍝ * A Boolean; 1 means "View the HTML file with the default browser".\\
+⍝ Returns the name of the file the HTML is written to.\\
+⍝ The HTML page contains the required CSS and JavaScript and is therefore fully self-contained.\\
+⍝ You should not attempt to view it with an outdated browser like IE9.
+ ⎕IO←1 ⋄ ⎕ML←1
+ Init ⍬
+ namespaces←MassageNameLists namespaces
+ x←{0<⎕NC'x':⍎⍵ ⋄ CreateParms''}'x'
+ :If (⊂x)∊0 1
+     parms←CreateParms''
+     parms.viewInBrowser←x
+ :Else
+     parms←x
+ :EndIf
+ parms.namespaces←namespaces
+ ⎕SIGNAL/HandleParms parms namespaces
+ filename←CreateHtml parms
+ :If parms.viewInBrowser
+     {}A.GoToWebPage filename
+ :EndIf
+ parms.cssfilename←{0=≢⍵:⍵ ⋄ 0 1∊⍨≡⍵:⍵ ⋄ ⊃{⍺,', ',⍵}/⍵}parms.cssfilename
+⍝Done

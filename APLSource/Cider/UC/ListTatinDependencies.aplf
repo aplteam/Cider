@@ -31,6 +31,7 @@
              :EndIf
          :Else
              list←P.##.F.ListDirs path
+             r←0 2⍴''
              :For path2 :In list
                  buildFilename←path2,'/apl-buildlist.json'
                  :If ⎕NEXISTS buildFilename
@@ -38,7 +39,11 @@
                          :If ~raw
                              buff←⊃,/CR,¨(buff[;1]⍴¨' '),¨buff[;2]
                          :EndIf
-                         r,←buff
+                         :If 2=⍴⍴buff
+                             r⍪←buff
+                         :Else
+                             r,←buff
+                         :EndIf
                      :EndIf
                  :EndIf
              :EndFor

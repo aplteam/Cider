@@ -1,0 +1,9 @@
+ html←InjectJavaScriptEarly dummy
+⍝ This code needs to go into the <head>er of the HTML page.
+ html←''
+ html,←⊂'<script>'
+ html,←⊂'function jump2bookmark(id){'
+ html,←⊂'    var obj = document.getElementById(id);'
+ html,←⊂'    obj.scrollIntoView({behavior: "smooth", block: "start"});'
+ html,←⊂'}'
+ html,←⊂'</script>'

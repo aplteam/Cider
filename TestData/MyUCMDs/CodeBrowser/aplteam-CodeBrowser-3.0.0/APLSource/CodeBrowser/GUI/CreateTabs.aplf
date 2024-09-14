@@ -1,0 +1,4 @@
+ n←CreateTabs n;∆
+ n←CreateTabControlAndChildren n
+ n←CreateSubForms n
+⍝Done

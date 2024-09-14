@@ -1,0 +1,22 @@
+ r←level CollectScript(ref name parms collect i);body;no;caption;target
+ r←''
+ :If 2=≡body←ref.⎕SRC ref.⍎name
+     body←(,¨'<>&')⎕R'\&lt;' '\&gt;' '\&amp;'⍠('Greedy' 0)⊣body
+     no←⍕2+level
+     r,←⊂'<div class="bookmarktarget" ',(collect MakeID(⍕ref),'.',name),'>'
+     r,←⊂'<div id="',(GetBookmark_ID parms),'" class="code_block">'
+     caption←MakeBreadCrumb collect.remove RemoveLevels⍕ref
+     r,←⊂'<button title="Hide" class="accordion expanded">Hide</button>'
+     target←'bookmark_',¯5↑'00000',⍕parms.bookmarkCounter-1
+     r,←⊂'<button title="Brings previous object to the top" onClick="jump2bookmark(''',target,''')">Previous</button>'
+     target←'bookmark_',¯5↑'00000',⍕parms.bookmarkCounter+1
+     r,←⊂'<button title="Brings next object to the top" onClick="jump2bookmark(''',target,''')">Next</button>'
+     r,←⊂'<p class="caption">',(⍕i),'. ',caption,'.',name,' (',(⍕≢body),' lines)</p>'
+     r,←⊂'<div class="accordion-content">'
+     body←({(3+⍴,⍕⍵){⍺↑'[',(⍕⍵),']'}¨¯1+⍳⍵}⍴body),¨body
+     (1⊃body)←'<pre><code>',1⊃body
+     r,←body,⊂'</code></pre>'
+     r,←'</div>' '</div>' '</div>'
+     IncrementBookMarkCounter parms
+ :EndIf
+⍝Done
