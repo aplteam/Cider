@@ -1,6 +1,7 @@
 (
- '* 0.43.0 ⋄ 2024-09-08'
+ '* 0.43.0 ⋄ 2024-09-14'
  '  * `ListTatinDependencies` now accepts the path to a package installationm folder as well'
+ '  * `]OpenProject` now understands `-alias=.` and takes the name of the project in lowercase as alias.'
  '* 0.42.4 ⋄ 2024-09-07'
  '  * Bug fixes'
  '    * `GetCiderGlobalConfigFilename` created a global Cider config file with the wrong defaults'
