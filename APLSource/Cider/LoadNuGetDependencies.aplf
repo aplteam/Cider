@@ -28,7 +28,7 @@
      :If 0<≢targetNamespace
          targetNamespace ns.⎕NS''
      :EndIf
-     nuGetFolder←F.(EnforceSlash ExpandPath)nuGetFolder
+     nuGetFolder←F.EnforceSlash nuGetFolder
      ns._dotnet.⎕USING←'(includePrimary : 0)'NuGet.Using nuGetFolder
      _dotnetReflection←⎕NS''
      _dotnetReflection.⎕USING←'System.Reflection,System.Runtime.dll'
