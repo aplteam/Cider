@@ -5,7 +5,7 @@
  ind←allVersions⍳⊂thisVersion
  noOf←≢allVersions
  :If ind=noOf
-     →0 ⋄ r←'There is no later version available than ',P.Version
+     r←'There is no later version available than ',P.Version ⋄ →0
  :EndIf
  q←'UpdateCider@Are you sure that you want to update Cider ',P.Version,' to version ',({1↓⍵/⍨2≤+\⍵='-'}noOf⊃allVersions),' ?'
  :If P.##.C.YesOrNo q
