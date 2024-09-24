@@ -1,5 +1,5 @@
 (
- 'Lists all Tatin packages including dependencies.'
+ 'Lists all Tatin packages including their dependencies.'
  ''
  ' * If no argument is provided, a list with all open projects is presented to the user, unless'
  '   there is only one open anyway.'
@@ -9,7 +9,7 @@
  '   * A path to a folder with installed packages, for example [MyUCMDs]'
  ''
  'The package install folder(s) are established from Cider''s config file unless it''s an installation'
- 'folder, when the buildlist.json files in the sub-directories rule the day. '
+ 'folder, when the buildlist.json file in the sub-directories rule the day. '
  ''
  'The main purpose of this user command is to check whether the packages got installed from the'
  'desired Tatin Registries, but check the -full flag'
@@ -18,6 +18,4 @@
  '       used, it gives you what the packages themselves require. This can be useful to figure out '
  '       why a particular (typically old) package is required.'
  '       (Note that due to minimum version selection they might end up using a later version)'
- '-raw   By default beautified data is displayed. With -raw you get just the pure data.'
- ''
 )

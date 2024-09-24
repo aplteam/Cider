@@ -11,10 +11,13 @@
  #.Cider.Cider.CommTools.Select_Choices←1 2⍴'SelectPkgFolder@Select package install folder to report on:' 'tatin-packages'
 
  stop←0
- (rc msg res)←stop ∆UCMD'ListTatinDependencies -raw -full'
+ (rc msg res)←stop ∆UCMD'ListTatinDependencies -full'
  Assert rc=0
+ res←↑(⎕UCS 13)(≠⊆⊢)res
+ res←(res[;1 2]∨.≠'-')⌿res
+ res←⌽(APLTreeUtils2.DLB↓res),[1.5]res[;1]=' '
  →T.GoToTidyUp 0=≢res
- →T.GoToTidyUp~2=⍴⍴res
+ →T.GoToTidyUp~2=⍴⍴2↓res
  →T.GoToTidyUp~∧/res[;1]∊0 1
  →T.GoToTidyUp~∧/res[;1]∊0 1
  →T.GoToTidyUp~∧/{2≤⍵+.='-'}¨res[;2]
