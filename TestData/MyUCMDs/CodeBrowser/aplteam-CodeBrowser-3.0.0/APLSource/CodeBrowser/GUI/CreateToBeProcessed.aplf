@@ -1,0 +1,50 @@
+ n←n CreateToBeProcessed(parent above);∆;ref
+ ∆←⊂'Group'
+ ∆,←⊂'Caption' ' &Process '
+ ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑n.linkCssFile.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Size'(135 300)
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ ∆,←⊂'TipObj'n.∆Tip
+⍝ ∆,←⊂'Tip'('')
+ ref←⍎'process_group'parent.⎕WC ∆
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'Caption' '&Functions'
+ ∆,←⊂'Posn'n.(2 1×∆vgap ∆hgap)
+ ∆,←⊂'State'n.∆Parms.processFunctions
+ ∆,←⊂'TipObj'n.∆Tip
+⍝ ∆,←⊂'Tip'('')
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ n.processFns←⍎'processFns'ref.⎕WC ∆
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'Caption' '&Operators'
+ ∆,←⊂'Posn'((⊃+⌿↑n.processFns.(Posn Size)),n.∆hgap)
+ ∆,←⊂'State'n.∆Parms.processOperators
+ ∆,←⊂'TipObj'n.∆Tip
+⍝ ∆,←⊂'Tip'('')
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ n.processOpr←⍎'processOpr'ref.⎕WC ∆
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'Caption' '&Scripts (classes, namespaces, interfaces)'
+ ∆,←⊂'Posn'((⊃+⌿↑n.processOpr.(Posn Size)),n.∆hgap)
+ ∆,←⊂'State'n.∆Parms.processScripts
+ ∆,←⊂'TipObj'n.∆Tip
+⍝ ∆,←⊂'Tip'('')
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ n.processScripts←⍎'processScripts'ref.⎕WC ∆
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'Caption' '&Variables'
+ ∆,←⊂'Posn'((⊃+⌿↑n.processScripts.(Posn Size)),n.∆hgap)
+ ∆,←⊂'State'n.∆Parms.processVars
+ ∆,←⊂'TipObj'n.∆Tip
+⍝ ∆,←⊂'Tip'('')
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ n.processVars←⍎'processVars'ref.⎕WC ∆
+⍝Done

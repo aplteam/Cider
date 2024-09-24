@@ -1,0 +1,21 @@
+ n←n CreateOtherParms(parent above);∆;ref
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'Caption' '&Show parameters at the end of the document'
+ ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑above.(Posn Size)),n.∆vgap)
+ ∆,←⊂'State'n.∆Parms.showParms
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('Use this for documenting the parameters.' 'When printed the parameter go onto a separate page.')
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ n.showParms←⍎'showParms'parent.⎕WC ∆
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'Caption' '&View resulting HTML page in default browser'
+ ∆,←⊂'Posn'((⊃+⌿↑n.showParms.(Posn Size)),n.∆hgap)
+ ∆,←⊂'State'n.∆Parms.viewInBrowser
+ ∆,←⊂'TipObj'n.∆Tip
+⍝ ∆,←⊂'Tip'('')
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ n.viewInBrowser←⍎'viewInBrowser'parent.⎕WC ∆
+⍝Done

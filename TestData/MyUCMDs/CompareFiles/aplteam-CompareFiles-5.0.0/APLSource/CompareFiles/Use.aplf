@@ -1,0 +1,16 @@
+ {(exe name)}←{save}Use name;exes;names;default;ref
+⍝ Defines the Comparison utility to be used.
+⍝ Must be either available on the PATH environment variable or the exe must be a fully qualified path,
+⍝ otherwise an error is thrown.
+⍝ By default this won't change the default comparison, but you can change this by passing a 1 as `⍺`.
+ save←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'save'
+ (exes names default)←GetFromConfig'EXEs' 'Names' 'Default'
+ 'No comparison utility available/defined'Assert 0<≢exes
+ (exe name)←EstablishCompareEXE name
+ :If save
+ :AndIf 0<≢name
+     ref←CONFIG⍎A.GetOperatingSystem ⍬
+     ref.Default←name
+     {}CONFIG WriteJSON5 GetConfigFilename
+ :EndIf
+⍝Done

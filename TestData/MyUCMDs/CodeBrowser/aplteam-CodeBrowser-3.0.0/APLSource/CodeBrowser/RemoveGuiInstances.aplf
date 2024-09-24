@@ -1,0 +1,11 @@
+ lists←RemoveGuiInstances(lists ref parms);bool;list
+⍝ Remove all GUI instances unless parms.processGuiInstances is 1.
+⍝ Even then everything that does not carry `KeepOnClose←` is
+⍝ removed
+ list←ref.⍎¨lists.containers
+ :If 0∊bool←'Namespace'∘≡¨list ⎕WG¨⊂'Type'
+     :If parms.processGuiInstances
+         bool∨←(~bool)\ref.{⍵ ⎕WG'KeepOnclose'}¨(~bool)/list
+     :EndIf
+     lists.containers←bool/lists.containers
+ :EndIf

@@ -1,0 +1,11 @@
+ {r}←level CollectAplObjects_(ref parms collect);EndIf;lists;refs
+ r←⍬
+ lists←level CreateToc ref parms collect
+ level CollectAplObjects__ lists ref parms collect
+ :If 0≠≢lists.containers
+ :AndIf parms.recursive
+     refs←ref.⍎¨lists.containers
+ :AndIf 0<≢refs←(0<≢¨⍕¨refs)/refs
+     ((⊂level),¨⍳⍴lists.containers){⍺ CollectAplObjects_ ⍵ parms collect}¨refs
+ :EndIf
+⍝Done

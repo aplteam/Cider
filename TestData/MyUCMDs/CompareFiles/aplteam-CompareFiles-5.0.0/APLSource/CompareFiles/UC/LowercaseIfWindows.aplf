@@ -1,0 +1,2 @@
+ txt←LowercaseIfWindows txt
+ txt←⎕C⍣('Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬)⊢txt

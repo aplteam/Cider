@@ -35,7 +35,9 @@
  parms.folder←path
  parms.projectSpace←Args.projectSpace
  parms.parent←{(,0)≡,⍵:'' ⋄ ⍵}Args.parent
- parms.alias←⎕C''Args.Switch'alias'
+ :If (,'.')≡,parms.alias←⎕C''Args.Switch'alias'
+     parms.alias←⎕C 2⊃⎕NPARTS parms.folder
+ :EndIf
  :If 0≢Args.watch
      parms.watch←⎕C Args.Switch'watch'
  :EndIf

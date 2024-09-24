@@ -1,0 +1,5 @@
+ OnSelectOkButtonInFileBox←{
+     n←GetRefTo_n⊃⍵
+     n.∆result←n.∆Form.Directory,n.∆Form.File
+     1
+ }

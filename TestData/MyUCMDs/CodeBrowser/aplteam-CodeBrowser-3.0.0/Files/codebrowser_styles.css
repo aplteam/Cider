@@ -1,0 +1,90 @@
+﻿@media screen {
+ html {margin: 1em 1em 1em 1em;}
+ footer {margin-top:1.87em;}
+ footer p {text-align:center;}
+ pre {overflow: auto; padding: 0.62em 0.31em; margin: .25em 0 0.75em 0 !important; white-space:pre-wrap; background-color: #faebd7; color:#3e3e3e; border:1px silver dashed;}
+ h1 {font-family: "APL385 Unicode"; font-size:180%; border: 2px Black solid; text-align: center; padding:0.62em 0 0.9em 0;}
+ h2,h3,h4,h5,h6 {font-family: "APL385 Unicode"; font-size:140%; margin:1.25em 0 0.62em 0; padding:0;}
+ p.caption {font-family: "APL385 Unicode"; font-size:100%; font-weight:800; margin:1em 0 0.3em 0; padding:0;}
+ p.timestamp {margin: -0.25em 0 0.31em 0; font-size:0.8em}
+ nav, code {font-family: "APL385 Unicode";}
+ code {background-color: #EFEFEF; padding: 0 3px 0 3px;}
+ div.code_block {margin:0.75em 0; padding-top: 10px;}
+ nav#main {padding-bottom: 0.62em;}
+ nav#main li {line-height: 1.3; list-style: none}
+ nav#main > p {font-family: Verdana, "Serif"; margin: .31em 0 0.12em 0;}
+ nav#main {border:1px black solid; display:block; padding-left: 0.62em;}
+ nav#main ol {margin:0; margin-left: 0.62em; padding-left: 0.62em}
+ nav.sub {border:1px silver solid; display:block; padding: 0.18em; margin:1.25em 0;}
+ .toclist > p, .functionlist > p, div.operatorlist > p {margin-bottom: 0.18em;}
+ .toclist {margin: 1em 0 1em 0; padding: 0 0.25em;}
+ .toclist > div {display:flex; flex-wrap:wrap;}
+ .toclist > div div {margin: 0.12em 0 0.12em 0;}
+ nav.sub p {font-family: Verdana, "Serif"; margin:0 0 0.31em; padding:0;}
+ div#info {display:block; margin:0.62em 0 1.87em 0; font-family:"Verdana2", "Serif"}
+ p#after_h1 {display:none;}
+ a {text-decoration: none; border-bottom: 1px Black dotted;}
+ #scrolltotop {display: none; position: fixed; bottom: 1.25em; right: 1.87em; z-index: 99; border: none; outline: none; background-color: black; color: white; cursor: pointer; padding: 1em; border-radius: 0.62em;}
+ #scrolltotop:hover {background-color: #555;}
+ div#parameters hr {margin-top: 4em;}
+ #parms {margin: 1em auto 0 auto; border-collapse: collapse; font-family: "APL385 Unicode"; font-size: 0.8em; border: 1px solid Black; border-spacing: 2px;}
+ #parms td {padding: 3px 5px; text-align: left;}
+ #parms tbody tr:nth-child(even) {background-color: #DEDEDE;}
+ #parms th {padding: 3px 5px; text-align: left; background-color: Black; color: white;}
+ hr {background-color: black; width: 75%; margin-left:auto; margin-right: auto;}
+ pre code {white-space: pre-wrap; background-color: #faebd7; color:#3e3e3e;}
+ .center {text-align:center;}
+ p.type  {font-family: Verdana, serif; font-weight: 800; font-size:100%; margin-top:1.5em; margin-bottom: 0;}
+ table.refs {font-family:"APL385 Unicode", monospace; margin-top:0.75em; margin-bottom:1.25em;}
+ table.refs > tbody > tr> td {padding: 3px;}
+ button.accordion {content:"Hide"; display:inline; padding: 0 5px; margin-right:5px;}
+ p.caption {display:inline;}
+ .accordion-content {padding: 0; display:block; overflow-y:auto; overflow-x:hidden; transition: max-height 0.5s ease; max-height: 20em;}
+ .jump2next {padding: 0 5px; margin-right:5px;}
+ .floatright {float: right; }
+
+ }
+
+@page :left {margin: 20mm 20mm 20mm 20mm;}
+@page :right {margin: 20mm 10mm 20mm 20mm;}
+@media print {
+ html {font-size:8pt; -webkit-print-color-adjust: exact;}
+ footer  {margin-top:20pt;}
+ footer p {text-align:center;}
+ pre {overflow: auto; padding:5pt; margin: 2pt 0 5pt 0 !important; white-space:pre-wrap; background-color: #F7F7F7; border:1pt silver solid;}
+ code {color:black; white-space: pre-wrap;}
+ h1 {font-family: "APL385 Unicode"; font-size:300%; text-align :center; padding: 20pt 0 50pt;}
+ h2 {page-break-before: always;}
+ h2,h3,h4,h5,h6 {font-family: "APL385 Unicode"; font-size:115%; margin:12pt 0 4pt 0; padding:0;}
+ h3 {page-break-before: always;}
+ p.caption {font-family: "APL385 Unicode"; font-size:100%; font-weight:800; margin:0; padding:0;}
+ p.timestamp {margin: -4pt 0 0 0; font-size:0.80em}
+ nav, code {font-family: "APL385 Unicode";}
+ nav#main > p {font-family: Verdana, "Serif";}
+ nav#main ol {margin: 0; margin-left: 15pt; padding-left: 5pt; list-style: none}
+ nav#main li {margin-top: 3pt;}
+ nav.sub {border:1pt silver solid; display:block; padding:0 5pt 5pt 5pt; margin:0 0 15pt 0;}
+ .toclist {margin: 0.8em 0 0.3em 0; padding: 0 1pt;}
+ .toclist > p {margin-bottom: 2pt;}
+ .toclist > div {display:flex; flex-wrap:wrap;}
+ .toclist > div div {margin: 1pt 0 1pt 0;}
+ nav.sub p {font-family: Verdana, "Serif"; margin:0 0 2pt 0; padding:0;}
+ div#info {display:block; margin:5pt 0 5pt 0; font-family:"Verdana2", "Serif"; page-break-after: always;}
+ a {text-decoration:none; color:black}
+ div.code_block {page-break-inside: avoid; margin:15pt 0;}
+ nav#main+h2 {page-break-before: always;}
+ h2+h3 {page-break-before: avoid;}
+ #scrolltotop {display: none !important;}
+ hr {background-color: black; width: 75%; margin-left:auto; margin-right: auto;}
+ div#parameters hr {display:none;}
+ #parms {margin: 1em auto 0 auto; border-collapse: collapse; font-family: "APL385 Unicode"; font-size: 0.8em; border: 1pt solid Black; border-spacing: 2pt;}
+ #parms td {padding: 3pt 5pt; text-align: left;}
+ #parms tbody tr:nth-child(even) {background-color: #efefef;}
+ #parms th {padding: 3pt 5pt; text-align: left; background-color: Black; color: white;}
+ .center {text-align:center;}
+ p.type  {font-family: Verdana, serif; font-weight: 800; font-size:100%; margin-top:0.75em; margin-bottom:0;}
+ table.refs {font-family:"APL385 Unicode", monospace; margin-top: 0.75em; margin-bottom: 1.25em;}
+ table.refs > tbody > tr> td {padding: 3pt;}
+ .accordion-content {padding: 0; display:block; overflow:hidden;}
+ button {display:none;}
+ }

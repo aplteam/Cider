@@ -1,0 +1,9 @@
+ {html}←AddFooter parms
+ html←''
+ :If ~0∊⍴parms.footer
+     html←⊂'<footer>'
+     html,←⊂'<hr>'
+     html,←⊂'<p>',(ExchangeHtmlSpecialChars parms.footer),'</p>'
+     html,←⊂'</footer>'
+ :EndIf
+⍝Done

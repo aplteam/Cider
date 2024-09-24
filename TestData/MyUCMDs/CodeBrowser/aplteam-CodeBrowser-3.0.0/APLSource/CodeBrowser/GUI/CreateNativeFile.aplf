@@ -1,0 +1,9 @@
+ success←CreateNativeFile filename;tno
+⍝ Tries to create native file with `filename` and returns 1 in case of success and 0 otherwise.
+ :Trap 22
+     tno←filename ⎕NCREATE 0
+     ⎕NUNTIE tno
+     success←1
+ :Case 22
+     success←0
+ :EndTrap

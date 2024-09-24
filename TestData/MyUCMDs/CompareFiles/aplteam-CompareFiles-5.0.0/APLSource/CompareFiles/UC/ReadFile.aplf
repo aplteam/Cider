@@ -1,0 +1,6 @@
+ r←ReadFile filename
+ :Trap 11
+     r←⊃⎕NGET filename
+ :Case 11
+     ('Could not read file ',filename)⎕SIGNAL 11
+ :EndTrap

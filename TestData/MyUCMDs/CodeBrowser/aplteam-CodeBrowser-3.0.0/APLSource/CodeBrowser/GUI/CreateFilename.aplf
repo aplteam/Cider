@@ -1,0 +1,33 @@
+ n←n CreateFilename parent;∆;ref
+ ∆←⊂'Label'
+ ∆,←⊂'Posn'(n.(∆vgap ∆hgap))
+ ∆,←⊂'Caption' '&HTML filename:'
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+ ref←⍎'filename_label'parent.⎕WC ∆
+
+ ∆←⊂'Edit'
+ ∆,←⊂'Posn'((2+⊃↑+⌿↑ref.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+ ∆,←⊂'Size'(⍬(parent.Size[2]-2×n.∆hgap))
+ :If 0∊≢n.∆Parms.filename
+     ∆,←⊂'Text'('html'##.F.GetTempFilename2'')
+ :Else
+     ∆,←⊂'Text'n.∆Parms.filename
+ :EndIf
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('The name of the file the HTML will be saved in.' 'There is not default.')
+ n.filename←⍎'footer'parent.⎕WC ∆
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Push'
+ ∆,←⊂'Caption' '...'
+ ∆,←⊂'Posn'((n.filename.Posn[1])⍬)
+ ∆,←⊂'Size'((n.filename.Size[1])⍬)
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('Browse for the file the HTML is going to be written to.')
+ ∆,←⊂'Attach'('Top' 'Right' 'Top' 'Right')
+ n.selectDirFilename←⍎'selectDirFilename'parent.⎕WC ∆
+ n.selectDirFilename.onSelect←'OnBrowseForFilename'
+ n.selectDirFilename.Posn[2]←n.TabCtrl.Size[2]-n.∆hgap+n.selectDirFilename.Size[2]
+ n.filename.Size[2]-←2+n.selectDirFilename.Size[2]
+⍝Done

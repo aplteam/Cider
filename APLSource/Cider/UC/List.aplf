@@ -55,7 +55,7 @@
      c.Name←'ListTatinDependencies'
      c.Desc←'List Tatin packages installed as dependencies'
      c.Group←'Cider'
-     c.Parse←'1s -full -raw'
+     c.Parse←'1s -full'
      r,←c
 
      c←⎕NS''

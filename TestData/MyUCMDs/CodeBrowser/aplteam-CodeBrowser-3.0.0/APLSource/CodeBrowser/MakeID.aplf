@@ -1,0 +1,4 @@
+ r←collect MakeID ref
+ ref←collect.remove RemoveLevels ref
+ r←'id="',ref,'"'
+ ⍝Done

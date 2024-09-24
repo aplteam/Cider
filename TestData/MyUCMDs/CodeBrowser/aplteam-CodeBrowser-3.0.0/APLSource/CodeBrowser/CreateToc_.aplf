@@ -1,0 +1,8 @@
+ html←CreateToc_(ref parms list title collect width)
+ html←''
+ html,←⊂'<div class="toclist">'
+ html,←⊂'<p><b>',title,(((1<⍴list)/'s'),': ',⍕⊃⍴list),'</b></p>'
+ html,←⊂'<div>'
+ html,←(ref{'<div style="width:',width,'em;"><a ',(collect MakeBookmarkRef(⍕⍺),'.',{⍵↓⍨⍵⍳' '}⍵),'>',⍵}¨{(⍕¨⍳⍴⍵),¨'. '∘,¨⍵}list),¨⊂'</a></div>'
+ html,←'</div>' '</div>'
+⍝Done

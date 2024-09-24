@@ -1,0 +1,5 @@
+ r←SetFocusTo(tab control)
+ r←0
+ ⎕NQ tab'Select'
+ ⎕NQ control'GotFocus'
+⍝Done

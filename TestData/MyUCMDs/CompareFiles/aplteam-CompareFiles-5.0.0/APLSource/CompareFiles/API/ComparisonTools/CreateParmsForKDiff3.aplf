@@ -1,0 +1,2 @@
+ ns←CreateParmsForKDiff3
+ ns←##.##.ComparisonTools.CreateParmsForKDiff3

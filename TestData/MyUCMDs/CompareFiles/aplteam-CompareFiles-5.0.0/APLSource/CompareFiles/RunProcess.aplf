@@ -1,0 +1,55 @@
+{r}←{doNotWait}RunProcess cmd;buff;dotnet;folder;i;op;p;pfn;re;ro;rtc;t;tfn;⎕IO;⎕USING
+⍝ Runs cmd and returns a namespace with three variables: ExitCode, StdOut and StdErr.
+⍝ Note that Dyalog (wrongly) writes ordinary session output to StdErr at least up to 19.0.
+⍝ Uses .NET everywhere when available but requires .NET only on Windows.
+ r←⎕NS''
+ ⎕IO←0
+ doNotWait←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'doNotWait'
+ dotnet←2250⌶0
+ :If 1=1⊃dotnet                  ⍝ Bridge successfully loaded?
+     :Select 0⊃dotnet
+     :Case 1            ⍝ .NET
+         ⎕USING←'System' 'System.IO' 'System.Diagnostics,System.Diagnostics.Process'
+     :Case 2            ⍝ .NET Framework
+         ⎕USING←'System' 'System.IO' 'System.Diagnostics,System.dll'
+     :EndSelect
+     p←⎕NEW Process
+     i←p.StartInfo
+     i.FileName←{'"'=1⍴⍵:⍵↑⍨1++/2>+\'"'=⍵ ⋄ ⍵↑⍨¯1+⍵⍳' '}cmd
+     i.Arguments←(1+≢i.FileName)↓cmd
+     i.FileName←i.FileName~'"'
+     i.RedirectStandardOutput←1
+     i.RedirectStandardInput←1
+     i.RedirectStandardError←1
+     i.UseShellExecute←0
+     i.CreateNoWindow←1
+     {}p.Start ⍬
+     re←⎕NEW StreamReader p.StandardError.BaseStream
+     ro←⎕NEW StreamReader p.StandardOutput.BaseStream
+     t←r{⍺.StdErr←⍵.ReadToEnd}&re
+     r.StdOut←ro.ReadToEnd
+     op←{6::0 ⋄ z←⍺⍺ ⍵}
+     {}p.WaitForExit op ⍬
+     {}⎕TSYNC op t
+     r.ExitCode←p.ExitCode
+     rtc←{' '@((⎕UCS 9)∘=)⍵}
+     pfn←{⍵⊆⍨~⍵∊⎕UCS 10 13}
+     r.StdOut←pfn rtc r.StdOut
+     r.StdErr←pfn rtc r.StdErr
+ :Else
+     '.NET is not available'Assert'Win'≢A.GetOperatingSystem ⍬
+     ⎕IO←1
+     r←⎕NS''
+     r.ExitCode←0
+     r.StdErr←''
+     folder←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'folder'
+     tfn←F.GetTempFilename2'APLGit'   ⍝ Temp FileName
+     cmd,←' 2>"',tfn,'"'
+     :Trap 0
+         buff←⎕SH cmd
+     :Else
+         ⍝
+     :EndTrap
+     r.StdOut←{22::'' ⋄ ⊃⎕NGET ⍵ 1}tfn
+     F.DeleteFile tfn
+ :EndIf

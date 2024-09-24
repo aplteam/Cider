@@ -11,6 +11,7 @@
  '                can be avoided: the code is then loaded with Link.Import and changes are not tracked.'
  '-alias=         In case you are going to work on a project frequently you may specify -alias=name'
  '                for quicker access: rather than a path you can then specify just the [alias].'
+ '                If you just want the project name to become the alias then -alias=. suffices.'
  '-noPkgLoad      By default the Tatin packages from the installation folder(s) defined in the'
  '                config file will be loaded. If you don''t want this specify -noPkgLoad'
  '-watch          Defaults to "both" (if .NET is available!) but may be "ns", "dir" or "none" instead.'

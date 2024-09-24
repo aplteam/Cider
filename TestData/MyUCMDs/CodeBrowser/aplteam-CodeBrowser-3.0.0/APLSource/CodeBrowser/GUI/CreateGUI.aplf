@@ -1,0 +1,14 @@
+ n←CreateGUI n;∆;size
+ n←CreateForm n
+ n←CreateTabs n
+ n(CreateScanTabChildren)←parms.namespaces
+ n←CreateParmsTabChildren n
+ n←CreateButtons n
+ n←CreateTextTabChildren n
+ n.OK.onSelect←'OnOK'
+ n.Cancel.onSelect←1
+ n.∆Form.n←n
+ 2 ⎕NQ n.Scan'Select'
+ n.namespaces.SelText←2⍴1+⍴,n.namespaces.Text
+ ⎕NQ n.namespaces'GotFocus'
+⍝Done

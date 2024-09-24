@@ -1,0 +1,21 @@
+ n←n CreateLang(parent above);∆;list
+ ∆←⊂'Label'
+ ∆,←⊂'Caption' '&Language:'
+ ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑above.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ n.lang_label←⍎'lang_label'parent.⎕WC ∆
+
+ ∆←⊂'Combo'
+ ∆,←⊂'Style' 'DropEdit'
+ ∆,←⊂'Posn'((⊃+⌿↑n.lang_label.(Posn Size)),n.∆hgap)
+ ∆,←⊂'index' 1
+ ∆,←⊂'Size'(21 50)
+ list←'en' 'de' 'da' 'fr' 'it' 'es'
+ ∆,←⊂'Items'list
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('This two-character code is used for setting the "lang" attribute of the <html> tag.')
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ ∆,←⊂'SelItems'({b←(⍴⍵)⍴0 ⋄ b[1]←1 ⋄ b}list)
+ n.lang←⍎'lang'parent.⎕WC ∆
+ n.lang.onKeyPress←'OnKeyPressInLang'
+⍝Done

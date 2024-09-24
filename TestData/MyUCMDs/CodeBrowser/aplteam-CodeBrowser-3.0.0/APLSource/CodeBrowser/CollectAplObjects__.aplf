@@ -1,0 +1,17 @@
+ {r}←level CollectAplObjects__(lists ref parms collect);i;html;names;k;name;captions
+ r←⍬
+ ReportRefs ref
+ html←''
+ captions←'Functions:' 'Operators:' 'Scripts:' 'Variables:'
+ :For i :In ⍳≢lists.(fns opr scripts variables)
+     :If 0≠≢names←i⊃lists.(fns opr scripts variables)
+         html,←⊂'<p class="type">',(i⊃captions),'</p>'
+         :For k :In ⍳⍴names
+             name←k⊃names
+             html,←level CollectFnsAndOprAndScriptsAndVars ref name parms k collect
+         :EndFor
+     :EndIf
+ :EndFor
+ html,←⊂'<div id="',(GetBookmark_ID parms),'"></div>'
+ IncrementBookMarkCounter parms
+ r←WriteHTML html

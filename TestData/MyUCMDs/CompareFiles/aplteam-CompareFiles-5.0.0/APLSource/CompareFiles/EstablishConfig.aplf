@@ -1,0 +1,5 @@
+ EstablishConfig filename;buff
+⍝ Establish the (semi)-global variable "CONFIG".
+ buff←ReadJSON5 filename
+ 'CONFIG'⎕NS buff  ⍝ Overcome the fact that ⎕JSON always creates in #!
+⍝Done

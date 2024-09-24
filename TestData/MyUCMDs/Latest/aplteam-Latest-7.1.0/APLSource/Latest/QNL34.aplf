@@ -1,0 +1,28 @@
+ Buff←{noScripts}QNL34 lookInto;list;a;list2;⎕ML;⎕IO;msg;scripts
+⍝ Returns all functions & operators found in "lookInto" and its sub-folders.
+⍝ "noScripts" may be empty (=default) or the string "noScripts".
+⍝ If it's empty then all fns & oprs are returned no matter where they stem from.
+⍝ With "noScripts" only those fns & oprs are returned that do NOT stem from scripted namespaces.
+ ⎕IO←1 ⋄ ⎕ML←3
+ Buff←''
+ noScripts←{0=⎕NC ⍵:'' ⋄ ⍎⍵}'noScripts'
+ noScripts←⎕C∊noScripts
+ msg←'Invalid left argument: must be either an empty vector or the string "noScripts"'
+ msg ⎕SIGNAL 11/⍨~(⊂noScripts)∊'' 'noscripts'
+ :If 0≠≢list←∪{⍵,List_NS ⍵}⍎lookInto
+     :If noScripts≡'noscripts'
+     :AndIf 0=≢list←(~IsScripted¨list)/list   ⍝ Exclude all scripts
+         :Return
+     :EndIf
+     list2←↑,/{(⊂(⍕⍵),'.'),¨⍵.⎕NL-3 4}¨list
+     :If 0≠≢list2←(0<⎕NC⊃list2)⌿list2
+         Buff←((≢list2),5)⍴⊂''
+         a←-+/∧\~'.'=⊃⌽¨list2
+         Buff[;1]←list2↑¨⍨a
+         Buff[;2]←'   FO'[1+⌊⎕NC⊃list2]
+         Buff[;3]←(¯1+a)↓¨list2
+         Buff[;4 5]←({0::'' ⋄ 2=⍴⍴⍵:⍵ ⋄ (¯2↑1 1,⍴⍵)⍴⍵}⊃⎕AT¨list2)[;2 4]
+         Buff⌿⍨←{0<↑⍴⎕VR ⍵}¨Buff[;3],¨'.',¨Buff[;1]
+         Buff[;4]←⊂[2]'ZI4,<->,ZI2,<->,ZI2,< >,ZI2,<:>,ZI2,<:>,ZI2'⎕FMT 6↑[2]⊃Buff[;4]
+     :EndIf
+ :EndIf

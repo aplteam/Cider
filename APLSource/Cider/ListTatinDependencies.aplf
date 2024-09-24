@@ -1,24 +1,32 @@
- r←ListTatinDependencies projectFolder;cfgFilename;cfg;buildFilenames;buildLists;b;tatinFolders;buildFolders
+ r←ListTatinDependencies folder;cfgFilename;cfg;buildFilenames;buildLists;b;tatinFolders;buildFolders;list;folder2;buildFilename
 ⍝ `y` must point to a project, either as alias ([]) or as a project folder.
 ⍝ The actual Tatin dependency folders are established from the project config file.
  r←0 5⍴''
- :If IsAlias projectFolder
-     projectFolder←GetFolderFromAlias2 projectFolder
+ :If IsAlias folder
+     folder←GetFolderFromAlias2 folder
  :EndIf
- cfgFilename←projectFolder,'/cider.config'
- 'No Cider config file found'Assert F.Exists cfgFilename
- cfg←ReadProjectConfigFile cfgFilename
- tatinFolders←GetTatinDependencyFolders cfg
- :If 0<≢tatinFolders
-     tatinFolders←RemoveTargetDefinition¨tatinFolders
-     buildFolders←(⊂projectFolder,'/'),¨tatinFolders
-     buildFilenames←buildFolders,¨⊂'/apl-buildlist.json'
-     b←F.Exists¨buildFilenames
- :AndIf 0<≢buildFilenames←b/buildFilenames
-     'Build files do not point to existing folders'Assert∨/b
-     buildLists←{⎕JSON⍠('Dialect' 'JSON5')⊣⊃F.NGET ⍵}¨buildFilenames
-     r←⍉∘↑¨(⊂¨' ',¨¨buildLists.packageID),¨buildLists.(principal url)
-     r←(⊂¨b/tatinFolders,¨'/'),¨r
-     r←{⍵,'? '[1+'https://tatin.dev/'∘≡¨⍵[;4]]}¨r
-     r←⊃⍪/r
+ cfgFilename←folder,'/cider.config'
+ :If F.Exists cfgFilename
+     cfg←ReadProjectConfigFile cfgFilename
+     tatinFolders←GetTatinDependencyFolders cfg
+     :If 0<≢tatinFolders
+         tatinFolders←RemoveTargetDefinition¨tatinFolders
+         buildFolders←(⊂folder,'/'),¨tatinFolders
+         buildFilenames←buildFolders,¨⊂'/apl-buildlist.json'
+         r⍪←tatinFolders ListTatinDependencies_ buildFilenames
+     :EndIf
+ :Else
+     buildFilename←folder,'/apl-buildlist.json'
+     :If ⎕NEXISTS buildFilename
+         r⍪←(⊂{¯1↓1⊃⎕NPARTS ⍵}buildFilename)ListTatinDependencies_⊂buildFilename
+     :Else
+         list←F.ListDirs folder
+         :For folder2 :In list
+             r⍪←ListTatinDependencies folder2
+         :EndFor
+         :If 1={+/∧\⍵≡¨⍵[1]}⎕XSI
+             r[;1]←(1+≢folder)↓¨r[;1]
+             r[⍸{~(⍵⍳⍵)=⍳≢⍵}r[;1];1]←⊂''
+         :EndIf
+     :EndIf
  :EndIf

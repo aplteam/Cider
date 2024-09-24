@@ -1,0 +1,7 @@
+ ListScriptsIn←{
+     l1←ref{0∊≢⍵:⍵ ⋄ ⍵/⍨⍺.{((⍕⎕THIS),'.',⍵)≡⍕⍎⍵}¨⍵}' '~¨⍨↓ref.⎕NL 9.4 9.5   ⍝ Class and interfaces
+     l2←ref{0∊≢⍵:⍵ ⋄ ⍵/⍨⍺.{((⍕⎕THIS),'.',⍵)≡⍕⍎⍵}¨⍵}' '~¨⍨↓ref.⎕NL 9.1       ⍝ All namespaces
+     l2←(ref.{0::0 ⋄ 1⊣⍴⎕SRC⍎⍵}¨l2)/l2
+     0=≢l2:l1
+     {⍵[⍋↑⍵]}l1,l2
+ }

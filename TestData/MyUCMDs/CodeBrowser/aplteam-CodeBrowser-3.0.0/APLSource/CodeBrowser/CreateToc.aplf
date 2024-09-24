@@ -1,0 +1,42 @@
+ lists←level CreateToc(ref parms collect);lists;width;caption;flag;html;buff
+ lists←⎕NS''                ⍝ All lists: functions, operators, non-scripted namespaces (containers)
+ lists.(fns opr scripts variables containers)←⊂''
+ :If collect.hasMainMenu
+     caption←(FormatLevel level),MakeBreadCrumb collect.remove RemoveLevels⍕ref
+     html←⊂caption{'<h3 id="',(collect.remove RemoveLevels ⍵),'">',⍺,'</h3>'}⍕ref
+ :Else
+     html←''
+ :EndIf
+ flag←1
+ :If 0<≢↓ref.⎕NL 2 3 4 9
+     width←⍕6⌈⌈0.8×⌈/≢¨↓ref.⎕NL 9,GetNameClasses parms
+     (buff flag)←HandleContainers ref width flag lists parms collect
+     html,←buff
+     :If parms.processFunctions
+     :AndIf 0≠≢lists.fns←' '~¨⍨↓ref.⎕NL 3
+     :AndIf 0≠≢lists.fns←(3.3≠⊃∘ref.⎕NC¨⊂¨lists.fns)/lists.fns
+         (html flag)←html OpenNavSub flag
+         html,←CreateToc_ ref parms lists.fns'Function'collect width
+     :EndIf
+     :If parms.processOperators
+     :AndIf 0≠≢lists.opr←' '~¨⍨↓ref.⎕NL 4
+     :AndIf 0≠≢lists.opr←(4.3≠⊃∘ref.⎕NC¨⊂¨lists.opr)/lists.opr
+         (html flag)←html OpenNavSub flag
+         html,←CreateToc_ ref parms lists.opr'Operator'collect width
+     :EndIf
+     :If parms.processScripts
+     :AndIf 0≠≢lists.scripts←ListScriptsIn ref
+     :AndIf 0≠≢lists.scripts←(~(ref.{0=≢⊃,/⍵:⍵ ⋄ ⍎¨⍵}lists.scripts)∊parms.ignore)/lists.scripts
+         (html flag)←html OpenNavSub flag
+         html,←CreateToc_ ref parms lists.scripts'Script'collect width
+     :EndIf
+     :If parms.processVars
+     :AndIf 0≠≢lists.variables←' '~¨⍨↓ref.⎕NL 2
+         (html flag)←html OpenNavSub flag
+         html,←CreateToc_ ref parms lists.variables'Variable'collect width
+     :EndIf
+     html,←(~flag)/⊂'</nav>'
+ :EndIf
+⍝ Collapsible: html,←⊂'</div>'
+ {}WriteHTML html
+⍝Done

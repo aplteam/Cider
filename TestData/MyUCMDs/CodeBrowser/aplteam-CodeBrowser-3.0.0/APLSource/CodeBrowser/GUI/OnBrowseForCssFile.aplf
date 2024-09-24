@@ -1,0 +1,18 @@
+ OnBrowseForCssFile msg;n;parms;fb;res;path;filename;extension
+ n←GetRefTo_n⊃msg
+ (path filename extension)←⎕NPARTS n.cssFilename.Text
+ filename←filename,extension
+ parms←filename CreateFileBoxParms n
+ :If 0∊⍴path
+     parms.path←##.F.PWD
+ :Else
+     parms.path←path
+ :EndIf
+ parms.caption←'Read CSS file'
+ parms.filters←⊂'*.css' 'CSS file'
+ fb←CreateFileBox parms
+ res←DQ fb.∆Form
+ :If ~0∊⍴fb.∆result
+     n.cssFilename.Text←fb.∆result
+ :EndIf
+⍝Done

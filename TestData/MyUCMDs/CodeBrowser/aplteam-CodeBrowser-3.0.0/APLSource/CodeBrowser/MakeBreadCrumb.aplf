@@ -1,0 +1,7 @@
+ MakeBreadCrumb←{
+     parts←'.'A.Split ⍵
+     urls←{(⍳⍴⍵)↑¨⊂⍵}parts
+     top←{'<a href="#',(⊃{⍺,'.',⍵}/⍵),'">'}¨urls
+     r←top,¨parts
+     ¯1↓⊃,/r,¨⊂'</a>.'
+ }

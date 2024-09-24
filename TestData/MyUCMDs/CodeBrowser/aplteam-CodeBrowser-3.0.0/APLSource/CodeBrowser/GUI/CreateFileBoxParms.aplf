@@ -1,0 +1,11 @@
+ r←filename CreateFileBoxParms n
+⍝ Returns a parameter namespace with default settings:
+ r←⎕NS''
+ r.caption←''
+ r.file←filename
+ r.fileMode←'Read'
+ r.filters←⊂'*.*' 'All files (*.*)'
+ r.index←1
+ r.parent←n.∆Form
+ r.path←{0∊⍴⍵:##.F.PWD ⋄ ⍵}path
+⍝Done

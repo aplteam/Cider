@@ -1,0 +1,7 @@
+(
+ '* 5.0.0 ⋄ 2024-05-20'
+ '  * This version a a complete re-design for better multi-platform support. Read the README file!'
+ '  * Works now with .NET (rather than only .NET Framework) and uses .NET on all platforms when available.'
+ '  * On Linux and Mac-OS, comparison utilities that returned a code different from 0 caused a crash.'
+ '  * Setting the lables for the left and/or right pane failed to work.'
+)

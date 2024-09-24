@@ -1,41 +1,70 @@
- r←ListTatinDependencies Args;path;full;cfgFilename;cfg;tatinFolders;ind;raw
+ r←ListTatinDependencies Args;path;full;cfgFilename;cfg;tatinFolders;list;path2;buildFilename;buff;F;P_
 ⍝ List all Tatin dependencies
  r←''
+ P_←P.##
+ F←P_.F
  :If 0=≢path←GetProjectPath Args._1
      ⎕←'Cancelled by user'
  :Else
      full←Args.Switch'full'
-     raw←Args.Switch'raw'
      :If full
          :If IsAlias path
              path←GetFolderFromAlias2 path
          :EndIf
-         cfgFilename←path,'/cider.config'
-         'No Cider config file found'Assert P.##.F.Exists cfgFilename
-         cfg←P.##.ReadProjectConfigFile cfgFilename
-         :If 0<≢tatinFolders←P.##.GetTatinDependencyFolders cfg
-             tatinFolders←P.##.RemoveTargetDefinition¨tatinFolders
-             ind←1
-             :If 1=≢tatinFolders
-             :OrIf 0<≢ind←'SelectPkgFolder@Select package install folder to report on:'Select tatinFolders
-                 :If 0<≢r←P.##.ListTatinDependenciesFull path,'/',ind⊃tatinFolders
-                     :If ~raw
-                         r←⊃,/CR,¨(r[;1]⍴¨' '),¨r[;2]
+         cfgFilename←(F.AddTrailingSep path),'cider.config'
+         :If F.Exists cfgFilename
+             cfg←P_.ReadProjectConfigFile cfgFilename
+             :If 0<≢tatinFolders←P_.GetTatinDependencyFolders cfg
+                 tatinFolders←P_.RemoveTargetDefinition¨tatinFolders
+                 :If 1=≢tatinFolders
+                     :If 0<≢r←P_.ListTatinDependenciesFull path,'/',⊃tatinFolders
+                         r←⊃,/CR,¨((r[;1])⍴¨' '),¨r[;2]
+                         r←'--- Investigated: ',(F.Exists path),CR,'-- Sub-folder: ',tatinFolders,'/',r
+                     :Else
+                         r←'No dependencies found'
                      :EndIf
                  :Else
-                     r←'No dependencies found'
+                     :If 0<≢r←path∘{P_.ListTatinDependenciesFull ⍺,'/',⍵}¨tatinFolders
+                         r←{⊃,/CR,¨((⍵[;1])⍴¨' '),¨⍵[;2]}¨r
+                         r←'--- Investigated: ',path,CR,⊃,/('-- Sub-folder: '∘,¨tatinFolders,¨'/'),¨r,¨CR
+                     :Else
+                         r←'No dependencies found'
+                     :EndIf
                  :EndIf
+             :Else
+                 r←'According to the project config file there are no dependencies'
              :EndIf
          :Else
-             r←'No dependencies found'
+             buildFilename←path,'/apl-buildlist.json'
+             :If ⎕NEXISTS buildFilename
+                 :If 0<≢r←P_.ListTatinDependenciesFull path
+                     r←⊃,/CR,¨((r[;1])⍴¨' '),¨r[;2]
+                     r←'--- Investigated: ',path,r
+                 :EndIf
+             :Else
+                 list←F.ListDirs path
+                 r←0 2⍴''
+                 :For path2 :In list
+                     buildFilename←path2,'/apl-buildlist.json'
+                     :If ⎕NEXISTS buildFilename
+                         :If 0<≢buff←P_.ListTatinDependenciesFull path2
+                             buff←⊃,/CR,¨(buff[;1]⍴¨' '),¨buff[;2]
+                             :If 2=⍴⍴buff
+                                 r⍪←buff
+                             :Else
+                                 r,←buff
+                             :EndIf
+                         :EndIf
+                     :EndIf
+                 :EndFor
+             :EndIf
          :EndIf
      :Else
-         :If 0<≢r←P.ListTatinDependencies path
-             :If ~raw
-                 r←('Source' 'Package-ID' 'Principal' 'URL' '')⍪('' '' '' '' '')⍪r
-                 (2⌷r)←(⊃¨⌈⌿≢¨r)⍴¨'-'
-                 r←{w←⍵ ⋄ w[2;2⊃⍴w]←' ' ⋄ w}r
-             :EndIf
+         :If 0<≢r←P_.ListTatinDependencies path
+             r[⍸{(⍵⍳⍵)≠⍳≢⍵}r[;1];1]←⊂''
+             r←('Source' 'Package-ID' 'Principal' 'URL' '?')⍪('' '' '' '' '')⍪r
+             (2⌷r)←(⊃¨⌈⌿≢¨r)⍴¨'-'
+             r←{w←⍵ ⋄ w[2;2⊃⍴w]←' ' ⋄ w}r
          :Else
              r←'No dependencies found'
          :EndIf

@@ -1,0 +1,11 @@
+ r←OnOK msg;n;msg2
+ n←GetRefTo_n⊃msg
+ (r msg2)←CheckInput n
+ :If r
+     ShowInStatusbar'Processing...'
+     n.∆Parms←n.∆Parms
+     CopyGuiToParms n
+     {}n.∆Parms ##.Run n.∆Parms.namespaces
+     ⎕NQ n.∆Form'Close'
+ :EndIf
+⍝Done

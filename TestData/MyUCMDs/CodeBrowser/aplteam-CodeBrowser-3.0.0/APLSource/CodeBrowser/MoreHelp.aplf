@@ -1,0 +1,4 @@
+ r←MoreHelp dummy
+⍝ Provides detailed help. Same as `]CoderBrowser -???`
+ {}⎕SE.UCMD']ADOC ⎕se.CodeBrowser'
+ r←'Watch your default browser'

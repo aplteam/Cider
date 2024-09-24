@@ -1,0 +1,2 @@
+ r←GetPathToConfig
+ r←##.GetPathToConfig

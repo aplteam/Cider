@@ -1,0 +1,19 @@
+ filename←caption GetFilename filename;bb;flag;msgb;res
+ :If 0=≢filename
+ :OrIf (,0)≡,filename
+ :OrIf 0=C.##.FilesAndDirs.IsFile filename
+     'bb'⎕WC'BrowseBox'('Caption'caption)('HasEdit' 1)('BrowseFor' 'File')('Target' '')('Event'('FileBoxOK' 'FileBoxCancel')1)
+     flag←0
+     :Repeat
+         res←⎕DQ'bb'
+         :If 'FileBoxCancel'≡2⊃res
+             filename←''
+             :Return
+         :EndIf
+         :If 0=flag←C.##.FilesAndDirs.IsFile filename←bb.Target
+             'msgb'⎕WC'MsgBox'('Caption' 'File selection for "CompareFiles"')('Style' 'Info')('Text'('This:'filename'is not a file - try again'))
+             ⎕DQ'msgb'
+         :EndIf
+     :Until flag
+ :EndIf
+⍝Done

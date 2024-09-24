@@ -1,0 +1,16 @@
+ n←n CreateCaption parent;∆;ref
+ ∆←⊂'Label'
+ ∆,←⊂'Posn'(n.(∆vgap ∆hgap))
+ ∆,←⊂'Caption' '&Caption:'
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+ ref←⍎'caption_label'parent.⎕WC ∆
+
+ ∆←⊂'Edit'
+ ∆,←⊂'Posn'(((⌈n.∆vgap÷2)+⊃↑+⌿⊃ref.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+ ∆,←⊂'Size'(⍬(parent.Size[2]-2×n.∆hgap))
+ ∆,←⊂'Text'({¯1≡⍵:'' ⋄ ⍵}n.∆Parms.caption)
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('Specify the overall caption.' 'If you leave this empty it will default to' 'the names of all namespaces to be scanned.')
+ n.caption←⍎'caption'parent.⎕WC ∆
+⍝Done

@@ -1,0 +1,6 @@
+ OpenInDefaultBrowser←{
+     6::0
+     ⎕USING←'' 'System' 'System.Diagnostics,System.dll'
+     proc←Process.Start,⊂⍵
+     1:proc←proc     ⍝ was a NEW process started = True?
+ }

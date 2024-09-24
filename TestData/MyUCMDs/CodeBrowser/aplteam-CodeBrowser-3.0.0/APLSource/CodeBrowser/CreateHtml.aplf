@@ -1,0 +1,32 @@
+ filename←CreateHtml parms;collect;WriteHTML;info
+ parms.bookmarkCounter←1
+ WriteHTML←parms.filename∘{0=≢⍵:r←⍬ ⋄ (⊂⍵)⎕NPUT ⍺ 2}
+ WriteHeader parms
+ WriteHTML'<h1>',(ExchangeHtmlSpecialChars parms.caption),'</h1>'
+ :If 0≠≢parms.info
+     info←ExchangeHtmlSpecialChars⍣(~parms.infoIsHTML)⊣parms.info
+     :If 0 1∊⍨≡info
+     :AndIf ~(⎕UCS 13)∊info
+         WriteHTML(⊂'<div id="info">'),({'<p>',⍵,'</p>'}¨⊆info),⊂'</div>'
+     :Else
+         info←(⎕UCS 13)A.Split⍣((⎕UCS 13)∊info)⊣info
+         WriteHTML(⊂'<div id="info">'),({({'<p>',⍵,'</p>'}⍵)}¨info),⊂'</div>'
+     :EndIf
+ :EndIf
+ collect←⎕NS''
+ collect.namespaces←⍬
+ collect.remove←⌊/{+/'.'=⍵}¨namespaces
+ :If parms.recursive
+     collect.hasMainMenu←AddMainMenu parms collect
+ :Else
+     collect.hasMainMenu←0
+ :EndIf
+ WriteHTML'<div id="',(GetBookmark_ID parms),'"></div>'
+ parms.bookmarkCounter+←1
+ 1 CollectAplObjects parms collect
+ WriteHTML AddFooter parms
+ WriteHTML AddParameters parms
+ WriteHTML InjectJavaScriptLate ⍬
+ WriteHTML('</body>' '</html>')
+ filename←parms.filename
+⍝Done

@@ -1,0 +1,11 @@
+ r←GetCssFilename path
+ :If 0=≢path
+     :If 9=⎕NC'TatinVars'
+         r←TatinVars.HOME,'/Files/codebrowser_styles.css'
+     :Else
+         r←##.TatinVars.HOME,'/Files/codebrowser_styles.css'
+     :EndIf
+ :Else
+     ((path∊'/\')/path)←FilesAndDirs.CurrentSep
+     r←path,FilesAndDirs.CurrentSep,'codebrowser_styles.css'
+ :EndIf

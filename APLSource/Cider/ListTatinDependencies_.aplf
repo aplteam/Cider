@@ -1,0 +1,11 @@
+ r←parentFolders ListTatinDependencies_ filenames;b;buildLists
+ r←0 5⍴''
+ b←F.Exists¨filenames
+ :If 0<≢filenames←b/filenames
+     'Build file does not point to existing folders'Assert∨/b
+     buildLists←{⎕JSON⍠('Dialect' 'JSON5')⊣⊃F.NGET ⍵}¨filenames
+     r←⍉∘↑¨(⊂¨' ',¨¨buildLists.packageID),¨buildLists.(principal url)
+     r←(⊂¨F.EnforceSlash¨b/parentFolders,¨'/'),¨r
+     r←{⍵,'? '[1+'https://tatin.dev/'∘≡¨⍵[;4]]}¨r
+     r←⊃⍪/r
+ :EndIf

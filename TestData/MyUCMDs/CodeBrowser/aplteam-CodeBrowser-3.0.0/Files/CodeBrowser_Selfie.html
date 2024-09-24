@@ -1,0 +1,3205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="utf-8">
+<title>CodeBrowser</title>
+<style>@media screen{html{margin:1em 1em 1em 1em;}footer{margin-top:1.87em;}footer p{text-align:center;}pre{overflow:auto;padding:0.62em 0.31em;margin:.25em 0 0.75em 0 !important;white-space:pre-wrap;background-color:#faebd7;color:#3e3e3e;border:1px silver dashed;}h1{font-family:"APL385 Unicode";font-size:180%;border:2px Black solid;text-align:center;padding:0.62em 0 0.9em 0;}h2,h3,h4,h5,h6{font-family:"APL385 Unicode";font-size:140%;margin:1.25em 0 0.62em 0;padding:0;}p.caption{font-family:"APL385 Unicode";font-size:100%;font-weight:800;margin:1em 0 0.3em 0;padding:0;}p.timestamp{margin:-0.25em 0 0.31em 0;font-size:0.8em}nav, code{font-family:"APL385 Unicode";}code{background-color:#EFEFEF;padding:0 3px 0 3px;}div.code_block{margin:0.75em 0;padding-top:10px;}nav#main{padding-bottom:0.62em;}nav#main li{line-height:1.3;list-style:none}nav#main > p{font-family:Verdana, "Serif";margin:.31em 0 0.12em 0;}nav#main{border:1px black solid;display:block;padding-left:0.62em;}nav#main ol{margin:0;margin-left:0.62em;padding-left:0.62em}nav.sub{border:1px silver solid;display:block;padding:0.18em;margin:1.25em 0;}.toclist > p, .functionlist > p, div.operatorlist > p{margin-bottom:0.18em;}.toclist{margin:1em 0 1em 0;padding:0 0.25em;}.toclist > div{display:flex;flex-wrap:wrap;}.toclist > div div{margin:0.12em 0 0.12em 0;}nav.sub p{font-family:Verdana, "Serif";margin:0 0 0.31em;padding:0;}div#info{display:block;margin:0.62em 0 1.87em 0;font-family:"Verdana2", "Serif"}p#after_h1{display:none;}a{text-decoration:none;border-bottom:1px Black dotted;}#scrolltotop{display:none;position:fixed;bottom:1.25em;right:1.87em;z-index:99;border:none;outline:none;background-color:black;color:white;cursor:pointer;padding:1em;border-radius:0.62em;}#scrolltotop:hover{background-color:#555;}div#parameters hr{margin-top:4em;}#parms{margin:1em auto 0 auto;border-collapse:collapse;font-family:"APL385 Unicode";font-size:0.8em;border:1px solid Black;border-spacing:2px;}#parms td{padding:3px 5px;text-align:left;}#parms tbody tr:nth-child(even){background-color:#DEDEDE;}#parms th{padding:3px 5px;text-align:left;background-color:Black;color:white;}hr{background-color:black;width:75%;margin-left:auto;margin-right:auto;}pre code{white-space:pre-wrap;background-color:#faebd7;color:#3e3e3e;}.center{text-align:center;}p.type{font-family:Verdana, serif;font-weight:800;font-size:100%;margin-top:1.5em;margin-bottom:0;}table.refs{font-family:"APL385 Unicode", monospace;margin-top:0.75em;margin-bottom:1.25em;}table.refs > tbody > tr> td{padding:3px;}button.accordion{content:"Hide";display:inline;padding:0 5px;margin-right:5px;}p.caption{display:inline;}.accordion-content{padding:0;display:block;overflow-y:auto;overflow-x:hidden;transition:max-height 0.5s ease;max-height:¯1em;}.jump2next{padding:0 5px;margin-right:5px;}.floatright{float:right;}}@page:left{margin:20mm 20mm 20mm 10mm;}@page:right{margin:20mm 10mm 20mm 20mm;}@media print{html{font-size:8pt;-webkit-print-color-adjust:exact;}footer{margin-top:20pt;}footer p{text-align:center;}pre{overflow:auto;padding:5pt;margin:2pt 0 5pt 0 !important;white-space:pre-wrap;background-color:#F7F7F7;border:1pt silver solid;}code{color:black;white-space:pre-wrap;}h1{font-family:"APL385 Unicode";font-size:300%;text-align:center;padding:20pt 0 50pt;}h2{page-break-before:always;}h2,h3,h4,h5,h6{font-family:"APL385 Unicode";font-size:115%;margin:12pt 0 4pt 0;padding:0;}h3{page-break-before:always;}p.caption{font-family:"APL385 Unicode";font-size:100%;font-weight:800;margin:0;padding:0;}p.timestamp{margin:-4pt 0 0 0;font-size:0.80em}nav, code{font-family:"APL385 Unicode";}nav#main > p{font-family:Verdana, "Serif";}nav#main ol{margin:0;margin-left:15pt;padding-left:5pt;list-style:none}nav#main li{margin-top:3pt;}nav.sub{border:1pt silver solid;display:block;padding:0 5pt 5pt 5pt;margin:0 0 15pt 0;}.toclist{margin:0.8em 0 0.3em 0;padding:0 1pt;}.toclist > p{margin-bottom:2pt;}.toclist > div{display:flex;flex-wrap:wrap;}.toclist > div div{margin:1pt 0 1pt 0;}nav.sub p{font-family:Verdana, "Serif";margin:0 0 2pt 0;padding:0;}div#info{display:block;margin:5pt 0 5pt 0;font-family:"Verdana2", "Serif";page-break-after:always;}a{text-decoration:none;color:black}div.code_block{page-break-inside:avoid;margin:15pt 0;}nav#main+h2{page-break-before:always;}h2+h3{page-break-before:avoid;}#scrolltotop{display:none !important;}hr{background-color:black;width:75%;margin-left:auto;margin-right:auto;}div#parameters hr{display:none;}#parms{margin:1em auto 0 auto;border-collapse:collapse;font-family:"APL385 Unicode";font-size:0.8em;border:1pt solid Black;border-spacing:2pt;}#parms td{padding:3pt 5pt;text-align:left;}#parms tbody tr:nth-child(even){background-color:#efefef;}#parms th{padding:3pt 5pt;text-align:left;background-color:Black;color:white;}.center{text-align:center;}p.type{font-family:Verdana, serif;font-weight:800;font-size:100%;margin-top:0.75em;margin-bottom:0;}table.refs{font-family:"APL385 Unicode", monospace;margin-top:0.75em;margin-bottom:1.25em;}table.refs > tbody > tr> td{padding:3pt;}.accordion-content{padding:0;display:block;overflow:hidden;}button{display:none;}}</style>
+<script>
+function jump2bookmark(id){
+    var obj = document.getElementById(id);
+    obj.scrollIntoView({behavior: "smooth", block: "start"});
+}
+</script>
+</head>
+<body>
+<h1>CodeBrowser</h1>
+<div id="info">
+<p>Contains the CodeBrowser code without the test cases.</p>
+</div>
+<nav id="main">
+<p>Namespace structure:</p>
+<ol>
+<li>
+<a href="#CodeBrowser">1. #.CodeBrowser.CodeBrowser</a>
+<ol>
+<li>
+<a href="#CodeBrowser.API">1.1. #.CodeBrowser.CodeBrowser.API</a>
+<li>
+<a href="#CodeBrowser.Admin">1.2. #.CodeBrowser.CodeBrowser.Admin</a>
+<li>
+<a href="#CodeBrowser.GUI">1.3. #.CodeBrowser.CodeBrowser.GUI</a>
+</ol>
+</ol>
+</nav>
+<div id="bookmark_00001"></div>
+<h3 id="CodeBrowser">1. <a href="#CodeBrowser">CodeBrowser</a></h3>
+<nav class="sub">
+<div class="toclist">
+<p><b>Sub namespaces: 3</b></p>
+<div>
+<div style="width:27em;"><a href="#CodeBrowser.API">1. API</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.Admin">2. Admin</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.GUI">3. GUI</a></div>
+</div>
+</div>
+<div class="toclist">
+<p><b>Functions: 54</b></p>
+<div>
+<div style="width:27em;"><a href="#CodeBrowser.AddFooter">1. AddFooter</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.AddMainMenu">2. AddMainMenu</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.AddMainMenu_">3. AddMainMenu_</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.AddParameters">4. AddParameters</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CollectAplObjects">5. CollectAplObjects</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CollectAplObjects_">6. CollectAplObjects_</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CollectAplObjects__">7. CollectAplObjects__</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CollectFnsAndOpr">8. CollectFnsAndOpr</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CollectFnsAndOprAndScriptsAndVars">9. CollectFnsAndOprAndScriptsAndVars</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CollectScript">10. CollectScript</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CollectVariable">11. CollectVariable</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CompressCSS">12. CompressCSS</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CreateHtml">13. CreateHtml</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CreateOrReplaceFile">14. CreateOrReplaceFile</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CreateParms">15. CreateParms</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CreateToc">16. CreateToc</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.CreateToc_">17. CreateToc_</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.ExchangeHtmlSpecialChars">18. ExchangeHtmlSpecialChars</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.FormatDate">19. FormatDate</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.FormatLevel">20. FormatLevel</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.GetBookmark_ID">21. GetBookmark_ID</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.GetCSS">22. GetCSS</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.GetCodeMirrorLib">23. GetCodeMirrorLib</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.GetCssFilename">24. GetCssFilename</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.GetNameClasses">25. GetNameClasses</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.GetSubNamespaces">26. GetSubNamespaces</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.HandleContainers">27. HandleContainers</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.HandleParms">28. HandleParms</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.IncrementBookMarkCounter">29. IncrementBookMarkCounter</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.Init">30. Init</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.InitializeUserCommand">31. InitializeUserCommand</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.InjectJavaScriptEarly">32. InjectJavaScriptEarly</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.InjectJavaScriptLate">33. InjectJavaScriptLate</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.Install">34. Install</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.ListScriptsIn">35. ListScriptsIn</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.MakeBookmarkRef">36. MakeBookmarkRef</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.MakeBreadCrumb">37. MakeBreadCrumb</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.MakeID">38. MakeID</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.MassageNameLists">39. MassageNameLists</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.Max">40. Max</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.MoreHelp">41. MoreHelp</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.OpenInDefaultBrowser">42. OpenInDefaultBrowser</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.OpenNavSub">43. OpenNavSub</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.Public">44. Public</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.RemoveEmptyContainers">45. RemoveEmptyContainers</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.RemoveGuiInstances">46. RemoveGuiInstances</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.RemoveLevels">47. RemoveLevels</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.RemoveRefs">48. RemoveRefs</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.RemoveTatinPackages">49. RemoveTatinPackages</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.ReportRefs">50. ReportRefs</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.Run">51. Run</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.Selfie">52. Selfie</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.Version">53. Version</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.WriteHeader">54. WriteHeader</a></div>
+</div>
+</div>
+<div class="toclist">
+<p><b>Variables: 12</b></p>
+<div>
+<div style="width:27em;"><a href="#CodeBrowser.ADOC_Doc">1. ADOC_Doc</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.History">2. History</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.buff">3. buff</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.caption">4. caption</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.dummy">5. dummy</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.flag">6. flag</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.html">7. html</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.info">8. info</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.level">9. level</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.namespaces">10. namespaces</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.r">11. r</a></div>
+<div style="width:27em;"><a href="#CodeBrowser.width">12. width</a></div>
+</div>
+</div>
+</nav>
+<p class="type">References:</p>
+<table class="refs">
+<tr><td>ref</td><td>==></td><td>ref</td></tr>
+</table>
+<p class="type">Functions:</p>
+<div class="bookmarktarget" id="CodeBrowser.AddFooter">
+<div id="bookmark_00002" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00001')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00003')">Next</button>
+<p class="caption">1. <a href="#CodeBrowser">CodeBrowser</a>.AddFooter (9 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {html}←AddFooter parms
+[1]    html←''
+[2]    :If ~0∊⍴parms.footer
+[3]        html←⊂'&lt;footer&gt;'
+[4]        html,←⊂'&lt;hr&gt;'
+[5]        html,←⊂'&lt;p&gt;',(ExchangeHtmlSpecialChars parms.footer),'&lt;/p&gt;'
+[6]        html,←⊂'&lt;/footer&gt;'
+[7]    :EndIf
+[8]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.AddMainMenu">
+<div id="bookmark_00003" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00002')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00004')">Next</button>
+<p class="caption">2. <a href="#CodeBrowser">CodeBrowser</a>.AddMainMenu (14 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {hasMainMenu}←AddMainMenu(parms collect);html;refs
+[1]    refs←{1&lt;⍴,⍵:↑⍵ ⋄ ⍉⍪⊃⍵}⊃,/parms GetSubNamespaces¨parms.refs
+[2]    refs←({(⍵⍳⍵)=⍳≢⍵}refs[;2])⌿refs        ⍝ Get rid of (additional) refs
+[3]    hasMainMenu←0
+[4]    html←1 AddMainMenu_ refs collect
+[5]    :If 1≥+/∨/¨'&lt;li&gt;'∘⍷¨html
+[6]        html←''
+[7]    :EndIf
+[8]    :If 0≠≢html
+[9]        html←('&lt;nav id="main"&gt;' '&lt;p&gt;Namespace structure:&lt;/p&gt;'),html,(⊂'&lt;/nav&gt;')
+[10]       WriteHTML html
+[11]       hasMainMenu←1
+[12]   :EndIf
+[13]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.AddMainMenu_">
+<div id="bookmark_00004" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00003')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00005')">Next</button>
+<p class="caption">3. <a href="#CodeBrowser">CodeBrowser</a>.AddMainMenu_ (17 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ html←level AddMainMenu_(refs collect);i;buff;noOf
+[1]    html←⊂'&lt;ol&gt;'
+[2]    i←1
+[3]    :Repeat
+[4]        :If ~0∊⍴refs
+[5]            html,←{'&lt;li&gt;'('&lt;a href="#',(collect.remove RemoveLevels⍕⍵),'"&gt;',((⊃{⍺,'.',⍵}/⍕¨level),'. ',⍕⍵),'&lt;/a&gt;')}refs[i;2]
+[6]            :If 0&lt;noOf←{+/∧\1↓⍵[;1]&gt;⊃⍵}(i-1)↓refs
+[7]                html,←(level,1)AddMainMenu_(noOf↑i↓refs)collect
+[8]                i←i+noOf+1
+[9]            :Else
+[10]               i+←1
+[11]           :EndIf
+[12]       :EndIf
+[13]       (¯1↑level)←1+¯1↑level
+[14]   :Until i&gt;1⊃⍴refs
+[15]   html,←⊂'&lt;/ol&gt;'
+[16]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.AddParameters">
+<div id="bookmark_00005" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00004')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00006')">Next</button>
+<p class="caption">4. <a href="#CodeBrowser">CodeBrowser</a>.AddParameters (17 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ html←AddParameters parms;mat;toc;header;row
+[1]    html←''
+[2]    :If parms.showParms
+[3]        mat←parms.∆List
+[4]        toc←mat[;1]~¨' '
+[5]        mat⌿⍨←~toc∊⊂'refs'      ⍝ Strictly speaking these are not parameters
+[6]        row←toc⍳⊂'info'
+[7]        mat[row;2]←⊂Max 2⊃mat[row;]
+[8]        row←toc⍳⊂'caption'
+[9]        mat[row;2]←⊂Max 2⊃mat[row;]
+[10]       row←toc⍳⊂'footer'
+[11]       mat[row;2]←⊂Max 2⊃mat[row;]
+[12]       html←({{'&lt;tr&gt;',⍵,'&lt;/tr&gt;'}⊃,/{'&lt;td&gt;',(⍕⍵),'&lt;/td&gt;'}¨⍵}¨↓mat)
+[13]       header←⊂'&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Setting&lt;/th&gt;&lt;/tr&gt;'
+[14]       html←('&lt;div id="parameters"&gt;' '&lt;hr&gt;' '&lt;h2 class="center"&gt;Parameters&lt;/h2&gt;' '&lt;table id="parms"&gt;'),header,(⊂'&lt;tbody&gt;'),html,'&lt;/tbody&gt;' '&lt;/table&gt;' '&lt;/div&gt;'
+[15]   :EndIf
+[16]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CollectAplObjects">
+<div id="bookmark_00006" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00005')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00007')">Next</button>
+<p class="caption">5. <a href="#CodeBrowser">CodeBrowser</a>.CollectAplObjects (6 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←level CollectAplObjects(parms collect);buff;ref;For;level
+[1]    r←⍬
+[2]    :For ref :In parms.refs
+[3]        level CollectAplObjects_ ref parms collect
+[4]    :EndFor
+[5]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CollectAplObjects_">
+<div id="bookmark_00007" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00006')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00008')">Next</button>
+<p class="caption">6. <a href="#CodeBrowser">CodeBrowser</a>.CollectAplObjects_ (11 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←level CollectAplObjects_(ref parms collect);EndIf;lists;refs
+[1]    r←⍬
+[2]    lists←level CreateToc ref parms collect
+[3]    level CollectAplObjects__ lists ref parms collect
+[4]    :If 0≠≢lists.containers
+[5]    :AndIf parms.recursive
+[6]        refs←ref.⍎¨lists.containers
+[7]    :AndIf 0&lt;≢refs←(0&lt;≢¨⍕¨refs)/refs
+[8]        ((⊂level),¨⍳⍴lists.containers){⍺ CollectAplObjects_ ⍵ parms collect}¨refs
+[9]    :EndIf
+[10]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CollectAplObjects__">
+<div id="bookmark_00008" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00007')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00009')">Next</button>
+<p class="caption">7. <a href="#CodeBrowser">CodeBrowser</a>.CollectAplObjects__ (17 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←level CollectAplObjects__(lists ref parms collect);i;html;names;k;name;captions
+[1]    r←⍬
+[2]    ReportRefs ref
+[3]    html←''
+[4]    captions←'Functions:' 'Operators:' 'Scripts:' 'Variables:'
+[5]    :For i :In ⍳≢lists.(fns opr scripts variables)
+[6]        :If 0≠≢names←i⊃lists.(fns opr scripts variables)
+[7]            html,←⊂'&lt;p class="type"&gt;',(i⊃captions),'&lt;/p&gt;'
+[8]            :For k :In ⍳⍴names
+[9]                name←k⊃names
+[10]               html,←level CollectFnsAndOprAndScriptsAndVars ref name parms k collect
+[11]           :EndFor
+[12]       :EndIf
+[13]   :EndFor
+[14]   html,←⊂'&lt;div id="',(GetBookmark_ID parms),'"&gt;&lt;/div&gt;'
+[15]   IncrementBookMarkCounter parms
+[16]   r←WriteHTML html
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CollectFnsAndOpr">
+<div id="bookmark_00009" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00008')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00010')">Next</button>
+<p class="caption">8. <a href="#CodeBrowser">CodeBrowser</a>.CollectFnsAndOpr (20 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←level CollectFnsAndOpr(ref name parms collect i);body;no;caption;target
+[1]    r←''
+[2]    :If ¯3≠≡body←(⎕UCS 13)A.Split ref.⎕VR name
+[3]        body←ExchangeHtmlSpecialChars body
+[4]        r,←⊂'&lt;div class="bookmarktarget" ',(collect MakeID(⍕ref),'.',name),'&gt;'
+[5]        r,←⊂'&lt;div id="',(GetBookmark_ID parms),'" class="code_block"&gt;'
+[6]        caption←MakeBreadCrumb collect.remove RemoveLevels⍕ref
+[7]        r,←⊂'&lt;button title="Hide" class="accordion expanded"&gt;Hide&lt;/button&gt;'
+[8]        target←'bookmark_',¯5↑'00000',⍕parms.bookmarkCounter-1
+[9]        r,←⊂'&lt;button title="Brings previous object to the top" onClick="jump2bookmark(''',target,''')"&gt;Previous&lt;/button&gt;'
+[10]       target←'bookmark_',¯5↑'00000',⍕parms.bookmarkCounter+1
+[11]       r,←⊂'&lt;button title="Brings next object to the top" onClick="jump2bookmark(''',target,''')"&gt;Next&lt;/button&gt;'
+[12]       r,←⊂'&lt;p class="caption"&gt;',(⍕i),'. ',caption,'.',name,' (',(⍕¯1+≢body),' lines)&lt;/p&gt;'
+[13]       r,←⊂'&lt;div class="accordion-content"&gt;'
+[14]       (1⊃body)←'&lt;pre&gt;&lt;code&gt;',1⊃body
+[15]       r,←body,⊂'&lt;/code&gt;&lt;/pre&gt;'
+[16]       r,←'&lt;/div&gt;' '&lt;/div&gt;' '&lt;/div&gt;'
+[17]       IncrementBookMarkCounter parms
+[18]   :EndIf
+[19]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CollectFnsAndOprAndScriptsAndVars">
+<div id="bookmark_00010" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00009')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00011')">Next</button>
+<p class="caption">9. <a href="#CodeBrowser">CodeBrowser</a>.CollectFnsAndOprAndScriptsAndVars (11 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←level CollectFnsAndOprAndScriptsAndVars(ref name parms i collect);body;no;caption
+[1]    r←''
+[2]    :Select ⊃ref.⎕NC name
+[3]    :Case 9
+[4]        r←level CollectScript ref name parms collect i
+[5]    :Case 2
+[6]        r←level CollectVariable ref name parms collect i
+[7]    :Else
+[8]        r←level CollectFnsAndOpr ref name parms collect i
+[9]    :EndSelect
+[10]  ⍝DoneColl
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CollectScript">
+<div id="bookmark_00011" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00010')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00012')">Next</button>
+<p class="caption">10. <a href="#CodeBrowser">CodeBrowser</a>.CollectScript (22 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←level CollectScript(ref name parms collect i);body;no;caption;target
+[1]    r←''
+[2]    :If 2=≡body←ref.⎕SRC ref.⍎name
+[3]        body←(,¨'&lt;&gt;&amp;')⎕R'\&amp;lt;' '\&amp;gt;' '\&amp;amp;'⍠('Greedy' 0)⊣body
+[4]        no←⍕2+level
+[5]        r,←⊂'&lt;div class="bookmarktarget" ',(collect MakeID(⍕ref),'.',name),'&gt;'
+[6]        r,←⊂'&lt;div id="',(GetBookmark_ID parms),'" class="code_block"&gt;'
+[7]        caption←MakeBreadCrumb collect.remove RemoveLevels⍕ref
+[8]        r,←⊂'&lt;button title="Hide" class="accordion expanded"&gt;Hide&lt;/button&gt;'
+[9]        target←'bookmark_',¯5↑'00000',⍕parms.bookmarkCounter-1
+[10]       r,←⊂'&lt;button title="Brings previous object to the top" onClick="jump2bookmark(''',target,''')"&gt;Previous&lt;/button&gt;'
+[11]       target←'bookmark_',¯5↑'00000',⍕parms.bookmarkCounter+1
+[12]       r,←⊂'&lt;button title="Brings next object to the top" onClick="jump2bookmark(''',target,''')"&gt;Next&lt;/button&gt;'
+[13]       r,←⊂'&lt;p class="caption"&gt;',(⍕i),'. ',caption,'.',name,' (',(⍕≢body),' lines)&lt;/p&gt;'
+[14]       r,←⊂'&lt;div class="accordion-content"&gt;'
+[15]       body←({(3+⍴,⍕⍵){⍺↑'[',(⍕⍵),']'}¨¯1+⍳⍵}⍴body),¨body
+[16]       (1⊃body)←'&lt;pre&gt;&lt;code&gt;',1⊃body
+[17]       r,←body,⊂'&lt;/code&gt;&lt;/pre&gt;'
+[18]       r,←'&lt;/div&gt;' '&lt;/div&gt;' '&lt;/div&gt;'
+[19]       IncrementBookMarkCounter parms
+[20]   :EndIf
+[21]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CollectVariable">
+<div id="bookmark_00012" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00011')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00013')">Next</button>
+<p class="caption">11. <a href="#CodeBrowser">CodeBrowser</a>.CollectVariable (14 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←level CollectVariable(ref name parms collect i);no;info;caption
+[1]    r←''
+[2]    no←⍕2+level
+[3]    r,←⊂'&lt;div ',(collect MakeID(⍕ref),'.',name),'&gt;'
+[4]    caption←MakeBreadCrumb collect.remove RemoveLevels⍕ref
+[5]    r,←⊂'&lt;p class="caption"&gt;',(⍕i),'. ',caption,'.',name,'&lt;/p&gt;'
+[6]    r,←⊂'&lt;/div&gt;'
+[7]    :Trap 6
+[8]        info←'Rank: ',(⍕⍴⍴ref.⍎name),'; Shape: ',({0∊⍴⍵:'⍬' ⋄ ⍕⍵}⍴ref.⍎name),'; Depth: ',(⍕≡ref.⍎name),'; Data Representation: ',⍕⎕DR ref.⍎name
+[9]        r,←⊂'&lt;pre&gt;&lt;code&gt;',info,'&lt;/code&gt;&lt;/pre&gt;'
+[10]   :Else  ⍝ This may well fail because the variable is now hidden (CodeBrowser on CodeBrowser)
+[11]       r←''
+[12]   :EndTrap
+[13]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CompressCSS">
+<div id="bookmark_00013" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00012')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00014')">Next</button>
+<p class="caption">12. <a href="#CodeBrowser">CodeBrowser</a>.CompressCSS (29 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ CompressCSS←{
+[1]   ⍝ Takes CSS and compresses it to a single line.
+[2]   ⍝ Along the way it...
+[3]   ⍝ * removes all comments
+[4]   ⍝ * removes any spaces around `;:{}`
+[5]   ⍝ * replaces &lt;TAB&gt; chars by spaces
+[6]   ⍝ * removes multiple spaces
+[7]   ⍝ Note that this method can have desastrous results when performed on non-valid CSS!\\
+[8]   ⍝ Throws an error in case something is not right with the CSS.
+[9]        css←⍵
+[10]       css←{(1↓⊃,/(⎕UCS 13),¨⍵)}⍣(1≠≡css)⊣css
+[11]       start←'/*'⍷css
+[12]       end←'*/'⍷css
+[13]       mask←~{⍵∨≠\⍵}css='"'
+[14]       0=≡/+/¨mask∘/¨start end:'Cannot compress CSS: number of occurrences of /* and */ are different'⎕SIGNAL 11
+[15]       0≠≢(∪⊃-/+\¨start end)~0 1:'Cannot compress CSS: Invalid nested comments'⎕SIGNAL 11
+[16]       start∧←mask
+[17]       end∧←mask
+[18]       bool←~{⍵∨≠\⍵}start∨end
+[19]       bool[1+⍸end]←0
+[20]       css←bool/css
+[21]       css←A.DMB css~⎕TC
+[22]       ((css=⎕UCS 9)/css)←' '
+[23]       mask←~{⍵∨≠\⍵}css='"'
+[24]       b1←mask\mask/⊃∨/' :' ' ;' ' {' ' }'⍷¨⊂css
+[25]       b2←mask\mask/⊃∨/': ' '; ' '{ ' '} '⍷¨⊂css
+[26]       b←~b1∨0,¯1↓b2
+[27]       '&lt;style&gt;',(b/css),'&lt;/style&gt;'
+[28]   }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CreateHtml">
+<div id="bookmark_00014" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00013')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00015')">Next</button>
+<p class="caption">13. <a href="#CodeBrowser">CodeBrowser</a>.CreateHtml (32 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ filename←CreateHtml parms;collect;WriteHTML;info
+[1]    parms.bookmarkCounter←1
+[2]    WriteHTML←parms.filename∘{0=≢⍵:r←⍬ ⋄ (⊂⍵)⎕NPUT ⍺ 2}
+[3]    WriteHeader parms
+[4]    WriteHTML'&lt;h1&gt;',(ExchangeHtmlSpecialChars parms.caption),'&lt;/h1&gt;'
+[5]    :If 0≠≢parms.info
+[6]        info←ExchangeHtmlSpecialChars⍣(~parms.infoIsHTML)⊣parms.info
+[7]        :If 0 1∊⍨≡info
+[8]        :AndIf ~(⎕UCS 13)∊info
+[9]            WriteHTML(⊂'&lt;div id="info"&gt;'),({'&lt;p&gt;',⍵,'&lt;/p&gt;'}¨⊆info),⊂'&lt;/div&gt;'
+[10]       :Else
+[11]           info←(⎕UCS 13)A.Split⍣((⎕UCS 13)∊info)⊣info
+[12]           WriteHTML(⊂'&lt;div id="info"&gt;'),({({'&lt;p&gt;',⍵,'&lt;/p&gt;'}⍵)}¨info),⊂'&lt;/div&gt;'
+[13]       :EndIf
+[14]   :EndIf
+[15]   collect←⎕NS''
+[16]   collect.namespaces←⍬
+[17]   collect.remove←⌊/{+/'.'=⍵}¨namespaces
+[18]   :If parms.recursive
+[19]       collect.hasMainMenu←AddMainMenu parms collect
+[20]   :Else
+[21]       collect.hasMainMenu←0
+[22]   :EndIf
+[23]   WriteHTML'&lt;div id="',(GetBookmark_ID parms),'"&gt;&lt;/div&gt;'
+[24]   parms.bookmarkCounter+←1
+[25]   1 CollectAplObjects parms collect
+[26]   WriteHTML AddFooter parms
+[27]   WriteHTML AddParameters parms
+[28]   WriteHTML InjectJavaScriptLate ⍬
+[29]   WriteHTML('&lt;/body&gt;' '&lt;/html&gt;')
+[30]   filename←parms.filename
+[31]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CreateOrReplaceFile">
+<div id="bookmark_00015" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00014')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00016')">Next</button>
+<p class="caption">14. <a href="#CodeBrowser">CodeBrowser</a>.CreateOrReplaceFile (25 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←CreateOrReplaceFile parms;errCounter;tno
+[1]    r←⍬
+[2]    :If ⎕NEXISTS parms.filename
+[3]        :Trap 19
+[4]            ⎕NDELETE parms.filename
+[5]        :Case 19
+[6]            ⎕NUNTIE((A.DTB↓⎕NNAMES)⍳⊂parms.filename)⊃⎕NNUMS
+[7]            ⎕NDELETE parms.filename
+[8]        :EndTrap
+[9]    :EndIf
+[10]   errCounter←0
+[11]   :Repeat
+[12]       :Trap 22
+[13]           ⍝ This causes sometimes an error that goes away
+[14]           ⍝ after a short delay. DropBox?!
+[15]           tno←parms.filename ⎕NCREATE 0
+[16]       :Else
+[17]           tno←0
+[18]           ⎕DL 0.2
+[19]           errCounter←errCounter+1
+[20]       :EndTrap
+[21]   :Until (tno&lt;0)∨5&lt;errCounter ⍝ Try max 5 times.
+[22]   'Unable to create the HTML file'⎕SIGNAL 22/⍨tno=0
+[23]   ⎕NUNTIE tno
+[24]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CreateParms">
+<div id="bookmark_00016" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00015')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00017')">Next</button>
+<p class="caption">15. <a href="#CodeBrowser">CodeBrowser</a>.CreateParms (57 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←CreateParms path
+[1]   ⍝ If `path` is not empty it is assumed that this points to the CodeBrowser home directory of a user command folder.
+[2]   ⍝ | Name             | Description | Options/flag |
+[3]   ⍝ |:-----------------|:------------|:-------------|
+[4]   ⍝ | `backgroundColorPrint` | Set this to 0 if you don't want background color when printing. | --- |
+[5]   ⍝ | `caption`        | Defaults to the list of namespaces specified by the user. | `-caption |
+[6]   ⍝ | `cssfilename`    | Location of the CSS file. | --- |
+[7]   ⍝ | `filename`       | If not set this defaults to a temp file name. | `-filename` |
+[8]   ⍝ | `footer`         | No default. Text string added to the bottom of the HTML file. | `-footer` |
+[9]   ⍝ | `ignore`         | Use this to ignore, say, a help system etc.&lt;&lt;br&gt;&gt;Text vector with comma-separated fully qualified namespace names. | `-ignore` |
+[10]  ⍝ | `ignoreEmpty`    | Boolean that defaults to 1 menaing that empty containers are ignored. | --- |
+[11]  ⍝ | `ignoreTatinPkgs`| Boolean that decided whether #._tatin (or ⎕SE._tatin) should be ignored |
+[12]  ⍝ | `info`           | If not empty this is shown under the caption with ID="info". | `-info` |
+[13]  ⍝ | `infoIsHTML`     | Boolean that defaults to 0, meaning that any `&lt;` becomes `&amp;lt;`.&lt;&lt;br&gt;&gt;Typically used for HTML that was generated by the `MarkAPL` class. |
+[14]  ⍝ | `lang`           | Specifies the language; defaults to "en". | `-lang` |
+[15]  ⍝ | `lines`          | Number of lines to be displayed. Defaults to no restriction |
+[16]  ⍝ | `linkcssfile`    | Boolean that defaults to 0 menaing that contents of `cssfile` is embedded. | --- |
+[17]  ⍝ | `namespaces`     | Will be becomes the namespaces to be scanned. Is read-only.| --- |
+[18]  ⍝ | `printFontSize`  | Base font size in pt. | `-pfs` |
+[19]  ⍝ | `processFunctions`   | Boolean that defaults to 1. | `-obj=f` |
+[20]  ⍝ | `processGuiInstances | Boolean that defaults to 0. | `-obj=g` |
+[21]  ⍝ | `processOperators`   | Boolean that defaults to 1. | `-obj=o` |
+[22]  ⍝ | `processScripts` | Boolean that defaults to 1. Regards classes, interfaces and scripted namespaces. | `-obj=s` |
+[23]  ⍝ | `processVars`    | Boolean that defaults to 1. | `-obj=v` |
+[24]  ⍝ | `recursive`      | Boolean that defaults to 1, meaning that sub-namespaces will be scanned as well. | `-r=1` |
+[25]  ⍝ | `showParms`      | Boolean that defaults to 0. Specify 1 to append a table with parameters. | `-p` |
+[26]  ⍝ | `twoSidedPrint`  | Boolean that defaults to 0. If 1 the left margin is always larger than the right one.| `-twosided` |
+[27]  ⍝ | `version`        | Text vector with version number and version data. Is read-only| --- |
+[28]  ⍝ | `viewInBrowser`  | Boolean that defaults to 0. Specify 1 for displaying the HTML in your default browser. | `-view` |
+[29]   r←⎕NS''
+[30]   r.backgroundColorPrint←1
+[31]   r.caption←¯1
+[32]   r.cssfilename←GetCssFilename path
+[33]   r.filename←''
+[34]   r.footer←''
+[35]   r.ignore←''
+[36]   r.ignoreEmpty←1
+[37]   r.ignoreTatinPkgs←1
+[38]   r.info←''
+[39]   r.infoIsHTML←0
+[40]   r.lang←'en'
+[41]   r.lines←¯1
+[42]   r.linkcssfile←0
+[43]   r.namespaces←''
+[44]   r.printFontSize←8
+[45]   r.processFunctions←1
+[46]   r.processGuiInstances←0
+[47]   r.processOperators←1
+[48]   r.processScripts←1
+[49]   r.processVars←1
+[50]   r.recursive←1
+[51]   r.showParms←0
+[52]   r.twoSidedPrint←0
+[53]   r.version←{(1⊃⍵),' ',(2⊃⍵),' from ',(3⊃⍵)}Version
+[54]   r.viewInBrowser←0
+[55]   r.⎕FX'r←∆List' 'r←{⍵,[1.5]⍎¨⍵}↓⎕nl 2' 'r←(~(r[;1]~¨'' '')∊''refs'' ''bookmarkCounter'')⌿r'
+[56]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CreateToc">
+<div id="bookmark_00017" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00016')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00018')">Next</button>
+<p class="caption">16. <a href="#CodeBrowser">CodeBrowser</a>.CreateToc (42 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ lists←level CreateToc(ref parms collect);lists;width;caption;flag;html;buff
+[1]    lists←⎕NS''                ⍝ All lists: functions, operators, non-scripted namespaces (containers)
+[2]    lists.(fns opr scripts variables containers)←⊂''
+[3]    :If collect.hasMainMenu
+[4]        caption←(FormatLevel level),MakeBreadCrumb collect.remove RemoveLevels⍕ref
+[5]        html←⊂caption{'&lt;h3 id="',(collect.remove RemoveLevels ⍵),'"&gt;',⍺,'&lt;/h3&gt;'}⍕ref
+[6]    :Else
+[7]        html←''
+[8]    :EndIf
+[9]    flag←1
+[10]   :If 0&lt;≢↓ref.⎕NL 2 3 4 9
+[11]       width←⍕6⌈⌈0.8×⌈/≢¨↓ref.⎕NL 9,GetNameClasses parms
+[12]       (buff flag)←HandleContainers ref width flag lists parms collect
+[13]       html,←buff
+[14]       :If parms.processFunctions
+[15]       :AndIf 0≠≢lists.fns←' '~¨⍨↓ref.⎕NL 3
+[16]       :AndIf 0≠≢lists.fns←(3.3≠⊃∘ref.⎕NC¨⊂¨lists.fns)/lists.fns
+[17]           (html flag)←html OpenNavSub flag
+[18]           html,←CreateToc_ ref parms lists.fns'Function'collect width
+[19]       :EndIf
+[20]       :If parms.processOperators
+[21]       :AndIf 0≠≢lists.opr←' '~¨⍨↓ref.⎕NL 4
+[22]       :AndIf 0≠≢lists.opr←(4.3≠⊃∘ref.⎕NC¨⊂¨lists.opr)/lists.opr
+[23]           (html flag)←html OpenNavSub flag
+[24]           html,←CreateToc_ ref parms lists.opr'Operator'collect width
+[25]       :EndIf
+[26]       :If parms.processScripts
+[27]       :AndIf 0≠≢lists.scripts←ListScriptsIn ref
+[28]       :AndIf 0≠≢lists.scripts←(~(ref.{0∊⍴⊃,/⍵:⍵ ⋄ ⍎¨⍵}lists.scripts)∊parms.ignore)/lists.scripts
+[29]           (html flag)←html OpenNavSub flag
+[30]           html,←CreateToc_ ref parms lists.scripts'Script'collect width
+[31]       :EndIf
+[32]       :If parms.processVars
+[33]       :AndIf 0≠≢lists.variables←' '~¨⍨↓ref.⎕NL 2
+[34]           (html flag)←html OpenNavSub flag
+[35]           html,←CreateToc_ ref parms lists.variables'Variable'collect width
+[36]       :EndIf
+[37]       html,←(~flag)/⊂'&lt;/nav&gt;'
+[38]   :EndIf
+[39]  ⍝ Collapsible: html,←⊂'&lt;/div&gt;'
+[40]   {}WriteHTML html
+[41]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.CreateToc_">
+<div id="bookmark_00018" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00017')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00019')">Next</button>
+<p class="caption">17. <a href="#CodeBrowser">CodeBrowser</a>.CreateToc_ (8 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ html←CreateToc_(ref parms list title collect width)
+[1]    html←''
+[2]    html,←⊂'&lt;div class="toclist"&gt;'
+[3]    html,←⊂'&lt;p&gt;&lt;b&gt;',title,(((1&lt;⍴list)/'s'),': ',⍕⊃⍴list),'&lt;/b&gt;&lt;/p&gt;'
+[4]    html,←⊂'&lt;div&gt;'
+[5]    html,←(ref{'&lt;div style="width:',width,'em;"&gt;&lt;a ',(collect MakeBookmarkRef(⍕⍺),'.',{⍵↓⍨⍵⍳' '}⍵),'&gt;',⍵}¨{(⍕¨⍳⍴⍵),¨'. '∘,¨⍵}list),¨⊂'&lt;/a&gt;&lt;/div&gt;'
+[6]    html,←'&lt;/div&gt;' '&lt;/div&gt;'
+[7]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.ExchangeHtmlSpecialChars">
+<div id="bookmark_00019" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00018')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00020')">Next</button>
+<p class="caption">18. <a href="#CodeBrowser">CodeBrowser</a>.ExchangeHtmlSpecialChars (4 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ ExchangeHtmlSpecialChars←{
+[1]        11::(,¨'&lt;&gt;&amp;')⎕R'\&amp;lt;' '\&amp;gt;' '\&amp;amp;'⍠('Greedy' 0)⊣↓⎕FMT ⍵
+[2]        (,¨'&lt;&gt;&amp;')⎕R'\&amp;lt;' '\&amp;gt;' '\&amp;amp;'⍠('Greedy' 0)⊣⍵
+[3]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.FormatDate">
+<div id="bookmark_00020" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00019')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00021')">Next</button>
+<p class="caption">19. <a href="#CodeBrowser">CodeBrowser</a>.FormatDate (5 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ FormatDate←{
+[1]        date←⍵
+[2]        ' '=1↑0⍴date:date
+[3]        10↑A.FormatDateTime date
+[4]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.FormatLevel">
+<div id="bookmark_00021" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00020')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00022')">Next</button>
+<p class="caption">20. <a href="#CodeBrowser">CodeBrowser</a>.FormatLevel (3 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ FormatLevel←{
+[1]        (⊃{⍺,'.',⍵}/⍕¨⍵),'. '
+[2]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GetBookmark_ID">
+<div id="bookmark_00022" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00021')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00023')">Next</button>
+<p class="caption">21. <a href="#CodeBrowser">CodeBrowser</a>.GetBookmark_ID (4 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←GetBookmark_ID parms
+[1]   ⍝ Returns an ID that can be used as a bookmark ID.
+[2]    r←'bookmark_',¯5↑'00000',⍕parms.bookmarkCounter
+[3]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GetCSS">
+<div id="bookmark_00023" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00022')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00024')">Next</button>
+<p class="caption">22. <a href="#CodeBrowser">CodeBrowser</a>.GetCSS (15 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ css←GetCSS parms;against;bool;row;replaceBy
+[1]    css←⊃F.NGET(1⊃,parms.cssfilename)1
+[2]    against←'font-size: ',(⍕parms.printFontSize),'pt;'
+[3]    css←'font-size: *8pt;'⎕R against⊣css
+[4]    css←{'-webkit-print-color-adjust: *exact;'⎕R''⊣⍵}⍣(⊃~parms.backgroundColorPrint)⊣css
+[5]    :If 0≠parms.twoSidedPrint
+[6]        against←'@page :left {margin: 20mm 20mm 20mm 10mm;}'
+[7]        css←'@page :left *{margin: *20mm *20mm *20mm *20mm;}'⎕R against⊣css
+[8]    :EndIf
+[9]    :If 0&lt;+/bool←∨/¨'.accordion-content'∘⍷¨css
+[10]       row←⍸bool
+[11]       replaceBy←'max-height: ',(⍕parms.lines),'em;'
+[12]       css[row]←replaceBy∘{replaceBy←⍺ ⋄ 'max-height: {0,}([1-9][0-9]){1,2}em;'⎕R replaceBy⍠('Greedy' 0)⊣⍵}¨css[row]
+[13]   :EndIf
+[14]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GetCodeMirrorLib">
+<div id="bookmark_00024" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00023')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00025')">Next</button>
+<p class="caption">23. <a href="#CodeBrowser">CodeBrowser</a>.GetCodeMirrorLib (27 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ GetCodeMirrorLib←{
+[1]        ⍝ NOT SUPPORTED (yet)
+[2]        parms←⍵
+[3]        0=parms.codeMirrorLib:''
+[4]        r←''
+[5]        r,←⊂'&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.js"&gt;&lt;/script&gt;'
+[6]        r,←⊂'&lt;link  href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.css" rel="stylesheet"&gt;'
+[7]        r,←⊂'&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/mode/apl/apl.js"&gt;&lt;/script&gt;'
+[8]        r,←⊂'&lt;style&gt;'
+[9]        r,←⊂'.CodeMirror{height:auto; border: 1px solid #eee;}'
+[10]       r,←⊂'&lt;/style&gt;'
+[11]       r,←⊂'     &lt;script&gt;'
+[12]       r,←⊂'(function(){'
+[13]       r,←⊂'nodes=document.getElementsByTagName(''code'')'
+[14]       r,←⊂'Array.from(nodes).forEach(node=&gt;{'
+[15]       r,←⊂'    if(node.parentNode.tagName===''PRE''){'
+[16]       r,←⊂'        let pre=node.parentNode;'
+[17]       r,←⊂'        let ta=document.createElement("TEXTAREA");'
+[18]       r,←⊂'        ta.value=node.innerText;'
+[19]       r,←⊂'        pre.parentNode.replaceChild(ta,pre);'
+[20]       r,←⊂'        CodeMirror.fromTextArea(ta);'
+[21]       r,←⊂'    }'
+[22]       r,←⊂'})'
+[23]       r,←⊂'})();'
+[24]       r,←⊂'&lt;/script&gt;'
+[25]       r
+[26]   }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GetCssFilename">
+<div id="bookmark_00025" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00024')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00026')">Next</button>
+<p class="caption">24. <a href="#CodeBrowser">CodeBrowser</a>.GetCssFilename (14 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←GetCssFilename path;F
+[1]    F←##.FilesAndDirs
+[2]    :If 0=≢path
+[3]        :If 9=##.⎕NC'CiderConfig'
+[4]            r←##.CiderConfig.HOME,'/Files/codebrowser_styles.css'
+[5]        :ElseIf 9=##.⎕NC'TatinVars'
+[6]            r←##.TatinVars.HOME,'/Files/codebrowser_styles.css'
+[7]        :Else
+[8]            r←HOME,'/codebrowser_styles.css'
+[9]        :EndIf
+[10]   :Else
+[11]       ((path∊'/\')/path)←F.CurrentSep
+[12]       r←path,F.CurrentSep,'codebrowser_styles.css'
+[13]   :EndIf
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GetNameClasses">
+<div id="bookmark_00026" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00025')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00027')">Next</button>
+<p class="caption">25. <a href="#CodeBrowser">CodeBrowser</a>.GetNameClasses (3 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←GetNameClasses parms
+[1]    r←parms.(processVars processFunctions processOperators processScripts)/2 3 4 9
+[2]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GetSubNamespaces">
+<div id="bookmark_00027" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00026')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00028')">Next</button>
+<p class="caption">26. <a href="#CodeBrowser">CodeBrowser</a>.GetSubNamespaces (39 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←{y}GetSubNamespaces ref;list;level;bool
+[1]    level←0
+[2]    :If 0=⎕NC'y'
+[3]        ⎕SHADOW'parms'
+[4]        parms←CreateParms''
+[5]    :ElseIf 326=⎕DR y
+[6]        ⎕SHADOW'parms'
+[7]        parms←y
+[8]    :Else
+[9]        level←y
+[10]   :EndIf
+[11]   r←⊂level ref
+[12]   :If 0≠≢list←' '~¨⍨↓ref.⎕NL 9.1 9.2                                 ⍝ All namespaces
+[13]   :AndIf 0≠≢list←(ref.{((⍕⎕THIS),'.',⍵)≡⍕⍎⍵}¨list)/list              ⍝ We are not interested in refs pointing elsewhere
+[14]       list←ref.⍎¨list                                                ⍝ Make them refs
+[15]       list~←ref,{0∊⍴⊃,/⍵:⍵ ⋄ ⍎¨⍵}MassageNameLists parms.ignore       ⍝ Remove any self references and those to be ignored
+[16]   :AndIf 0≠≢list
+[17]       :If parms.ignoreTatinPkgs
+[18]       :AndIf 0&lt;≢parms.namespaces
+[19]       :AndIf ∧/parms.namespaces≢¨⊂'_tatin'
+[20]           list←(~(⍕¨list)∊'#._tatin' '⎕SE._tatin')/list              ⍝ Remove Tatin packages
+[21]       :EndIf
+[22]   :AndIf 0≠≢list
+[23]   :AndIf 0≠≢list←(~'['∊¨⍕¨list)/list                                 ⍝ Remove unnamed namespaces and instances
+[24]   :AndIf 0≠≢list←({16::1 ⋄ 0⊣⎕SRC ⍵}¨list)/list                      ⍝ Remove scripted ones
+[25]       :If 0∊bool←'Namespace'∘≡¨ref.{⍵ ⎕WG'Type'}¨list
+[26]           :If parms.processGuiInstances
+[27]               bool∨←(~bool)\ref.{⍵ ⎕WG'KeepOnClose'}¨(~bool)/list
+[28]           :EndIf
+[29]           list←bool/list
+[30]       :EndIf
+[31]   :AndIf 0≠≢list
+[32]       :If parms.ignoreEmpty
+[33]           list←({0≠≢⍵.⎕NL⍳16}¨list)/list
+[34]       :EndIf
+[35]   :AndIf 0≠≢list
+[36]       r←((⊂level,ref),⊃,/(1+level)GetSubNamespaces¨list)~⊂''
+[37]   :EndIf
+[38]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.HandleContainers">
+<div id="bookmark_00028" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00027')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00029')">Next</button>
+<p class="caption">27. <a href="#CodeBrowser">CodeBrowser</a>.HandleContainers (27 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ (html flag)←HandleContainers(ref width flag lists parms collect);html;these;recursiveMsg
+[1]    html←''
+[2]    :If 0&lt;≢lists.containers←' '~¨⍨↓ref.⎕NL 9
+[3]    :AndIf 0&lt;≢lists.containers←({16::1 ⋄ 0⊣⎕SRC ⍵}¨ref.⍎¨lists.containers)/lists.containers
+[4]    :AndIf 0&lt;≢lists.containers←(~(ref.⍎¨lists.containers)∊parms.ignore)/lists.containers
+[5]    :AndIf 0&lt;≢lists.containers←(ref≠ref.⍎¨lists.containers)/lists.containers
+[6]    :AndIf 0&lt;≢lists.containers←((~'['∊¨⍕¨ref.⍎¨lists.containers))/lists.containers
+[7]    :AndIf 0&lt;≢lists.containers←(~(these←ref.⍎¨lists.containers)∊collect.namespaces)/lists.containers
+[8]        lists←RemoveGuiInstances lists ref parms
+[9]    :AndIf 0&lt;≢lists.containers
+[10]       lists←RemoveEmptyContainers lists ref parms
+[11]   :AndIf 0&lt;≢lists.containers
+[12]       lists←RemoveTatinPackages lists ref parms
+[13]   :AndIf 0&lt;≢lists.containers
+[14]       collect.namespaces,←these
+[15]       flag←{0⊣html,←⊂'&lt;nav class="sub"&gt;'}⍣1⊣1
+[16]       html,←⊂'&lt;div class="toclist"&gt;'
+[17]       recursiveMsg←(~collect.hasMainMenu)/' (not scanned)'
+[18]       html,←⊂'&lt;p&gt;&lt;b&gt;Sub namespace',((1&lt;⍴lists.containers)/'s'),': ',(⍕⊃⍴lists.containers),'&lt;/b&gt;',recursiveMsg,'&lt;/p&gt;'
+[19]       html,←⊂'&lt;div&gt;'
+[20]       :If parms.recursive
+[21]           html,←⊃,/ref{(no name)←⍵ ⋄ ⊂'&lt;div style="width:',width,'em;"&gt;&lt;a ',(collect MakeBookmarkRef(⍕⍺),'.',name),'&gt;',(⍕no),'. ',name,'&lt;/a&gt;&lt;/div&gt;'}¨(⍳≢lists.containers),¨⊂¨lists.containers
+[22]       :Else
+[23]           html,←lists.containers{('&lt;div style="width:',width,'em;"&gt;'),(⍕⍵),'. ',⍺,'&lt;/div&gt;'}¨⍳≢lists.containers
+[24]       :EndIf
+[25]       html,←'&lt;/div&gt;' '&lt;/div&gt;'
+[26]   :EndIf
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.HandleParms">
+<div id="bookmark_00029" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00028')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00030')">Next</button>
+<p class="caption">28. <a href="#CodeBrowser">CodeBrowser</a>.HandleParms (50 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ (msg en)←HandleParms(parms namespaces);DE
+[1]   ⍝ Returns either `'' 0` or an error message in `msg` and 11 in `en`.
+[2]    DE←11 ⍝ DOMAIN ERROR
+[3]    msg←en←⍬
+[4]    namespaces←'⎕se'⎕R'⎕SE'⊣namespaces
+[5]    :If ~∧/((,¨namespaces)∊,¨'#' '⎕SE')∨⊃¨9=⎕NC¨namespaces
+[6]        msg←'No namespace(s) specified'
+[7]        en←DE
+[8]        :Return
+[9]    :EndIf
+[10]   :Trap 0
+[11]       parms.refs←⍎¨namespaces
+[12]   :Else
+[13]       msg←'Something went wrong - check the namespace list'
+[14]       en←DE
+[15]       :Return
+[16]   :EndTrap
+[17]   :If 1≥|≡parms.cssfilename
+[18]       parms.cssfilename←A.DMB parms.cssfilename
+[19]       :If ∨/' ,'∊parms.cssfilename
+[20]           ((' '=parms.cssfilename)/parms.cssfilename)←','
+[21]           parms.cssfilename←','A.Split parms.cssfilename
+[22]       :EndIf
+[23]       parms.cssfilename←⊆parms.cssfilename
+[24]   :EndIf
+[25]   parms.filename{~0∊⍴⍺:⍺ ⋄ (¯4↓F.GetTempFilename''),'.html'}←⍬
+[26]   parms.caption{~(⊂⍺)∊¯1 '':⍺ ⋄ 1=⍴,⍵:⍕⍵ ⋄ ⊃,/{⍺,', ',⍵}/⍵}←namespaces
+[27]   CreateOrReplaceFile parms
+[28]   :Trap 0
+[29]       parms.ignore←{0∊⍴⊃,/⍵:⍵ ⋄ ⍎¨⍵}MassageNameLists parms.ignore
+[30]   :Else
+[31]       msg←'Something went wrong - check -ignore'
+[32]       en←DE
+[33]   :EndTrap
+[34]   :If '⋄'∊parms.info
+[35]       parms.info←'⋄'A.Split parms.info
+[36]   :EndIf
+[37]   :If ~(⊂parms.infoIsHTML)∊0 1
+[38]       msg←'"infoIsHTML" is not a Boolean'
+[39]       en←DE
+[40]   :EndIf
+[41]   :If ~(⊂parms.processGuiInstances)∊0 1
+[42]       msg←'"processGuiInstances" is not a Boolean'
+[43]       en←DE
+[44]   :EndIf
+[45]   :If ~(≡parms.info)∊0 1 2
+[46]       msg←'"info" is neither a text vector nor a vector of text vectors'
+[47]       en←DE
+[48]   :EndIf
+[49]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.IncrementBookMarkCounter">
+<div id="bookmark_00030" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00029')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00031')">Next</button>
+<p class="caption">29. <a href="#CodeBrowser">CodeBrowser</a>.IncrementBookMarkCounter (3 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {parms}←IncrementBookMarkCounter parms
+[1]    parms.bookmarkCounter+←1
+[2]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.Init">
+<div id="bookmark_00031" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00030')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00032')">Next</button>
+<p class="caption">30. <a href="#CodeBrowser">CodeBrowser</a>.Init (4 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←Init dummy
+[1]    r←⍬
+[2]    A←##.APLTreeUtils2 ⋄ F←##.FilesAndDirs
+[3]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.InitializeUserCommand">
+<div id="bookmark_00032" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00031')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00033')">Next</button>
+<p class="caption">31. <a href="#CodeBrowser">CodeBrowser</a>.InitializeUserCommand (13 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←InitializeUserCommand dummy
+[1]   ⍝ Propagate refs depending on circumstances
+[2]    r←⍬
+[3]    :If 0=⎕NC'A'                                   ⍝ It's a Tatin package then
+[4]        :If '⎕'=⊃⊃⎕XSI
+[5]            A←⎕SE._CodeBrowser.APLSource.APLTreeUtils2
+[6]            F←⎕SE._CodeBrowser.APLSource.FilesAndDirs
+[7]        :Else
+[8]            A←##.APLTreeUtils2
+[9]            F←##.FilesAndDirs
+[10]       :EndIf
+[11]   :EndIf
+[12]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.InjectJavaScriptEarly">
+<div id="bookmark_00033" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00032')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00034')">Next</button>
+<p class="caption">32. <a href="#CodeBrowser">CodeBrowser</a>.InjectJavaScriptEarly (9 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ html←InjectJavaScriptEarly dummy
+[1]   ⍝ This code needs to go into the &lt;head&gt;er of the HTML page.
+[2]    html←''
+[3]    html,←⊂'&lt;script&gt;'
+[4]    html,←⊂'function jump2bookmark(id){'
+[5]    html,←⊂'    var obj = document.getElementById(id);'
+[6]    html,←⊂'    obj.scrollIntoView({behavior: "smooth", block: "start"});'
+[7]    html,←⊂'}'
+[8]    html,←⊂'&lt;/script&gt;'
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.InjectJavaScriptLate">
+<div id="bookmark_00034" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00033')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00035')">Next</button>
+<p class="caption">33. <a href="#CodeBrowser">CodeBrowser</a>.InjectJavaScriptLate (40 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ html←InjectJavaScriptLate dummy
+[1]   ⍝ The transition does not work well on large objects (several hundred lines) at all.
+[2]   ⍝ May be one day CSS gets better options for this, or we implement a pure JavaScript solution?!
+[3]   ⍝ This code needs to go to the bottom of the HTML page!
+[4]    html←''
+[5]    html,←⊂'&lt;script&gt;'
+[6]    html,←⊂'var acc = document.getElementsByClassName("accordion");'
+[7]    html,←⊂'var i;'
+[8]    html,←⊂'for (i = 0; i &lt; acc.length; i++) {'
+[9]    html,←⊂'    acc[i].addEventListener("click", function() {'
+[10]   ⍝ html,←⊂'debugger;'
+[11]   html,←⊂'         var content = lastSibling(this);'
+[12]   html,←⊂'         if (this.classList.contains("expanded")) {'
+[13]  ⍝ We need to collapse it:
+[14]   html,←⊂'               this.classList.add("collapsed");'
+[15]   html,←⊂'               this.classList.remove("expanded");'
+[16]   ⍝html,←⊂'               content.style.transition = "max-height 1s ease-in 0s";'
+[17]   html,←⊂'               content.style.maxHeight = 0;'
+[18]   html,←⊂'               this.innerHTML = "Show"'                 ⍝ "↕"'
+[19]   html,←⊂'               this.setAttribute("title", "Show the code block");'
+[20]   html,←⊂'           } else {'
+[21]  ⍝ We need to expanded it:
+[22]   ⍝html,←⊂'               content.style.transition = "max-height 0.2s ease-out 0s";'
+[23]   html,←⊂'               content.style.maxHeight = content.scrollHeight + "px";'
+[24]   html,←⊂'               this.classList.add("expanded");'
+[25]   html,←⊂'               this.classList.remove("collapsed");'
+[26]   html,←⊂'               this.innerHTML = "Hide"'
+[27]   html,←⊂'               this.setAttribute("title", "Hide the code block");'
+[28]   html,←⊂'         } '
+[29]   html,←⊂'    });'
+[30]   html,←⊂'}'
+[31]   html,←⊂'function lastSibling(node){'
+[32]   html,←⊂'   var tempObj=node.parentNode.lastChild;'
+[33]   html,←⊂'   while(tempObj.nodeType!=1 &amp;&amp; tempObj.previousSibling!=null){'
+[34]   html,←⊂'   tempObj=tempObj.previousSibling;'
+[35]   html,←⊂'   }'
+[36]   html,←⊂'   return (tempObj.nodeType==1)?tempObj:false;'
+[37]   html,←⊂'}'
+[38]   html,←⊂'&lt;/script&gt;'
+[39]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.Install">
+<div id="bookmark_00035" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00034')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00036')">Next</button>
+<p class="caption">34. <a href="#CodeBrowser">CodeBrowser</a>.Install (4 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ Install
+[1]   ⍝ Checks whether the packages required by CodeBrowser are already installed in the standard folder for
+[2]   ⍝ packages required by any Dyalog user command.
+[3]    ∘∘∘
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.ListScriptsIn">
+<div id="bookmark_00036" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00035')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00037')">Next</button>
+<p class="caption">35. <a href="#CodeBrowser">CodeBrowser</a>.ListScriptsIn (7 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ ListScriptsIn←{
+[1]        l1←ref{0∊≢⍵:⍵ ⋄ ⍵/⍨⍺.{((⍕⎕THIS),'.',⍵)≡⍕⍎⍵}¨⍵}' '~¨⍨↓ref.⎕NL 9.4 9.5   ⍝ Class and interfaces
+[2]        l2←ref{0∊≢⍵:⍵ ⋄ ⍵/⍨⍺.{((⍕⎕THIS),'.',⍵)≡⍕⍎⍵}¨⍵}' '~¨⍨↓ref.⎕NL 9.1       ⍝ All namespaces
+[3]        l2←(ref.{0::0 ⋄ 1⊣⍴⎕SRC⍎⍵}¨l2)/l2
+[4]        0∊⍴l2:l1
+[5]        {⍵[⍋↑⍵]}l1,l2
+[6]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.MakeBookmarkRef">
+<div id="bookmark_00037" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00036')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00038')">Next</button>
+<p class="caption">36. <a href="#CodeBrowser">CodeBrowser</a>.MakeBookmarkRef (4 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←collect MakeBookmarkRef path
+[1]    path←collect.remove RemoveLevels path
+[2]    r←'href="#',path,'"'
+[3]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.MakeBreadCrumb">
+<div id="bookmark_00038" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00037')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00039')">Next</button>
+<p class="caption">37. <a href="#CodeBrowser">CodeBrowser</a>.MakeBreadCrumb (7 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ MakeBreadCrumb←{
+[1]        parts←'.'A.Split ⍵
+[2]        urls←{(⍳⍴⍵)↑¨⊂⍵}parts
+[3]        top←{'&lt;a href="#',(⊃{⍺,'.',⍵}/⍵),'"&gt;'}¨urls
+[4]        r←top,¨parts
+[5]        ¯1↓⊃,/r,¨⊂'&lt;/a&gt;.'
+[6]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.MakeID">
+<div id="bookmark_00039" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00038')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00040')">Next</button>
+<p class="caption">38. <a href="#CodeBrowser">CodeBrowser</a>.MakeID (4 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←collect MakeID ref
+[1]    ref←collect.remove RemoveLevels ref
+[2]    r←'id="',ref,'"'
+[3]    ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.MassageNameLists">
+<div id="bookmark_00040" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00039')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00041')">Next</button>
+<p class="caption">39. <a href="#CodeBrowser">CodeBrowser</a>.MassageNameLists (9 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ MassageNameLists←{
+[1]   ⍝ (⊂'#.abc') ←→ MassageNameLists '#.abc'
+[2]   ⍝ ('#.abc' '#.x' '#.y') ←→ MassageNameLists '#.abc  #.x , #.y'
+[3]   ⍝ ('#.abc' '#.x' '#.y') ←→ MassageNameLists #.abc  #.x #.y'
+[4]        1&lt;|≡⍵:⍕¨⍵
+[5]        r←⍕,⍵
+[6]        ((','=r)/r)←' '
+[7]        ' 'A.Split A.DMB r
+[8]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.Max">
+<div id="bookmark_00041" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00040')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00042')">Next</button>
+<p class="caption">40. <a href="#CodeBrowser">CodeBrowser</a>.Max (5 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ Max←{
+[1]        ⍺←80
+[2]        ⍺&gt;⍴⍵:⍵
+[3]        (⍺⍴⍵),'...'
+[4]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.MoreHelp">
+<div id="bookmark_00042" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00041')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00043')">Next</button>
+<p class="caption">41. <a href="#CodeBrowser">CodeBrowser</a>.MoreHelp (3 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←MoreHelp dummy
+[1]    {}⎕SE.UCMD']ADOC ⎕se._CodeBrowser'
+[2]    r←'Watch your default browser'
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.OpenInDefaultBrowser">
+<div id="bookmark_00043" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00042')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00044')">Next</button>
+<p class="caption">42. <a href="#CodeBrowser">CodeBrowser</a>.OpenInDefaultBrowser (6 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ OpenInDefaultBrowser←{
+[1]        6::0
+[2]        ⎕USING←'' 'System' 'System.Diagnostics,System.dll'
+[3]        proc←Process.Start,⊂⍵
+[4]        1:proc←proc     ⍝ was a NEW process started = True?
+[5]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.OpenNavSub">
+<div id="bookmark_00044" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00043')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00045')">Next</button>
+<p class="caption">43. <a href="#CodeBrowser">CodeBrowser</a>.OpenNavSub (5 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ (html flag)←html OpenNavSub flag
+[1]    :If flag
+[2]        html,←⊂'&lt;nav class="sub"&gt;'
+[3]        flag←0
+[4]    :EndIf
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.Public">
+<div id="bookmark_00045" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00044')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00046')">Next</button>
+<p class="caption">44. <a href="#CodeBrowser">CodeBrowser</a>.Public (2 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←Public
+[1]    r←'Run' 'CreateParms' 'Selfie' 'MoreHelp'
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.RemoveEmptyContainers">
+<div id="bookmark_00046" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00045')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00047')">Next</button>
+<p class="caption">45. <a href="#CodeBrowser">CodeBrowser</a>.RemoveEmptyContainers (8 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ lists←RemoveEmptyContainers(lists ref parms);bool;list
+[1]   ⍝ Remove all empty containers unless parms.ignoreEmpty is 0.
+[2]    :If parms.ignoreEmpty
+[3]        list←ref.⍎¨lists.containers
+[4]        :If 0∊bool←{~0∊⍴⍵.⎕NL⍳16}¨list
+[5]            lists.containers←bool/lists.containers
+[6]        :EndIf
+[7]    :EndIf
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.RemoveGuiInstances">
+<div id="bookmark_00047" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00046')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00048')">Next</button>
+<p class="caption">46. <a href="#CodeBrowser">CodeBrowser</a>.RemoveGuiInstances (11 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ lists←RemoveGuiInstances(lists ref parms);bool;list
+[1]   ⍝ Remove all GUI instances unless parms.processGuiInstances is 1.
+[2]   ⍝ Even then everything that does not carry `KeepOnClose←` is
+[3]   ⍝ removed
+[4]    list←ref.⍎¨lists.containers
+[5]    :If 0∊bool←'Namespace'∘≡¨list ⎕WG¨⊂'Type'
+[6]        :If parms.processGuiInstances
+[7]            bool∨←(~bool)\ref.{⍵ ⎕WG'KeepOnclose'}¨(~bool)/list
+[8]        :EndIf
+[9]        lists.containers←bool/lists.containers
+[10]   :EndIf
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.RemoveLevels">
+<div id="bookmark_00048" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00047')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00049')">Next</button>
+<p class="caption">47. <a href="#CodeBrowser">CodeBrowser</a>.RemoveLevels (8 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ RemoveLevels←{
+[1]        noOf←⍺
+[2]        path←⍵
+[3]        (,'#')≡,path:path
+[4]        buff←+\'.'=⍵
+[5]        path←(+/∧\noOf&gt;buff)↓path
+[6]        ('.'=1⍴path)↓path
+[7]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.RemoveRefs">
+<div id="bookmark_00049" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00048')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00050')">Next</button>
+<p class="caption">48. <a href="#CodeBrowser">CodeBrowser</a>.RemoveRefs (6 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ list←parent RemoveRefs list;bool
+[1]   ⍝ Remove scripts that are just references.
+[2]    :If 0&lt;+/bool←9=parent.⎕NC list        ⍝ Only those are potentially refs
+[3]        bool←bool∧bool\parent.{((⍕⎕THIS),'.',⍵)≡⍕⍎⍵}¨↓bool⌿list
+[4]        list←bool⌿list
+[5]    :EndIf
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.RemoveTatinPackages">
+<div id="bookmark_00050" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00049')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00051')">Next</button>
+<p class="caption">49. <a href="#CodeBrowser">CodeBrowser</a>.RemoveTatinPackages (6 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ lists←RemoveTatinPackages(lists ref parms);bool
+[1]   ⍝ Remove all Tatin packages except when the user asks for them explicitly
+[2]    :If parms.ignoreTatinPkgs
+[3]    :AndIf 0=+/'⎕SE._tatin' '#._tatin'∊parms.namespaces
+[4]        lists.containers←(~lists.containers≡¨⊂'_tatin')/lists.containers
+[5]    :EndIf
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.ReportRefs">
+<div id="bookmark_00051" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00050')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00052')">Next</button>
+<p class="caption">50. <a href="#CodeBrowser">CodeBrowser</a>.ReportRefs (11 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←ReportRefs ref;html;list
+[1]    r←⍬
+[2]    :If 0≠≢list←' '~¨⍨↓ref.⎕NL 9.1
+[3]    :AndIf 0≠≢list←(ref.{∊'['∊is←⍕⍎⍵:0 ⋄ ((⍕⎕THIS),'.',⍵)≢is}¨list)/list
+[4]        html←⊂'&lt;p class="type"&gt;References:&lt;/p&gt;'
+[5]        html,←⊂'&lt;table class="refs"&gt;'
+[6]        html,←'&lt;tr&gt;'∘,¨(ref.{'&lt;td&gt;',⍵,'&lt;/td&gt;&lt;td&gt;==&gt;&lt;/td&gt;&lt;td&gt;',({0::⍵ ⋄ ⍕⍎}⍵),'&lt;/td&gt;'}¨list),¨⊂'&lt;/tr&gt;'
+[7]        html,←⊂'&lt;/table&gt;'
+[8]        {}WriteHTML html
+[9]    :EndIf
+[10]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.Run">
+<div id="bookmark_00052" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00051')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00053')">Next</button>
+<p class="caption">51. <a href="#CodeBrowser">CodeBrowser</a>.Run (21 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ filename←{parms}Run namespaces;refs
+[1]   ⍝ Collects the code and variables in the (non-scripted) namespaces listed in `namespaces` and
+[2]   ⍝ compiles an HTML page with the code in it.\\
+[3]   ⍝ `namespaces` must be a text vector with fully qualified namespace name(s). You can use either
+[4]   ⍝ a space or a comma as separator.\\
+[5]   ⍝ `parms` is optional. If provided it must be a parameter space, typically created with `CreateParms`.\\
+[6]   ⍝ Returns the name of the file the HTML is written to.\\
+[7]   ⍝ The HTML page contains the CSS and JavaScript needed and is therefore fully self-contained.
+[8]   ⍝ You should not attempt to view it in an outdated browser like IE9.
+[9]    ⎕IO←1 ⋄ ⎕ML←1
+[10]   Init ⍬
+[11]   namespaces←MassageNameLists namespaces
+[12]   parms←{0&lt;⎕NC ⍵:⍎⍵ ⋄ CreateParms''}'parms'
+[13]   parms.namespaces←namespaces
+[14]   ⎕SIGNAL/HandleParms parms namespaces
+[15]   filename←CreateHtml parms
+[16]   :If parms.viewInBrowser
+[17]       {}A.GoToWebPage filename
+[18]   :EndIf
+[19]   parms.cssfilename←{0=≢⍵:⍵ ⋄ 0 1∊⍨≡⍵:⍵ ⋄ ⊃{⍺,', ',⍵}/⍵}parms.cssfilename
+[20]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.Selfie">
+<div id="bookmark_00053" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00052')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00054')">Next</button>
+<p class="caption">52. <a href="#CodeBrowser">CodeBrowser</a>.Selfie (12 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←Selfie dummy;parms
+[1]   ⍝ Create an HTML document of CodeBrowser itself.
+[2]    parms←CreateParms''
+[3]    parms.caption←'CodeBrowser'
+[4]    parms.info←'Contains the CodeBrowser code without the test cases.'
+[5]    parms.showParms←1
+[6]    parms.footer←'Created by ',⎕AN,' on ',A.FormatDateTime ⎕TS
+[7]    parms.twoSidedPrint←1
+[8]    parms.filename←F.GetTempPath,'/',⎕AN,'_CodeBrowser_CodeReview.html'
+[9]    parms.viewInBrowser←1
+[10]   r←parms Run(⍕⎕THIS)
+[11]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.Version">
+<div id="bookmark_00054" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00053')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00055')">Next</button>
+<p class="caption">53. <a href="#CodeBrowser">CodeBrowser</a>.Version (3 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←Version
+[1]   ⍝ See also `History`
+[2]    r←'CodeBrowser' '2.0.0+81' '2022-01-17'
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.WriteHeader">
+<div id="bookmark_00055" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00054')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00056')">Next</button>
+<p class="caption">54. <a href="#CodeBrowser">CodeBrowser</a>.WriteHeader (22 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←WriteHeader parms;html;thisCssFile;filename
+[1]    html←⊂'&lt;!DOCTYPE html&gt;'
+[2]    html,←⊂'&lt;html lang="',parms.lang,'"&gt;'
+[3]    html,←⊂'&lt;head&gt;'
+[4]    html,←⊂'&lt;meta http-equiv="X-UA-Compatible" content="IE=edge" /&gt;'
+[5]    html,←⊂'&lt;meta charset="utf-8"&gt;'
+[6]    html,←⊂'&lt;title&gt;',(ExchangeHtmlSpecialChars parms.caption),'&lt;/title&gt;'
+[7]    :If parms.linkcssfile
+[8]        :For thisCssFile :In parms.cssfilename
+[9]            filename←F.EnforceSlash'expand'F.NormalizePath thisCssFile
+[10]           filename←':/'⎕R'|/'⊣filename
+[11]           html,←⊂'&lt;link href="file://',filename,'" rel="stylesheet"&gt;'
+[12]       :EndFor
+[13]   :Else
+[14]       html,←⊂CompressCSS GetCSS parms
+[15]   :EndIf
+[16]   html,←InjectJavaScriptEarly ⍬
+[17]   ⍝html,←GetCodeMirrorLib parms  ⍝ Not implemented yet   ⍝TODO⍝
+[18]   html,←⊂'&lt;/head&gt;'
+[19]   html,←⊂'&lt;body&gt;'
+[20]   r←WriteHTML html
+[21]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<p class="type">Variables:</p>
+<div id="CodeBrowser.ADOC_Doc">
+<p class="caption">1. <a href="#CodeBrowser">CodeBrowser</a>.ADOC_Doc</p>
+</div>
+<pre><code>Rank: 1; Shape: 83; Depth: 2; Data Representation: 326</code></pre>
+<div id="CodeBrowser.History">
+<p class="caption">2. <a href="#CodeBrowser">CodeBrowser</a>.History</p>
+</div>
+<pre><code>Rank: 1; Shape: 18; Depth: 2; Data Representation: 326</code></pre>
+<div class="bookmarktarget" id="CodeBrowser.buff">
+<div id="bookmark_00056" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00055')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00057')">Next</button>
+<p class="caption">3. <a href="#CodeBrowser">CodeBrowser</a>.buff (0 lines)</p>
+<div class="accordion-content">
+<pre><code>
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.caption">
+<div id="bookmark_00057" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00056')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00058')">Next</button>
+<p class="caption">4. <a href="#CodeBrowser">CodeBrowser</a>.caption (0 lines)</p>
+<div class="accordion-content">
+<pre><code>
+</code></pre>
+</div>
+</div>
+</div>
+<div id="CodeBrowser.dummy">
+<p class="caption">5. <a href="#CodeBrowser">CodeBrowser</a>.dummy</p>
+</div>
+<pre><code>Rank: 0; Shape: ⍬; Depth: 0; Data Representation: 83</code></pre>
+<div class="bookmarktarget" id="CodeBrowser.flag">
+<div id="bookmark_00058" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00057')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00059')">Next</button>
+<p class="caption">6. <a href="#CodeBrowser">CodeBrowser</a>.flag (0 lines)</p>
+<div class="accordion-content">
+<pre><code>
+</code></pre>
+</div>
+</div>
+</div>
+<div id="CodeBrowser.html">
+<p class="caption">7. <a href="#CodeBrowser">CodeBrowser</a>.html</p>
+</div>
+<pre><code>Rank: 1; Shape: 1473; Depth: 2; Data Representation: 326</code></pre>
+<div id="CodeBrowser.level">
+<p class="caption">9. <a href="#CodeBrowser">CodeBrowser</a>.level</p>
+</div>
+<pre><code>Rank: 0; Shape: ⍬; Depth: 0; Data Representation: 83</code></pre>
+<div id="CodeBrowser.namespaces">
+<p class="caption">10. <a href="#CodeBrowser">CodeBrowser</a>.namespaces</p>
+</div>
+<pre><code>Rank: 1; Shape: 1; Depth: 2; Data Representation: 326</code></pre>
+<div id="CodeBrowser.r">
+<p class="caption">11. <a href="#CodeBrowser">CodeBrowser</a>.r</p>
+</div>
+<pre><code>Rank: 1; Shape: 3; Depth: 2; Data Representation: 326</code></pre>
+<div class="bookmarktarget" id="CodeBrowser.width">
+<div id="bookmark_00059" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00058')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00060')">Next</button>
+<p class="caption">12. <a href="#CodeBrowser">CodeBrowser</a>.width (0 lines)</p>
+<div class="accordion-content">
+<pre><code>
+</code></pre>
+</div>
+</div>
+</div>
+<div id="bookmark_00060"></div>
+<h3 id="CodeBrowser.API">1.1. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.API">API</a></h3>
+<nav class="sub">
+<div class="toclist">
+<p><b>Functions: 4</b></p>
+<div>
+<div style="width:9em;"><a href="#CodeBrowser.API.CreateParms">1. CreateParms</a></div>
+<div style="width:9em;"><a href="#CodeBrowser.API.MoreHelp">2. MoreHelp</a></div>
+<div style="width:9em;"><a href="#CodeBrowser.API.Run">3. Run</a></div>
+<div style="width:9em;"><a href="#CodeBrowser.API.Selfie">4. Selfie</a></div>
+</div>
+</div>
+</nav>
+<p class="type">Functions:</p>
+<div class="bookmarktarget" id="CodeBrowser.API.CreateParms">
+<div id="bookmark_00061" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00060')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00062')">Next</button>
+<p class="caption">1. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.API">API</a>.CreateParms (1 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ CreateParms←{⍺←⊣ ⋄ ⍺ ##.CreateParms ⍵}
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.API.MoreHelp">
+<div id="bookmark_00062" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00061')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00063')">Next</button>
+<p class="caption">2. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.API">API</a>.MoreHelp (1 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ MoreHelp←{⍺←⊣ ⋄ ⍺ ##.MoreHelp ⍵}
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.API.Run">
+<div id="bookmark_00063" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00062')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00064')">Next</button>
+<p class="caption">3. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.API">API</a>.Run (1 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ Run←{⍺←⊣ ⋄ ⍺ ##.Run ⍵}
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.API.Selfie">
+<div id="bookmark_00064" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00063')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00065')">Next</button>
+<p class="caption">4. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.API">API</a>.Selfie (1 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ Selfie←{⍺←⊣ ⋄ ⍺ ##.Selfie ⍵}
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div id="bookmark_00065"></div>
+<h3 id="CodeBrowser.Admin">1.2. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.Admin">Admin</a></h3>
+<nav class="sub">
+<div class="toclist">
+<p><b>Functions: 2</b></p>
+<div>
+<div style="width:8em;"><a href="#CodeBrowser.Admin.CreateAPI">1. CreateAPI</a></div>
+<div style="width:8em;"><a href="#CodeBrowser.Admin.ImportCode">2. ImportCode</a></div>
+</div>
+</div>
+</nav>
+<p class="type">Functions:</p>
+<div class="bookmarktarget" id="CodeBrowser.Admin.CreateAPI">
+<div id="bookmark_00066" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00065')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00067')">Next</button>
+<p class="caption">1. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.Admin">Admin</a>.CreateAPI (20 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←{tellLink}CreateAPI flag;list1;list2
+[1]   ⍝ Creates cover functions for all API functions in ##.API from ##.Public.\\
+[2]   ⍝ If ⍺←1 then Link will be told.
+[3]   ⍝ Without ⍺ the user will be asked whether Link should be told.
+[4]    r←⍬
+[5]    tellLink←{0&lt;⎕NC ⍵:⍎⍵ ⋄ ¯1}'tellLink'
+[6]    :If 0=##.⎕NC'API'
+[7]        'API'##.⎕NS''
+[8]    :EndIf
+[9]    :If flag
+[10]       :If 0&lt;≢list1←↓##.API.⎕NL⍳16
+[11]           ⎕SE.Link.Expunge¨(⊂(⍕⎕THIS),'.##.API.'),¨list1
+[12]       :EndIf
+[13]       list2←##.Public~'Methods' 'Public' 'GoToGitHub'
+[14]       ##.API.{⍎⍵,'←{⍺←⊣ ⋄ ⍺ ##.',⍵,' ⍵}'}¨list2
+[15]       :If (,1)≡,tellLink
+[16]       :OrIf 1 ##.U.YesOrNo'Tell Link?'
+[17]           r,←⎕SE.Link.Add¨##.API.((⊂(⍕⎕THIS),'.'),¨↓⎕NL 3)
+[18]       :EndIf
+[19]   :EndIf
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.Admin.ImportCode">
+<div id="bookmark_00067" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00066')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00068')">Next</button>
+<p class="caption">2. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.Admin">Admin</a>.ImportCode (9 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {success}←ImportCode path;list
+[1]   ⍝ Takes a path and imports everyting found. Traps any errors but prints errors to the session for them.
+[2]   ⍝ Returns a scalar 0 in case their is nothing to import, otherwise a vector with 1 for success and 0
+[3]   ⍝ otherwise for every item found.
+[4]    success←0
+[5]    :If 0&lt;≢list←⊃⎕NINFO⍠('Wildcard' 1)('Recurse' 2)⊣path
+[6]        success←{0::0,0/⎕←'Error fixing ',⍵,':',⍕⎕EN ⋄ 1⊣2 ⎕FIX'file://',⍵}¨list
+[7]    :EndIf
+[8]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div id="bookmark_00068"></div>
+<h3 id="CodeBrowser.GUI">1.3. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a></h3>
+<nav class="sub">
+<div class="toclist">
+<p><b>Functions: 46</b></p>
+<div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.AddPosnAndSize">1. AddPosnAndSize</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CheckInput">2. CheckInput</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CopyGuiToParms">3. CopyGuiToParms</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateButtons">4. CreateButtons</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateCaption">5. CreateCaption</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateCssFilename">6. CreateCssFilename</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateFileBox">7. CreateFileBox</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateFileBoxParms">8. CreateFileBoxParms</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateFilename">9. CreateFilename</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateFonts">10. CreateFonts</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateFooter">11. CreateFooter</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateForm">12. CreateForm</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateGUI">13. CreateGUI</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateIgnoreGuiInstances">14. CreateIgnoreGuiInstances</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateInfo">15. CreateInfo</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateLang">16. CreateLang</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateLines">17. CreateLines</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateNamespaces">18. CreateNamespaces</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateNativeFile">19. CreateNativeFile</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateOtherParms">20. CreateOtherParms</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateParmsTabChildren">21. CreateParmsTabChildren</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreatePrintParms">22. CreatePrintParms</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateScanTabChildren">23. CreateScanTabChildren</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateSubForms">24. CreateSubForms</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateTabControlAndChildren">25. CreateTabControlAndChildren</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateTabs">26. CreateTabs</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateTatinPackages">27. CreateTatinPackages</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateTextTabChildren">28. CreateTextTabChildren</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateToBeIgnored">29. CreateToBeIgnored</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.CreateToBeProcessed">30. CreateToBeProcessed</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.DQ">31. DQ</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.GetRefTo_n">32. GetRefTo_n</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.Init">33. Init</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.MassageCssFilename">34. MassageCssFilename</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.OnBrowseForCssFile">35. OnBrowseForCssFile</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.OnBrowseForFilename">36. OnBrowseForFilename</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.OnKeyPressInInfo">37. OnKeyPressInInfo</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.OnKeyPressInLang">38. OnKeyPressInLang</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.OnOK">39. OnOK</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.OnPreview">40. OnPreview</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.OnSelectCancelButtonInFileBox">41. OnSelectCancelButtonInFileBox</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.OnSelectOkButtonInFileBox">42. OnSelectOkButtonInFileBox</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.PolishNamespaceList">43. PolishNamespaceList</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.Run">44. Run</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.SetFocusTo">45. SetFocusTo</a></div>
+<div style="width:24em;"><a href="#CodeBrowser.GUI.ShowInStatusbar">46. ShowInStatusbar</a></div>
+</div>
+</div>
+</nav>
+<p class="type">Functions:</p>
+<div class="bookmarktarget" id="CodeBrowser.GUI.AddPosnAndSize">
+<div id="bookmark_00069" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00068')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00070')">Next</button>
+<p class="caption">1. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.AddPosnAndSize (1 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ AddPosnAndSize←{+⌿↑⍵.(Posn Size)}
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CheckInput">
+<div id="bookmark_00070" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00069')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00071')">Next</button>
+<p class="caption">2. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CheckInput (51 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ (success msg)←CheckInput n;list;bool
+[1]    success←0
+[2]    msg←''
+[3]   
+[4]    :If 0∊⍴∊list←PolishNamespaceList n.namespaces.Text
+[5]        ShowInStatusbar'Nothing to scan?!'
+[6]        →SetFocusTo n.Scan n.namespaces
+[7]    :EndIf
+[8]    bool←list∊,¨'#' '⎕SE'
+[9]    :If 1∊bool←~{(⍵∊,¨'#' '⎕SE')∨9.1=⎕NC∘⊂¨⍵}list
+[10]       ShowInStatusbar'Scan: not a namespace: ',⊃{⍺,',',⍵}/bool/list
+[11]       →SetFocusTo n.Scan n.namespaces
+[12]   :EndIf
+[13]   n.namespaces.Text←⊃{⍺,', ',⍵}/list
+[14]  
+[15]   :If ~0∊⍴list←n.toBeIgnored.Text
+[16]       ((list=',')/list)←' '
+[17]       list←##.A.DMB list
+[18]       list←∪' '##.A.Split list
+[19]       :If 1∊bool←~{((,'#')∘≡¨⍵)∨9=⎕NC¨⍵}list
+[20]           ShowInStatusbar'To be ignored: not a namespace: ',⊃{⍺,',',⍵}/bool/list
+[21]           →SetFocusTo n.Scan n.toBeIgnored
+[22]       :EndIf
+[23]       n.toBeIgnored.Text←⊃{⍺,',',⍵}/list
+[24]   :EndIf
+[25]  
+[26]   :If ~0∊⍴n.filename.Text
+[27]   :AndIf 0=##.F.IsFile n.filename.Text
+[28]   :AndIf ~CreateNativeFile n.filename.Text
+[29]       ShowInStatusbar'HTML filename is invalid (not pointing to a file)'
+[30]       →SetFocusTo n.Parms n.filename
+[31]   :EndIf
+[32]  
+[33]   :If ~0∊⍴n.cssFilename.Text
+[34]   :AndIf 0=##.F.IsFile n.cssFilename.Text
+[35]       ShowInStatusbar'CSS filename is invalid (not pointing to a file)'
+[36]       →SetFocusTo n.Parms n.cssFilename
+[37]   :EndIf
+[38]  
+[39]   :If 0=+/n.(processFns processOpr processScripts processVars).State
+[40]       ShowInStatusbar'Nothing to be processed?!'
+[41]       →SetFocusTo n.Parms n.processFns
+[42]   :EndIf
+[43]  
+[44]   :If (0=n.lines.Value)∨n.lines.Value&lt;¯1
+[45]       ShowInStatusbar'"Lines" must be either a positive integer or ¯1'
+[46]       →SetFocusTo n.Parms n.lines
+[47]   :EndIf
+[48]  
+[49]   success←1
+[50]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CopyGuiToParms">
+<div id="bookmark_00071" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00070')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00072')">Next</button>
+<p class="caption">3. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CopyGuiToParms (27 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←CopyGuiToParms n
+[1]    r←⍬
+[2]    n.∆Parms.namespaces←n.namespaces.Text
+[3]    n.∆Parms.ignore←n.toBeIgnored.Text
+[4]    n.∆Parms.ignoreEmpty←n.ignoreEmptyNamespaces.State
+[5]    n.∆Parms.ignoreTatinPkgs←n.ignoreTatinPkgs.State
+[6]    n.∆Parms.recursive←n.recursive.State
+[7]    n.∆Parms.processGuiInstances←n.processGuiInstances.State
+[8]    n.∆Parms.filename←n.filename.Text
+[9]    n.∆Parms.cssfilename←MassageCssFilename n.cssFilename.Text
+[10]   n.∆Parms.linkcssfile←n.linkCssFile.State
+[11]   n.∆Parms.lang←n.lang.Text
+[12]   n.∆Parms.showParms←n.showParms.State
+[13]   n.∆Parms.viewInBrowser←n.viewInBrowser.State
+[14]   n.∆Parms.processFunctions←n.processFns.State
+[15]   n.∆Parms.processOperators←n.processOpr.State
+[16]   n.∆Parms.processScripts←n.processScripts.State
+[17]   n.∆Parms.processVars←n.processVars.State
+[18]   n.∆Parms.backgroundColorPrint←n.printBgrCol.State
+[19]   n.∆Parms.twoSidedPrint←n.twoSidedPrint.State
+[20]   n.∆Parms.printFontSize←⊃(//)⎕VFI n.fontSizeForPrint.Text
+[21]   n.∆Parms.caption←n.caption.Text
+[22]   n.∆Parms.footer←n.footer.Text
+[23]   n.∆Parms.info←,n.info.Text
+[24]   n.∆Parms.infoIsHTML←n.infoIsHtml.State
+[25]   n.∆Parms.lines←n.lines.Value
+[26]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateButtons">
+<div id="bookmark_00072" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00071')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00073')">Next</button>
+<p class="caption">4. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateButtons (38 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←CreateButtons n;∆
+[1]    ∆←⊂'Button'
+[2]    ∆,←⊂'Style' 'Push'
+[3]    ∆,←⊂'Caption' '&amp;Done'
+[4]    ∆,←⊂'Size'(⍬ 120)
+[5]    ∆,←⊂'TipObj'n.∆Tip
+[6]    ∆,←⊂'Tip'('Create the HTML page, close the GUI and' 'print the HTML filename to the session')
+[7]    ∆,←⊂'Attach'(4⍴'Bottom' 'Left')
+[8]    n.OK←⍎'ok'n.∆Form.⎕WC ∆
+[9]    n.∆Buttons←n.OK
+[10]   n.OK.Posn[1]←n.∆Form.Size[1]-n.OK.Size[1]+(⌊0.5×n.∆vgap)+n.StatusMsg.##.Size[1]
+[11]   n.OK.Posn[2]←n.∆hgap
+[12]  
+[13]   ∆←⊂'Button'
+[14]   ∆,←⊂'Style' 'Push'
+[15]   ∆,←⊂'Caption' 'Cancel'
+[16]   ∆,←⊂'Size'(⍬ 120)
+[17]   ∆,←⊂'Attach'(4⍴'Bottom' 'Left')
+[18]   ∆,←⊂'TipObj'n.∆Tip
+[19]   ∆,←⊂'Tip'('Close the GUI without taking any action')
+[20]   n.Cancel←⍎'cancel'n.∆Form.⎕WC ∆
+[21]   n.∆Buttons,←n.Cancel
+[22]   n.Cancel.Posn[1]←n.OK.Posn[1]
+[23]   n.Cancel.Posn[2]←n.∆hgap+2⊃AddPosnAndSize n.OK
+[24]  
+[25]   ∆←⊂'Button'
+[26]   ∆,←⊂'Style' 'Push'
+[27]   ∆,←⊂'Caption' '&amp;Preview'
+[28]   ∆,←⊂'Size'(⍬ 120)
+[29]   ∆,←⊂'Attach'(4⍴'Bottom' 'Left')
+[30]   ∆,←⊂'TipObj'n.∆Tip
+[31]   ∆,←⊂'Tip'('Put what''s defined on display' 'with the default browser.')
+[32]   n.Preview←⍎'preview'n.∆Form.⎕WC ∆
+[33]   n.∆Buttons,←n.Preview
+[34]   n.Preview.Posn[1]←n.OK.Posn[1]
+[35]   n.Preview.Posn[2]←n.∆hgap+2⊃AddPosnAndSize n.Cancel
+[36]   n.Preview.onSelect←'OnPreview'
+[37]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateCaption">
+<div id="bookmark_00073" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00072')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00074')">Next</button>
+<p class="caption">5. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateCaption (16 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateCaption parent;∆;ref
+[1]    ∆←⊂'Label'
+[2]    ∆,←⊂'Posn'(n.(∆vgap ∆hgap))
+[3]    ∆,←⊂'Caption' '&amp;Caption:'
+[4]    ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+[5]    ref←⍎'caption_label'parent.⎕WC ∆
+[6]   
+[7]    ∆←⊂'Edit'
+[8]    ∆,←⊂'Posn'(((⌈n.∆vgap÷2)+⊃↑+⌿⊃ref.(Posn Size)),n.∆hgap)
+[9]    ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+[10]   ∆,←⊂'Size'(⍬(parent.Size[2]-2×n.∆hgap))
+[11]   ∆,←⊂'Text'({¯1≡⍵:'' ⋄ ⍵}n.∆Parms.caption)
+[12]   ∆,←⊂'TipObj'n.∆Tip
+[13]   ∆,←⊂'Tip'('Specify the overall caption.' 'If you leave this empty it will default to' 'the names of all namespaces to be scanned.')
+[14]   n.caption←⍎'caption'parent.⎕WC ∆
+[15]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateCssFilename">
+<div id="bookmark_00074" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00073')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00075')">Next</button>
+<p class="caption">6. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateCssFilename (38 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateCssFilename(above parent);∆;ref
+[1]    ∆←⊂'Label'
+[2]    ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑above.(Posn Size)),n.∆hgap)
+[3]    ∆,←⊂'Caption' '&amp;CSS filename:'
+[4]    ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+[5]    ref←⍎'cssfile_label'parent.⎕WC ∆
+[6]   
+[7]    ∆←⊂'Edit'
+[8]    ∆,←⊂'Posn'(((2+⌈n.∆vgap÷2)+⊃↑+⌿⊃ref.(Posn Size)),n.∆hgap)
+[9]    ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+[10]   ∆,←⊂'Size'(⍬(parent.Size[2]-2×n.∆hgap))
+[11]   ∆,←⊂'TipObj'n.∆Tip
+[12]   ∆,←⊂'Tip'('The name of the CSS file to be used.' 'Change this only if you have created your own CSS file.')
+[13]   ∆,←⊂'Text'n.∆Parms.cssfilename
+[14]   n.cssFilename←⍎'cssfile'parent.⎕WC ∆
+[15]  
+[16]   ∆←⊂'Button'
+[17]   ∆,←⊂'Style' 'Push'
+[18]   ∆,←⊂'Caption' '...'
+[19]   ∆,←⊂'Posn'((n.cssFilename.Posn[1])⍬)
+[20]   ∆,←⊂'Size'((n.cssFilename.Size[1])⍬)
+[21]   ∆,←⊂'TipObj'n.∆Tip
+[22]   ∆,←⊂'Tip'('Browse for the CSS file to be used')
+[23]   ∆,←⊂'Attach'('Top' 'Right' 'Top' 'Right')
+[24]   n.selectDirCssFile←⍎'selectDirFilename'parent.⎕WC ∆
+[25]   n.selectDirCssFile.onSelect←'OnBrowseForCssFile'
+[26]   n.selectDirCssFile.Posn[2]←n.TabCtrl.Size[2]-n.∆hgap+n.selectDirCssFile.Size[2]
+[27]   n.cssFilename.Size[2]-←2+n.selectDirCssFile.Size[2]
+[28]  
+[29]   ∆←⊂'Button'
+[30]   ∆,←⊂'Style' 'Check'
+[31]   ∆,←⊂'Caption' 'Link the CSS file rather than emebedd'
+[32]   ∆,←⊂'Posn'((2+n.∆vgap+⊃↑+⌿⊃n.cssFilename.(Posn Size)),n.∆hgap)
+[33]   ∆,←⊂'TipObj'n.∆Tip
+[34]   ∆,←⊂'Tip'('Linking can be very useful for changing the CSS')
+[35]   ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+[36]   n.linkCssFile←⍎'linkCssFile'parent.⎕WC ∆
+[37]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateFileBox">
+<div id="bookmark_00075" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00074')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00076')">Next</button>
+<p class="caption">7. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateFileBox (26 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←CreateFileBox parms;n;∆;path
+[1]   ⍝ Builds up a `FileBox` control which will remain invisible until it is `⎕DQ`ed.\\
+[2]   ⍝ Returns an `n` namepsace.
+[3]    n←⎕NS''
+[4]    ∆←''
+[5]    ∆,←⊂'Caption'parms.caption
+[6]    ∆,←⊂'Style' 'Single'
+[7]    ∆,←⊂'Filters'parms.filters
+[8]    ∆,←⊂'FileMode'parms.fileMode
+[9]    ∆,←⊂'Index'(parms.index-1)
+[10]   path←parms.path
+[11]   ((path='/')/path)←'\'
+[12]   ∆,←⊂'Directory'path
+[13]   :If 0∊⍴parms.file
+[14]       ∆,←⊂'File'(↑,/1↓⎕NPARTS path)
+[15]   :Else
+[16]       ∆,←⊂'File'(↑,/1↓⎕NPARTS parms.file)
+[17]   :EndIf
+[18]   n.∆Form←parms.parent.⎕NEW'FileBox'∆
+[19]   n.∆Form.⎕DF'[FileBox]'
+[20]   n.∆Form.onFileBoxOK←'OnSelectOkButtonInFileBox'
+[21]   n.∆Form.onFileBoxCancel←'OnSelectCancelButtonInFileBox'
+[22]   n.∆parms←parms
+[23]   n.∆result←''
+[24]   n.∆Form.n←n
+[25]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateFileBoxParms">
+<div id="bookmark_00076" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00075')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00077')">Next</button>
+<p class="caption">8. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateFileBoxParms (11 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←filename CreateFileBoxParms n
+[1]   ⍝ Returns a parameter namespace with default settings:
+[2]    r←⎕NS''
+[3]    r.caption←''
+[4]    r.file←filename
+[5]    r.fileMode←'Read'
+[6]    r.filters←⊂'*.*' 'All files (*.*)'
+[7]    r.index←1
+[8]    r.parent←n.∆Form
+[9]    r.path←{0∊⍴⍵:##.F.PWD ⋄ ⍵}path
+[10]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateFilename">
+<div id="bookmark_00077" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00076')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00078')">Next</button>
+<p class="caption">9. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateFilename (33 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateFilename parent;∆;ref
+[1]    ∆←⊂'Label'
+[2]    ∆,←⊂'Posn'(n.(∆vgap ∆hgap))
+[3]    ∆,←⊂'Caption' '&amp;HTML filename:'
+[4]    ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+[5]    ref←⍎'filename_label'parent.⎕WC ∆
+[6]   
+[7]    ∆←⊂'Edit'
+[8]    ∆,←⊂'Posn'((2+⊃↑+⌿↑ref.(Posn Size)),n.∆hgap)
+[9]    ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+[10]   ∆,←⊂'Size'(⍬(parent.Size[2]-2×n.∆hgap))
+[11]   :If 0∊≢n.∆Parms.filename
+[12]       ∆,←⊂'Text'('html'##.F.GetTempFilename2'')
+[13]   :Else
+[14]       ∆,←⊂'Text'n.∆Parms.filename
+[15]   :EndIf
+[16]   ∆,←⊂'TipObj'n.∆Tip
+[17]   ∆,←⊂'Tip'('The name of the file the HTML will be saved in.' 'There is not default.')
+[18]   n.filename←⍎'footer'parent.⎕WC ∆
+[19]  
+[20]   ∆←⊂'Button'
+[21]   ∆,←⊂'Style' 'Push'
+[22]   ∆,←⊂'Caption' '...'
+[23]   ∆,←⊂'Posn'((n.filename.Posn[1])⍬)
+[24]   ∆,←⊂'Size'((n.filename.Size[1])⍬)
+[25]   ∆,←⊂'TipObj'n.∆Tip
+[26]   ∆,←⊂'Tip'('Browse for the file the HTML is going to be written to.')
+[27]   ∆,←⊂'Attach'('Top' 'Right' 'Top' 'Right')
+[28]   n.selectDirFilename←⍎'selectDirFilename'parent.⎕WC ∆
+[29]   n.selectDirFilename.onSelect←'OnBrowseForFilename'
+[30]   n.selectDirFilename.Posn[2]←n.TabCtrl.Size[2]-n.∆hgap+n.selectDirFilename.Size[2]
+[31]   n.filename.Size[2]-←2+n.selectDirFilename.Size[2]
+[32]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateFonts">
+<div id="bookmark_00078" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00077')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00079')">Next</button>
+<p class="caption">10. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateFonts (4 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←CreateFonts n
+[1]    n.∆APL_Font←⍎'APLFont'n.∆Form.⎕WC'Font'('PName' 'APL385 Unicode')('Size' 18)
+[2]    n.∆STD_Font←⍎'STDFont'n.∆Form.⎕WC'Font'('PName' 'Verdana')('Size' 15)
+[3]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateFooter">
+<div id="bookmark_00079" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00078')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00080')">Next</button>
+<p class="caption">11. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateFooter (16 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateFooter(parent above);∆;ref
+[1]    ∆←⊂'Label'
+[2]    ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑above.(Posn Size)),n.∆hgap)
+[3]    ∆,←⊂'Caption' '&amp;Footer:'
+[4]    ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+[5]    ref←⍎'footer_label'parent.⎕WC ∆
+[6]   
+[7]    ∆←⊂'Edit'
+[8]    ∆,←⊂'Posn'((⊃+⌿↑ref.(Posn Size)),n.∆hgap)
+[9]    ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+[10]   ∆,←⊂'Size'(⍬(parent.Size[2]-2×n.∆hgap))
+[11]   ∆,←⊂'Text'n.∆Parms.footer
+[12]   ∆,←⊂'TipObj'n.∆Tip
+[13]   ∆,←⊂'Tip'('The footer may be a single line or several lines with ⋄ used as separators.' 'There is no default.')
+[14]   n.footer←⍎'footer'parent.⎕WC ∆
+[15]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateForm">
+<div id="bookmark_00080" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00079')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00081')">Next</button>
+<p class="caption">12. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateForm (14 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←CreateForm n;∆;ref;∆Form
+[1]    ∆←⊂'Form'
+[2]    ∆,←⊂'Caption'({(1⊃⍵),' version ',(2⊃⍵),' from ',(3⊃⍵)}##.Version)
+[3]    ∆,←⊂'Coord' 'Pixel'
+[4]    ∆,←⊂'Posn'(300 280)
+[5]    ∆,←⊂'Size'(565 900)
+[6]    n.∆Form←⍎'gui'⎕WC ∆
+[7]   
+[8]    ref←⍎'SB'n.∆Form.⎕WC⊂'Statusbar'
+[9]    n.StatusMsg←⍎'StatusMsg'ref.⎕WC'StatusField'('Coord' 'Prop')('Size'⍬ 99)
+[10]   n←CreateFonts n
+[11]   n.∆Form.FontObj←n.∆STD_Font
+[12]   n.∆Tip←'MyTip'n.∆Form.⎕WC⊂'TipField'
+[13]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateGUI">
+<div id="bookmark_00081" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00080')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00082')">Next</button>
+<p class="caption">13. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateGUI (14 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←CreateGUI n;∆;size
+[1]    n←CreateForm n
+[2]    n←CreateTabs n
+[3]    n(CreateScanTabChildren)←parms.namespaces
+[4]    n←CreateParmsTabChildren n
+[5]    n←CreateButtons n
+[6]    n←CreateTextTabChildren n
+[7]    n.OK.onSelect←'OnOK'
+[8]    n.Cancel.onSelect←1
+[9]    n.∆Form.n←n
+[10]   2 ⎕NQ n.Scan'Select'
+[11]   n.namespaces.SelText←2⍴1+⍴,n.namespaces.Text
+[12]   ⎕NQ n.namespaces'GotFocus'
+[13]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateIgnoreGuiInstances">
+<div id="bookmark_00082" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00081')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00083')">Next</button>
+<p class="caption">14. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateIgnoreGuiInstances (11 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateIgnoreGuiInstances(parent above);∆
+[1]    ∆←⊂'Button'
+[2]    ∆,←⊂'Caption' 'Ignore &amp;GUI instances'
+[3]    ∆,←⊂'Style' 'Check'
+[4]    ∆,←⊂'State'(~n.∆Parms.processGuiInstances)
+[5]    ∆,←⊂'Attach'('Top' 'Left' 'Top' 'left')
+[6]    ∆,←⊂'TipObj'n.∆Tip
+[7]    ∆,←⊂'Tip'('GUI instances with' 'KeepOnClose←0' 'are ignored in any case')
+[8]    ∆,←⊂'Posn'((⊃+⌿↑above.(Posn Size)),n.∆hgap+2)
+[9]    n.processGuiInstances←⍎'processGuiInstances'parent.⎕WC ∆
+[10]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateInfo">
+<div id="bookmark_00083" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00082')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00084')">Next</button>
+<p class="caption">15. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateInfo (34 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateInfo(parent above);∆;ref;tip
+[1]    ∆←⊂'Label'
+[2]    ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑above.(Posn Size)),n.∆hgap)
+[3]    ∆,←⊂'Caption' '&amp;Info:'
+[4]    ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+[5]    ref←⍎'info_label'parent.⎕WC ∆
+[6]   
+[7]    ∆←⊂'Edit'
+[8]    ∆,←⊂'Posn'((⊃+⌿↑ref.(Posn Size)),n.∆hgap)
+[9]    ∆,←⊂'Attach'('Top' 'Left' 'Bottom' 'Right')
+[10]   ∆,←⊂'Size'(⍬(parent.Size[2]-2×n.∆hgap))
+[11]   ∆,←⊂'Text'n.∆Parms.info
+[12]   ∆,←⊂'Style' 'Multi'
+[13]   ∆,←⊂'TipObj'n.∆Tip
+[14]   tip←⊂'"Info" goes right after the "Caption".'
+[15]   tip,←⊂'There is no default, so if you leave this'
+[16]   tip,←⊂'empty then there will be no "Info".'
+[17]   ∆,←⊂'Tip'tip
+[18]   n.info←⍎'info'parent.⎕WC ∆
+[19]   n.info.onKeyPress←'OnKeyPressInInfo'
+[20]  
+[21]   ∆←⊂'Button'
+[22]   ∆,←⊂'Style' 'Check'
+[23]   ∆,←⊂'Caption' '"Info" is &amp;HTML'
+[24]   ∆,←⊂'TipObj'n.∆Tip
+[25]   tip←⊂'Use this in case you want "Info" to be left alone (normally "&lt;" etc. would be translated).'
+[26]   tip,←⊂'This allows you to transform Markdown to HTML and then insert that HTML as "Info".'
+[27]   ∆,←⊂'Tip'tip
+[28]   ∆,←⊂'Posn'(((⌈n.∆vgap÷2)+⊃+⌿↑n.info.(Posn Size)),n.∆hgap)
+[29]   ∆,←⊂'State'n.∆Parms.infoIsHTML
+[30]   ∆,←⊂'Attach'(4⍴'Bottom' 'Left')
+[31]   n.infoIsHtml←⍎'infoIsHtml'parent.⎕WC ∆
+[32]   n.infoIsHtml.Posn[2]+←2
+[33]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateLang">
+<div id="bookmark_00084" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00083')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00085')">Next</button>
+<p class="caption">16. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateLang (21 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateLang(parent above);∆;list
+[1]    ∆←⊂'Label'
+[2]    ∆,←⊂'Caption' '&amp;Language:'
+[3]    ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑above.(Posn Size)),n.∆hgap)
+[4]    ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[5]    n.lang_label←⍎'lang_label'parent.⎕WC ∆
+[6]   
+[7]    ∆←⊂'Combo'
+[8]    ∆,←⊂'Style' 'DropEdit'
+[9]    ∆,←⊂'Posn'((⊃+⌿↑n.lang_label.(Posn Size)),n.∆hgap)
+[10]   ∆,←⊂'index' 1
+[11]   ∆,←⊂'Size'(21 50)
+[12]   list←'en' 'de' 'da' 'fr' 'it' 'es'
+[13]   ∆,←⊂'Items'list
+[14]   ∆,←⊂'TipObj'n.∆Tip
+[15]   ∆,←⊂'Tip'('This two-character code is used for setting the "lang" attribute of the &lt;html&gt; tag.')
+[16]   ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[17]   ∆,←⊂'SelItems'({b←(⍴⍵)⍴0 ⋄ b[1]←1 ⋄ b}list)
+[18]   n.lang←⍎'lang'parent.⎕WC ∆
+[19]   n.lang.onKeyPress←'OnKeyPressInLang'
+[20]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateLines">
+<div id="bookmark_00085" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00084')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00086')">Next</button>
+<p class="caption">17. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateLines (17 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateLines(parent sibling);∆;ref
+[1]    ∆←⊂'Label'
+[2]    ∆,←⊂'Caption' '&amp;L&amp;ines:'
+[3]    ∆,←⊂'Posn'(sibling.Posn[1],n.∆vgap+2⊃+⌿↑sibling.(Posn Size))
+[4]    ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[5]    ref←⍎'lines_label'parent.⎕WC ∆
+[6]   
+[7]    ∆←⊂'Edit'
+[8]    ∆,←⊂'Posn'((⊃+⌿↑ref.(Posn Size)),ref.Posn[2])
+[9]    ∆,←⊂'FieldType' 'Numeric'
+[10]   ∆,←⊂'Size'(21 50)
+[11]   ∆,←⊂'Value'n.∆Parms.lines
+[12]   ∆,←⊂'TipObj'n.∆Tip
+[13]   ∆,←⊂'Tip'('How many lines are displayed per object.' '¯1 means "all lines".')
+[14]   ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[15]   n.lines←⍎'lines'parent.⎕WC ∆
+[16]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateNamespaces">
+<div id="bookmark_00086" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00085')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00087')">Next</button>
+<p class="caption">18. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateNamespaces (29 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateNamespaces(parent namespaces);∆;ref
+[1]    ∆←⊂'Label'
+[2]    ∆,←⊂'Posn'n.(∆vgap ∆hgap)
+[3]    ∆,←⊂'Caption' '&amp;Namespace(s) to be scanned:'
+[4]    ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+[5]    ref←⍎'ns_label'parent.⎕WC ∆
+[6]   
+[7]    ∆←⊂'Edit'
+[8]    ∆,←⊂'Posn'(((2+⌈n.∆vgap÷2)+⊃↑+⌿⊃ref.(Posn Size)),n.∆hgap)
+[9]    ∆,←⊂'Font'n.∆APL_Font
+[10]   ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+[11]   ∆,←⊂'Text'(⊃{⍺,', ',⍵}/{0∊≢⍵:'#' ⋄ ⍵}⊆⍕¨namespaces)
+[12]   ∆,←⊂'Size'(⍬(n.ScanSubForm.Size[2]-2×n.∆hgap))
+[13]   ∆,←⊂'FontObj'n.∆APL_Font
+[14]   ∆,←⊂'TipObj'n.∆Tip
+[15]   ∆,←⊂'Tip'('Specify all the namespaces to be scanned.' 'Use spaces or commata as separators.')
+[16]   n.namespaces←⍎'namespaces'parent.⎕WC ∆
+[17]   n.namespaces.Size[1]-←5
+[18]  
+[19]   ∆←⊂'Button'
+[20]   ∆,←⊂'Style' 'Check'
+[21]   ∆,←⊂'Caption' 'Process &amp;recursively'
+[22]   ∆,←⊂'Posn'((n.∆hgap+⊃+⌿↑n.namespaces.(Posn Size)),n.∆vgap)
+[23]   ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+[24]   ∆,←⊂'State'n.∆Parms.recursive
+[25]   ∆,←⊂'TipObj'n.∆Tip
+[26]  ⍝∆,←⊂'Tip'('')
+[27]   n.recursive←⍎'recursive'parent.⎕WC ∆
+[28]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateNativeFile">
+<div id="bookmark_00087" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00086')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00088')">Next</button>
+<p class="caption">19. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateNativeFile (9 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ success←CreateNativeFile filename;tno
+[1]   ⍝ Tries to create native file with `filename` and returns 1 in case of success and 0 otherwise.
+[2]    :Trap 22
+[3]        tno←filename ⎕NCREATE 0
+[4]        ⎕NUNTIE tno
+[5]        success←1
+[6]    :Case 22
+[7]        success←0
+[8]    :EndTrap
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateOtherParms">
+<div id="bookmark_00088" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00087')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00089')">Next</button>
+<p class="caption">20. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateOtherParms (21 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateOtherParms(parent above);∆;ref
+[1]    ∆←⊂'Button'
+[2]    ∆,←⊂'Style' 'Check'
+[3]    ∆,←⊂'Caption' '&amp;Show parameters at the end of the document'
+[4]    ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑above.(Posn Size)),n.∆vgap)
+[5]    ∆,←⊂'State'n.∆Parms.showParms
+[6]    ∆,←⊂'TipObj'n.∆Tip
+[7]    ∆,←⊂'Tip'('Use this for documenting the parameters.' 'When printed the parameter go onto a separate page.')
+[8]    ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[9]    n.showParms←⍎'showParms'parent.⎕WC ∆
+[10]  
+[11]   ∆←⊂'Button'
+[12]   ∆,←⊂'Style' 'Check'
+[13]   ∆,←⊂'Caption' '&amp;View resulting HTML page in default browser'
+[14]   ∆,←⊂'Posn'((⊃+⌿↑n.showParms.(Posn Size)),n.∆hgap)
+[15]   ∆,←⊂'State'n.∆Parms.viewInBrowser
+[16]   ∆,←⊂'TipObj'n.∆Tip
+[17]  ⍝ ∆,←⊂'Tip'('')
+[18]   ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[19]   n.viewInBrowser←⍎'viewInBrowser'parent.⎕WC ∆
+[20]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateParmsTabChildren">
+<div id="bookmark_00089" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00088')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00090')">Next</button>
+<p class="caption">21. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateParmsTabChildren (9 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←CreateParmsTabChildren n;∆;ref
+[1]    n(CreateFilename)←n.ParmsSubForm
+[2]    n(CreateCssFilename)←n.filename n.ParmsSubForm
+[3]    n(CreateToBeProcessed)←n.ParmsSubForm n.linkCssFile
+[4]    n(CreatePrintParms)←n.processFns.## n.ParmsSubForm
+[5]    n(CreateLang)←n.ParmsSubForm n.processFns.##
+[6]    n(CreateLines)←n.ParmsSubForm n.lang_label
+[7]    n(CreateOtherParms)←n.ParmsSubForm n.lines
+[8]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreatePrintParms">
+<div id="bookmark_00090" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00089')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00091')">Next</button>
+<p class="caption">22. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreatePrintParms (47 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreatePrintParms(sibling parent);∆;ref;ref2;list
+[1]    ∆←⊂'Group'
+[2]    ∆,←⊂'Caption' ' P&amp;rint parameters'
+[3]    ∆,←⊂'Posn'(sibling.Posn[1],n.∆hgap+2⊃+⌿↑sibling.(Posn Size))
+[4]    ∆,←⊂'Size'(135 300)
+[5]    ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[6]    ref←⍎'printParms_group'parent.⎕WC ∆
+[7]   
+[8]    ∆←⊂'Button'
+[9]    ∆,←⊂'Style' 'Check'
+[10]   ∆,←⊂'Caption' '&amp;Use background colour for print'
+[11]   ∆,←⊂'TipObj'n.∆Tip
+[12]   ∆,←⊂'State'n.∆Parms.backgroundColorPrint
+[13]   ∆,←⊂'Tip'('By default when printing background colours are ignored.' 'For some browsers that default behaviour can be overwritten.')
+[14]   ∆,←⊂'Posn'(n.(2 1×∆vgap ∆hgap))
+[15]   ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[16]   n.printBgrCol←⍎'printBgrCol'ref.⎕WC ∆
+[17]  
+[18]   ∆←⊂'Button'
+[19]   ∆,←⊂'Style' 'Check'
+[20]   ∆,←⊂'Caption' '&amp;Two-sided print'
+[21]   ∆,←⊂'State'n.∆Parms.twoSidedPrint
+[22]   ∆,←⊂'TipObj'n.∆Tip
+[23]   ∆,←⊂'Tip'('The left margin is different on odd and even pages then.')
+[24]   ∆,←⊂'Posn'((⊃+⌿↑n.printBgrCol.(Posn Size)),n.∆hgap)
+[25]   ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[26]   n.twoSidedPrint←⍎'twoSidedPrint'ref.⎕WC ∆
+[27]  
+[28]   ∆←⊂'Label'
+[29]   ∆,←⊂'Caption' '&amp;Font size to be used for print:'
+[30]   ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑n.twoSidedPrint.(Posn Size)),n.∆hgap)
+[31]   ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[32]   ref2←⍎'fontsize_label'ref.⎕WC ∆
+[33]  
+[34]   ∆←⊂'Combo'
+[35]   ∆,←⊂'Style' 'Drop'
+[36]   ∆,←⊂'Posn'(ref2.Posn[1],ref2.Size[2]+n.∆hgap)
+[37]   ∆,←⊂'index' 1
+[38]   ∆,←⊂'Size'(21 40)
+[39]   list←'4' '5' '6' '7' '8' '9' '10' '11' '12' '16' '17' '18' '20' '22' '23' '24' '25' '27' '28' '29' '31'
+[40]   ∆,←⊂'Items'list
+[41]   ∆,←⊂'TipObj'n.∆Tip
+[42]  ⍝∆,←⊂'Tip' ('')
+[43]   ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[44]   ∆,←⊂'SelItems'(list{b←(⍴⍺)⍴0 ⋄ b[(⍎¨⍺)⍳⍵]←1 ⋄ b}n.∆Parms.printFontSize)
+[45]   n.fontSizeForPrint←⍎'fontSizeForPrint'ref.⎕WC ∆
+[46]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateScanTabChildren">
+<div id="bookmark_00091" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00090')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00092')">Next</button>
+<p class="caption">23. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateScanTabChildren (6 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateScanTabChildren namespaces
+[1]    n(CreateNamespaces)←n.ScanSubForm namespaces
+[2]    n(CreateToBeIgnored)←n.ScanSubForm n.recursive
+[3]    n(CreateIgnoreGuiInstances)←n.ScanSubForm n.ignoreEmptyNamespaces
+[4]    n(CreateTatinPackages)←n.ScanSubForm n.processGuiInstances
+[5]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateSubForms">
+<div id="bookmark_00092" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00091')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00093')">Next</button>
+<p class="caption">24. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateSubForms (31 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←CreateSubForms n;∆
+[1]    ∆←⊂'SubForm'
+[2]    ∆,←⊂'TabObj'n.Scan
+[3]    ∆,←⊂'Coord' 'Prop'
+[4]    ∆,←⊂'Posn'(0 0)
+[5]    ∆,←⊂'Size'(100 100)
+[6]    ∆,←⊂'EdgeStyle' 'Dialog'
+[7]    ∆,←⊂'Attach'('Top' 'Left' 'Bottom' 'Right')
+[8]    n.ScanSubForm←⍎'subformScan'n.TabCtrl.⎕WC ∆
+[9]    n.ScanSubForm.Coord←'Pixel'
+[10]  
+[11]   ∆←⊂'SubForm'
+[12]   ∆,←⊂'TabObj'n.Parms
+[13]   ∆,←⊂'Coord' 'Prop'
+[14]   ∆,←⊂'Posn'(0 0)
+[15]   ∆,←⊂'Size'(100 100)
+[16]   ∆,←⊂'EdgeStyle' 'Dialog'
+[17]   ∆,←⊂'Attach'('Top' 'Left' 'Bottom' 'Right')
+[18]   n.ParmsSubForm←⍎'subformParms'n.TabCtrl.⎕WC ∆
+[19]   n.ParmsSubForm.Coord←'Pixel'
+[20]  
+[21]   ∆←⊂'SubForm'
+[22]   ∆,←⊂'TabObj'n.Text
+[23]   ∆,←⊂'Coord' 'Prop'
+[24]   ∆,←⊂'Posn'(0 0)
+[25]   ∆,←⊂'Size'(100 100)
+[26]   ∆,←⊂'EdgeStyle' 'Dialog'
+[27]   ∆,←⊂'Attach'('Top' 'Left' 'Bottom' 'Right')
+[28]   n.TextSubForm←⍎'subformText'n.TabCtrl.⎕WC ∆
+[29]   n.TextSubForm.Coord←'Pixel'
+[30]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateTabControlAndChildren">
+<div id="bookmark_00093" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00092')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00094')">Next</button>
+<p class="caption">25. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateTabControlAndChildren (19 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←CreateTabControlAndChildren n;∆
+[1]    ∆←⊂'TabControl'
+[2]    ∆,←⊂'Size'(n.∆Form.Size-70 20)
+[3]    ∆,←⊂'Posn'(0 10)
+[4]    ∆,←⊂'Attach'('Top' 'Left' 'Bottom' 'Right')
+[5]    n.TabCtrl←⍎'tabctrl'n.∆Form.⎕WC ∆
+[6]   
+[7]    ∆←⊂'TabButton'
+[8]    ∆,←⊂'Caption' 'Scan'
+[9]    n.Scan←⍎'tabbtnScan'n.TabCtrl.⎕WC ∆
+[10]  
+[11]   ∆←⊂'TabButton'
+[12]   ∆,←⊂'Caption' 'Parameters'
+[13]   n.Parms←⍎'tabbtnParms'n.TabCtrl.⎕WC ∆
+[14]  
+[15]   ∆←⊂'TabButton'
+[16]   ∆,←⊂'Caption' 'Text'
+[17]   n.Text←⍎'tabbtnText'n.TabCtrl.⎕WC ∆
+[18]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateTabs">
+<div id="bookmark_00094" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00093')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00095')">Next</button>
+<p class="caption">26. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateTabs (4 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←CreateTabs n;∆
+[1]    n←CreateTabControlAndChildren n
+[2]    n←CreateSubForms n
+[3]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateTatinPackages">
+<div id="bookmark_00095" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00094')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00096')">Next</button>
+<p class="caption">27. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateTatinPackages (11 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateTatinPackages(parent above);∆
+[1]    ∆←⊂'Button'
+[2]    ∆,←⊂'Style' 'Check'
+[3]    ∆,←⊂'Caption' 'Ignore &amp;Tatin packages'
+[4]    ∆,←⊂'Posn'((⊃+⌿↑above.(Posn Size)),n.∆hgap)
+[5]    ∆,←⊂'State'n.∆Parms.ignoreTatinPkgs
+[6]    ∆,←⊂'TipObj'n.∆Tip
+[7]    ∆,←⊂'Tip'('Ignores (⎕SE|#)._tatin')
+[8]    ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[9]    n.ignoreTatinPkgs←⍎'ignoreTatinPkgs'parent.⎕WC ∆
+[10]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateTextTabChildren">
+<div id="bookmark_00096" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00095')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00097')">Next</button>
+<p class="caption">28. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateTextTabChildren (5 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←CreateTextTabChildren n;∆;ref;list
+[1]    n(CreateCaption)←n.TextSubForm
+[2]    n(CreateFooter)←n.TextSubForm n.caption
+[3]    n(CreateInfo)←n.TextSubForm n.footer
+[4]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateToBeIgnored">
+<div id="bookmark_00097" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00096')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00098')">Next</button>
+<p class="caption">29. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateToBeIgnored (27 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateToBeIgnored(parent above);∆;ref
+[1]    ∆←⊂'Label'
+[2]    ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑above.(Posn Size)),n.∆hgap)
+[3]    ∆,←⊂'Caption' 'To be ignored:'
+[4]    ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+[5]    ref←⍎'ignored_label'parent.⎕WC ∆
+[6]   
+[7]    ∆←⊂'Edit'
+[8]    ∆,←⊂'Posn'(((2+⌈n.∆vgap÷2)+⊃↑+⌿⊃ref.(Posn Size)),n.∆hgap)
+[9]    ∆,←⊂'Font'n.∆APL_Font
+[10]   ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+[11]   ∆,←⊂'Size'(⍬(parent.Size[2]-2×n.∆hgap))
+[12]   ∆,←⊂'FontObj'n.∆APL_Font
+[13]   ∆,←⊂'TipObj'n.∆Tip
+[14]   ∆,←⊂'Tip'('Specify everything inside the namespaces to be scanned that you want to be ignored.' 'Specify fully qualified names. Use spaces or commata as separators.')
+[15]   n.toBeIgnored←⍎'tobeignored'parent.⎕WC ∆
+[16]   n.toBeIgnored.Size[1]-←5
+[17]  
+[18]   ∆←⊂'Button'
+[19]   ∆,←⊂'Caption' '&amp;Ignore empty namespaces'
+[20]   ∆,←⊂'Style' 'Check'
+[21]   ∆,←⊂'State'n.∆Parms.ignoreEmpty
+[22]   ∆,←⊂'Attach'('Top' 'Left' 'Top' 'left')
+[23]   ∆,←⊂'Tip'('If this is not ticked empty namespaces will be listed')
+[24]   ∆,←⊂'Posn'(((⌈n.∆vgap÷2)+⊃+⌿↑n.toBeIgnored.(Posn Size)),n.∆hgap+2)
+[25]   n.ignoreEmptyNamespaces←⍎'ignoreEmpty'parent.⎕WC ∆
+[26]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.CreateToBeProcessed">
+<div id="bookmark_00098" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00097')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00099')">Next</button>
+<p class="caption">30. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.CreateToBeProcessed (50 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←n CreateToBeProcessed(parent above);∆;ref
+[1]    ∆←⊂'Group'
+[2]    ∆,←⊂'Caption' ' &amp;Process '
+[3]    ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑n.linkCssFile.(Posn Size)),n.∆hgap)
+[4]    ∆,←⊂'Size'(135 300)
+[5]    ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[6]    ∆,←⊂'TipObj'n.∆Tip
+[7]   ⍝ ∆,←⊂'Tip'('')
+[8]    ref←⍎'process_group'parent.⎕WC ∆
+[9]   
+[10]   ∆←⊂'Button'
+[11]   ∆,←⊂'Style' 'Check'
+[12]   ∆,←⊂'Caption' '&amp;Functions'
+[13]   ∆,←⊂'Posn'n.(2 1×∆vgap ∆hgap)
+[14]   ∆,←⊂'State'n.∆Parms.processFunctions
+[15]   ∆,←⊂'TipObj'n.∆Tip
+[16]  ⍝ ∆,←⊂'Tip'('')
+[17]   ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[18]   n.processFns←⍎'processFns'ref.⎕WC ∆
+[19]  
+[20]   ∆←⊂'Button'
+[21]   ∆,←⊂'Style' 'Check'
+[22]   ∆,←⊂'Caption' '&amp;Operators'
+[23]   ∆,←⊂'Posn'((⊃+⌿↑n.processFns.(Posn Size)),n.∆hgap)
+[24]   ∆,←⊂'State'n.∆Parms.processOperators
+[25]   ∆,←⊂'TipObj'n.∆Tip
+[26]  ⍝ ∆,←⊂'Tip'('')
+[27]   ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[28]   n.processOpr←⍎'processOpr'ref.⎕WC ∆
+[29]  
+[30]   ∆←⊂'Button'
+[31]   ∆,←⊂'Style' 'Check'
+[32]   ∆,←⊂'Caption' '&amp;Scripts (classes, namespaces, interfaces)'
+[33]   ∆,←⊂'Posn'((⊃+⌿↑n.processOpr.(Posn Size)),n.∆hgap)
+[34]   ∆,←⊂'State'n.∆Parms.processScripts
+[35]   ∆,←⊂'TipObj'n.∆Tip
+[36]  ⍝ ∆,←⊂'Tip'('')
+[37]   ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[38]   n.processScripts←⍎'processScripts'ref.⎕WC ∆
+[39]  
+[40]   ∆←⊂'Button'
+[41]   ∆,←⊂'Style' 'Check'
+[42]   ∆,←⊂'Caption' '&amp;Variables'
+[43]   ∆,←⊂'Posn'((⊃+⌿↑n.processScripts.(Posn Size)),n.∆hgap)
+[44]   ∆,←⊂'State'n.∆Parms.processVars
+[45]   ∆,←⊂'TipObj'n.∆Tip
+[46]  ⍝ ∆,←⊂'Tip'('')
+[47]   ∆,←⊂'Attach'(4⍴'Top' 'Left')
+[48]   n.processVars←⍎'processVars'ref.⎕WC ∆
+[49]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.DQ">
+<div id="bookmark_00099" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00098')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00100')">Next</button>
+<p class="caption">31. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.DQ (3 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←DQ ref
+[1]    r←⎕DQ ref
+[2]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.GetRefTo_n">
+<div id="bookmark_00100" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00099')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00101')">Next</button>
+<p class="caption">32. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.GetRefTo_n (4 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ GetRefTo_n←{
+[1]        0&lt;⍵.⎕NC'n':⍵.n
+[2]        ∇ ⍵.##
+[3]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.Init">
+<div id="bookmark_00101" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00100')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00102')">Next</button>
+<p class="caption">33. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.Init (3 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ n←Init dummy
+[1]    n←⎕NS''
+[2]    n.(∆vgap ∆hgap)←15
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.MassageCssFilename">
+<div id="bookmark_00102" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00101')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00103')">Next</button>
+<p class="caption">34. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.MassageCssFilename (6 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ filename←MassageCssFilename filename
+[1]   ⍝ Forces `filename` to be an absolute path.
+[2]    :If (~':'∊filename)∧'//'≢2⍴filename  ⍝ Not absolute?
+[3]        filename←'expand'##.F.NormalizePath filename
+[4]    :EndIf
+[5]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.OnBrowseForCssFile">
+<div id="bookmark_00103" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00102')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00104')">Next</button>
+<p class="caption">35. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.OnBrowseForCssFile (18 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ OnBrowseForCssFile msg;n;parms;fb;res;path;filename;extension
+[1]    n←GetRefTo_n⊃msg
+[2]    (path filename extension)←⎕NPARTS n.cssFilename.Text
+[3]    filename←filename,extension
+[4]    parms←filename CreateFileBoxParms n
+[5]    :If 0∊⍴path
+[6]        parms.path←##.F.PWD
+[7]    :Else
+[8]        parms.path←path
+[9]    :EndIf
+[10]   parms.caption←'Read CSS file'
+[11]   parms.filters←⊂'*.css' 'CSS file'
+[12]   fb←CreateFileBox parms
+[13]   res←DQ fb.∆Form
+[14]   :If ~0∊⍴fb.∆result
+[15]       n.cssFilename.Text←fb.∆result
+[16]   :EndIf
+[17]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.OnBrowseForFilename">
+<div id="bookmark_00104" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00103')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00105')">Next</button>
+<p class="caption">36. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.OnBrowseForFilename (20 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ OnBrowseForFilename msg;parms;fb;n;res;path;filename;extension
+[1]    n←GetRefTo_n⊃msg
+[2]    (path filename extension)←⎕NPARTS n.filename.Text
+[3]    filename←filename,extension
+[4]    parms←filename CreateFileBoxParms n
+[5]    :If 0∊⍴path
+[6]        parms.path←##.F.PWD
+[7]    :Else
+[8]        parms.path←path
+[9]    :EndIf
+[10]   parms←filename CreateFileBoxParms n
+[11]   parms.caption←'Save HTML file'
+[12]   parms.fileMode←'Write'
+[13]   parms.filters←('*.HTML' 'HTML files')('*.HTM' 'HTML files')
+[14]   fb←CreateFileBox parms
+[15]   res←DQ fb.∆Form
+[16]   :If ~0∊⍴fb.∆result
+[17]       n.filename.Text←fb.∆result
+[18]   :EndIf
+[19]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.OnKeyPressInInfo">
+<div id="bookmark_00105" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00104')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00106')">Next</button>
+<p class="caption">37. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.OnKeyPressInInfo (6 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ OnKeyPressInInfo←{
+[1]        ⍵[4 5 6]≢0 9 2:1
+[2]        ⍝ Suppress Ctrl+Tab: that should change the current tab
+[3]        n←GetRefTo_n⊃⍵
+[4]        0⊣⎕NQ n.TabCtrl.TabObj,1↓⍵
+[5]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.OnKeyPressInLang">
+<div id="bookmark_00106" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00105')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00107')">Next</button>
+<p class="caption">38. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.OnKeyPressInLang (4 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ OnKeyPressInLang←{
+[1]        1≠⍴,3⊃⍵:1
+[2]        2≥1+⍴,⍵[1].Text
+[3]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.OnOK">
+<div id="bookmark_00107" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00106')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00108')">Next</button>
+<p class="caption">39. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.OnOK (11 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←OnOK msg;n
+[1]    n←GetRefTo_n⊃msg
+[2]    (r msg)←CheckInput n
+[3]    :If r
+[4]        ShowInStatusbar'Processing...'
+[5]        n.∆Parms←n.∆Parms
+[6]        CopyGuiToParms n
+[7]        {}n.∆Parms ##.Run n.∆Parms.namespaces
+[8]        ⎕NQ n.∆Form'Close'
+[9]    :EndIf
+[10]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.OnPreview">
+<div id="bookmark_00108" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00107')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00109')">Next</button>
+<p class="caption">40. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.OnPreview (10 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ OnPreview←{
+[1]        n←GetRefTo_n⊃⍵
+[2]        (r msg)←CheckInput n
+[3]        0=r:0
+[4]        _←CopyGuiToParms n
+[5]        0=≢n.∆Parms.filename:0
+[6]        _←n.∆Parms ##.Run n.∆Parms.namespaces
+[7]        _←##.A.GoToWebPage⍣(⊃~n.∆Parms.viewInBrowser)⊣n.∆Parms.filename
+[8]        0
+[9]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.OnSelectCancelButtonInFileBox">
+<div id="bookmark_00109" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00108')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00110')">Next</button>
+<p class="caption">41. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.OnSelectCancelButtonInFileBox (5 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ OnSelectCancelButtonInFileBox←{
+[1]        n←GetRefTo_n⊃⍵
+[2]        n.∆result←''
+[3]        1
+[4]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.OnSelectOkButtonInFileBox">
+<div id="bookmark_00110" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00109')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00111')">Next</button>
+<p class="caption">42. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.OnSelectOkButtonInFileBox (5 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ OnSelectOkButtonInFileBox←{
+[1]        n←GetRefTo_n⊃⍵
+[2]        n.∆result←n.∆Form.Directory,n.∆Form.File
+[3]        1
+[4]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.PolishNamespaceList">
+<div id="bookmark_00111" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00110')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00112')">Next</button>
+<p class="caption">43. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.PolishNamespaceList (7 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ PolishNamespaceList←{
+[1]    ⍝ ⍵ is typically n.namespaces.Text
+[2]        list←⍵
+[3]        ((list=',')/list)←' '
+[4]        list←∪' '##.A.Split ##.A.DMB list
+[5]        '⎕se'⎕R'⎕SE'⊣list
+[6]    }
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.Run">
+<div id="bookmark_00112" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00111')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00113')">Next</button>
+<p class="caption">44. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.Run (19 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←{parms}Run(namespaces homePath);∆;n
+[1]   ⍝ `namespaces` can be one of:
+[2]   ⍝ * Single ref
+[3]   ⍝ * Vector of refs
+[4]   ⍝ * Simple text vector
+[5]   ⍝ * Vector of text vectors
+[6]   ⍝ In case `homePath` is not empty it is assumed that `Run` is executed by the user command framework.
+[7]    r←⍬
+[8]    ##.Init ⍬
+[9]    :If 0=⎕NC'parms'
+[10]       parms←##.CreateParms homePath
+[11]   :EndIf
+[12]   parms.namespaces←namespaces
+[13]   n←Init ⍬
+[14]   n.∆Parms←parms
+[15]   n←CreateGUI n
+[16]   DQ n.∆Form
+[17]   :Trap 0 ⋄ ⎕NQ n.∆Form'Close' ⋄ :EndTrap
+[18]  ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.SetFocusTo">
+<div id="bookmark_00113" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00112')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00114')">Next</button>
+<p class="caption">45. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.SetFocusTo (5 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ r←SetFocusTo(tab control)
+[1]    r←0
+[2]    ⎕NQ tab'Select'
+[3]    ⎕NQ control'GotFocus'
+[4]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div class="bookmarktarget" id="CodeBrowser.GUI.ShowInStatusbar">
+<div id="bookmark_00114" class="code_block">
+<button title="Hide" class="accordion expanded">Hide</button>
+<button title="Brings previous object to the top" onClick="jump2bookmark('bookmark_00113')">Previous</button>
+<button title="Brings next object to the top" onClick="jump2bookmark('bookmark_00115')">Next</button>
+<p class="caption">46. <a href="#CodeBrowser">CodeBrowser</a>.<a href="#CodeBrowser.GUI">GUI</a>.ShowInStatusbar (3 lines)</p>
+<div class="accordion-content">
+<pre><code>     ∇ {r}←ShowInStatusbar msg
+[1]    n.StatusMsg.Text←msg
+[2]   ⍝Done
+     ∇
+</code></pre>
+</div>
+</div>
+</div>
+<div id="bookmark_00115"></div>
+<footer>
+<hr>
+<p>Created by kai on 2022-01-18 09:27:16</p>
+</footer>
+<div id="parameters">
+<hr>
+<h2 class="center">Parameters</h2>
+<table id="parms">
+<tr><th>Name</th><th>Setting</th></tr>
+<tbody>
+<tr><td>backgroundColorPrint</td><td>1</td></tr>
+<tr><td>caption             </td><td>CodeBrowser</td></tr>
+<tr><td>cssfilename         </td><td> C:/T/Projects/UserCommands/CodeBrowser/Files/codebrowser_styles.css </td></tr>
+<tr><td>filename            </td><td>C:\Users\kai\AppData\Local\Temp\/kai_CodeBrowser_CodeReview.html</td></tr>
+<tr><td>footer              </td><td>Created by kai on 2022-01-18 09:27:16</td></tr>
+<tr><td>ignore              </td><td>  </td></tr>
+<tr><td>ignoreEmpty         </td><td>1</td></tr>
+<tr><td>ignoreTatinPkgs     </td><td>1</td></tr>
+<tr><td>info                </td><td>Contains the CodeBrowser code without the test cases.</td></tr>
+<tr><td>infoIsHTML          </td><td>0</td></tr>
+<tr><td>lang                </td><td>en</td></tr>
+<tr><td>lines               </td><td>¯1</td></tr>
+<tr><td>linkcssfile         </td><td>0</td></tr>
+<tr><td>namespaces          </td><td> #.CodeBrowser.CodeBrowser </td></tr>
+<tr><td>printFontSize       </td><td>8</td></tr>
+<tr><td>processFunctions    </td><td>1</td></tr>
+<tr><td>processGuiInstances </td><td>0</td></tr>
+<tr><td>processOperators    </td><td>1</td></tr>
+<tr><td>processScripts      </td><td>1</td></tr>
+<tr><td>processVars         </td><td>1</td></tr>
+<tr><td>recursive           </td><td>1</td></tr>
+<tr><td>showParms           </td><td>1</td></tr>
+<tr><td>twoSidedPrint       </td><td>1</td></tr>
+<tr><td>version             </td><td>CodeBrowser 2.0.0+81 from 2022-01-17</td></tr>
+<tr><td>viewInBrowser       </td><td>1</td></tr>
+</tbody>
+</table>
+</div>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+         var content = lastSibling(this);
+         if (this.classList.contains("expanded")) {
+               this.classList.add("collapsed");
+               this.classList.remove("expanded");
+               content.style.maxHeight = 0;
+               this.innerHTML = "Show"
+               this.setAttribute("title", "Show the code block");
+           } else {
+               content.style.maxHeight = content.scrollHeight + "px";
+               this.classList.add("expanded");
+               this.classList.remove("collapsed");
+               this.innerHTML = "Hide"
+               this.setAttribute("title", "Hide the code block");
+         } 
+    });
+}
+function lastSibling(node){
+   var tempObj=node.parentNode.lastChild;
+   while(tempObj.nodeType!=1 && tempObj.previousSibling!=null){
+   tempObj=tempObj.previousSibling;
+   }
+   return (tempObj.nodeType==1)?tempObj:false;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+ ns←CreateParmsForWinMerge
+ ns←##.##.ComparisonTools.CreateParmsForWinMerge

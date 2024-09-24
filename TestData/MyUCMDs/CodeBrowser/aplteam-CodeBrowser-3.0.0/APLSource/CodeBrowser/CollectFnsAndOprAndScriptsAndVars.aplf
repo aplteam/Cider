@@ -1,0 +1,11 @@
+ r←level CollectFnsAndOprAndScriptsAndVars(ref name parms i collect);body;no;caption
+ r←''
+ :Select ⊃ref.⎕NC name
+ :Case 9
+     r←level CollectScript ref name parms collect i
+ :Case 2
+     r←level CollectVariable ref name parms collect i
+ :Else
+     r←level CollectFnsAndOpr ref name parms collect i
+ :EndSelect
+⍝DoneColl

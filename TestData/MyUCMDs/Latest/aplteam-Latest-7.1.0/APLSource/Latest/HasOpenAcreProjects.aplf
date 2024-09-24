@@ -1,0 +1,2 @@
+ bool←HasOpenAcreProjects projects
+ bool←projects[;2]∨.=1

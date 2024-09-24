@@ -1,0 +1,41 @@
+ r←{lookInto}List y;noOfDays;noOfLines;⎕ML;⎕IO;all;type;dates
+⍝ If y is a positiv integer smaller than 10000000 then y objects are returned.
+⍝ If y is a positiv integer larger than   9999999 then y is treated as a date (YYYYMMDD).
+⍝ If is a negative integer then all objects changed on the last y days are returned.
+⍝ If y is an empty vector all objects are returned.
+⍝ If y is zero an error is thrown.
+⍝ If y is a two-item vector then the second item must be a Boolean:
+⍝ 1 = exclude scripted Namespaces (the default)
+⍝ 0 = include scripted Namespaces
+ ⎕IO←1 ⋄ ⎕ML←3
+ lookInto←{0=⎕NC ⍵:# ⋄ ⍎⍕⍵}'lookInto'
+ (type all)←2↑y,1
+ :If (⊂type)∊''⍬
+     noOfDays←99999
+ :ElseIf (,1)≡,×type
+     noOfLines←type
+ :ElseIf (,¯1)≡,×type
+     noOfDays←type
+ :ElseIf 2=≢type
+     ⍝ no action
+ :Else
+     'What?!'⎕SIGNAL 11
+ :EndIf
+ :If 0≠≢r←'noScripts'QNL34⍕lookInto
+     r[;1]←↑¨{⍺,'.',⍵}/¨↓r[;3 1]
+     r←r[⍋⊃r[;4];1 4 5]
+     :If ~(⊂type)∊''⍬
+         dates←↑∘A.ToNum¨'-'~⍨¨10↑¨r[;2]
+         :If 2=≢type  ⍝ From-to?
+             r←((dates≤↑2⊃type)∧(dates≥↑1⊃type))⌿r
+         :ElseIf (,1)≡,×type
+             :If noOfLines>9999999
+                 r←(noOfLines=dates)⌿r
+             :Else
+                 r←(-noOfLines⌊1⊃⍴r)↑[1]r
+             :EndIf
+         :ElseIf (,¯1)≡,×type
+             r←(noOfDays{⍵∊(⍺⌊≢⍵)↑∪⍵}10↑¨r[;2])⌿r
+         :EndIf
+     :EndIf
+ :EndIf

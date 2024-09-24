@@ -1,0 +1,4 @@
+ n←CreateFonts n
+ n.∆APL_Font←⍎'APLFont'n.∆Form.⎕WC'Font'('PName' 'APL385 Unicode')('Size' 18)
+ n.∆STD_Font←⍎'STDFont'n.∆Form.⎕WC'Font'('PName' 'Verdana')('Size' 15)
+⍝Done

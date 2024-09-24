@@ -1,0 +1,47 @@
+ n←n CreatePrintParms(sibling parent);∆;ref;ref2;list
+ ∆←⊂'Group'
+ ∆,←⊂'Caption' ' P&rint parameters'
+ ∆,←⊂'Posn'(sibling.Posn[1],n.∆hgap+2⊃+⌿↑sibling.(Posn Size))
+ ∆,←⊂'Size'(135 300)
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ ref←⍎'printParms_group'parent.⎕WC ∆
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'Caption' '&Use background colour for print'
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'State'n.∆Parms.backgroundColorPrint
+ ∆,←⊂'Tip'('By default when printing background colours are ignored.' 'For some browsers that default behaviour can be overwritten.')
+ ∆,←⊂'Posn'(n.(2 1×∆vgap ∆hgap))
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ n.printBgrCol←⍎'printBgrCol'ref.⎕WC ∆
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'Caption' '&Two-sided print'
+ ∆,←⊂'State'n.∆Parms.twoSidedPrint
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('The left margin is different on odd and even pages then.')
+ ∆,←⊂'Posn'((⊃+⌿↑n.printBgrCol.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ n.twoSidedPrint←⍎'twoSidedPrint'ref.⎕WC ∆
+
+ ∆←⊂'Label'
+ ∆,←⊂'Caption' '&Font size to be used for print:'
+ ∆,←⊂'Posn'((n.∆vgap+⊃+⌿↑n.twoSidedPrint.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ ref2←⍎'fontsize_label'ref.⎕WC ∆
+
+ ∆←⊂'Combo'
+ ∆,←⊂'Style' 'Drop'
+ ∆,←⊂'Posn'(ref2.Posn[1],ref2.Size[2]+n.∆hgap)
+ ∆,←⊂'index' 1
+ ∆,←⊂'Size'(21 40)
+ list←'4' '5' '6' '7' '8' '9' '10' '11' '12' '16' '17' '18' '20' '22' '23' '24' '25' '27' '28' '29' '31'
+ ∆,←⊂'Items'list
+ ∆,←⊂'TipObj'n.∆Tip
+⍝∆,←⊂'Tip' ('')
+ ∆,←⊂'Attach'(4⍴'Top' 'Left')
+ ∆,←⊂'SelItems'(list{b←(⍴⍺)⍴0 ⋄ b[(⍎¨⍺)⍳⍵]←1 ⋄ b}n.∆Parms.printFontSize)
+ n.fontSizeForPrint←⍎'fontSizeForPrint'ref.⎕WC ∆
+⍝Done

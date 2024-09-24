@@ -1,0 +1,14 @@
+ n←CreateForm n;∆;ref;∆Form
+ ∆←⊂'Form'
+ ∆,←⊂'Caption'({(1⊃⍵),' version ',(2⊃⍵),' from ',(3⊃⍵)}##.Version)
+ ∆,←⊂'Coord' 'Pixel'
+ ∆,←⊂'Posn'(300 280)
+ ∆,←⊂'Size'(565 900)
+ n.∆Form←⍎'gui'⎕WC ∆
+
+ ref←⍎'SB'n.∆Form.⎕WC⊂'Statusbar'
+ n.StatusMsg←⍎'StatusMsg'ref.⎕WC'StatusField'('Coord' 'Prop')('Size'⍬ 99)
+ n←CreateFonts n
+ n.∆Form.FontObj←n.∆STD_Font
+ n.∆Tip←'MyTip'n.∆Form.⎕WC⊂'TipField'
+⍝Done

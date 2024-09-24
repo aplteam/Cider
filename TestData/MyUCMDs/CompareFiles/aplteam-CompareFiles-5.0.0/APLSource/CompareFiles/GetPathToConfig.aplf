@@ -1,0 +1,13 @@
+ r←GetPathToConfig;Case
+ :Select ⎕C APLTreeUtils2.GetOperatingSystem''
+ :Case 'win'
+     r←2 ⎕NQ #'GetEnvironment' 'USERPROFILE'
+ :Case 'mac'
+     r←⊃⎕SH'echo $HOME'
+ :Case 'lin'
+     r←⊃⎕SH'echo $HOME'
+ :Else
+     'The current operating system is not supported'⎕SIGNAL 11
+ :EndSelect
+ r,←'/.config/dyalog/aplteam/CompareFiles/'
+⍝Done

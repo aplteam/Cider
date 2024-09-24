@@ -861,35 +861,33 @@ On NuGet packages
 </a>
 </div>
 <p>Checking dependencies before publishing to the principal Tatin Registry is a good idea, in particular when one uses several Tatin Registries like a personal one, a company Registry and https://tatin.dev</p>
-<p>In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev. However, when the package is eventually published on tatin.dev, then you most likely don't want your projecty to depend on release candidates anymore.</p>
-<p>The function <code>ListTatinDependencies</code> compiles a report from the build lists from all Tatin install folders of a given project on display, making it easy to check.</p>
+<p>In such a scenario you might well install release candidates into a project that will eventually be published on https://tatin.dev. However, when the package is eventually published on tatin.dev, then you must not depend on release candidates anymore.</p>
+<p>The function <code>ListTatinDependencies</code> compiles a report from the build lists from all Tatin install folders of a given project, making it easy to check.</p>
 <p>The following example was created in a workspace where the project <code>Cider</code> was opened. Because it was the only open project at that time, it acted on it.</p>
 <p><code>Cider</code> has two Tatin installation folders, one for production (<code>tatin-packages/</code>) and one for development and testing (<code>tatin-packages_dev/</code>):</p>
 <pre tabindex="0"><code>      ]listTatinDependencies
  Source               Package-ID                      Principal  URL
  -------------------  ------------------------------  ---------  ------------------
- tatin-packages/       G@aplteam-APLGit2-0.15.3               1  https://tatin.dev/
- tatin-packages/       F@aplteam-FilesAndDirs-5.5.0           1  https://tatin.dev/
- tatin-packages/       C@aplteam-CommTools-1.7.0              1  https://tatin.dev/
- tatin-packages/       aplteam-FilesAndDirs-5.5.0             1  https://tatin.dev/
- tatin-packages/       aplteam-CommTools-1.7.0                1  https://tatin.dev/
- tatin-packages/       aplteam-APLTreeUtils2-1.2.0            1  https://tatin.dev/
- tatin-packages/       aplteam-APLGit2-0.15.3                 1  https://tatin.dev/
- tatin-packages/       A@aplteam-APLTreeUtils2-1.2.0          1  https://tatin.dev/
- tatin-packages/       dyalog-HttpCommand-5.2.0               0  https://tatin.dev/
- tatin-packages/       aplteam-OS-3.1.1                       0  https://tatin.dev/
- tatin-packages/       aplteam-GitHubAPIv3-0.7.0              0  https://tatin.dev/
- tatin-packages_dev/   aplteam-Tester2-3.5.0                  1  https://tatin.dev/
- tatin-packages_dev/   aplteam-MakeHelpers-0.10.1             1  https://tatin.dev/
- tatin-packages_dev/   aplteam-FilesAndDirs-5.5.0             1  https://tatin.dev/
- tatin-packages_dev/   aplteam-CommTools-1.7.0                1  https://tatin.dev/
- tatin-packages_dev/   aplteam-CodeCoverage-0.10.3            1  https://tatin.dev/
- tatin-packages_dev/   aplteam-APLTreeUtils2-1.2.0            1  https://tatin.dev/
- tatin-packages_dev/   aplteam-ZipArchive-1.1.0               0  https://tatin.dev/
- tatin-packages_dev/   aplteam-OS-3.1.1                       0  https://tatin.dev/
- tatin-packages_dev/   aplteam-MarkAPL-11.1.0                 0  https://tatin.dev/
- tatin-packages_dev/   aplteam-IniFiles-5.0.3                 0  https://tatin.dev/
- tatin-packages_dev/   aplteam-DotNetZip-2.0.2                0  https://tatin.dev/</code></pre>
+ tatin-packages/       dyalog-NuGet-0.2.1                   1  https://tatin.dev/
+                       aplteam-FilesAndDirs-5.8.1           1  https://tatin.dev/
+                       aplteam-CommTools-1.8.1              1  https://tatin.dev/
+                       aplteam-APLTreeUtils2-1.4.0          1  https://tatin.dev/
+                       aplteam-APLGit2-0.18.0               1  https://tatin.dev/
+                       dyalog-HttpCommand-5.7.0             0  https://tatin.dev/
+                       aplteam-OS-3.1.1                     0  https://tatin.dev/
+                       aplteam-GitHubAPIv3-1.2.1            0  https://tatin.dev/
+ tatin-packages_dev/   aplteam-Tester2-3.8.0                1  https://tatin.dev/
+                       aplteam-MakeHelpers-0.15.1           1  https://tatin.dev/
+                       aplteam-FilesAndDirs-5.8.1           1  https://tatin.dev/
+                       aplteam-CommTools-1.8.1              1  https://tatin.dev/
+                       aplteam-CodeCoverage-0.10.7          1  https://tatin.dev/
+                       aplteam-APLTreeUtils2-1.4.0          1  https://tatin.dev/
+                       aplteam-APLProcess-0.7.0             1  https://tatin.dev/
+                       aplteam-ZipArchive-1.2.0             0  https://tatin.dev/
+                       aplteam-OS-3.1.1                     0  https://tatin.dev/
+                       aplteam-MarkAPL-12.1.2               0  https://tatin.dev/
+                       aplteam-IniFiles-5.0.3               0  https://tatin.dev/
+                       aplteam-DotNetZip-2.1.0              0  https://tatin.dev/</code></pre>
 <div class="h_tag">
 <a href="#check-the-precise-versions-of-dependencies" id="check-the-precise-versions-of-dependencies" class="autoheader_anchor">
 <h4 data-id="Check-the-precise-versions-of-dependencies">3.4.2. Check the precise versions of dependencies</h4>
@@ -898,25 +896,21 @@ On NuGet packages
 <p>This is useful for finding out why a particular package (typically an old one) is requested at all.</p>
 <p>For this specifify the <code>-full</code> flag:</p>
 <pre tabindex="0"><code>]listTatinDependencies -full
---- Select package install folder to report on: ---
-   1. tatin-packages
-   2. tatin-packages_dev
-
-Select one item (q=quit) :1
-
+--- Investigated: C:/T/Projects/Dyalog/Cider
+-- Sub-folder: tatin-packages/
 aplteam-APLTreeUtils2-1.4.0
-aplteam-FilesAndDirs-5.7.1
+aplteam-FilesAndDirs-5.8.1
  aplteam-OS-3.1.1
  aplteam-APLTreeUtils2-1.4.0
-aplteam-CommTools-1.7.1
-aplteam-APLGit2-0.15.4
- aplteam-APLTreeUtils2-1.2.2
- aplteam-FilesAndDirs-5.5.1
- aplteam-GitHubAPIv3-0.7.0
- dyalog-HttpCommand-5.2.0
- aplteam-CommTools-1.7.0
+aplteam-APLGit2-0.18.0
+ aplteam-APLTreeUtils2-1.4.0
+ aplteam-FilesAndDirs-5.8.0
+ dyalog-HttpCommand-5.7.0
+ aplteam-CommTools-1.8.1
  aplteam-OS-3.1.1
-dyalog-NuGet-0.2.1</code></pre>
+ aplteam-GitHubAPIv3-1.2.1
+dyalog-NuGet-0.2.1
+...</code></pre>
 <p>This shows that the package <code>APLGit2</code> requests older versions of <code>APLTreeUtils2</code>, <code>FilesAndDirs</code> and <code>CommTools</code> than Cider would eventually use, information that is not easily available by other means.</p>
 <div class="h_tag">
 <a href="#listnugetdependencies" id="listnugetdependencies" class="autoheader_anchor">

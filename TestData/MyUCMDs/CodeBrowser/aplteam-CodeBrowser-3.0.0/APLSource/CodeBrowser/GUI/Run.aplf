@@ -1,0 +1,20 @@
+ {r}←{parms}Run(namespaces homePath);∆;n
+⍝ `namespaces` can be one of:
+⍝ * Single ref
+⍝ * Vector of refs
+⍝ * Simple text vector
+⍝ * Vector of text vectors
+⍝ In case `homePath` is not empty it is assumed that `Run` is executed by the user command framework.
+ r←⍬
+ ##.Init ⍬
+ :If 0=⎕NC'parms'
+     parms←##.CreateParms homePath
+ :EndIf
+ parms.namespaces←namespaces
+ n←Init ⍬
+ n.∆Parms←parms
+ n←CreateGUI n
+ DQ n.∆Form
+ :Trap 0 ⋄ ⎕NQ n.∆Form'Close' ⋄ :EndTrap
+ r←parms.filename
+⍝Done

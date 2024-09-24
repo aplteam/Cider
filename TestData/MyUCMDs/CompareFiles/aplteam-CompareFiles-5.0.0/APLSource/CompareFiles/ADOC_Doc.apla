@@ -1,0 +1,7 @@
+(
+ '# CompareFiles'
+ ''
+ '`CompareFiles` takes two files and feeds them to a comparison utility.'
+ ''
+ 'The project is hosted on <https://github.com/aplteam/CompareFiles>'
+)

@@ -1,0 +1,25 @@
+ {r}←CreateOrReplaceFile parms;errCounter;tno
+ r←⍬
+ :If ⎕NEXISTS parms.filename
+     :Trap 19
+         ⎕NDELETE parms.filename
+     :Case 19
+         ⎕NUNTIE((A.DTB↓⎕NNAMES)⍳⊂parms.filename)⊃⎕NNUMS
+         ⎕NDELETE parms.filename
+     :EndTrap
+ :EndIf
+ errCounter←0
+ :Repeat
+     :Trap 22
+         ⍝ This causes sometimes an error that goes away
+         ⍝ after a short delay. DropBox?!
+         tno←parms.filename ⎕NCREATE 0
+     :Else
+         tno←0
+         ⎕DL 0.2
+         errCounter←errCounter+1
+     :EndTrap
+ :Until (tno<0)∨5<errCounter ⍝ Try max 5 times.
+ 'Unable to create the HTML file'⎕SIGNAL 22/⍨tno=0
+ ⎕NUNTIE tno
+⍝Done

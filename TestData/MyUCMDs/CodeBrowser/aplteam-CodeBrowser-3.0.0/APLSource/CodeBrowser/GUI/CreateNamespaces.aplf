@@ -1,0 +1,29 @@
+ n←n CreateNamespaces(parent namespaces);∆;ref
+ ∆←⊂'Label'
+ ∆,←⊂'Posn'n.(∆vgap ∆hgap)
+ ∆,←⊂'Caption' '&Namespace(s) to be scanned:'
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Left')
+ ref←⍎'ns_label'parent.⎕WC ∆
+
+ ∆←⊂'Edit'
+ ∆,←⊂'Posn'(((2+⌈n.∆vgap÷2)+⊃↑+⌿⊃ref.(Posn Size)),n.∆hgap)
+ ∆,←⊂'Font'n.∆APL_Font
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+ ∆,←⊂'Text'(⊃{⍺,', ',⍵}/{0∊≢⍵:'#' ⋄ ⍵}⊆⍕¨namespaces)
+ ∆,←⊂'Size'(⍬(n.ScanSubForm.Size[2]-2×n.∆hgap))
+ ∆,←⊂'FontObj'n.∆APL_Font
+ ∆,←⊂'TipObj'n.∆Tip
+ ∆,←⊂'Tip'('Specify all the namespaces to be scanned.' 'Use spaces or commata as separators.')
+ n.namespaces←⍎'namespaces'parent.⎕WC ∆
+ n.namespaces.Size[1]-←5
+
+ ∆←⊂'Button'
+ ∆,←⊂'Style' 'Check'
+ ∆,←⊂'Caption' 'Process &recursively'
+ ∆,←⊂'Posn'((n.∆hgap+⊃+⌿↑n.namespaces.(Posn Size)),n.∆vgap)
+ ∆,←⊂'Attach'('Top' 'Left' 'Top' 'Right')
+ ∆,←⊂'State'n.∆Parms.recursive
+ ∆,←⊂'TipObj'n.∆Tip
+⍝∆,←⊂'Tip'('')
+ n.recursive←⍎'recursive'parent.⎕WC ∆
+⍝Done

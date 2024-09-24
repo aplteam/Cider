@@ -1,0 +1,7 @@
+ r←Public
+ r←'ComparisonTools.'∘,¨' '~⍨¨↓ComparisonTools.⎕NL 3
+ r,←⊂'Compare'
+ r,←⊂'EstablishCompareEXE'
+ r,←⊂'GetPathToConfig'
+ r,←⊂'Use'
+ r,←⊂'Version'

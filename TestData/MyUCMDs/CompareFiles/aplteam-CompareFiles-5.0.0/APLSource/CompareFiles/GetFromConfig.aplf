@@ -1,0 +1,7 @@
+ r←GetFromConfig names;os;Config_
+ names←⊆names
+ Assert∧/names∊'EXEs' 'Names' 'Default'
+ os←A.GetOperatingSystem ⍬
+ Config_←CONFIG⍎os
+ r←Config_∘⍎¨names
+⍝Done

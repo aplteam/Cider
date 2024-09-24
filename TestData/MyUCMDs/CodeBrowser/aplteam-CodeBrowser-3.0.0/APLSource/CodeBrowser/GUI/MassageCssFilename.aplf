@@ -1,0 +1,6 @@
+ filename←MassageCssFilename filename
+⍝ Forces `filename` to be an absolute path.
+ :If (~':'∊filename)∧'//'≢2⍴filename  ⍝ Not absolute?
+     filename←'expand'##.F.NormalizePath filename
+ :EndIf
+⍝Done

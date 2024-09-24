@@ -1,0 +1,4 @@
+ ExchangeHtmlSpecialChars←{
+     11::(,¨'<>&')⎕R'\&lt;' '\&gt;' '\&amp;'⍠('Greedy' 0)⊣↓⎕FMT ⍵
+     (,¨'<>&')⎕R'\&lt;' '\&gt;' '\&amp;'⍠('Greedy' 0)⊣⍵
+ }

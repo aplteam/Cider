@@ -1,0 +1,18 @@
+ R←Test_UC_100(stopFlag batchFlag);⎕TRAP;rc;msg;res;stop;ns;expected
+⍝ List all dependencies of the Cider project with defaults (except -raw)
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If ~(⊂'#.Cider')∊{⍵[;1]}⎕SE.Cider.ListOpenProjects 0
+     ⎕←(⊃⎕SI),' requires an opened Cider project'
+     →0 ⋄ R←T._Inactive
+ :EndIf
+
+ stop←0
+ (rc msg res)←stop ∆UCMD'ListTatinDependencies'
+ Assert rc=0
+ ns←##.Cider.Get_JSON5 #.Cider.CiderConfig.HOME,'/cider.config'
+ expected←FilesAndDirs.EnforceSlash∘FilesAndDirs.AddTrailingSep¨{⍵↑⍨¯1+⍵⍳'='}¨ns.CIDER.(dependencies dependencies_dev).tatin
+ →T.PassesIf∧/expected∊res[;]
+
+⍝Done

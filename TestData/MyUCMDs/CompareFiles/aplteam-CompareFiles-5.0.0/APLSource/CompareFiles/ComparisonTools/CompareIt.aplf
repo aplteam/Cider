@@ -1,0 +1,39 @@
+ (rc out err)←CompareIt parms;cmd;result
+⍝ Function for the comparison utility CompareIt!
+ :If 0=parms.⎕NC'use'
+     parms.use←⊃##.EstablishCompareEXE parms.name
+ :EndIf
+ cmd←'"',(parms.use~'"'),'" '
+ :If 0<≢parms.file1
+     cmd,←'"',(parms.file1~'"'),'"'
+     :If 0=≢parms.caption1
+         cmd,←' /="',(⊃,/1↓⎕NPARTS parms.file1),'"'
+     :Else
+         cmd,←' /="',(parms.caption1~'"'),'"'
+     :EndIf
+ :EndIf
+ :If 0<≢parms.file2
+     cmd,←' "',(parms.file2~'"'),'"'
+     :If 0=≢parms.caption2
+         cmd,←' /="',(⊃,/1↓⎕NPARTS parms.file2),'"'
+     :Else
+         cmd,←' /="',(parms.caption2~'"'),'"'
+     :EndIf
+ :EndIf
+ :If 0=+/parms.(edit1,edit2)
+     cmd,←' /R'
+ :Else
+     :If 0=parms.edit1
+         cmd,←' /R1'
+     :EndIf
+     :If 0=parms.edit2
+         cmd,←' /R2'
+     :EndIf
+ :EndIf
+ result←(parms.(0=edit1+edit2))##.RunProcess cmd
+ :If parms.(0<edit1+edit2)
+     (rc out err)←result.(ExitCode StdOut ExitCode)
+ :Else
+     rc←0 ⋄ out←err←''
+ :EndIf
+⍝Done

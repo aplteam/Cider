@@ -1,0 +1,40 @@
+ html←InjectJavaScriptLate dummy
+⍝ The transition does not work well on large objects (several hundred lines) at all.
+⍝ May be one day CSS gets better options for this, or we implement a pure JavaScript solution?!
+⍝ This code needs to go to the bottom of the HTML page!
+ html←''
+ html,←⊂'<script>'
+ html,←⊂'var acc = document.getElementsByClassName("accordion");'
+ html,←⊂'var i;'
+ html,←⊂'for (i = 0; i < acc.length; i++) {'
+ html,←⊂'    acc[i].addEventListener("click", function() {'
+ ⍝ html,←⊂'debugger;'
+ html,←⊂'         var content = lastSibling(this);'
+ html,←⊂'         if (this.classList.contains("expanded")) {'
+⍝ We need to collapse it:
+ html,←⊂'               this.classList.add("collapsed");'
+ html,←⊂'               this.classList.remove("expanded");'
+ ⍝html,←⊂'               content.style.transition = "max-height 1s ease-in 0s";'
+ html,←⊂'               content.style.maxHeight = 0;'
+ html,←⊂'               this.innerHTML = "Show"'                 ⍝ "↕"'
+ html,←⊂'               this.setAttribute("title", "Show the code block");'
+ html,←⊂'           } else {'
+⍝ We need to expanded it:
+ ⍝html,←⊂'               content.style.transition = "max-height 0.2s ease-out 0s";'
+ html,←⊂'               content.style.maxHeight = content.scrollHeight + "px";'
+ html,←⊂'               this.classList.add("expanded");'
+ html,←⊂'               this.classList.remove("collapsed");'
+ html,←⊂'               this.innerHTML = "Hide"'
+ html,←⊂'               this.setAttribute("title", "Hide the code block");'
+ html,←⊂'         } '
+ html,←⊂'    });'
+ html,←⊂'}'
+ html,←⊂'function lastSibling(node){'
+ html,←⊂'   var tempObj=node.parentNode.lastChild;'
+ html,←⊂'   while(tempObj.nodeType!=1 && tempObj.previousSibling!=null){'
+ html,←⊂'   tempObj=tempObj.previousSibling;'
+ html,←⊂'   }'
+ html,←⊂'   return (tempObj.nodeType==1)?tempObj:false;'
+ html,←⊂'}'
+ html,←⊂'</script>'
+⍝Done

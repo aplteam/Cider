@@ -1,0 +1,27 @@
+ GetCodeMirrorLib←{
+     ⍝ NOT SUPPORTED (yet)
+     parms←⍵
+     0=parms.codeMirrorLib:''
+     r←''
+     r,←⊂'<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.js"></script>'
+     r,←⊂'<link  href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.css" rel="stylesheet">'
+     r,←⊂'<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/mode/apl/apl.js"></script>'
+     r,←⊂'<style>'
+     r,←⊂'.CodeMirror{height:auto; border: 1px solid #eee;}'
+     r,←⊂'</style>'
+     r,←⊂'     <script>'
+     r,←⊂'(function(){'
+     r,←⊂'nodes=document.getElementsByTagName(''code'')'
+     r,←⊂'Array.from(nodes).forEach(node=>{'
+     r,←⊂'    if(node.parentNode.tagName===''PRE''){'
+     r,←⊂'        let pre=node.parentNode;'
+     r,←⊂'        let ta=document.createElement("TEXTAREA");'
+     r,←⊂'        ta.value=node.innerText;'
+     r,←⊂'        pre.parentNode.replaceChild(ta,pre);'
+     r,←⊂'        CodeMirror.fromTextArea(ta);'
+     r,←⊂'    }'
+     r,←⊂'})'
+     r,←⊂'})();'
+     r,←⊂'</script>'
+     r
+ }

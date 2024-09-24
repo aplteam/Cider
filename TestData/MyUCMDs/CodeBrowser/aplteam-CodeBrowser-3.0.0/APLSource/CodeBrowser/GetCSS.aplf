@@ -1,0 +1,15 @@
+ css←GetCSS parms;against;bool;row;replaceBy
+ css←⊃F.NGET(1⊃,parms.cssfilename)1
+ against←'font-size: ',(⍕parms.printFontSize),'pt;'
+ css←'font-size: *8pt;'⎕R against⊣css
+ css←{'-webkit-print-color-adjust: *exact;'⎕R''⊣⍵}⍣(⊃~parms.backgroundColorPrint)⊣css
+ :If 0≠parms.twoSidedPrint
+     against←'@page :left {margin: 20mm 20mm 20mm 10mm;}'
+     css←'@page :left *{margin: *20mm *20mm *20mm *20mm;}'⎕R against⊣css
+ :EndIf
+ :If 0<+/bool←∨/¨'.accordion-content'∘⍷¨css
+     row←⍸bool
+     replaceBy←'max-height: ',(⍕parms.lines),'em;'
+     css[row]←replaceBy∘{replaceBy←⍺ ⋄ 'max-height: {0,}([1-9][0-9]){1,2}em;'⎕R replaceBy⍠('Greedy' 0)⊣⍵}¨css[row]
+ :EndIf
+⍝Done

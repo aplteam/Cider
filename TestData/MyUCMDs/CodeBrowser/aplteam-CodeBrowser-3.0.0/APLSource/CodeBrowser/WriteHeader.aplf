@@ -1,0 +1,22 @@
+ {r}←WriteHeader parms;html;thisCssFile;filename
+ html←⊂'<!DOCTYPE html>'
+ html,←⊂'<html lang="',parms.lang,'">'
+ html,←⊂'<head>'
+ html,←⊂'<meta http-equiv="X-UA-Compatible" content="IE=edge" />'
+ html,←⊂'<meta charset="utf-8">'
+ html,←⊂'<title>',(ExchangeHtmlSpecialChars parms.caption),'</title>'
+ :If parms.linkcssfile
+     :For thisCssFile :In parms.cssfilename
+         filename←F.EnforceSlash'expand'F.NormalizePath thisCssFile
+         filename←':/'⎕R'|/'⊣filename
+         html,←⊂'<link href="file://',filename,'" rel="stylesheet">'
+     :EndFor
+ :Else
+     html,←⊂CompressCSS GetCSS parms
+ :EndIf
+ html,←InjectJavaScriptEarly ⍬
+ ⍝html,←GetCodeMirrorLib parms  ⍝ Not implemented yet
+ html,←⊂'</head>'
+ html,←⊂'<body>'
+ r←WriteHTML html
+⍝Done

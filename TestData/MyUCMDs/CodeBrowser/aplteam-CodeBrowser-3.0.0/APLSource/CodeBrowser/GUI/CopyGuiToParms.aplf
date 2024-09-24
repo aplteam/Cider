@@ -1,0 +1,27 @@
+ {r}←CopyGuiToParms n
+ r←⍬
+ n.∆Parms.namespaces←n.namespaces.Text
+ n.∆Parms.ignore←n.toBeIgnored.Text
+ n.∆Parms.ignoreEmpty←n.ignoreEmptyNamespaces.State
+ n.∆Parms.ignoreTatinPkgs←n.ignoreTatinPkgs.State
+ n.∆Parms.recursive←n.recursive.State
+ n.∆Parms.processGuiInstances←n.processGuiInstances.State
+ n.∆Parms.filename←n.filename.Text
+ n.∆Parms.cssfilename←MassageCssFilename n.cssFilename.Text
+ n.∆Parms.linkcssfile←n.linkCssFile.State
+ n.∆Parms.lang←n.lang.Text
+ n.∆Parms.showParms←n.showParms.State
+ n.∆Parms.viewInBrowser←n.viewInBrowser.State
+ n.∆Parms.processFunctions←n.processFns.State
+ n.∆Parms.processOperators←n.processOpr.State
+ n.∆Parms.processScripts←n.processScripts.State
+ n.∆Parms.processVars←n.processVars.State
+ n.∆Parms.backgroundColorPrint←n.printBgrCol.State
+ n.∆Parms.twoSidedPrint←n.twoSidedPrint.State
+ n.∆Parms.printFontSize←⊃(//)⎕VFI n.fontSizeForPrint.Text
+ n.∆Parms.caption←n.caption.Text
+ n.∆Parms.footer←n.footer.Text
+ n.∆Parms.info←,n.info.Text
+ n.∆Parms.infoIsHTML←n.infoIsHtml.State
+ n.∆Parms.lines←n.lines.Value
+⍝Done
