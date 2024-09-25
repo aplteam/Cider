@@ -30,7 +30,7 @@
          q←(2⊃⎕NPARTS projectFolder),': no Tatin dependency folder defined for "dependencies',(development/'_dev'),'" - edit project config file?'
          q←'EditProjectConfig@',q
          :If 1 P.##.C.YesOrNo q
-             P.ProjectConfig projectFolder
+             1 P.ProjectConfig projectFolder
              cfg←P.ReadProjectConfigFile projectFolder
              ref←cfg.CIDER.dependencies
          :Else

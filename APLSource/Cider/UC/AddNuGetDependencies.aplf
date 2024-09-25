@@ -25,7 +25,7 @@
          q←'No NuGet dependency folder defined for "dependencies" - edit project config file?'
          q←'EditProjectConfig@',q
          :If 1 P.##.C.YesOrNo q
-             P.ProjectConfig projectFolder
+             1 P.ProjectConfig projectFolder
              cfg←P.ReadProjectConfigFile projectFolder
              ref←cfg.CIDER.dependencies
          :Else
