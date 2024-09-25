@@ -1,8 +1,11 @@
- folder←GetCiderGlobalConfigHomeFolder;name;flag;oldFolder;res
+ folder←GetCiderGlobalConfigHomeFolder;oldFolder;res
 ⍝ Return the full path to (and including) .cider in the user's home directory
 ⍝ Has a side effect: creates the hosting folder in case it does not yet exist
- name←(1+'win'≡⎕C 3↑1⊃'.'⎕WG'aplversion')⊃'HOME' 'USERPROFILE'
- folder←F.NormalizePath(2 ⎕NQ #'GetEnvironment'name),'/.cider/'
+ :If 'win'≡⎕C 3↑1⊃'.'⎕WG'aplversion'
+     folder←(⊃⎕NPARTS ¯1↓⊃⎕NPARTS 2⊃4070⌶0),'.cider/'
+ :Else
+     folder←F.NormalizePath(2 ⎕NQ #'GetEnvironment' 'HOME'),'/.cider/'
+ :EndIf
  1 ⎕MKDIR folder
 ⍝ The remaining code checks whether there is a .cider folder in a different location
 ⍝ and if so copies the content over.

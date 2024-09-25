@@ -1,8 +1,9 @@
 (
- '* 0.43.1 ⋄ 2024-09-??'
+ '* 0.43.1 ⋄ 2024-09-25'
+ '  * Package updated (NuGet)'
  '  * Bug fixes'
  '    * On Windows with OneDrive being used to sync the user''s Documents/ folder, <GetProgramFilesFolder> '
- '      returned incorrect information.'
+ '      and <GetMyUCMDsFolder> both returned incorrect information.'
  '* 0.43.0 ⋄ 2024-09-24'
  '  * `]OpenProject` now understands `-alias=.`, resulting in the name of the project in lowercase as alias.'
  '  * `ListTatinDependencies` now accepts the path to a package installation folder in addition to a project '

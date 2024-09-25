@@ -1,4 +1,4 @@
- r←Test_Misc_007(stopFlag batchFlag);⎕TRAP;path
+ r←Test_Misc_007(stopFlag batchFlag);⎕TRAP;path;expected
 ⍝ Exercise GetMyUCMDsFolder
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
@@ -8,7 +8,8 @@
  :EndIf
 
  path←##.Cider.GetMyUCMDsFolder
- →T.PassesIf path≡(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\MyUCMDs'
+ expected←(⊃⎕NPARTS 2⊃4070⌶0),'MyUCMDs'
+ →T.PassesIf path≡expected
 
  r←T._OK
 ⍝Done

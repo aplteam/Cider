@@ -1,11 +1,11 @@
  CreateLinksInDocuments_APLFiles flag;sourceFolder;targetFolder;cmd;res
-⍝ This function assumes that the "correct" version of Cider is installed in $USERPROFILE\Documents\Dyalog APL Files
-⍝ It attempts to create links from this folder to all version-specific folders in $USERPROFILE\Documents\
+⍝ This function assumes that the "correct" version of Cider is installed in the user's Documents\Dyalog APL Files folder.
+⍝ It attempts to create links from this folder to all version-specific folders in the user's Documents\ folder.
 ⍝ `flag` is an insurance against accidental calls.
 ⍝ See also `DeleteLinksInDocuments_APLFiles`
  :If flag
      'This function requires Admin rights'⎕SIGNAL 11/⍨~##.Cider.APLTreeUtils2.IsRunningAsAdmin
-     sourceFolder←(2 ⎕NQ #'GetEnvironment' 'USERPROFILE'),'\Documents\Dyalog APL Files\CiderTatin/Cider'
+     sourceFolder←(⊃⎕NPARTS 2⊃4070⌶0),'Dyalog APL Files\CiderTatin/Cider'
      :If 'Win'≡3↑1⊃# ⎕WG'APLVersion'
          targetFolder←4{⍵/⍨⍺>+\'\'=⍵}sourceFolder
          :If ⎕NEXISTS targetFolder,'/Dyalog APL-64 18.0 Unicode Files'
