@@ -49,5 +49,5 @@
          :EndIf
      :Until flag
  :Else
-     r←↑ns.cider_config
+     ns.⎕ED⍠('ReadOnly' 1)⊢'cider_config'
  :EndIf
