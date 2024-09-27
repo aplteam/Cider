@@ -13,8 +13,8 @@
      selectFlag←0
      :Select os←C.APLTreeUtils2.GetOperatingSystem ⍬
      :Case 'Win'
-         :If ~⎕NEXISTS installFolder←if1←(2⊃4070⌶0),'\SessionExtensions\CiderTatin\Cider'
-         :AndIf ~⎕NEXISTS installFolder←if2←(1⊃⎕NPARTS 2⊃4070⌶0),'Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
+         :If ~⎕NEXISTS installFolder←if1←##.Cider.GetCurrentAPLsFolderInDocuments,'\SessionExtensions\CiderTatin\Cider'
+         :AndIf ~⎕NEXISTS installFolder←if2←##.Cider.GetUserDocumentsFolder,'Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
              selectFlag←1
          :EndIf
      :Case 'Lin'

@@ -9,9 +9,9 @@
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
      cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
-     targetFolder←(2⊃4070⌶0),'\SessionExtensions\CiderTatin\Cider'
+     targetFolder←##.Cider.GetCurrentAPLsFolderInDocuments,'SessionExtensions\CiderTatin\Cider'
      :If 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
-         targetFolder←(⊃1 ⎕NPARTS 2⊃4070⌶0),'Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
+         targetFolder←##.Cider.GetUserDocumentsFolder,'Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
      :AndIf 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
      :AndIf ~1 M.##.CommTools.YesOrNo'Could not find the user command script in the user''s home folder anywhere - continue?'
          :Return

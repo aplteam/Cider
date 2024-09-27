@@ -2,7 +2,7 @@
 ⍝ Return the full path to (and including) .cider in the user's home directory
 ⍝ Has a side effect: creates the hosting folder in case it does not yet exist
  :If 'win'≡⎕C 3↑1⊃'.'⎕WG'aplversion'
-     folder←(⊃⎕NPARTS ¯1↓⊃⎕NPARTS 2⊃4070⌶0),'.cider/'
+     folder←F.ExpandPath GetUserDocumentsFolder,'../.cider/'
  :Else
      folder←F.NormalizePath(2 ⎕NQ #'GetEnvironment' 'HOME'),'/.cider/'
  :EndIf

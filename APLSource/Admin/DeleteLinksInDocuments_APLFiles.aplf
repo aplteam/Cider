@@ -6,7 +6,7 @@
  :If flag
      'This function requires Admin rights'⎕SIGNAL 11/⍨~##.Cider.APLTreeUtils2.IsRunningAsAdmin
      :If 'Win'≡3↑1⊃# ⎕WG'APLVersion'
-         hostingFolder←⊃⎕NPARTS 2⊃4070⌶0
+         hostingFolder←##.Cider.GetUserDocumentsFolder
          targetFolder←hostingFolder,'/Dyalog APL-64 18.0 Unicode Files\CiderTatin\Cider'
          :If ##.Cider.F.IsSymbolicLink targetFolder
              ⎕NDELETE targetFolder

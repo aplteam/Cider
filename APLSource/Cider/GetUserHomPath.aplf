@@ -2,7 +2,7 @@
 ⍝ Returns the user's HOME path on the current operating system
  :Select os←APLTreeUtils2.GetOperatingSystem ⍬
  :Case 'Win'
-     r←¯1↓⊃1 ⎕NPARTS ¯1↓⊃1 ⎕NPARTS 2⊃4070⌶0
+     r←¯1↓⊃1 ⎕NPARTS ¯1↓GetUserDocumentsFolder
  :Case 'Lin'
      r←2 ⎕NQ'.' 'GetEnvironment' 'HOME'
  :Case 'Mac'

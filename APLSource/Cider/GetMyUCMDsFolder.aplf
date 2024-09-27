@@ -4,7 +4,7 @@
 ⍝ Under Windows typically:\\
 ⍝ `'C:\Users\{⎕AN}\Documents\MyUCMDs\' ←→ GetMyUCMDsFolder`
  :If 'Win'≡A.GetOperatingSystem ⍬
-     r←(⊃⎕NPARTS 2⊃4070⌶0),'MyUCMDs'
+     r←GetUserDocumentsFolder,'MyUCMDs'
  :Else
      r←(2 ⎕NQ'.' 'GetEnvironment' 'Home'),'/MyUCMDs'
  :EndIf
