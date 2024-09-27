@@ -178,7 +178,7 @@
       :If 0=⎕SE.⎕NC'APLGit2'
           {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)'⎕SE'
       :EndIf
-      G←⎕SE.APLGit2
+      G←GetRefToAPLGit2 ⍬
       :If (⊂⎕C Cmd)∊⎕C'Log' 'Squash'
           :If 0≢Args._1
           :AndIf ~⊃⊃⎕VFI Args._1~'-'  ⍝ Neither a positive integer nor "yyyy-mm-dd"
@@ -253,7 +253,7 @@
           →noProjectSelected/0
           r←⍪Status space folder Args
       :Case ⎕C'Version'
-          r←⎕SE.APLGit2.Version
+          r←G.Version
       :Else
           ∘∘∘ ⍝ Huh?!
       :EndSelect
@@ -272,7 +272,7 @@
     ∇
 
     ∇ r←AddGitIgnore folder
-      r←⎕SE.APLGit2.AddGitIgnore folder
+      r←G.AddGitIgnore folder
     ∇
 
     ∇ r←Log(space folder args);parms;buff
@@ -391,32 +391,32 @@
           name←(⍕space),'.',name
       :EndIf
       ('Not an APL object: ',name)Assert 0<⎕NC name
-      r←folder ⎕SE.APLGit2.ChangeLog name
+      r←folder G.ChangeLog name
     ∇
 
     ∇ r←Init(space folder args)
-      ('This folder is already managed by Git: ',folder)Assert~⎕SE.APLGit2.IsGitProject folder
+      ('This folder is already managed by Git: ',folder)Assert~G.IsGitProject folder
       :If args.quiet
       :OrIf ⎕SE.CommTools.YesOrNo'Sure that you want to make ',folder,' a Git-managed folder?'
-          r←args.quiet ⎕SE.APLGit2.Init folder
+          r←args.quiet G.Init folder
       :EndIf
     ∇
 
     ∇ r←IsDirty(space folder args)
-      r←⎕SE.APLGit2.IsDirty folder
+      r←G.IsDirty folder
       r←(r+1)⊃'Clean' 'Dirty'
     ∇
 
     ∇ r←NoOfUntrackedFiles folder
-      r←⎕SE.APLGit2.NoOfUntrackedFiles folder
+      r←G.NoOfUntrackedFiles folder
     ∇
 
     ∇ r←IsGitProject(space folder args)
-      r←(1+⎕SE.APLGit2.IsGitProject folder)⊃'no' 'yes'
+      r←(1+G.IsGitProject folder)⊃'no' 'yes'
     ∇
 
     ∇ r←OpenGitShell(space folder args)
-      r←⎕SE.APLGit2.OpenGitShell folder
+      r←G.OpenGitShell folder
     ∇
 
     ∇ r←RefLog(space folder args);branch;value;flag
@@ -426,33 +426,40 @@
           branch←args.branch
       :EndIf
       :If (,0)≡,args.max
-          r←folder ⎕SE.APLGit2.RefLog~args.all
+          r←folder G.RefLog~args.all
       :Else
-          r←folder ⎕SE.APLGit2.RefLog 0
+          r←folder G.RefLog 0
           (flag value)←⎕VFI args.max
           '"max" must be a positive integer'Assert flag
           r←value↑r
       :EndIf
     ∇
 
-    ∇ r←Commit(space folder args);msg;ref;branch;rc;data;flag
-      branch←⎕SE.APLGit2.CurrentBranch folder
-      :If 0<⎕SE.APLGit2.NoOfUntrackedFiles folder
+    ∇ r←Commit(space folder args);msg;ref;branch;rc;data;flag;status;currentBranch
+      branch←G.CurrentBranch folder
+      :If 0<G.NoOfUntrackedFiles folder
           :If 1=args.add
           :OrIf 1 ⎕SE.CommTools.YesOrNo'Branch "',branch,'" has unstaged changes etc - shall Git''s "Add -A" command be executed?'
-              (rc msg data)←folder ⎕SE.APLGit2.##.U.RunGitCommand'add -A'
+              (rc msg data)←folder G.##.U.RunGitCommand'add -A'
               msg Assert 0=rc
           :Else
-              r←'Cancelled by user'
-              :Return
+              r←'Cancelled by user' ⋄ →0
           :EndIf
       :EndIf
-      :If ⎕SE.APLGit2.IsDirty folder
-          :If 0 args.Switch'amend'
-              'You must not specify both -amend and -m='Assert 0=≢''args.Switch'm'
-              r←⍪1 ⎕SE.APLGit2.Commit folder
-              :Return
-          :ElseIf (,0)≢,args.m
+      :If 0 args.Switch'amend'
+          status←G.Status folder
+          :If ∨/'nothing to commit, working tree clean'⍷∊status
+          :AndIf 0=≢''args.Switch'm'
+              r←'There is nothing to commit and you have not specified a message either?!' ⋄ →0
+          :EndIf
+          currentBranch←G.CurrentBranch folder
+          :If 'main'≡currentBranch
+          :AndIf ~∨/'(use "git push" to publish your local commits)'⍷∊status
+              r←'You MUST NOT use the -amend flag when the latest commit has already been pushed' ⋄ →0
+          :EndIf
+          r←⍪({0≡⍵:'' ⋄ ⍵}Args.m)G.Commit folder 1
+      :Else
+          :If (,0)≢,args.m
           :AndIf 0<≢args.m
               msg←args.m
           :Else
@@ -464,12 +471,12 @@
                   msg←ref.msg{⍺/⍨~(⌽∧\0=⌽⍵)∨(∧\0=⍵)}≢¨ref.msg
                   :If (⊂branch)∊'main' 'master'
                   :AndIf 0=≢(∊msg)~'.'
-                      :If 0=1 ⎕SE.CommTools.YesOrNo'You MUST specify a meaningful message for "',branch,'"; try again (no=cancel) ?'
+                      :If 0=1 G.##.CommTools.YesOrNo'You MUST specify a meaningful message for "',branch,'"; try again (no=cancel) ?'
                           r←'Commit cancelled by user'
                           :Return
                       :EndIf
                   :ElseIf 0<≢(∊msg)~'.'
-                  :OrIf ⎕SE.CommTools.YesOrNo'Sure you don''t want to provide a message? ("No" cancells the whole operation)'
+                  :OrIf G.##.CommTools.YesOrNo'Sure you don''t want to provide a message? ("No" cancells the whole operation)'
                       flag←1
                   :Else
                       r←'Operation cancelled by user'
@@ -479,9 +486,7 @@
                   msg←1↓⊃,/(⎕UCS 10),¨⊆msg
               :Until flag
           :EndIf
-          r←⍪msg ⎕SE.APLGit2.Commit folder
-      :Else
-          r←'Nothing to commit, is clean'
+          r←⍪msg G.Commit folder
       :EndIf
     ∇
 
@@ -799,6 +804,17 @@
       :Else
           space←data
           folder←G.GetPathFromProject space
+      :EndIf
+    ∇
+
+    ∇ ref←GetRefToAPLGit2 dummy
+      :If 9=#.⎕NC'APLGit2.APLGit2'
+      :AndIf 0<⎕SE.APLGit2.⎕NC'DEVELOPMENT'
+      :AndIf ⎕SE.APLGit2.DEVELOPMENT
+      :AndIf 0={0=⍵.⎕NC'∆TestFlag':0 ⋄ ⍵.∆TestFlag}#.APLGit2.APLGit2
+          ref←#.APLGit2.APLGit2.API
+      :Else
+          ref←⎕SE.APLGit2
       :EndIf
     ∇
 

@@ -1,4 +1,4 @@
-  (filename1 filename2 hash1 hash2)←{x}CompareCommits y;space;folder;hash1;hash2;list;noofBytes;flag;exe;alias;parms;branch;name;cfg;ns
+ (filename1 filename2 hash1 hash2)←{x}CompareCommits y;space;folder;hash1;hash2;list;noofBytes;flag;exe;alias;parms;branch;name;cfg;ns
 ⍝ Allows inspection of all differences between two commits in a single comparison.\\
 ⍝ In case `⍵` is empty the last commit is compared with the checkout commit of the current branch.
 ⍝ In case `⍵` is a single commit it is compared with the last commit.
@@ -34,6 +34,7 @@
      :EndIf
      'The two hashes match - that makes no sense'U.Assert hash1≢hash2
      (hash1 hash2)←{⍵↑⍨¨8⌊≢¨⍵}hash1 hash2
+     'The length of the hashes must be 4 or more characters'U.Assert∧/{(,'.')≡,⍵:1 ⋄ 4≤≢⍵}¨hash1 hash2
      :If (,'.')≡,hash1
          list←↑{⍵{((⍵-1)↑⍺)(⍵↓⍺)}⍵⍳' '}∘A.DLB¨1↓1 Status folder
      :Else

@@ -30,7 +30,7 @@
                      :OrIf rc=128   ⍝ From experience we know that this often means that the file does not exist, though it might have other reasons...
                          buff1←''
                      :Else
-                         ∘∘∘ ⍝ It appears that the file does not exist but we fail to analyze the error message correctly in this respect  ⍝TODO⍝
+                         ∘∘∘ ⍝ It appears that the file does not exist but we fail to analyze the error message correctly in this respect
                      :EndIf
                  :EndIf
              :EndIf

@@ -14,6 +14,10 @@ In short, when compatability is affected.
 
 This document does not come with a complete list of fixes, added features etc. Consult [Cider on GitHub](https://github.com/aplteam/Cider/releases) for that.
 
+## Version 0.43.1 from 2024-09-25
+
+Just bug fixes
+
 ## Version 0.43.0 from 2024-09-23
 
 * The `-raw` flag has been removed from the `]ListTatinDependencies` user command
@@ -40,6 +44,7 @@ Just bug fixes
 * The `]Cider.ProjectConfig` user command does not have a `-print` flag anymore but an `-edit` flag instead, and by default it prints the content of Cider's global config file to the session.
  
   That brings this user command syntactially in line with another Cider user command (`Config`) and similar Tatin user commands.
+
 
 
 

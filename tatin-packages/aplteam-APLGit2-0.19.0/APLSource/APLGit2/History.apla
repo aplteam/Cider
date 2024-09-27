@@ -1,4 +1,9 @@
 (
+ '* 0.19.0 ⋄ 2024-09-12'
+ '  * Beware, the syntax of `Commit` has changed! Due to that you can now use it to change a commit message'
+ '    with the -amend flag'
+ '  * `CompareCommits` did not check the hashes for having a proper length.'
+ '* 0.18.0 ⋄ 2024-08-11'
  '* 0.17.0 ⋄ 2024-08-05'
  '  * `GoToGitHub` removed, or rather: moved to the ]GitHub user command where it belongs.'
  '* 0.17.0 ⋄ 2024-08-01'
