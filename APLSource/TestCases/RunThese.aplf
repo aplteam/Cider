@@ -1,0 +1,10 @@
+ {(rc log)}←RunThese these;rc;ref2Gui;_parms
+ _parms←T.CreateParms ⍬
+ _parms.testCaseNos←these
+ _parms.debugFlag←1
+ _parms.trapFlag←0
+ _parms.stopFlag←1
+ (rc log)←T.Run__ _parms
+ ⎕←'------'
+ ⎕←'rc=',⍕rc
+ ⎕←⍪log
