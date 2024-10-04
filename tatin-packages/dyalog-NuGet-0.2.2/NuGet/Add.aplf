@@ -1,7 +1,7 @@
- r←Add args;project_dir;newpkgs;new;p;newv;old;oldv;pkgs;i;same;bad;add;z;mask;v
- ⍝ ⊃args: project_dir
- ⍝ 1↓args: new packages, either 'name' or 'name/version'
- ⍝ e.g. Add 'c:\tmp\clocktest\ 'Clock'
+ r←Add args;project_dir;newpkgs;new;p;newv;old;oldv;pkgs;i;same;bad;add;z;mask;v;cmd
+⍝ ⊃args: project_dir
+⍝ 1↓args: new packages, either 'name' or 'name/version'
+⍝ e.g. Add 'c:\tmp\clocktest\ 'Clock'
 
  args←,⊆args
  project_dir←⊃args
@@ -20,17 +20,18 @@
 
  same←⍸new∊old            ⍝ Already registered
  same←(⍳≢new)∊(newv[same]≡oldv[old⍳new[same]])/i ⍝ With the same version
- ⍝ research suggests the following is wrong, just "dotnet add" again to change version
- ⍝:If 0≠≢i←i/⍨newv[i]≢oldv[old⍳new[i]]
- ⍝    ('already registered with a different version: ',,⍕pkgs[old⍳new[i]])⎕SIGNAL 11
- ⍝:EndIf
+⍝ research suggests the following is wrong, just "dotnet add" again to change version
+⍝:If 0≠≢i←i/⍨newv[i]≢oldv[old⍳new[i]]
+⍝ ('already registered with a different version: ',,⍕pkgs[old⍳new[i]])⎕SIGNAL 11
+⍝:EndIf
 
  bad←0⍨¨new
  r←''
  r,←'Already registered: '∘,¨same/new
  :For i :In ⍸~same
      add←(i⊃new),(0≠≢v)/' --version ',v←i⊃newv
-     z←⎕CMD'dotnet add ',project_dir,' package ',add
+     cmd←'dotnet add ',project_dir,' package ',add
+     z←CMD cmd
      mask←∨/¨'error: '∘⍷¨z
      :If bad[i]←∨/mask
          r,←⊂'Error: ',add

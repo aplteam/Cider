@@ -489,7 +489,19 @@ RunThese 'G*,~GP'        ⍝ Everything that starts with "G" except "GP"</code><
 <h4 data-id="I-cant-remember-the-numbers">I can't remember the numbers!</h4>
 </a>
 </div>
-<p>In case the tests are called by a user (rather than a batch process), you can also specify a “?” as <code>stop</code>. That makes the test suite offer all options in a list. You can then simply select the options you are interested in.</p>
+<p>In case the tests are called by a user (rather than a batch process), you can also specify a “?” as <code>stop</code>. That makes the test suite offer all options in a list. You can then simply select the options you are interested in:</p>
+<pre tabindex="0"><code>--- Stop just before... -----------------------
+   1. Tests
+   2. Initial
+   3. Cleanup
+   4. Tests &amp; Initial
+   5. Tests &amp; Cleanup
+   6. Initial &amp; Cleanup
+   7. Test, Initial &amp; Cleanup
+   8. Nowhere
+   9. Cancel
+
+Select one item (q=quit) :</code></pre>
 <div class="h_tag">
 <a href="#stops-with-the-gui" id="stops-with-the-gui" class="autoheader_anchor">
 <h4 data-id="Stops-with-the-GUI">Stops with the GUI</h4>
@@ -718,7 +730,7 @@ Test_Misc_001
 <h5 data-id="Run"><code>Run</code></h5>
 </a>
 </div>
-<pre tabindex="0"><code>{(rc log)}←{stopFlag} Run debugFlag</code></pre>
+<pre tabindex="0"><code>{(rc log)}←{stop} Run debugFlag</code></pre>
 <p><code>Run</code> requires a Boolean right argument. A 1 makes the test framework stop on a line that fails to return the expected result (<code>PassesIf</code>, <code>FailsIf</code>, <code>GotoTidyUp</code>) while a 0 does not.</p>
 <p>The optional left argument defines whether the test framework should stop right before any of the test cases is executed (1) or not (0, which is the default), or other functions, see “<a href="#make-the-test-framework-stop" class="bookmark_link">Make the test framework stop</a>” for details</p>
 <div class="h_tag">
@@ -760,7 +772,7 @@ T.RunThese 'Test_Group1_001'   ⍝ Same as before</code></pre>
 <h5 data-id="RunBatchTests"><code>RunBatchTests</code></h5>
 </a>
 </div>
-<pre tabindex="0"><code>{(rc log)}←{stopFlag} RunBatchTests debugFlag</code></pre>
+<pre tabindex="0"><code>{(rc log)}←{stop} RunBatchTests debugFlag</code></pre>
 <p>This is the same as <code>Run</code> except that it passes a 1 as <code>batchFlag</code> to the test functions. This allows the test function itself to quit because it's not batchable. This is usually because a test requires a human in front of the monitor, and if such a human is not available right now, then there is no point running such tests.</p>
 <div class="h_tag">
 <a href="#without-helpers" id="without-helpers" class="autoheader_anchor">
@@ -779,11 +791,11 @@ T.RunThese 'Test_Group1_001'   ⍝ Same as before</code></pre>
  batchFlag    0
  debugFlag    0
  guiFlag      0
- stopFlag     0
+ stop         0
  testCaseNos
  trapFlag     1
       ⍝ Make amendments:
-      ps.stopFlag←1
+      ps.stop←1
       ps.testCaseNos←'Misc' (1 2 3)
       ⍝ Call the Run__ function:
       (rc log)←T.Run__ ps</code></pre>

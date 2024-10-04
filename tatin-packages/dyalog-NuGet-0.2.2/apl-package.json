@@ -1,9 +1,10 @@
 {
   api: "",
   assets: "",
-  date: 20240314.18114,
+  date: 20241004.163137,
   description: "Use NuGet packages from Dyalog APL",
   documentation: "./README.md",
+  exclude: "⎕IO.apla,⎕ML.apla",
   files: "",
   group: "dyalog",
   io: 1,
@@ -21,5 +22,5 @@
   tags: "dotnet,nuget,packages",
   uri: "https://tatin.dev/",
   userCommandScript: "",
-  version: "0.2.1+1",
+  version: "0.2.2+1",
 }
