@@ -1,6 +1,6 @@
 (
- '* 0.43.1 ⋄ 2024-09-27'
- '  * Package updated (NuGet, APLGit2)'
+ '* 0.43.1 ⋄ 2024-10-04'
+ '  * Package updated (NuGet, APLGit2, Tester2)'
  '  * Bug fixes'
  '    * On Windows with OneDrive being used to sync the user''s Documents/ folder, <GetProgramFilesFolder> '
  '      and <GetMyUCMDsFolder> both returned incorrect information.'
