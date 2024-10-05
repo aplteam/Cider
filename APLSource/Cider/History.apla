@@ -1,4 +1,7 @@
 (
+ '* 0.43.2 ⋄ 2024-10-??'
+ '  * Bug fixes:'
+ '    * When the user set the global config parm `ReportGitStatus` to 3 things went south'
  '* 0.43.1 ⋄ 2024-10-04'
  '  * Package updated (NuGet, APLGit2, Tester2)'
  '  * Bug fixes'
