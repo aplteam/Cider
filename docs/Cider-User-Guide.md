@@ -21,7 +21,7 @@ The two most important commands of Cider's user commands are `CreateProject` and
 
 I> Note that in this document names stemming from the Cider configuration file are shown `like this`.
 
-Note that a Cider project may or may not contain a single Tatin package. It is **_not_** designed to keep multiple packages. O course a project can have multiple Tatin packages as dependencies, that is a different matter.
+Note that a Cider project may or may not contain a single Tatin package. It is **_not_** designed to keep multiple packages. Of course a project can have multiple Tatin packages as dependencies, that is a different matter.
 
 A> ### Additional features
 A> 
@@ -192,11 +192,13 @@ This folder does not only host the global config file, it's also the place where
 
 You may define `AskForDirChange` and assign one of the following values:
 
-0 = Don't do anything at all regarding the current directory<br>
-1 = If it's the first project in the current WS then change the directory<br>
-2 = If it's the first project in the current WS then ask the user whether she wants to change the current directory
+* 0 = Don't do anything at all regarding the current directory
+* 1 = Change the current directory
+* 2 = Ask the user whether she wants to change the current directory
 
-If no such value is defined then Cider behaves as if it is defined with the value 1.
+If `AskForDirChange` is not defined then it defaults to 1.
+
+Note that this happens only for the first project in the current WS.
 
 ##### CheckForDropboxConflicts
 
@@ -207,7 +209,9 @@ If you don't use Dropbox skip this topic.
 
 If `CheckForDropboxConflicts` is defined and has the value 1, then both `]OpenProject` and `]CloseProject` will check whether the project has files were the name contains the string "conflicted copy", and report such files to the session.
 
-Background: in case Dropbox cannot figure out what the last version of a file is, it will create such a file. Dropbox leaves it to the user to compare such a file manually and solve the conflict somehow. The problem is that Dropbox does not actually tell you about such files, it just silently creates them. Therefore Cider does it for you if you configure Cider accordingly.
+Background: in case Dropbox cannot figure out what the last version of a file is, it will create of that file and add "conflicted copy" to the name, followed by a timestamp. 
+
+Dropbox leaves it to the user to compare such a file manually and solve the conflict somehow. The problem is that Dropbox does not actually tell you about such files, it just silently creates them. Therefore Cider does it for you if you configure Cider accordingly.
 
 ##### ExecuteAfterProjectOpen
 
@@ -223,10 +227,10 @@ By default Cider reports the Git status of a project by putting it into an edit 
 
 If you don't want this you can inject `ReportGitStatus` into the global config file and assign one of the following values:
 
-0 = Don't report the Git status <br>
-1 = Report the Git status in a read-only edit window (the default) <br>
-2 = Report the Git status by printing it to the session <br>
-3 = Ask the user what to do <br>
+* 0 = Don't report the Git status
+* 1 = Report the Git status in a read-only edit window (the default)
+* 2 = Report the Git status by printing it to the session
+* 3 = Ask the user what to do
 
 No matter what the global config parameter `ReportGitStatus` is saying, if a project is not version-controlled by Git (read: has no `.git/` folder in the root of the project folder) or `batch` is 1, no Git status is reported.
 
@@ -596,11 +600,10 @@ See the config properties `dependencies` and `dependencies_dev` for details.
 Your application or tool might depend on a NuGet[^nuget] package. By assigning a folder hosting NuGet packages to the `nuget` sub-key in `dependencies` you can make sure that Cider will load those installed packages into the root of your project or the assigned sub-namespace.
 
 !> On NuGet packages
-=> Note that for the time being the ability to load NuGet packages is most useful for loading you own NuGet packages written in C#. 
-=>
-=> Beyong that it depends on whether the package uses [generics](https://learn.microsoft.com/en-us/dotnet/standard/generics/). Many packages do, and that makes them unusable for the time being, because Dyalog's .NET interface does not support generics right now.
-=>
-=> However, this restriction of the .NET interface is likely to be lifted in a future release.
+=> Currently, the ability to load NuGet packages is most useful for loading your own packages written in C#.
+=> Beyond that, it depends on whether the package uses [generics](https://learn.microsoft.com/en-us/dotnet/standard/generics/). Many packages do, which makes them unusable for now, as Dyalog’s .NET interface does not yet support generics.
+=> However, this limitation is expected to be resolved in a future release of the .NET interface.
+
 
 See the config property `dependencies` details.
 
@@ -699,12 +702,6 @@ If the project was opened (rather than imported!) **_and_** the project is versi
 ## Misc
 
 Cider offers helpers that are useful in particular circumstances.
-
-### Check for Dropbox conflicts
-
-At this stage Cider would perform a check for any Dropbox conflicts if the project was opened rather than imported **_and_** the global configuration parameter 
-
-The check is only performed the `batch` parameter is 0
 
 
 ### AddTatinDependencies
@@ -823,6 +820,8 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
+
 
 
 
