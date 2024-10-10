@@ -1,0 +1,15 @@
+(
+ 'The ]APLGit2.* user commands are particularly useful when used in conjunction with the project'
+ 'manager Cider, but they can be used without Cider as well, though you must then specify the'
+ 'folder you wish the user command to act on.'
+ ''
+ 'Note that APLGit2 does not accept URLs pointing to GitHub, it works only locally.'
+ ''
+ 'By default a user command will act on the currently opened Cider project if there is just one.'
+ 'If there are multiple open Cider projects, the user will be asked which one to act on.'
+ ''
+ 'Once a default project got established, and there are several Cider projects opened, the user will'
+ 'be asked if she wants to act on the default project. If she refuses, a list with all opened Cider'
+ 'projects will be presented to her.'
+ ''
+)

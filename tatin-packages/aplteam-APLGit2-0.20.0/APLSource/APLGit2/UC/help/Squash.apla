@@ -1,0 +1,11 @@
+(
+ 'Squashes some commits of the current branch into a single commit.'
+ 'The current branch MUST be neither "main" nor "master".'
+ ''
+ 'If no argument is specifid all suitable commits will be listed.'
+ 'By specifying a positive integer you can specify the number of commits to be squashed'
+ ''
+ '-m     You may specify a message with -m="my message", but if you don''t you will be given an edit'
+ '       window for specifying a message. It will be populated with the messages from the commits'
+ '       about to be squashed.'
+)

@@ -1,0 +1,10 @@
+ r←ListBranches(space folder args);parms
+ :If (,0)≢,args.a
+     parms←'-a'
+ :ElseIf (,0)≢,args.r
+     parms←'-r'
+ :Else
+     parms←''
+ :EndIf
+ r←⍪parms ##.ListBranches folder
+⍝Done

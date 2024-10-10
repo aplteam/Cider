@@ -1,0 +1,3 @@
+ r←AddGitIgnore folder
+ r←##.AddGitIgnore folder
+⍝Done

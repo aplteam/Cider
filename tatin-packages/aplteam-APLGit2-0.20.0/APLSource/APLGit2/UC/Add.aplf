@@ -1,0 +1,7 @@
+ r←Add(space folder args);filter
+ 'Not a URL on GitHub'Assert 0<≢args._1
+ filter←args._1
+ 'Invalid filter'Assert 0<≢filter
+ {}filter ##.Add folder
+ r←0 0⍴''
+⍝Done

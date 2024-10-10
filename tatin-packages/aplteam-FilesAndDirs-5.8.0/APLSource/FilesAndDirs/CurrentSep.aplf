@@ -1,3 +1,0 @@
- r←CurrentSep
-⍝ Returns what is the "correct" filename separator under the current OS.
- r←('Win'≡APLTreeUtils2.GetOperatingSystem ⍬)⊃'/\'

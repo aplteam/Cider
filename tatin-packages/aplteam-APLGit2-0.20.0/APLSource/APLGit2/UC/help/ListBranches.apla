@@ -1,0 +1,9 @@
+(
+ 'List all branches, by default local ones.'
+ ''
+ 'You may specify two mutually exclusive options in order to change its behaviour:'
+ ' * -a stands for "all": list all local and remote branches'
+ ' * -r stands for "remote": list just remote branches'
+ 'For more information execute:'
+ ']APLGit2.ListBranches -???'
+)

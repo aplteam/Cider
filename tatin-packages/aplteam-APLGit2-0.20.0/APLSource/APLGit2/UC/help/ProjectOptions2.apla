@@ -1,0 +1,7 @@
+(
+ 'You may specify a project by setting -project=. It must be one of:'
+ ' * The fully qualified path to a namespace that is an opened Cider project'
+ ' * The path to a git-managed folder'
+ '   In this case it does not have to be an open Cider project, and not even a closed one.'
+ ''
+)

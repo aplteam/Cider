@@ -1,0 +1,65 @@
+ r←level Help Cmd;ref;⎕TRAP
+ r←''
+ :Select level
+ :Case 0
+     :Select ⎕C Cmd
+     :Case ⎕C'Add'
+         r,←⊂']APLGit2.add <filter> -project='
+     :Case ⎕C'AddGitIgnore'
+         r,←⊂']APLGit2.AddGitIgnore [space|folder]'
+     :Case ⎕C'ChangeLog <apl-name> -project='
+         r,←⊂']APLGit2.ChangeLog <filter> -project='
+     :Case ⎕C'Commit'
+         r,←⊂']APLGit2.Commit [space|folder] -m= -add -amend'
+     :Case ⎕C'CompareCommits'
+         r,←⊂']APLGit2.CompareCommits [hash1] [hash2] -project= -use=[name|?] -view'
+     :Case ⎕C'CurrentBranch'
+         r,←⊂']APLGit2.CurrenBranch [space|folder]'
+     :Case ⎕C'Diff'
+         r,←⊂']APLGit2.Diff [space|folder] -verbose'
+     :Case ⎕C'GetDefaultProject'
+         r,←⊂']GetDefaultProject'
+     :Case ⎕C'GetTagOfLatestRelease'
+         r,←⊂']APLGit2.GetTagOfLatestRelease [space|folder]'
+     :Case ⎕C'Init'
+         r,←⊂']APLGit2.Init [folder] -quiet'
+     :Case ⎕C'IsDirty'
+         r,←⊂']APLGit2.IsDirty [space|folder]'
+     :Case ⎕C'IsGitProject'
+         r,←⊂']APLGit2.IsGitProject [space|folder]'
+     :Case ⎕C'ListBranches'
+         r,←⊂']APLGit2.ListBranches [space|folder] -a -r'
+     :Case ⎕C'Log'
+         r,←⊂']APLGit2.Log [space|folder] -since= -verbose -max= -name='
+     :Case ⎕C'NoOfUntrackedFiles'
+         r,←⊂']APLGit2.NoOfUntrackedFiles [space|folder]'
+     :Case ⎕C'OpenGitShell'
+         r,←⊂']APLGit2.OpenGitShell [space|folder]'
+     :Case ⎕C'RefLog'
+         r,←⊂']APLGit2.RefLog [space|folder] -max= -all -branch= -project='
+     :Case ⎕C'SetDefaultProject'
+         r,←⊂']APLGit2.SetDefaultProject [space|folder]'
+     :Case ⎕C'Status'
+         r,←⊂']APLGit2.Status -short -path='
+     :Case ⎕C'Squash'
+         r,←⊂']APLGit2.Squash [space|folder] [noOf] -m=<message>'
+     :Else
+         r,←⊂'There is no help available'
+     :EndSelect
+     :If 'Version'≢Cmd
+         r,←''(']APLGit2.',Cmd,' -?? ⍝ Enter this for more information ')
+     :EndIf
+
+ :Case 1
+     r←help⍎Cmd
+ :Case 2
+     :Select ⎕C Cmd
+     :CaseList ⎕C¨'Add' ''
+         r,←AddProjectOptions 1
+     :CaseList ⎕C¨'Commit' 'CurrentBranch' 'Diff' 'IsDirty' 'IsGitProject' 'ListBranches' 'Log' 'OpenGitShell' 'Status'
+         r,←AddProjectOptions 0
+     :Else
+         r,←⊂'There is no additional help available'
+     :EndSelect
+
+ :EndSelect

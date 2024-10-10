@@ -1,0 +1,8 @@
+(
+ 'Returns a list of files in the working directory that are different from HEAD.'
+ ''
+ '-verbose:  Specify this to get a full report'
+ ''
+ 'For more information execute:'
+ ']APLGit2.Diff -???'
+)

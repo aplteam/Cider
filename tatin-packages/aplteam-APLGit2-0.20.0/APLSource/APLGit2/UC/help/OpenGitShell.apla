@@ -1,0 +1,8 @@
+(
+ 'Opens a Git Bash shell, either on the given project or, if no project was provided, the'
+ 'current directory.'
+ ''
+ 'If there are opened Cider projects you can specify a path or a dot (".") for the current directory.'
+ 'For more information execute:'
+ ']APLGit2.OpenGitShell -???'
+)

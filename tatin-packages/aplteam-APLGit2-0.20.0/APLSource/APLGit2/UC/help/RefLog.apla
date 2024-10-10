@@ -1,0 +1,12 @@
+(
+ 'Lists the reference log.'
+ ''
+ 'By default the command lists just log entries up to the last checkout.'
+ ''
+ 'Reference logs, or "reflogs", record when the tips of branches and other references were'
+ 'updated in the local repository. Reflogs are useful in various Git commands, to specify'
+ 'the old value of a reference.'
+ ''
+ '-all   If you want all records then specifiy the -all flag.'
+ '-max=  If you want a specific number then specify the max= modifier.'
+)

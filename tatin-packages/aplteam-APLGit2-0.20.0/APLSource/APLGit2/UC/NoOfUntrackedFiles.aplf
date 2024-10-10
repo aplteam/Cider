@@ -1,0 +1,3 @@
+ r←NoOfUntrackedFiles folder
+ r←##.NoOfUntrackedFiles folder
+⍝Done

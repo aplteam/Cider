@@ -1,0 +1,7 @@
+(
+ 'Returns:'
+ 'Project <name> (<path) is [not] managed by Git'
+ ''
+ 'For more information execute:'
+ ']APLGit2.IsGitProject -???'
+)
