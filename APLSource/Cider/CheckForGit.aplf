@@ -1,4 +1,4 @@
- {r}←CheckForGit(path config parms);status;dmx;gitStatus;ind
+  {r}←CheckForGit(path config parms);status;dmx;gitStatus;ind
 ⍝ Checks whether the project is managed by Git, and if so offers some help, unless parms.batch=1
  r←⍬
  →(~F.Exists(AddSlash path),'.git')/0
@@ -16,18 +16,19 @@
      dmx←⎕DMX
      :If 127=dmx.EN
          (1 parms.batch)p'The project appears to be managed by Git but Git is not installed?!'
-         :Return
      :ElseIf 128=dmx.EN
          (1 parms.batch)p'The project appears to be managed by Git but user.email and/or user.name are not defined'
-         :Return
      :ElseIf 0<≢dmx.Message
          (1 parms.batch)p'The Git status of the project could not be determined due to an error:'
          (1 parms.batch)p dmx.Message,'; rc=',⍕dmx.EN
-         :Return
+     :ElseIf 0<≢dmx.DM
+         (1 parms.batch)p'The Git status of the project could not be determined due to an error:'
+         (1 parms.batch)p (⊃dmx.DM),'; rc=',⍕dmx.EN
      :Else
          (1 parms.batch)p'The Git status of the project could not be determined due to an error'
          :Return
      :EndIf
+     :Return
  :EndTrap
  :If ∧/∨/¨'nothing to commit' 'working tree clean'⍷¨⊂∊status
  :AndIf ~∨/∨/¨'on branch main' 'on branch master'⍷¨⊂⎕C∊status
