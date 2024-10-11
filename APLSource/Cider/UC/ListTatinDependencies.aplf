@@ -43,20 +43,16 @@
                  :EndIf
              :Else
                  list←F.ListDirs path
-                 r←0 2⍴''
+                 r←''
                  :For path2 :In list
                      buildFilename←path2,'/apl-buildlist.json'
                      :If ⎕NEXISTS buildFilename
                          :If 0<≢buff←P_.ListTatinDependenciesFull path2
-                             buff←⊃,/CR,¨(buff[;1]⍴¨' '),¨buff[;2]
-                             :If 2=⍴⍴buff
-                                 r⍪←buff
-                             :Else
-                                 r,←buff
-                             :EndIf
+                             r,←⊃,/CR,¨(buff[;1]⍴¨' '),¨buff[;2]
                          :EndIf
                      :EndIf
                  :EndFor
+                 r←1↓r
              :EndIf
          :EndIf
      :Else
