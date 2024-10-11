@@ -1,5 +1,6 @@
 (
  '* 0.43.2 ⋄ 2024-10-??'
+ '  * Git status report improved'
  '  * Bug fixes:'
  '    * When the user set the global config parm `ReportGitStatus` to 3 things went south'
  '    * If a project was opened that is not managed by Git an error was reported (wrongly)'

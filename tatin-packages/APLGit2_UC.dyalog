@@ -35,6 +35,21 @@
     ⍝Done
     ∇
 
+    ∇ r←level Help cmd;ref
+      :Access Shared Public
+      r←0⍴⊂''
+      :If 9=⎕NC'⎕SE.APLGit2'
+          ref←GetRefToAPLGit2''
+          :If 3=ref.##.⎕NC'UC.Help'
+              r←level ref.##.UC.Help cmd
+          :Else
+              PrintError''
+          :EndIf
+      :Else
+          ⎕←'APLGit2 not found'
+      :EndIf
+    ∇
+
     ∇ ref←GetRefToAPLGit2 dummy
       :If 9=#.⎕NC'APLGit2.APLGit2'
       :AndIf 0<⎕SE.APLGit2.⎕NC'DEVELOPMENT'
@@ -44,6 +59,14 @@
       :Else
           ref←⎕SE.APLGit2
       :EndIf
+    ∇
+
+    ∇ PrintError dummy;msg
+      msg←''
+      :If 3=⎕NC'⎕SE.APLGit2.Version'
+          msg←' APLGit2 is not installed correctly. Please remove and install again.'
+      :EndIf
+      ⎕←msg
     ∇
 
 :EndClass
