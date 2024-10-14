@@ -1,4 +1,4 @@
-﻿:Class APLGit2_uc
+:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 

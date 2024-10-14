@@ -1,5 +1,5 @@
 (
- '* 0.43.2 ⋄ 2024-10-11'
+ '* 0.43.2 ⋄ 2024-10-13'
  '  * Git status report improved'
  '  * Bug fixes:'
  '    * When the user set the global config parm `ReportGitStatus` to 3 things went south'

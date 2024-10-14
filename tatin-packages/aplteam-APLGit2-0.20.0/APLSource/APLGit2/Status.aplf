@@ -19,6 +19,6 @@
          msg←'On branch ',branch
      :EndIf
      (ind⊃r)←msg
+     r←(⊂path{0<≢⍵:'Namespace: ',⍵ ⋄ 'Folder: ',⍺}space),⊆r
  :EndIf
- r←(⊂path{0<≢⍵:'Namespace: ',⍵ ⋄ 'Folder: ',⍺}space),⊆r
 ⍝Done

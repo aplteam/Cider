@@ -1,10 +1,10 @@
 (
- '* 0.20.0 ⋄ 2024-10-10'
+ '* 0.20.0 ⋄ 2024-10-13'
  '  * User command script simplified and all code moved to the UC namespace'
  '  * All commands now allow `.` for "current directory"'
  '  * Bug fixes'
  '    * `]Commits`''s help page corrected regarding the change of -amend (can now be used to change commit msg)'
- '    * `]Status` now reports the folder in case no namepsace was specified'
+ '    * `]Status` now reports the folder in case no namespace was specified'
  '    * `]Status` provided sometimes a mutilated message when on main/master.'
  '    * `]CompareCommits` crashed when no files were found'
  '    * `-??` did not work '

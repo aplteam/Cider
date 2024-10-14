@@ -1,5 +1,7 @@
- r←folder Squash(msg noOf)
+ r←Squash(space folder Args);msg;noOf
+ msg←''Args.Switch'm'
+ noOf←⊃(//)⎕VFI(⍕(1+∧/Args._1∊⎕D)⊃Args.(_2 _1)),' +0'
  'Number of commits to be squashed must be a positive integer'Assert(⎕DR noOf)∊83 163 323
  'Number of commits to be squashed must be a positive integer'Assert noOf≥0
- r←folder ##.Squash msg noOf
+ r←⍪folder ##.Squash msg noOf
 ⍝Done
