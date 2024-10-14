@@ -158,6 +158,7 @@ A> => For that reason you are advised to install again into the correct folder.
 A> =>
 A> => The next time you use `]Cider.UpdateCider` it will remove Cider from the wrong folder.
 
+
 #### When updating goes wrong
 
 Debugging is the process of removing bugs from code, while programming is how you introduce them in the first place.
@@ -196,6 +197,8 @@ You may define `AskForDirChange` and assign one of the following values:
 2 = If it's the first project in the current WS then ask the user whether she wants to change the current directory
 
 If no such value is defined then Cider behaves as if it is defined with the value 1.
+
+Note that this happens only for the first project in the current WS.
 
 ##### CheckForDropboxConflicts
 
@@ -247,13 +250,13 @@ With `]Cider.CreateProject` any folder that does not yet host a file `cider.conf
 
 If the folder does not yet exist it will be created. In any case, the folder will be populated with a file `cider.config`.
 
-I> The default config file that is copied into any new project stems from a folder `.cider/` in your home directory.
+I> The default config file that is copied into any new project stems from a folder `.cider/` in your home directory. 
 I>
-I> You may change this file and make amendments that suit your needs.
+I> You may change this file and make amendments that suit your needs. 
 I>
 I> However, when a new version of Cider is installed the template config file *might* come with new or renamed or removed properties, and those would not make it into the template file in `.cider/cider.config` in your home directory: watch the release notes for this.
 
-Starting with version 0.41.0, when Cider writes a config file to disk it adds (to old config files) or updates the Cider version number. The purpose of this is that one can see which version of Cider was used to write the file.
+Starting with version 0.41.0, when Cider writes a config file to disk is adds (to old config files) or updates the Cider version number. The purpose of this is that one can see which version of Cider was used to write the file.
 
 Note that `]Cider.CreateProject` deals differently with the possible combinations of namespace and source folder:
 
@@ -279,7 +282,6 @@ A> ```
 A> ]Cider.CreateProject /path/2/project -alias=foo
 A> ```
 A> From now on you can open the project with:
-A>
 A> ```
 A> ]Cider.OpenProject [foo]
 A> ```
@@ -383,7 +385,7 @@ If not empty, this must be the name of a function within `projectSpace`. The fun
 
 Such a function should not return a result; if it does anyway, it should be shy.
 
-Such a function may be niladic, monadic, or ambivalent:
+Such a function may be niladic, monadic or ambivalent:
 
 * A niladic function is just called
 * An ambivalent or monadic function receives a namespace with the project configuration as the right argument
@@ -399,7 +401,7 @@ The purpose is to tell anybody not familiar with the project how to create a new
 #.Cider.Admin.Make 1 ⍝ Execute this for creating a new version
 ```
 
-The output is compiled from the config parameter values `CIDER.parent`, `CIDER.projectSpace`, and `CIDER.make`, and the comment is then added.
+The output is compiled from the config parameter values `CIDER.parent`, `CIDER.projectSpace` and `CIDER.make`, and the comment is then added.
 
 However, if the first non-white space character of `make` is a `]`, its definition would just be printed to the session together with a comment because then it's obviously a user command.
 
@@ -431,7 +433,7 @@ The purpose is to tell anybody not familiar with the project how to execute the 
 #.Cider.TestCases.RunTests ⍝ Execute this for running the test suite
 ```
 
-The output is compiled from the config parameter values `CIDER.parent`, `CIDER.projectSpace`, and `CIDER.tests`, and the comment is then added.
+The output is compiled from the config parameter values `CIDER.parent`, `CIDER.projectSpace` and `CIDER.tests`, and the comment is then added.
 
 However, if the first non-white space character of `tests` is a `]` (making it a user command rather than a function call), its definition would just be printed to the session together with a comment.
 
@@ -502,7 +504,7 @@ The first step carried out by `]Cider.OpenProject` is to create a namespace with
 The `parent` must exist while the `projectSpace` may or may not exist. If it does not, it is created. If it does already exist then:
 
 * In case the namespace and the folder are both empty, Cider carries on.
- In case only the namespace is empty, Cider carries on.
+* In case only the namespace is empty, Cider carries on.
 * In case only the folder is empty, Cider carries on.
 * In case neither the namespace nor the folder is empty, the user is asked whether she wants the namespace to be emptied; if not, an error is thrown.
 
@@ -611,9 +613,9 @@ If a property "tatinVars" does exist and points to a sub-namespace, then Cider w
 
 If the project was opened (rather than imported!) **_and_** `batch` is 0, then Cider checks at this point the current (or working) directory. If it's different from the project's directory, the user is asked whether she wants to change the current directory to the project's directory.
 
-#### Initializing a project
+#### Initialising a project
 
-There might well be demand for executing some code to initialize your project.
+There might well be demand for executing some code to initialise your project.
 
 This can be achieved by assigning the name of a function to `init`. The name must be relative to the root of your project.
 
@@ -621,7 +623,7 @@ The function will be executed unless `suppressInit` is 1.
 
 The function should not return a result. If it does anyway it should be shy. Any result would be ignored.
 
-Such a function may be niladic, monadic, ambivalent, or dyadic:
+Such a function may be niladic, monadic, ambivalent or dyadic:
 
 * A monadic function receives a namespace with the project configuration as the right argument
 * A dyadic or ambivalent function receives in addition the parameter space passed to `OpenProject`
@@ -774,7 +776,7 @@ dyalog-NuGet-0.2.1
 ...                                
 ```
 
-This shows that the package `APLGit2` requests older versions of `APLTreeUtils2`, `FilesAndDirs`, and `CommTools` than Cider would eventually use, information that is not easily available by other means.
+This shows that the package `APLGit2` requests older versions of `APLTreeUtils2`, `FilesAndDirs` and `CommTools` than Cider would eventually use, information that is not easily available by other means.
 
 ### ListNuGetDependencies                                                   
 
@@ -796,3 +798,43 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
