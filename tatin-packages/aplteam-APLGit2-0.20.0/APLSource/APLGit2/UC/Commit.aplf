@@ -1,0 +1,53 @@
+ r←Commit(space folder args);msg;ref;branch;rc;data;flag;status;currentBranch
+ branch←##.CurrentBranch folder
+ :If 0<##.NoOfUntrackedFiles folder
+     :If 1=args.add
+     :OrIf 1 ⎕SE.CommTools.YesOrNo'Branch "',branch,'" has unstaged changes etc - shall Git''s "Add -A" command be executed?'
+         (rc msg data)←folder ##.U.RunGitCommand'add -A'
+         msg Assert 0=rc
+     :Else
+         r←'Cancelled by user' ⋄ →0
+     :EndIf
+ :EndIf
+ :If 0 args.Switch'amend'
+     status←##.Status folder
+     :If ∨/'nothing to commit, working tree clean'⍷∊status
+     :AndIf 0=≢''args.Switch'm'
+         r←'There is nothing to commit and you have not specified a message either?!' ⋄ →0
+     :EndIf
+     currentBranch←##.CurrentBranch folder
+     :If 'main'≡currentBranch
+     :AndIf ~∨/'(use "git push" to publish your local commits)'⍷∊status
+         r←'You MUST NOT use the -amend flag when the latest commit has already been pushed' ⋄ →0
+     :EndIf
+     r←⍪({0≡⍵:'' ⋄ ⍵}args.m)##.Commit folder 1
+ :Else
+     :If (,0)≢,args.m
+     :AndIf 0<≢args.m
+         msg←args.m
+     :Else
+         flag←0
+         :Repeat
+             ref←⎕NS''
+             ref.msg←,⊂''
+             ref.⎕ED'msg'
+             msg←ref.msg{⍺/⍨~(⌽∧\0=⌽⍵)∨(∧\0=⍵)}≢¨ref.msg
+             :If (⊂branch)∊'main' 'master'
+             :AndIf 0=≢(∊msg)~'.'
+                 :If 0=1 ##.CommTools.YesOrNo'You MUST specify a meaningful message for "',branch,'"; try again (no=cancel) ?'
+                     r←'Commit cancelled by user'
+                     :Return
+                 :EndIf
+             :ElseIf 0<≢(∊msg)~'.'
+             :OrIf ##.CommTools.YesOrNo'Sure you don''t want to provide a message? ("No" cancells the whole operation)'
+                 flag←1
+             :Else
+                 r←'Operation cancelled by user'
+                 :Return
+             :EndIf
+             msg←{0=≢⍵:'...' ⋄ ⍵}msg
+             msg←1↓⊃,/(⎕UCS 10),¨⊆msg
+         :Until flag
+     :EndIf
+     r←⍪msg ##.Commit folder
+ :EndIf

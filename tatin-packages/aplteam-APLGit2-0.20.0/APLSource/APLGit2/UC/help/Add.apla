@@ -1,0 +1,13 @@
+(
+ 'Add files to the index.                                                 '
+ '                                                                         '
+ 'You may specify one of:                                                 '
+ ' * A file                                                               '
+ ' * A folder                                                             '
+ ' * A "." (dot), meaning that all so far untracked files should be added '
+ '                                                                         '
+ 'For more information execute:                                           '
+ ']APLGit2.Add -???                                                       '
+ ''
+ ''
+)

@@ -1,41 +1,44 @@
  {r}←CheckForGit(path config parms);status;dmx;gitStatus;ind
 ⍝ Checks whether the project is managed by Git, and if so offers some help, unless parms.batch=1
  r←⍬
+ →(~F.Exists(AddSlash path),'.git')/0
  gitStatus←GetGlobalGitStatus
  :If gitStatus≠0
- :AndIf F.Exists(AddSlash path),'.git'
-     :If gitStatus=3
-         ind←'Report Git status?'C.Select'Nope!' 'Yes, in ⎕ED' 'Yes, in the session'
+     :If gitStatus=3  ⍝ We need to ask the user
+         ind←'Report Git status (if anything is to report) ?'C.Select'Nope!' 'Yes, in ⎕ED' 'Yes, in the session'
          →(1=ind)/0
+         gitStatus←(2 3⍳ind)⊃1 2
      :EndIf
-     :Trap 0
-         status←G.Status path
+ :EndIf
+ :Trap 0
+     status←G.Status path
+ :Else
+     dmx←⎕DMX
+     :If 127=dmx.EN
+         (1 parms.batch)p'The project appears to be managed by Git but Git is not installed?!'
+     :ElseIf 128=dmx.EN
+         (1 parms.batch)p'The project appears to be managed by Git but user.email and/or user.name are not defined'
+     :ElseIf 0<≢dmx.Message
+         (1 parms.batch)p'The Git status of the project could not be determined due to an error:'
+         (1 parms.batch)p dmx.Message,'; rc=',⍕dmx.EN
+     :ElseIf 0<≢dmx.DM
+         (1 parms.batch)p'The Git status of the project could not be determined due to an error:'
+         (1 parms.batch)p(⊃dmx.DM),'; rc=',⍕dmx.EN
      :Else
-         dmx←⎕DMX
-         :If 127=dmx.EN
-             (1 parms.batch)p'The project appears to be managed by Git but Git is not installed?!'
-             :Return
-         :ElseIf 128=dmx.EN
-             (1 parms.batch)p'The project appears to be managed by Git but user.email and/or user.name are not defined'
-             :Return
-         :ElseIf 0<≢dmx.Message
-             (1 parms.batch)p'The Git status of the project could not be determined due to an error:'
-             (1 parms.batch)p dmx.Message,'; rc=',⍕dmx.EN
-             :Return
-         :Else
-             (1 parms.batch)p'The Git status of the project could not be determined due to an error'
-             :Return
-         :EndIf
-     :EndTrap
-     :If ∧/∨/¨'nothing to commit' 'working tree clean'⍷¨⊂∊status
-     :AndIf ~∨/∨/¨'on branch main' 'on branch master'⍷¨⊂⎕C∊status
-         (1 parms.batch)p'Git: ',(1⊃status),', ',⊃{⍺,', ',⍵}/1↓status
-     :ElseIf 0=parms.batch
-         status←(↓(,[0.5]'Git status report')⍪'='),status
-         :If gitStatus=1
-             {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
-         :Else
-             ⎕←↑status
-         :EndIf
+         (1 parms.batch)p'The Git status of the project could not be determined due to an error'
+         :Return
+     :EndIf
+     :Return
+ :EndTrap
+ :If ∧/∨/¨'nothing to commit' 'working tree clean'⍷¨⊂∊status
+ :AndIf ~∨/∨/¨'on branch main' 'on branch master'⍷¨⊂⎕C∊status
+     status←(↓(,[0.5]'Git status report')⍪'='),status
+     p status
+ :ElseIf 0=parms.batch
+     status←(↓(,[0.5]'Git status report')⍪'='),status
+     :If gitStatus=1
+         {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
+     :Else
+         ⎕←↑status
      :EndIf
  :EndIf

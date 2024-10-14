@@ -1,0 +1,7 @@
+(
+ 'Reports the status from Git''s perspective.'
+ 'By default a verbose report is printed.'
+ 'Specify -short for getting just the essentials.'
+ 'For more information execute:'
+ ']APLGit2.Status -???'
+)

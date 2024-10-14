@@ -1,0 +1,25 @@
+ (r space folder)←GetSpaceAndFolder(Cmd args)
+ r←0 0⍴''
+ space←folder←''
+ :If ~(⊂Cmd)∊'GetDefaultProject' 'SetDefaultProject' 'Version'
+     :If ({⍵⊃⍨⍸⍵.Name≡¨⊂Cmd}List ⍬)._Project
+     :AndIf 0≢args._1
+         (space folder)←GetSpaceAndFolder_ args._1
+         ('Project <',args._1,'> not found on disk')Assert 0<≢folder
+     :ElseIf 2=args.⎕NC'project'
+     :AndIf (,0)≢,args.project
+     :AndIf 0<≢args.project
+         (space folder)←GetSpaceAndFolder_ args.project
+     :Else
+         (space folder)←##.EstablishProject''
+     :EndIf
+     :If 0=≢space,folder
+         :If (⊂Cmd)∊'OpenGitShell' ''
+             folder←'.'
+         :Else
+             r←'No project provided/selected'
+         :EndIf
+     :ElseIf ~(⊂Cmd)∊,⊂'OpenGitShell'
+         ('<',folder,'> not found on disk')Assert ⎕NEXISTS folder
+     :EndIf
+ :EndIf

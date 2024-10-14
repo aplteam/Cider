@@ -444,7 +444,7 @@ The name of the namespace the project is injected into. If this is empty it is g
 
 #### ignoreUserExec
 
-This flag is ignored in case Cider's own global config file defines not function on `ExecuteAfterProjectOpen`, but if there is a fully qualified function name defined then this flag can be used to prevent the function from execution with a particular call of `OpenProject`.
+This flag is ignored in case Cider's own global config file does not define a function on `ExecuteAfterProjectOpen`, but if there is a fully qualified function name defined, then this flag can be used to prevent the function from being executed at the end of opening a project.
 
 
 #### importFlag
@@ -545,6 +545,7 @@ r←Version
 Returns the version number.
 
 This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
+
 
 
 

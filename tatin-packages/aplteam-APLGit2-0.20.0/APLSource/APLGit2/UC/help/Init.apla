@@ -1,0 +1,8 @@
+(
+ 'Useful to initialize a folder for being managed by Git.'
+ ''
+ 'You may add the path to a folder as argument; if you do not then APLGit2 tries to'
+ 'figure it out.'
+ ''
+ '-quiet is useful to prevent Init to ask any questions, mostly for tests.'
+)

@@ -1,0 +1,163 @@
+ r←List dummy;c
+ r←⍬
+ :If AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
+     c←⎕NS''
+     c.Name←'Add'
+     c.Desc←'Executes the git "Add" commands'
+     c.Group←'APLGit2'
+     c.Parse←'1 -project='
+     c._Project←0
+     r,←c
+
+     c←⎕NS''
+     c.Name←'AddGitIgnore'
+     c.Desc←'Create a file .gitignore, or merge default values with existing one'
+     c.Group←'APLGit2'
+     c.Parse←'1s'
+     c._Project←0
+     r,←c
+
+     c←⎕NS''
+     c.Name←'ListBranches'
+     c.Desc←'Lists all branches for a Git-managed project'
+     c.Group←'APLGit2'
+     c.Parse←'1s -a -r'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'ChangeLog'
+     c.Desc←'Takes an APL name and list all commits the object was part of'
+     c.Group←'APLGit2'
+     c.Parse←'1 -project='
+     c._Project←0
+     r,←c
+
+     c←⎕NS''
+     c.Name←'Commit'
+     c.Desc←'Performs a commit on the current branch'
+     c.Group←'APLGit2'
+     c.Parse←'1s -m= -add -amend'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'CompareCommits'
+     c.Desc←'Compares two different commits'
+     c.Group←'APLGit2'
+     c.Parse←'2s -project= -use= -files'
+     c._Project←0
+     r,←c
+
+     c←⎕NS''
+     c.Name←'Diff'
+     c.Desc←'Compares the working directory with HEAD'
+     c.Group←'APLGit2'
+     c.Parse←'1s -verbose'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'GetDefaultProject'
+     c.Desc←'Returns namespace and folder of the current default project, if any'
+     c.Group←'APLGit2'
+     c.Parse←'0'
+     c._Project←0
+     r,←c
+
+     c←⎕NS''
+     c.Name←'GetTagOfLatestRelease'
+     c.Desc←'Returns the tag of the latest release'
+     c.Group←'APLGit2'
+     c.Parse←'1s -verbose -username='
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'Init'
+     c.Desc←'Initialises a folder for managing it by Git'
+     c.Group←'APLGit2'
+     c.Parse←'1s -quiet'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'IsDirty'
+     c.Desc←'Reports whether there are uncommited changes'
+     c.Group←'APLGit2'
+     c.Parse←'1s'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'IsGitProject'
+     c.Desc←'Returns "yes" or "no" depending on whether there is a ./.git folder'
+     c.Group←'APLGit2'
+     c.Parse←'1s'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'Log'
+     c.Desc←'Shows the commit logs'
+     c.Group←'APLGit2'
+     c.Parse←'2s -verbose -name= -commit='
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'NoOfUntrackedFiles'
+     c.Desc←'Returns the number of untracked files'
+     c.Group←'APLGit2'
+     c.Parse←'1s'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'OpenGitShell'
+     c.Desc←'Opens a Git shell for a Git managed project'
+     c.Group←'APLGit2'
+     c.Parse←'1s'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'RefLog'
+     c.Desc←'List reference log entries (RefLogs)'
+     c.Group←'APLGit2'
+     c.Parse←'1s -max= -all -branch= -project='
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'SetDefaultProject'
+     c.Desc←'Specifies the project to be used in case no project is specified'
+     c.Group←'APLGit2'
+     c.Parse←'1s'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'Squash'
+     c.Desc←'Squashes some commits in the current branch into a single one'
+     c.Group←'APLGit2'
+     c.Parse←'2s -m='
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'Status'
+     c.Desc←'Reports all untracked files and/or all uncommitted changes'
+     c.Group←'APLGit2'
+     c.Parse←'1s -short'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'Version'
+     c.Desc←'Returns name, version number and version date as a three-element vector'
+     c.Group←'APLGit2'
+     c.Parse←''
+     c._Project←0
+     r,←c
+ :EndIf

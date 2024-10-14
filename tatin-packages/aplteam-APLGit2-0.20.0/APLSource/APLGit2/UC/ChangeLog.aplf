@@ -1,0 +1,8 @@
+ r←ChangeLog(space folder args);msg;name;⎕TRAP
+ name←args._1
+ :If ~(⊃name)∊'#⎕'
+     name←(⍕space),'.',name
+ :EndIf
+ ('Not an APL object: ',name)Assert 0<⎕NC name
+ r←folder ##.ChangeLog name
+⍝Done

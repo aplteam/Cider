@@ -1,0 +1,5 @@
+ r←r AddTitles titles
+    ⍝ `r` is a matrix with data. `titles` is put on top of that matrix, followed by a row with `-` matching the lengths of each title
+ r←⍉↑(⊂¨titles),¨' ',¨↓⍉r
+ r[2;]←(≢¨r[1;])⍴¨'-'
+⍝Done

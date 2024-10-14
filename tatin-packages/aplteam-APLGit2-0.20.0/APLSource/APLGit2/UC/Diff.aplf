@@ -1,0 +1,3 @@
+ r←Diff(space folder args);filter
+ r←⍪args.verbose ##.Diff folder
+⍝Done

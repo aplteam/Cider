@@ -1,0 +1,4 @@
+ r←IsDirty(space folder args)
+ r←##.IsDirty folder
+ r←(r+1)⊃'Clean' 'Dirty'
+⍝Done
