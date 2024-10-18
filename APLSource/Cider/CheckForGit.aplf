@@ -31,9 +31,13 @@
      :Return
  :EndTrap
  :If 0=parms.batch
-     status←(↓(,[0.5]'Git status report')⍪'='),status
-     status,←⊂'Git branches: ',⊃{⍺,', ',⍵}/2↓¨APLGit2.ListBranches''
+     :If ∨/'No commits yet'⍷∊status
+         (3⊃status)←'Nothing has been commited yet, therefore branches cannot be reported'
+     :Else
+         (3⊃status)←'Git branches: '{0=≢⍵:'No other branches' ⋄ ⍺,⊃{⍺,', ',⍵}/⍵}2↓¨APLGit2.ListBranches path
+     :EndIf
       ⍝TODO⍝ Add stash info if any
+     status←(↓(,[0.5]'Git status report')⍪'='),status
      :If gitStatus=1
          {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
      :Else

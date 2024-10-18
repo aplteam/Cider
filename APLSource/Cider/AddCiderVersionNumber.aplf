@@ -1,7 +1,7 @@
  cfg←AddCiderVersionNumber cfg
 ⍝ Either adds Cider's version number to the config file or overwrites it.
 ⍝ It also checks whether there is a property CIDER.version and deletes it if so.
-⍝ This is because this was introduced into new projects by accident.
+⍝ This was introduced into new projects by accident for a while after "version" was renamed to "cider_version"
  cfg.CIDER.cider_version←{⍵↑⍨¯1+⍵⍳'+'}Version
- ⎕trap←0'S'
- ∘∘∘
+ cfg.CIDER.⎕EX'version'
+⍝Done
