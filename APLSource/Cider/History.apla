@@ -1,4 +1,9 @@
 (
+ '* 0.44.0 ⋄ 2024-10-??'
+ '  * `]OpenProject`''s reporting on Git enhanced and treamlined'
+ '  * Bug fixes'
+ '    * The file `cider.config.template` wrongly came with a property `CIDER.version`. As a result,'
+ '      `CreateProject` injected this wrongly into the new file `cider.config` '
  '* 0.43.2 ⋄ 2024-10-13'
  '  * Git status report improved'
  '  * Bug fixes:'

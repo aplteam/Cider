@@ -30,12 +30,10 @@
      :EndIf
      :Return
  :EndTrap
- :If ∧/∨/¨'nothing to commit' 'working tree clean'⍷¨⊂∊status
- :AndIf ~∨/∨/¨'on branch main' 'on branch master'⍷¨⊂⎕C∊status
+ :If 0=parms.batch
      status←(↓(,[0.5]'Git status report')⍪'='),status
-     p status
- :ElseIf 0=parms.batch
-     status←(↓(,[0.5]'Git status report')⍪'='),status
+     status,←⊂'Git branches: ',⊃{⍺,', ',⍵}/2↓¨APLGit2.ListBranches''
+      ⍝TODO⍝ Add stash info if any
      :If gitStatus=1
          {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
      :Else
