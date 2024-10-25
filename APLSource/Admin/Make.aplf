@@ -8,23 +8,27 @@
      M←##.TestCases.MakeHelpers
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
-     cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
+     cfg←⎕SE.Tatin.ReadPackageConfigFile C.HOME
      targetFolder←##.Cider.GetCurrentAPLsFolderInDocuments,'SessionExtensions\CiderTatin\Cider'
      :If 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
          targetFolder←##.Cider.GetUserDocumentsFolder,'Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
      :AndIf 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
-     :AndIf ~1 M.##.CommTools.YesOrNo'Could not find the user command script in the user''s home folder anywhere - continue?'
+     :AndIf ~1 M.YesOrNo'Could not find the user command script in the user''s home folder anywhere - continue?'
          :Return
      :EndIf
+     :If ~batch
+         M.##.CommTools.Pause'In the next step, update the version number',('+'∊##.Cider.Version)/' but leave the build number alone'
+         ⎕ED'##.Cider.Version'
+     :EndIf
+     M.IncreaseBuildIDInFunction(⍕##.Cider),'.Version'
      M.FetchLaterUserCommand cfg C targetFolder
-     version←M.CompileVersionNumberPattern cfg
      M.RecreateFolder path
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
-     parms.version←version
      noOf←M.ConvertMarkdownToHtml5(⊂C.HOME,'/'),¨'docs/' 'html/'
-     Assert 4=noOf
-     {}⎕SE.Tatin.CreateAPIfromCFG ##.Cider cfg
+     'Tally of converted documentation files?!'Assert 4=noOf
+     noOf←⎕SE.Tatin.CreateAPIfromCFG ##.Cider cfg
+     'Tally of the API is unexpected'Assert 30=noOf
      zipFilename←⎕SE.Tatin.BuildPackage parms
      MakeZipForDyalog 1
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
