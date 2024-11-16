@@ -1,5 +1,5 @@
 (
- '* 0.44.0 ⋄ 2024-10-??'
+ '* 0.44.0 ⋄ 2024-11-16'
  '  * `]OpenProject`''s reporting on Git enhanced and streamlined'
  '  * Bug fixes'
  '    * The file `cider.config.template` wrongly came with a property `CIDER.version`. '
