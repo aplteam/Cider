@@ -5,7 +5,7 @@
  gitStatus←GetGlobalGitStatus
  :If gitStatus≠0
      :If gitStatus=3  ⍝ We need to ask the user
-         ind←'Report Git status (if anything is to report) ?'C.Select'Nope!' 'Yes, in ⎕ED' 'Yes, in the session'
+         ind←'Report Git status (if anything is to report) ?' 0 1 C.Select'Nope!' 'Yes, in ⎕ED' 'Yes, in the session'
          →(1=ind)/0
          gitStatus←(2 3⍳ind)⊃1 2
      :EndIf
