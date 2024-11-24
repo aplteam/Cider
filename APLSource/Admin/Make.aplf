@@ -19,12 +19,18 @@
      :If ~batch
          M.##.CommTools.Pause'In the next step, update the version number',('+'∊##.Cider.Version)/' but leave the build number alone'
          ⎕ED'##.Cider.Version'
+         version←M.CompileVersionNumberPattern cfg
+     :Else
+         version←⍬
      :EndIf
      M.IncreaseBuildIDInFunction(⍕##.Cider),'.Version'
      M.FetchLaterUserCommand cfg C targetFolder
      M.RecreateFolder path
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
+     :If ⍬≢version
+         parms.version←version
+     :EndIf
      noOf←M.ConvertMarkdownToHtml5(⊂C.HOME,'/'),¨'docs/' 'html/'
      'Tally of converted documentation files?!'Assert 4=noOf
      noOf←⎕SE.Tatin.CreateAPIfromCFG ##.Cider cfg
