@@ -1,4 +1,6 @@
 (
+ '* 0.44.1 ⋄ 2024-11-24'
+ '  * Bug fixed in `ProjectConfig`: did not return the expected result when editing was disallowed'
  '* 0.44.0 ⋄ 2024-11-16'
  '  * `]OpenProject`''s reporting on Git enhanced and streamlined'
  '  * Bug fixes'
