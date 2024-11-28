@@ -14,7 +14,7 @@ Specify all a command’s arguments _before_ any options, e.g.
 
 	]CIDER.CreateProject path/to/foo path/to/bar -noEdit 
 
-
+---
 
 ## Add NuGet dependencies
 
@@ -381,7 +381,7 @@ _Tries to update Cider_
 
 	]CIDER.UpdateCider
 
-If a later version of Cider is available,asks whether you want to update to it.
+If a later version is available, Cider asks whether you want to update to it.
 
 When the update is complete, restart Dyalog, rebuild the user commands, and print the current version.
 
@@ -389,6 +389,37 @@ When the update is complete, restart Dyalog, rebuild the user commands, and prin
 	153 commands reloaded
 	      ]CIDER.Version
 	0.44.0+835
+
+!!! danger "Do not use the command for versions prior to 0.37.3" 
+
+	=== "Versions 0.37.1 and 0.37.2"
+
+		These versions installed into the new folder but with one level missing.
+
+
+		[Reinstall Cider](get-started.md#install).
+
+		The next time you use `]CIDER.UpdateCider` it will remove Cider from the wrong folder.
+
+	=== "Versions prior to 0.37.0"
+
+		Uninstall: delete the `Cider/` folder from your `MyUCMDs/` folder.
+
+		[Reinstall Cider](get-started.md#install).
+
+__Troubleshooting__
+
+If the update process fails, calling it again rarely helps. You need an escape route.
+
+=== "Dyalog 19.0 and later"
+
+	1. Execute `]DeActivate tatin` to remove Cider.
+	1. Execute `]Activate cider` to restore the version of Cider your installation originally came with.
+	1. Execute `]Cider.UpdateCider` to try to update to the latest version.
+
+=== "Dyalog 18.2"
+
+	Uninstall and then install Cider again.
 
 
 ## Version

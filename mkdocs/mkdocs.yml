@@ -52,7 +52,7 @@ markdown_extensions:
   - def_list
   - footnotes
   - md_in_html
-  # - markdown_tables_extended
+  - markdown_tables_extended
   - pymdownx.arithmatex:
       generic: true
   - pymdownx.caret

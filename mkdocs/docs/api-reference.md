@@ -1,4 +1,4 @@
-# API Reference
+# Original API Reference
 
 Although the API functions are similar to their user command equivalents, they are not identical. Also, the API offers more functions.
 

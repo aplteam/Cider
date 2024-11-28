@@ -1,4 +1,4 @@
-# Cider User Guide
+# Original User Guide
 
 ## What is Cider for?
 
