@@ -1,9 +1,10 @@
 (
- '* 0.44.1 ⋄ 2024-11-24'
+ '* 0.44.1 ⋄ 2024-11-25'
  '  * Bug fixes                                                              '
  '    * `CheckForGit`, when asking the user what to do, allowed "quit" but did not handle it correctly'
  '    * `ProjectConfig`: did not return the expected result when editing was disallowed'
  '    * `Make` did not not ask for a change of the `Version` function anymore'
+ '    * When a nw Cider project was created and opened, Link complained about a trailing slash'
  '* 0.44.0 ⋄ 2024-11-16'
  '  * `]OpenProject`''s reporting on Git enhanced and streamlined'
  '  * Bug fixes'

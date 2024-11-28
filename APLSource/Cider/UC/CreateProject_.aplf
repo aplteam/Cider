@@ -75,7 +75,7 @@
          :EndIf
      :AndIf {⍵:1 ⋄ 1 YesOrNo'OpenAsWell@Project successfully created; open as well?' ⋄ 1}batch
          parms←P.CreateOpenParms ⍬
-         parms.folder←projectFolder
+         parms.folder←##.DropTrailingSlash projectFolder
          parms.projectSpace←config.CIDER.projectSpace
          parms.parent←config.CIDER.parent
          parms.alias←{0≡⍵:'' ⋄ ⍵}Args.alias
