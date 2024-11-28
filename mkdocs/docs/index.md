@@ -1,4 +1,4 @@
-# ![Cider logo](img/cider-logo.png){: style="height: 1.4em"} Cider
+# ![Cider logo](img/cider-logo.png){: style="height: 1.8em"} Cider
 
 _Cider is a project manager for Dyalog APL_
 
@@ -8,12 +8,12 @@ A project is
 -   the files you make it from
 -   any imported packages needed
 
-Cider manages projects written in Dyalog APL (with APL source kept as text files) and with packages imported from [Tatin](https://tatin.dev), the APL community’s package manager.
+Cider manages projects written in Dyalog APL (with APL source kept as text files) and with imported [Tatin](https://tatin.dev) or [NuGet](https://learn.microsoft.com/en-us/nuget/what-is-nuget) packages.
 
 
 ## Using Cider
 
-You use Cider through its user commands.
+You use Cider through its [user commands](user-commands.md).
 
 You identify your project folder (where you keep your APL source files) and any packages your project uses. When you open your project, Cider builds everything in namespaces in the session workspace.
 (Code is not stored in saved workspaces.)
@@ -30,6 +30,7 @@ Cider cooperates with
 -    [Link](https://dyalog.github.io/link), the tool for maintaining the source of functions and other Dyalog APL objects as text files
 -    [Tatin](https://tatin.dev), the APL community’s package manager
 -    [Git](https://git-scm.com), a popular version-control system. 
+-    [Dropbox](https://dropbox.com), a file synching service
 
 Cider is designed to work with the Git source control manager, but can also be used with others.
 
@@ -39,7 +40,6 @@ Cider is designed to work with the Git source control manager, but can also be u
 1.  Dyalog Unicode Edition version 18.2 or better
 1.  Your APL source kept in text files
 1.  Tatin version xx.x or better
-1.  If using Git, the Tatin package [`APLGit2`](https://github.com/aplteam/APLGit2)
 
 Dyalog 19.0 has Cider and Tatin installed.
 For Dyalog 18.2, Cider and Tatin have to be installed.
