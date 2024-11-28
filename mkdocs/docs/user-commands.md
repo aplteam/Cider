@@ -16,7 +16,7 @@ Specify all a command’s arguments _before_ any options, e.g.
 
 ---
 
-## Add NuGet dependencies
+## :fontawesome-solid-terminal: Add NuGet dependencies
 
 _Add one or more NuGet packages as dependencies_
 
@@ -44,7 +44,7 @@ If the project’s config file does not specify a NuGet dependency folder, you a
 : Name of a namespace to be created and added to the `dependencies` or the `dependencies_dev` parameter. If it exists an error is signalled. (You then need to edit the project’s config file.)
 
 
-## Add Tatin dependencies
+## :fontawesome-solid-terminal: Add Tatin dependencies
 
 _Add one or more Tatin packages as dependencies_
 
@@ -75,7 +75,7 @@ __Options__
 : Name of a namespace to be created and added to the `dependencies` or the `dependencies_dev` parameter. If it exists an error is signalled. (You then need to edit the project’s config file.)
 
 
-## Close project
+## :fontawesome-solid-terminal: Close project
 
 _Break the link between the workspace and the files on disk_
 
@@ -102,7 +102,7 @@ __Options__
 : Use this to close without performing any checks. (See global config parameter `CheckForDropboxConflicts`.)
 
 
-## Config
+## :fontawesome-solid-terminal: Config
 
 _Display or edit Cider’s global configuration_
 
@@ -133,7 +133,7 @@ __Options__
                                                                                            
 
 
-## Create project
+## :fontawesome-solid-terminal: Create project
 
 _Initialise a folder as a project_
 
@@ -197,14 +197,14 @@ __Options__
 : Do not offer the configuration for editing.
 
 
-## Help
+## :fontawesome-solid-terminal: Help
 
 _Display the Cider User Guide_
 
 	]CIDER.Help
 
 
-## List aliases
+## :fontawesome-solid-terminal: List aliases
 
 _List all defined aliases with their folders_
 
@@ -227,7 +227,7 @@ Only options `-prune` and `-batch` can be used together.
 : Scan the specified folder for projects and let me pick which I want added as aliases.
 
 
-## List NuGet dependencies
+## :fontawesome-solid-terminal: List NuGet dependencies
 
 _List NuGet packages installed as dependencies_
 
@@ -243,7 +243,7 @@ The user command help says `folder` can be specified as an alias. Appears not to
 -->
 
 
-## List open projects
+## :fontawesome-solid-terminal: List open projects
 
 _List all currently open projects_
 
@@ -257,7 +257,7 @@ __Options__
 : Instead of a list, print a table.
 
 
-## List Tatin dependencies
+## :fontawesome-solid-terminal: List Tatin dependencies
 
 	]CIDER.ListTatinDependencies [project]
 
@@ -274,7 +274,7 @@ __Options__
 : Print dependency data unformatted.
 
 
-## Make
+## :fontawesome-solid-terminal: Make
 
 _Print the expression that builds a new version of the project_
 
@@ -286,7 +286,7 @@ If `project` is omitted, Cider uses the one open project or, if you have more th
 
 
 
-## Open project
+## :fontawesome-solid-terminal: Open project
 
 _Build the project in the active workspace and keep it linked_
 
@@ -348,7 +348,7 @@ Options affect only the command and leave the project configuration unchanged.
 : Where changes to object definitions cause Link to synchronise workspace objects with their source files. Options are `ns`, `dir`, `none`, or `both` (default).
                                          
 
-## Project config
+## :fontawesome-solid-terminal: Project config
 
 _Display or edit the project configuration_
 
@@ -364,7 +364,7 @@ __Options__
 : Display the config for editing.
 
 
-## Run tests
+## :fontawesome-solid-terminal: Run tests
 
 _Print the expression that executes the project’s test suite_
 
@@ -375,7 +375,7 @@ Where `project` is the path to a project folder, Cider prints the APL expression
 If `project` is omitted, Cider uses the one open project or, if you have more than one open, asks you which.
 
 
-## Update Cider
+## :fontawesome-solid-terminal: Update Cider
 
 _Tries to update Cider_
 
@@ -422,7 +422,7 @@ If the update process fails, calling it again rarely helps. You need an escape r
 	Uninstall and then install Cider again.
 
 
-## Version
+## :fontawesome-solid-terminal: Version
 
 	]CIDER.Version
 
