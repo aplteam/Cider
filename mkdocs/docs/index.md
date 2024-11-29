@@ -31,7 +31,7 @@ Cider cooperates with
 -    [Tatin](https://tatin.dev), the APL community’s package manager
 -    [NuGet](https://www.nuget.org), the package manager for .NET
 -    [Git](https://git-scm.com), a version-control system
--    [Dropbox](https://dropbox.com), a file synching service
+-    [Dropbox](https://dropbox.com), a file-sharing service
 
 Cider is designed to work with the Git source control manager, but can also be used with others.
 

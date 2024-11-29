@@ -13,8 +13,6 @@ The API is exposed in `⎕SE.Cider` so, for example, call `AddAlias` as `⎕SE.C
 
     Do not call functions in `⎕SE.Cider_`. 
 
-A flag is 1 or 0. It is ‘set’ with a value of 1.
-
 
 ---
 
@@ -602,4 +600,3 @@ This could be just e.g. `1.2.3`,  but might be something like `1.2.3-beta-1+113`
 
 
 
-*[NuGet]: .NET package manager
