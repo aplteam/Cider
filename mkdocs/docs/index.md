@@ -29,7 +29,8 @@ Cider cooperates with
 
 -    [Link](https://dyalog.github.io/link), the tool for maintaining the source of functions and other Dyalog APL objects as text files
 -    [Tatin](https://tatin.dev), the APL community’s package manager
--    [Git](https://git-scm.com), a popular version-control system. 
+-    [NuGet](https://www.nuget.org), the package manager for .NET
+-    [Git](https://git-scm.com), a version-control system
 -    [Dropbox](https://dropbox.com), a file synching service
 
 Cider is designed to work with the Git source control manager, but can also be used with others.
@@ -44,3 +45,14 @@ Cider is designed to work with the Git source control manager, but can also be u
 Dyalog 19.0 has Cider and Tatin installed.
 For Dyalog 18.2, Cider and Tatin have to be installed.
 
+
+## Terminology
+
+flag
+: A flag has value 0 or 1. It is ‘set’ with a value of 1.
+
+string
+: A simple character vector (depth 1)
+
+list of strings
+: A nested vector of strings (depth 2)

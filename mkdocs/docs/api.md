@@ -1,7 +1,8 @@
 # API Reference
 
-The API functions resemble their [user-command](user-commands.md) equivalents, but are not identical.
+The API functions are similar to the [user-commands](user-commands.md), but are not identical.
 Some  do not have equivalent user commands.
+
 Unlike user commands, API function names are case-sensitive.
 
 The API is exposed in `⎕SE.Cider` so, for example, call `AddAlias` as `⎕SE.Cider.AddAlias`.
@@ -53,7 +54,7 @@ Specify `packages` as either a list of strings or a comma-separated string.
     However, the correct name is returned, and is required for using a package.
 
 :fontawesome-solid-terminal: 
-[`]CIDER.AddNugetDependencies`](user-commands.md#add-nuget-dependencies).
+[`]CIDER.AddNugetDependencies`](user-commands.md#add-nuget-dependencies)
 
 
 ## :fontawesome-solid-code: AddTatinDependencies
@@ -282,7 +283,7 @@ returns either the value of `nuget` in the given branch or an empty vector if `n
 The `config` argument is typically derived from a project’s configuration file.
 
 :fontawesome-solid-terminal: 
-[`]CIDER.ListNuGetDependencies`](user-commands.md#list-nuget-dependencies).
+[`]CIDER.ListNuGetDependencies`](user-commands.md#list-nuget-dependencies)
 
 
 
@@ -601,6 +602,4 @@ This could be just e.g. `1.2.3`,  but might be something like `1.2.3-beta-1+113`
 
 
 
-*[string]: a character vector of depth 1
-*[list of strings]: a nested vector of character vectors of depth 1
 *[NuGet]: .NET package manager

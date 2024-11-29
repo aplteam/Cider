@@ -14,6 +14,8 @@ Specify all a command’s arguments _before_ any options, e.g.
 
 	]CIDER.CreateProject path/to/foo path/to/bar -noEdit 
 
+Command options affect only the command and leave the project and global configurations unchanged.
+
 ---
 
 ## :fontawesome-solid-terminal: Add NuGet dependencies
@@ -26,11 +28,9 @@ _Add one or more NuGet packages as dependencies_
 
 Where
 
-`pkglist`
-: is a comma-separated list of NuGet packages to be installed
+-   `pkglist` is a comma-separated list of NuGet packages to be installed
+-   `project` (optional) is either a project alias or the path of a project folder
 
-`project` (optional)
-: is either a project alias or the filepath of a project folder
 
 Cider registers the listed dependencies in the project.
 
@@ -54,11 +54,8 @@ _Add one or more Tatin packages as dependencies_
 
 Where
 
-`pkglist`
-: is a comma-separated list of Tatin packages to be installed
-
-`project` (optional)
-: is either a project alias or the filepath of a project folder
+-   `pkglist` is a comma-separated list of Tatin packages to be installed
+-   `project` (optional) is either a project alias or the path of a project folder
 
 Cider registers the listed dependencies in the project.
 
@@ -87,7 +84,7 @@ If `projects` is omitted, Cider uses the one open project or, if you have more t
 
 You can specify a project as
 
--   a fully qualified namespace name
+-   a fully qualified namespace
 -   a project alias
 -   a filepath
 
@@ -99,7 +96,10 @@ Otherwise attempts to close projects are reported in detail.
 __Options__
 
 `-fast`
-: Use this to close without performing any checks. (See global config parameter `CheckForDropboxConflicts`.)
+: Close project without performing any checks. 
+
+	:fontawesome-solid-gear:
+	[`CheckForDropboxConflicts`](configuration.md#checkfordropboxconflicts)
 
 
 ## :fontawesome-solid-terminal: Config
@@ -141,15 +141,12 @@ _Initialise a folder as a project_
 
 Where
 
-`folder` (optional)
-: is a path to a folder that is empty or does not exist
-
-`project-namespace` (optional)
-: is a namespace in the active workspace to be linked to the project
+-   `folder` (optional) is a path to a folder that is empty or does not exist
+-   `project-namespace` (optional) is a namespace in the active workspace to be linked to the project
 
 Cider initialises `folder` as a project (creating it if necessary), links it to `project-namespace`, and offers the project configuration for editing.
 
-Finally Cider attempts to open the new project.                                                         
+Finally Cider offers to open the new project.                                                         
 
 __Project folder__
 
@@ -188,10 +185,10 @@ __Options__
 : Remember the specified string as an alternative to the project folder filepath when opening the project. Aliases are not case sensitive.
 
 `-batch`
-: Open the newly created project without asking for confirmation.
+: Open the new project without asking for confirmation.
 
 `-ignoreUserExec`
-: On this occasion, open the project without executing the user function defined in Cider’s config file.
+: Open the project without executing the [user function](configuration.md#executeafterprojectopen) specified in the global config.
 
 `-noEdit`
 : Do not offer the configuration for editing.
@@ -224,7 +221,7 @@ Only options `-prune` and `-batch` can be used together.
 : Delete aliases whose folders cannot be found. (Ask me first for confirmation.)
 
 `-scan=`
-: Scan the specified folder for projects and let me pick which I want added as aliases.
+: Scan the specified folder for projects and ask me which to add as aliases.
 
 
 ## :fontawesome-solid-terminal: List NuGet dependencies
@@ -268,7 +265,7 @@ If `project` is omitted, Cider uses the one open project or, if you have more th
 __Options__
 
 `-full`
-: Print a hierarchical report on all dependencies. This does not give what is actually used, but what the packages themselves require. (Due to minimum version selection they might end up using a later version.) This can be useful to figure out why a particular (typically old) package is required.
+: Print a hierarchical report on all dependencies. This does not give what is actually used, but what the packages themselves require. (Due to minimum version selection they might end up using a later version.) This can help show why a particular (typically old) package is required.
 
 `-raw`
 : Print dependency data unformatted.
@@ -280,7 +277,7 @@ _Print the expression that builds a new version of the project_
 
 	]CIDER.Make [project]
 
-Where `project` is the filepath of a project folder, Cider prints the project’s "make" expression.
+Where `project` is the path of a project folder, Cider prints the project’s "make" expression.
 
 If `project` is omitted, Cider uses the one open project or, if you have more than one open, asks you which.
 
@@ -314,7 +311,7 @@ Where `project` is the filepath of a project folder, or its alias, Cider builds 
 
 __Options__
 
-Options affect only the command and leave the project configuration unchanged.
+Options `-import` and `-watch=` cannot be used together.
 
 `-alias=`
 : Remember this alias for the project.
@@ -327,31 +324,26 @@ Options affect only the command and leave the project configuration unchanged.
 		Consider instead using the API function `⎕SE.Cider.OpenProject`.
 
 `-ignoreUserExec`
-: Do not execute the [`init`](configuration.md#init) function specified in the project configuration.
+: Do not execute the function specified by the [`init`](configuration.md#init) setting in the project config.
 
 `-import`
-: Do not link the built APL objects to their source files. No changes I make in the workspace will change the source files; nor will changes to the source files be mirrored in the workspace. Ignore the configuration [`watch`](configuration.md#watch) setting.
+: Do not link APL objects to their source files. (Ignore the [`watch`](configuration.md#watch) setting in the project config.)
 
 `-noPkgLoad`
  : Do not load the project’s Tatin packages.
                 
 `-parent=`
-: Override the project configuration’s `parent` property.
+: Override the [`parent`](configuration.md#parent) setting in the project config.
 
 `-projectSpace=`
-: Override the project configuration’s `projectSpace` property.
+: Override the [`projectSpace`](configuration.md#projectspace) setting in the project config.
 
 `-verbose`
-: Report command actions in detail.
+: Report command actions in more detail.
 
 `-watch=`
-: Where changes to object definitions cause Link to synchronise workspace objects with their source files. Options are 
+: Override the [`watch`](configuration.md#watch) setting in the project config.
 
-		ns   - workspace
-		dir  - source files
-		none - neither
-		both - workspace and source files (default)
-                                         
 
 ## :fontawesome-solid-terminal: Project config
 

@@ -87,7 +87,7 @@ Now Link will save any APL objects defined in the `#.myproj` namespace as text f
 ❯ tree myproj
 myproj
 ├── APLSource
-│   └── mean.aplf
+│   └── mean.aplf
 └── cider.config
 ```
 
@@ -106,3 +106,7 @@ In a clear workspace
 	      myproj.mean ⍳20
 	10.5
 
+Changes to your APL objects in `#.myproj` will be mirrored in the source files in `myproj/APLSource`. 
+Changes to the source files will be mirrored in the workspace.
+
+When you quit Dyalog your changes have already been saved.
