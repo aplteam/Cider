@@ -106,7 +106,7 @@ In a clear workspace
 	      myproj.mean ⍳20
 	10.5
 
-Changes to your APL objects in `#.myproj` will be mirrored in the source files in `myproj/APLSource`. 
+Changes to the objects in `#.myproj` will be mirrored in their source files in `myproj/APLSource`. 
 Changes to the source files will be mirrored in the workspace.
 
 When you quit Dyalog your changes have already been saved.
