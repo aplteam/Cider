@@ -12,6 +12,8 @@ The API is exposed in `⎕SE.Cider` so, for example, call `AddAlias` as `⎕SE.C
 
     Do not call functions in `⎕SE.Cider_`. 
 
+A flag is 1 or 0. It is ‘set’ with a value of 1.
+
 
 ---
 
@@ -21,11 +23,10 @@ The API is exposed in `⎕SE.Cider` so, for example, call `AddAlias` as `⎕SE.C
 
 Where
 
---------|---------------------------------------------
-`folder`|is a fully qualified path to a project folder
-`alias` |is a string with no punctuation or spaces    
+-   `folder`  is a path to a project folder
+-   `alias`   is a string with no punctuation or spaces
 
-if the project folder exists the alias is registered in the file returned by `GetAliasFilename`.
+if the project folder exists the alias is registered in the file returned by [`GetCiderAliasFilename`](#GetCiderAliasFilename).
 The result is an error message, empty if successful.
 
 If the alias is already in use you are asked to confirm the change.
@@ -37,9 +38,8 @@ If the alias is already in use you are asked to confirm the change.
 
 Where
 
----------|---------------------------------------------
-`packages`|NuGet package/s
-`project` |fully qualified path to a project folder or a Cider alias
+-   `packages`is one or more NuGet packages
+-   `project` is a project alias or a path to a project folder 
 
 Cider installs NuGet packages in the (single) NuGet dependency folder defined in the project’s configuration file and returns their names as a list of strings.
 <!-- FIXME list of strings? -->
@@ -52,7 +52,8 @@ Specify `packages` as either a list of strings or a comma-separated string.
 
     However, the correct name is returned, and is required for using a package.
 
-See also [`]CIDER.AddNugetDependencies`](user-commands.md#add-nuget-dependencies).
+:fontawesome-solid-terminal: 
+[`]CIDER.AddNugetDependencies`](user-commands.md#add-nuget-dependencies).
 
 
 ## :fontawesome-solid-code: AddTatinDependencies
@@ -61,24 +62,20 @@ See also [`]CIDER.AddNugetDependencies`](user-commands.md#add-nuget-dependencies
 
 Where
 
---------|---------------------------------------------
-`packages`|Tatin package/s
-`project` |fully qualified path to a project folder or a Cider alias
-`dev` | flag
+-   `packages` is one or more Tatin packages
+-   `project` is a project alias or a path to a project folder 
+-   `dev` is a flag
 
-Cider installs Tatin packages in one of the Tatin dependency folders defined in the project’s configuration file. (The default is `dependencies.tatin`.)
+Cider installs the packages in one of the Tatin dependency folders defined in the project’s configuration file. (The default is `dependencies.tatin`.)
 
-Specify packages as either a a list of strings or a comma-separated string.
+Specify packages as either a list of strings or a comma-separated string.
 
-The `dev` flag indicates which configuration parameter specifies the installation folder.
-
-----|-------------------
-0   | `dependencies`
-1   | `dependencies_dev`
+Setting the `dev` flag switches the installation folder from `dependencies` (default) to`dependencies_dev`.
 
 <!-- FIXME Result? -->
 
-See also [`]CIDER.AddTatinDependencies`](user-commands.md#add-tatin-dependencies).
+:fontawesome-solid-terminal: 
+[`]CIDER.AddTatinDependencies`](user-commands.md#add-tatin-dependencies).
 
 
 
@@ -88,9 +85,8 @@ See also [`]CIDER.AddTatinDependencies`](user-commands.md#add-tatin-dependencies
 
 Where 
 
-----------|----------------------------
-`x`       | (optional) list of projects and/or flag
-`projects`| is one or more open projects
+-   `x` (optional) is a list of projects and/or a flag
+-   `projects` is one or more open projects
 
 Cider closes the projects (unlinks the source files) and returns the number of projects closed.
 
@@ -104,15 +100,16 @@ Specify `projects` as either a string or a list of strings.
 
 The __optional left argument__ can be either or both (in any order) of
 
--   a list of projects as returned by `ListProjects`
--   a flag (defaults to 1): whether checks are performed.
+-   a list of projects as returned by [`ListOpenProjects`](#listopenprojects)
+-   a flag (defaults to 1): whether Dropbox conflict checks are made.
 
-    See `CheckForDropboxConflicts` in Cider's _User Guide > Global configuration > CheckForDropboxConflicts_ for an example. 
-    <!-- FIXME Replace with link. -->
 
 <!-- FIXME specify effect of listing projects in `x`. -->
 
-See also [`]CIDER.ClosePoject`](user-commands.md#close-project).
+:fontawesome-solid-gear: 
+[`CheckForDropboxConflicts`](configuration.md#checkfordropboxconflicts)<br>
+:fontawesome-solid-terminal: 
+[`]CIDER.CloseProject`](user-commands.md#close-project)
 
 
 ## :fontawesome-solid-code: CreateCreateProjectParms
@@ -121,23 +118,20 @@ See also [`]CIDER.ClosePoject`](user-commands.md#close-project).
 
 Where
 
----------|-----------------------------------------
-`parms`  | (optional) namespace of parameters
-`folder` | fully qualified path of a project folder
-
+-   `parms` (optional) is a namespace of parameters
+-   `folder` is the path of a project folder
 
 Cider returns a namespace with parameters required by [`CreateProject`](#createproject), by default:
 
-
------------------|--------
-`acceptConfig`   | 0
-`folder`         | `folder` argument filepath
-`ignoreUserExec` | 0
-`namespace`      | last part of the `folder` filepath
+    acceptConfig   - 0
+    folder         - folder argument filepath
+    ignoreUserExec - 0
+    namespace      - last part of the folder filepath
 
 Defaults are overwritten by any specified in the `parms` argument.
 
-See also [`]CIDER.CreatePoject`](user-commands.md#create-project).
+:fontawesome-solid-terminal: 
+[`]CIDER.CreatePoject`](user-commands.md#create-project)
 
 
 ## :fontawesome-solid-code: CreateOpenParms
@@ -162,7 +156,7 @@ Parameters in `y` overwrite the defaults, which are:
     verbose               0
     watch                 0
 
-!!! detail "Setting to `watch` to 0 shows Cider you have not set this. Eventually 0 becomes `both`, the default."
+!!! detail "Setting `watch` to 0 shows Cider you have not set this. Eventually 0 becomes `both`, the default."
 
 <!-- 
     watch                 ['ns'|'both']  ⍝ depending on the availability of .NET 
@@ -181,7 +175,8 @@ Why is `#` not the default for `parent`?
 
 Where `parms` is a namespace of parameter values, typically the result of [`CreateCreateProjectParms`](#createcreateprojectparms), Cider creates a project.
 
-See also [`]CIDER.CreateProject`](user-commands.md#create-project).
+:fontawesome-solid-terminal: 
+[`]CIDER.CreateProject`](user-commands.md#create-project)
 
 
 ## :fontawesome-solid-code: DropAlias
@@ -207,7 +202,8 @@ Cider ignores `dummy` and returns as a matrix of strings the contents of the fil
 
 If the file is empty the result has zero rows.
 
-See also [`]CIDER.ListAliases`](user-commands.md#list-aliases).
+:fontawesome-solid-terminal: 
+[`]CIDER.ListAliases`](user-commands.md#list-aliases)
 
 
 
@@ -240,7 +236,8 @@ This can be used to, say, check the status of the project on GitLab or a similar
 This setting defines the same function for all your Cider projects, which is why it is not part of the file `cider.config.template` but defined in Cider's global config file.
  -->
 
-See also [`]CIDER.Config`](user-commands.md#config).
+:fontawesome-solid-terminal: 
+[`]CIDER.Config`](user-commands.md#config)
 
 
 ## :fontawesome-solid-code: GetCiderGlobalConfigFilename
@@ -277,15 +274,15 @@ Returns the fully qualified filepath to the `MyUCMDs/` folder.
 
 Where 
 
----------|----------------------
-`name`   | `'development'` or `'development_dev'`
-`config` | is a namespace of parameters 
+-   `name` is `'development'` or `'development_dev'`
+-   `config` is a namespace of parameters 
 
 returns either the value of `nuget` in the given branch or an empty vector if `nuget` is not defined.
 
 The `config` argument is typically derived from a project’s configuration file.
 
-See also [`]CIDER.ListNuGetDependencies`](user-commands.md#list-nuget-dependencies).
+:fontawesome-solid-terminal: 
+[`]CIDER.ListNuGetDependencies`](user-commands.md#list-nuget-dependencies).
 
 
 
@@ -295,11 +292,10 @@ See also [`]CIDER.ListNuGetDependencies`](user-commands.md#list-nuget-dependenci
 
 Where
 
-----------|-------------------
-`current` | (optional) flag
-`suffix`  | suffix to the folder filepath
+-   `current` (optional) is a flag
+-   `suffix` is a suffix to the folder filepath
 
-Returns the fully qualified filepath to the Dyalog files folder with any `suffix` specified.
+returns the path to the Dyalog files folder with any `suffix` specified.
 
 The `current` flag (default 0) specifies whether the result is specific to the currently running version of Dyalog.
 
@@ -322,9 +318,8 @@ C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files
 
 Where
 
----------|----------------------
-`name`   | `'development'` or `'development_dev'`
-`config` | is a namespace of parameters 
+-   `name` is `'development'` or `'development_dev'`
+-   `config` is a namespace of parameters 
 
 returns either the value of `tatin` in the given branch or an empty vector if `tatin` is not defined.
 
@@ -371,14 +366,15 @@ Where `verbose` is a flag, returns the open projects as a matrix of 2 or 4 colum
  #.Cider  /path/to/Cider  32  cider 
 ```
 
-See also [`]CIDER.ListOpenProjects`](user-commands.md#list-open-projects).
+:fontawesome-solid-terminal:
+[`]CIDER.ListOpenProjects`](user-commands.md#list-open-projects).
 
 
 ## :fontawesome-solid-code: ListTatinDependencies
 
     r←ListTatinDependencies project
 
-Where `project` is a fully qualified path to a project folder, returns as a 5-column matrix the dependencies installed in the Tatin installation folders.
+Where `project` is a path to a project folder, returns as a 5-column matrix the dependencies installed in the Tatin installation folders.
 
 1. The full package ID
 1. A Boolean indicating whether the package is a principal one or just a dependency
@@ -393,7 +389,8 @@ Describe the other two columns
 
 !!! detail "Until version 0.34.0 this was named `ListTatinPackages`"
 
-See also [`]CIDER.ListTatinDependencies`](user-commands.md#list-tatin-dependencies).
+:fontawesome-solid-terminal:
+[`]CIDER.ListTatinDependencies`](user-commands.md#list-tatin-dependencies).
 
 
 
@@ -411,37 +408,37 @@ Where `y` is either
 
 Cider opens the project as listed below, and returns a 2-item result:
 
---------------|--------------------------
-`successFlag` | flag, 1 for success
-`∆LOG`        | list of strings as printed to the session
+    successFlag - 1 for success
+    ∆LOG        - list of strings as printed to the session
 
-__Actions opening the project__
+### Actions
 
 1.  Creates the `projectSpace` namespace in `parent` if it does not already exist. This is the __project root__.
-1.  Sets the system variables `⎕IO` and `⎕ML` in the project root.
-1.  Brings all code and variables into the project root.
-1.  Loads all Tatin packages from the Tatin installation folders defined by `dependencies:tatin` and `dependencies_dev:tatin`.
-1.  Loads all NuGet packages from the NuGet installation folder defined by `dependencies:nuget`.
+1.  Sets the projects’s [system variables](configuration.md#system) (at least `⎕IO` and `⎕ML`) in the project root.
+1.  Brings all APL code and variables into the project root, linked to their source files according to the project’s [`watch`](configuration.md#watch) setting unless the `importFlag` parameter is set.
+1.  Loads all Tatin packages from the Tatin installation folders defined by [`dependencies:tatin`](configuration.md#dependencies) and [`dependencies_dev:tatin`](configuration.md#dependencies-dev).
+1.  Loads all NuGet packages from the NuGet installation folder defined by [`dependencies:nuget`](configuration.md#dependencies).
 1.  Injects a namespace `CiderConfig` into the project root and populates it with the contents of the configuration file.
-1.  Injects a namespace `TatinVars` into the project root, and a ref pointing to that `TatinVars` (with the same name) if the optional parameter `tatinVars` in the Cider Config section `CIDER` is defined and points to a sub-namespace in the project root.
-1.  Changes the current directory to the project path if this is the first and only Cider project.
+1.  Injects a namespace `TatinVars` into the project root, and a ref pointing to that `TatinVars` (with the same name) if parameter [`tatinVars`](configuration.md#tatinvars) is defined in the project config `CIDER` section and points to a subnamespace of the project space.
+1.  Changes the current directory as specified by [`AskForDirChange`](configuration.md#askfordirchange) in the global config.
 1.  Adds a variable `HOME` to `CiderConfig` specifying the path from which the project was loaded.
-1.  Executes the project-specific function noted on `init`, usually to initialise the project.
-1.  Executes a non-project-specific function defined in Cider’s global configuration.
-    Allows for carrying out user-specific actions as a project is opened.
-1. Checks for a variable `ToDo` in the project root, and displays it for editing if it exists.
-1. Checks the status of the project if it is managed by Git.
+1.  Executes the function specified in the project’s [`init`](configuration.md#init) setting.
+1.  Executes the function specified in the global [`ExecuteAfterProjectOpen`](configuration.md#executeafterprojectopen) setting.
+1. If it finds a variable `ToDo` in the project root, displays it for editing.
+1. Reports the Git status of the project according to the global [`ReportGitStatus`](configuration.md#reportgitstatus) setting.
 
-__Parameters__
+### Parameters
 
 Parameter values affect the command.
-They override the project’s configuration but do not change it. 
+They override the settings in the global and project configurations but do not change them. 
+
+All parameters are optional except `folder`.
 
 
-`folder` (mandatory)
+`folder` (required)
 
-: String. Must be either the filepath of a folder containing a file `cider.config` or a Cider project alias. (See also `alias`.) 
-: Cannot be empty but could be `./` indicating the current directory.
+: String. Either the path of a folder containing a file `cider.config` or a project alias. (See also `alias`.) 
+: May not be empty but could be `./` indicating the current directory.
 
 `alias`
 
@@ -461,63 +458,69 @@ They override the project’s configuration but do not change it.
 
 `checkPackageVersions`
 
-: Numeric scalar or empty vector (default). 
+: By default you will be asked if you want Cider to check all principal packages for later versions and, if any are found, if you want to update them. (If the project has multiple package folders the second question is asked for each Tatin installation folder.)
 
-    The default means you will be asked if you want Cider to check all principal packages for later versions and, if any are found, if you want to update them. (If the project has multiple package folders the second question is asked for each Tatin installation folder.)
-
-    Alternative values:
-
-        0 | Do not check at all
-        1 | Check and report findings but prompt for updating
-        2 | Check and update without consulting me
+        ⍬ - Ask me whether to check (default)
+        0 - Do not check at all
+        1 - Check and report findings but prompt for updating
+        2 - Check and update without consulting me
 
     This parameter is ignored if the project has no Tatin installation folder, or if `importFlag` is set.
 
 
 `ignoreUserExec`
 
-: Flag[^flag]. Setting it stops Cider executing at the end of opening a project a function named in the global config’s `ExecuteAfterProjectOpen` parameter. Defaults to 0.
+: Setting the flag stops Cider executing at the end of opening a project a function named in the global  [`ExecuteAfterProjectOpen`](configuration.md#executeafterprojectopen) setting. Defaults to 0.
 
 
 `importFlag`
 
-: Flag. Setting it stops Cider from linking APL objects to their source files. Defaults to 0.
+: Setting the flag stops Cider from linking APL objects to their source files. Defaults to 0.
 
-: !!! warning "Setting this flag has implications for how Cider deals with Tatin packages."
+    :fontawesome-solid-gear:
+    [`watch`](configuration.md#watch)
+
+    !!! warning "Setting this flag has implications for how Cider deals with Tatin packages."
 <!-- 
 , see there. 
-FIXME Where?
+FIXME Where? What implications?
  -->
 
 `noPkgLoad`
 
-: Flag. Setting it stops Cider from loading Tatin dependencies as specifed in the config file’s `dependencies` and `dependencies_dev` parameters. Defaults to 0.
+: Setting the flag stops Cider from loading Tatin dependencies as specifed in the config file’s `dependencies` and `dependencies_dev` parameters. Defaults to 0.
 
 
 `parent`
 
 : String. Defaults to `#` but could be something like `⎕SE` or `#.Foo.Goo.Boo`. All namespaces listed must exist.
 
+    :fontawesome-solid-gear:
+    [`parent`](configuration.md#parent)
+
 
 `projectSpace`
 
 : String. The name of the namespace the project is injected into. If this is empty it is going to be `#` or `⎕SE`, depending from where the function was called from.
 
+    :fontawesome-solid-gear:
+    [`projectSpace`](configuration.md#projectspace)
+
 
 `quietFlag`
 
-: Flag. Setting it stops Cider printing messages to the session. (They are still returned in the function‘s result.)
+: Setting the flag stops Cider printing messages to the session. (They are still returned in the function‘s result.)
 
 
 `suppressLX`
 
-: Flag. Setting it stops Cider executing the project’s initialisation function. Defaults to 0.
+: Setting the flag stops Cider executing the project’s [initialisation function](configuration.md#init). Defaults to 0.
 
 : For example, an automated build process might open a project without actually initialising it.
 
 `watch`
 
-: String. The default of `both` means Link responds to changes to the definitions of APL objects in either the workspace or the source files: changes in one environment are reflected in the other.
+: String. The default of `both` means Link responds to changes to the definitions of APL objects in either the workspace or the source files: changes in one environment are mirrored in the other.
 
 : Alternative values:
 
@@ -537,14 +540,18 @@ FIXME Where?
         The Link handlers set a Hold under some circumstances. 
         Depending on your actions, this might result in a deadlock. Dyalog would appear to hang until you use the session’s _System_ menu to issue a strong interrupt.
 
-See also [`]CIDER.OpenProject`](user-commands.md#open-project).
+    :fontawesome-solid-gear:
+    [`watch`](configuration.md#watch)
+
+:fontawesome-solid-terminal:
+[`]CIDER.OpenProject`](user-commands.md#open-project).
 
 
 ## :fontawesome-solid-code: ProjectConfig
 
     {r}←ProjectConfig project
 
-Where `project` is a fully qualified path to a project folder, Cider displays the project’s config file for editing.
+Where `project` is a path to a project folder, Cider displays the project’s config file for editing.
 
 Asks your permission before writing changes back to file, and performs checks before doing so.
 
@@ -555,13 +562,14 @@ Asks your permission before writing changes back to file, and performs checks be
 
     config←ReadProjectConfigFile project
 
-Where `project` is a fully qualified path to a project folder, Cider returns the contents of the project’s config file as a parameter namespace.
+Where `project` is a path to a project folder, Cider returns the contents of the project’s config file as a parameter namespace.
 
 The path may or may not terminate in the filename `cider.config`.
 
-Side effect: if the function does not find the sub-keys `dependency.tatin` and `dependency.nuget` in the file it creates them and writes them there.
+__Side effect__ if the function does not find the sub-keys `dependency.tatin` and `dependency.nuget` in the file it creates them and writes them there.
 
-See also [`]CIDER.ProjectConfig`](user-commands.md#project-config).
+:fontawesome-solid-terminal:
+[`]CIDER.ProjectConfig`](user-commands.md#project-config).
 
 
 ## :fontawesome-solid-code: WriteProjectConfigFile
@@ -570,9 +578,8 @@ See also [`]CIDER.ProjectConfig`](user-commands.md#project-config).
 
 Where 
 
-----------|-------------------------
-`config`  | a parameter namespace
-`project` | a fully qualified path to a project folder
+-   `config` is a parameter namespace
+-   `project` is a path to a project folder
 
 Cider writes the contents of`config` as the project’s configuration file.
 
@@ -582,7 +589,6 @@ The path may or may not terminate in the filename `cider.config`.
 ## :fontawesome-solid-code: Version
 
     r←Version
-
 
 Returns a string with major and minor versions, patch number and timestamp, e.g.
 
@@ -594,8 +600,6 @@ This could be just e.g. `1.2.3`,  but might be something like `1.2.3-beta-1+113`
 
 
 
-
-[^flag]: A flag is 1 or 0. It is ‘set’ with a value of 1.
 
 *[string]: a character vector of depth 1
 *[list of strings]: a nested vector of character vectors of depth 1

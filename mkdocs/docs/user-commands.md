@@ -327,10 +327,10 @@ Options affect only the command and leave the project configuration unchanged.
 		Consider instead using the API function `⎕SE.Cider.OpenProject`.
 
 `-ignoreUserExec`
-: Do not execute the User Exec function specified in the project configuration.
+: Do not execute the [`init`](configuration.md#init) function specified in the project configuration.
 
 `-import`
-: Do not link the built APL objects to their source files. Any changes I make to the objects in the workspace will leave the source files unchanged.
+: Do not link the built APL objects to their source files. No changes I make in the workspace will change the source files; nor will changes to the source files be mirrored in the workspace. Ignore the configuration [`watch`](configuration.md#watch) setting.
 
 `-noPkgLoad`
  : Do not load the project’s Tatin packages.
@@ -345,7 +345,12 @@ Options affect only the command and leave the project configuration unchanged.
 : Report command actions in detail.
 
 `-watch=`
-: Where changes to object definitions cause Link to synchronise workspace objects with their source files. Options are `ns`, `dir`, `none`, or `both` (default).
+: Where changes to object definitions cause Link to synchronise workspace objects with their source files. Options are 
+
+		ns   - workspace
+		dir  - source files
+		none - neither
+		both - workspace and source files (default)
                                          
 
 ## :fontawesome-solid-terminal: Project config
@@ -394,7 +399,7 @@ When the update is complete, restart Dyalog, rebuild the user commands, and prin
 
 	=== "Versions 0.37.1 and 0.37.2"
 
-		These versions installed into the new folder but with one level missing.
+		These versions were installed into the new folder but with a level missing.
 
 
 		[Reinstall Cider](get-started.md#install).
@@ -407,19 +412,19 @@ When the update is complete, restart Dyalog, rebuild the user commands, and prin
 
 		[Reinstall Cider](get-started.md#install).
 
-__Troubleshooting__
+!!! tip "Troubleshooting"
 
-If the update process fails, calling it again rarely helps. You need an escape route.
+	If the update process fails, calling it again rarely helps. You need an escape route.
 
-=== "Dyalog 19.0 and later"
+	=== "Dyalog 19.0 and later"
 
-	1. Execute `]DeActivate tatin` to remove Cider.
-	1. Execute `]Activate cider` to restore the version of Cider your installation originally came with.
-	1. Execute `]Cider.UpdateCider` to try to update to the latest version.
+		1. Execute `]DeActivate tatin` to remove Cider.
+		1. Execute `]Activate cider` to restore the version of Cider your installation originally came with.
+		1. Execute `]Cider.UpdateCider` to try to update to the latest version.
 
-=== "Dyalog 18.2"
+	=== "Dyalog 18.2"
 
-	Uninstall and then install Cider again.
+		Uninstall and then install Cider again.
 
 
 ## :fontawesome-solid-terminal: Version
