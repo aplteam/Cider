@@ -2,6 +2,20 @@ site_name: Cider User Guide
 repo_url: https://github.com/aplteam/Cider
 repo_name: aplteam/Cider
 
+nav:
+  - Revised:
+    - About Cider: index.md
+    - Open project: open-project.md
+    - Get started: get-started.md
+    - User commands: user-commands.md
+    - API functions: api.md
+    - Configuration: configuration.md
+  - Original:
+    - User Guide: original-user-guide.md
+    - API Reference: api-reference.md
+    - Contributing: contributing.md
+    - Release notes: release-notes.md
+
 theme:
   favicon: 'img/cider-logo.png'
   logo: 'img/dyalog-white.svg'
@@ -10,7 +24,7 @@ theme:
     - navigation.instant
     - navigation.path
     - navigation.sections
-    # - navigation.tabs
+    - navigation.tabs
     - navigation.tracking
   name: material
   font:
