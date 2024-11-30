@@ -1,41 +1,32 @@
 # Open project
 
-!!! abstract "The detail of what happens when you open a project"
+!!! abstract "What happens when you open a project, in detail"
 
-The actions of opening a project are modified by configuration settings and by user-command options and API function parameters.
-In ascending priority:
+You open a project with either
 
-1. global configuration settings
-1. project configuration settings
+-   user command [`]CIDER.OpenProject`](user-commands.md#open-project)
+-   API function [`⎕SE.Cider.OpenProject`](api.md#open-project) 
+
+The actions on opening a project are modified by, in ascending priority:
+
+1. [global](configuration.md#global-configuration) config settings
+1. [project](configuration.md#project-configuration) config settings
 1. user-command options or API function parameters
 
 
-:fontawesome-solid-gear: &nbsp;
-[Global](configuration.md#global-configuration) and [project](configuration.md#project-configuration) configurations<br>
-:fontawesome-solid-terminal: &nbsp;
-User command [`OpenProject`](user-commands.md#open-project)<br>
-:fontawesome-solid-code: &nbsp;
-API function `OpenProject` [parameters](api.md#parameters) 
-
 ## Create the project space
 
-Create a child namespace within the parent namespace, which must exist.
+Cider creates the project space as a child of the parent namespace.
 
-The parent namespace is specified in the [`parent`](configuration.md#parent) setting of the project config. (It is `#` by default, but could be something like `⎕SE` or `#.Foo.Goo`.) 
-You can override the project setting with 
+The parent namespace is specified in the [`parent`](configuration.md#parent) setting of the project config, and must exist. (It is `#` by default, but could be something like `⎕SE` or `#.Foo.Goo`.) 
+You can override the project setting with the `parent` option or parameter.
 
--   the user-command option `-parent=`
--   the API parameter] `parent`
-
-The name of the project space is specified in the [`projectSpace`](configuration.md#projectspace) setting of the project config, but  you can override it with
-
--   the user-command option `-projectSpace=`
--   the API parameter `projectSpace`
+The name of the project space is specified in the [`projectSpace`](configuration.md#projectspace) setting of the project config, but you can override it with the `projectSpace` option or parameter.
 
 If the project space does not exist, Cider creates it.
 
-If neither the project space nor the project folder is empty, Cider asks you whether it can empty the project space.
-If you say not, Cider signals an error.
+If neither the project space nor the project folder is empty, Cider proposes to empty the project space.
+(If you say not, Cider signals an error.)
 
 
 ## Set system variables
@@ -44,9 +35,9 @@ Cider sets in the project space the values of `⎕IO` and `⎕ML` and any other 
 
 !!! detail "System variables have priority"
 
-	These variables must be set before code is brought into the workspace because defining classes or namespaces potentially entails executing code which might rely on them.
+	System variables must be set before code is brought into the workspace because defining classes or namespaces potentially entails executing code that relies on them.
 
-If a setting in `SYSVARS` cannot be used to set a system variable, a warning message is printed in the session.
+If a setting in `SYSVARS` cannot be used to set a system variable, Cider prints a warning message.
 
 !!! tip "Set system variables in your source code"
 
@@ -64,6 +55,9 @@ Cider links the project space to the project folder according to the [`watch`](c
 
 -   the `-watch=` or `import` options of the user command
 -   the `watch` or `importFlag` parameters of the API function
+
+:fontawesome-solid-bomb:
+Troubleshooting: [How link watches for changes](troubleshooting.md#how-link-watches-for-changes)
 
 
 ## Check for empty package folders
@@ -83,13 +77,13 @@ If a Tatin installation folder contains the two definition files but no packages
 
 ## Check for later package versions
 
-If the project has Tatin packages installed in one or more folders, Cider will ask you whether it should check for any later versions of any of the principal packages. (This will not happen only if `importFlag` is set.)
+If the project has Tatin packages installed in one or more folders, Cider proposes to check for later versions of any of the principal packages. (This will not happen only if `importFlag` is set.)
 
-If Cider finds a later version of a package it will ask you whether it should update it.
+If Cider finds a later version of a package it proposes to update it.
 
 !!! warning "Tatin registries only"
 
-The check is offered only for packages loaded from a Tatin registry that is in your config file _and_ has a priority greater than 0. 
+	The check is offered only for packages loaded from a Tatin registry that is in your config file _and_ has a priority greater than 0. 
 
 :fontawesome-solid-book:
 [Tatin documentation](https://tatin.dev/v1/documentation)
@@ -104,101 +98,78 @@ Required Tatin packages are specified in the `tatin` subkeys of the [`dependenci
 The packages are loaded into the project space unless the subkeys specify another destination.
 
 
-## Loading NuGet packages
+## Load NuGet packages
 
-Your application or tool might depend on a NuGet[^nuget] package. By assigning a folder hosting NuGet packages to the `nuget` sub-key in `dependencies` you can make sure that Cider will load those installed packages into the root of your project or the assigned sub-namespace.
+Cider loads required NuGet packages.
 
-> On NuGet packages
->
-> Note that for the time being the ability to load NuGet packages is most useful for loading your own NuGet packages written in C#.
->
-> Beyond that, it depends on whether the package uses [generics](https://learn.microsoft.com/en-us/dotnet/standard/generics/). Many packages do, and that makes them unusable for the time being, because Dyalog's .NET interface does not support generics right now.
->
-> However, this restriction of the .NET interface is likely to be lifted in a future release.
+Required NuGet packages are specified in the `nuget` subkey of the [`dependencies`](configuration.md#dependencies) setting in the project config.
 
-See the config property `dependencies` details.
+The packages are loaded into the project space unless the subkeys specify another destination.
 
-Note that NuGet packages can currently become part of your application, but they cannot be loaded as development tools. This restriction is likely to be lifted in a later release of Tatin.
+!!! warning "NuGet packages and generics"
 
-## Injecting a namespace `CiderConfig`
+	The ability to load NuGet packages is most useful for loading your own NuGet packages, written in C#.
 
-In this step `]Cider.OpenProject` injects a namespace `CiderConfig` into the project space and...
+	Packages that use [generics](https://learn.microsoft.com/en-us/dotnet/standard/generics/) cannot be used, as Dyalog’s .NET interface does not support them.
+	This restriction may be removed in a future release.
 
-* populates it with the contents of the configuration file as an APL array
-* adds a variable `HOME` that remembers the path the project was loaded from
+NuGet packages can be included your application, but not loaded only as development tools, as only a single installation folder may be specified. 
+(This restriction may be removed in a later release.)
 
-## Injecting a namespace `TatinVars`
 
-Whether a project is going to be a package depends on the presence of a file `apl-package.json` in the root of the project.
+## Inject the project config
 
-If such a file is present, Cider injects a namespace `TatinVars` into the root of the project, containing exactly the same pieces of information as if it were loaded as a package. This allows a developer to access `TatinVars` as if it was loaded as a package while working on the project.
+Cider injects a namespace `CiderConfig` into the project space and
 
-However, a programmer would expect a namespace `TatinVars` in the root of the _package_. That might be the root of a project, but it might as well be a _sub-namespace_ of the project. In fact, that is more likely.
+-   populates it with the project config as an APL array
+-   sets a variable `HOME` with the project path
 
-This can be addressed by adding the optional property "tatinVars" into the `CIDER` section of the Cider config file, holding the name of a sub-namespace that will eventually become the package. 
 
-If a property "tatinVars" does exist and points to a sub-namespace, then Cider will create a reference `TatinVars` in that namespace that points to `TatinVars` in the root of the project.
+## Inject a `TatinVars` namespace
 
-## Changing the current directory
+A file `apl-package.json` in the project folder indicates the project is to produce a Tatin package.
 
-If the project was opened (rather than imported!) **_and_** `batch` is 0, then Cider checks at this point the current (or working) directory. If it's different from the project's directory, the user is asked whether she wants to change the current directory to the project's directory.
+If `apl-package.json` is found, Cider injects a namespace `TatinVars` into the project space.
+So while you work on the project, you can access `TatinVars` as if it had been loaded as a package.
 
-## Initialising a project
+You would also expect a namespace `TatinVars` in the root of the _package_. That _might_ be the project space, but is more likely to be a child namespace.
 
-There might well be demand for executing some code to initialise your project.
+If so, specify it in the optional setting `tatinVars` in the `CIDER` section of the project config.
+Cider will then create a reference `TatinVars` in that namespace, pointing to `TatinVars` in the project space.
 
-This can be achieved by assigning the name of a function to `init`. The name must be relative to the root of your project.
 
-The function will be executed unless `suppressInit` is 1.
+## Change the current working directory
 
-The function should not return a result. If it does anyway it should be shy. Any result would be ignored.
+If neither `import`, `importFlag` nor `batch` is set, Cider checks the current working directory. 
 
-Such a function may be niladic, monadic, ambivalent or dyadic:
+If it’s not the project folder, Cider proposes to change to it.
 
-* A monadic function receives a namespace with the project configuration as the right argument
-* A dyadic or ambivalent function receives in addition the parameter space passed to `OpenProject`
 
-Note that such a function will be executed no matter whether the project was opened or imported.
+## Initialise the project
 
-## Executing user-specific code
+If the project config specifies an [initialisation](configuration.md#init) function, Cider executes it unless the `suppressInit` option or `suppressLX` parameter is set.
+<!-- FIXME Do the option and parameter names really differ like this? -->
 
-You might want to execute some general code (as opposed to project-specific code) after a project was opened (rather than imported). "General" means that this code is executed whenever a project (any project!) is opened. 
 
-You can suppress the execution of such a function by setting `ignoreUserExec` to 1.
+## Execute the global initialisation function
 
-This can be achieved by specifying the fully qualified name of a function that must be monadic, most likely in `⎕SE`. A namespace with the configuration data of the project is passed as the right argument.
+If the global config specifies an [initialisation](configuration.md#executeafterprojectopen) function, it applies to __all__ your projects.
 
-The function may or may not return a result, but when it does the result will be discarded.
+Cider executes it unless the `ignoreUserExec` option or parameter is set.
 
-The fully qualified name of the function must go into the file that is returned by the function `GetCiderGlobalConfigFilename`, which is available only via the API, not as a user command. This is the global Cider config file, not a Cider project config file.
-
-That file already contains a definition of the keyword `ExecuteAfterProjectOpen`, but it is empty:
-
-```json
-{
-    ExecuteAfterProjectOpen: "",
-}
-```
-
-What is this application for you may ask? Well, let's assume that you are not using Git but a different version control software. With Git, Cider would execute the "status" command and show the result to the user. With your version control software, it can't do something similar because it does not know what to do.
-
-You can easily achieve that by yourself: just add the required code to a function you load early into `⎕SE`, and then make sure that `ExecuteAfterProjectOpen` is calling that function and you are done.
-
-Another application could be to bring in non-Tatin dependencies defined in the `dependencies` and/or the `dependencies_dev` properties.
-
-Note that you may use the `ignoreUserExec` flag to tell `OpenProject` to ignore the global setting. This is certainly useful when Cider's test suite is executed.
 
 ## Check for `ToDo`
 
-If the project was opened (rather than imported!) **_and_** `batch` is 0, then Cider checks whether there is a variable `ToDo` in the root of your project that is not empty. If that's the case then the contents of that variable is printed to the session.
+If neither `import`, `importFlag` nor `batch` is set; and the project space contains a non-empty variable `ToDo`, Cider prints it.
 
-You may use this to keep track of:
 
-* Steps that need to be executed before the project can be committed or published etc.
-* A variable, config property, or setting that has just been deprecated, but should be removed with the next major release.
-* Or anything else you might want to note.
+## Report Git status
 
-## Git Status
+If 
 
-If the project was opened (rather than imported!) **_and_** the project is version-controlled by Git **_and_** `batch` is 0 **_and_** the global configuration parameter `ReportGitStatus` is greater than 0, then Cider will report the current branch and its status.
+-   neither `import`, `importFlag` nor `batch` is set; and
+-   the project is version-controlled by Git; and
+-   the global config setting `ReportGitStatus` is greater than 0
+
+Cider reports the current branch and its status.
 

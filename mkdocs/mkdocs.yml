@@ -5,11 +5,12 @@ repo_name: aplteam/Cider
 nav:
   - Revised:
     - About Cider: index.md
-    - Open project: open-project.md
     - Get started: get-started.md
     - User commands: user-commands.md
+    - Open project: open-project.md
     - API functions: api.md
     - Configuration: configuration.md
+    - Troubleshooting: troubleshooting.md
   - Original:
     - User Guide: original-user-guide.md
     - API Reference: api-reference.md

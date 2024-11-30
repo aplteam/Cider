@@ -1,40 +1,45 @@
-# ![Cider logo](img/cider-logo.png){: style="height: 1.8em"} Cider
+# ![Cider logo](img/cider-logo.png){: style="height: 1.8em"} About Cider
 
 <!-- _Cider is a project manager for Dyalog APL_ -->
 
 !!! abstract "Cider is a project manager for authors who make software for others to use."
 
-If you are an author, Cider helps you manage
+__If you write software for others to use__ Cider helps you manage
 
 -   the software you publish
 -   the files you make it from
--   any imported packages it uses
+-   any imported packages it depends on
 -   the versions you produce
 
 
-## Related tools
+## When you open a project
 
-Cider cooperates with
+Cider creates its namespace (project space) in the active workspace then
 
--    [Link](https://dyalog.github.io/link), which maintains the source of Dyalog APL objects as text files
--    [Tatin](https://tatin.dev), the community APL package manager
--    [NuGet](https://www.nuget.org), the package manager for .NET
--    [Git](https://git-scm.com), a source-control manager
--    [Dropbox](https://dropbox.com), a file-sharing service
+-   defines its APL objects in the project space, linked to their source files
+-   loads its Tatin and NuGet packages
+-   executes the project’s initialisation function
+-   executes your global initialisation function 
+-   displays the project’s to-do list and Git status
 
-Cider is designed to work with the popular Git source control manager,  but can also be used with others.
+:fontawesome-solid-hand-point-right:
+[More details …](open-project.md)
 
 
-## Using Cider
+You use Cider through its [user commands](user-commands.md) or its [API functions](api.md).
 
-You use Cider through its [user commands](user-commands.md).
 
-You identify your project folder (where you keep your APL source files) and any packages your project uses. When you open your project, Cider builds everything in namespaces in the session workspace.
-<!-- (Code is not stored in saved workspaces.) -->
+!!! detail "Related tools"
 
-Cider assumes your project will have multiple versions, and keeps track of them for you.
+	Cider cooperates with
 
-You can also use Cider through its API.
+	-    [Link](https://dyalog.github.io/link), which maintains the source of Dyalog APL objects as text files
+	-    [Tatin](https://tatin.dev), the community APL package manager
+	-    [NuGet](https://www.nuget.org), the package manager for .NET
+	-    [Git](https://git-scm.com), a source-control manager[^git]
+	-    [Dropbox](https://dropbox.com), a file-sharing service
+
+	[^git]: Cider is designed to work with the popular Git source control manager,  but can be used with others.
 
 
 ## Requirements
@@ -47,16 +52,28 @@ Dyalog 19.0 has Cider and Tatin installed.
 For Dyalog 18.2, Cider and Tatin have to be installed.
 
 
-## Terminology
+## Glossary
+
+alias
+: A short name for a project, used as an alternative to the project path. Aliases are not case sensitive.
 
 flag
-: A flag has value 0 or 1. It is ‘set’ with a value of 1.
-
-string
-: A simple character vector (depth 1)
+: A flag has value 0 or 1. Set a flag by giving it a value of 1.
 
 list of strings
-: A nested vector of strings (depth 2)
+: A nested vector of strings, eg. `'quick' 'brown' 'fox'`
 
 parameter namespace
-: a namespace of variables representing parameters
+: A namespace of variables representing parameters
+
+project folder
+: Where the project is defined in the filesystem
+
+project space
+: The namespace in which Cider builds the project
+
+project path
+: The filesystem path to the project folder 
+
+string
+: A simple character vector, e.g. `'quick'`

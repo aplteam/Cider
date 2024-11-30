@@ -1,9 +1,12 @@
 # Get started
 
+!!! abstract "Install and activate Cider; create and open a blank project"
+
+<!-- FIXME Describe creating a project from APL source files -->
 
 ## Install
 
-Dyalog version 19+ has Tatin and Cider already installed.
+Dyalog version 19 has Tatin and Cider already installed.
 Nothing to do here. 
 
 ??? info "For Dyalog 18.2 install Tatin and Cider"
@@ -58,11 +61,11 @@ Verify. For example,
 
 ## Create a blank project
 
-		  ]CIDER.CreateProject <filepath>
+		  ]CIDER.CreateProject <projectpath>
 
-where `<filepath>` identifies a folder that is empty or does not exist.
+where `<projectpath>` identifies a folder that is empty or does not exist.
 
-Cider will create the folder as a Cider project, with an empty `APLSource` child folder, linked to a new namespace in your active workspace. 
+Cider creates the folder as a Cider project, with an empty `APLSource` child folder, linked to a new namespace in your active workspace. 
 
 	      ]CIDER.CreateProject /Users/sjt/tmp/myproj
 
@@ -74,7 +77,7 @@ Cider will create the folder as a Cider project, with an empty `APLSource` child
 	  No Dropbox conflicts found
 	Project successfully opened and established in "#.myproj"
 
-Now Link will save any APL objects defined in the `#.myproj` namespace as text files in `APLSource`.
+Now Link will save APL objects in the `#.myproj` namespace as text files in `APLSource`.
 
 	      )CS myproj
 	#.myproj
@@ -94,7 +97,7 @@ myproj
 
 ## Open your project
 
-In a clear workspace
+Clear the workspace and open the project.
 
 	      )CLEAR
 	clear ws
@@ -110,3 +113,4 @@ Changes to the objects in `#.myproj` will be mirrored in their source files in `
 Changes to the source files will be mirrored in the workspace.
 
 When you quit Dyalog your changes have already been saved.
+
