@@ -283,9 +283,11 @@ The `watch` setting is ignored when a project is opened with the `import` option
 
 This section lets you to set system variables. 
 `⎕IO` and `⎕ML` should always be set explicitly.
+(They default to 1.)
 
 You can set other system variables here like, say, `⎕CT` as `ct`, and so on.
-(They default to 1.)
+
+System variable names are case-insensitive.
 
 
 ### `USER`

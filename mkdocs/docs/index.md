@@ -57,3 +57,6 @@ string
 
 list of strings
 : A nested vector of strings (depth 2)
+
+parameter namespace
+: a namespace of variables representing parameters

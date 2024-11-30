@@ -216,9 +216,9 @@ Returns the path to the file used to record alias names and their paths.
 
 ## :fontawesome-solid-code: GetCiderGlobalConfigFileContent
 
-    r←GetCiderGlobalConfigFileContent
+    parms←GetCiderGlobalConfigFileContent
 
-Returns the contents of Cider’s (optional) global configuration file – if found – as a namespace of parameters.
+Returns the contents of Cider’s (optional) global configuration file – if found – as a parameter namespace.
 
 If no global configuration file is found, the result is `⍬`.
 
@@ -241,16 +241,16 @@ This setting defines the same function for all your Cider projects, which is why
 
 ## :fontawesome-solid-code: GetCiderGlobalConfigFilename
 
-    filename←GetCiderGlobalConfigFilename
+    path←GetCiderGlobalConfigFilename
 
-Returns as a fully qualified filepath Cider’s global configuration file.
+Returns the path to Cider’s global configuration file.
 
 
 ## :fontawesome-solid-code: GetCiderGlobalConfigHomeFolder
 
-    folder←GetCiderGlobalConfigHomeFolder
+    path←GetCiderGlobalConfigHomeFolder
 
-Returns as a fully qualified filepath the folder that contains Cider’s global configuration file.
+Returns the path to the folder that contains Cider’s global configuration file.
 
 On Windows, this is typically `C:/Users/<⎕AN>/.cider/config.json`
 
@@ -258,9 +258,9 @@ On Windows, this is typically `C:/Users/<⎕AN>/.cider/config.json`
 
 ## :fontawesome-solid-code: GetMyUCMDsFolder
 
-    r←GetMyUCMDsFolder
+    path←GetMyUCMDsFolder
 
-Returns the fully qualified filepath to the `MyUCMDs/` folder.
+Returns the path to the `MyUCMDs/` folder.
 
 !!! warning "The folder might not exist :fontawesome-brands-linux: :fontawesome-brands-apple:"
 
@@ -287,7 +287,7 @@ The `config` argument is typically derived from a project’s configuration file
 
 ## :fontawesome-solid-code: GetProgramFilesFolder
 
-    r←{current}GetProgramFilesFolder suffix
+    path←{current}GetProgramFilesFolder suffix
 
 Where
 
@@ -395,7 +395,7 @@ Describe the other two columns
 
 ## :fontawesome-solid-code: OpenProject
 
-    (successFlag ∆LOG)←OpenProject y
+    (flag log)←OpenProject y
 
 Where `y` is either
 
@@ -407,8 +407,8 @@ Where `y` is either
 
 Cider opens the project as listed below, and returns a 2-item result:
 
-    successFlag - 1 for success
-    ∆LOG        - list of strings as printed to the session
+    flag - 1 for success
+    log  - list of strings as printed to the session
 
 ### Actions
 
