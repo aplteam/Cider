@@ -1,4 +1,12 @@
+---
+title: Configuring Cider
+description: How to configure the global and project settings for Cider, the project manager for Dyalog APL software authors.
+keywords: api, apl, cider, configuration, dyalog, key, link, setting, source, subkey, tatin
+---
+
 # Configuration
+
+!!! abstract "Project settings, and settings that apply to all your projects"
 
 ## Global configuration
 

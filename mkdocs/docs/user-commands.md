@@ -1,9 +1,15 @@
+---
+title: Cider user commands
+description: Complete reference for the Cider user commands, most convenient way to use the Cider project manager for Dyalog APL.
+keywords: api, apl, cider, dependency, dyalog, link, reference, source, tatin, ui
+---
 # User commands
 
 
-!!! tip "All the user commands have help built in"
+!!! abstract "User commands are Cider’s user interface"
 
-	For example
+
+	All the user commands have help built in, for example
 
 		]CIDER -?
 		]CIDER -??
@@ -30,9 +36,7 @@ They override settings in the [project](configuration.md#project) and [global](c
 
 _Add one or more NuGet packages as dependencies_
 
-```
-]CIDER.AddNuGetDependencies pkglist [project]
-```
+	]CIDER.AddNuGetDependencies pkglist [project]
 
 Where
 
@@ -141,7 +145,7 @@ If the project folder already contains a file `cider.config` Cider signals an er
 
 Cider initialises the project folder, links it to the project space, and offers the project config for editing, checking required settings are specified correctly.
 
-Finally Cider offers to open the new project.                                                         
+Finally Cider offers to open the new project.
 
 -----------------|------------------------
 `acceptConfig`   | Accept an already existing config file.
@@ -150,7 +154,7 @@ Finally Cider offers to open the new project.
 `ignoreUserExec` | Open the project without executing the global config’s [initialisation](configuration.md#executeafterprojectopen) function.
 `noEdit`         | Do not offer me the configuration for editing.
 
-!!! tip "Keep the workspace root empty"
+??? tip "Keep the workspace root empty"
 
 	Good practice keeps the active workspace root empty. So Cider is designed to associate each project with a namespace.
 
@@ -203,8 +207,6 @@ _List all currently open projects_
 
 Prints a list of all open projects.
 
-Options:
-
 ---|---
 `verbose` | Instead of a list, print a table.
 
@@ -219,11 +221,12 @@ If you omit `projectpath` Cider uses the one open project or, if you have more t
 
 -------|--------
 `full` | Print a hierarchical report on all dependencies.
-`raw`  | Print dependency data unformatted.
+<!-- `raw`  | Print dependency data unformatted. -->
 
 The full report does not show what is actually used, but what the packages themselves require. 
 (Due to minimum version selection they might end up using a later version.) 
 This can help show why a particular (typically old) package is required.
+
 
 ## :fontawesome-solid-terminal: Make
 
@@ -245,7 +248,6 @@ _Build the project in the active workspace and keep it linked_
 
 Where `project` is an alias or project path, Cider builds the project in the active workspace, linked to its source files.
 [More detail…](open-project.md)
-
 
 ---|---
 `alias=` | Remember this alias for the project.

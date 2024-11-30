@@ -1,3 +1,9 @@
+---
+title: Open a Cider project
+description: A detailed account of what happens when Cider opens a project
+keywords: api, apl, cider, dyalog, link, nuget, source, tatin
+---
+
 # Open project
 
 !!! abstract "What happens when you open a project, in detail"

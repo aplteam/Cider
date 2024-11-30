@@ -1,9 +1,21 @@
+---
+title: Troubleshooting Cider
+description: How to spot and handle problems with Cider, the project manager for Dyalog APL software authors.
+keywords: apl, cider, dotnet, dyalog, link, source, tatin
+---
+
 # Troubleshooting
+
+
+??? quote "I don’t mind a reasonable amount of trouble."
+
+	Sam Spade in Dashiel Hammett’s _The Maltese Falcon_
+
 
 
 ## How Link watches for changes
 
-To detect changes on the file system, Link uses a File System Watcher, which requires .NET.
+To detect changes on the file system, Link uses a .NET File System Watcher.
 
 To detect changes in the workspace, Link uses APL threads.
 

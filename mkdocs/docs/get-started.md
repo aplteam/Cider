@@ -1,3 +1,9 @@
+---
+title: Get started
+description: How to install and activate the Cider project manager for Dyalog APL. How to create and open a blank project.
+keywords: apl, command, cider, dyalog, install, link, source, tatin
+---
+
 # Get started
 
 !!! abstract "Install and activate Cider; create and open a blank project"
@@ -114,3 +120,4 @@ Changes to the source files will be mirrored in the workspace.
 
 When you quit Dyalog your changes have already been saved.
 
+If you have APL source files already written, copy them into the `APLSource` folder.

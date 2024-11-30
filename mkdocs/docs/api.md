@@ -1,4 +1,12 @@
-# API Reference
+---
+title: Cider’s API functions
+description: Complete reference to the Cider API, which lets you call the Dyalog APL project manager from your own code.
+keywords: api, apl, cider, dyalog, link, nuget, parameter, source, tatin
+---
+
+# API functions
+
+!!! abstract "Cider’s API lets you call it from your own code"
 
 The API functions are similar to the [user-commands](user-commands.md), but not identical.
 Not all have equivalent user commands.

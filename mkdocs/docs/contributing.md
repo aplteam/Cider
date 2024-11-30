@@ -1,137 +1,170 @@
+---
+title: Contributing to Cider
+description: How to contribute to Cider, the project manager for Dyalog APL software authors
+keywords: api, apl, cider, dyalog, link, source, tatin, versions
+---
+
 # Contributing
 
-## Overview
 
-In order to contribute to Cider as a developer you need some pieces of information. 
-
-## Design
-
-### The user commands and the API
-
-Cider consists of an API and a user command script.
-
-A couple of principles:
+!!! abstract "How to contribute to Cider"
 
 
-**API functions...**
+Cider exposes an API and some user commands.
 
-* do not do any guessing, meaning they require precise parameters in order to work
-* do not communicate with the user
-* throw an error if they cannot fulfil their job
+API functions
 
-**User commands...**
+-   make no guesses: they require exact arguments and parameters
+-   do not communicate with you
+-   signal an error if they fail
 
-* print useful messages if something goes wrong (though they do throw errors in case of missing or invalid parameters)
-* They often do guess what the user is up to
+User commands
 
-  For example, if no project is specified, they check whether there is a single Cider project open. If that's the case, they act on that project. If multiple projects are open, they will ask the user which one to act on.
+-   print helpful messages if something goes wrong (but signal errors for missing or invalid parameters)
+-   often guess what you want; e.g. if no project is specified but one is open, the command uses it; if several are open, Cider asks you to select one
 
 
-## Developing
+## Develop
 
-### General
+__Development Mode__ (DM) is set in variable `⎕SE.Cider.DEVELOPMENT`:
 
-The user command script does not carry out any of Cider's "business logic", it just works out whether it should execute code in `⎕SE` or in `#`, and then calls functions in either `⎕se.Cider.##.UC` (the default) or in `#.Cider.Cider.UC` (trace & develop).
+    0 - off
+    1 - on (verbose)
+    2 - on (silent)
 
-> See the discussion of the `DEVELOPMENT` variable further down for details
 
-While the API functions live in `⎕SE.Cider` (and call stuff in `⎕SE.Cider.##`), the user command functions live in `⎕SE.Cider.##.UC`.
+If DM is 2, reports and warnings are suppressed.
 
-### Changing the user command script
 
-The user command script is a thin cover that directs calls to (usually) `⎕SE.Cider.UC`. It is therefore pretty unlikely that there will every be a need for changing that script.
+### User commands and the API
 
-In the unlikely event that the user command script needs changing anyway, Link will record any changes only if you have specified 
+Cider’s core logic is in the API functions.
 
-```
-   DYALOGSTARTUPKEEPLINK : 1,
-```
+The user-command script works out whether it should execute code in `⎕SE` or in `#`,  then calls functions according to the DM:
 
-in a dyalog configuration file, otherwise changes are **_not_** recorded. 
+    off - ⎕SE.Cider.##.UC
+    on  - #.Cider.Cider.UC
 
-> Regarding `DYALOGSTARTUPKEEPLINK`, see the "Installation and Configuration Guide" of Dyalog for your OS for details.
 
-Make sure that you change the script either in the location it is started from or in the project, but not both. When you create a new version of Cider it will check whether the two versions are identical (when no action is taken) or not, when it will suggest to copy over the version that carries the latest changes.
+The API functions are in `⎕SE.Cider`, and call objects in `⎕SE.Cider.##`
 
-### Changing the user command functions
+The user-command functions are in `⎕SE.Cider.##.UC`
 
-The user command script calls functions in `#.Cider.UC` when developing and in `⎕SE.Cider.##.UC` otherwise. Because that namespace is part of the project, with `DEVELOPMENT>0` changes are recorded, so developing is easy.
+
+### The user-command script
+
+The user-command script is a thin cover for calls to (usually) `⎕SE.Cider.UC`. 
+<!-- FIXME Really? Namespace not previously mentioned. -->
+You will rarely need to change it.
+
+If you do, Link records your changes __only__ if you have specified environment variable
+
+    DYALOGSTARTUPKEEPLINK : 1,
+
+in a Dyalog configuration file.
+
+!!! tip "See the Dyalog _Installation and Configuration Guide_ for how to set environment variables."
+
+Change the script either in the location it is started from, or in the project, but not in both. 
+
+When you create a new version, Cider checks whether the two versions are identical.
+If not, it proposes copying over the version that carries the latest changes.
+<!-- FIXME I don’t understand this. -->
+
+
+### Changing user-command functions
+
+The user-command script calls functions in `#.Cider.UC` when DM is on, and in `⎕SE.Cider.##.UC` when DM is off.
+<!-- FIXME Contradicts reference above to #.Cider.Cider.UC -->
+
+Because that namespace is part of the project, with DM on, your changes are recorded, and developing is easy.
+<!-- FIXME Which namespace? -->
+
 
 ### Changing API functions
 
-When a user command is issued, the Cider user command script calls a function in the `UC` namespace (see above), which will eventually call an API function in `#.Cider.Cider` (with `DEVELOPMENT>0`) or in `⎕SE.Cider`
+A Cider user command calls a function in the `UC` namespace (see above), which eventually calls an API function in
 
-When Cider is opened as a Cider project, the user will be asked whether a variable `DEVELOPMENT` with a value greater than 0 should be established in the namespace `⎕SE.Cider`.
+    #.Cider.Cider   ⍝ DM on
+    ⎕SE.Cider       ⍝ DM off
 
-If such a variable exists and its values is not 0, then Cider establishes a reference not to `⎕SE.Cider` but to `#.Cider.Cider`.
+When Cider opens Cider as a project, it proposes setting DM on in `⎕SE.Cider`.
 
-The consequence of this is that when you change a function in the process of running it, it will be saved by Link _in the project_, meaning your changes are preserved.
+If DM is on, Cider establishes a reference not to `⎕SE.Cider` but to `#.Cider.Cider`.
+<!-- FIXME Establishes a reference? -->
 
-In order to remind you what's happening, Cider prints a warning to the session whenever a user command is executed:
+The consequence is that when you change a function in the course of running it, Link will save it _in the project_, preserving your changes.
 
-```
-*** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!
-```
+To remind you what’s happening, Cider prints a warning whenever a user command is executed:
 
-However, `⎕SE.Cider.DEVELOPMENT` is set to 2 by the test suite in case it was 1. This has the same consequences except that the warnings are not printed, so the tests are not flooding the session window with those warnings.
-
-The former value is re-established once the tests are done.
-
-## Running the test suite
-
-You may ask Cider for how to run the test cases:
-
-```
-]Cider.RunTests
-```
-
-That gives you a statement that will execute all tests, and report to the session. That includes tests that will attempt to interact with the user.
-
-If you need to execute the test suite in batch mode (no reporting to the session, and returning a single boolean indicating success (1) or failure (0)) you must run:
-
-```
-#.Cider.TestCases.RunTestsInBatchMode
-```
-
-
-### NuGet tests
-
-Note that running the NuGet tests requires .NET (rather than .NET Framework) to be used by Dyalog.
-
-The test cases check that and don't execute in case .NET is not available.
-
-## Building a new version
-
-You may ask Cider for how to build a new version:
-
-```
-]Cider.Make
-```
-
-Before executing that statement you should check both `#.Cider.Cider.Version` and `#.Cider.Cider.History` for being up-to-date.
-
-Cider's `Admin.Make` function will create a new version and save it as a ZIP file in the `Dist/` folder within the project folder.
-
-In a final step it will ask whether the new version should be installed as a user command. 
-
-If the answer is "yes" it will install Cider into the folder where it has previously been installed, or, if it has not been previously installed, ask the user whether it should be installed into the version-specific or the version-agnostic folder for Dyalog files on your operating system.
-
-
-## Making a new version ready for Dyalog
-
-In order to make a new version available for Dyalog for bundling purposes, Cider needs to be installed from the `[tatin]` Registry in a first step. In a second and last step, the contents of the installation folder needs to be zipped into a file with the name
-
-```
-Installed-aplteam-Cider-<major>.<minor>.<patch>
-```
-
-There is a function available that executes both steps; it requires a 1 to be passed as right argument:
-
-```
-#.Cider.Admin.MakeZipForDyalog 1
-```
-
-That file needs to go onto the release page for that version where Dyalog can fetch and process it.
+    *** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!
 
 
 
+
+## Test
+
+Cider can tell you how to run the test cases:
+
+    ]Cider.RunTests
+
+That prints an expression that, if executed, runs all the tests (interactive included) and reports to the session.
+
+If DM is 1, the test suite sets it to 2 while running, so as not to flood the session window.
+
+To execute the test suite in batch mode (no reports, and returns a single flag indicating success):
+<!-- FIXME Why a batch mode if the test suite sets DM to 2 while running? -->
+
+    #.Cider.TestCases.RunTestsInBatchMode
+
+!!! warning "NuGet tests require .NET"
+
+    Running the NuGet tests requires .NET, rather than .NET Framework.
+
+    The test cases execute only if .NET is available.
+    <!-- FIXME Just the Nuget tests, or all tests? -->
+
+
+## Build
+
+Cider can tell you how to build a new version. 
+User command
+
+    ]Cider.Make
+
+prints an expression that builds a new version. 
+
+Before executing it, check both `#.Cider.Cider.Version` and `#.Cider.Cider.History` are up-to-date.
+
+Cider’s `Admin.Make` function creates a new version and saves it as a ZIP file in the distribution folder specified in the project config.
+
+Finally, Cider proposes installing the new version.
+
+Doing so installs Cider over the current version.
+Restart Dyalog to use the new version.
+
+<!-- 
+FIXME How can Cider not be installed if it is running?
+
+  , or, if it has not been previously installed, ask the user whether it should be installed into the version-specific or the version-agnostic folder for Dyalog files on your operating system.
+ -->
+
+
+## Distribute
+
+To release a new version to Dyalog for bundling:
+
+1.  Install Cider from the `tatin` Registry
+1.  Zip the contents of the installation folder into a file with the name 
+
+        Installed-aplteam-Cider-<major>.<minor>.<patch>
+
+This function takes an argument of 1 and executes both steps:
+
+    #.Cider.Admin.MakeZipForDyalog 1
+
+Upload the ZIP file to the release page for the version, where Dyalog can fetch and process it.
+
+
+
+*[DM]: Development Mode

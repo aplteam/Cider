@@ -1,3 +1,9 @@
+---
+title: About Cider
+description: Cider is a project manager for Dyalog APL authors who make software for others to use.
+keywords: api, apl, cider, dropbox, dyalog, git, link, nuget, source, tatin
+---
+
 # ![Cider logo](img/cider-logo.png){: style="height: 1.8em"} About Cider
 
 <!-- _Cider is a project manager for Dyalog APL_ -->
@@ -77,3 +83,8 @@ project path
 
 string
 : A simple character vector, e.g. `'quick'`
+
+
+## Acknowledgements
+
+Cider is developed from more than a decade of earlier work, primarily by Phil Last and Paul Mansour on the Acre source-code manager.
