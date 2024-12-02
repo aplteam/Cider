@@ -4,7 +4,9 @@ description: Cider is a project manager for Dyalog APL authors who make software
 keywords: api, apl, cider, dropbox, dyalog, git, link, nuget, source, tatin
 ---
 
-# ![Cider logo](img/cider-logo.png){: style="height: 1.8em"} About Cider
+# :dyalog-cider-logo: About Cider
+<!-- # ![Cider logo](img/cider-logo.png){: style="height: 1em"} About Cider -->
+
 
 <!-- _Cider is a project manager for Dyalog APL_ -->
 
@@ -28,7 +30,7 @@ Cider creates its namespace (project space) in the active workspace then
 -   executes your global initialisation function 
 -   displays the project’s to-do list and Git status
 
-:fontawesome-solid-hand-point-right:
+<!-- :fontawesome-solid-hand-point-right: -->
 [More details …](open-project.md)
 
 

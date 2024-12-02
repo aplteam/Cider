@@ -20,8 +20,14 @@ nav:
     - Contributing: original-contributing.md
 
 theme:
+  custom_dir: overrides
   favicon: 'img/cider-logo.png'
-  logo: 'img/dyalog-white.svg'
+  # logo: 'img/dyalog-white.svg'
+  icon:
+    logo: dyalog/cider-logo
+  name: material
+  font:
+      text: Be Vietnam Pro
   features:
     - content.tabs.link
     - navigation.instant
@@ -29,9 +35,9 @@ theme:
     - navigation.sections
     - navigation.tabs
     - navigation.tracking
-  name: material
-  font:
-      text: Be Vietnam Pro
+  palette:
+    primary: custom
+    accent: custom
 
 extra:
   version_maj: 0
@@ -77,6 +83,9 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      options:
+        custom_icons:
+          - overrides/.icons
   - pymdownx.keys
   - pymdownx.mark
   - pymdownx.superfences
