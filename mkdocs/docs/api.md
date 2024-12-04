@@ -11,6 +11,22 @@ keywords: api, apl, cider, dyalog, link, nuget, parameter, source, tatin
 The API functions are similar to the [user-commands](user-commands.md), but not identical.
 Not all have equivalent user commands.
 
+<pre style="font-family: APL">
+  AddAlias                            GetMyUCMDsFolder
+  AddNuGetDependencies                GetNuGetDependencies
+  AddTatinDependencies                GetProgramFilesFolder
+  CloseProject                        GetTatinDependencies
+  CreateCreateProjectParms            HasDotNet
+  CreateOpenParms                     ListNuGetDependencies
+  CreateProject                       ListOpenProjects
+  DropAlias                           ListTatinDependencies
+  GetCiderAliasFileContent            OpenProject
+  GetCiderAliasFilename               ProjectConfig
+  GetCiderGlobalConfigFileContent     ReadProjectConfigFile
+  GetCiderGlobalConfigFilename        WriteProjectConfigFile
+  GetCiderGlobalConfigHomeFolder      Version
+</pre>
+
 Unlike user commands, API function names are case-sensitive.
 
 The API is exposed in `⎕SE.Cider` so, for example, call `AddAlias` as `⎕SE.Cider.AddAlias`.

@@ -8,12 +8,22 @@ keywords: api, apl, cider, dependency, dyalog, link, reference, source, tatin, u
 
 !!! abstract "User commands are Cider’s user interface"
 
+<pre style="font-family: APL">
+  AddNuGetDependencies    ListOpenProjects
+  AddTatinDependencies    ListTatinDependencies
+  CloseProject            Make
+  Config                  OpenProject
+  CreateProject           ProjectConfig
+  Help                    RunTests
+  ListAliases             UpdateCider
+  ListNuGetDependencies   Version
+</pre>
 
-	All the user commands have help built in, for example
+All the user commands have help built in, for example
 
-		]CIDER -?
-		]CIDER -??
-		]CIDER.AddNuGetDependencies -?
+	]CIDER -?
+	]CIDER -??
+	]CIDER.AddNuGetDependencies -?
 
 User commands and their options are case-insensitive.
 
