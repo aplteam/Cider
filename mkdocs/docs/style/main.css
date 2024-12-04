@@ -34,6 +34,7 @@ code {
 :root {
 	--md-primary-fg-color: rgba(0,59,92,.7); /*Midnight*/
 	--md-accent-fg-color: rgba(256,106,19,1); /*Retina Searing Orange*/
+	--md-code-bg-color: var(--md-primary-bg-color);
 
 }
 /*	--md-primary-bg-color: #F2F1F0; /*Lotion*/
@@ -63,10 +64,30 @@ pre + pre , hr + pre {
 pre + pre > code, hr + pre > code {
     padding-top: 0.2em!important;
 }
+/*no bg for inline code*/
+.md-typeset details summary code,
+.md-typeset h1 code,
+.md-typeset h2 code,
+.md-typeset h3 code,
+.md-typeset h4 code,
+.md-typeset p code {
+	background-color: inherit;
+	box-shadow: none;
+}
 /* reverse out .85em size from theme */
 .md-typeset code {
 	font-size: inherit;
 }
 .md-typeset a {
-	text
+	border-bottom: 1px dashed rgba(0,0,0,.3);
+}
+/* Syntax displays */
+.syntax {
+    color: var(--md-code-fg-color);
+    font-size: 1rem;
+    font-weight: bold;
+    padding: .7720588235em 1.1764705882em;
+    padding-bottom: 1em!important;
+    font-family: APL;
+    line-height: 1.4;
 }

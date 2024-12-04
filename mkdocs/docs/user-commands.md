@@ -36,7 +36,8 @@ They override settings in the [project](configuration.md#project) and [global](c
 
 _Add one or more NuGet packages as dependencies_
 
-	]CIDER.AddNuGetDependencies pkglist [project]
+]CIDER.AddNuGetDependencies pkglist [project]
+{: .syntax}
 
 Where
 
@@ -58,7 +59,8 @@ If the project config does not specify a NuGet dependency folder, Cider asks you
 
 _Add one or more Tatin packages as dependencies_
 
-	]CIDER.AddTatinDependency pkglist [project]
+]CIDER.AddTatinDependency pkglist [project]
+{: .syntax}
 
 Where
 
@@ -80,7 +82,8 @@ If the project config does not specify a Tatin dependency folder, Cider asks you
 
 _Break the link between the workspace and the files on disk_
 
-	]CIDER.CloseProject [projects]
+]CIDER.CloseProject [projects]
+{: .syntax}
 
 Where `projects` is one or more projects, Cider breaks the link between their namespaces and the associated files on disk.
 
@@ -105,7 +108,8 @@ Otherwise attempts to close projects are reported in detail.
 
 _Display or edit Cider’s global configuration_
 
-	]CIDER.Config
+]CIDER.Config
+{: .syntax}
                                                                                            
 Cider prints the content of its global config file to the session.
 
@@ -132,7 +136,8 @@ Cider prints the content of its global config file to the session.
 
 _Initialise a folder as a project_
 
-	]CIDER.CreateProject [projectpath [projectspace] ]
+]CIDER.CreateProject [projectpath [projectspace] ]
+{: .syntax}
 
 Where
 
@@ -165,14 +170,16 @@ Finally Cider offers to open the new project.
 
 _Display the Cider User Guide_
 
-	]CIDER.Help
+]CIDER.Help
+{: .syntax}
 
 
 ## :fontawesome-solid-terminal: List aliases
 
 _List all defined aliases with their folders_
 
-	]CIDER.ListAliases
+]CIDER.ListAliases
+{: .syntax}
 
 ---|---
 `batch`| With `prune` delete without asking me for confirmation.
@@ -187,7 +194,8 @@ Only options `prune` and `batch` can be used together.
 
 _List NuGet packages installed as dependencies_
 
-	]CIDER.ListNugetDependencies [projectpath
+]CIDER.ListNugetDependencies [projectpath]
+{: .syntax}
 
 Where `projectpath` is the project path, Cider lists the project’s NuGet dependencies.
 
@@ -203,7 +211,8 @@ The user command help says project can be specified as an alias. Appears not to 
 
 _List all currently open projects_
 
-	]CIDER.ListOpenProjects
+]CIDER.ListOpenProjects
+{: .syntax}
 
 Prints a list of all open projects.
 
@@ -213,7 +222,8 @@ Prints a list of all open projects.
 
 ## :fontawesome-solid-terminal: List Tatin dependencies
 
-	]CIDER.ListTatinDependencies [projectpath]
+]CIDER.ListTatinDependencies [projectpath]
+{: .syntax}
 
 Where `projectpath` is a project path, Cider lists Tatin packages installed as dependencies of the project.
 
@@ -232,7 +242,8 @@ This can help show why a particular (typically old) package is required.
 
 _Print the expression that builds a new version of the project_
 
-	]CIDER.Make [projectpath]
+]CIDER.Make [projectpath]
+{: .syntax}
 
 Where `projectpath` is a project path, Cider prints the project’s "make" expression.
 
@@ -244,7 +255,8 @@ If you omit `projectpath` Cider uses the one open project or, if you have more t
 
 _Build the project in the active workspace and keep it linked_
 
-	]CIDER.OpenProject project
+]CIDER.OpenProject project
+{: .syntax}
 
 Where `project` is an alias or project path, Cider builds the project in the active workspace, linked to its source files.
 [More detail…](open-project.md)
@@ -270,7 +282,8 @@ The `batch` option is intended for test cases. Consider instead using the [`Open
 
 _Display or edit the project configuration_
 
-	]CIDER.ProjectConfig [projectpath]
+]CIDER.ProjectConfig [projectpath]
+{: .syntax}
 
 Where `projectpath` is the path to a project folder, prints the project configuration.
 
@@ -284,7 +297,8 @@ If you omit `projectpath` Cider uses the one open project or, if you have more t
 
 _Print the expression that executes the project’s test suite_
 
-	]CIDER.RunTests [projectpath]
+]CIDER.RunTests [projectpath]
+{: .syntax}
 
 Where `projectpath` is a project path, Cider prints the APL expression that executes its test suite.
 
@@ -295,7 +309,8 @@ If you omit `projectpath` Cider uses the one open project or, if you have more t
 
 _Tries to update Cider_
 
-	]CIDER.UpdateCider
+]CIDER.UpdateCider
+{: .syntax}
 
 If a later version is available, Cider asks whether you want to update to it.
 
@@ -330,7 +345,8 @@ Troubleshooting: [Updating Cider](troubleshooting.md#updating-cider)
 
 ## :fontawesome-solid-terminal: Version
 
-	]CIDER.Version
+]CIDER.Version
+{: .syntax}
 
 Prints major, minor and patch numbers:
 

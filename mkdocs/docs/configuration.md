@@ -348,6 +348,3 @@ After opening the project into, say, `#.MyProject`, the setting is accessible:
 
 
 
-
-
-*[Dropbox]: A file-sharing service
