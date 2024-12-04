@@ -8,9 +8,7 @@ keywords: api, apl, cider, dropbox, dyalog, git, link, nuget, source, tatin
 <!-- # ![Cider logo](img/cider-logo.png){: style="height: 1em"} About Cider -->
 
 
-<!-- _Cider is a project manager for Dyalog APL_ -->
-
-!!! abstract "Cider is a project manager for authors who make software for others to use."
+!!! abstract "Cider is a project manager for authors who make APL software for others to use."
 
 __If you write software for others to use__ Cider helps you manage
 
