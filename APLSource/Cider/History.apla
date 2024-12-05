@@ -1,5 +1,7 @@
 (
- '* 0.44.1 ⋄ 2024-11-25'
+ '* 0.45.0 ⋄ 2024-12-05'
+ '  * If the Dropbox check is not configured in the Cider config file, Cider now checks whether there is'
+ '    a folder Dropbox/ in the current users home folder. If so, the check is performed.'
  '  * Bug fixes                                                              '
  '    * `CheckForGit`, when asking the user what to do, allowed "quit" but did not handle it correctly'
  '    * `ProjectConfig`: did not return the expected result when editing was disallowed'

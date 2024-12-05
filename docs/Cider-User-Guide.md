@@ -210,6 +210,8 @@ If `CheckForDropboxConflicts` is defined and has the value 1, then both `]OpenPr
 
 Background: in case Dropbox cannot figure out what the last version of a file is, it will create such a file. Dropbox leaves it to the user to compare such a file manually and solve the conflict somehow. The problem is that Dropbox does not actually tell you about such files, it just silently creates them. Therefore Cider does it for you if you configure Cider accordingly.
 
+Note that if there is no global Cider config file, or if it does not contain `CheckForDropboxConflicts`, then Cider checks whether there is a folder `Dropbox/` in the user's home folder. If there is, the check is performed.
+
 ##### ExecuteAfterProjectOpen
 
 If defined and not empty, it must be the fully qualified path to a function. That function will be executed by Cider after the project was opened.
@@ -798,6 +800,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 

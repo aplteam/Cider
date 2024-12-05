@@ -1,10 +1,13 @@
- {r}←CheckForDropboxConflicts path;dmx;list;msg;found
+ {r}←CheckForDropboxConflicts path;dmx;list;msg;found;dropbox
 ⍝ Checks whether there are any Dropbox files indicating conflictes, and if so print them to the session.
 ⍝ Returns 0 in case there are not any such conflict files, otherwise the number of files found.
  r←found←0
  msg←''
  :If 0<≢path~' '
- :AndIf GetGlobalDropboxConflicts
+     :If ⍬≡dropbox←GetGlobalDropboxConflicts
+         dropbox←⎕NEXISTS GetUserHomPath,'\Dropbox'
+     :EndIf
+ :AndIf dropbox
      msg,←⊂'Checking for Dropbox conflicts: ',path,' ...'
      r←≢list←'recursive'F.ListFiles path,'/*conflicted copy*'
      :If 0<r
