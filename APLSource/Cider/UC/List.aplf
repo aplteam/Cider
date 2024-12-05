@@ -81,9 +81,9 @@
 
      c←⎕NS''
      c.Name←'UpdateCider'
-     c.Desc←'Tries to update Cider'
+     c.Desc←'Tries to update Cider to the latest or the given version'
      c.Group←'Cider'
-     c.Parse←''
+     c.Parse←'1s'
      r,←c
 
      c←⎕NS''

@@ -31,13 +31,13 @@ A> Cider offers more than is outlined here as "the solution", but you need to co
 
 #### APL Version
 
-The first version you can use Cider with is 18.0. This is because Cider is a Tatin package, and Tatin runs under 18.0 or later.
+The first version you can use Cider with is 18.2. This is because Cider is a Tatin package, and Tatin runs under 18.2 or later.
 
 Cider requires (like Tatin) a Unicode version of APL.
 
 #### Tatin
 
-Cider relies on the [Tatin package manager](https://github.com/aplteam/Tatin "Link to Tatin on GitHub") because it is a Tatin package. With version 19.0 and later Cider and Tatin will optionally be both available in `⎕SE` right from the start. With earlier versions (18.0 and 18.2) it's up to the user to take care of that.
+Cider relies on the [Tatin package manager](https://github.com/aplteam/Tatin "Link to Tatin on GitHub") because it is a Tatin package. With version 19.0 and later Cider and Tatin will optionally be both available in `⎕SE` right from the start. With earlier versions (18.2) it's up to the user to take care of that.
 
 If Tatin is not in `⎕SE` but recognized as a user command then Cider will attempt to load it by executing the user command `]Tatin.Version` which will implicitly load the Tatin API into `⎕SE`.
 
@@ -57,11 +57,11 @@ Use the user command `]Activate` to activate both Cider and Tatin. Start with:
 ]Activate -??
 ```
 
-#### Version 18.0 and 18.2
+#### Version 18.2
 
 Unlike 19.0, these versions come with neither Tatin nor Cider, so you first have to make sure that Tatin is installed and available, because Cider is a Tatin package and is loaded as such.
  
-The document [Installing And Updating The Tatin Client](https://tatin.dev/Assets/docs/InstallingAndUpdatingTheTatinClient.html "Link to the document on https://tatin.dev") provides instructions for how to install Tatin on 18.0 and 18.2.
+The document [Installing And Updating The Tatin Client](https://tatin.dev/Assets/docs/InstallingAndUpdatingTheTatinClient.html "Link to the document on https://tatin.dev") provides instructions for how to install Tatin on 18.2.
  
 Once Tatin is available, installing Cider is easy and straightforward, just issue this command:
 
@@ -110,7 +110,7 @@ All you have to do in addition to that is to add this function to the `setup.dya
           version←⊃(//)⎕VFI{⍵↑⍨¯1+⍵⍳'.'}2⊃# ⎕WG'APLVersion'
           path←1 GetProgramFilesFolder '/SessionExtensions/CiderTatin/'
           :If version<18
-              r←'Cider not loaded, only supported in Dyalog 18.0 and later'
+              r←'Cider not loaded, only supported in Dyalog 18.2 and later'
           :ElseIf 9=⎕SE.⎕NC'Cider'
               ⍝ Already loaded (19.0)
           :ElseIf 80≠⎕DR' '               ⍝ Not in "Classic"
@@ -141,6 +141,12 @@ You can update Cider to the latest version by issuing the following command:
     
 You must restart Dyalog in order to start using the new version.
 
+Instead you may specify a specific version as an argument. This allows you to go back to an older version, for example when the latest one is buggy.
+
+The version number must be specified as `<major>.<minor>.<patch>`.
+
+If the specified version does not exist, an error is thrown.
+
 A> ### ]Cider.UpdateCider
 A> 
 A> Note that due to a change of the target folder this command will only work when you use it to update version 0.37.1 or later.
@@ -165,7 +171,7 @@ Debugging is the process of removing bugs from code, while programming is how yo
 
 There is always the possibility that the update process is itself buggy. Calling it again usually does not help, so you need an escape route.
 
-!> 18.2 and 18.0
+!> 18.2
 => The easiest way to recover it by uninstalling and then installing Cider again.
 !> 19.0 and later
 => 1. Execute `]DeActivate tatin` --- that removes Cider.
@@ -800,6 +806,7 @@ An example:
 [^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 
