@@ -2,6 +2,7 @@
  '* 0.45.0 ⋄ 2024-12-09'
  '  * If the Dropbox check is not configured in the Cider config file, Cider now checks whether there is'
  '    a folder Dropbox/ in the current users home folder. If so, the check is performed.'
+ '  * `]UpdateCider` now accepts an optional argument: a Cider version number'
  '  * Bug fixes                                                              '
  '    * `CheckForGit`, when asking the user what to do, allowed "quit" but did not handle it correctly'
  '    * `ProjectConfig`: did not return the expected result when editing was disallowed'
