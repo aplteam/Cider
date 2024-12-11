@@ -1,0 +1,34 @@
+ {r}←packageFolder CopyPackageFolderTo targetFolder;pkgs;files;json;ns;noOf;toBeDeleted;rc
+⍝ Copies the files `apl-dependencies.txt` & `apl-buildlist.json` and all packages mentioned by the build list
+⍝ from `packageFolder` to `targetFolder`.\\
+⍝ Packages in `packageFolder` that are NOT mentioned by the build list are NOT copied. This is important when a package installation
+⍝ folder is copied into a folder that is going to be an application: potentially too many packages are copied then.\\
+⍝ If there is a build list but no packages then the packages are installed into `targetFolder` according to the build list.
+⍝ In a second step all superfluous packages are then deleted from `targetFolder`.\\
+⍝ `targetFolder` must be empty.
+⍝ Returns always a 0.
+ r←0
+ Assert 2≤≢files←FilesAndDirs.ListFiles packageFolder
+ Assert'apl-buildlist.json' 'apl-dependencies.txt'{(∧/⍺∊⍵)∨(∧/⍵∊⍺)}{⊃,/1↓1 ⎕NPARTS ⍵}¨files
+ (targetFolder packageFolder)←FilesAndDirs.AddTrailingSep¨targetFolder packageFolder
+ 'Create!'FilesAndDirs.CheckPath targetFolder
+ rc←targetFolder∘{⍺ ⎕NCOPY ⍵}¨files
+ Assert 2≤+/rc
+ json←⊃⎕NGET packageFolder,'/apl-buildlist.json'
+ ns←⎕JSON⍠('Dialect' 'JSON5')⊢json
+ :If 0=≢pkgs←FilesAndDirs.ListDirs packageFolder
+     {}targetFolder{⎕SE.Tatin.InstallPackages(⊃{⍺,',',⍵}/⍵)⍺}ns.url,¨ns.packageID
+     pkgs←FilesAndDirs.ListDirs targetFolder
+     pkgs←{⊃,/1↓1 ⎕NPARTS ⍵}¨pkgs
+     :If 0<≢toBeDeleted←(~pkgs∊ns.packageID)/pkgs
+         2 ⎕NDELETE targetFolder∘,¨toBeDeleted
+     :EndIf
+ :Else
+     pkgs←{⊃,/1↓1 ⎕NPARTS ⍵}¨pkgs
+     pkgs/⍨←pkgs∊ns.packageID
+     :If 0<≢pkgs
+         noOf←+/targetFolder∘{⍺ ⎕NCOPY ⍵}¨packageFolder∘,¨pkgs
+         Assert noOf=≢ns.packageID
+     :EndIf
+ :EndIf
+⍝Done
