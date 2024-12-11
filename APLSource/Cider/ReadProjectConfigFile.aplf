@@ -6,6 +6,9 @@
  projectFolder2←ConfigFilename{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}projectFolder
  config←Get_JSON5 projectFolder2
  saveFlag←0
+ :If 0=config.CIDER.⎕NC'dependencies'
+     'dependencies'config.CIDER.⎕NS''
+ :EndIf
  :If 0=config.CIDER.dependencies.⎕NC'tatin'
      config.CIDER.dependencies.tatin←''
      saveFlag←1

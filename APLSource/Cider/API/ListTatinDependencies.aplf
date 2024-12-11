@@ -1,1 +1,1 @@
-ListTatinDependencies←{##.ListTatinDependencies ⍵}
+ListTatinDependencies←{⍺←⊢ ⋄ ⍺ ##.ListTatinDependencies ⍵}

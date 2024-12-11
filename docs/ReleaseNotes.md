@@ -14,6 +14,13 @@ In short, when compatability is affected.
 
 This document does not come with a complete list of fixes, added features etc. Consult [Cider on GitHub](https://github.com/aplteam/Cider/releases) for that.
 
+## Version 0.46.0 from 2024-12-11
+
+* Bug fixes
+  * `]ListTatinDependencies` did not always report the folder that was investigated (#93)
+  * `]ListTatinDependencies` had a problem with -full: only obe level of sub-folders was investigated (#94)
+  * `ReadProjectConfigFile` now injects `dependencies` into the config file when undefined.
+
 ## Version 0.45.0 from 2024-12-09
 
 * `]UpdateCider` now allows to replace the current version by a particular version
@@ -59,6 +66,7 @@ Just bug fixes
 * The `]Cider.ProjectConfig` user command does not have a `-print` flag anymore but an `-edit` flag instead, and by default it prints the content of Cider's global config file to the session.
  
   That brings this user command syntactially in line with another Cider user command (`Config`) and similar Tatin user commands.
+
 
 
 

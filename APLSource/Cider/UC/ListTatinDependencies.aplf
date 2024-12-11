@@ -1,4 +1,4 @@
- r←ListTatinDependencies Args;path;full;cfgFilename;cfg;tatinFolders;list;path2;buildFilename;buff;F;P_
+r←ListTatinDependencies Args;path;full;cfgFilename;cfg;tatinFolders;list;path2;buildFilename;buff;F;P_
 ⍝ List all Tatin dependencies
  r←''
  P_←P.##
