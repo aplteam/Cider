@@ -1,8 +1,20 @@
- r←ProcessLinkOptions(parms config);path;filename;msg
+  r←ProcessLinkOptions(parms config);path;filename;msg;cfg
+⍝ Looks into the Cider config file and also a file .linkconfig in config.CIDER.source
+⍝ If such a file exists and contains more than just the Link version number and stop flags  ⍝TODO⍝
+⍝ then it takes precedence over what is defined in the [LINK] section of Cider's config file,
+⍝ and the user is informed that she should remove any Link-related stuff from the Cider config file.
+⍝ Otherwise the Link-specific settings in the Cider config file are evaluated.
  r←⎕NS''
  path←config.CIDER.source{0=≢⍺:⍵ ⋄ ⍵,'/',⍺}parms.folder
  filename←(F.AddTrailingSep path),'.linkconfig'
  :If F.IsFile filename
+     cfg←Get_JSON5 filename
+     ⍝TODO⍝
+     ⍝ The next check is a temp solution until Link's .linkconfig file is documented and Link has settled down.
+     ⍝ (For the moment we don't fully understand .linkconfig - 2024-12)
+     ⍝ If there is such a file but it contains nothing but stop vectors (apart from a Link version number)
+     ⍝ we ignore the file and carry on as usual.
+ :AndIf (,⊂'SourceFlags')≢(cfg.⎕NL-2 9)~⊂'LinkVersion'
      :If 0≢parms.watch
          r.watch←parms.watch                     ⍝ Was specified by the user, and that takes (temporarily) precendence
      :EndIf

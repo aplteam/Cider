@@ -1,5 +1,8 @@
 (
- '* 0.46.0 ⋄ 2024-12-11'
+ '* 0.46.0 ⋄ 2024-12-18'
+ '  * When a project is opened and a file .linkconfig is found in the project''s source folder, its content is'
+ '    now checked. If it contains nothing but stop vectors and Link''s version number, then that file is now'
+ '    ignored, and any Link-related settings in Cider''s own config file are evaluated.'
  '  * Bug fixes'
  '    * `]ListTatinDependencies` did not always report the folder that was investigated (#93)'
  '    * `]ListTatinDependencies` had a problem with -full: only obe level of sub-folders was investigated (#94)'

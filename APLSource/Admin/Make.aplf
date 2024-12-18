@@ -4,8 +4,9 @@
 ⍝ Cider won't be installed as a user command then.
  :If flag
      'Runs only on Windows'Assert'Win'≡##.Cider.APLTreeUtils2.GetOperatingSystem ⍬
+     :If 0=⎕SE.⎕NC'MakeHelpers' ⋄ {}⎕SE.Tatin.LoadPackages'[tatin]MakeHelpers'⎕SE ⋄ :EndIf
      batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
-     M←##.TestCases.MakeHelpers
+     M←⎕SE.MakeHelpers
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
      cfg←⎕SE.Tatin.ReadPackageConfigFile C.HOME
