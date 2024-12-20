@@ -102,7 +102,7 @@ If you omit `project` Cider uses the one open project or, if you have more than 
 You can specify a project as
 
 -   a fully qualified namespace
--   an alias
+-   an alias <!-- FIXME Issue #95 -->
 -   a project path
 
 Separate multiple projects with spaces or commas.
@@ -208,6 +208,7 @@ _List NuGet packages installed as dependencies_
 {: .syntax}
 
 Where `projectpath` is the project path, Cider lists the project’s NuGet dependencies.
+<!-- FIXME Issue #95 -->
 
 If you omit `projectpath` Cider uses the one open project or, if you have more than one open, asks you which.
 
@@ -236,6 +237,7 @@ Prints a list of all open projects.
 {: .syntax}
 
 Where `projectpath` is a project path, Cider lists Tatin packages installed as dependencies of the project.
+<!-- FIXME Issue #95 -->
 
 If you omit `projectpath` Cider uses the one open project or, if you have more than one open, asks you which.
 
@@ -270,6 +272,7 @@ _Build the project in the active workspace and keep it linked_
 
 Where `project` is an alias or project path, Cider builds the project in the active workspace, linked to its source files.
 [More detail…](open-project.md)
+<!-- FIXME Issue #95 -->
 
 ---|---
 `alias=` | Remember this alias for the project.
@@ -292,12 +295,18 @@ The `batch` option is intended for test cases. Consider instead using the [`Open
 
 _Display or edit the project configuration_
 
-]CIDER.ProjectConfig [projectpath]
+]CIDER.ProjectConfig [project]
 {: .syntax}
 
-Where `projectpath` is the path to a project folder, prints the project configuration.
+Where `project` is the 
 
-If you omit `projectpath` Cider uses the one open project or, if you have more than one open, asks you which.
+-   project path
+-   alias
+-   project space
+
+of an open project, prints the project configuration.
+
+If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
 
 ---|---
 `edit` | Display the config for editing.
@@ -307,12 +316,18 @@ If you omit `projectpath` Cider uses the one open project or, if you have more t
 
 _Print the expression that executes the project’s test suite_
 
-]CIDER.RunTests [projectpath]
+]CIDER.RunTests [project]
 {: .syntax}
 
-Where `projectpath` is a project path, Cider prints the APL expression that executes its test suite.
+Where `project` is a 
 
-If you omit `projectpath` Cider uses the one open project or, if you have more than one open, asks you which.
+-   project path
+-   alias
+-   project space
+
+of an open project, Cider prints the APL expression that executes its test suite.
+
+If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
 
 
 ## :fontawesome-solid-terminal: Update Cider
