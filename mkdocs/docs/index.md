@@ -64,10 +64,13 @@ alias
 : A short name for a project, used as an alternative to the project path. Aliases are not case sensitive.
 
 flag
-: A flag has value 0 or 1. Set a flag by giving it a value of 1.
+: The meaning depends on context:
+
+	-   In the API or configuration, a boolean; a flag is ‘set’ with 1.
+	-   In the user commands, a parameter without a corresponding value: for example in `]CIDER.OpenProject path/2/project -watch`, the `watch` flag is set.
 
 list of strings
-: A nested vector of strings, eg. `'quick' 'brown' 'fox'`
+: A nested vector of strings, e.g. `'quick' 'brown' 'fox'`
 
 parameter namespace
 : A namespace of variables representing parameters

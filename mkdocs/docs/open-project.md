@@ -59,8 +59,8 @@ Cider uses Link to find all files in the project’s `source` folder (and its ch
 
 Cider links the project space to the project folder according to the [`watch`](configuration.md#watch) setting of the project config, which may be overridden by 
 
--   the `-watch=` or `import` options of the user command
--   the `watch` or `importFlag` parameters of the API function
+-   the `-watch=` or `import` options of [`]CIDER.OpenProject`](user-commands.md#open-project)
+-   the `watch` or `importFlag` parameters of [`⎕SE.Cider.OpenProject`](api.md#open-project)
 
 :fontawesome-solid-bomb:
 Troubleshooting: [How link watches for changes](troubleshooting.md#how-link-watches-for-changes)

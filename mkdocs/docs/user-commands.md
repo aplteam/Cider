@@ -107,7 +107,7 @@ You can specify a project as
 
 Separate multiple projects with spaces or commas.
 
-Where a particular project is specified, success or failure is reported as a flag.
+Where a particular project is specified, success or failure is reported as a boolean.
 Otherwise attempts to close projects are reported in detail.
 
 ---|---
