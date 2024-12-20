@@ -84,6 +84,7 @@ The user-command script works out whether it should execute code in `⎕SE` or i
     off - ⎕SE.Cider.##.UC
     on  - #.Cider.Cider.UC
 
+<!-- FIXME Is `a.b.##.c` not a ref to `a.c`? -->
 
 The API functions are in `⎕SE.Cider`, and call objects in `⎕SE.Cider.##`
 
@@ -102,7 +103,11 @@ If you do, Link records your changes __only__ if you have specified environment 
 
 in a Dyalog configuration file.
 
-!!! tip "See the Dyalog _Installation and Configuration Guide_ for how to set environment variables."
+!!! tip "How to set environment variables"
+    See the Dyalog installation and configuration guides for how to set environment variables.
+
+    :fontawesome-solid-globe: 
+    [Dyalog Documentation Centre](https://www.dyalog.com/documentation_190.htm)
 
 Change the script either in the location it is started from, or in the project, but not in both. 
 
@@ -114,10 +119,8 @@ If not, it proposes copying over the version that carries the latest changes.
 ### Changing user-command functions
 
 The user-command script calls functions in `#.Cider.UC` when DM is on, and in `⎕SE.Cider.##.UC` when DM is off.
-<!-- FIXME Contradicts reference above to #.Cider.Cider.UC -->
 
 Because that namespace is part of the project, with DM on, your changes are recorded, and developing is easy.
-<!-- FIXME Which namespace? -->
 
 
 ### Changing API functions

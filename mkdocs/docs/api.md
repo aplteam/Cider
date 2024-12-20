@@ -468,8 +468,6 @@ All parameters are optional except `folder`.
 
     If you specify an alias on `folder` but also on `alias`, then Cider expects the alias on `folder` to be defined, and will use that one to open the project. It will then overwrite the former alias with the one defined on `alias`.
 
-<!-- FIXME I don’t understand the preceding paragraph. -->
-
 `checkPackageVersions`
 
 : By default Cider proposes to check principal packages for later versions and, if found, to update them. 
