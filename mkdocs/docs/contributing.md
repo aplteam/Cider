@@ -24,6 +24,45 @@ User commands
 -   often guess what you want; e.g. if no project is specified but one is open, the command uses it; if several are open, Cider asks you to select one
 
 
+## Namespaces
+
+The only namespace a Cider user needs to refer to (for the API) is `⎕SE.Cider`.
+
+Developers understand:
+
+`#.Cider`
+: holds the project.
+
+`#.Cider.Cider`
+: holds what will eventually become the Cider package.
+
+`#.Cider.Cider.UC`
+: holds the functions called by the user-command framework. 
+    They potentially communicate with the user, prepare arguments and eventually call functions in `#.Cider.Cider`.
+
+`⎕SE.Cider`
+: is a ref pointing to the Cider package’s API namespace, for example:
+    `⎕SE._tatin.aplteam_Cider_0_44_0.API`
+
+`⎕SE._tatin`
+: holds all packages loaded into `⎕SE`, while `#._tatin` holds all Tatin packages loaded into `#`.
+
+The API namespace
+: (the name can be configured in the project’s config file) holds thin covers for calling the real thing in the parent,, hence `##` or `⎕SE.Cider.##`
+
+`⎕SE.Cider.##.UC`
+: is the same as `#.Cider.Cider.UC` but as part of the user-command package rather than the project.
+
+When you execute a user command like
+`]Cider.ListOpenProjects`
+it is executed in `⎕SE`. 
+
+When you run tests, you might want to make changes to the code.
+That would not work well when user commands are tested because changes in `⎕SE` are
+not tracked! 
+That’s why the tests ask whether you would prefer the code to be executed in `#.Cider` rather than `⎕SE.Cider`, because then they *are* tracked.
+
+
 ## Develop
 
 __Development Mode__ (DM) is set in variable `⎕SE.Cider.DEVELOPMENT`:
