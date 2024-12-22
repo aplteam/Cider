@@ -17,7 +17,7 @@
  cfg←⊃⎕NGET filename
  ns←⎕JSON⍠('Dialect' 'JSON5')⊢cfg
  (⊂buff)⎕NPUT filename 1 ⍝ Paranoia
- expected←'CIDER' 'LINK' 'SYSVARS' 'USER'
+ expected←'CIDER' 'SYSVARS' 'USER'  ⍝ Cider itself does not have a LINK section anymore
  →T.PassesIf expected≡' '~¨⍨↓ns.⎕NL 9
 
  r←T._OK
