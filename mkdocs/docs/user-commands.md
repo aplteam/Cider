@@ -8,53 +8,87 @@ keywords: api, apl, cider, dependency, dyalog, link, reference, source, tatin, u
 
 !!! abstract "User commands are Cider’s user interface"
 
-<pre style="font-family: APL">
-  AddNuGetDependencies    ListOpenProjects
-  AddTatinDependencies    ListTatinDependencies
-  CloseProject            Make
-  Config                  OpenProject
-  CreateProject           ProjectConfig
-  Help                    RunTests
-  ListAliases             UpdateCider
-  ListNuGetDependencies   Version
-</pre>
+<style>
+	.typewriter {
+		font-family: APL; 
+		white-space: preserve;
+	}
+</style>
 
-All the user commands have help built in, for example
+[AddNuGetDependencies](#add-nuget-dependencies)    [ListOpenProjects](#list-open-projects)
+[AddTatinDependencies](#add-tatin-dependencies)    [ListTatinDependencies](#list-tatin-dependencies)
+[CloseProject](#close-project)            [Make](#make)
+[Config](#config)                  [OpenProject](#open-project)
+[CreateProject](#create-project)           [ProjectConfig](#project-config)
+[Help](#help)                    [RunTests](#run-tests)
+[ListAliases](#list-aliases)             [UpdateCider](#update-cider)
+[ListNuGetDependencies](#list-nuget-dependencies)   [Version](#version)
+{: .typewriter}
 
-	]CIDER -?
-	]CIDER -??
+Cider user commands and their options are case-insensitive.
+They all have help built in, for example
+
+	]cider -?
+	]cider -??
 	]CIDER.AddNuGetDependencies -?
 
-User commands and their options are case-insensitive.
+
+
+## Identifying projects
+
+You can always identify a project by its **project path**.
+
+	]CIDER.OpenProject path/to/project
+
+If you have assigned it an **alias** (e.g. `foo`) you can use the alias, 
+embraced with square brackets to mark it as an alias.
+
+	]CIDER.OpenProject [foo]
+
+If a project is open, you can identify it by its **project space**.
+
+	]CIDER.ListTatinDependencies #.bar
+
+!!! warning "Square brackets in the command sytax"
+
+	Square brackets in the command sytaxes shown on this page indicate **optional command arguments**, not aliases.
+	For example, the `ListTatinDependencies` command has syntax
+
+		]CIDER.ListTatinDependencies [project]
+
+	If the project has alias `foo`, has been opened in `#.bar`, 
+	and is the only project open, then the following are equivalent.
+
+		]CIDER.ListTatinDependencies path/to/project
+		]CIDER.ListTatinDependencies [foo]
+		]CIDER.ListTatinDependencies #.bar
+		]CIDER.ListTatinDependencies
+
 
 
 ## Command options
 
-Each command’s options are tabulated below its definition.
+Options are further optional arguments to the command.
 
 Specify all the command’s arguments _before_ any options.
 Prefix options with dashes, e.g.
 
 	]CIDER.CreateProject path/to/foo path/to/bar -noEdit 
+	]CIDER.OpenProject path/to/foo -alias=ted
 
 Options affect only the current command. 
 They override settings in the [project](configuration.md#project) and [global](configuration.md#global) configurations and leave them unchanged.
+
+Each command’s options are tabulated below its definition.
 
 ---
 
 ## :fontawesome-solid-terminal: Add NuGet dependencies
 
-_Add one or more NuGet packages as dependencies_
-
 ]CIDER.AddNuGetDependencies pkglist [project]
 {: .syntax}
 
-Where
-
--   `pkglist` is a comma-separated list of NuGet packages to be installed
--   `project` (optional) is an alias or project path
-
-
+Where `pkglist` is a comma-separated list of NuGet packages to be installed,
 Cider registers the listed dependencies in the project.
 
 If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
@@ -67,16 +101,10 @@ If the project config does not specify a NuGet dependency folder, Cider asks you
 
 ## :fontawesome-solid-terminal: Add Tatin dependencies
 
-_Add one or more Tatin packages as dependencies_
-
 ]CIDER.AddTatinDependency pkglist [project]
 {: .syntax}
 
-Where
-
--   `pkglist` is a comma-separated list of Tatin packages to be installed
--   `project` (optional) is an alias or project path
-
+Where `pkglist` is a comma-separated list of Tatin packages to be installed, 
 Cider registers the listed dependencies in the project.
 
 If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
@@ -90,20 +118,12 @@ If the project config does not specify a Tatin dependency folder, Cider asks you
 
 ## :fontawesome-solid-terminal: Close project
 
-_Break the link between the workspace and the files on disk_
-
 ]CIDER.CloseProject [projects]
 {: .syntax}
 
 Where `projects` is one or more projects, Cider breaks the link between their namespaces and the associated files on disk.
 
-If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
-
-You can specify a project as
-
--   a fully qualified namespace
--   an alias <!-- FIXME Issue #95 -->
--   a project path
+If you omit `projects` Cider uses the one open project or, if you have more than one open, asks you which.
 
 Separate multiple projects with spaces or commas.
 
@@ -115,8 +135,6 @@ Otherwise attempts to close projects are reported in detail.
 
 
 ## :fontawesome-solid-terminal: Config
-
-_Display or edit Cider’s global configuration_
 
 ]CIDER.Config
 {: .syntax}
@@ -144,23 +162,22 @@ Cider prints the content of its global config file to the session.
 
 ## :fontawesome-solid-terminal: Create project
 
-_Initialise a folder as a project_
-
-]CIDER.CreateProject [projectpath [projectspace] ]
+]CIDER.CreateProject [path [space] ]
 {: .syntax}
 
 Where
 
--   `projectpath` (optional) is a path to the project folder.
-    (If you omit it, Cider proposes using the current working directory.)
--   `projectspace` (optional) is a namespace in the active workspace to be linked to the project.
-    (If you omit it, Cider uses the name of the project folder.)
-
-If the project folder already contains a file `cider.config` Cider signals an error, unless the `acceptConfig` option is used.
+-   `path` (optional) is a path to the project folder
+-   `space` (optional) is a namespace in the active workspace to be linked to the project
 
 Cider initialises the project folder, links it to the project space, and offers the project config for editing, checking required settings are specified correctly.
 
-Finally Cider offers to open the new project.
+Finally, Cider offers to open the new project.
+
+If you omit `path`, Cider proposes the current working directory.
+If you omit `space`, Cider uses the name of the project folder.
+
+If the project folder already contains a file `cider.config` Cider signals an error, unless the `acceptConfig` flag is set.
 
 -----------------|------------------------
 `acceptConfig`   | Accept an already existing config file.
@@ -171,25 +188,26 @@ Finally Cider offers to open the new project.
 
 ??? tip "Keep the workspace root empty"
 
-	Good practice keeps the active workspace root empty. So Cider is designed to associate each project with a namespace.
+	Good practice keeps the active workspace root empty. 
+	Cider is designed to associate each project with a namespace.
 
 	To create a root project (NOT recommended) specify `#` as the project space.
                                                                                                        
 
 ## :fontawesome-solid-terminal: Help
 
-_Display the Cider User Guide_
-
 ]CIDER.Help
 {: .syntax}
+
+Displays the Cider User Guide.
 
 
 ## :fontawesome-solid-terminal: List aliases
 
-_List all defined aliases with their folders_
-
 ]CIDER.ListAliases
 {: .syntax}
+
+Lists all defined aliases with their folders.
 
 ---|---
 `batch`| With `prune` delete without asking me for confirmation.
@@ -202,25 +220,16 @@ Only options `prune` and `batch` can be used together.
 
 ## :fontawesome-solid-terminal: List NuGet dependencies
 
-_List NuGet packages installed as dependencies_
-
-]CIDER.ListNugetDependencies [projectpath]
+]CIDER.ListNuGetDependencies [project]
 {: .syntax}
 
-Where `projectpath` is the project path, Cider lists the project’s NuGet dependencies.
-<!-- FIXME Issue #95 -->
+Lists the project’s NuGet dependencies.
 
-If you omit `projectpath` Cider uses the one open project or, if you have more than one open, asks you which.
+If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
 
-<!-- 
-FIXME
-The user command help says project can be specified as an alias. Appears not to be true.
--->
 
 
 ## :fontawesome-solid-terminal: List open projects
-
-_List all currently open projects_
 
 ]CIDER.ListOpenProjects
 {: .syntax}
@@ -233,13 +242,12 @@ Prints a list of all open projects.
 
 ## :fontawesome-solid-terminal: List Tatin dependencies
 
-]CIDER.ListTatinDependencies [projectpath]
+]CIDER.ListTatinDependencies [project]
 {: .syntax}
 
-Where `projectpath` is a project path, Cider lists Tatin packages installed as dependencies of the project.
-<!-- FIXME Issue #95 -->
+Lists Tatin packages installed as its dependencies.
 
-If you omit `projectpath` Cider uses the one open project or, if you have more than one open, asks you which.
+If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
 
 -------|--------
 `full` | Print a hierarchical report on all dependencies.
@@ -252,27 +260,23 @@ This can help show why a particular (typically old) package is required.
 
 ## :fontawesome-solid-terminal: Make
 
-_Print the expression that builds a new version of the project_
-
-]CIDER.Make [projectpath]
+]CIDER.Make [project]
 {: .syntax}
 
-Where `projectpath` is a project path, Cider prints the project’s "make" expression.
+Prints the project’s Make expression: 
+the expression that builds a new version of the project.
 
-If you omit `projectpath` Cider uses the one open project or, if you have more than one open, asks you which.
+If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
 
 
 
 ## :fontawesome-solid-terminal: Open project
 
-_Build the project in the active workspace and keep it linked_
-
 ]CIDER.OpenProject project
 {: .syntax}
 
-Where `project` is an alias or project path, Cider builds the project in the active workspace, linked to its source files.
+Builds the project in the active workspace, linked to its source files.
 [More detail…](open-project.md)
-<!-- FIXME Issue #95 -->
 
 ---|---
 `alias=` | Remember this alias for the project.
@@ -293,18 +297,10 @@ The `batch` option is intended for test cases. Consider instead using the [`Open
 
 ## :fontawesome-solid-terminal: Project config
 
-_Display or edit the project configuration_
-
 ]CIDER.ProjectConfig [project]
 {: .syntax}
 
-Where `project` is the 
-
--   project path
--   alias
--   project space
-
-of an open project, prints the project configuration.
+Displays or edits the project configuration.
 
 If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
 
@@ -314,29 +310,20 @@ If you omit `project` Cider uses the one open project or, if you have more than 
 
 ## :fontawesome-solid-terminal: Run tests
 
-_Print the expression that executes the project’s test suite_
-
 ]CIDER.RunTests [project]
 {: .syntax}
 
-Where `project` is a 
-
--   project path
--   alias
--   project space
-
-of an open project, Cider prints the APL expression that executes its test suite.
+Prints the APL expression that executes the project’s test suite.
 
 If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
 
 
 ## :fontawesome-solid-terminal: Update Cider
 
-_Tries to update Cider_
-
 ]CIDER.UpdateCider
 {: .syntax}
 
+Tries to update Cider.
 If a later version is available, Cider asks whether you want to update to it.
 
 When the update is complete, restart Dyalog, rebuild the user commands, and print the current version.
