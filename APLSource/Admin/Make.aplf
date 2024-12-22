@@ -17,14 +17,12 @@
      :AndIf ~1 M.YesOrNo'Could not find the user command script in the user''s home folder anywhere - continue?'
          :Return
      :EndIf
-     :If ~batch
-         M.##.CommTools.Pause'In the next step, update the version number',('+'∊##.Cider.Version)/' but leave the build number alone'
-         ⎕ED'##.Cider.Version'
-         version←M.CompileVersionNumberPattern cfg
-     :Else
+     :If batch
          version←⍬
+     :Else
+         cfg←M.EditVersion cfg
+         version←cfg.version
      :EndIf
-     M.IncreaseBuildIDInFunction(⍕##.Cider),'.Version'
      M.FetchLaterUserCommand cfg C targetFolder
      M.RecreateFolder path
      parms←⎕SE.Tatin.CreateBuildParms C.HOME

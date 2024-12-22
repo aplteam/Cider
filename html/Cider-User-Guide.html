@@ -590,11 +590,12 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <h5 data-id="LINK">2.6.1.2. LINK</h5>
 </a>
 </div>
-<p>These are LINK parameters which are passed on to LINK when Cider brings the APL code into the WS with LINK.</p>
-<p>Note that this is a temporary solution: LINK should have its own config files for this, and will get them with Link 4.0.</p>
+<p>These are Link parameters which are passed on to Link when Cider brings the APL code into the WS with Link.</p>
+<p>Note that this is a temporary solution: Link should have its own config files for this, and will get them with Link 4.0.</p>
 <p>However, until all supported versions of Link can deal with Link's own configuration file, Cider will save non-default values in a Cider project config file.</p>
-<p>If there is a Link config file by the name <code>.linkconfig</code>, then any definition in the “Link” section of the Cider config file is ignored. A message will remind the user of deleting the “Link” section from the Cider config file.</p>
-<p>Cider will look for the file in what <a href="#source" class="bookmark_link"><code>source</code></a> defines. If <code>source</code> is empty then it is the root of the project.</p>
+<p>If there is a Link config file by the name <code>.linkconfig</code>, then any definition in the <code>LINK</code> section of the Cider config file is ignored. A message will remind the user of deleting the <code>LINK</code> section from the Cider config file.</p>
+<p>However, with version 0.46.0 this changed slightly: because Link 4.0 saves stop vectors as well as trace vectors in a file <code>.linkconfig</code>, Cider checks the contents of <code>.linkconfig</code>. If the file contains nothing but stop vectors and trace vectors and the Link version number the file was saved by, then Cider will evaluate any possible settings in the <code>LINK</code> section of the Cider config file, and it will advise the user to reconcile the two sources of Link options, and eventually delete the <code>LINK</code> section from the Cider config file.</p>
+<p>Cider will look for the file in what <a href="#source" class="bookmark_link"><code>source</code></a> defines. If <code>source</code> is empty then it defaults of the root of the project.</p>
 <div class="h_tag">
 <a href="#watch" id="watch" class="autoheader_anchor">
 <h6 data-id="watch">2.6.1.2.1. watch</h6>
@@ -668,7 +669,7 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <div class="leanpub_A">
 <h3>System variables</h3>
 <p>Feel free to save system variables in files like <code>⎕IO.apla</code> in your source folder.</p>
-<p>That's another way to make sure that system variables are set as early as possible, because LINK will establish the values of system variables defined in files before it attempts to bring code into the workspace.</p>
+<p>That's another way to make sure that system variables are set as early as possible, because Link will establish the values of system variables defined in files before it attempts to bring code into the workspace.</p>
 </div>
 
 <div class="h_tag">
@@ -676,15 +677,15 @@ C:\Users\&lt;⎕AN&gt;\Documents\Dyalog APL-64 18.2 Unicode Files\SessionExtensi
 <h4 data-id="Bringing-the-code-into-the-workspace">2.7.3. Bringing the code into the workspace</h4>
 </a>
 </div>
-<p>In this step, all files with supported file extensions (See LINK's documentation for details) found in <code>source</code> and any subfolder are established in the workspace in <code>{parent}.{projectSpace}</code>.</p>
-<p>To achieve this Cider uses LINK[<a href="#fnref3" class="footnote_link"><sup>3</sup></a>].</p>
+<p>In this step, all files with supported file extensions (See Link's documentation for details) found in <code>source</code> and any subfolder are established in the workspace in <code>{parent}.{projectSpace}</code>.</p>
+<p>To achieve this Cider uses Link[<a href="#fnref3" class="footnote_link"><sup>3</sup></a>].</p>
 <p>Note that from now on we will refer to:</p>
 <p><code>{parent}.{projectSpace}</code> as <em>the root of a project</em>.</p>
 <p>By default, a Link is established between the root of the project and the folder. When you intend to work on the project (read: change the code), then this is the obvious thing to do.</p>
 <div class="leanpub_A">
-<h3>LINK's <code>watch</code> parameter</h3>
+<h3>Link's <code>watch</code> parameter</h3>
 <p>By default, Cider sets the <code>watch</code> parameter to “both”, meaning that changes in the workspace via the editor are saved to disk, and any changes on disk are brought into the workspace.</p>
-<p>You may set <code>watch</code> to “ns” or “dir” instead. Refer to the LINK documentation for details.</p>
+<p>You may set <code>watch</code> to “ns” or “dir” instead. Refer to the Link documentation for details.</p>
 </div>
 
 <p>However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a Link, you just want to bring the code into the workspace. This can be achieved by specifying the <code>-import</code> flag.</p>
@@ -931,7 +932,7 @@ dyalog-NuGet-0.2.1
 <ol>
 <li id="fnref1"><p><em>Tatin</em> is a Dyalog APL package manager: <a href="https://github.com/aplteam/Tatin" class="external_link">https://github.com/aplteam/Tatin</a></p><a href="#fnref1" class="footnote_anchor"></a>
 <li id="fnref2"><p><em>NuGet</em> is all about .NET packages: <a href="https://en.wikipedia.org/wiki/NuGet" class="external_link">https://en.wikipedia.org/wiki/NuGet</a></p><a href="#fnref2" class="footnote_anchor"></a>
-<li id="fnref3"><p><em>LINK</em> is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <a href="https://github.com/dyalog/Link" class="external_link">https://github.com/dyalog/Link</a> and <a href="https://dyalog.github.io/link" class="external_link">https://dyalog.github.io/link</a></p><a href="#fnref3" class="footnote_anchor"></a>
+<li id="fnref3"><p><em>Link</em> is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <a href="https://github.com/dyalog/Link" class="external_link">https://github.com/dyalog/Link</a> and <a href="https://dyalog.github.io/link" class="external_link">https://dyalog.github.io/link</a></p><a href="#fnref3" class="footnote_anchor"></a>
 <li id="fnref4"><p>Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either <code>#._tatin</code> or <code>⎕SE._tatin</code></p><a href="#fnref4" class="footnote_anchor"></a>
 </ol>
 </div>

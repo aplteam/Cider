@@ -1,41 +1,56 @@
-  r←ProcessLinkOptions(parms config);path;filename;msg;cfg
+ (linkOptions parms)←ProcessLinkOptions(parms config);path;filename;msg;cfg
 ⍝ Looks into the Cider config file and also a file .linkconfig in config.CIDER.source
-⍝ If such a file exists and contains more than just the Link version number and stop flags  ⍝TODO⍝
-⍝ then it takes precedence over what is defined in the [LINK] section of Cider's config file,
-⍝ and the user is informed that she should remove any Link-related stuff from the Cider config file.
-⍝ Otherwise the Link-specific settings in the Cider config file are evaluated.
- r←⎕NS''
+⍝ If such a file exists and contains more than just the Link version number and "SourceFlags" (that is,
+⍝ Stop and Trace vectors), then it takes precedence over what is defined in the [LINK] section of Cider's
+⍝ config file, and the user is told that she should remove any Link-related stuff from Cider's config file.
+⍝ If the file .linkconfig exists but carries nothing but stop vectors and trace vectors and the Link
+⍝ version number, then the LINK section in the Ccider project config file is evaluated but the user is
+⍝  told to reconcile the two sources of Link options, and eventaully delete te the LINK section from the
+⍝ Cider project config file.
+⍝ If .linkconfig does not exist the Link-specific settings in the Cider config file are evaluated.
+ linkOptions←⎕NS''
  path←config.CIDER.source{0=≢⍺:⍵ ⋄ ⍵,'/',⍺}parms.folder
  filename←(F.AddTrailingSep path),'.linkconfig'
  :If F.IsFile filename
      cfg←Get_JSON5 filename
-     ⍝TODO⍝
-     ⍝ The next check is a temp solution until Link's .linkconfig file is documented and Link has settled down.
-     ⍝ (For the moment we don't fully understand .linkconfig - 2024-12)
-     ⍝ If there is such a file but it contains nothing but stop vectors (apart from a Link version number)
-     ⍝ we ignore the file and carry on as usual.
- :AndIf (,⊂'SourceFlags')≢(cfg.⎕NL-2 9)~⊂'LinkVersion'
-     :If 0≢parms.watch
-         r.watch←parms.watch                     ⍝ Was specified by the user, and that takes (temporarily) precendence
-     :EndIf
-     :If 9=config.⎕NC'LINK'
-     :AndIf 0<≢config.LINK.⎕NL⍳16
-     :AndIf 0=parms.batch
+     ⍝ When there is a file .linkconfig but it does only contain stop vectors and trace vectos (apart from a
+     ⍝ Link version number) we carry on as usual: evaluate the LINK section of Cider's project config file.
+     :If 0=≢(cfg.⎕NL-2 9)~'LinkVersion' 'SourceFlags'
+         :If 9=config.⎕NC'LINK'
+         :AndIf 0<≢config.LINK.⎕NL⍳16
+         :AndIf 0=parms.batch
+             msg←''
+             msg,←⊂'There is a file .linkconfig in:'
+             msg,←⊂F.EnforceSlash path
+             msg,←⊂'though it contains nothing but stop and trace vectors.'
+             msg,←⊂'The LINK section in the project config file IS evaluated.'
+             msg,←⊂'You are advised to reconcile the two sources of Link options'
+             msg,←⊂'and delete the "LINK" section from Cider''s project config file.'
+             msg,←⊂'Note that Cider''s Linksection were introduced at a time when'
+             msg,←⊂'there was no Link config file available (prior version 4).'
+             ⎕←Box Frame msg
+         :EndIf
+     :Else
          msg←''
          msg,←⊂'There is a file .linkconfig in:'
          msg,←⊂F.EnforceSlash path
-         msg,←⊂'but there is also a non-empty "Link" section in Cider''s config file'
-         msg,←⊂'which will be ignored because of the .linkconfig file.'
-         msg,←⊂'Consider deleting the "Link" section from Cider''s config file!'
-         Box Frame msg
+         msg,←⊂'that carries Link options, but there is also a non-empty "LINK"'
+         msg,←⊂'section in Cider''s project config file, which will be IGNORED'
+         msg,←⊂'because of the .linkconfig file.'
+         msg,←⊂'You are advised to delete the "Link" section from Cider''s'
+         msg,←⊂'project config file, maybe after reconciling it with .linkconfig.'
+         msg,←⊂'Note that Cider''s Link options were invented at a time when'
+         msg,←⊂'there was no Link config file available (prior to version 4).'
+         ⎕←Box Frame msg
+         linkOptions←ExtractLinkOptions config             ⍝ Merge the default options with Cider's options
      :EndIf
  :Else
-     r←ExtractLinkOptions config                 ⍝ Merge the default options with Cider's options
-     :If 0≢parms.watch
-         config.LINK.watch←parms.watch           ⍝ Was specified by the user, and that takes (temporarily) precendence
-     :ElseIf 2=r.⎕NC'watch'
-         parms.watch←r.watch
-     :Else
-         parms.watch←(1+HasDotNet)⊃'ns' 'both'   ⍝ Default is "both" but for the time being only when .NET is available
-     :EndIf
+     linkOptions←ExtractLinkOptions config             ⍝ Merge the default options with Cider's options
+ :EndIf
+ :If 0≢parms.watch
+     config.LINK.watch←parms.watch           ⍝ Was specified by the user, and that takes (temporarily) precendence
+ :ElseIf 2=linkOptions.⎕NC'watch'
+     parms.watch←linkOptions.watch
+ :Else
+     parms.watch←(1+HasDotNet)⊃'ns' 'both'   ⍝ Default is "both" but for the time being only when .NET is available
  :EndIf

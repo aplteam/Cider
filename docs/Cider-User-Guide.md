@@ -447,15 +447,17 @@ However, if the first non-white space character of `tests` is a `]` (making it a
 
 ##### LINK
 
-These are LINK parameters which are passed on to LINK when Cider brings the APL code into the WS with LINK.
+These are Link parameters which are passed on to Link when Cider brings the APL code into the WS with Link.
 
-Note that this is a temporary solution: LINK should have its own config files for this, and will get them with Link 4.0. 
+Note that this is a temporary solution: Link should have its own config files for this, and will get them with Link 4.0. 
 
 However, until all supported versions of Link can deal with Link's own configuration file, Cider will save non-default values in a Cider project config file.
 
-If there is a Link config file by the name `.linkconfig`, then any definition in the "Link" section of the Cider config file is ignored. A message will remind the user of deleting the "Link" section from the Cider config file.
+If there is a Link config file by the name `.linkconfig`, then any definition in the `LINK` section of the Cider config file is ignored. A message will remind the user of deleting the `LINK` section from the Cider config file.
 
-Cider will look for the file in what [`source`](#) defines. If `source` is empty then it is the root of the project.
+However, with version 0.46.0 this changed slightly: because Link 4.0 saves stop vectors as well as trace vectors in a file `.linkconfig`, Cider checks the contents of `.linkconfig`. If the file contains nothing but stop vectors and trace vectors and the Link version number the file was saved by, then Cider will evaluate any possible settings in the `LINK` section of the Cider config file, and it will advise the user to reconcile the two sources of Link options, and eventually delete the `LINK` section from the Cider config file.
+
+Cider will look for the file in what [`source`](#) defines. If `source` is empty then it defaults of the root of the project.
 
 ###### watch
 
@@ -532,13 +534,13 @@ A> ### System variables
 A>
 A> Feel free to save system variables in files like `⎕IO.apla` in your source folder.
 A>
-A> That's another way to make sure that system variables are set as early as possible, because LINK will establish the values of system variables defined in files before it attempts to bring code into the workspace.
+A> That's another way to make sure that system variables are set as early as possible, because Link will establish the values of system variables defined in files before it attempts to bring code into the workspace.
 
 #### Bringing the code into the workspace
 
-In this step, all files with supported file extensions (See LINK's documentation for details) found in `source` and any subfolder are established in the workspace in `{parent}.{projectSpace}`.
+In this step, all files with supported file extensions (See Link's documentation for details) found in `source` and any subfolder are established in the workspace in `{parent}.{projectSpace}`.
 
-To achieve this Cider uses LINK[^link]. 
+To achieve this Cider uses Link[^link]. 
 
 Note that from now on we will refer to:
 
@@ -546,11 +548,11 @@ Note that from now on we will refer to:
 
 By default, a Link is established between the root of the project and the folder. When you intend to work on the project (read: change the code), then this is the obvious thing to do.
 
-A> ### LINK's `watch` parameter
+A> ### Link's `watch` parameter
 A>
 A> By default, Cider sets the `watch` parameter to "both", meaning that changes in the workspace via the editor are saved to disk, and any changes on disk are brought into the workspace.
 A>
-A> You may set `watch` to "ns" or "dir" instead. Refer to the LINK documentation for details.
+A> You may set `watch` to "ns" or "dir" instead. Refer to the Link documentation for details.
 
 However, if you want to bring in the code as part of, say, an automated build process, then you don't want to establish a Link, you just want to bring the code into the workspace. This can be achieved by specifying the `-import` flag.
 
@@ -803,9 +805,13 @@ An example:
 
 [^nuget]: _NuGet_ is all about .NET packages: <https://en.wikipedia.org/wiki/NuGet>
 
-[^link]: _LINK_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
+[^link]: _Link_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
+
+
+
 
 
 
