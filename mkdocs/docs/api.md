@@ -11,21 +11,21 @@ keywords: api, apl, cider, dyalog, link, nuget, parameter, source, tatin
 The API functions are similar to the [user-commands](user-commands.md), but not identical.
 Not all have equivalent user commands.
 
-<pre style="font-family: APL">
-  AddAlias                            GetMyUCMDsFolder
-  AddNuGetDependencies                GetNuGetDependencies
-  AddTatinDependencies                GetProgramFilesFolder
-  CloseProject                        GetTatinDependencies
-  CreateCreateProjectParms            HasDotNet
-  CreateOpenParms                     ListNuGetDependencies
-  CreateProject                       ListOpenProjects
-  DropAlias                           ListTatinDependencies
-  GetCiderAliasFileContent            OpenProject
-  GetCiderAliasFilename               ProjectConfig
-  GetCiderGlobalConfigFileContent     ReadProjectConfigFile
-  GetCiderGlobalConfigFilename        WriteProjectConfigFile
-  GetCiderGlobalConfigHomeFolder      Version
-</pre>
+
+[AddAlias](#add-alias)                            [GetMyUCMDsFolder](#get-ucmds-folder)
+[AddNuGetDependencies](#add-nuget-dependencies)                [GetNuGetDependencies](#get-nuget-dependencies)
+[AddTatinDependencies](#add-tatin-dependencies)                [GetProgramFilesFolder](#get-program-files-folder)
+[CloseProject](#close-project)                        [GetTatinDependencies](#get-tatin-dependencies)
+[CreateCreateProjectParms](#create-createproject-parms)            [HasDotNet](#has-dotnet)
+[CreateOpenParms](#create-open-parms)                     [ListNuGetDependencies](#list-nuget-dependencies)
+[CreateProject](#create-project)                       [ListOpenProjects](#list-open-projects)
+[DropAlias](#drop-alias)                           [ListTatinDependencies](#list-tatin-dependencies)
+[GetCiderAliasFileContent](#get-alias-file-content)            [OpenProject](#open-project)
+[GetCiderAliasFilename](#get-alias-filename)               [ProjectConfig](#project-config)
+[GetCiderGlobalConfigFileContent](#get-global-config-file-content)     [ReadProjectConfigFile](#read-project-config-file)
+[GetCiderGlobalConfigFilename](#get-global-config-filename)        [WriteProjectConfigFile](#write-project-config-file)
+[GetCiderGlobalConfigHomeFolder](#get-global-config-home-folder)      [Version](#version)
+{: .typewriter}
 
 Unlike user commands, API function names are case-sensitive.
 
@@ -318,13 +318,13 @@ The `current` flag (default 0) specifies whether the result is specific to the c
 
 ```
       ⍝ Version agnostic
-      Cider.GetProgramFilesFolder ''
+      ⎕SE.Cider.GetProgramFilesFolder ''
 C:\Users\kai\Documents\Dyalog APL Files             
       Cider.GetProgramFilesFolder 'CiderTatin'
 C:\Users\kai\Documents\Dyalog APL Files/CiderTatin
 
       ⍝ Version specific
-      1 Cider.GetProgramFilesFolder ''              
+      1 ⎕SE.Cider.GetProgramFilesFolder ''              
 C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files
 ```
 
