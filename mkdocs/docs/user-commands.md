@@ -8,13 +8,6 @@ keywords: api, apl, cider, dependency, dyalog, link, reference, source, tatin, u
 
 !!! abstract "User commands are Cider’s user interface"
 
-<style>
-	.typewriter {
-		font-family: APL; 
-		white-space: preserve;
-	}
-</style>
-
 [AddNuGetDependencies](#add-nuget-dependencies)    [ListOpenProjects](#list-open-projects)
 [AddTatinDependencies](#add-tatin-dependencies)    [ListTatinDependencies](#list-tatin-dependencies)
 [CloseProject](#close-project)            [Make](#make)

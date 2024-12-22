@@ -91,3 +91,9 @@ pre + pre > code, hr + pre > code {
     font-family: APL;
     line-height: 1.4;
 }
+
+.typewriter {
+	font-family: APL;
+	margin-left: 1em;
+	white-space: preserve;
+}
