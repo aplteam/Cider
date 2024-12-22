@@ -8,7 +8,7 @@
  :EndIf
  :If (⊂,folder)∊,¨'.' './'
      folder←⊃1 ⎕NPARTS'./'
-     :If ~YesOrNo'Sure you want to create the project in ',folder,' ?'
+     :If ~YesOrNo'SureCreateProj@Sure you want to create the project in ',folder,' ?'
          :Return
      :EndIf
  :EndIf
