@@ -1,8 +1,10 @@
 (
- '* 0.46.0 ⋄ 2024-12-21`'
+ '* 0.46.0 ⋄ 2024-12-21'
  '  * When a project is opened and a file .linkconfig is found in the project''s source folder, its content is'
  '    now checked. If it contains nothing but stop & trace vectors and Link''s version number, then that file'
  '    is now ignored, and any Link-related settings in Cider''s project config file are evaluated.'
+ '  * A Cider project config file does not have to have a LINK section anymore because there might be a Link'
+ '    configuration file be used instead. '
  '  * `ListAliases` embraces aliases with `[]` from now on'
  '  * Bug fixes'
  '    * `]ListTatinDependencies` did not always report the folder that was investigated (#93)'

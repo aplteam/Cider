@@ -1,58 +1,60 @@
- r←ExtractLinkOptions config;C;options
+  r←ExtractLinkOptions config;C;options;LINK
 ⍝ This is slowly going to disappear because Link 4.0 will come with its own set of features
 ⍝ for setting Link parameters.
  options←⎕SE.Link.U.DefaultOpts ⎕NS''
  r←⎕NS''
- C←config.LINK
- :If 0<C.⎕NC'arrays'
- :AndIf options.arrays≢C.arrays
-     r.arrays←C.arrays
- :EndIf
- :If 0<C.⎕NC'beforeRead'
- :AndIf options.beforeRead≢C.beforeRead
-     r.beforeRead←C.beforeRead
- :EndIf
- :If 0<C.⎕NC'beforeWrite'
- :AndIf options.beforeWrite≢C.beforeWrite
-     r.beforeWrite←C.beforeWrite
- :EndIf
- :If 0<C.⎕NC'caseCode'
- :AndIf options.caseCode≢C.caseCode
-     r.caseCode←C.caseCode
- :EndIf
- :If 0<C.⎕NC'codeExtensions'
- :AndIf options.codeExtensions≢C.codeExtensions
-     r.codeExtensions←C.codeExtensions
- :EndIf
- :If 0<C.⎕NC'fastLoad'
- :AndIf options.fastLoad≢C.fastLoad
-     r.fastLoad←C.fastLoad
- :EndIf
- :If 0<C.⎕NC'flatten'
- :AndIf options.flatten≢C.flatten
-     r.flatten←C.flatten
- :EndIf
- :If 0<C.⎕NC'forceExtensions'
- :AndIf options.forceExtensions≢C.forceExtensions
-     r.forceExtensions←C.forceExtensions
- :EndIf
- :If 0<C.⎕NC'forceFilenames'
- :AndIf options.forceFilenames≢C.forceFilenames
-     r.forceFilenames←C.forceFilenames
- :EndIf
- :If 0<C.⎕NC'getFilename'
- :AndIf options.getFilename≢C.getFilename
-     r.getFilename←C.getFilename
- :EndIf
- :If 0<C.⎕NC'typeExtensions'
- :AndIf options.typeExtensions≢C.typeExtensions
-     r.typeExtensions←↑C.typeExtensions
- :EndIf
- :If 0<C.⎕NC'watch'
- :AndIf options.watch≢C.watch
-     r.watch←C.watch
- :EndIf
- :If 0<C.⎕NC'fastLoad'
- :AndIf options.fastLoad≢C.fastLoad
-     r.fastLoad←config.LINK.fastLoad
+ :If 9=config.⎕NC'LINK'
+     C←config.LINK
+     :If 0<C.⎕NC'arrays'
+     :AndIf options.arrays≢C.arrays
+         r.arrays←C.arrays
+     :EndIf
+     :If 0<C.⎕NC'beforeRead'
+     :AndIf options.beforeRead≢C.beforeRead
+         r.beforeRead←C.beforeRead
+     :EndIf
+     :If 0<C.⎕NC'beforeWrite'
+     :AndIf options.beforeWrite≢C.beforeWrite
+         r.beforeWrite←C.beforeWrite
+     :EndIf
+     :If 0<C.⎕NC'caseCode'
+     :AndIf options.caseCode≢C.caseCode
+         r.caseCode←C.caseCode
+     :EndIf
+     :If 0<C.⎕NC'codeExtensions'
+     :AndIf options.codeExtensions≢C.codeExtensions
+         r.codeExtensions←C.codeExtensions
+     :EndIf
+     :If 0<C.⎕NC'fastLoad'
+     :AndIf options.fastLoad≢C.fastLoad
+         r.fastLoad←C.fastLoad
+     :EndIf
+     :If 0<C.⎕NC'flatten'
+     :AndIf options.flatten≢C.flatten
+         r.flatten←C.flatten
+     :EndIf
+     :If 0<C.⎕NC'forceExtensions'
+     :AndIf options.forceExtensions≢C.forceExtensions
+         r.forceExtensions←C.forceExtensions
+     :EndIf
+     :If 0<C.⎕NC'forceFilenames'
+     :AndIf options.forceFilenames≢C.forceFilenames
+         r.forceFilenames←C.forceFilenames
+     :EndIf
+     :If 0<C.⎕NC'getFilename'
+     :AndIf options.getFilename≢C.getFilename
+         r.getFilename←C.getFilename
+     :EndIf
+     :If 0<C.⎕NC'typeExtensions'
+     :AndIf options.typeExtensions≢C.typeExtensions
+         r.typeExtensions←↑C.typeExtensions
+     :EndIf
+     :If 0<C.⎕NC'watch'
+     :AndIf options.watch≢C.watch
+         r.watch←C.watch
+     :EndIf
+     :If 0<C.⎕NC'fastLoad'
+     :AndIf options.fastLoad≢C.fastLoad
+         r.fastLoad←config.LINK.fastLoad
+     :EndIf
  :EndIf

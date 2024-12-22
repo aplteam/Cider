@@ -1,4 +1,6 @@
- r←GetValidCiderParams
+ r←GetValidCiderParams all
+⍝ Returns only the "must-have" properties if all is 0 or all (including the optional ones) if all is 1
+ 'Right argument must be a Boolean'Assert(⊂all)∊0 1
  r←⍬
  r,←⊂'source'
  r,←⊂'init'
@@ -10,3 +12,7 @@
  r,←⊂'project_url'
  r,←⊂'tests'
  r,←⊂'make'
+ :If all
+     r,←⊂'cider_version'
+     r,←⊂'tatinVars'
+ :EndIf
