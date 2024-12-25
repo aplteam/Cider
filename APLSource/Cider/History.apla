@@ -3,6 +3,7 @@
  '  * When a project is opened and a file .linkconfig is found in the project''s source folder, its content is'
  '    now checked. If it contains nothing but stop & trace vectors and Link''s version number, then that file'
  '    is now ignored, and any Link-related settings in Cider''s project config file are evaluated.'
+ '  * New command ]Cider.LinkConfig added that allows printing, editing and deleting a Link config file'
  '  * A Cider project config file does not have to have a LINK section anymore because there might be a Link'
  '    configuration file be used instead. '
  '  * Bug fixes'
