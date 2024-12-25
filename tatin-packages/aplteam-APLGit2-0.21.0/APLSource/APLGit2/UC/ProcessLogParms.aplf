@@ -1,0 +1,9 @@
+ parms←parms ProcessLogParms data;max
+ :If 0≢data
+     :If {(10=≢⍵)∧∧/(({⊃⍵↑⍨1⌈≢⍵}1↑(⍵~'-')∊⎕D)('-'=⊃1↑∪⍵~⎕D))}data ⍝ Is it something like "1934-01-31"?
+         parms.since←data
+     :ElseIf ⊃⊃⎕VFI data   ⍝ Max?!
+     :AndIf 0<max←⊃(//)⎕VFI data
+         parms.max←max
+     :EndIf
+ :EndIf

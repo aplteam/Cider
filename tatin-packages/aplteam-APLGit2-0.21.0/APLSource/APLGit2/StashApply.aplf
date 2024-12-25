@@ -1,0 +1,9 @@
+ r←{stashNo}StashApply folder;cmd;rc;buff;more
+⍝ Applies the given stash but does not remove it from the stash stack
+ stashNo←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'stashNo'
+ 'Invalid stash number'⎕SIGNAL 11/⍨0≠1↑0⍴stashNo
+ cmd←'stash apply stash@{',(⍕stashNo),'}'
+ (rc more buff)←folder U.RunGitCommand cmd
+ more U.Assert 0=rc
+ r←(⊂more),buff
+⍝Done

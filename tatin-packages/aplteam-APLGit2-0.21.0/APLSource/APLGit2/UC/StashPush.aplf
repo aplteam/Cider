@@ -1,0 +1,20 @@
+ r←StashPush(space folder Args);parms
+⍝ Stashes all files in the working area
+ parms←##.CreateStashPushParms
+ parms.folder←folder
+ :If 1<≡Args._2
+     ⍝ Then the user has asked for a list with "?" and selected from a list of all files
+     parms.files←Args._2
+ :EndIf
+ parms.msg←''Args.Switch'm'
+ :If ' '=1↑0⍴Args._1
+     ⍝ Then the user has specified files as argument
+     parms.files←Args.Arguments
+ :EndIf
+ :If 0<≢parms.files
+     parms.addUntracked←0  ⍝ Then parms.files rules the day
+ :Else
+     parms.addUntracked←0 Args.Switch'u'
+ :EndIf
+ r←↑##.StashPush parms
+⍝Done

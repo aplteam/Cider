@@ -1,0 +1,4 @@
+ r←StashDrop(space folder Args);n
+ n←0 Args.Switch'n'
+ r←↑n ##.StashDrop folder
+⍝Done

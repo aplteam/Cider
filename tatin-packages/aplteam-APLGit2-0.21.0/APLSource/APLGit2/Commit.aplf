@@ -1,0 +1,41 @@
+ r←{msg}Commit y;project;buff;rc;⎕TRAP;cb;path;cmd;msg_;space;msg;amendFlag
+⍝ Commit changes.\\
+⍝ `y` must be one of:
+⍝   * Fully qualified name of a namespace that is an opened Cider project
+⍝   * Fully qualified path to a Git-managed project
+⍝ Additionally `y` must come with a second: a Boolean that when it is 1 is treated as "amend".
+⍝ This would result in a `commit --amend --no-edit`, effectively adding the latest changes to the last commit\\
+⍝ The optional `msg` can be a commit message. This  may be empty but will become three dots (`...`) then.\\
+⍝ Returns a two-element vector:
+⍝  1. The name of the branch
+⍝  2. The hash of the commit as a simple text string
+ ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
+ msg←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'msg'
+ 'Right argument is invalid (empty)'U.Assert 0<≢y
+ 'Left argument is invalid (wrong type)'U.Assert' '=1↑0⍴msg
+ (buff amendFlag)←2↑(⊆y),0
+ (space path)←EstablishProject buff
+ cb←CurrentBranch path
+ :If amendFlag
+     cmd←'commit --amend --no-edit'
+     :If 0<≢msg
+         msg_←U.MassageMsg msg
+         cmd,←' -m "',msg_,'"'
+     :EndIf
+ :Else
+     msg←{0=≢⍵:'...' ⋄ ⍵},msg
+     :If (⊂cb)∊'master' 'main'
+     :AndIf 0=≢msg~'.'
+         'Cancelled by user'U.Assert CommTools.YesOrNo'NoMsgOnCommit@No meaningful message provided on "',cb,'"; continue anyway?'
+     :EndIf
+     msg_←U.MassageMsg msg
+     cmd←'commit -m "',msg_,'"'
+ :EndIf
+ (rc msg buff)←path U.RunGitCommand cmd
+ :If ∨/'nothing to commit, working tree clean'⍷∊buff
+     r←buff
+ :Else
+     msg U.Assert 0=rc
+     r←buff
+ :EndIf
+⍝Done

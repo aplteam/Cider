@@ -1,0 +1,8 @@
+(
+ 'Takes an APL name and returns a matrix with zero or more rows and 4 columns with'
+ 'information regarding all commits the given APL object was changed:'
+ ' 1. Hash'
+ ' 2. Commiter''s name'
+ ' 3. Date of the commit date in strict ISO 8601 format'
+ ' 4. Message of the commit'
+)

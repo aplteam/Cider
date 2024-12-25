@@ -1,0 +1,5 @@
+(
+ '"Version" returns a text vector with version information:'
+ ''
+ 'Major, minor, patch and build number, and optionally additional information.'
+)

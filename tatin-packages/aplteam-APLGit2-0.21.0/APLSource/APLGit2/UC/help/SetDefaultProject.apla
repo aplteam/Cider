@@ -1,0 +1,5 @@
+(
+ 'Use this to specify a default project.'
+ 'Commands that require a project will act on the default project in case it was set.'
+ 'See also ]APLGit2.GetDefaultProject'
+)

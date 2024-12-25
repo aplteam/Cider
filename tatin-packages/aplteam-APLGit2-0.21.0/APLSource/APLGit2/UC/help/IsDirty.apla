@@ -1,0 +1,8 @@
+(
+ 'Returns one of:'
+ ' * "Clean"'
+ ' * "Dirty"'
+ ''
+ 'For more information execute:'
+ ']APLGit2.IsDirty -???'
+)

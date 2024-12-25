@@ -1,0 +1,7 @@
+ {r}←InitializeGitUserCommand dummy
+⍝ Propagate refs and set global ∆TestFlag
+ r←⍬
+ U.A←A←APLTreeUtils2
+ U.F←F←FilesAndDirs
+ ∆TestFlag←0
+⍝Done

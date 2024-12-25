@@ -1,0 +1,10 @@
+ r←Log(space folder args);parms;buff
+ parms←⎕NS''
+ parms.verbose←args.verbose
+ parms.max←¯1
+ parms.since←''
+ parms.name←''args.Switch'name'
+ parms.commit←''args.Switch'commit'
+ parms(ProcessLogParms)←(1+0≡args._2)⊃args.(_2 _1)
+ r←parms ##.Log folder
+⍝Done

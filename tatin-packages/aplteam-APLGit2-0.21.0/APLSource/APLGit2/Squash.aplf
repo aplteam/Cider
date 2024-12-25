@@ -1,0 +1,92 @@
+ r←{x}Squash y;msg;noOf;folder;currentBranch;buff;rc;more;commits;historyPath;space;noOf;parms;allCommits;noOf_;caption;ind
+⍝ Squashes some commits of the current branch into a single one.\\
+⍝ You can provide as a right argument:\\
+⍝  * A char vector; treated as commit message
+⍝  * An integer; treated as number of commits to be squashed
+⍝  * Any combination of message and number of commits in any sequence
+⍝  * An empty vector\\
+⍝ If the number of commits to be squashed was not defiend or is 0, a list of all candidates
+⍝ (commits) will be presented to you for selection.\\
+⍝ You may provide a meaningful message as the first right argument but if you don't you will be prompted.
+⍝ If you still do not provide a meaningful message the function will throw an error.\\
+⍝ In case there  uncommited changes, an error is thrown.\\
+⍝ In case the current branch is either "main" or "master" the user is asked for confirmation.\\
+⍝ The number of commits to be squashed might be provided as (additional) right argument.\\
+⍝ For what `⍺` can actually be see `EstablishProject`.\\
+⍝ Returns the number of commits that were eventually squashed.\\
+ r←0
+ x←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'x'
+ msg←'' ⋄ noOf←0
+ :If 0≠≢y
+     buff←2↑(⊆y),0
+     :If ' '=1↑0⍴1⊃buff
+         msg←1⊃buff
+         noOf←2⊃buff
+     :Else
+         noOf←⊃y
+         msg←{' '=1↑0⍴⍵:⍵ ⋄ ''}2⊃buff
+     :EndIf
+ :EndIf
+ (space folder)←EstablishProject x
+ 'Cannot squash: there are uncommitted changes'U.Assert~IsDirty folder
+ currentBranch←CurrentBranch folder
+ :If (⊂currentBranch)∊'main' 'master'
+     'Cancelled by user'U.Assert CommTools.YesOrNo'SquashOnMain@Sure you want to squash the ',currentBranch,' branch?'
+ :EndIf
+ :If 0=noOf
+     r←≢commits←folder RefLog 0
+ :Else
+     commits←folder RefLog 0
+     r←≢commits←(noOf⌊≢commits)↑commits
+ :EndIf
+ :If 0<r
+     :If noOf>0
+         noOf_←noOf
+     :Else
+         caption←'How many commits would you like to squash? Maximum is ',(⍕≢commits),'; (empty=quit) '
+         noOf_←'NoOfSquashs@'U.GetNumberOfCommits commits currentBranch folder caption
+     :EndIf
+ :EndIf
+ :If 0<noOf_
+     :If 0=≢msg
+         :If ⍬≢ind←CommTools.FindAutomationIndex'AskForNumber' 'NoOfSquashs@'
+             noOf_←3⊃CommTools.∆Automation[⊃ind;]
+         :AndIf ⍬≢ind←CommTools.FindAutomationIndex'AskForText' 'NoOfSquashsComment@'
+             msg←3⊃CommTools.∆Automation[⊃ind;]
+         :Else
+             ⍞←'Provide a meaningful commit message in the editor:'
+             ⎕SE.⎕SHADOW'TEMP'
+             'TEMP'⎕SE.⎕NS''
+             :If 0=≢⎕SE.TEMP.CommitMsg←{0=≢⍵:⍵ ⋄ ⊃{⍺,(⎕UCS 13),⍵}/⍵}{⍵/⍨0<≢¨⍵~¨⊂' .'}commits[⍳noOf_;4]
+                 historyPath←(({⍵,'.',(⍵⍳'.')↓⍵}space)),'.History'
+                 :If 0<⎕NC historyPath
+                     ⎕SE.TEMP.CommitMsg←{1↓⍵↑⍨1++/∧\'*'≠1↓⊃¨⍵}⍎historyPath
+                 :ElseIf 0<|⎕NC⊂historyPath
+                     :Trap 0
+                     ⍝ Assumes something like "* Foo 1.2.3 from xx.xx.xxx" with an indented sub list:
+                         ⎕SE.TEMP.CommitMsg←{(1↓⍵)↑⍨+/∧\' '=1↓,1↑[2]⍵}2↓[2]A.DLB 2↓180⌶historyPath
+                         ⎕SE.TEMP.CommitMsg←,{⍵↓[2]⍨⌊/+/∧\' '=⍵}⎕SE.TEMP.CommitMsg
+                     :EndTrap
+                 :EndIf
+             :EndIf
+             ⎕SE.TEMP.⎕ED'CommitMsg'
+             msg←⎕SE.TEMP.CommitMsg
+             :If 2=≡msg
+                 msg←1↓⊃,/';',¨msg
+             :Else
+                 msg←(~(⎕UCS 13 13)⍷msg)/msg
+                 msg←(-(⎕UCS 13)=¯1↑msg)↓msg
+             :EndIf
+         :EndIf
+     :EndIf
+     'Sqash requires a meaningful message'U.Assert 0<≢msg~' .'
+     (rc more buff)←folder U.RunGitCommand('reset --soft HEAD~',⍕noOf_)
+     ('Reset failed; RC=',(⍕rc),' ',more)U.Assert 0=rc
+     buff U.Assert 0=≢buff
+     msg←U.MassageMsg msg
+     msg←'-m "',msg,'"'
+     (rc more buff)←folder U.RunGitCommand('commit ',msg)
+     ('Committing after resetting failed; RC=',(⍕rc),' ',more)U.Assert 0=rc
+     r←noOf_
+ :EndIf
+⍝Done

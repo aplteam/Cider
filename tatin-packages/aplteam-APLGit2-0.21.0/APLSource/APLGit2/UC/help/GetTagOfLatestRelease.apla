@@ -1,0 +1,6 @@
+(
+ 'Returns the tag number of the latest release.'
+ 'Drafts are ignored.'
+ ''
+ '-verbose   If specified the date of the commit & the caption of the release are returned as well'
+)
