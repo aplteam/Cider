@@ -1,3 +1,0 @@
-aplteam-APLTreeUtils2-1.4.0
-aplteam-IniFiles-5.1.0
-aplteam-CommTools-1.8.2
