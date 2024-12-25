@@ -1,3 +1,0 @@
- r←ExpandPath path
-⍝ Shortcut for  `'expand' NormalizePath` - see there.
- r←1 NormalizePath path

@@ -1,4 +1,4 @@
-r←ListTatinDependencies Args;path;full;cfgFilename;cfg;tatinFolders;list;path2;buildFilename;buff;F;P_
+ r←ListTatinDependencies Args;path;full;cfgFilename;cfg;tatinFolders;list;path2;buildFilename;buff;F;P_
 ⍝ List all Tatin dependencies
  r←''
  P_←P.##
@@ -25,6 +25,9 @@ r←ListTatinDependencies Args;path;full;cfgFilename;cfg;tatinFolders;list;path2
                      :EndIf
                  :Else
                      :If 0<≢r←path∘{P_.ListTatinDependenciesFull ⍺,'/',⍵}¨tatinFolders
+                         r←(0<≢¨r)/r
+                     :EndIf
+                     :If 0<≢r
                          r←{⊃,/CR,¨((⍵[;1])⍴¨' '),¨⍵[;2]}¨r
                          r←'--- Investigated: ',path,CR,⊃,/('-- Sub-folder: '∘,¨tatinFolders,¨'/'),¨r,¨CR
                      :Else

@@ -1,3 +1,0 @@
- r←IsGitProject(space folder args)
- r←(1+##.IsGitProject folder)⊃'no' 'yes'
-⍝Done

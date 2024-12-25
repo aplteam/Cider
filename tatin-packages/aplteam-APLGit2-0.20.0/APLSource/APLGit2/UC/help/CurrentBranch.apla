@@ -1,6 +1,0 @@
-(
- 'Returns the name of the current branch'
- ''
- 'For more information execute:'
- ']APLGit2.CurrentBranch -???'
-)

@@ -1,4 +1,0 @@
-(
- 'Returns the namespace and the folder if there is a default project defined.'
- 'See also ]APLGit2.SetDefaultProject'
-)
