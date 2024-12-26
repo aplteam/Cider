@@ -34,7 +34,7 @@ window.matchMedia("print").addEventListener("change", evt => {
 
 
 </script>
-
+<meta name="author" content="kai">
 </head>
 <body>
 <div class="h_tag">
@@ -758,7 +758,7 @@ On NuGet packages
 <p>If such a file is present, Cider injects a namespace <code>TatinVars</code> into the root of the project, containing exactly the same pieces of information as if it were loaded as a package. This allows a developer to access <code>TatinVars</code> as if it was loaded as a package while working on the project.</p>
 <p>However, a programmer would expect a namespace <code>TatinVars</code> in the root of the <em>package</em>. That might be the root of a project, but it might as well be a <em>sub-namespace</em> of the project. In fact, that is more likely.</p>
 <p>This can be addressed by adding the optional property “tatinVars” into the <code>CIDER</code> section of the Cider config file, holding the name of a sub-namespace that will eventually become the package.</p>
-<p>If a property “tatinVars” does exist and points to a sub-namespace, then Cider will create a reference <code>TatinVars</code> in that namespace that points to <code>TatinVars</code> in the root of the project.</p>
+<p>If a property “tatinVars” does exist and points to a sub-namespace, then Cider will <del>create a reference <code>TatinVars</code> in that namespace that points to <code>TatinVars</code> in the root of the project.</del> move the namespace from the root of the project to that sub-namespace.</p>
 <div class="h_tag">
 <a href="#changing-the-current-directory" id="changing-the-current-directory" class="autoheader_anchor">
 <h4 data-id="Changing-the-current-directory">2.7.10. Changing the current directory</h4>

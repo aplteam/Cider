@@ -617,7 +617,7 @@ However, a programmer would expect a namespace `TatinVars` in the root of the _p
 
 This can be addressed by adding the optional property "tatinVars" into the `CIDER` section of the Cider config file, holding the name of a sub-namespace that will eventually become the package. 
 
-If a property "tatinVars" does exist and points to a sub-namespace, then Cider will create a reference `TatinVars` in that namespace that points to `TatinVars` in the root of the project.
+If a property "tatinVars" does exist and points to a sub-namespace, then Cider will ~~create a reference `TatinVars` in that namespace that points to `TatinVars` in the root of the project.~~ move the namespace from the root of the project to that sub-namespace.
 
 #### Changing the current directory
 
@@ -808,6 +808,7 @@ An example:
 [^link]: _Link_ is a tool designed to bring APL code into the workspace and keep it in sync with the files the code came from; see <https://github.com/dyalog/Link> and <https://dyalog.github.io/link>
 
 [^load_tatin_pkgs]: Strictly speaking only references to the packages are injected into your application or tool. The actual packages are loaded into either `#._tatin` or `⎕SE._tatin`
+
 
 
 
