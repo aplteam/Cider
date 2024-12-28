@@ -1,5 +1,5 @@
  r←LinkConfig Args;folder;path;editFlag;deleteFlag;cfg;linkCfgPath;json;ref
- path←''Args.Switch Args._1
+ path←{0≡⍵:'' ⋄ ⍵}Args._1
  editFlag←Args.edit
  deleteFlag←Args.delete
  '-edit and -delete are mutually exclusive'Assert(deleteFlag+editFlag)∊0 1
@@ -17,7 +17,7 @@
              :If 0=≢(∊ref.linkconfig)~' '
                  r←'Cancelled by user'
              :ElseIf json≢ref.linkconfig
-                 :If 0=1 ##.CommTools.YesOrNo'SaveLinkConfigChanges@Save Link Config changes?'
+                 :If 0=1 ##.CommTools.YesOrNo'SaveLinkConfigChanges@Save ',linkCfgPath,'?'
                      r←'Cancelled by user' ⋄ →0
                  :Else
                      (⊂ref.linkconfig)⎕NPUT linkCfgPath 1

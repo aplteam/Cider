@@ -7,4 +7,5 @@
     forceFilenames: 1,
     watch: "both",
   },
+  CiderTest: 1,
 }

@@ -1,14 +1,11 @@
- R←Test_UC_200(stopFlag batchFlag);⎕TRAP;rc;msg;res;stop;ns;expected
+ R←Test_UC_200(stopFlag batchFlag);⎕TRAP;rc;msg;res;stop
 ⍝ Print contents of a .linkconfig file to the session
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- ∘∘∘
  stop←0
- (rc msg res)←stop ∆UCMD'ListTatinDependencies'
+ (rc msg res)←stop ∆UCMD'LinkConfig'
  Assert rc=0
- ns←##.Cider.Get_JSON5 #.Cider.CiderConfig.HOME,'/cider.config'
- expected←FilesAndDirs.EnforceSlash∘FilesAndDirs.AddTrailingSep¨{⍵↑⍨¯1+⍵⍳'='}¨ns.CIDER.(dependencies dependencies_dev).tatin
- →T.PassesIf∧/expected∊res[;]
+ →T.PassesIf ∨/'*** Link config file'⍷∊res
 
 ⍝Done

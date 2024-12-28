@@ -1,7 +1,7 @@
  r←∆GetRefToCommTools
 ⍝ Depending of whether there is a variable "DEVLOPMENT" set in ⎕SE.Cider and it is 1
 ⍝ this function returns a ref to Cider in either ⎕SE or #.
-⍝ This is an important destinction in case the variables in CoommTools nees to be specified
+⍝ This is an important destinction in case the variables in CommTools nees to be specified
 ⍝ to pretend a human being making decisions/selections.
  :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'
  :AndIf 0<⎕SE.Cider.DEVELOPMENT

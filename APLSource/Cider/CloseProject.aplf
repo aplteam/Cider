@@ -24,14 +24,16 @@
          projects←⊆projects
          :For project :In projects
              project←⍕project
-             :If (∧/~'/\'∊project)∧~(1⊃project)∊'#⎕'
-                 buff←(({⊃(-+/∧\~'⎕'=⊃¨⍵)↑⍵}⎕NSI),'.'),project
-                 ('Could not identify: ',project)Assert 9=⊃⎕NC buff
-                 project←buff
-             :EndIf
              :If ∧/'[]'∊project
                  ind←list[;4]⍳⊂⎕C project~'[]'
              :Else
+                 :If (∧/~'/\'∊project)∧~(1⊃project)∊'#⎕'
+                     buff←(({⊃(-+/∧\~'⎕'=⊃¨⍵)↑⍵}⎕NSI),'.'),project
+                     :If 9≠⊃⎕NC buff
+                         :Continue
+                     :EndIf
+                     project←buff
+                 :EndIf
                  ind←(⎕C list[;1])⍳⊂⎕C project
              :EndIf
              :If ind>≢list
