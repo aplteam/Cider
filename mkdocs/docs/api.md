@@ -105,7 +105,7 @@ Setting the `dev` flag switches the installation folder from `dependencies` (def
 ```apl
       pkgs←'rikedyp-TinyTest,boobly-boo'
       proj←'/Users/sjt/Projects/dyalog/examples/stat'
-      ⍴q←⎕←⎕SE.Cider.AddTatinDependencies pkgs proj 1
+      ⍴⎕←⎕SE.Cider.AddTatinDependencies pkgs proj 1
 Not found: boobly-boo
 ┌──────────────────────┐
 │rikedyp-TinyTest-1.0.1│
@@ -132,7 +132,8 @@ r←{x} CloseProject projects
 
 Where 
 
--   `x` (optional) is a list of projects and/or a flag
+<!-- -   `x` (optional) is a list of projects and/or a flag -->
+-   `x` (optional) is whether to check for Dropbox conflicts (default is 1)
 -   `projects` is one or more open projects
 
 Cider closes the projects (unlinks the source files) and returns the number of projects closed.
@@ -143,15 +144,21 @@ Identify projects as (any of)
 -   aliases
 -   project paths
 
-Specify `projects` as either a string or list of strings.
-
+<!-- see Issue #100
 The __optional left argument__ can be either or both (in any order) of
 
 -   a list of projects as returned by [`ListOpenProjects`](#list-open-projects)
 -   a flag (defaults to 1): whether Dropbox conflict checks are made.
 
-
-<!-- FIXME specify effect of listing projects in `x`. -->
+ -->
+Example: close all open projects.
+```apl
+⎕SE.Cider.CloseProject ⍬
+```
+Example: close three projects without checking for Dropbox conflicts.
+```apl
+0 ⎕SE.Cider.CloseProject 'path/to/project' #.util '[test]'
+```
 
 :fontawesome-solid-gear: 
 [`CheckForDropboxConflicts`](configuration.md#checkfordropboxconflicts)<br>
