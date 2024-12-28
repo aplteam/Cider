@@ -67,7 +67,6 @@ Where
 -   `project` is an alias or project path
 
 Cider installs NuGet packages in the (single) NuGet dependency folder defined in the project config and returns their names as a list of strings.
-<!-- FIXME confirm list of strings -->
 
 Specify `packages` as either a list of strings or a comma-separated string.
 
@@ -89,17 +88,37 @@ r←AddTatinDependencies(packages project dev)
 Where
 
 -   `packages` is one or more Tatin packages
--   `project` is an alias or project path
+-   `project` is a project path
 -   `dev` is a flag
+<!-- FIXME Issue #99: -  `project` is a project path or alias -->
 
-Cider installs the packages in one of the Tatin dependency folders defined in the project’s configuration file. 
-(The default is `dependencies.tatin`.)
+Cider installs the packages in one of the Tatin dependency folders
+and returns as a list of strings the names of the packages installed.
 
-Specify packages as either a list of strings or a comma-separated string.
+Specify `packages` as either a list of strings or a comma-separated string.
+
+Any errors are reported to the session.
 
 Setting the `dev` flag switches the installation folder from `dependencies` (default) to`dependencies_dev`.
 
-<!-- FIXME Result? -->
+
+```apl
+      pkgs←'rikedyp-TinyTest,boobly-boo'
+      proj←'/Users/sjt/Projects/dyalog/examples/stat'
+      ⍴q←⎕←⎕SE.Cider.AddTatinDependencies pkgs proj 1
+Not found: boobly-boo
+┌──────────────────────┐
+│rikedyp-TinyTest-1.0.1│
+└──────────────────────┘
+1
+
+```
+
+??? detail "Dependency folders"
+
+    The dependency folders are defined in the project’s configuration file.
+
+    The default project configuration file name is `dependencies.tatin`.
 
 :fontawesome-solid-terminal: 
 [`]CIDER.AddTatinDependencies`](user-commands.md#add-tatin-dependencies).
