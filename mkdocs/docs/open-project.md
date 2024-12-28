@@ -55,7 +55,7 @@ If a setting in `SYSVARS` cannot be used to set a system variable, Cider prints 
 
 ## Define objects in the project space
 
-Cider uses Link to find all files in the project’s `source` folder (and its children) with [supported file extensions](FIXME) and define them in the project space.
+Cider uses Link to find all files in the project’s `source` folder (and its children) with [supported file extensions](https://dyalog.github.io/link/4.0/Usage/Arrays/) and define them in the project space.
 
 Cider links the project space to the project folder according to the [`watch`](configuration.md#watch) setting of the project config, which may be overridden by 
 
