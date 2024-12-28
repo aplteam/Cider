@@ -22,6 +22,18 @@ For example, for user JohnDoe:
 
 The default name for the global configuration is  `config.json`.
 
+Example:
+
+```json
+{
+  AskForDirChange: 1,
+  CheckForDropboxConflicts: 1,
+  ExecuteAfterProjectOpen: "⎕SE.Path.To.Function",
+  ReportGitStatus: 1,
+  verbose: 1,
+}
+```
+
 :fontawesome-solid-code:
 [`GetCiderGlobalConfigFilename`](api.md#getciderglobalconfigfilename)<br>
 :fontawesome-solid-code:
@@ -31,6 +43,9 @@ This folder also contains
 
 -   alias definitions in `aliases.txt`
 -   your project template in `cider.config.template`
+
+
+-----
 
 
 ### :fontawesome-solid-gear: `AskForDirChange`
@@ -63,8 +78,11 @@ If this flag is set, when opening and closing projects Cider will report files w
 
 ### :fontawesome-solid-gear: `ExecuteAfterProjectOpen`
 
-If defined and not empty, the fully qualified path to a monadic function. 
-<!-- FIXME filepath or fully qualified name? -->
+If defined and not empty, the fully qualified name of a monadic function. 
+
+    ExecuteAfterProjectOpen: "⎕SE.Path.To.Function",
+
+
 Cider will execute the function after you open __any__ project, unless the `ignoreUserExec` option or parameter is set.
 
 The function’s argument is the project config as a namespace.
@@ -110,8 +128,6 @@ When a Cider project is created, a copy of the file `cider.config.template` in t
 
 
 The Cider configuration file comes with four sections: `CIDER`, `LINK`, `SYSVARS`, `USER`.
-
-<!-- FIXME Distinguish clearly between required and optional settings. Are some required but can be empty? -->
 
 
 ### `CIDER`
@@ -288,15 +304,14 @@ However, if the first non-white space character of `tests` is a `]` (making it a
 
 These parameters are passed to Link when Cider uses it to define APL objects in the workspace.
 
-??? info "Temporary solution"
+Since Version 4.0.0, Link has its own config file, but, until all supported versions of Link deal with it, Cider saves non-default values in a Cider project config.
 
-	LINK should have its own config files for this, and will get them with Link 4.0. 
+??? warning " If Cider finds a Link config file, it ignores the `LINK` section of the Cider config."
 
-	However, until all supported versions of Link can deal with Link's own configuration file, Cider will save non-default values in a Cider project config file.
+	<!-- A message will remind you to delete the `LINK` section from the Cider config file. -->
 
-	If there is a Link config file by the name `.linkconfig`, then any definition in the `LINK` section of the Cider config file is ignored. A message will remind you to delete the `LINK` section from the Cider config file.
-
-	Cider will look for the file in what [`source`](#) defines. If `source` is empty then it is the root of the project.
+	Cider looks for `.linkconfig` at the path specified in [`source`](#source). 
+	If `source` is empty, then the root of the project.
 
 #### :fontawesome-solid-gear: `watch`
 
@@ -312,9 +327,13 @@ Irrelevant: we assume Link is installed
 Note that for "both" and "dir," .NET or .NET Core is required. Under Windows, this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not, the default for "watch" will be "ns".
  -->
 
-The `watch` setting is very important, so Cider always reports it. Other Link settings are reported only when they diverge from the default.
+The `watch` setting is very important, so Cider always reports it. 
+Other Link settings are reported only when they diverge from the default.
 
 The `watch` setting is ignored when a project is opened with the `import` option.
+
+:fontawesome-solid-book:
+[`Link.Create`](https://dyalog.github.io/link/4.0/API/Link.Create/#watch)
 
 
 ### `SYSVARS`
