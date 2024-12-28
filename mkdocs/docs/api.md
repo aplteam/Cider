@@ -458,31 +458,18 @@ Where `y` is either
 -   an alias or project path
 -   a parameter namespace (typically created by  `CreateOpenParms`)
 
-Cider [opens the project](open-project.md), and returns a 2-item result:
+Cider [opens the project](open-project.md), and returns a 2-item result: a flag for success, and a log string as printed to the session.
 
-    flag - 1 for success
-    log  - list of strings as printed to the session
+```apl
+      (flag log)←⎕SE.Cider.OpenProject '[stat]'
+The current directory is now ...
+      flag
+1
+      (≡log)(≢log)
+1 388 
+```
 
-<!-- 
-### Actions
-
-1.  Creates the `projectSpace` namespace in `parent` if it does not already exist. This is the __project root__.
-1.  Sets the projects’s [system variables](configuration.md#system) (at least `⎕IO` and `⎕ML`) in the project root.
-1.  Brings all APL code and variables into the project root, linked to their source files according to the project’s [`watch`](configuration.md#watch) setting unless the `importFlag` parameter is set.
-1.  Loads all Tatin packages from the Tatin installation folders defined by [`dependencies:tatin`](configuration.md#dependencies) and [`dependencies_dev:tatin`](configuration.md#dependencies-dev).
-1.  Loads all NuGet packages from the NuGet installation folder defined by [`dependencies:nuget`](configuration.md#dependencies).
-1.  Injects a namespace `CiderConfig` into the project root and populates it with the contents of the configuration file.
-1.  Injects a namespace `TatinVars` into the project root, and a ref pointing to that `TatinVars` (with the same name) if parameter [`tatinVars`](configuration.md#tatinvars) is defined in the project config `CIDER` section and points to a subnamespace of the project space.
-1.  Changes the current directory as specified by [`AskForDirChange`](configuration.md#askfordirchange) in the global config.
-1.  Adds a variable `HOME` to `CiderConfig` specifying the path from which the project was loaded.
-1.  Executes the function specified in the project’s [`init`](configuration.md#init) setting.
-1.  Executes the function specified in the global [`ExecuteAfterProjectOpen`](configuration.md#executeafterprojectopen) setting.
-1. If it finds a variable `ToDo` in the project root, displays it for editing.
-1. Reports the Git status of the project according to the global [`ReportGitStatus`](configuration.md#reportgitstatus) setting.
-### Parameters
- -->
-
-All parameters are optional except `folder`.
+If `y` is a parameter space, all parameters are optional except `folder`.
 
 
 `folder`
@@ -493,18 +480,26 @@ All parameters are optional except `folder`.
 
 : String. An alias by which you can refer to the project.
 
-    !!! detail "Special syntax"
+    !!! detail "Special syntax for alias"
 
         If `alias` is just a dot, the name of the project folder becomes the alias. 
         Example:
 
         ```apl
-        p←Cider.CreateOpenParms
+        p←⎕SE.Cider.CreateOpenParms
         p.folder←'/path/2/projects/foo'
         p.alias←'.'  ⍝ `foo` becomes the (new) alias
         ```
 
-    If you specify an alias on `folder` but also on `alias`, then Cider expects the alias on `folder` to be defined, and will use that one to open the project. It will then overwrite the former alias with the one defined on `alias`.
+    **Side effect**
+    Cider will register the new alias for the project.
+
+    Example: Open project aliased as `foo` and reregister its alias as `bar`:
+    ```apl
+    p←⎕SE.Cider.CreateOpenParms
+    p.folder←'[foo]'
+    p.alias←'bar'
+    ```
 
 `checkPackageVersions`
 
@@ -520,12 +515,12 @@ All parameters are optional except `folder`.
 
 `ignoreUserExec`
 
-: Set the flag to stop Cider executing at the end of opening a project a function named in the global  [`ExecuteAfterProjectOpen`](configuration.md#executeafterprojectopen) setting. Defaults to 0.
+: Flag to stop Cider executing at the end of opening a project a function named in the global  [`ExecuteAfterProjectOpen`](configuration.md#executeafterprojectopen) setting. Defaults to 0.
 
 
 `importFlag`
 
-: Set the flag to stop Cider from linking APL objects to their source files. Defaults to 0.
+: Flag to stop Cider from linking APL objects to their source files. Defaults to 0.
 
     :fontawesome-solid-gear:
     [`watch`](configuration.md#watch)
@@ -538,7 +533,7 @@ FIXME Explain.
 
 `noPkgLoad`
 
-: Set the flag to stop Cider from loading Tatin dependencies as specifed in the config file’s `dependencies` and `dependencies_dev` settings. Defaults to 0.
+: Flag to stop Cider from loading Tatin dependencies as specifed in the config file’s `dependencies` and `dependencies_dev` settings. Defaults to 0.
 
 
 `parent`
@@ -559,12 +554,12 @@ FIXME Explain.
 
 `quietFlag`
 
-: Set the flag to stop Cider printing messages to the session. (They are still returned in the function‘s result.)
+: Flag to stop Cider printing messages to the session. (They are still returned in the function‘s result.)
 
 
-`suppressLX`
+`suppressInit`
 
-: Set the flag to stop Cider executing the project’s [initialisation](configuration.md#init) function. Defaults to 0.
+: Flag to stop Cider executing the project’s [initialisation](configuration.md#init) function. Defaults to 0.
 
 : For example, an automated build process might open a project without initialising it.
 
