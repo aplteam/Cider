@@ -18,7 +18,7 @@ For a full list of fixes, see [Cider on GitHub](https://github.com/aplteam/Cider
 
 -------|------------|--------------
 0.44.0 | 2024-11-16 | `]OpenProject`’s report of Git status enhanced and streamlined.<br><br>Some bug fixes.
-0.43.2 | 2024-13  <!-- FIXME Correct the date. --> | Bug fixes.
+0.43.2 | 2024-10-13 | Bug fixes.
 0.43.1 | 2024-09-25 | Bug fixes.
 0.43.0 | 2024-09-23 | The `-raw` option removed from the `]ListTatinDependencies` user command
 0.42.4 | 2024-09-07 | Bug fixes.
