@@ -48,7 +48,7 @@ Developers understand:
 : holds all packages loaded into `⎕SE`, while `#._tatin` holds all Tatin packages loaded into `#`.
 
 The API namespace
-: (the name can be configured in the project’s config file) holds thin covers for calling the real thing in the parent,, hence `##` or `⎕SE.Cider.##`
+: (the name can be configured in the project’s config file) holds thin covers for calling the real thing in the parent, hence `##` or `⎕SE.Cider.##`
 
 `⎕SE.Cider.##.UC`
 : is the same as `#.Cider.Cider.UC` but as part of the user-command package rather than the project.
@@ -56,6 +56,11 @@ The API namespace
 When you execute a user command like
 `]Cider.ListOpenProjects`
 it is executed in `⎕SE`. 
+
+<!-- 
+The above deinitions bewilder me. 
+Perhaps if I worked on the package, they would make more sense to me.
+ -->
 
 When you run tests, you might want to make changes to the code.
 That would not work well when user commands are tested because changes in `⎕SE` are
@@ -84,7 +89,6 @@ The user-command script works out whether it should execute code in `⎕SE` or i
     off - ⎕SE.Cider.##.UC
     on  - #.Cider.Cider.UC
 
-<!-- FIXME Is `a.b.##.c` not a ref to `a.c`? -->
 
 The API functions are in `⎕SE.Cider`, and call objects in `⎕SE.Cider.##`
 
@@ -94,7 +98,7 @@ The user-command functions are in `⎕SE.Cider.##.UC`
 ### The user-command script
 
 The user-command script is a thin cover for calls to (usually) `⎕SE.Cider.UC`. 
-<!-- FIXME Really? Namespace not previously mentioned. -->
+<!-- Really? Namespace not previously mentioned. -->
 You will rarely need to change it.
 
 If you do, Link records your changes __only__ if you have specified environment variable
@@ -113,7 +117,6 @@ Change the script either in the location it is started from, or in the project, 
 
 When you create a new version, Cider checks whether the two versions are identical.
 If not, it proposes copying over the version that carries the latest changes.
-<!-- FIXME I don’t understand this. -->
 
 
 ### Changing user-command functions
@@ -132,10 +135,7 @@ A Cider user command calls a function in the `UC` namespace (see above), which e
 
 When Cider opens Cider as a project, it proposes setting DM on in `⎕SE.Cider`.
 
-If DM is on, Cider establishes a reference not to `⎕SE.Cider` but to `#.Cider.Cider`.
-<!-- FIXME Establishes a reference? -->
-
-The consequence is that when you change a function in the course of running it, Link will save it _in the project_, preserving your changes.
+With DM on, when you change a function in the course of running it, Link will save it _in the project_, preserving your changes.
 
 To remind you what’s happening, Cider prints a warning whenever a user command is executed:
 
@@ -155,7 +155,6 @@ That prints an expression that, if executed, runs all the tests (interactive inc
 If DM is 1, the test suite sets it to 2 while running, so as not to flood the session window.
 
 To execute the test suite in batch mode (no reports, and returns a single flag indicating success):
-<!-- FIXME Why a batch mode if the test suite sets DM to 2 while running? -->
 
     #.Cider.TestCases.RunTestsInBatchMode
 
@@ -164,7 +163,7 @@ To execute the test suite in batch mode (no reports, and returns a single flag i
     Running the NuGet tests requires .NET, rather than .NET Framework.
 
     The test cases execute only if .NET is available.
-    <!-- FIXME Just the Nuget tests, or all tests? -->
+    <!-- Just the Nuget tests, or all tests? -->
 
 
 ## Build
@@ -186,7 +185,7 @@ Doing so installs Cider over the current version.
 Restart Dyalog to use the new version.
 
 <!-- 
-FIXME How can Cider not be installed if it is running?
+  **How can Cider not be installed if it is running?**
 
   , or, if it has not been previously installed, ask the user whether it should be installed into the version-specific or the version-agnostic folder for Dyalog files on your operating system.
  -->

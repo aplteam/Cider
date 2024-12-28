@@ -280,7 +280,7 @@ Optional. Either `⎕THIS` or the name of a child of the project space.
 -   `⎕THIS` has the same effect as if the property were undefined.
 -   A subnamespace has Cider inject a reference `TatinVars` into it, pointing to `TatinVars` in the project root.
 
-See [Injecting a namespace TatinVars](FIXME).
+See [Injecting a namespace `TatinVars`](open-project.md#inject-a-tatinvars-namespace).
 
 
 #### :fontawesome-solid-gear: `tests`

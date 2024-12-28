@@ -90,7 +90,9 @@ Where
 -   `packages` is one or more Tatin packages
 -   `project` is a project path
 -   `dev` is a flag
-<!-- FIXME Issue #99: -  `project` is a project path or alias -->
+<!-- ISSUE #99: 
+-  `project` is a project path or alias 
+-->
 
 Cider installs the packages in one of the Tatin dependency folders
 and returns as a list of strings the names of the packages installed.
@@ -526,9 +528,8 @@ If `y` is a parameter space, all parameters are optional except `folder`.
     [`watch`](configuration.md#watch)
 
     !!! warning "Setting this flag has implications for how Cider deals with Tatin packages."
-<!-- 
+<!-- Explain.
 , see there. 
-FIXME Explain.
  -->
 
 `noPkgLoad`

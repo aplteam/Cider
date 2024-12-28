@@ -8,7 +8,6 @@ keywords: apl, command, cider, dyalog, install, link, source, tatin
 
 !!! abstract "Install and activate Cider; create and open a blank project"
 
-<!-- FIXME Describe creating a project from APL source files -->
 
 ## Install
 
