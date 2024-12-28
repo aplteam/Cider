@@ -154,7 +154,7 @@ If it’s not the project folder, Cider proposes to change to it.
 ## Initialise the project
 
 If the project config specifies an [initialisation](configuration.md#init) function, Cider executes it unless the `suppressInit` option or `suppressLX` parameter is set.
-<!-- FIXME Do the option and parameter names really differ like this? -->
+<!-- FIXME Revise when Issue #101 resolved -->
 
 
 ## Execute the global initialisation function
