@@ -52,7 +52,7 @@ You use Cider through its [user commands](user-commands.md) or its [API function
 
 1.  Dyalog Unicode Edition version 18.2 or better
 1.  Your APL source kept in text files
-1.  Tatin version ==xx.x== or better
+1.  Tatin version 0.116.0 or better
 
 Dyalog 19.0 has Cider and Tatin installed.
 For Dyalog 18.2, Cider and Tatin have to be installed.
