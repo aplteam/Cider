@@ -418,16 +418,28 @@ r←ListTatinDependencies projectpath
 
 Where `projectpath` is a project path, returns as a 5-column matrix the dependencies installed in the Tatin installation folders.
 
-1. Full package ID
-1. A flag: whether the package is a principal or a dependency
+1. dependency folder
+1. full package ID
+1. flag: whether the package is a principal or a dependency
 1. URL from which the package was loaded
-2. ==???==
-3. ==???==
+1. (reserved)
 
-<!-- 
-FIXME
-Describe the other two columns
- -->
+```apl
+      ⍉r←⎕SE.Cider.ListTatinDependencies '[stat]'
+┌───────────────────┬───────────────────────┐
+│tatin-dependencies/│tatin-dependencies_dev/│
+├───────────────────┼───────────────────────┤
+│ davin-Tester-1.1.0│ rikedyp-TinyTest-1.0.1│
+├───────────────────┼───────────────────────┤
+│1                  │1                      │
+├───────────────────┼───────────────────────┤
+│https://tatin.dev/ │https://tatin.dev/     │
+├───────────────────┼───────────────────────┤
+│                   │                       │
+└───────────────────┴───────────────────────┘
+      r[;5]≡' ' ' '
+1
+```
 
 !!! detail "Until version 0.34.0 this was named `ListTatinPackages`"
 
