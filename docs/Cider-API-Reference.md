@@ -466,7 +466,7 @@ Defaults to 0, meaning that Cider will load Tatin packages by honoring the confi
 Defaults to 0, meaning that the function prints messages to the session. If this is 1 then no messages are printed but what would have been printed is still returned as second element of the result of the function.
 
 
-#### suppressLX
+#### suppressInit
 
 Defaults to 0, meaning that the projects initialisation function (if any) will be executed.
 
@@ -545,6 +545,7 @@ r←Version
 Returns the version number.
 
 This can be just `1.2.3`,  but it may be something like `1.2.3-beta-1+113`
+
 
 
 

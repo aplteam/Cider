@@ -1,6 +1,6 @@
- r←{x}CloseProject projects;list;project;ind;res;list;checks;closed
-⍝ Breaks the Link between a project and its folder on disk, and potentially execute a check functon afterwards.
-⍝ In case ⍵ is empty ALL projects are closed.
+ r←{performChecks}CloseProject projects;list;project;ind;res;list;closed;buff
+⍝ Breaks the Link between a project and its folder on disk, and potentially executes a check functon afterwards.
+⍝ In case ⍵ is empty, ALL projects are closed.
 ⍝ `projects` may be one of:
 ⍝ 1. Empty vector (=close all)
 ⍝ 2. One or more project names like `#.Foo`
@@ -12,19 +12,8 @@
 ⍝ A 0 as left argument would therefore prevent checks from being performed.
 ⍝ Returns the number of projects closed.
  r←0
- checks←1
- :If 0=⎕NC'x'
-     list←ListOpenProjects 1
- :Else
-     :If 3=|≡x
-         (list checks)←{⍵[⍒{' '=⊃1↑0⍴⊃⍵}¨⍵]}x
-     :ElseIf ' '=1↑0⍴⊃x
-         list←x
-     :Else
-         checks←x
-         list←ListOpenProjects 1
-     :EndIf
- :EndIf
+ performChecks←{0<⎕NC ⍵:⍎⍵ ⋄ 1}'performChecks'
+ list←ListOpenProjects 1
  :If 0<≢list
      :If 0=≢projects
          res←{⎕SE.Link.Break ⍵}¨list
@@ -35,6 +24,11 @@
          projects←⊆projects
          :For project :In projects
              project←⍕project
+             :If (∧/~'/\'∊project)∧~(1⊃project)∊'#⎕'
+                 buff←(({⊃(-+/∧\~'⎕'=⊃¨⍵)↑⍵}⎕NSI),'.'),project
+                 ('Could not identify: ',project)Assert 9=⊃⎕NC buff
+                 project←buff
+             :EndIf
              :If ∧/'[]'∊project
                  ind←list[;4]⍳⊂⎕C project~'[]'
              :Else
@@ -49,7 +43,7 @@
                  closed,←list[ind;2]
              :EndIf
          :EndFor
-         :If checks
+         :If performChecks
              {}CheckForDropboxConflicts¨closed
          :EndIf
      :EndIf

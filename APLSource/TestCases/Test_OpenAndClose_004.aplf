@@ -1,5 +1,5 @@
  R←Test_OpenAndClose_004(stopFlag batchFlag);⎕TRAP;tempDir;list;sourceFolder1;projectFolder1;projectFolder2;sourceFolder2;aliase;rc;res;buff;msg;projectFolder3;sourceFolder3;ref
-⍝ Opens three (new) projects and then close both of them in one go, one by alias and one by path. Uses `DropAlias`.
+⍝ Opens 3 (new) projects and then closes 2 of them, 1 by alias and 1 by path. Uses `DropAlias`.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
