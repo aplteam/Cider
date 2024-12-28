@@ -533,7 +533,7 @@ All parameters are optional except `folder`.
     !!! warning "Setting this flag has implications for how Cider deals with Tatin packages."
 <!-- 
 , see there. 
-FIXME Where? What implications?
+FIXME Explain.
  -->
 
 `noPkgLoad`
