@@ -32,8 +32,8 @@ code {
 */
 /* Custom colors */
 :root {
-	--md-primary-fg-color: rgba(0,59,92,.7); /*Midnight*/
-	--md-accent-fg-color: rgba(256,106,19,1); /*Retina Searing Orange*/
+	--md-primary-fg-color: rgb(0,77,118,141); /*rgba(0,59,92,.7) Midnight*/
+	--md-accent-fg-color: rgb(256,106,19); /*Retina Searing Orange*/
 	--md-code-bg-color: var(--md-primary-bg-color);
 
 }
