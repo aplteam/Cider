@@ -3,21 +3,15 @@ repo_url: https://github.com/aplteam/Cider
 repo_name: aplteam/Cider
 
 nav:
-  - Revised:
-    - About Cider: index.md
-    - Get started: get-started.md
-    - User commands: user-commands.md
-    - Open project: open-project.md
-    - API functions: api.md
-    - Configuration: configuration.md
-    - Troubleshooting: troubleshooting.md
-    - Release notes: release-notes.md
-    - Contributing: contributing.md
-  - Original:
-    - User Guide: original-user-guide.md
-    - API Reference: api-reference.md
-    - Release notes: original-release-notes.md
-    - Contributing: original-contributing.md
+  - About Cider: index.md
+  - Get started: get-started.md
+  - User commands: user-commands.md
+  - Open project: open-project.md
+  - API functions: api.md
+  - Configuration: configuration.md
+  - Troubleshooting: troubleshooting.md
+  - Release notes: release-notes.md
+  - Contributing: contributing.md
 
 theme:
   custom_dir: overrides
@@ -33,7 +27,7 @@ theme:
     - navigation.instant
     - navigation.path
     - navigation.sections
-    - navigation.tabs
+    # - navigation.tabs
     - navigation.tracking
   palette:
     primary: custom
