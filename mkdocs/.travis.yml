@@ -1,0 +1,34 @@
+language: python
+
+python: 3.8
+
+install:
+  - pip install -r docs/requirements.txt
+
+sudo: false
+
+branches: main
+
+script: true
+
+before_install:
+  - sudo apt update
+  - sudo apt -y install wget xvfb
+  # - sudo apt -y install wget xvfb libasound2
+  # - wget https://github.com/jgraph/drawio-desktop/releases/download/v15.7.3/drawio-amd64-15.7.3.deb
+  # - sudo apt -f install ./drawio-amd64-15.7.3.deb -y
+
+before_deploy:
+  - xvfb-run -a mkdocs build -v
+  - git config user.name 'Stephen Taylor'
+  - git config user.email 'sjt@5jt.com'
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  target_branch: gh-pages
+  script: mkdocs gh-deploy --force
+  on:
+    branch: main
+
+# https://medium.com/@suresh_subbaiah/github-pages-with-mkdocs-fcac79e74218
