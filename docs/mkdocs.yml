@@ -2,6 +2,8 @@ site_name: Cider User Guide
 repo_url: https://github.com/aplteam/Cider
 repo_name: aplteam/Cider
 
+docs_dir: source
+
 nav:
   - About Cider: index.md
   - Get started: get-started.md
