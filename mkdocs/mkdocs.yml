@@ -53,6 +53,7 @@ extra_javascript:
 plugins:
   # - privacy
   - search
+  - git-revision-date
   # - macros
   # - monorepo
   # - caption:
