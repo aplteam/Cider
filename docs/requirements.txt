@@ -2,3 +2,4 @@ mkdocs
 mkdocs-git-revision-date-plugin
 mkdocs-material
 mkdocs-material-extensions
+markdown-tables-extended
