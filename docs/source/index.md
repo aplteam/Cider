@@ -4,7 +4,7 @@ description: Cider is a project manager for Dyalog APL authors who make software
 keywords: api, apl, cider, dropbox, dyalog, git, link, nuget, source, tatin
 ---
 
-# :dyalog-cider-logo: About Cider
+# About Cider
 
 !!! abstract "Cider is a project manager for authors who make APL software for others to use."
 

@@ -18,9 +18,9 @@ nav:
 theme:
   custom_dir: overrides
   favicon: 'img/cider-logo.png'
-  # logo: 'img/dyalog-white.svg'
-  icon:
-    logo: dyalog/cider-logo
+  logo: 'img/cider-logo.svg'
+  # icon:
+  #   logo: dyalog/cider-logo
   name: material
   font:
       text: Be Vietnam Pro
