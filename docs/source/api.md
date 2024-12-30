@@ -129,14 +129,16 @@ Not found: boobly-boo
 
 ## :fontawesome-solid-code: Close project
 
-r←{x} CloseProject projects
+r←{performChecks} CloseProject projects
 {: .syntax}
 
 Where 
 
 <!-- -   `x` (optional) is a list of projects and/or a flag -->
--   `x` (optional) is whether to check for Dropbox conflicts (default is 1)
--   `projects` is one or more open projects
+-   `performChecks` (optional) is whether to check for Dropbox conflicts (default is 1)
+-   `projects` is 
+    -   one or more open projects
+    -   an empty vector (all open projects)
 
 Cider closes the projects (unlinks the source files) and returns the number of projects closed.
 
