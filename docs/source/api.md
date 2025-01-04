@@ -6,7 +6,7 @@ keywords: api, apl, cider, dyalog, link, nuget, parameter, source, tatin
 
 # API functions
 
-!!! abstract "Cider’s API lets you call it from your own code"
+!!! abstract "With the Cider API you can write DevOps scripts in APL."
 
 The API functions are similar to the [user-commands](user-commands.md), but not identical.
 Not all have equivalent user commands.
@@ -35,7 +35,7 @@ The API is exposed in `⎕SE.Cider` so, for example, call `AddAlias` as `⎕SE.C
 
     The Cider code package is loaded into `⎕SE._Cider`, but the API is exposed via `⎕SE.Cider`. 
 
-    Do not call functions in `⎕SE.Cider_`. 
+    Do not call functions in `⎕SE._Cider`. 
 
 
 ---
