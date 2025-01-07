@@ -42,8 +42,7 @@ The API is exposed in `⎕SE.Cider` so, for example, call `AddAlias` as `⎕SE.C
 
 ## :fontawesome-solid-code: Add alias
 
-{r}←AddAlias(projectpath alias)
-{: .syntax}
+    {r}←AddAlias(projectpath alias)
 
 Where
 
@@ -58,8 +57,7 @@ If the alias is already in use Cider asks you to confirm the change.
 
 ## :fontawesome-solid-code: Add NuGet dependencies
 
-list←AddNuGetDependencies(packages project)
-{: .syntax}
+    list←AddNuGetDependencies(packages project)
 
 Where
 
@@ -82,8 +80,7 @@ Specify `packages` as either a list of strings or a comma-separated string.
 
 ## :fontawesome-solid-code: Add Tatin dependencies
 
-r←AddTatinDependencies(packages project dev)
-{: .syntax}
+    r←AddTatinDependencies(packages project dev)
 
 Where
 
@@ -129,8 +126,7 @@ Not found: boobly-boo
 
 ## :fontawesome-solid-code: Close project
 
-r←{performChecks} CloseProject projects
-{: .syntax}
+    r←{performChecks} CloseProject projects
 
 Where 
 
@@ -172,8 +168,7 @@ Example: close three projects without checking for Dropbox conflicts.
 
 ## :fontawesome-solid-code: Create `CreateProject` parms
 
-parms←{parms} CreateCreateProjectParms folder
-{: .syntax}
+    parms←{parms} CreateCreateProjectParms folder
 
 Where
 
@@ -195,8 +190,7 @@ Defaults are overwritten by any specified in the `parms` argument.
 
 ## :fontawesome-solid-code: Create Open parms
 
-parms←CreateOpenParms y
-{: .syntax}
+    parms←CreateOpenParms y
 
 Where `y` is either an empty vector or a namespace of parameters, returns a namespace of parameters required by the `OpenProject` function. 
 
@@ -221,8 +215,7 @@ Parameters in `y` overwrite the defaults, which are:
 
 ## :fontawesome-solid-code: Create project
 
-r←CreateProject parms
-{: .syntax}
+    r←CreateProject parms
 
 Where `parms` is a namespace of parameter values, typically the result of [`CreateCreateProjectParms`](#create-createproject-parms), Cider creates a project.
 
@@ -232,16 +225,14 @@ Where `parms` is a namespace of parameter values, typically the result of [`Crea
 
 ## :fontawesome-solid-code: Drop alias
 
-{flag}←DropAlias alias
-{: .syntax}
+    {flag}←DropAlias alias
 
 Where `alias` is a project alias, Cider removes it from the file named by `GetCiderAliasFilename` and returns a flag indicating success.
 
 
 ## :fontawesome-solid-code: Get alias file content
 
-r←{filename} GetCiderAliasFileContent dummy
-{: .syntax}
+    r←{filename} GetCiderAliasFileContent dummy
 
 Cider ignores `dummy` and returns as a matrix of strings the contents of the file named by `GetCiderAliasFilename`.
 
@@ -262,8 +253,7 @@ If the file is empty the result has zero rows.
 
 ## :fontawesome-solid-code: Get alias filename
 
-filename←GetCiderAliasFilename
-{: .syntax}
+    filename←GetCiderAliasFilename
 
 Returns the path to the file used to record alias names and their paths.
 
@@ -271,8 +261,7 @@ Returns the path to the file used to record alias names and their paths.
 
 ## :fontawesome-solid-code: Get global config file content
 
-parms←GetCiderGlobalConfigFileContent
-{: .syntax}
+    parms←GetCiderGlobalConfigFileContent
 
 Cider returns the [global config](configuration.md#global) – if found – as a parameter namespace; otherwise the result is `⍬`.
 
@@ -282,16 +271,14 @@ Cider returns the [global config](configuration.md#global) – if found – as a
 
 ## :fontawesome-solid-code: Get global config filename
 
-path←GetCiderGlobalConfigFilename
-{: .syntax}
+    path←GetCiderGlobalConfigFilename
 
 Returns the path to Cider’s global config file.
 
 
 ## :fontawesome-solid-code: Get global config home folder
 
-path←GetCiderGlobalConfigHomeFolder
-{: .syntax}
+    path←GetCiderGlobalConfigHomeFolder
 
 Returns the path to the parent folder of Cider’s global config file.
 
@@ -301,8 +288,7 @@ On Windows, this is typically `C:/Users/<⎕AN>/.cider/config.json`
 
 ## :fontawesome-solid-code: Get MyUCMDs folder
 
-path←GetMyUCMDsFolder
-{: .syntax}
+    path←GetMyUCMDsFolder
 
 Returns the path to the `MyUCMDs/` folder.
 
@@ -314,8 +300,7 @@ Returns the path to the `MyUCMDs/` folder.
 
 ## :fontawesome-solid-code: Get NuGet dependencies
 
-r←name GetNuGetDependencies config
-{: .syntax}
+    r←name GetNuGetDependencies config
 
 Where 
 
@@ -333,8 +318,7 @@ The `config` argument is typically derived from a project’s configuration file
 
 ## :fontawesome-solid-code: Get Program Files folder
 
-path←{current}GetProgramFilesFolder suffix
-{: .syntax}
+    path←{current}GetProgramFilesFolder suffix
 
 Where
 
@@ -361,8 +345,7 @@ C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files
 
 ## :fontawesome-solid-code: Get TatinD dependencies
 
-r←name GetTatinDependencies config
-{: .syntax}
+    r←name GetTatinDependencies config
 
 Where
 
@@ -377,24 +360,21 @@ The `config` argument is typically derived from the project config.
 
 ## :fontawesome-solid-code: Has DotNet
 
-flag←HasDotNet
-{: .syntax}
+    flag←HasDotNet
 
 Result indicates whether .NET Core or .NET is available and the bridge DLL was successfully loaded.
 
 
 ## :fontawesome-solid-code: List NuGet dependencies
 
-r←ListNuGetDependencies projectPath
-{: .syntax}
+    r←ListNuGetDependencies projectPath
 
 Where `projectPath` is a project path, returns a matrix of names and versions of its NuGet dependencies.
 
 
 ## :fontawesome-solid-code: List open projects
 
-r←ListOpenProjects verbose
-{: .syntax}
+    r←ListOpenProjects verbose
 
 Where `verbose` is a flag, returns the open projects as a matrix of 2 or 4 columns:
 
@@ -417,8 +397,7 @@ Where `verbose` is a flag, returns the open projects as a matrix of 2 or 4 colum
 
 ## :fontawesome-solid-code: List Tatin dependencies
 
-r←ListTatinDependencies projectpath
-{: .syntax}
+    r←ListTatinDependencies projectpath
 
 Where `projectpath` is a project path, returns as a 5-column matrix the dependencies installed in the Tatin installation folders.
 
@@ -454,8 +433,7 @@ Where `projectpath` is a project path, returns as a 5-column matrix the dependen
 
 ## :fontawesome-solid-code: Open project
 
-(flag log)←OpenProject y
-{: .syntax}
+    (flag log)←OpenProject y
 
 Where `y` is either
 
@@ -579,8 +557,7 @@ If `y` is a parameter space, all parameters are optional except `folder`.
 
 ## :fontawesome-solid-code: Project config
 
-{r}←ProjectConfig projectpath
-{: .syntax}
+    {r}←ProjectConfig projectpath
 
 Where `projectpath` is a project path, Cider displays the project config for editing.
 
@@ -589,8 +566,7 @@ Asks your permission before writing changes back to file, and performs checks be
 
 ## :fontawesome-solid-code: Read project config file
 
-config←ReadProjectConfigFile projectpath
-{: .syntax}
+    config←ReadProjectConfigFile projectpath
 
 Where `projectpath` is a project path, Cider returns its project config as a parameter namespace.
 
@@ -604,8 +580,7 @@ __Side effect__ If the function does not find the sub-keys `dependency.tatin` an
 
 ## :fontawesome-solid-code: Write project config file
 
-{r}←config WriteProjectConfigFile project
-{: .syntax}
+    {r}←config WriteProjectConfigFile project
 
 Where 
 
@@ -619,8 +594,7 @@ The path may or may not terminate in the filename `cider.config`.
 
 ## :fontawesome-solid-code: Version
 
-r←Version
-{: .syntax}
+    r←Version
 
 Returns a string with major and minor versions, patch number and timestamp, e.g.
 

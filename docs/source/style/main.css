@@ -32,8 +32,9 @@ code {
 */
 /* Custom colors */
 :root {
-	--md-primary-fg-color: rgb(0,77,118,141); /*rgba(0,59,92,.7) Midnight*/
+	--md-primary-fg-color: rgb(0,59,92); /* Midnight*/
 	--md-accent-fg-color: rgb(256,106,19); /*Retina Searing Orange*/
+	--md-syntax-fg-color: rgb(81,18,32); /*Dragonfruit x .4*/
 	--md-code-bg-color: var(--md-primary-bg-color);
 
 }
@@ -66,6 +67,8 @@ pre + pre > code, hr + pre > code {
 }
 /*no bg for inline code*/
 .md-typeset details summary code,
+.md-typeset dd code,
+.md-typeset dt code,
 .md-typeset h1 code,
 .md-typeset h2 code,
 .md-typeset h3 code,
@@ -80,16 +83,6 @@ pre + pre > code, hr + pre > code {
 }
 .md-typeset a {
 	border-bottom: 1px dashed rgba(0,0,0,.3);
-}
-/* Syntax displays */
-.syntax {
-    color: var(--md-code-fg-color);
-    font-size: 1rem;
-    font-weight: bold;
-    padding: .7720588235em 1.1764705882em;
-    padding-bottom: 1em!important;
-    font-family: APL;
-    line-height: 1.4;
 }
 
 .typewriter {

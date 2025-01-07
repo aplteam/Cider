@@ -38,8 +38,8 @@ theme:
 extra:
   version_maj: 0
   version_majmin: 0.44
-  version:
-    provider: mike
+  # version:
+  #   provider: mike
 
 
 extra_css:
