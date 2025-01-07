@@ -7,9 +7,9 @@
 ⍝ 3. One or more alias names like `[my-alias]`
 ⍝ 4. One or more paths of currently open projects
 ⍝ 5. A mixture of 2, 3 and 4
-⍝ `x` can be a Boolean that defaults to 1, meaning "perform checks, if any"; see "CheckForDropboxConflicts" as
-⍝ an example.
-⍝ A 0 as left argument would therefore prevent checks from being performed.
+⍝ `performChecks` can be a Boolean that defaults to 1, meaning "perform checks, if any".
+⍝ See "CheckForDropboxConflicts" as an example.
+⍝ A 0 as left argument would therefore prevent such checks from being performed.\\
 ⍝ Returns the number of projects closed.
  r←0
  performChecks←{0<⎕NC ⍵:⍎⍵ ⋄ 1}'performChecks'
@@ -21,7 +21,7 @@
      :Else
          closed←''
          list[;2]←F.NormalizePath list[;2]
-         projects←⊆projects
+         projects←,⊆projects
          :For project :In projects
              project←⍕project
              :If ∧/'[]'∊project
