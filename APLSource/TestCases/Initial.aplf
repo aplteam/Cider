@@ -1,5 +1,6 @@
  Initial ps
  ∆LINK_NOTIFY_WAS←⎕SE.Link.NOTIFY
+ ∆IsDotNetAvailable←IsDotNetAvailable
  ⎕SE.Link.NOTIFY←1
  :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'
      ∆QSE_CIDER_DEVELOPMENT←⎕SE.Cider.DEVELOPMENT

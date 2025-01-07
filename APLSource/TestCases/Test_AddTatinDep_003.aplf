@@ -7,7 +7,7 @@
  folder←∆GetTestPath⊃⎕SI
  tempDir←∆GetFolderInTempDir⊃⎕SI
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
- alias←'MyAliias_',⊃⎕SI
+ alias←'MyAlias_',⊃⎕SI
  res←⎕SE.Cider.AddAlias tempDir alias
  Assert 0=≢res
 
