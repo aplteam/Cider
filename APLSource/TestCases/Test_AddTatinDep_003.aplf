@@ -1,5 +1,5 @@
- R←Test_AddTatinDep_001(stopFlag batchFlag);⎕TRAP;folder;tempDir;parms;log;res;list;success;configfile;config
-⍝ Exercise AddTatinDependencies in its most simple form: single package from https://tatin.dev
+ R←Test_AddTatinDep_003(stopFlag batchFlag);⎕TRAP;folder;tempDir;parms;log;res;list;success;configfile;config;alias
+⍝ Exercise AddTatinDependencies and add a package
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -7,6 +7,9 @@
  folder←∆GetTestPath⊃⎕SI
  tempDir←∆GetFolderInTempDir⊃⎕SI
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
+ alias←'MyAliias_',⊃⎕SI
+ res←⎕SE.Cider.AddAlias tempDir alias
+ Assert 0=≢res
 
  configfile←tempDir,'/cider.config'
  config←##.Cider.Get_JSON5 configfile
@@ -23,7 +26,7 @@
  →T.GoToTidyUp~success
  →T.GoToTidyUp∨/'ERROR'⍷log
 
- list←##.Cider.AddTatinDependencies'https://tatin.dev/APLTreeUtils2'tempDir 0
+ list←##.Cider.AddTatinDependencies'https://tatin.dev/APLTreeUtils2'('[',alias,']')0
  →T.GoToTidyUp 1≠≢list
 
  res←(~parms.batch)##.Cider.CloseProject tempDir
@@ -45,4 +48,5 @@
  ##.Cider.C.Cleanup
  {}∆LINK'Break' '#.TEMP'
  FilesAndDirs.RmDir tempDir,'/..'
+ ⎕SE.Cider.DropAlias alias
 ⍝Done

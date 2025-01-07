@@ -1,5 +1,5 @@
- R←Test_AddTatinDep_001(stopFlag batchFlag);⎕TRAP;folder;tempDir;parms;log;res;list;success;configfile;config
-⍝ Exercise AddTatinDependencies in its most simple form: single package from https://tatin.dev
+ R←Test_AddTatinDep_002(stopFlag batchFlag);⎕TRAP;folder;tempDir;parms;log;res;list;success;configfile;config
+⍝ Exercise AddTatinDependencies with alias names: two packages, both with a registry alias
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -23,8 +23,8 @@
  →T.GoToTidyUp~success
  →T.GoToTidyUp∨/'ERROR'⍷log
 
- list←##.Cider.AddTatinDependencies'https://tatin.dev/APLTreeUtils2'tempDir 0
- →T.GoToTidyUp 1≠≢list
+ list←##.Cider.AddTatinDependencies'[tatin]APLTreeUtils2,[tatin]FilesAndDirs'tempDir 0
+ →T.GoToTidyUp 2≠≢list
 
  res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
@@ -35,6 +35,7 @@
  →T.GoToTidyUp∨/'ERROR'⍷log
 
  {}#.TEMP.APLTreeUtils2.GetOperatingSystem ⍬
+ {}#.TEMP.FilesAndDirs.PWD
 
  res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1
