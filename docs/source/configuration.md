@@ -338,7 +338,7 @@ The `watch` setting is ignored when a project is opened with the `import` option
 
 ### `SYSVARS`
 
-This section lets you to set system variables. 
+This section lets set system variables. 
 `⎕IO` and `⎕ML` should always be set explicitly.
 (They default to 1.)
 

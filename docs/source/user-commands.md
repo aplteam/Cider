@@ -42,7 +42,7 @@ If a project is open, you can identify it by its **project space**.
 
 	]CIDER.ListTatinDependencies #.bar
 
-!!! warning "Square brackets in the command sytax"
+!!! warning "Square brackets in the command syntax"
 
 	Square brackets in the command sytaxes shown on this page indicate **optional command arguments**, not aliases.
 	For example, the `ListTatinDependencies` command has syntax
