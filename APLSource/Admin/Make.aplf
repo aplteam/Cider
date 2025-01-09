@@ -27,6 +27,7 @@
      M.RecreateFolder path
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
+     parms.projectSpace←'#.Cider'
      :If ⍬≢version
          parms.version←version
      :EndIf
