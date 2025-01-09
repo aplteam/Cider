@@ -40,6 +40,7 @@
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
      :If 0=batch
          ⎕←'   ',4↓0 #.Cider.Admin.InstallCider 1
+         ⎕←'Cider in ⎕SE is out of date, restart APL'
      :EndIf
  :EndIf
  ⍝Done

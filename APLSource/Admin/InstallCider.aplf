@@ -1,4 +1,4 @@
-  r←{batch}InstallCider flag;C;aplVersion;selectFlag;os;installFolder;ind;ZIPs;zipFilename;q;res;if1;if2
+ r←{batch}InstallCider flag;C;aplVersion;selectFlag;os;installFolder;ind;ZIPs;zipFilename;q;res;if1;if2
 ⍝ Installs Cider into the appropriate folder, depending on the current OS.
 ⍝ The user will be asked whether to install into the version specific folder or agnostic folder.
 ⍝ `flag` is insurance against accidental calls.
@@ -48,7 +48,7 @@
      zipFilename←⊃ZIPs
      :If batch
          q←'Install:',(⎕UCS 13),('  ',zipFilename),(⎕UCS 13),'into:',(⎕UCS 13),'  ',installFolder,' ?'
-     :OrIf C.CommTools.YesOrNo q
+     :OrIf 1 C.CommTools.YesOrNo q
          {}##.Cider.FilesAndDirs.RmDir installFolder
          3 ⎕MKDIR installFolder
          res←⎕SE.Tatin.InstallPackages(⊃ZIPs)installFolder
