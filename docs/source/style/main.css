@@ -32,7 +32,7 @@ code {
 */
 /* Custom colors */
 :root {
-	--md-primary-fg-color: rgb(0,59,92); /* Midnight*/
+	--md-primary-fg-color: rgb(0,89,138); /* Midnight × 1.5*/
 	--md-accent-fg-color: rgb(256,106,19); /*Retina Searing Orange*/
 	--md-syntax-fg-color: rgb(81,18,32); /*Dragonfruit x .4*/
 	--md-code-bg-color: var(--md-primary-bg-color);
@@ -82,7 +82,7 @@ pre + pre > code, hr + pre > code {
 	font-size: inherit;
 }
 .md-typeset a {
-	border-bottom: 1px dashed rgba(0,0,0,.3);
+	border-bottom: 2px dotted rgba(0,0,0,.3);
 }
 
 .typewriter {
