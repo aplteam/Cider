@@ -2,12 +2,13 @@
   packageID: [
     "dyalog-NuGet-0.2.2",
     "aplteam-FilesAndDirs-5.8.1",
-    "aplteam-CommTools-1.8.2",
-    "aplteam-APLTreeUtils2-1.4.0",
-    "aplteam-APLGit2-0.20.0",
+    "aplteam-CommTools-2.0.0",
+    "aplteam-APLTreeUtils2-1.4.1",
+    "aplteam-APLGit2-0.21.0",
     "dyalog-HttpCommand-5.8.0",
     "aplteam-OS-3.1.1",
-    "aplteam-GitHubAPIv3-1.4.0",
+    "aplteam-GitHubAPIv3-1.5.0",
+    "aplteam-CommTools-1.8.2",
   ],
   principal: [
     1,
@@ -18,8 +19,10 @@
     0,
     0,
     0,
+    0,
   ],
   url: [
+    "https://tatin.dev/",
     "https://tatin.dev/",
     "https://tatin.dev/",
     "https://tatin.dev/",

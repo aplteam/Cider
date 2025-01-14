@@ -9,7 +9,7 @@
  wasDir←FilesAndDirs.Cd tempDir
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'Sure you want to create the project' 'Y'
+ ref.AddAutomation'YesOrNo' 'SureCreateProj@' 'Y'
  (rc msg res)←∆UCMD'CreateProject . -noEdit -batch -ignoreUserExec'
  Assert rc=0
  list←##.Cider.ListOpenProjects 0

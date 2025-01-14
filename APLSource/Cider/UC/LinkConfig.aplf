@@ -1,0 +1,42 @@
+ r←LinkConfig Args;folder;path;editFlag;deleteFlag;cfg;linkCfgPath;json;ref
+ path←{0≡⍵:'' ⋄ ⍵}Args._1
+ editFlag←Args.edit
+ deleteFlag←Args.delete
+ '-edit and -delete are mutually exclusive'Assert(deleteFlag+editFlag)∊0 1
+ :If 0=≢path←GetProjectPath path
+     →0,≢⎕←'Cancelled by user'
+ :Else
+     cfg←P.##.Get_JSON5 path,'/cider.config'
+     linkCfgPath←##.FilesAndDirs.NormalizePath path,'/',cfg.CIDER.source,'/.linkconfig'
+     :If ⎕NEXISTS linkCfgPath
+         json←⊃⎕NGET linkCfgPath 1
+         :If editFlag
+             ref←⎕NS''
+             ref.linkconfig←json
+             ref.⎕ED'linkconfig'
+             :If 0=≢(∊ref.linkconfig)~' '
+                 r←'Cancelled by user'
+             :ElseIf json≢ref.linkconfig
+                 :If 0=1 ##.CommTools.YesOrNo'SaveLinkConfigChanges@Save ',linkCfgPath,'?'
+                     r←'Cancelled by user' ⋄ →0
+                 :Else
+                     (⊂ref.linkconfig)⎕NPUT linkCfgPath 1
+                     r←'Changes got saved, but are not reflected in the workspace!'
+                 :EndIf
+             :Else
+                 r←'Nothing got changed'
+             :EndIf
+         :ElseIf deleteFlag
+             :If 0=1 ##.CommTools.YesOrNo linkCfgPath{'DeleteLinkConfig@Sure you want to delete',⍵,⍺,' ?'}⎕UCS 13
+                 r←'Cancelled by user' ⋄ →0
+             :Else
+                 ⎕NDELETE linkCfgPath
+                 r←'Deleted: ',linkCfgPath
+             :EndIf
+         :Else
+             r←⍪(⊂'*** Link config file in ',linkCfgPath),json
+         :EndIf
+     :Else
+         r←'Not found: ',linkCfgPath
+     :EndIf
+ :EndIf

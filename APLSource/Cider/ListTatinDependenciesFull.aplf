@@ -1,8 +1,13 @@
- r←ListTatinDependenciesFull tatinFolder;dependencyFilename
+ r←ListTatinDependenciesFull tatinFolder;dependencyFilename;buff;list
 ⍝ `y` must point to a project, either as alias ([]) or as a project folder.
 ⍝ The Tatin dependency folders are established from the project config file.
  ('"',tatinFolder,'" does not point to an existing folder')Assert ⎕NEXISTS tatinFolder
  dependencyFilename←tatinFolder,'/apl-dependencies.txt'
  ('"',dependencyFilename,'" does not point to existing folder')Assert F.Exists dependencyFilename
- r←↑ListTatinDependenciesFull_ dependencyFilename
+ :If 0<≢r←↑ListTatinDependenciesFull_ dependencyFilename
+     list←(⊂tatinFolder,'/'),¨r[;2],¨⊂'/apl-dependencies.txt'
+     buff←ListTatinDependenciesFull_¨list
+     r←(↓r){0=≢r←⍵:r ⋄ r[;1]←1+r[;1]+⊃⍺ ⋄ ⍺⍪r}¨↑¨buff
+     r←⊃⍪/(0<≢¨r)/r
+ :EndIf
 ⍝Done

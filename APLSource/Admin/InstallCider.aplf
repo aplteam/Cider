@@ -48,7 +48,7 @@
      zipFilename←⊃ZIPs
      :If batch
          q←'Install:',(⎕UCS 13),('  ',zipFilename),(⎕UCS 13),'into:',(⎕UCS 13),'  ',installFolder,' ?'
-     :OrIf C.CommTools.YesOrNo q
+     :OrIf 1 C.CommTools.YesOrNo q
          {}##.Cider.FilesAndDirs.RmDir installFolder
          3 ⎕MKDIR installFolder
          res←⎕SE.Tatin.InstallPackages(⊃ZIPs)installFolder

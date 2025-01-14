@@ -1,0 +1,12 @@
+(
+ '# APGit2'
+ ''
+ '`APLGit2` comes with a set of user commands and API functions designed to support the APL programmer '
+ 'while working on projects managed by Git.'
+ '                                                                '
+ 'Usually API functions do not communicate with the user; that is left to the user commands. '
+ 'However, `APLGit2` is in this respect an exceptions.'
+ ''
+ 'In case clarification is required or a dangerous command is carried out, `APLGit2` might well communicate '
+ 'with the user from within API functions. '
+)

@@ -2,23 +2,24 @@
 ⍝ With version 0.34.0 Cider removes all Link settings that are defaults anyway from the Cider config file.
 ⍝ That's what this function is doing. This implies that as a side effect it writes the configuration
 ⍝ back to file.
- linkDefaults←{⍵.{⍵,[1.5]⍎¨⍵}' '~⍨¨↓⍵.⎕NL 2}⎕SE.Link.U.DefaultOpts ⎕NS''
- list←' '~⍨¨↓cfg.LINK.⎕NL 2
- flag←0
- :For i :In ⍳≢list
-     name←i⊃list
-     ind←linkDefaults[;1]⍳⊂name
-     :If ind≤≢linkDefaults
-         value←cfg.LINK⍎name
-         :If value≡2⊃linkDefaults[ind;]
-         :OrIf value≡↓2⊃linkDefaults[ind;]
-             cfg.LINK.⎕EX name
-             flag←1
+ :If 9=cfg.⎕NC'LINK'
+     linkDefaults←{⍵.{⍵,[1.5]⍎¨⍵}' '~⍨¨↓⍵.⎕NL 2}⎕SE.Link.U.DefaultOpts ⎕NS''
+     list←' '~⍨¨↓cfg.LINK.⎕NL 2
+     flag←0
+     :For i :In ⍳≢list
+         name←i⊃list
+         ind←linkDefaults[;1]⍳⊂name
+         :If ind≤≢linkDefaults
+             value←cfg.LINK⍎name
+             :If value≡2⊃linkDefaults[ind;]
+             :OrIf value≡↓2⊃linkDefaults[ind;]
+                 cfg.LINK.⎕EX name
+                 flag←1
+             :EndIf
          :EndIf
+     :EndFor
+     :If flag
+         json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣cfg
+         (⊂json)⎕NPUT cfgFilename 1
      :EndIf
- :EndFor
- :If flag
-     json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣cfg
-     (⊂json)⎕NPUT cfgFilename 1
  :EndIf
-⍝Done

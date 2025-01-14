@@ -13,8 +13,8 @@
  parms.watch←'ns'
  parms.ignoreUserExec←1
  parms.batch←1
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
- ##.Cider.C.YesOrNo_Answers⍪←1 2⍴'ReinstallBecauseOfInconsistency@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ReinstallBecauseOfInconsistency@' 'n'
 
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success

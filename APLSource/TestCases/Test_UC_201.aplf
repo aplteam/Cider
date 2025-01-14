@@ -1,0 +1,27 @@
+ R←Test_UC_201(stopFlag batchFlag);⎕TRAP;rc;msg;res;stop;ref;tempDir;json;ns
+⍝ Let the user edit a Link config file
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If ~batchFlag
+     CommTools.Pause'This test needs you: when an edit window pops up, change "CiderTest" from 1 to 2, then close the window.'
+ :EndIf
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY ##.CiderConfig.HOME,'/TestData/Boo-Project'
+
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'YesOrNo' 'SaveLinkConfigChanges@' 'y'
+
+ stop←0
+ (rc msg res)←stop ∆UCMD'LinkConfig  ',tempDir,'/Boo-Project -edit'
+ Assert rc=0
+ →T.GoToTidyUp'Changes got saved, but are not reflected in the workspace!'≢res
+ json←⊃⎕NGET tempDir,'/Boo-Project/APLSource/.linkconfig'
+ ns←⎕JSON⍠('Dialect' 'JSON5')⊢json
+ →T.GoToTidyUp 2≠ns.CiderTest
+
+∆TidyUp:
+ ref.Cleanup
+ {}FilesAndDirs.RmDirByForce tempDir
+⍝Done

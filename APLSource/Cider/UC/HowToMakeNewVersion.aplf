@@ -1,0 +1,12 @@
+ r←HowToMakeNewVersion Args;config;path;list;index;home
+ r←''
+ :If 0=≢path←GetProjectPath Args._1
+     →0,≢⎕←'Cancelled by user'
+ :Else
+     home←(P.ListOpenProjects 0){⊃⍺[⍺[;2]⍳⊂⍵;1]}path
+     :If 2≠⎕NC home,'.ToDo'
+     :OrIf 0=≢(∊home⍎'ToDo')~' '
+     :OrIf 1 P.##.C.YesOrNo'IgnoreToDo@There is a non-empty variable "ToDo" in <',home,'> - carry on anyway?'
+         r←P.RunMake path
+     :EndIf
+ :EndIf

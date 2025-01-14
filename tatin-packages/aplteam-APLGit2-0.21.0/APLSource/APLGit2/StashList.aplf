@@ -1,0 +1,13 @@
+ r←StashList y;rc;more;path;⎕TRAP;space
+⍝ List the stash entries that you currently have. Each stash entry is listed with its name (e.g. stash@{0} is the latest entry,
+⍝ stash@{1} is the one before, etc.), the name of the branch that was current when the entry was made, and a short description
+⍝ of the commit the entry was based on.\\
+⍝ `y` must be one of:
+⍝   * Fully qualfied name of a namespace that is an opened Cider project
+⍝   * Fully qualified path to a Git-managed project
+ ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
+ (space path)←EstablishProject y
+ (rc more r)←path U.RunGitCommand'stash list'
+ more U.Assert 0=rc
+ ((≢'fatal:')↓more)U.Assert'fatal:'{⍺≢(≢⍺)↑⍵}more
+⍝Done

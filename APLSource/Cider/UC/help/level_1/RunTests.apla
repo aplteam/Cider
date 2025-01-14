@@ -1,7 +1,0 @@
-(
- 'Prints the statement to the session that is designed to run the project''s test cases, if any.'
- ''
- 'The optional parameter must be the path to a folder holding a cider.config file (a project).'
- 'In case no path is provided Cider will present all currently opened projects to the user for'
- 'selecting one, except when there is only one project open anyway.'
-)

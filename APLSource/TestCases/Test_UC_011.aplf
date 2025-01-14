@@ -14,7 +14,7 @@
  CommTools.Pause'This test needs you: it will display ',noOf,' HTML files with your default browser'
 
  ref←∆GetRefToCommTools
- ref.Select_Choices←1 2⍴'Select document to be viewed:' 'a'
+ ref.AddAutomation'Select' 'Select document to be viewed:' 'a'
 
  stop←0
  (rc msg res)←stop ∆UCMD'Help'

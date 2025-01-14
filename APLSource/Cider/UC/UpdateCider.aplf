@@ -1,16 +1,23 @@
- r←UpdateCider dummy;allVersions;thisVersion;ind;noOf;targetFolder;tempFolder;res;q;folder
+ r←UpdateCider args;allVersions;thisVersion;ind;noOf;targetFolder;tempFolder;res;q;folder;flag;version;pkg
  r←''
  allVersions←,⎕SE.Tatin.ListVersions'[Tatin]aplteam-Cider'
- thisVersion←'aplteam-Cider-',{⍵↑⍨¯1+⍵⍳'+'}P.Version
- ind←allVersions⍳⊂thisVersion
- noOf←≢allVersions
- :If ind=noOf
-     r←'There is no later version available than ',P.Version ⋄ →0
+ :If 0≢version←args._1
+     ('Is not a valid Cider version: ',version)Assert(⊂version)∊{⍵↑⍨1+-(⌽⍵)⍳'-'}¨allVersions
+     q←'UpdateCider@Are you sure that you want to update Cider ',P.Version,' to version ',version,' ?'
+     pkg←'[tatin]aplteam-Cider-',version
+ :Else
+     thisVersion←'aplteam-Cider-',{⍵↑⍨¯1+⍵⍳'+'}P.Version
+     ind←allVersions⍳⊂thisVersion
+     noOf←≢allVersions
+     :If ind=noOf
+         r←'There is no later version available than ',P.Version ⋄ →0
+     :EndIf
+     q←'UpdateCider@Are you sure that you want to update Cider ',P.Version,' to version ',({1↓⍵/⍨2≤+\⍵='-'}noOf⊃allVersions),' ?'
+     pkg←'[tatin]aplteam-Cider'
  :EndIf
- q←'UpdateCider@Are you sure that you want to update Cider ',P.Version,' to version ',({1↓⍵/⍨2≤+\⍵='-'}noOf⊃allVersions),' ?'
- :If P.##.C.YesOrNo q
+ :If flag←P.##.C.YesOrNo q
      tempFolder←P.##.F.GetTempSubDir'Cider'
-     res←⎕SE.Tatin.InstallPackages('[tatin]aplteam-Cider')tempFolder
+     res←⎕SE.Tatin.InstallPackages pkg tempFolder
      targetFolder←1 P.GetProgramFilesFolder'/SessionExtensions/CiderTatin/Cider'
      :If 0=⎕NEXISTS targetFolder    ⍝ If there is no version-specific folder...
              ⍝ ... we check for a version-agnostic folder:

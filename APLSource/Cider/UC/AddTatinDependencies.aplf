@@ -5,7 +5,7 @@
  development←0 Args.Switch'development'
  targetNamespace←''Args.Switch'target'
  :If IsAlias projectFolder
-     projectFolder←P.GetFolderFromAlias projectFolder
+     projectFolder←P.##.GetFolderFromAlias2 projectFolder
  :Else
      projectFolder←'GetProjectPathForAddingTatinPkgs@Which project would you like to add Tatin packages to?'GetProjectPath projectFolder
  :EndIf

@@ -1,0 +1,11 @@
+ R←Test_UC_200(stopFlag batchFlag);⎕TRAP;rc;msg;res;stop
+⍝ Print contents of a .linkconfig file to the session
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ stop←0
+ (rc msg res)←stop ∆UCMD'LinkConfig'
+ Assert rc=0
+ →T.PassesIf ∨/'*** Link config file'⍷∊res
+
+⍝Done

@@ -12,7 +12,7 @@ It cooperates with [Tatin](https://github.com/aplteam/Tatin "Link to the Tatin r
 
 Cider requires 
 
-* Dyalog 18.0 Unicode or better 
+* Dyalog 18.2 Unicode or better 
 * Link 3.0.8 or better (part of a standard Dyalog installation from 18.2 onwards)
 * The Tatin package manager (because Cider itself is a Tatin package)
 
@@ -27,6 +27,7 @@ These commands are available:
 * `]Cider.Config`
 * `]Cider.CreateProject`
 * `]Cider.Help`
+* `]Cider.LinkConfig`
 * `]Cider.ListAliases`
 * `]Cider.ListNuGetDependencies`
 * `]Cider.ListOpenProjects`
@@ -35,7 +36,7 @@ These commands are available:
 * `]Cider.OpenProject`
 * `]Cider.ProjectConfig`
 * `]Cider.RunTests`
-* `]UpdateCider`
+* `]Cider.UpdateCider`
 * `]Cider.Version`
 
 ## Documentation
@@ -167,7 +168,11 @@ Allow the user to edit Cider's global config file.
  
 ### `Help`
 
-Offers the user the ability to view selected or all HTML documents with her standard browser.
+Offers the user the ability to view selected or all of the documentation.
+
+### `LinkConfig`
+
+Prints the contents of a `.linkconfig` file to the session. Alternatively, the user may edit or delete the file.
 
 ### `AddNuGetDependencies`
 
@@ -215,3 +220,6 @@ Returns a three-item-vector with "Name", "Version number" and "Version date".
 ### `UpdateCider`
 
 Update Cider in case a later version is available as a package on [https://tatin.dev](https://tatin.dev).
+
+
+

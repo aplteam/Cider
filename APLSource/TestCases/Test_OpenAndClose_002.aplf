@@ -1,5 +1,5 @@
  R←Test_OpenAndClose_002(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;list;rc;ref;res;msg
-⍝ Create and open a project and then close it by path
+⍝ Creates and opens a project and then closes it by path
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

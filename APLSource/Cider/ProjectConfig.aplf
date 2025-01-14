@@ -1,8 +1,10 @@
  {r}←{editFlag}ProjectConfig path;filename;ns;orig;flag;edit;data
 ⍝ Puts the contents of the file cider.config in "path" into the editor.
 ⍝ If `editFlag` is 0 it's running in read-only mode.
-⍝ Returns 1 in case the file was modified and 0 otherwise.
-⍝ If the user deletes the contents of the edit window this is treated as cancellation, and ¯1 is returned.
+⍝ The result depends on `editFlag`
+⍝ * If the user is allowed to edit the configuration (edtFlag←→1) a 1 is returned in case the file was modified and 0 otherwise.
+⍝   If the user deletes the contents of the edit window this is treated as cancellation, and ¯1 is returned.
+⍝ * If editFlag←→0 the configuration is returned as a simple text matrix
  r←0
  editFlag←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'editFlag'
  :If '['∊path
@@ -49,5 +51,5 @@
          :EndIf
      :Until flag
  :Else
-     ns.⎕ED⍠('ReadOnly' 1)⊢'cider_config'
+     r←↑ns.cider_config
  :EndIf

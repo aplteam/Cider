@@ -1,4 +1,4 @@
- r←Test_Misc_016(stopFlag batchFlag);⎕TRAP;b;folder;parms;log;success;msg;rc;res;en;cfg;body;pkgCfg;name;ref;stop
+ r←Test_Misc_016(stopFlag batchFlag);⎕TRAP;b;folder;parms;log;success;msg;rc;res;en;cfg;body;pkgCfg;name;ref;stop;C
 ⍝ Test the "tatinVars" property
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
 
@@ -8,10 +8,11 @@
  FilesAndDirs.MkDir folder,'/APLSource/Tests'
  :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'
  :AndIf 0<⎕SE.Cider.DEVELOPMENT
-     ##.Cider.CommTools.YesOrNo_Answers←1 2⍴'OpenAsWell@' 'n'
+     C←##.Cider.CommTools
  :Else
-     ⎕SE.Cider.##.CommTools.YesOrNo_Answers←1 2⍴'OpenAsWell@' 'n'
+     C←⎕SE.Cider.##.CommTools
  :EndIf
+ C.AddAutomation'YesOrNo' 'OpenAsWell@' 'n'
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject ',folder,' -noEdit -ignoreUserExec'
  msg Assert rc=0
@@ -28,7 +29,6 @@
  parms.batch←1
  parms.ignoreUserExec←1
  parms.folder←folder
- ##.Cider.CommTools.YesOrNo_Answers←1 2⍴'OpenAsWell@' 'n'
  (success log)←##.Cider.OpenProject parms
  ref←⍎'#.',name
  Assert 9=#.⎕NC name

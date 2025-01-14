@@ -1,9 +1,9 @@
- R←Test_UC_047(stopFlag batchFlag);⎕TRAP;res;msg;rc;folder;parms;tempDir;success;log;stop;expected
-⍝ Exercise ]Cider.AddTatinDependencies without loading
+ R←Test_UC_047(stopFlag batchFlag);⎕TRAP;res;msg;rc;folder;parms;tempDir;success;log;stop;expected;alias
+⍝ Exercise ]Cider.AddTatinDependencies without loading; uses a projet alias
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If ~IsDotNetAvailable
+ :If ~∆IsDotNetAvailable
      R←T._NotApplicable ⋄ →0
  :EndIf
 
@@ -11,6 +11,9 @@
  folder←∆GetTestPath⊃⎕SI
  tempDir←∆GetFolderInTempDir⊃⎕SI
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
+ alias←'MyAlias_',⊃⎕SI
+ res←⎕SE.Cider.AddAlias tempDir alias
+ Assert 0=≢res
 
  parms←##.Cider.CreateOpenParms''
  parms.folder←∊⎕NPARTS tempDir
@@ -18,15 +21,15 @@
  parms.batch←1
  parms.ignoreUserExec←1
 
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp∨/'ERROR'⍷log
 
  stop←0
- ##.Cider.C.YesOrNo_Answers←1 2⍴'AddTatinDeps@' 'y'
- ##.Cider.C.YesOrNo_Answers⍪←'LoadTatinDependenciesAfterAdding@' 'n'
- (rc msg res)←stop ∆UCMD'AddTatinDependencies FilesAndDirs,APLTreeUtils2 "',tempDir,'"'
+ ##.Cider.C.AddAutomation'YesOrNo' 'AddTatinDeps@' 'y'
+ ##.Cider.C.AddAutomation'YesOrNo' 'LoadTatinDependenciesAfterAdding@' 'n'
+ (rc msg res)←stop ∆UCMD'AddTatinDependencies FilesAndDirs,APLTreeUtils2 [',alias,']'
  →T.GoToTidyUp rc≠0
  →T.GoToTidyUp 0≠≢msg
  expected←'2 Tatin dependencies added:' 'aplteam-FilesAndDirs-' 'aplteam-APLTreeUtils2-'
@@ -38,4 +41,5 @@
  ##.Cider.C.Cleanup
  {}∆LINK'Break' '#.TEMP'
  FilesAndDirs.RmDir tempDir,'/..'
+ ⎕SE.Cider.DropAlias alias
 ⍝Done

@@ -12,9 +12,9 @@
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'OpenAsWell@' 'y'
- ref.YesOrNo_Answers⍪←'TargetNotEmpty@' 'Y'
- ref.YesOrNo_Answers⍪←'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'OpenAsWell@' 'y'
+ ref.AddAutomation'YesOrNo' 'TargetNotEmpty@' 'Y'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -noEdit -ignoreUserExec'   ⍝ We cannot specify -batch here!
  →T.GoToTidyUp 0<rc

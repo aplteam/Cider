@@ -1,4 +1,4 @@
- r←CloseProject Args;list;bool;row;invalid;noop;report;projectID;ind;noOf;fast
+ r←CloseProject Args;list;bool;row;invalid;noop;report;projectID;ind;noOf;fast;b;buff;b2
  r←''
  report←1
  fast←Args.Switch'fast'
@@ -29,6 +29,12 @@
      ((projectID=',')/projectID)←' '
      projectID←' '(≠⊆⊢)projectID
      projectID←TranslateAlias¨projectID
+     :If ∨/b←{(∧/~'/\'∊⍵)∧~(1⊃⍵)∊'#⎕'}¨projectID
+         buff←(⊂((2++/∧\'⎕'=⊃¨1↓⎕NSI)⊃⎕NSI),'.'),¨b/projectID
+     :AndIf ∨/b2←9=⊃∘⎕NC¨buff
+         ('Could not identify: ',⊃{⍺,',',⍵}/b2/projectID)Assert∧/b2
+         (b/projectID)←buff
+     :EndIf
      :If 0∊invalid←(~∨/¨'/\'∘∊¨projectID)∧~({1 ⎕C ⍵↑⍨¯1+⍵⍳'.'}¨projectID)∊,¨'#' '⎕SE'
          (invalid/projectID)←(⊂'#.'),¨invalid/projectID
      :EndIf
@@ -40,7 +46,7 @@
      :If 1∊invalid
          ('Not an open Cider project: ',⊃{⍺,',',⍵}/invalid/projectID)Assert∧/~invalid
      :EndIf
-     r←+/(⊂(~fast)list)P.CloseProject¨projectID
+     r←+/(~fast)P.CloseProject¨projectID
  :EndIf
  :If 0<≢r
      :If ' '=1↑0⍴∊r

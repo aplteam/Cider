@@ -1,0 +1,13 @@
+(
+ '# StashClear'
+ ''
+ 'Drops all saved stashes from the stash cache.'
+ ''
+ 'If specified, the optional argument must be either a path or a fully qualified namespace name pointing to a Git-managed project.'
+ ''
+ 'If no argument is specified, it attempts to find open Cider project(s). '
+ 'If it finds one, it will act on it.'
+ 'If it finds multiple open Cider projects, it will ask the user which one to act on.'
+ 'If it does not find any open Cider projects it will ask the user whether it should act on the current directory.'
+ 'If the user negates the question an error will be thrown. '
+)

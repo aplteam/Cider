@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If ~IsDotNetAvailable
+ :If ~∆IsDotNetAvailable
      R←T._NotApplicable ⋄ →0
  :EndIf
 
@@ -18,14 +18,14 @@
  parms.batch←1
  parms.ignoreUserExec←1
 
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp∨/'ERROR'⍷log
 
  stop←0
- ##.Cider.C.YesOrNo_Answers←1 2⍴'AddTatinDeps@' 'y'
- ##.Cider.C.YesOrNo_Answers⍪←'LoadTatinDependenciesAfterAdding@' 'y'
+ ##.Cider.C.AddAutomation'YesOrNo' 'AddTatinDeps@' 'y'
+ ##.Cider.C.AddAutomation'YesOrNo' 'LoadTatinDependenciesAfterAdding@' 'y'
  (rc msg res)←stop ∆UCMD'AddTatinDependencies FilesAndDirs,APLTreeUtils2 "',tempDir,'"'
  →T.GoToTidyUp rc≠0
  →T.GoToTidyUp 0≠≢msg

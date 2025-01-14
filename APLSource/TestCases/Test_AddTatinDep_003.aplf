@@ -1,0 +1,52 @@
+ R←Test_AddTatinDep_003(stopFlag batchFlag);⎕TRAP;folder;tempDir;parms;log;res;list;success;configfile;config;alias
+⍝ Exercise AddTatinDependencies and add a package
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
+ alias←'MyAlias_',⊃⎕SI
+ res←⎕SE.Cider.AddAlias tempDir alias
+ Assert 0=≢res
+
+ configfile←tempDir,'/cider.config'
+ config←##.Cider.Get_JSON5 configfile
+ config.CIDER.dependencies.tatin←'tatin-packages'
+ config ##.Cider.Put_JSON5 configfile
+
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ parms←##.Cider.CreateOpenParms''
+ parms.folder←tempDir
+ parms.batch←1
+ parms.ignoreUserExec←1
+
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+
+ list←##.Cider.AddTatinDependencies'https://tatin.dev/APLTreeUtils2'('[',alias,']')0
+ →T.GoToTidyUp 1≠≢list
+
+ res←(~parms.batch)##.Cider.CloseProject tempDir
+ →T.GoToTidyUp res≠1
+
+ #.TEMP.(⎕EX ⎕NL-⍳9)
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+
+ {}#.TEMP.APLTreeUtils2.GetOperatingSystem ⍬
+
+ res←(~parms.batch)##.Cider.CloseProject tempDir
+ →T.GoToTidyUp res≠1
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
+ {}∆LINK'Break' '#.TEMP'
+ FilesAndDirs.RmDir tempDir,'/..'
+ ⎕SE.Cider.DropAlias alias
+⍝Done

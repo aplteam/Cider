@@ -4,14 +4,14 @@
 
     ⎕IO←1 ⋄ ⎕ML←1
 
-    ∇ r←List;c;G ⍝ this function usually returns 1 or more namespaces (here only 1)
+    ∇ r←List;c;G ⍝ this function usually returns 1 or more namespaces (here only 1);⎕TRAP
       :Access Shared Public
       r←⍬
       G←GetRefToAPLGit2 ⍬
       r←G.##.UC.List ⍬
     ∇
 
-    ∇ r←Run(Cmd Args);folder;G;space;ns;noProjectSelected;func
+    ∇ r←Run(Cmd Args);folder;G;space;ns;noProjectSelected;func;list;ind
       :Access Shared Public
       :If 0=⎕SE.⎕NC'APLGit2'
           {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)'⎕SE'
@@ -27,11 +27,32 @@
               (r space folder)←G.##.UC.GetSpaceAndFolder Cmd ns
           :EndIf
       :Else
-          (r space folder)←G.##.UC.GetSpaceAndFolder Cmd Args
+          :If (⊂⎕C Cmd)∊⎕C'AddGitIgnore' 'Add'
+          :AndIf ∨/'/\'∊Args._1
+              folder←Args._1
+              space←''
+          :Else
+              (r space folder)←G.##.UC.GetSpaceAndFolder Cmd Args
+              :If 'stashpush'≡⎕C Cmd
+              :AndIf (,'?')≡,Args._2
+                  :If 0<≢list←1 G.##.Status folder
+                      ind←'SelectForStash@Select what to stash:' 1 G.##.CommTools.Select list
+                      :If 0=≢ind
+                          r←'Cancelled by user' ⋄ →0
+                      :Else
+                          Args._2←list←3↓¨list[ind]
+                      :EndIf
+                  :Else
+                      r←'No changes found you could stash' ⋄ →0
+                  :EndIf
+              :EndIf
+          :EndIf
       :EndIf
-      noProjectSelected←∧/space folder∊''⍬
-      func←G.##.UC⍎Cmd
-      r←func space folder Args
+      :If (⊂⎕C Cmd)∊'setdefaultproject' 'getdefaultproject' 'version'
+      :OrIf ~noProjectSelected←∧/space folder∊''⍬
+          func←G.##.UC⍎Cmd
+          r←func space folder Args
+      :EndIf
     ⍝Done
     ∇
 

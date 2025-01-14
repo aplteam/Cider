@@ -1,3 +1,0 @@
-aplteam-APLTreeUtils2-1.4.0
-aplteam-FilesAndDirs-5.7.1
-aplteam-DotNetZip-2.1.0

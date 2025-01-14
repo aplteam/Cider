@@ -1,6 +1,9 @@
  MakeZipForDyalog flag;list;ID;path;F;tempFolder;C;zipFilename
 ⍝ Create the ZIP file that can be put on the relase page for Dyalog
  :If flag
+     :If 0=⎕SE.⎕NC'MakeHelpers'
+         {}⎕SE.Tatin.LoadPackages'[tatin]MakeHelpers'⎕SE
+     :EndIf
      C←##.CiderConfig ⋄ F←##.Cider.FilesAndDirs
      path←C.HOME,'/',C.CIDER.distributionFolder
      list←F.ListFiles path,'/*.zip'
@@ -11,7 +14,7 @@
      tempFolder←F.GetTempSubDir'NewCiderVersion'
      {}⎕SE.Tatin.InstallPackages(⊃list)tempFolder
      zipFilename←path,'/Installed-',ID,'.zip'
-     {}tempFolder ##.TestCases.MakeHelpers.##.ZipArchive.ZipFolder zipFilename
+     {}tempFolder ⎕SE.MakeHelpers.##.ZipArchive.ZipFolder zipFilename
      {}F.RmDirByForce tempFolder
  :EndIf
  ⍝Done

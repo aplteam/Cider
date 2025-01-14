@@ -1,6 +1,0 @@
- Pause←{
- ⍝ Cover function for `CommTools.Pause`: display a message and force the user to press <enter> to continue
-     ⍺←⊢
-     r←⍺ CommTools.Pause ⍵
-     1:shy←r
- }

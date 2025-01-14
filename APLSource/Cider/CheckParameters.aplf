@@ -1,16 +1,20 @@
-{config}←CheckParameters config;list;bool;list2
+ {config}←CheckParameters config;list;bool;list2;linkFlag
 ⍝ Check the parameters for being complete and valid
  p'Checking parameters...'
- list←' '~⍨¨⊃,/↓¨config.(LINK CIDER).⎕NL 2 9
- list2←list~GetValidCiderParams
- bool←(list~GetValidCiderParams)∊GetValidLinkParams
+ :If linkFlag←9=config.⎕NC'LINK'
+     list←' '~⍨¨⊃,/↓¨config.(LINK CIDER).⎕NL 2 9
+ :Else
+     list←' '~⍨¨↓config.CIDER.⎕NL 2 9
+ :EndIf
+ list2←list~GetValidCiderParams 1
+ bool←(list~GetValidCiderParams 1)∊GetValidLinkParams
  ('Invalid LINK parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool
  bool←GetValidLinkParams∊list2
  list2←list~GetValidLinkParams
- bool←(list~GetValidLinkParams)∊GetValidCiderParams
+ bool←(list~GetValidLinkParams)∊GetValidCiderParams 1
  ('Invalid Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/list2)Assert∧/bool
  list←' '~⍨¨↓config.CIDER.⎕NL 2 9
- bool←GetValidCiderParams∊list
- ('Missing Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams)Assert∧/bool
+ bool←(GetValidCiderParams 0)∊list
+ ('Missing Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams 0)Assert∧/bool
  p'Parameters are okay'
 ⍝Done

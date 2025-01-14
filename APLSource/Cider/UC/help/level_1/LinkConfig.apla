@@ -1,0 +1,11 @@
+(
+ 'Report the contents of a .linkconfig file, or edit or delete it'
+ ''
+ '-edit    Put the content into an edit window and write any changes back to file'
+ '-delete  Delete the .linkconfig file'
+ ''
+ 'Notes:'
+ ''
+ '* Both -edit and -delete will ask the user for confirmation'
+ '* The -edit and the -delete flags are mutually exclusive '
+)
