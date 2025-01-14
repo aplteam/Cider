@@ -31,8 +31,6 @@
      :If ⍬≢version
          parms.version←version
      :EndIf
-     noOf←M.ConvertMarkdownToHtml5(⊂C.HOME,'/'),¨'docs/' 'html/'
-     'Tally of converted documentation files?!'Assert 4=noOf
      noOf←⎕SE.Tatin.CreateAPIfromCFG ##.Cider cfg
      'Tally of the API is unexpected'Assert 30=noOf
      zipFilename←⎕SE.Tatin.BuildPackage parms
