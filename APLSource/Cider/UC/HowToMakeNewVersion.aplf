@@ -1,4 +1,4 @@
- r←Make Args;config;path;list;index;home
+ r←HowToMakeNewVersion Args;config;path;list;index;home
  r←''
  :If 0=≢path←GetProjectPath Args._1
      →0,≢⎕←'Cancelled by user'

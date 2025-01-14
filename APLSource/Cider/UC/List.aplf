@@ -28,14 +28,28 @@
      c.Desc←'Prints Cider''s config file to the session, and allow the user to edit it'
      c.Group←'Cider'
      c.Parse←'-edit'
+     r,←c 
+
+	 c←⎕NS''
+     c.Name←'HowToMakeNewVersion'
+     c.Desc←'Tells how to make a new version of the project'
+     c.Group←'Cider'
+     c.Parse←'1s'
      r,←c
 
      c←⎕NS''
+     c.Name←'HowToRunTests'
+     c.Desc←'Tells how to execute the project''s test suite (if any)'
+     c.Group←'Cider'
+     c.Parse←'1s'
+     r,←c
+	 
+	 c←⎕NS''
      c.Name←'LinkConfig'
      c.Desc←'List the Link config file, if any, or edit or delete it'
      c.Group←'Cider'
      c.Parse←'1s -edit -delete'
-     r,←c
+	 r,←c
 
      c←⎕NS''
      c.Name←'ListOpenProjects'
@@ -80,22 +94,8 @@
      r,←c
 
      c←⎕NS''
-     c.Name←'RunTests'
-     c.Desc←'Executes the project''s test suite (if any)'
-     c.Group←'Cider'
-     c.Parse←'1s'
-     r,←c
-
-     c←⎕NS''
      c.Name←'UpdateCider'
      c.Desc←'Tries to update Cider to the latest or the given version'
-     c.Group←'Cider'
-     c.Parse←'1s'
-     r,←c
-
-     c←⎕NS''
-     c.Name←'Make'
-     c.Desc←'Build a new version of the project'
      c.Group←'Cider'
      c.Parse←'1s'
      r,←c

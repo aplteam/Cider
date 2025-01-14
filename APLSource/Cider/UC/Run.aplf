@@ -27,10 +27,10 @@
      r←CloseProject Args
  :Case ⎕C'ProjectConfig'
      r←ProjectConfig Args
- :Case ⎕C'RunTests'
-     r←RunTests Args
- :Case ⎕C'Make'
-     r←Make Args
+ :Case ⎕C'HowToRunTests'
+     r←HowToRunTests Args
+ :Case ⎕C'HowToMakeNewVersion'
+     r←HowToMakeNewVersion Args
  :Case ⎕C'Config'
      r←Config Args
  :Case ⎕C'UpdateCider'

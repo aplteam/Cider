@@ -14,16 +14,16 @@ In short, when compatability is affected.
 
 This document does not come with a complete list of fixes, added features etc. Consult [Cider on GitHub](https://github.com/aplteam/Cider/releases) for that.
 
-## Version 0.46.0 from 2024-12-21
+## Version 0.46.0 from 2025-01-14
 
 * Prior to version 0.46.0, Cider would look for a file `.linkconfig` in the source folder. If there is one, it ignored a `LINK` section in Cider's project config file and informed the user about this. In addition Cider recommended to the user to remove the `Link` section from the Cider config file.
 
   There is a problem with that: Link would create such a file in case there are any Stop- or Trace vectors set on any function or operator. For that reason Cider 0.46.0 checks whether the file `.linkconfig` contains nothing but those settings (plus the Link version number the file was written by). If that's the case, Cider now ignores the file and evaluates the LINK section in the project config files. It would also recommend to reconcile the two sources of Link settings, and get rid of the LINK section in the project config file.
 
-* Bug fixes
-  * `]ListTatinDependencies` did not always report the folder that was investigated (#93)
-  * `]ListTatinDependencies` had a problem with -full: only obe level of sub-folders was investigated (#94)
-  * `ReadProjectConfigFile` now injects `dependencies` into the config file when undefined.
+* The user command `]Cider.Make` was renamed; it's now `]Cider.HowToMakeNewVersion`
+* The user command `]Cider.RunTests` was renamed; it's now `]Cider.HowToRunTests`
+
+* Several bug fixes
 
 ## Version 0.45.0 from 2024-12-09
 
@@ -70,6 +70,7 @@ Just bug fixes
 * The `]Cider.ProjectConfig` user command does not have a `-print` flag anymore but an `-edit` flag instead, and by default it prints the content of Cider's global config file to the session.
  
   That brings this user command syntactially in line with another Cider user command (`Config`) and similar Tatin user commands.
+
 
 
 

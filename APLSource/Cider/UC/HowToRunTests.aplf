@@ -1,4 +1,4 @@
- r←RunTests Args;config;path;list;index
+ r←HowToRunTests Args;config;path;list;index
  r←''
  :If 0=≢path←GetProjectPath Args._1
      →0,≢⎕←'Cancelled by user'
