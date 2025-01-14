@@ -1,21 +1,2 @@
- r←ShowHelp dummy;list;folder;answer;msg;filenames
- r←''
- folder←1⊃⎕NPARTS SourceFile
- list←⊃⎕NINFO⍠('Wildcard' 1)⊣folder,'*'
- folder←⊃(∨/'aplteam-Cider'⍷↑list)/list
- folder,←'/html/'
- :If 0=≢list←⊃⎕NINFO⍠('Wildcard' 1)⊣folder,'*.html'
-     r←'No documentation found for Cider in ',folder
- :Else
-     list←{⊃,/1↓⎕NPARTS ⍵}¨list
-     msg←'Select document to be viewed:'
-     answer←msg 1 Select 2⊃∘⎕NPARTS¨list
-     :If 0<≢answer
-         filenames←'"',¨'"',⍨¨SanitizePath¨folder∘,¨list[answer]
-         :Trap 0
-             {##.A.GoToWebPage'file:///',⍵}¨filenames
-         :Else
-             ⎕←⍪filenames
-         :EndTrap
-     :EndIf
- :EndIf
+ r←ShowHelp dummy
+ r←']Open https://aplteam.github.io/Cider/      ⍝ Opens documentation in default browser'
