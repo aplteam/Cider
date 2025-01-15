@@ -1,3 +1,0 @@
- r←CR
- ⍝ Constant for Carriage Return (⎕UCS 13)
- r←⎕UCS 13

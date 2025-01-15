@@ -64,7 +64,7 @@
  configFilename HandleSysVars config
  source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source           ⍝ For linking we are only interested in the code folder
  ('Source folder does not exist: ',parms.folder)Assert F.Exists parms.folder
- linkOptions←ProcessLinkOptions parms config
+ (linkOptions parms)←ProcessLinkOptions parms config
  p'Bringing in the source code...'
  projectSpace_←CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
  :If parms.importFlag

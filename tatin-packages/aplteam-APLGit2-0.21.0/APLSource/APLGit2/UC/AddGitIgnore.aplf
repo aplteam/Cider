@@ -1,0 +1,4 @@
+ r←AddGitIgnore y;args;folder;space
+ (space folder args)←y
+ r←##.AddGitIgnore folder
+⍝Done

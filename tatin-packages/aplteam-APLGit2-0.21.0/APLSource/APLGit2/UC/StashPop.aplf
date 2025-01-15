@@ -1,0 +1,4 @@
+ r←StashPop(space folder Args);stashNo
+ stashNo←0 Args.Switch'n'
+ r←↑stashNo ##.StashPop folder
+⍝Done

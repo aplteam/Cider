@@ -1,0 +1,11 @@
+
+{
+  LinkVersion: { ID: "4.0.20"},
+
+  Settings: {
+    fastLoad: 1,
+    forceFilenames: 1,
+    watch: "both",
+  },
+  CiderTest: 1,
+}

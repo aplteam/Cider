@@ -4,6 +4,9 @@
  :If 1<≡packageIDs
      packageIDs←⊃1↓,/',',¨packageIDs
  :EndIf
+ :If ∧/'[]'∊projectFolder
+     projectFolder←GetFolderFromAlias2 projectFolder
+ :EndIf
  cfg←ReadProjectConfigFile projectFolder
  :If dev
      ref←cfg.CIDER.dependencies_dev

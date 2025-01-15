@@ -1,6 +1,6 @@
  r←{x}Initial_NuGet ps;info;rc;netcore
  r←1
- :If netcore←IsDotNetAvailable
+ :If netcore←∆IsDotNetAvailable
      :If (,1)≡,APLTreeUtils2.ToNum 2 ⎕NQ #'GetEnvironment' 'DYALOG_NETCORE'
          rc←2250⌶0
          :Select ⊃⊃rc

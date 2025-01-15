@@ -4,8 +4,9 @@
 ⍝ Cider won't be installed as a user command then.
  :If flag
      'Runs only on Windows'Assert'Win'≡##.Cider.APLTreeUtils2.GetOperatingSystem ⍬
+     :If 0=⎕SE.⎕NC'MakeHelpers' ⋄ {}⎕SE.Tatin.LoadPackages'[tatin]MakeHelpers'⎕SE ⋄ :EndIf
      batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
-     M←##.TestCases.MakeHelpers
+     M←⎕SE.MakeHelpers
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
      cfg←⎕SE.Tatin.ReadPackageConfigFile C.HOME
@@ -16,17 +17,20 @@
      :AndIf ~1 M.YesOrNo'Could not find the user command script in the user''s home folder anywhere - continue?'
          :Return
      :EndIf
-     :If ~batch
-         M.##.CommTools.Pause'In the next step, update the version number',('+'∊##.Cider.Version)/' but leave the build number alone'
-         ⎕ED'##.Cider.Version'
+     :If batch
+         version←⍬
+     :Else
+         cfg←M.EditVersion cfg
+         version←cfg.version
      :EndIf
-     M.IncreaseBuildIDInFunction(⍕##.Cider),'.Version'
      M.FetchLaterUserCommand cfg C targetFolder
      M.RecreateFolder path
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
-     noOf←M.ConvertMarkdownToHtml5(⊂C.HOME,'/'),¨'docs/' 'html/'
-     'Tally of converted documentation files?!'Assert 4=noOf
+     parms.projectSpace←'#.Cider'
+     :If ⍬≢version
+         parms.version←version
+     :EndIf
      noOf←⎕SE.Tatin.CreateAPIfromCFG ##.Cider cfg
      'Tally of the API is unexpected'Assert 30=noOf
      zipFilename←⎕SE.Tatin.BuildPackage parms
@@ -34,6 +38,7 @@
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
      :If 0=batch
          ⎕←'   ',4↓0 #.Cider.Admin.InstallCider 1
+         ⎕←'Cider in ⎕SE is out of date, restart APL'
      :EndIf
  :EndIf
  ⍝Done

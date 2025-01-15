@@ -1,0 +1,32 @@
+ R←Test_OpenAndClose_005(stopFlag batchFlag);⎕TRAP;tempDir;list;sourceFolder1;projectFolder1;rc;res;buff;msg;ref
+⍝ Opens a (new) project and then closes it with a namespace name that is not fully qualified
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ projectFolder1←tempDir,'/Foo'
+ sourceFolder1←projectFolder1,'/APLSource'
+ 'Create!'FilesAndDirs.CheckPath sourceFolder1
+ (projectFolder1,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
+ #.⎕EX'TEMP' ⋄ 'TEMP.Foo'#.⎕NS''
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (rc msg buff)←∆UCMD'CreateProject "',projectFolder1,'" #.TEMP.Foo -noEdit -acceptConfig -batch -ignoreUserExec'
+ Assert rc=0
+ #.TEMP.Foo.⎕FX'r←Hello' 'r←''World'''
+ {}⎕SE.Link.Add'#.TEMP.Foo.Hello'
+ list←FilesAndDirs.ListFiles projectFolder1
+ →T.GoToTidyUp 1≠≢list
+ →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
+
+ →T.GoToTidyUp 1≠0 ##.Cider.CloseProject #.TEMP.{⍺ ⍺⍺ ⍵}'Foo'  ⍝ The dfn makes sure that the namespace is correctly qualified
+
+ R←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ ∆LINK'Break' '#.TEMP.Foo'  ⍝ We DO NOT check here because when everything is working fine...
+ rc←FilesAndDirs.RmDir tempDir,'/..'
+ Assert 0=+/∊rc
+ #.⎕EX'TEMP'
+⍝Done

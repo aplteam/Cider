@@ -1,6 +1,7 @@
- r←ListTatinDependencies folder;cfgFilename;cfg;buildFilenames;buildLists;b;tatinFolders;buildFolders;list;folder2;buildFilename
+ r←{self}ListTatinDependencies folder;cfgFilename;cfg;buildFilenames;buildLists;b;tatinFolders;buildFolders;list;folder2;buildFilename;buff
 ⍝ `y` must point to a project, either as alias ([]) or as a project folder.
 ⍝ The actual Tatin dependency folders are established from the project config file.
+⍝ `self` is only passed when this function calles itself.
  r←0 5⍴''
  :If IsAlias folder
      folder←GetFolderFromAlias2 folder
@@ -13,7 +14,9 @@
          tatinFolders←RemoveTargetDefinition¨tatinFolders
          buildFolders←(⊂folder,'/'),¨tatinFolders
          buildFilenames←buildFolders,¨⊂'/apl-buildlist.json'
-         r⍪←tatinFolders ListTatinDependencies_ buildFilenames
+         buff←tatinFolders ListTatinDependencies_ buildFilenames
+         buff[;1]←FilesAndDirs.EnforceSlash¨(FilesAndDirs.AddTrailingSep folder)∘,¨buff[;1]
+         r⍪←buff
      :EndIf
  :Else
      buildFilename←folder,'/apl-buildlist.json'
@@ -22,11 +25,15 @@
      :Else
          list←F.ListDirs folder
          :For folder2 :In list
-             r⍪←ListTatinDependencies folder2
+             buff←1 ListTatinDependencies folder2
+             :If 0<≢buff
+                 r⍪←buff
+             :EndIf
          :EndFor
-         :If 1={+/∧\⍵≡¨⍵[1]}⎕XSI
-             r[;1]←(1+≢folder)↓¨r[;1]
-             r[⍸{~(⍵⍳⍵)=⍳≢⍵}r[;1];1]←⊂''
-         :EndIf
      :EndIf
+ :EndIf
+ :If 0=⎕NC'self'
+ :AndIf 0<≢r
+     r[;1]←(≢F.AddTrailingSep folder)↓¨r[;1]
+     r[⍸{~(⍵⍳⍵)=⍳≢⍵}r[;1];1]←⊂''
  :EndIf

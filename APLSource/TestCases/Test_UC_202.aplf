@@ -1,0 +1,21 @@
+ R←Test_UC_202(stopFlag batchFlag);⎕TRAP;rc;msg;res;stop;tempDir;ref
+⍝ Let the user delete a Link config file
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY ##.CiderConfig.HOME,'/TestData/Boo-Project'
+ Assert ⎕NEXISTS tempDir,'/Boo-Project/APLSource/.linkconfig'
+
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'YesOrNo' 'DeleteLinkConfig@' 'y'
+
+ stop←0
+ (rc msg res)←stop ∆UCMD'LinkConfig  ',tempDir,'/Boo-Project -delete'
+ Assert rc=0
+ →T.GoToTidyUp 0≠⎕NEXISTS tempDir,'/Boo-Project/APLSource/.linkconfig'
+
+∆TidyUp:
+ ref.Cleanup
+ {}FilesAndDirs.RmDirByForce tempDir
+⍝Done

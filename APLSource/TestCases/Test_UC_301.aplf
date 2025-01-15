@@ -1,0 +1,42 @@
+ r←Test_UC_301(stopFlag batchFlag);⎕TRAP;tempDir;parms;list;rc;msg;res;log;ref;noOf
+⍝ Exercise the user command on "CloseProject" with a non-qualified namespace name called from #
+⍝ Should work anyway if there is just one project with that name
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ #.⎕EX'Foo' ⋄ 'Foo'#.⎕NS''
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
+ 3 ⎕MKDIR tempDir,'/APLSource'
+
+ ref←∆GetRefToCommTools
+ ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (rc msg res)←∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -batch -ignoreUserExec'
+ Assert rc=0
+ (rc msg res)←∆UCMD'CloseProject #.Foo -fast'
+ Assert rc=0
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←tempDir
+ parms.watch←'ns'
+ parms.parent←'#.Foo'
+ parms.ignoreUserExec←1
+ parms.batch←1
+ ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ (res log)←##.Cider.OpenProject parms
+
+ →T.GoToTidyUp 0=≢list←##.Cider.ListOpenProjects 0
+
+ noOf←⎕SE.UCMD #.{⍺⍺ ⍵}'Cider.CloseProject Foo.Foo -fast'  ⍝ We MUST NOT use ∆UCMD here, otherwise we cannot establoish where CloseProject was called from
+ →T.GoToTidyUp'Number of projects closed: 1'≢noOf
+
+ r←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ ##.Cider.C.Cleanup
+ ∆LINK'Break' '#.Foo.Foo'  ⍝ We DO NOT check here because when everything is working fine then it's not linked anymore.
+ rc←FilesAndDirs.RmDir tempDir,'/..'
+ Assert 0=+/∊rc
+ #.⎕EX'Foo'
+⍝Done

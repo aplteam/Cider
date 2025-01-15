@@ -1,0 +1,5 @@
+ r←StashApply(space folder Args);stashNo
+⍝ Applies the given or last stash and remove it from the stash stack
+ stashNo←0 Args.Switch'n'
+ r←↑stashNo ##.StashApply folder
+⍝Done

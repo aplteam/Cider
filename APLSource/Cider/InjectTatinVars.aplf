@@ -20,7 +20,7 @@
          :If '⎕this'≢⎕C projectRoot.CiderConfig.CIDER.tatinVars
              :If 9=projectRoot.⎕NC projectRoot.CiderConfig.CIDER.tatinVars
                  ref←projectRoot⍎projectRoot.CiderConfig.CIDER.tatinVars
-                 ref.TatinVars←projectRoot.TatinVars
+                 ((⍕ref),'.TatinVars')⎕NS projectRoot.TatinVars
                  projectRoot.⎕EX'TatinVars' ⍝ Policy change in 2024-07
              :Else
                  msg←'"tatinVars" does not point to a sub-namespace in the project''s root'

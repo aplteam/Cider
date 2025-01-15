@@ -8,7 +8,7 @@
  :EndIf
  :If (⊂,folder)∊,¨'.' './'
      folder←⊃1 ⎕NPARTS'./'
-     :If ~YesOrNo'Sure you want to create the project in ',folder,' ?'
+     :If ~YesOrNo'SureCreateProj@Sure you want to create the project in ',folder,' ?'
          :Return
      :EndIf
  :EndIf
@@ -54,10 +54,13 @@
  :If success
      :If namespace≢⍬
          projectFolder←1⊃⎕NPARTS filename
+         :If '.'∊namespace
+             config.CIDER.parent←{⍵↓⍨-1++/∧\'.'≠⌽⍵}namespace
+         :EndIf
          :If 0=(⍎config.CIDER.parent).⎕NC config.CIDER.projectSpace
              config.CIDER.projectSpace(⍎config.CIDER.parent).⎕NS''
          :Else
-             :If 0<≢((⍎config.CIDER.parent)⍎config.CIDER.projectSpace).⎕NL 9~⍨⍳16
+             :If 0<≢(' '~⍨¨↓((⍎config.CIDER.parent)⍎config.CIDER.projectSpace).⎕NL 9~⍨⍳16)~⊂'CiderConfig'
                  :If 1<≢list←⊃P.##.F.Dir projectFolder
                  :OrIf P.##.ConfigFilename≢{1≠≢⍵:0 ⋄ ⊃,/1↓⎕NPARTS⊃⍵}list
                      :If batch
@@ -75,7 +78,7 @@
          :EndIf
      :AndIf {⍵:1 ⋄ 1 YesOrNo'OpenAsWell@Project successfully created; open as well?' ⋄ 1}batch
          parms←P.CreateOpenParms ⍬
-         parms.folder←projectFolder
+         parms.folder←##.DropTrailingSlash projectFolder
          parms.projectSpace←config.CIDER.projectSpace
          parms.parent←config.CIDER.parent
          parms.alias←{0≡⍵:'' ⋄ ⍵}Args.alias

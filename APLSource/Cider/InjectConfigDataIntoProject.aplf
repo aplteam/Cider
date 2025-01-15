@@ -4,7 +4,9 @@
  r←⍬
  'CiderConfig'projectSpace_.⎕NS config
  projectSpace_.CiderConfig.CIDER←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.CIDER
- projectSpace_.CiderConfig.LINK←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.LINK
+ :If 9=projectSpace_.CiderConfig.⎕NC'LINK'
+     projectSpace_.CiderConfig.LINK←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.LINK
+ :EndIf
  projectSpace_.CiderConfig.USER←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.USER
  projectSpace_.CiderConfig.SYSVARS←projectSpace_.CiderConfig.⎕NS projectSpace_.CiderConfig.SYSVARS
  projectSpace_.CiderConfig.HOME←⊃,/1 ⎕NPARTS folder

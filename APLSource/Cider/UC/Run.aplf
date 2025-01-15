@@ -2,7 +2,7 @@
  r←0 0⍴''
  CheckAPLversion ⍬
  AutoLoadTatin ⍬
- SourceFile←GetSourceFilename ⊃⎕RSI
+ SourceFile←GetSourceFilename⊃⎕RSI
  P←GetRefToCiderCode Cmd Args
  :Select ⎕C Cmd
  :Case ⎕C'OpenProject'
@@ -17,6 +17,8 @@
      r←AddTatinDependencies Args
  :Case ⎕C'AddNuGetDependencies'
      r←AddNuGetDependencies Args
+ :Case ⎕C'LinkConfig'
+     r←LinkConfig Args
  :Case ⎕C'ListAliases'
      r←ListAliases Args
  :Case ⎕C'CreateProject'
@@ -25,10 +27,10 @@
      r←CloseProject Args
  :Case ⎕C'ProjectConfig'
      r←ProjectConfig Args
- :Case ⎕C'RunTests'
-     r←RunTests Args
- :Case ⎕C'Make'
-     r←Make Args
+ :Case ⎕C'HowToRunTests'
+     r←HowToRunTests Args
+ :Case ⎕C'HowToMakeNewVersion'
+     r←HowToMakeNewVersion Args
  :Case ⎕C'Config'
      r←Config Args
  :Case ⎕C'UpdateCider'

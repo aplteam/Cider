@@ -7,9 +7,9 @@
          flag←0
          :Repeat
              :If batch
-                 ⎕←'Pruning Cider aliases:'
-                 ⎕←' ',' ',(~bool)⌿r
-             :OrIf 1 YesOrNo'Sure you want to prune ',((1+1<+/~bool)⊃'this' 'these'),'?'
+                 ⎕←'--- To be pruned:'
+                 ⎕←' ',' ',{('[',¨⍵[;1],¨']'),⍵[;,2]}(~bool)⌿r
+             :OrIf 1 YesOrNo'PruneAliases@Sure you want to prune ',((1+1=+/~bool)⊃'them' 'this'),'?'
                  :If 0=≢r←bool⌿r
                      ⎕NDELETE P.GetCiderAliasFilename
                  :Else
@@ -18,16 +18,7 @@
                  flag←1
              :Else
                  flag←1
-                 r←0 2⍴''
-                 :If ~batch
-                     ⎕←'Nothing done'
-                 :EndIf
              :EndIf
          :Until flag
-     :Else
-         :If ~batch
-             ⎕←'Nothing to prune'
-         :EndIf
-         r←0 2⍴''
      :EndIf
  :EndIf
