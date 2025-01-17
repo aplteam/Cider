@@ -62,6 +62,8 @@ On opening the first project in the current workspace
 
 If this flag is set, when opening and closing projects Cider will report files where the name contains the string "conflicted copy".
 
+Absent this flag, if your home folder contains a folder `Dropbox/`, Cider will perform the check.
+
 !!! detail "How Dropbox reports conflicts"
 
 	If Dropbox cannot decide what the last version of a file is, it will create a file with "conflicted copy" in its name. Dropbox leaves it to you to compare such files and resolve the conflict. 
