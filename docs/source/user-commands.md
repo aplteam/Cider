@@ -299,19 +299,24 @@ If you omit `project` Cider uses the one open project or, if you have more than 
 
 ## :fontawesome-solid-terminal: Update Cider
 
-    ]CIDER.UpdateCider
+    ]CIDER.UpdateCider [version]
 
-Tries to update Cider.
-If a later version is available, Cider asks whether you want to update to it.
+Where `version` is `<major>.<minor>.<patch>`,
+tries to update Cider to it.
 
-When the update is complete, restart Dyalog, rebuild the user commands, and print the current version.
+If you omit `version` and a later version is available,
+Cider asks whether you want to update to it.
+
+The update is performed automatically,
+but does not change Cider in the current workspace.
+When the update is complete, restart Dyalog APL, rebuild the user commands, and print the current version.
 
 	      ]UReset
 	153 commands reloaded
 	      ]CIDER.Version
 	0.44.0+835
 
-!!! danger "Do not use the command for versions prior to 0.37.3" 
+??? danger "Do not use the command for Cider versions prior to 0.37.3" 
 
 	=== "Versions 0.37.1 and 0.37.2"
 
