@@ -308,12 +308,19 @@ These parameters are passed to Link when Cider uses it to define APL objects in 
 
 Since Version 4.0.0, Link has its own config file, but, until all supported versions of Link deal with it, Cider saves non-default values in a Cider project config.
 
-??? warning " If Cider finds a Link config file, it ignores the `LINK` section of the Cider config."
+Cider looks for `.linkconfig` at the path specified in [`source`](#source);
+if `source` is empty, then the root of the project.
 
-	<!-- A message will remind you to delete the `LINK` section from the Cider config file. -->
+As of Cider version 0.46.0,
+if Cider finds a Link config file, it ignores the `LINK` section of its config
+and reminds you to delete it.
 
-	Cider looks for `.linkconfig` at the path specified in [`source`](#source). 
-	If `source` is empty, then the root of the project.
+But if the Link config file contains only stop and trace vectors and the Link version number,
+then Cider will use its `LINK` section settings, and recommend you
+
+-   reconcile the two sources of Link options
+-   delete the `LINK` section from the Cider config file.
+
 
 #### :fontawesome-solid-gear: `watch`
 
