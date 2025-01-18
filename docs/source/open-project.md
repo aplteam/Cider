@@ -141,7 +141,14 @@ So while you work on the project, you can access `TatinVars` as if it had been l
 You would also expect a namespace `TatinVars` in the root of the _package_. That _might_ be the project space, but is more likely to be a child namespace.
 
 If so, specify it in the optional setting `tatinVars` in the `CIDER` section of the project config.
-Cider will then create a reference `TatinVars` in that namespace, pointing to `TatinVars` in the project space.
+
+=== "Cider version 0.46.0"
+
+	Cider will move the namespace from the root of the project to that sub-namespace.
+	
+=== "Earlier Cider versions"
+
+	Cider will then create a reference `TatinVars` in that namespace, pointing to `TatinVars` in the project space.
 
 
 ## Change the current working directory

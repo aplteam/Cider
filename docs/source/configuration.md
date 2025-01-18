@@ -10,9 +10,9 @@ keywords: api, apl, cider, configuration, dyalog, key, link, setting, source, su
 
 ## Global configuration
 
-Cider’s global configuration settings apply to __all__ your projects. 
+Cider’s global configuration settings apply to __all__ your projects.
 
-Non-default settings can be saved in a folder `.cider` in your home folder. 
+Non-default settings can be saved in a folder `.cider` in your home folder.
 
 For example, for user JohnDoe:
 
@@ -66,7 +66,7 @@ Absent this flag, if your home folder contains a folder `Dropbox/`, Cider will p
 
 !!! detail "How Dropbox reports conflicts"
 
-	If Dropbox cannot decide what the last version of a file is, it will create a file with "conflicted copy" in its name. Dropbox leaves it to you to compare such files and resolve the conflict. 
+	If Dropbox cannot decide what the last version of a file is, it will create a file with "conflicted copy" in its name. Dropbox leaves it to you to compare such files and resolve the conflict.
 
 	Dropbox does not actually alert you to such conflicts, it just silently creates the files. So you can configure Cider to look for them.
 
@@ -80,7 +80,7 @@ Absent this flag, if your home folder contains a folder `Dropbox/`, Cider will p
 
 ### :fontawesome-solid-gear: `ExecuteAfterProjectOpen`
 
-If defined and not empty, the fully qualified name of a monadic function. 
+If defined and not empty, the fully qualified name of a monadic function.
 
     ExecuteAfterProjectOpen: "⎕SE.Path.To.Function",
 
@@ -92,7 +92,7 @@ Any result it returns is ignored.
 
 !!! tip "Use cases"
 
-	Suppose you use a source code manager (SCM) other than Git. 
+	Suppose you use a source code manager (SCM) other than Git.
 	With Git, Cider would execute the `status` command and show you the result.
 	With another SCM, it does not know what to do.
 
@@ -183,7 +183,7 @@ Above, all packages in folder `tatin-packages_dev` (a child of the project folde
 #### :fontawesome-solid-gear: `distributionFolder`
 
 The default destination for the ZIP file produced by Tatin’s `BuildPackage` function: either empty or the path to a folder, usually relative to the project root.
-There is no default. 
+There is no default.
 
 If you always create your package ZIP files in the same  child folder of each project, define this in the project config template file.
 
@@ -260,8 +260,8 @@ Empty, or the URL of, say, a GitHub project. For information only.
 
 Cider includes the [`APLGit2`](https://github.com/aplteam/APLGit2) package, an interface between Dyalog and Git, although some of its commands work only when the project is hosted on GitHub.
 
-Some functions of `APLGit2` must know the `owner` of a project on GitHub. 
-Those functions will investigate `project_url`. 
+Some functions of `APLGit2` must know the `owner` of a project on GitHub.
+Those functions will investigate `project_url`.
 If it points to GitHub, the owner is established from its contents.
 
 
@@ -277,12 +277,13 @@ Note that this might differ from the Tatin `source` parameter, which could point
 
 #### :fontawesome-solid-gear: `tatinVars`
 
-Optional. Either `⎕THIS` or the name of a child of the project space.
+Optional. Either
 
--   `⎕THIS` has the same effect as if the property were undefined.
--   A subnamespace has Cider inject a reference `TatinVars` into it, pointing to `TatinVars` in the project root.
 
-See [Injecting a namespace `TatinVars`](open-project.md#inject-a-tatinvars-namespace).
+-   `⎕THIS`: has the same effect as if the property were undefined
+-   the name of a child space of the project space
+
+See [Injecting a namespace `TatinVars`](open-project.md#inject-a-tatinvars-namespace) for what happens.
 
 
 #### :fontawesome-solid-gear: `tests`
@@ -293,7 +294,7 @@ See how to execute the test cases, e.g.
 
 ```
       ]Cider.RunTests
-#.Cider.TestCases.RunTests 
+#.Cider.TestCases.RunTests
 ```
 Above, execute `#.Cider.TestCases.RunTests` to run the test suite.
 
@@ -331,12 +332,12 @@ Which source/s to watch for changes to linked APL definitions. Changes in one en
 	both - watch both (default)
 	none - watch neither
 
-<!-- 
+<!--
 Irrelevant: we assume Link is installed
 Note that for "both" and "dir," .NET or .NET Core is required. Under Windows, this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not, the default for "watch" will be "ns".
  -->
 
-The `watch` setting is very important, so Cider always reports it. 
+The `watch` setting is very important, so Cider always reports it.
 Other Link settings are reported only when they diverge from the default.
 
 The `watch` setting is ignored when a project is opened with the `import` option.
@@ -347,7 +348,7 @@ The `watch` setting is ignored when a project is opened with the `import` option
 
 ### `SYSVARS`
 
-This section lets set system variables. 
+This section lets set system variables.
 `⎕IO` and `⎕ML` should always be set explicitly.
 (They default to 1.)
 
@@ -358,7 +359,7 @@ System variable names are case-insensitive.
 
 ### `USER`
 
-In this section you can set your own project-specific values. 
+In this section you can set your own project-specific values.
 Cider ignores them.
 
 For example
