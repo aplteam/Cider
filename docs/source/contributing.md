@@ -37,7 +37,7 @@ Developers understand:
 : holds what will eventually become the Cider package.
 
 `#.Cider.Cider.UC`
-: holds the functions called by the user-command framework. 
+: holds the functions called by the user-command framework.
     They potentially communicate with the user, prepare arguments and eventually call functions in `#.Cider.Cider`.
 
 `⎕SE.Cider`
@@ -55,16 +55,16 @@ The API namespace
 
 When you execute a user command like
 `]Cider.ListOpenProjects`
-it is executed in `⎕SE`. 
+it is executed in `⎕SE`.
 
-<!-- 
-The above deinitions bewilder me. 
+<!--
+The above deinitions bewilder me.
 Perhaps if I worked on the package, they would make more sense to me.
  -->
 
 When you run tests, you might want to make changes to the code.
 That would not work well when user commands are tested because changes in `⎕SE` are
-not tracked! 
+not tracked!
 That’s why the tests ask whether you would prefer the code to be executed in `#.Cider` rather than `⎕SE.Cider`, because then they *are* tracked.
 
 
@@ -97,7 +97,7 @@ The user-command functions are in `⎕SE.Cider.##.UC`
 
 ### The user-command script
 
-The user-command script is a thin cover for calls to (usually) `⎕SE.Cider.UC`. 
+The user-command script is a thin cover for calls to (usually) `⎕SE.Cider.UC`.
 <!-- Really? Namespace not previously mentioned. -->
 You will rarely need to change it.
 
@@ -110,10 +110,10 @@ in a Dyalog configuration file.
 !!! tip "How to set environment variables"
     See the Dyalog installation and configuration guides for how to set environment variables.
 
-    :fontawesome-solid-globe: 
+    :fontawesome-solid-globe:
     [Dyalog Documentation Centre](https://www.dyalog.com/documentation_190.htm)
 
-Change the script either in the location it is started from, or in the project, but not in both. 
+Change the script either in the location it is started from, or in the project, but not in both.
 
 When you create a new version, Cider checks whether the two versions are identical.
 If not, it proposes copying over the version that carries the latest changes.
@@ -168,12 +168,12 @@ To execute the test suite in batch mode (no reports, and returns a single flag i
 
 ## Build
 
-Cider can tell you how to build a new version. 
+Cider can tell you how to build a new version.
 User command
 
     ]Cider.Make
 
-prints an expression that builds a new version. 
+prints an expression that builds a new version.
 
 Before executing it, check both `#.Cider.Cider.Version` and `#.Cider.Cider.History` are up-to-date.
 
@@ -184,7 +184,7 @@ Finally, Cider proposes installing the new version.
 Doing so installs Cider over the current version.
 Restart Dyalog to use the new version.
 
-<!-- 
+<!--
   **How can Cider not be installed if it is running?**
 
   , or, if it has not been previously installed, ask the user whether it should be installed into the version-specific or the version-agnostic folder for Dyalog files on your operating system.
@@ -196,7 +196,7 @@ Restart Dyalog to use the new version.
 To release a new version to Dyalog for bundling:
 
 1.  Install Cider from the `tatin` Registry
-1.  Zip the contents of the installation folder into a file with the name 
+1.  Zip the contents of the installation folder into a file with the name
 
         Installed-aplteam-Cider-<major>.<minor>.<patch>
 

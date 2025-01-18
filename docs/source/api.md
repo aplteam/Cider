@@ -33,9 +33,9 @@ The API is exposed in `⎕SE.Cider` so, for example, call `AddAlias` as `⎕SE.C
 
 ??? warning "API code cache"
 
-    The Cider code package is loaded into `⎕SE._Cider`, but the API is exposed via `⎕SE.Cider`. 
+    The Cider code package is loaded into `⎕SE._Cider`, but the API is exposed via `⎕SE.Cider`.
 
-    Do not call functions in `⎕SE._Cider`. 
+    Do not call functions in `⎕SE._Cider`.
 
 
 ---
@@ -68,13 +68,13 @@ Cider installs NuGet packages in the (single) NuGet dependency folder defined in
 
 Specify `packages` as either a list of strings or a comma-separated string.
 
-!!! warning "NuGet package names" 
+!!! warning "NuGet package names"
 
-    NuGet package names are not case sensitive when they are loaded so, for example, you can load `Clock` by the name `clock`. 
+    NuGet package names are not case sensitive when they are loaded so, for example, you can load `Clock` by the name `clock`.
 
     However, the correct name is returned, and is required for using a package.
 
-:fontawesome-solid-terminal: 
+:fontawesome-solid-terminal:
 [`]CIDER.AddNugetDependencies`](user-commands.md#add-nuget-dependencies)
 
 
@@ -87,8 +87,8 @@ Where
 -   `packages` is one or more Tatin packages
 -   `project` is a project path
 -   `dev` is a flag
-<!-- ISSUE #99: 
--  `project` is a project path or alias 
+<!-- ISSUE #99:
+-  `project` is a project path or alias
 -->
 
 Cider installs the packages in one of the Tatin dependency folders
@@ -119,7 +119,7 @@ Not found: boobly-boo
 
     The default project configuration file name is `dependencies.tatin`.
 
-:fontawesome-solid-terminal: 
+:fontawesome-solid-terminal:
 [`]CIDER.AddTatinDependencies`](user-commands.md#add-tatin-dependencies).
 
 
@@ -128,11 +128,11 @@ Not found: boobly-boo
 
     r←{performChecks} CloseProject projects
 
-Where 
+Where
 
 <!-- -   `x` (optional) is a list of projects and/or a flag -->
 -   `performChecks` (optional) is whether to check for Dropbox conflicts (default is 1)
--   `projects` is 
+-   `projects` is
     -   one or more open projects
     -   an empty vector (all open projects)
 
@@ -160,9 +160,9 @@ Example: close three projects without checking for Dropbox conflicts.
 0 ⎕SE.Cider.CloseProject 'path/to/project' #.util '[test]'
 ```
 
-:fontawesome-solid-gear: 
+:fontawesome-solid-gear:
 [`CheckForDropboxConflicts`](configuration.md#checkfordropboxconflicts)<br>
-:fontawesome-solid-terminal: 
+:fontawesome-solid-terminal:
 [`]CIDER.CloseProject`](user-commands.md#close-project)
 
 
@@ -184,7 +184,7 @@ Cider returns a namespace with parameters required by [`CreateProject`](#create-
 
 Defaults are overwritten by any specified in the `parms` argument.
 
-:fontawesome-solid-terminal: 
+:fontawesome-solid-terminal:
 [`]CIDER.CreateProject`](user-commands.md#create-project)
 
 
@@ -192,20 +192,20 @@ Defaults are overwritten by any specified in the `parms` argument.
 
     parms←CreateOpenParms y
 
-Where `y` is either an empty vector or a namespace of parameters, returns a namespace of parameters required by the `OpenProject` function. 
+Where `y` is either an empty vector or a namespace of parameters, returns a namespace of parameters required by the `OpenProject` function.
 
 Parameters in `y` overwrite the defaults, which are:
 
-    alias                 ''      
+    alias                 ''
     batch                 0
     checkPackageVersions  ⍬
-    folder                ''  
+    folder                ''
     ignoreUserExec        0
     importFlag            0
     noPkgLoad             0
-    parent                '' 
-    projectSpace          ''  
-    quietFlag             0 
+    parent                ''
+    projectSpace          ''
+    quietFlag             0
     suppressInit          0
     verbose               0
     watch                 0
@@ -219,7 +219,7 @@ Parameters in `y` overwrite the defaults, which are:
 
 Where `parms` is a namespace of parameter values, typically the result of [`CreateCreateProjectParms`](#create-createproject-parms), Cider creates a project.
 
-:fontawesome-solid-terminal: 
+:fontawesome-solid-terminal:
 [`]CIDER.CreateProject`](user-commands.md#create-project)
 
 
@@ -246,7 +246,7 @@ Cider ignores `dummy` and returns as a matrix of strings the contents of the fil
 
 If the file is empty the result has zero rows.
 
-:fontawesome-solid-terminal: 
+:fontawesome-solid-terminal:
 [`]CIDER.ListAliases`](user-commands.md#list-aliases)
 
 
@@ -265,7 +265,7 @@ Returns the path to the file used to record alias names and their paths.
 
 Cider returns the [global config](configuration.md#global) – if found – as a parameter namespace; otherwise the result is `⍬`.
 
-:fontawesome-solid-terminal: 
+:fontawesome-solid-terminal:
 [`]CIDER.Config`](user-commands.md#config)
 
 
@@ -294,7 +294,7 @@ Returns the path to the `MyUCMDs/` folder.
 
 !!! warning "The folder might not exist :fontawesome-brands-linux: :fontawesome-brands-apple:"
 
-    On Windows, this folder is created by the installer. 
+    On Windows, this folder is created by the installer.
     Not so on other platforms.
 
 
@@ -302,7 +302,7 @@ Returns the path to the `MyUCMDs/` folder.
 
     r←name GetNuGetDependencies config
 
-Where 
+Where
 
 -   `name` is `'development'` or `'development_dev'`
 -   `config` is a parameter namespace
@@ -311,7 +311,7 @@ returns either the value of `nuget` in the given branch or an empty vector if `n
 
 The `config` argument is typically derived from a project’s configuration file.
 
-:fontawesome-solid-terminal: 
+:fontawesome-solid-terminal:
 [`]CIDER.ListNuGetDependencies`](user-commands.md#list-nuget-dependencies)
 
 
@@ -333,12 +333,12 @@ The `current` flag (default 0) specifies whether the result is specific to the c
 ```
       ⍝ Version agnostic
       ⎕SE.Cider.GetProgramFilesFolder ''
-C:\Users\kai\Documents\Dyalog APL Files             
+C:\Users\kai\Documents\Dyalog APL Files
       Cider.GetProgramFilesFolder 'CiderTatin'
 C:\Users\kai\Documents\Dyalog APL Files/CiderTatin
 
       ⍝ Version specific
-      1 ⎕SE.Cider.GetProgramFilesFolder ''              
+      1 ⎕SE.Cider.GetProgramFilesFolder ''
 C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files
 ```
 
@@ -388,7 +388,7 @@ Where `verbose` is a flag, returns the open projects as a matrix of 2 or 4 colum
  #.Cider  /path/to/Cider
 
       ⎕SE.Cider.ListOpenProjects 1
- #.Cider  /path/to/Cider  32  cider 
+ #.Cider  /path/to/Cider  32  cider
 ```
 
 :fontawesome-solid-terminal:
@@ -424,7 +424,7 @@ Where `projectpath` is a project path, returns as a 5-column matrix the dependen
 1
 ```
 
-!!! detail "Until version 0.34.0 this was named `ListTatinPackages`"
+!!! detail "Until Cider version 0.34.0 this was named `ListTatinPackages`"
 
 :fontawesome-solid-terminal:
 [`]CIDER.ListTatinDependencies`](user-commands.md#list-tatin-dependencies).
@@ -448,7 +448,7 @@ The current directory is now ...
       flag
 1
       (≡log)(≢log)
-1 388 
+1 388
 ```
 
 If `y` is a parameter space, all parameters are optional except `folder`.
@@ -464,7 +464,7 @@ If `y` is a parameter space, all parameters are optional except `folder`.
 
     !!! detail "Special syntax for alias"
 
-        If `alias` is just a dot, the name of the project folder becomes the alias. 
+        If `alias` is just a dot, the name of the project folder becomes the alias.
         Example:
 
         ```apl
@@ -485,7 +485,7 @@ If `y` is a parameter space, all parameters are optional except `folder`.
 
 `checkPackageVersions`
 
-: By default Cider proposes to check principal packages for later versions and, if found, to update them. 
+: By default Cider proposes to check principal packages for later versions and, if found, to update them.
 
         ⍬ - Ask me whether to check (default)
         0 - Do not check at all
@@ -509,7 +509,7 @@ If `y` is a parameter space, all parameters are optional except `folder`.
 
     !!! warning "Setting this flag has implications for how Cider deals with Tatin packages."
 <!-- Explain.
-, see there. 
+, see there.
  -->
 
 `noPkgLoad`
@@ -546,7 +546,7 @@ If `y` is a parameter space, all parameters are optional except `folder`.
 
 `watch`
 
-: String. See [`watch`](configuration.md#watch) in the project config for setting values. 
+: String. See [`watch`](configuration.md#watch) in the project config for setting values.
 
     :fontawesome-solid-bomb:
     [How Link watches for changes](troubleshooting.md#how-link-watches-for-changes)
@@ -582,7 +582,7 @@ __Side effect__ If the function does not find the sub-keys `dependency.tatin` an
 
     {r}←config WriteProjectConfigFile project
 
-Where 
+Where
 
 -   `config` is a parameter namespace
 -   `project` is a project path

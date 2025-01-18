@@ -25,7 +25,7 @@ Cider creates its namespace (project space) in the active workspace then
 -   defines its APL objects in the project space, linked to their source files
 -   loads its Tatin and NuGet packages
 -   executes the project’s initialisation function
--   executes your global initialisation function 
+-   executes your global initialisation function
 -   displays the project’s to-do list and Git status
 
 <!-- :fontawesome-solid-hand-point-right: -->
@@ -54,8 +54,8 @@ You use Cider through its [user commands](user-commands.md) or its [API function
 1.  Your APL source kept in text files
 1.  Tatin version 0.116.0 or better
 
-Dyalog 19.0 has Cider and Tatin installed.
-For Dyalog 18.2, Cider and Tatin have to be installed.
+Dyalog v19.0 has Cider and Tatin installed.
+For Dyalog v18.2, Cider and Tatin have to be installed.
 
 
 ## Glossary
@@ -82,7 +82,7 @@ project space
 : The namespace in which Cider builds the project
 
 project path
-: The filesystem path to the project folder 
+: The filesystem path to the project folder
 
 string
 : A simple character vector, e.g. `'quick'`

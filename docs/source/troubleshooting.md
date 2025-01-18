@@ -21,7 +21,7 @@ To detect changes in the workspace, Link uses APL threads.
 
 When you trace through your code, or set a stop vector, and have _Pause on Error_ checked in the session’s _Threads_ menu, handlers associated with those threads will also stop.
 
-The Link handlers set a Hold under some circumstances. 
+The Link handlers set a Hold under some circumstances.
 Depending on your actions, this might result in a deadlock. Dyalog would appear to hang until you use the session’s _System_ menu to issue a strong interrupt.
 
 
@@ -29,12 +29,12 @@ Depending on your actions, this might result in a deadlock. Dyalog would appear 
 
 If the update process fails, calling it again rarely helps. You need an escape route.
 
-=== "Dyalog 19.0 and later"
+=== "Dyalog v19.0 and later"
 
 	1. Execute `]DeActivate tatin` to remove Cider.
 	1. Execute `]Activate cider` to restore the version of Cider your installation originally came with.
 	1. Execute `]Cider.UpdateCider` to try to update to the latest version.
 
-=== "Dyalog 18.2"
+=== "Dyalog v18.2"
 
 	Uninstall and then install Cider again.

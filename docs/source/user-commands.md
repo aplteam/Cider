@@ -33,7 +33,7 @@ You can always identify a project by its **project path**.
 
 	]CIDER.OpenProject path/to/project
 
-If you have assigned it an **alias** (e.g. `foo`) you can use the alias, 
+If you have assigned it an **alias** (e.g. `foo`) you can use the alias,
 embraced with square brackets to mark it as an alias.
 
 	]CIDER.OpenProject [foo]
@@ -49,7 +49,7 @@ If a project is open, you can identify it by its **project space**.
 
 		]CIDER.ListTatinDependencies [project]
 
-	If the project has alias `foo`, has been opened in `#.bar`, 
+	If the project has alias `foo`, has been opened in `#.bar`,
 	and is the only project open, then the following are equivalent.
 
 		]CIDER.ListTatinDependencies path/to/project
@@ -66,10 +66,10 @@ Options are further optional arguments to the command.
 Specify all the command’s arguments _before_ any options.
 Prefix options with dashes, e.g.
 
-	]CIDER.CreateProject path/to/foo path/to/bar -noEdit 
+	]CIDER.CreateProject path/to/foo path/to/bar -noEdit
 	]CIDER.OpenProject path/to/foo -alias=ted
 
-Options affect only the current command. 
+Options affect only the current command.
 They override settings in the [project](configuration.md#project) and [global](configuration.md#global) configurations and leave them unchanged.
 
 Each command’s options are tabulated below its definition.
@@ -95,14 +95,14 @@ If the project config does not specify a NuGet dependency folder, Cider asks you
 
     ]CIDER.AddTatinDependency pkglist [project]
 
-Where `pkglist` is a comma-separated list of Tatin packages to be installed, 
+Where `pkglist` is a comma-separated list of Tatin packages to be installed,
 Cider registers the listed dependencies in the project.
 
 If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
 
 If the project config does not specify a Tatin dependency folder, Cider asks you to edit it.
 
----|---                                                                                 
+---|---
 `development` | By default the packages are added as project dependencies. This option makes them development dependencies instead.
 `target=` | Name of a namespace to be created and added to the `dependencies` or the `dependencies_dev` parameter.<br><br>If the namespace exists, Cider signals an error. You then need to edit the project’s config file.
 
@@ -127,7 +127,7 @@ Otherwise attempts to close projects are reported in detail.
 ## :fontawesome-solid-terminal: Config
 
     ]CIDER.Config
-                                                                                           
+
 Cider prints the content of its global config file to the session.
 
 ---|---
@@ -137,11 +137,11 @@ Cider prints the content of its global config file to the session.
 
 	```
 	      ]CIDER.Config
-	 --- Cider Config File: /Users/sjt/.cider/config.json --- 
+	 --- Cider Config File: /Users/sjt/.cider/config.json ---
 	 {
 	   // AskForDirChange: 1,
 	   // CheckForDropboxConflicts: 1,
-	   // ExecuteAfterProjectOpen: "⎕SE.Path.To.Function",    
+	   // ExecuteAfterProjectOpen: "⎕SE.Path.To.Function",
 	   // ReportGitStatus: 1,
 	   // verbose: 1,
 	 }
@@ -176,11 +176,11 @@ If the project folder already contains a file `cider.config` Cider signals an er
 
 ??? tip "Keep the workspace root empty"
 
-	Good practice keeps the active workspace root empty. 
+	Good practice keeps the active workspace root empty.
 	Cider is designed to associate each project with a namespace.
 
 	To create a root project (NOT recommended) specify `#` as the project space.
-                                                                                                       
+
 
 ## :fontawesome-solid-terminal: Help
 
@@ -236,8 +236,8 @@ If you omit `project` Cider uses the one open project or, if you have more than 
 `full` | Print a hierarchical report on all dependencies.
 <!-- `raw`  | Print dependency data unformatted. -->
 
-The full report does not show what is actually used, but what the packages themselves require. 
-(Due to minimum version selection they might end up using a later version.) 
+The full report does not show what is actually used, but what the packages themselves require.
+(Due to minimum version selection they might end up using a later version.)
 This can help show why a particular (typically old) package is required.
 
 
@@ -245,7 +245,7 @@ This can help show why a particular (typically old) package is required.
 
     ]CIDER.Make [project]
 
-Prints the project’s Make expression: 
+Prints the project’s Make expression:
 the expression that builds a new version of the project.
 
 If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
@@ -309,14 +309,14 @@ Cider asks whether you want to update to it.
 
 The update is performed automatically,
 but does not change Cider in the current workspace.
-When the update is complete, restart Dyalog APL, rebuild the user commands, and print the current version.
+When the update is complete, restart Dyalog, rebuild the user commands, and print the current version.
 
 	      ]UReset
 	153 commands reloaded
 	      ]CIDER.Version
 	0.44.0+835
 
-??? danger "Do not use the command for Cider versions prior to 0.37.3" 
+??? danger "Do not use the command for Cider versions prior to 0.37.3"
 
 	=== "Versions 0.37.1 and 0.37.2"
 
