@@ -1,4 +1,8 @@
 (
+ '* 0.47.0 ⋄ 2025-01-19'
+ '  * Packages updated (CommTools)'
+ '  * Bug fixes'
+ '    * assets" property in the package config file corrected: not "html" anymore but empty '
  '* 0.46.0 ⋄ 2025-01-14'
  '  * Potentially BREAKING CHANGES'
  '    * When a project is opened and a file .linkconfig is found in the project''s source folder, its content is'
