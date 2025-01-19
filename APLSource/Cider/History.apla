@@ -1,5 +1,6 @@
 (
  '* 0.47.0 ⋄ 2025-01-19'
+ '  * Several documentation issues fixed / amended '
  '  * Packages updated (CommTools)'
  '  * Bug fixes'
  '    * assets" property in the package config file corrected: not "html" anymore but empty '
