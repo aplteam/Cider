@@ -11,7 +11,7 @@ keywords: api, apl, cider, dyalog, link, nuget, source, tatin
 You open a project with either
 
 -   user command [`]CIDER.OpenProject`](user-commands.md#open-project)
--   API function [`⎕SE.Cider.OpenProject`](api.md#open-project) 
+-   API function [`⎕SE.Cider.OpenProject`](api.md#open-project)
 
 The actions on opening a project are modified by, in ascending priority:
 
@@ -24,7 +24,7 @@ The actions on opening a project are modified by, in ascending priority:
 
 Cider creates the project space as a child of the parent namespace.
 
-The parent namespace is specified in the [`parent`](configuration.md#parent) setting of the project config, and must exist. (It is `#` by default, but could be something like `⎕SE` or `#.Foo.Goo`.) 
+The parent namespace is specified in the [`parent`](configuration.md#parent) setting of the project config, and must exist. (It is `#` by default, but could be something like `⎕SE` or `#.Foo.Goo`.)
 You can override the project setting with the `parent` option or parameter.
 
 The name of the project space is specified in the [`projectSpace`](configuration.md#projectspace) setting of the project config, but you can override it with the `projectSpace` option or parameter.
@@ -57,7 +57,7 @@ If a setting in `SYSVARS` cannot be used to set a system variable, Cider prints 
 
 Cider uses Link to find all files in the project’s `source` folder (and its children) with [supported file extensions](https://dyalog.github.io/link/4.0/Usage/Arrays/) and define them in the project space.
 
-Cider links the project space to the project folder according to the [`watch`](configuration.md#watch) setting of the project config, which may be overridden by 
+Cider links the project space to the project folder according to the [`watch`](configuration.md#watch) setting of the project config, which may be overridden by
 
 -   the `-watch=` or `import` options of [`]CIDER.OpenProject`](user-commands.md#open-project)
 -   the `watch` or `importFlag` parameters of [`⎕SE.Cider.OpenProject`](api.md#open-project)
@@ -89,7 +89,7 @@ If Cider finds a later version of a package it proposes to update it.
 
 !!! warning "Tatin registries only"
 
-	The check is offered only for packages loaded from a Tatin registry that is in your config file _and_ has a priority greater than 0. 
+	The check is offered only for packages loaded from a Tatin registry that is in your config file _and_ has a priority greater than 0.
 
 :fontawesome-solid-book:
 [Tatin documentation](https://tatin.dev/v1/documentation)
@@ -119,7 +119,7 @@ The packages are loaded into the project space unless the subkeys specify anothe
 	Packages that use [generics](https://learn.microsoft.com/en-us/dotnet/standard/generics/) cannot be used, as Dyalog’s .NET interface does not support them.
 	This restriction may be removed in a future release.
 
-NuGet packages can be included your application, but not loaded only as development tools, as only a single installation folder may be specified. 
+NuGet packages can be included your application, but not loaded only as development tools, as only a single installation folder may be specified.
 (This restriction may be removed in a later release.)
 
 
@@ -141,12 +141,19 @@ So while you work on the project, you can access `TatinVars` as if it had been l
 You would also expect a namespace `TatinVars` in the root of the _package_. That _might_ be the project space, but is more likely to be a child namespace.
 
 If so, specify it in the optional setting `tatinVars` in the `CIDER` section of the project config.
-Cider will then create a reference `TatinVars` in that namespace, pointing to `TatinVars` in the project space.
+
+=== "Cider version 0.46.0"
+
+	Cider will move the namespace from the root of the project to that sub-namespace.
+
+=== "Earlier Cider versions"
+
+	Cider will then create a reference `TatinVars` in that namespace, pointing to `TatinVars` in the project space.
 
 
 ## Change the current working directory
 
-If neither `import`, `importFlag` nor `batch` is set, Cider checks the current working directory. 
+If neither `import`, `importFlag` nor `batch` is set, Cider checks the current working directory.
 
 If it’s not the project folder, Cider proposes to change to it.
 
@@ -170,7 +177,7 @@ If neither `import`, `importFlag` nor `batch` is set; and the project space cont
 
 ## Report Git status
 
-If 
+If
 
 -   neither `import`, `importFlag` nor `batch` is set; and
 -   the project is version-controlled by Git; and

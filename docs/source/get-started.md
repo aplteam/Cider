@@ -11,12 +11,12 @@ keywords: apl, command, cider, dyalog, install, link, source, tatin
 
 ## Install
 
-Dyalog version 19 has Tatin and Cider already installed.
-Nothing to do here. 
+Dyalog version 19.0 has Tatin and Cider already installed.
+Nothing to do here.
 
-??? info "For Dyalog 18.2 install Tatin and Cider"
+??? info "For Dyalog v18.2 install Tatin and Cider"
 
-	For Dyalog 18.2, first [install Tatin](https://tatin.dev/Assets/docs/InstallingAndUpdatingTheTatinClient.html).
+	For Dyalog v18.2, first [install Tatin](https://tatin.dev/Assets/docs/InstallingAndUpdatingTheTatinClient.html).
 
 	Then use Tatin to install Cider.
 
@@ -43,7 +43,7 @@ Nothing to do here.
 
 ## Activate
 
-Dyalog 19.0 installs with Tatin and Cider, but they are disabled by default.
+Dyalog v19.0 installs with Tatin and Cider, but they are disabled by default.
 
 	]Activate all
 
@@ -56,7 +56,7 @@ Restart Dyalog.
 Verify. For example,
 
 	      ]TATIN.Version
-	 Tatin  0.112.1+1942  2024-08-16 
+	 Tatin  0.112.1+1942  2024-08-16
 	      ]CIDER.Version
 	0.42.2+671
 
@@ -70,7 +70,7 @@ Verify. For example,
 
 where `<projectpath>` identifies a folder that is empty or does not exist.
 
-Cider creates the folder as a Cider project, with an empty `APLSource` child folder, linked to a new namespace in your active workspace. 
+Cider creates the folder as a Cider project, with an empty `APLSource` child folder, linked to a new namespace in your active workspace.
 
 	      ]CIDER.CreateProject /Users/sjt/tmp/myproj
 
@@ -114,7 +114,7 @@ Clear the workspace and open the project.
 	      myproj.mean ⍳20
 	10.5
 
-Changes to the objects in `#.myproj` will be mirrored in their source files in `myproj/APLSource`. 
+Changes to the objects in `#.myproj` will be mirrored in their source files in `myproj/APLSource`.
 Changes to the source files will be mirrored in the workspace.
 
 When you quit Dyalog your changes have already been saved.
