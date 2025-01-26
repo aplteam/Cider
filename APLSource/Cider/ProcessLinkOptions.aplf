@@ -1,4 +1,4 @@
-(linkOptions parms)←ProcessLinkOptions(parms config);path;filename;msg;linkconfig
+ (linkOptions parms)←ProcessLinkOptions(parms config);path;filename;msg;linkconfig
 ⍝ Looks into the Cider config file and also a file .linkconfig in config.CIDER.source
 ⍝ If such a file exists and contains more than just the Link version number and "SourceFlags" (that is,
 ⍝ Stop and Trace vectors), then it takes precedence over what is defined in the (optional) [LINK] section
@@ -51,6 +51,7 @@
      :EndIf
  :EndIf
  :If 0≢parms.watch
+ :AndIf 0<config.⎕NC'LINK'
      config.LINK.watch←parms.watch           ⍝ Was specified by the user, and that takes (temporarily) precendence
  :ElseIf 2=linkOptions.⎕NC'watch'
      parms.watch←linkOptions.watch

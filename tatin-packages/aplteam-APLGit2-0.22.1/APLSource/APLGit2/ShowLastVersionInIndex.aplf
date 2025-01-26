@@ -1,0 +1,16 @@
+ r←{x}ShowLastVersionInIndex y;filename;res;msg;rc;path
+⍝ Takes the name of an object in the workspace or a filename of an APL object.\\
+⍝ Shows the last version of that APL object in the index.\\
+⍝ This command is useful when you have changed, and possibly even added, an object\\
+⍝ though not committed yet, and now want to see the original version in the Git index.\\
+⍝ For what `x` can actually be see `EstablishProject`.\\
+ x←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'x'
+ (filename path)←x IdentifyObject y
+ (rc msg res)←path U.RunGitCommand'show :"',(filename~'"'),'"'
+ msg Assert rc=0
+ :If 0=≢res
+     r←''
+ :Else
+     r←1↓⊃,/(⎕UCS 13),¨res
+ :EndIf
+⍝Done

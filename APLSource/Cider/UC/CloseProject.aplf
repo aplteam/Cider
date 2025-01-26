@@ -21,6 +21,8 @@
                  r←+/(~fast)P.CloseProject list[ind;1]
                  'Something went wrong'Assert r=≢ind
                  r←1↓∊(⎕UCS 13),¨↓⎕FMT list[ind;]
+             :Else
+                 r←'Cancelled by user' ⋄ →0
              :EndIf
          :EndIf
      :EndIf

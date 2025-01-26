@@ -1,0 +1,12 @@
+(
+ 'Takes an APL name or a filename and returns a matrix with zero or more rows and 4 columns'
+ 'with information regarding all commits the given object was changed by:'
+ ''
+ ' 1. Hash'
+ ' 2. Commiter''s name'
+ ' 3. Date of the commit date in strict ISO 8601 format'
+ ' 4. Message of the commit'
+ (' '⋄)
+ ' The command tries to work out the project itself, but you can specify it with'
+ ' -project= '
+)

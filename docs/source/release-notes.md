@@ -18,7 +18,8 @@ Here we highlight incompatabilities, if any.
   }
 </style>
 
--------|------------|--------------
+------|------------|--------------
+0.47.0 | 2025-02-03 | No compatability issues
 0.46.0 | 2025-01-14 | Several potentially BREAKING CHANGES!
 0.45.0 | 2024-12-09 | No compatability issues
 0.44.0 | 2024-11-16 | No compatability issues

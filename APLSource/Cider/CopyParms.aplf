@@ -8,6 +8,7 @@
  :EndIf
  :If ' '=1↑0⍴parms.watch
  :AndIf 0<≢parms.watch
+ :AndIf 0<cfg.⎕NC'LINK'
      cfg.LINK.watch←parms.watch
  :EndIf
 ⍝Done

@@ -1,4 +1,4 @@
- {r}←CheckForGit(path config parms);status;dmx;gitStatus;ind
+ {r}←CheckForGit(path config parms);status;dmx;gitStatus;ind;stashes
 ⍝ Checks whether the project is managed by Git, and if so offers some help, unless parms.batch=1
  r←⍬
  →(~F.Exists(AddSlash path),'.git')/0
@@ -36,7 +36,9 @@
      :Else
          (3⊃status)←'Git branches: '{0=≢⍵:'No other branches' ⋄ ⍺,⊃{⍺,', ',⍵}/⍵}2↓¨APLGit2.ListBranches path
      :EndIf
-      ⍝TODO⍝ Add stash info if any
+     :If 0<≢stashes←APLGit2.StashList path
+         status,←⊂'Number of stashes: ',⍕≢status
+     :EndIf
      status←(↓(,[0.5]'Git status report')⍪'='),status
      :If gitStatus=1
          {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status

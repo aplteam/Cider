@@ -1,0 +1,30 @@
+ (r space folder)←GetSpaceAndFolder(Cmd args)
+ r←0 0⍴''
+ space←folder←''
+ :If 'stashpush'≡⎕C Cmd
+ :AndIf (,'?')≡,args._1
+     (space folder)←##.EstablishProject''
+     args._2←args._1
+     args._1←folder
+ :ElseIf ~(⊂Cmd)∊,⊂'Version'
+     :If ({⍵⊃⍨⍸⍵.Name≡¨⊂Cmd}List ⍬)._Project
+     :AndIf 0≢args._1
+         (space folder)←GetSpaceAndFolder_ args._1
+         ('Project <',args._1,'> not found on disk')Assert 0<≢folder
+     :ElseIf 2=args.⎕NC'project'
+     :AndIf (,0)≢,args.project
+     :AndIf 0<≢args.project
+         (space folder)←GetSpaceAndFolder_ args.project
+     :Else
+         (space folder)←##.EstablishProject''
+     :EndIf
+     :If 0=≢space,folder
+         :If 1 ##.CommTools.YesOrNo'Act on the current directory (',(⊃1 ⎕NPARTS''),') ?'
+             folder←⊃1 ⎕NPARTS''
+         :Else
+             r←'No argument provided',(9=⎕SE.⎕NC'Cider')/' and no open Cider project(s) found.'
+         :EndIf
+     :ElseIf ~(⊂Cmd)∊,⊂'OpenGitShell'
+         ('<',folder,'> not found on disk')Assert ⎕NEXISTS folder
+     :EndIf
+ :EndIf

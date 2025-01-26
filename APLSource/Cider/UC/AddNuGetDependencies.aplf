@@ -29,7 +29,7 @@
              cfg←P.ReadProjectConfigFile projectFolder
              ref←cfg.CIDER.dependencies
          :Else
-             →0,≢r←'Cancelled by user'
+             r←'Cancelled by user' ⋄ →0
          :EndIf
      :Else
          flag←1

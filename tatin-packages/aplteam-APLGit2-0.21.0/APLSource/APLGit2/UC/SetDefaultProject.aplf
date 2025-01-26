@@ -1,3 +1,0 @@
- r←SetDefaultProject(space folder Args)
- r←##.SetDefaultProject{⍵/⍨0≠⍵}Args._1
-⍝Done
