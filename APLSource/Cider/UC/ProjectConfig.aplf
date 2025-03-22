@@ -10,6 +10,8 @@
      :AndIf res
          r←'Changed: ',path,'/cider.config; changes are NOT reflected in the workspace (requires close and re-open)!'
      :Else
-         r←res
+         :If (⊂res)∊0 ¯1
+             r←'Cancelled by user'
+         :EndIf
      :EndIf
  :EndIf

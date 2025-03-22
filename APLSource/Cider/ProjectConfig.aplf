@@ -5,7 +5,7 @@
 ⍝ * If the user is allowed to edit the configuration (edtFlag←→1) a 1 is returned in case the file was modified and 0 otherwise.
 ⍝   If the user deletes the contents of the edit window this is treated as cancellation, and ¯1 is returned.
 ⍝ * If editFlag←→0 the configuration is returned as a simple text matrix
- r←0
+ r←0                 ⍝ 0 = no action required ⋄ 1 = save data ⋄ ¯1 = cancelled by user
  editFlag←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'editFlag'
  :If '['∊path
      path←GetFolderFromAlias path
@@ -25,23 +25,29 @@
  :OrIf ~0 PerformConfigChecks ⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
      orig←'' ⍝ This can happen in case the user edited the file with an external editor and introduced a mistake
  :EndIf
- flag←0
  :If editFlag
+     flag←0      ⍝ Controls the :Repeat loop
      :Repeat
          ns.⎕ED'cider_config'
          :If orig≢ns.cider_config
              :If 0=≢(∊ns.cider_config)~' '
                  r←¯1 ⍝ Cancelled by user
                  flag←1
+             :ElseIf ~CheckJsonSyntax ns.cider_config
+                 :If ~1 C.YesOrNo'JsonSyntaxProblem@The JSON is syntactially incorrect. Would you like to try again? (no=changes are lost)'
+                     flag←1
+                 :EndIf
              :Else
-                 :If 1 C.YesOrNo'SaveChanges@Would you like to save your changes?'
-                 :AndIf CheckJsonSyntax ns.cider_config
-                     data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
-                 :AndIf PerformConfigChecks data
-                     data Put_JSON5 filename
-                     r←flag←1
+                 data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
+                 :If ~PerformConfigChecks data
+                     :If ~1 C.YesOrNo'JsonCheckFailed@Something is wrong with the JSON, see above. Would you like to try again? (no=changes are lost)'
+                         flag←1
+                     :EndIf
                  :Else
-                     :If ~1 C.YesOrNo'Syntax check failed. Try again? (no=changes are lost)'
+                     :If 1 C.YesOrNo'JsonSaveChanges@Would you like to save your changes?'
+                         data Put_JSON5 filename
+                         r←flag←1
+                     :Else
                          flag←1
                      :EndIf
                  :EndIf

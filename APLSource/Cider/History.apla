@@ -1,4 +1,6 @@
 (
+ '* 0.47.1 ⋄ 2025-03-22'
+ '  * Messages & checks in ]ProjectConfig -edit improved'
  '* 0.47.0 ⋄ 2025-02-03'
  '  * `OpenProject` now reports Git stashes if there are any'
  '  * Several documentation issues fixed / amended '
