@@ -5,7 +5,7 @@
      filenames←{tatinFolder,'/',⍵,'/apl-dependencies.txt'}¨2⊃¨r
      buff←filenames ListTatinDependenciesFull_¨⊂(level+1)folder
      :If 0<≢∊buff
-         r←(⊂¨r),¨buff
+         r←(⊂¨r),¨{0=≢⍵:⍵ ⋄ d←≡⍵ ⋄ ¯3≡d:⍵ ⋄ ⊃,/⍵}¨buff
      :EndIf
  :Else
      r←⍬

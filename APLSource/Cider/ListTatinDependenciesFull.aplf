@@ -7,7 +7,6 @@
  filenames←{tatinFolder,'/',⍵,'/apl-dependencies.txt'}¨2⊃¨r
  buff←filenames ListTatinDependenciesFull_¨⊂1 tatinFolder
  r←r{0=≢⍵:⊂⍺ ⋄ ¯4=≡⍵:(⊂⍺),⊃,/⍵ ⋄ (⊂⍺),⍵}¨buff
-⍝ r←r{0=≢⍵:⍵ ⋄ (⊂⍺),⍵}¨buff
  r←(0<≢¨r)/r
- r←⊃⍪/↑¨r
+ r←⊃⍪/↑¨,¨r
 ⍝Done
