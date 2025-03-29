@@ -1,0 +1,7 @@
+ r←GetDependencies filename
+⍝ Returns real dependencies from file.
+⍝ `filename` must point to a file "apl-dependencies.txt"
+ r←⊃⎕NGET filename 1
+ r←r[⍋r]                   ⍝ Sort filenames
+ r←(0<≢¨r)/r               ⍝ Remove empty lines
+ r←(~';'∊¨r)/r             ⍝ Remove comment lines
