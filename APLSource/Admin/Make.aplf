@@ -1,15 +1,17 @@
- {batch}Make flag;M;C;path;zipFilename;res;version;cfg;parms;folder1;folder2;targetFolder;developmentWas;noOf
+ Make flag;M;C;path;zipFilename;res;cfg;parms;folder1;folder2;targetFolder;developmentWas;noOf
 ⍝ "Make" a new version of this project.
 ⍝ If called by a program rather executed by a human specify a 1 as left arguments: not questions are asked, but
 ⍝ Cider won't be installed as a user command then.
  :If flag
      'Runs only on Windows'Assert'Win'≡##.Cider.APLTreeUtils2.GetOperatingSystem ⍬
      :If 0=⎕SE.⎕NC'MakeHelpers' ⋄ {}⎕SE.Tatin.LoadPackages'[tatin]MakeHelpers'⎕SE ⋄ :EndIf
-     batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
      M←⎕SE.MakeHelpers
      C←##.CiderConfig
+     ⎕←'' ⋄ 0 0⍴⍞,0/⍞←'Pause sync services like Dropbox, Google Drive etc. in order to avoid FILE ACCESS errors. Press <enter> to continue '
+     :If ⎕NULL≡cfg←M.EditPackageConfigFile C.HOME
+         ⎕←'Cancelled by user' ⋄ →0
+     :EndIf
      path←C.HOME,'/',C.CIDER.distributionFolder
-     cfg←⎕SE.Tatin.ReadPackageConfigFile C.HOME
      targetFolder←##.Cider.GetCurrentAPLsFolderInDocuments,'SessionExtensions\CiderTatin\Cider'
      :If 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
          targetFolder←##.Cider.GetUserDocumentsFolder,'Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
@@ -17,28 +19,18 @@
      :AndIf ~1 M.YesOrNo'Could not find the user command script in the user''s home folder anywhere - continue?'
          :Return
      :EndIf
-     :If batch
-         version←⍬
-     :Else
-         cfg←M.EditVersion cfg
-         version←cfg.version
-     :EndIf
      M.FetchLaterUserCommand cfg C targetFolder
      M.RecreateFolder path
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
      parms.projectSpace←'#.Cider'
-     :If ⍬≢version
-         parms.version←version
-     :EndIf
+     parms.version←cfg.version
      noOf←⎕SE.Tatin.CreateAPIfromCFG ##.Cider cfg
      'Tally of the API is unexpected'Assert 30=noOf
      zipFilename←⎕SE.Tatin.BuildPackage parms
      MakeZipForDyalog 1
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
-     :If 0=batch
-         ⎕←'   ',4↓0 #.Cider.Admin.InstallCider 1
-         ⎕←'Cider in ⎕SE is out of date, restart APL'
-     :EndIf
+     ⎕←'   ',4↓0 #.Cider.Admin.InstallCider 1
+     ⎕←'Cider in ⎕SE is out of date, restart APL'
  :EndIf
  ⍝Done
