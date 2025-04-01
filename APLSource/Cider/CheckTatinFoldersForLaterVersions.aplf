@@ -7,7 +7,7 @@
          folder_←parms.folder,'/',folder_
          :If 0<≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣folder_,'/*'
              :Trap 998
-                 report,←⊂⎕SE.Tatin.CheckForLaterVersion folder_
+                 report,←⊂(3×parms.major)⎕SE.Tatin.CheckForLaterVersion folder_
              :Else
                  qdmx←⎕DMX
                  :If qdmx.EM≡'The build list carries entries that are not on the Tatin Registry search path'

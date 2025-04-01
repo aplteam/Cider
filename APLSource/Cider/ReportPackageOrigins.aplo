@@ -1,5 +1,5 @@
  msg←(reportFns ReportPackageOrigins)folder;data;noOf
-⍝ Report where the package got installed from but not if all came from https://tatin.dev/
+⍝ Report where the package got installed from in case they did NOT come from https://tatin.dev/
  msg←''
  data←Get_JSON5 folder,'/apl-buildlist.json'
  :If ~∧/'https://tatin.dev/'∘≡¨data.url

@@ -7,13 +7,16 @@
 ⍝ 1 means yes, check, but ask before updating
 ⍝ 2 means update without further ado
  r←⍬
+ parms.major←0    ⍝ By default we don't check on latermajor versions
  folders←GetTatinDependencyFolders config
  :If 0<≢folders
      :If 0≢parms.checkPackageVersions
      :AndIf 2>pkgStatus
          :If (⊂parms.checkPackageVersions)∊⍬ 1
          :AndIf 0=parms.batch
-             checkFlag←0 C.YesOrNo' Report availability of later versions of installed Tatin packages?'
+             :If checkFlag←0 C.YesOrNo' Report availability of later versions of installed Tatin packages?'
+                 parms.major←0 C.YesOrNo' Report even later MAJOR versions?'
+             :EndIf
          :Else
              checkFlag←2≡parms.checkPackageVersions
          :EndIf

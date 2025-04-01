@@ -5,6 +5,7 @@
  updateParms←⎕SE.Tatin.CreateReInstallParms
  updateParms.update←1
  updateParms.quiet←parms.batch
+ updateParms.major←parms.major
  :For i :In ⍳≢reports
      report←i⊃reports
      :If 0<≢report

@@ -1,4 +1,4 @@
- status←parms CheckForTatinPackages config;folders;list;bool;report;this;parms;parms2
+ status←parms CheckForTatinPackages config;folders;list;bool;report;this;parms;parms2;askForMajor;q
 ⍝ Checks whether at least one Tatin install folder is defined, does exist and is not empty, in which case a 1 is returned.
 ⍝ In case at least one install folder contains just a dependency file and a build file but nothing else then...
 ⍝ * when the user goes for re-installing the packages, a 2 is returned
@@ -16,10 +16,24 @@
      :OrIf 1 C.YesOrNo'Tatin install folder',((1+1=+/bool)⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
          status←2
          parms2←⎕SE.Tatin.CreateReInstallParms
+         :If 0=parms2.⎕NC'major'
+             ⍝ This can only happen when this version of Cider (or a later one) is used with Tatin 0.119.0 or earlier, meaning
+             ⍝ that Tatin can't do a major update yet.
+             ⍝ Therefore we have to make sure that this works anyway.
+             askForMajor←0
+         :Else
+             askForMajor←1
+         :EndIf
          :If parms.batch
              parms2.quiet←1
          :Else
-             parms2.update←1 C.YesOrNo'Would you like to install later versions, if available (NOT later major versions) ?'
+             q←'Would you like to install later versions, if available',((~askForMajor)/' (NOT later major versions'),' ?'
+             parms2.update←1 C.YesOrNo q
+             :If parms2.update
+             :AndIf askForMajor
+                 q←'Would you like to install even later MAJOR versions, if available ?'
+                 parms2.major←0 C.YesOrNo q
+             :EndIf
          :EndIf
          folders←bool/folders
          :For this :In (⊂parms.folder,'/'),¨folders
