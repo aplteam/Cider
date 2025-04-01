@@ -11,7 +11,7 @@
      :If 0<≢report
          folder←RemoveTargetDefinition i⊃folders
          1 parms.batch p'Later versions in <',(AddSlash folder),'> :'
-         1 parms.batch p ⎕FMT↑{(1⊃⍵),' ==> ',(2⊃⍵)}¨↓report
+         1 parms.batch p ⎕FMT({⍵↑⍨+/2>+\⍵='-'}¨report[;1]){↑(↓(↑⍺),' '),¨⍵[;1],¨' => '∘,¨⍵[;2]}{⍵↓⍨1++/2>+\⍵='-'}¨report[;1 2]
          :If ~updateFlag←2≡parms.checkPackageVersions
              updateFlag←1 C.YesOrNo'ReinstallLatest@Re-install latest versions in <',(AddSlash folder),'> ?'
          :EndIf

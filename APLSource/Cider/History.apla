@@ -1,6 +1,7 @@
 (
  '* 0.48.0 ⋄ 2025-04-01'
- '  * Updating packages impoved: now even later major versions can be installed over earlier versions '
+ '  * Updating packages impoved: now even later major versions can be installed over earlier versions'
+ '  * Reeporting off later versions improved when opening a project '
  '  * Bug fix in ]ListTatinDependencies -full'
  '  * Messages & checks in ]ProjectConfig -edit improved'
  '* 0.47.0 ⋄ 2025-02-03'
