@@ -1,4 +1,4 @@
- {r}←UpdatePackages(folders reports parms);i;folder;updateFlag;report;updateParms
+ {r}←UpdatePackages(folders reports parms);i;folder;updateFlag;report;updateParms;buff
 ⍝ Update Tatin install folders by running ReInstallDependencies with the updateFlag set
 ⍝ Returns the number of install folders updated.
  r←0
@@ -11,7 +11,9 @@
      :If 0<≢report
          folder←RemoveTargetDefinition i⊃folders
          1 parms.batch p'Later versions in <',(AddSlash folder),'> :'
-         1 parms.batch p ⎕FMT({⍵↑⍨+/2>+\⍵='-'}¨report[;1]){↑(↓(↑⍺),' '),¨⍵[;1],¨' => '∘,¨⍵[;2]}{⍵↓⍨1++/2>+\⍵='-'}¨report[;1 2]
+         buff←({⍵↑⍨+/2>+\⍵='-'}¨report[;1]){↑(↓(↑⍺),' '),¨⍵[;1],¨' => '∘,¨⍵[;2]}{⍵↓⍨1++/2>+\⍵='-'}¨report[;1 2]
+         buff,←{≡/⍵:'' ⋄ '  ',(1⊃⍵),' => ',(2⊃⍵)}¨↓report[;3 5]   ⍝ If the source URLs differ, list them as well
+         1 parms.batch p ⎕FMT buff
          :If ~updateFlag←2≡parms.checkPackageVersions
              updateFlag←1 C.YesOrNo'ReinstallLatest@Re-install latest versions in <',(AddSlash folder),'> ?'
          :EndIf

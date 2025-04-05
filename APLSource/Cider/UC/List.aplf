@@ -28,7 +28,7 @@
      c.Desc←'Prints Cider''s config file to the session, and allow the user to edit it'
      c.Group←'Cider'
      c.Parse←'-edit'
-     r,←c 
+     r,←c
 
 	 c←⎕NS''
      c.Name←'HowToMakeNewVersion'
@@ -43,7 +43,7 @@
      c.Group←'Cider'
      c.Parse←'1s'
      r,←c
-	 
+	
 	 c←⎕NS''
      c.Name←'LinkConfig'
      c.Desc←'List the Link config file, if any, or edit or delete it'
@@ -76,7 +76,7 @@
      c.Name←'ListTatinDependencies'
      c.Desc←'List Tatin packages installed as dependencies'
      c.Group←'Cider'
-     c.Parse←'1s -full'
+     c.Parse←'1s -full -latest'
      r,←c
 
      c←⎕NS''

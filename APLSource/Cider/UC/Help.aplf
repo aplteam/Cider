@@ -39,7 +39,7 @@
          r,←⊂']Cider.ListOpenProjects -verbose'
      :Case ⎕C'ListTatinDependencies'
          r,←⊂'List all Tatin dependencies'
-         r,←⊂']Cider.ListTatinDependencies [projectpath] -full'
+         r,←⊂']Cider.ListTatinDependencies [projectpath] -full -latest'
      :Case ⎕C'OpenProject'
          r,←⊂'Load all source files into the WS and keep it linked by default plus some more actions'
          r,←⊂']Cider.OpenProject [folder|alias] -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns|dir|both -verbose -batch'

@@ -1,0 +1,13 @@
+ r←GetLatestVersionNumbers mat_;IDs1;IDs2;mat;v1;v2;forceClose;buff1;buff2
+ mat←{⍵⌿⍨{(⍵⍳⍵)=⍳≢⍵}⍵[;1]}mat_                          ⍝ Remove duplicates
+ IDs1←IDs2←mat[;1]
+ IDs1←⎕SE._Tatin.Client.Reg.RemoveMinorAndPatch¨IDs1    ⍝ For the latest version number of the given major version the minor & patch
+ IDs2←⎕SE._Tatin.Client.Reg.RemoveVersionNumber¨IDs2    ⍝ For the latest major version number we remove the full version number
+ forceClose←1 ⎕SE._Tatin.Client.EstablishRumbaClients ⍬
+ buff1←↑{3⊃⎕SE._Tatin.Client.GetBestVersionNumber ⍵~¨' '}¨(⊂¨IDs1),¨⊂¨mat[;2]
+ buff1←(≢¨mat[;2])↓¨↓buff1
+ buff2←↑{3⊃⎕SE._Tatin.Client.GetBestVersionNumber ⍵~¨' '}¨(⊂¨IDs2),¨⊂¨mat[;2]
+ buff2←(≢¨mat[;2])↓¨↓buff2
+ ⎕SE._Tatin.Client.CloseConnections forceClose
+
+⍝Done
