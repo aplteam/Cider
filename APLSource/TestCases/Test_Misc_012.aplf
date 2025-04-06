@@ -7,7 +7,7 @@
  →T.PassesIf'/totally/made/up'≡data
 
  parms←##.Cider.CreateOpenParms ⍬
- parms.folder←'[foo]'
+ parms.folder←'[aliasdoesnotexist]'
 
  :Trap 11
      {}({⍵}#.Cider.Cider.GetFolderFromAlias)parms
@@ -15,7 +15,7 @@
  :Else
      qdmx←⎕DMX
      →T.PassesIf 11=qdmx.EN
-     →T.PassesIf'"foo" is not a valid alias'≡qdmx.EM
+     →T.PassesIf'"aliasdoesnotexist" is not a valid alias'≡qdmx.EM
  :EndTrap
 
  r←T._OK

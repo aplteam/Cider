@@ -1,0 +1,20 @@
+ r←WeekNo_ISO yyyy_mm_dd;b1;b2;r2;Calc
+⍝ Calculates the week number according to the ISO standard.\\
+⍝ See <https://www.wikiwand.com/en/ISO_week_date> for details.\\
+⍝ See also `DateFrom_Year_WeekNumberISO`.\\
+⍝ Example:\\
+⍝ `39 ← WeekNo_ISO 2008 9 22`\\
+⍝ Kai Jaeger
+ :Access Public Shared
+ Calc←{⌊(10+(OrdinalNumber ⍵)-DayOfWeekAsNumber ⍵)÷7}
+ r←Calc yyyy_mm_dd
+ b1←r=0
+ b2←r=53
+ :If ∨/b1
+     (b1/r)←Calc((b1/¯1+0⌷⍤1⊣yyyy_mm_dd),[0.5]12),31
+ :EndIf
+ :If ∨/b2
+ :AndIf 0∧.≠r2←Calc((b2/1+0⌷⍤1⊣yyyy_mm_dd),[0.5]1),1
+     b2∧←b2\r2≠0
+     (b2/r)←(0≠r2)/r2
+ :EndIf

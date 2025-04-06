@@ -17,16 +17,17 @@
  ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (success log)←##.Cider.OpenProject parms
  Assert success
- →T.GoToTidyUp∨/'ERROR'⍷log
  defs←##.Cider.GetCiderAliasFileContent ⍬
+ →T.GoToTidyUp∨/'ERROR'⍷log
  →T.GoToTidyUp~(⊂'foo')∊defs[;1]
 
  R←T._OK
 
 ∆TidyUp:
  ##.Cider.C.Cleanup
- Assert res←(~parms.batch)⎕SE.Cider.CloseProject'[foo]'
- #.⎕EX'TEMP'
+ res←(~parms.batch)⎕SE.Cider.CloseProject'[foo]'
+ Assert res=1
  defs←(defs[;1]≢¨⊂'foo')⌿defs
  (⊂⊃¨{⍺,'=',⍵}/¨↓defs)⎕NPUT ##.Cider.GetCiderAliasFilename 1
+ #.⎕EX'TEMP'
 ⍝Done

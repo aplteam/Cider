@@ -1,0 +1,10 @@
+ OrdinalNumber←{
+⍝ `⍵` can be either a vector with 3 elements (Y M D) or a matrix with n rows and 3 columns.\\
+⍝ Returns the ordinal number (= the position within the year) of the give date.\\
+⍝ The first of March has an ordinal number of 61 in leap years and 60 otherwise.\\
+⍝ The last day of the year has an ordinal number 365 in leap years and 364 otherwise.\\
+⍝ Kai Jaeger
+     'Year must be 1753 or later'⎕SIGNAL 11/⍨1752∧.≥0⌷⍤1⊣⍵
+     (Y M D)←↓∘⍉⍣(⊃2=⍴⍴yyyy_mm_dd)⊣⍵
+     D+Y{+/(1+⍳⍵)DaysInMonth ⍺}¨M-1
+ }

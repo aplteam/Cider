@@ -1,0 +1,16 @@
+ {success}←parms HandleLX(ref2TatinVars ref2project);ns;success;rc;msg
+⍝ Returns 1 in case a package parameter "lx" was successfully exxecuted and 0 otherwise.
+ success←0
+ :If ref2TatinVars≢⎕NULL
+     ns←⎕JSON⍠('Dialect' 'JSON5')⊢ref2TatinVars.CONFIG
+ :AndIf 0<≢ns.lx
+     :If parms.batch
+     :OrIf 1 C.YesOrNo'ExecLX@lx←',ns.lx,'  -- execute?'
+         (success rc msg)←ExecUnderTrap(⍕projectSpace_),'.',parms.projectSpace,'.',ns.lx
+         :If ~success
+             1 p'>>> Executing "lx" (according to the package conf) caused an error:'
+             1 p'    RC=',⍕rc,(⎕UCS 13),¨(⊂4⍴' '),¨msg
+         :EndIf
+     :EndIf
+ :EndIf
+⍝Done

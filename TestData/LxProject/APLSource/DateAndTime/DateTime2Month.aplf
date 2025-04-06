@@ -1,0 +1,8 @@
+ DateTime2Month←{
+    ⍝ `⍵` date.time      - shape any\\
+    ⍝ `←` months         - shape ⍴⍵\\
+    ⍝ Origin is 1 Jan 1 bce (for what it's worth)\\
+    ⍝ See also [`Month2DateTime`](#).\\
+    ⍝ Phil Last
+     r←0 12⊥0 100⊤⌊⍵÷100
+ }

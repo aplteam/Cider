@@ -1,0 +1,12 @@
+ AddPeriod2DateTime←{
+⍝ `⍺` period(s)    - Y [M [D [h [m [s [i]]]]]]   - vector or matrix\\
+⍝ `⍵` date.time(s) - yyyymmdd.hhmmssmmm - scalar or vector\\
+⍝ `⍺` conforms `⍤ 1 0 ⊢ ⍵`\\
+⍝ i.e. each row in `⍺` corresponds to each element in `⍵`\\
+⍝ `← date.time ← period ∇ date.time`\\
+⍝ Phil Last
+     d←⍉(DateTime2Timestamp ⍵)+∘(7∘↑)⍤1⊢⍺
+     m d←1 0+(0 12)(0 24 60 60 1000){⍺⊤⍺⊥⍵}¨(¯1+2↑d)(2↓d)
+     (1 0 0 0 0⌿d)+←Date2GregorianSerialDate⍉m⍪0
+     Timestamp2DateTime(GregorianSerialDate2Date⊣⌿d),⍉1↓d
+ }

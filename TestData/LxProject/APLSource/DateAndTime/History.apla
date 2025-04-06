@@ -1,0 +1,12 @@
+(
+ '* 3.0.0'
+ '  * Potentially breaking change: `Version` now returns a char vector stemming from the package config'
+ '  * Converted from a class to a namespace, and some tfns to dfns in the process'
+ '  * Added a function `Init` for initalizing `⎕IO` and `⎕ML` when loaded as a package'
+ '* 2.0.1'
+ '  * Package config corrected'
+ '* 2.0.0'
+ '  * BREAKING CHANGE: File extension changed from .DYALOG to .APLC'
+ ''
+ 'For information regarding older versions see <https://github.com/aplteam/DateAndTime/releases>'
+)

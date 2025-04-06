@@ -1,0 +1,8 @@
+ FileDate2Timestap←{
+⍝ filedate to timestamp\\
+⍝ `⍵` filedate - `⊢/⎕FRDCI - s/60 since 1970 1 1 0 0 0 0`\\
+⍝ `←` timestamp - shape as `(⍴⍵),7`\\
+⍝ Phil Last
+     s←719163 ⍝ ts2dd 1970 1 1
+     DayDecimal2Timestamp s+⍵÷×/24 60 60 60
+ }

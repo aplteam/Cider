@@ -1,0 +1,18 @@
+ (success rc msg)←ExecUnderTrap expr;qdmx
+⍝ Executes `expr` under a :Trap 0 and returns (1 0 '') in case of success and (0 ⎕en <errorMessage>) otherwise.
+⍝ If `expr` is a function that returns a result, that result will be ignored.
+ :Trap 0
+     :If 0=10 ⎕ATX expr
+         ⍎expr
+     :Else
+         {}⍎expr
+     :EndIf
+     success←1
+     rc←0
+     msg←''
+ :Else
+     qdmx←⎕DMX
+     success←0
+     rc←qdmx.EN
+     msg←qdmx.DM
+ :EndTrap

@@ -1,4 +1,4 @@
- (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag
+ (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag;ref2TatinVars
 ⍝ Open a Cider project.\\
 ⍝ `y` must be one of:
 ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
@@ -100,7 +100,7 @@
                  buff←''
                  buff,←⊂'ERROR: Checking Tatin package status in ',parms.folder
                  buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
-                 buff Assert 0=parms.batch
+                 (1↓⊃,/(⎕UCS 13),¨buff)Assert 0=parms.batch
                  (1 parms.batch)p buff
              :EndTrap
          :EndIf
@@ -141,8 +141,8 @@
      :EndIf
  :EndIf
  InjectConfigDataIntoProject config projectSpace_ parms.folder
- msg←InjectTatinVars projectSpace_ parms.folder
- 1 p msg
+ ref2TatinVars←InjectTatinVars projectSpace_ parms.folder
+ parms HandleLX ref2TatinVars projectSpace_
  flag←(0=parms.batch)∧(0=parms.importFlag)
  {}ChangeCurrentDir⍣flag⊢parms.folder
  {}parms ExecProjectInitFunction⍣(0=parms.suppressInit)⊢config projectSpace_

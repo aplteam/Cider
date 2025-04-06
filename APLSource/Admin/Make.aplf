@@ -56,12 +56,13 @@
      noOf←⎕SE.Tatin.CreateAPIfromCFG ##.Cider cfg
      'Tally of the API is unexpected'Assert 30=noOf
      M.RecreateFolder path
-     {}⎕SE.Tatin.CreateAPIfromCFG ##.Cider cfg
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←C.CIDER.distributionFolder
      parms.version←cfg.version
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version built successfully:',M.CR,'   ',zipFilename
      r←1
+     ⎕←'   ',4↓0 #.Cider.Admin.InstallCider 1
+     ⎕←'Cider in ⎕SE is out of date, restart APL'
  :EndIf
 ⍝Done

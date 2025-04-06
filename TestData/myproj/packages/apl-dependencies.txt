@@ -1,1 +1,1 @@
-dyalog-HttpCommand-4.0.24
+dyalog-HttpCommand-5.8.0

@@ -1,0 +1,8 @@
+ WeekNo_US←{
+⍝ Calculates the week number according to the US standard.\\
+⍝ See <https://www.wikiwand.com/en/ISO_week_date#Other_week_numbering_systems> for details.\\
+⍝ See also [`DateFrom_Year_WeekNumberUS`](#).\\
+⍝ Kai Jaeger
+     days←DayOfWeekAsNumber↑⍵[0]{⍺,1,⍵}¨1+⍳7
+     (¯1+OrdinalNumber ⍵)⊃(1⍴⍨1+days⍳6),⊃,/7⍴¨2+⍳52
+ }

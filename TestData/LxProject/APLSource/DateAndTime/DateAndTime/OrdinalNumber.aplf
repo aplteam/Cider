@@ -1,0 +1,1 @@
+OrdinalNumber←{⍺←⊢ ⋄ 1:shy←⍺ ##.OrdinalNumber ⍵}

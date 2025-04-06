@@ -1,0 +1,8 @@
+ r←{M}DaysInMonth Y
+⍝ `⍵` The year. Must be a single integer value.\\
+⍝ `⍺` Optional: month; If not specified then all 12 months for the year given are returned.\\
+⍝ `←` Scalar with number of days.\\
+⍝ Kai Jaeger
+ M←{0<⎕NC ⍵:⍎⍵ ⋄ 1+⍳12}'M'
+ 'Invalid month'⎕SIGNAL 11/⍨∨/~M∊1+⍳12
+ r←(31(28+LeapYear Y)31 30 31 30 31 31 30 31 30 31)[M-1]

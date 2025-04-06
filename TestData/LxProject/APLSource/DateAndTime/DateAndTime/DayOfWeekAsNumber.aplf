@@ -1,0 +1,1 @@
+DayOfWeekAsNumber←{⍺←⊢ ⋄ 1:shy←⍺ ##.DayOfWeekAsNumber ⍵}

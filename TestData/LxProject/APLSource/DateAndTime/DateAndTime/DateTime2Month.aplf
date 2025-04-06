@@ -1,0 +1,1 @@
+DateTime2Month←{⍺←⊢ ⋄ 1:shy←⍺ ##.DateTime2Month ⍵}

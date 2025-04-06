@@ -1,0 +1,13 @@
+ DayDecimal2Timestamp←{
+    ⍝ `⍵` days.decs ddddd.dddddd            - Scalar or vector\\
+    ⍝ `←` timestamp yyyy mm dd hh mm ss mmm - shape `(⍴⍵),7`\\
+    ⍝ Try:
+    ⍝ ~~~
+    ⍝ `a←(24÷⍨6+2.2×1○2×○(92⌽⍳366)÷366)+(39436+⍳366)`
+    ⍝ `FormatDateTime∘Timestamp2DateTime∘DayDecimal2Timestamp a`
+    ⍝ ~~~
+    ⍝ See also [`Timestamp2DayDecimal`](#).\\
+    ⍝ Phil Last
+     dhm←24 60 60 1000
+     (GregorianSerialDate2Date⌊⍵),⌊⍉dhm⊤⍉(1|⍵)××/dhm
+ }

@@ -1,0 +1,9 @@
+ Timestamp2DayDecimal←{
+⍝ `⍵` timestamp yyyy mm dd [hh [mm [ss [mmm]]]] - Either a simple vector or a simple matrix.\\
+⍝ `←` days.decs ddddd.dddddd                    - shape `¯1↓⍴⍵`\\
+⍝ 1899-12-31 00:00 `→` 0 - a year and a day before the end of the 19th century!\\
+⍝ See also [`DayDecimal2Timestamp`](#).\\
+⍝ Phil Last
+     dhm←24 60 60 1000
+     (¯1↓⍴TS)⍴⊃{(Date2GregorianSerialDate ⍺)+(⍉dhm⊥⍉⍵)÷×/dhm}/1 0 0 1 0 0 0⊂7↑[0⊥⍳⍴⍴TS]
+ }

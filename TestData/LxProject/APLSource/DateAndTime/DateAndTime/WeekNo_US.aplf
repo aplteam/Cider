@@ -1,0 +1,1 @@
+WeekNo_US←{⍺←⊢ ⋄ 1:shy←⍺ ##.WeekNo_US ⍵}
