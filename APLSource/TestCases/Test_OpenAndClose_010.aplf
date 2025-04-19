@@ -14,9 +14,8 @@
  (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←0 2⍴''
- ref.YesOrNo_Answers⍪←'ChangeCurrentDir@' 'n'
- ref.YesOrNo_Answers⍪←'OpenAsWell@' 'y'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'OpenAsWell@' 'y'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" # -noEdit -acceptConfig -ignoreUserExec -batch'
  Assert'Project successfully opened and established in '{⍺≡(≢⍺)↑⍵}res
  list←FilesAndDirs.ListFiles tempDir

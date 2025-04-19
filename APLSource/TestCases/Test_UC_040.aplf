@@ -9,7 +9,7 @@
  (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" -noEdit -ignoreUserExec -batch'
  Assert rc=0
 

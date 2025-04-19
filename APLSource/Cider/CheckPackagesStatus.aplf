@@ -14,8 +14,8 @@
      :AndIf 2>pkgStatus
          :If (⊂parms.checkPackageVersions)∊⍬ 1
          :AndIf 0=parms.batch
-             :If checkFlag←0 C.YesOrNo' Report availability of later versions of installed Tatin packages?'
-                 parms.major←0 C.YesOrNo' Report even later MAJOR versions?'
+             :If checkFlag←0 C.YesOrNo'ReportLaterVersions@ Report availability of later versions of installed Tatin packages?'
+                 parms.major←0 C.YesOrNo'ReportLaterMajorVersions@ Report even later MAJOR versions?'
              :EndIf
          :Else
              checkFlag←2≡parms.checkPackageVersions

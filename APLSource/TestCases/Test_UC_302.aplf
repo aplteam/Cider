@@ -10,7 +10,7 @@
  3 ⎕MKDIR tempDir,'/APLSource'
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -batch -ignoreUserExec'
  Assert rc=0
  (rc msg res)←∆UCMD'CloseProject #.Foo -fast'
@@ -22,7 +22,7 @@
  parms.parent←'#.Foo'
  parms.ignoreUserExec←1
  parms.batch←1
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (res log)←##.Cider.OpenProject parms
 
  →T.GoToTidyUp 0=≢list←##.Cider.ListOpenProjects 0

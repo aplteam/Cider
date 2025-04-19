@@ -60,7 +60,7 @@
      report←0
  :EndIf
  :If 0=≢⎕SE.Cider.ListOpenProjects 0
- :AndIf 1 YesOrNo'Do you wish to )CLEAR the workspace?'
+ :AndIf 1 YesOrNo'ClearWS@Do you wish to )CLEAR the workspace?'
      :If report
          :If ' '=1↑0⍴∊r
              r←('These projects were closed:'),(⎕UCS 13),r,(⎕UCS 13),(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'

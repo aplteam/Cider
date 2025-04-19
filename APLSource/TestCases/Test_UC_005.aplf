@@ -13,7 +13,7 @@
  (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -batch -ignoreUserExec'
  Assert rc=0
 

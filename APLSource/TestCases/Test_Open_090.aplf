@@ -1,5 +1,5 @@
  R←Test_Open_090(stopFlag batchFlag);⎕TRAP;parms;success;log
-⍝ Opens a project with "lx" being not empty. Was once a bug: Cider must check amd handle it.
+⍝ Opens a project with "lx" being not empty. Was once a bug: Cider must check and handle it.
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

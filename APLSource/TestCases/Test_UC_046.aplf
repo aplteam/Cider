@@ -1,4 +1,4 @@
- R←Test_UC_046(stopFlag batchFlag);⎕TRAP;res;msg;rc;folder;parms;tempDir;success;log;stop;expected
+ R←Test_UC_046(stopFlag batchFlag);⎕TRAP;res;msg;rc;folder;parms;tempDir;success;log;stop;expected;C
 ⍝ Exercise ]Cider.AddTatinDependencies and ListTatinDependencies
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -18,14 +18,16 @@
  parms.batch←1
  parms.ignoreUserExec←1
 
- ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ C←∆GetRefToCommTools
+
+ C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp∨/'ERROR'⍷log
 
  stop←0
- ##.Cider.C.AddAutomation'YesOrNo' 'AddTatinDeps@' 'y'
- ##.Cider.C.AddAutomation'YesOrNo' 'LoadTatinDependenciesAfterAdding@' 'y'
+ C.AddAutomation'YesOrNo' 'AddTatinDeps@' 'y'
+ C.AddAutomation'YesOrNo' 'LoadTatinDependenciesAfterAdding@' 'y'
  (rc msg res)←stop ∆UCMD'AddTatinDependencies FilesAndDirs,APLTreeUtils2 "',tempDir,'"'
  →T.GoToTidyUp rc≠0
  →T.GoToTidyUp 0≠≢msg
@@ -40,7 +42,7 @@
  R←T._OK
 
 ∆TidyUp:
- ##.Cider.C.Cleanup
+ C.Cleanup
  {}∆LINK'Break' '#.TEMP'
  FilesAndDirs.RmDir tempDir,'/..'
 ⍝Done

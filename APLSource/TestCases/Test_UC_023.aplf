@@ -7,7 +7,7 @@
 
  folder←∆GetTestPath⊃⎕SI
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (rc msg res)←∆UCMD'OpenProject ',folder,' -noPkgLoad -import -watch=ns -ignoreUserExec'
  Assert rc=0
  →T.GoToTidyUp~∨/'Project successfully imported and established in'⍷∊res

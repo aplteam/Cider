@@ -30,6 +30,7 @@
  Assert rc=0
  →T.GoToTidyUp 3≠≢res   ⍝ One data row, two for pimping
 
+ ref.AddAutomation'YesOrNo' 'ClearWS@' 'n'
  (rc msg res)←∆UCMD'CloseProject ',tempDir,' -fast'
  Assert rc=0
  →T.GoToTidyUp'Number of projects closed: 1'≢res

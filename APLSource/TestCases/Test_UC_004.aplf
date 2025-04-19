@@ -11,9 +11,9 @@
  (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'TargetNotEmpty@' 'y'
- ref.YesOrNo_Answers⍪←'OpenAsWell@' 'y'
- ref.YesOrNo_Answers⍪←'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'TargetNotEmpty@' 'y'
+ ref.AddAutomation'YesOrNo' 'OpenAsWell@' 'y'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -ignoreUserExec -batch'
  Assert rc=0
  'You did not just press <enter>!'Assert∨/'Project successfully opened and established in'⍷res

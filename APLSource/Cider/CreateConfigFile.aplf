@@ -1,4 +1,4 @@
-{name}←CreateConfigFile(filename name);config;globalCiderConfigFilename;tatinVars
+ {name}←CreateConfigFile(filename name);config;globalCiderConfigFilename;tatinVars
 ⍝ Copies the config template file over and injects the last part of the path of "filename" as "projectSpace"
  ('The folder already hosts a file "',ConfigFilename,'"')Assert~⎕NEXISTS filename
  globalCiderConfigFilename←GetCiderGlobalConfigHomeFolder,'cider.config.template'
@@ -13,7 +13,9 @@
  config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃F.NGET globalCiderConfigFilename
  :If 0=⎕SE.Link.⎕NC'Version'                          ⍝ There was no such function prior to Link 3
  :OrIf 3=⌊⊃⊃(//)⎕VFI{⍵/⍨2>+\⍵='.'}⎕SE.Link.Version    ⍝ Version 3.x?
-     config.LINK.watch←(1+HasDotNet)⊃'ns' 'both'
+     :If 0<config.⎕NC'LINK'                           ⍝ Has not necessarily a LINK section anymore
+         config.LINK.watch←(1+HasDotNet)⊃'ns' 'both'
+     :EndIf
  :EndIf
  :If (⊃name)∊'#⎕'
      name←{⍵↓⍨⍵⍳'.'}name

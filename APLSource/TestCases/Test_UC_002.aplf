@@ -8,7 +8,8 @@
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'ClearWS@' 'n'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -batch -ignoreUserExec'
  Assert rc=0
  (rc msg res)←∆UCMD'CloseProject #.Foo -fast'

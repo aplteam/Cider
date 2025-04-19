@@ -10,8 +10,8 @@
  (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'Project successfully created; open as well?' 'y'
- ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'Project successfully created; open as well?' 'y'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -ignoreUserExec -batch'
  Assert rc=0
 

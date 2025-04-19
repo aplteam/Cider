@@ -1,1 +1,1 @@
-{  LinkVersion: { ID: "4.0.20"},  Settings: {    fastLoad: 1,    forceFilenames: 1,    watch: "both",  },}
+{  LinkVersion: { ID: "4.0.20"},  Settings: {    fastLoad: 1,    forceFilenames: 1,    watch: "both",  },  SourceFlags: [    {      Name: "TestCases.Test_Create_003",      Stop: [        14,      ],    },    {      Name: "TestCases.Test_OpenAndClose_004",      Stop: [        12,      ],    },  ],}

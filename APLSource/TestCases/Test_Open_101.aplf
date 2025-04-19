@@ -1,0 +1,32 @@
+ R←Test_Open_101(stopFlag batchFlag);⎕TRAP;parms;success;log;tempFolder;version;majorVersion
+⍝ Opens a project and updates all packages to latest major ones
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempFolder←∆GetFolderInTempDir⊃⎕SI
+ tempFolder ⎕NCOPY ##.CiderConfig.HOME,'/TestData/UpdatePkgs'
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←tempFolder,'/UpdatePkgs'
+ parms.parent←'#.TEMP'
+ parms.checkPackageVersions←1
+
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ReinstallLatest@' 'y'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ReportLaterVersions@' 'y'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ReportLaterMajorVersions@' 'y'
+ (success log)←##.Cider.OpenProject parms
+ 'Something is very wrong'Assert 1=success
+
+ version←#.TEMP.UpdatePkgs.MarkAPL.Version
+ →T.GoToTidyUp 1≠≡version                       ⍝ MUST be the new format (simple char vector)
+ majorVersion←APLTreeUtils2.ToNum{⍵↑⍨¯1+⍵⍳'.'}version
+ →T.GoToTidyUp ~11<majorVersion
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
+ {}##.Cider.CloseProject #.TEMP.UpdatePkgs
+ {}FilesAndDirs.RmDirByForce tempFolder
+⍝Done

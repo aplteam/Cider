@@ -13,7 +13,7 @@
  :AndIf 1∊bool←0=≢¨F.ListDirs¨(⊂parms.folder,'/'),¨folders,¨'/'
  :AndIf 1∊bool←bool∧⎕NEXISTS(⊂parms.folder,'/'),¨folders,¨⊂'/apl-dependencies.txt'
      :If parms.batch
-     :OrIf 1 C.YesOrNo'Tatin install folder',((1+1=+/bool)⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
+     :OrIf 1 C.YesOrNo'ReinstallInEmptyFolder@Tatin install folder',((1+1=+/bool)⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
          status←2
          parms2←⎕SE.Tatin.CreateReInstallParms
          :If 0=parms2.⎕NC'major'
@@ -27,11 +27,11 @@
          :If parms.batch
              parms2.quiet←1
          :Else
-             q←'Would you like to install later versions, if available',((~askForMajor)/' (NOT later major versions'),' ?'
+             q←'ReinstallLaterVersions@Would you like to install later versions, if available',((~askForMajor)/' (NOT later major versions'),' ?'
              parms2.update←1 C.YesOrNo q
              :If parms2.update
              :AndIf askForMajor
-                 q←'Would you like to install even later MAJOR versions, if available ?'
+                 q←'ReinstallLaterMajorVersions@Would you like to install even later MAJOR versions, if available ?'
                  parms2.major←0 C.YesOrNo q
              :EndIf
          :EndIf
