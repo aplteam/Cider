@@ -1,0 +1,12 @@
+ (drive path)←HandlePath path
+⍝ Splits path into drive and remaining path; useful only on Windows
+ path←NormalizePath⊃,/1 ⎕NPARTS path
+ drive←''
+ :If '\\'≢2↑path
+     :If ~':'∊path
+         path←PWD,path
+     :EndIf
+     :If ':'∊path
+         drive←1↑path
+     :EndIf
+ :EndIf

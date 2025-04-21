@@ -20,7 +20,7 @@
          :Return
      :Case 1
          (alias path)←aliasDefs[bool⍳1;]
-         :If 0=1 YesOrNo'Sure you want to open "',path,'" ?'
+         :If 0=1 YesOrNo'SureToOpen@Sure you want to open "',path,'" ?'
              :Return
          :EndIf
      :Else

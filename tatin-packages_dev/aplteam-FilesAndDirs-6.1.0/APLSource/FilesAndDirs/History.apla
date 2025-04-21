@@ -1,0 +1,18 @@
+(
+ '* 6.1.0 ⋄ 2025-04-21'
+ '  * New function `Dir2` introduced which is way faster than `Dir` when recursive calls are required'
+ '    `Dir` is now deprecated. However, note that both the syntax and the result are slightly different'
+ '  * `Dir` is now deprecated - see `Dir2` instead'
+ '  * `EnforceBackslash`, `EnforceSlash` and `NormalizeePath` improved in terms of performance'
+ '  * Bug fixes'
+ '    * `Dir` did not report files in a directory pointed to by a link in the given path when `follow←0` '
+ '      and `recursive←1` were specified'
+ '* 6.0.1 ⋄ 2025-03-30'
+ '  * The package required a dependency OS from a server https://localhost:444 rather than the Tatin registry'
+ '* 6.0.0 ⋄ 2025-03-28'
+ '  * Syntax change: `Version` returns now a simple string with the version number from the package config file'
+ '  * Packages updated.'
+ '  * `Make` improved.  '
+ ''
+ 'For information regarding older version see <https://github.com/aplteam/FilesAndDirs/releases>'
+)

@@ -11,8 +11,9 @@
      :If 0<≢report
          folder←RemoveTargetDefinition i⊃folders
          1 parms.batch p'Later versions in <',(AddSlash folder),'> :'
-         buff←({⍵↑⍨+/2>+\⍵='-'}¨report[;1]){↑(↓(↑⍺),' '),¨⍵[;1],¨' => '∘,¨⍵[;2]}{⍵↓⍨1++/2>+\⍵='-'}¨report[;1 2]
-         buff,←{≡/⍵:'' ⋄ '  ',(1⊃⍵),' => ',(2⊃⍵)}¨↓report[;3 5]   ⍝ If the source URLs differ, list them as well
+         buff←{id←(1⊃⍵)/⍨2>+\'-'=1⊃⍵ ⋄ (⊂id),((1+≢id)↓¨2↑⍵),2↓⍵}¨↓report
+         buff←↑{⍵[1 2 4],(⊂' ==> '),⍵[3 6]}¨buff
+         buff←({(⍵⍳⍵)=⍳≢⍵}↓buff[;1 5 6])⌿buff
          1 parms.batch p ⎕FMT buff
          :If ~updateFlag←2≡parms.checkPackageVersions
              updateFlag←1 C.YesOrNo'ReinstallLatest@Re-install latest versions in <',(AddSlash folder),'> ?'

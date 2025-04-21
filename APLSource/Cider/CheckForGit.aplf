@@ -1,11 +1,12 @@
- {r}←CheckForGit(path config parms);status;dmx;gitStatus;ind;stashes
+ {r}←CheckForGit(path config parms);status;dmx;gitStatus;ind;stashes;gitIssues
 ⍝ Checks whether the project is managed by Git, and if so offers some help, unless parms.batch=1
  r←⍬
- →(~F.Exists(AddSlash path),'.git')/0
+ →(~G.IsGitProject path)/0
  gitStatus←GetGlobalGitStatus
+ gitIssues←GetGlobalGitIssues
  :If gitStatus≠0
      :If gitStatus=3  ⍝ We need to ask the user
-         ind←'Report Git status (if anything is to report) ?' 0 1 C.Select'Nope!' 'Yes, in ⎕ED' 'Yes, in the session'
+         ind←'HowToReportGitStaus@Report Git status (if anything is to report) ?' 0 1 C.Select'Nope!' 'Yes, in ⎕ED' 'Yes, in the session'
          →(1=ind)/0
          gitStatus←(2 3⍳ind)⊃1 2
      :EndIf
