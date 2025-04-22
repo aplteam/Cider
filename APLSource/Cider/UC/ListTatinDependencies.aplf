@@ -26,8 +26,8 @@
                      :EndIf
                  :Else
                      :If 0<≢r←path∘{P_.ListTatinDependenciesFull ⍺,'/',⍵}¨tatinFolders
-                         r←{0=≢⍵:'' ⋄ ⊃,/CR,¨' ',¨((2×⍵[;1])⍴¨' '),¨⍵[;2]}¨r
-                         r←'--- Investigated: ',path,CR,⊃,/('-- Sub-folder: '∘,¨tatinFolders,¨'/'),¨r,¨CR
+                         r←{0=≢⍵:'' ⋄ ⊃,/CR,¨((2×⍵[;1])⍴¨' '),¨⍵[;2]}¨r
+                         r←1↓⊃,/((⊂CR,'--- Install folder: '),¨(⊂path,'/'),¨tatinFolders,¨'/'),¨r
                      :Else
                          r←'No dependencies found'
                      :EndIf

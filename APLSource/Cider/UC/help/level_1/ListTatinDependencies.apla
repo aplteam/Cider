@@ -22,5 +22,5 @@
  '         why a particular (typically old) package is required.'
  '         Note that due to minimum version selection they might end up not being used.'
  '-latest  When this is specified, the version numbers of later versions are listed as well.'
- '         This works with and without -full'
+ '         Is ignored when specified with -full'
 )
