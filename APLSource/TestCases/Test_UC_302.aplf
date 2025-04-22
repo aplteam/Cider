@@ -22,7 +22,7 @@
  parms.parent←'#.Foo'
  parms.ignoreUserExec←1
  parms.batch←1
- ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ 1 ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'  ⍝ Because ref might or might not point to ##.Cider.C. we must specify overwrite←1
  (res log)←##.Cider.OpenProject parms
 
  →T.GoToTidyUp 0=≢list←##.Cider.ListOpenProjects 0
