@@ -5,9 +5,8 @@
     "aplteam-CommTools-2.0.1",
     "aplteam-CodeCoverage-0.10.7",
     "aplteam-APLTreeUtils2-1.4.1",
-    "aplteam-APLProcess-0.7.0",
+    "aplteam-APLProcess-0.8.0",
     "aplteam-OS-4.0.0",
-    "aplteam-OS-3.1.1",
     "aplteam-IniFiles-6.0.0",
   ],
   principal: [
@@ -19,10 +18,8 @@
     1,
     0,
     0,
-    0,
   ],
   url: [
-    "https://tatin.dev/",
     "https://tatin.dev/",
     "https://tatin.dev/",
     "https://tatin.dev/",

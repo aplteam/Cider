@@ -10,7 +10,7 @@
      latest←Args.Switch'latest'
      :If full
          :If IsAlias path
-             path←GetFolderFromAlias2 path
+             path←P.##.GetFolderFromAlias2 path
          :EndIf
          cfgFilename←(F.AddTrailingSep path),'cider.config'
          :If F.Exists cfgFilename
@@ -19,8 +19,8 @@
                  tatinFolders←P_.RemoveTargetDefinition¨tatinFolders
                  :If 1=≢tatinFolders
                      :If 0<≢r←P_.ListTatinDependenciesFull path,'/',⊃tatinFolders
-                         r←⊃,/CR,¨((r[;1])⍴¨' '),¨r[;2]
-                         r←'--- Investigated: ',(F.Exists path),CR,'-- Sub-folder: ',tatinFolders,'/',r
+                         r←{0=≢⍵:'' ⋄ ⊃,/CR,¨((2×⍵[;1])⍴¨' '),¨⍵[;2]}r
+                         r←'--- Install folder: ',path,'/',(1⊃tatinFolders),'/',r
                      :Else
                          r←'No dependencies found'
                      :EndIf

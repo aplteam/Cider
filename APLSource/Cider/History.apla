@@ -1,11 +1,12 @@
 (
- '* 0.48.0 ⋄ 2025-04-22'
+ '* 0.48.0 ⋄ 2025-04-23'
  '  * Updating packages improved: now even later major versions can be handled if desired'
  '  * Reporting of later versions improved when opening a project'
  '  * Messages & checks in ]ProjectConfig -edit improved'
  '  * Result of `InjectTatinVars` has changed'
  '  * `]ListTatinDependencies -full` improved   '
  '  * Bug fixes        '
+ '    * `]ListTatinDependencies [alias] -f` crashed because the alias was not handled '
  '    * `CreateConfigFile` crashed in case there is no `LINK` section, which is not mandatory anymore'
  '    * When a package that had a function on the "lx" config parameter was opened as a project, Cider did'
  '      not check "lx", let alone execute it'
