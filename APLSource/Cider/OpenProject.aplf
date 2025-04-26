@@ -1,13 +1,18 @@
- (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag;ref2TatinVars
+ (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag;ref2TatinVars;∆Problems;loadDependencies
 ⍝ Open a Cider project.\\
 ⍝ `y` must be one of:
 ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
 ⍝  * A character vector holding the full path to a project\\
 ⍝ The function returns either FAILURE or SUCCESS. This refers to the principal operation: opening the project.
-⍝ However, if something like loading dependencies goes wrong then messages are printed to the session.\\
-⍝ In case `batch` is 1 things are different, however: in that case an error is thrown for all essential parts
-⍝ of the operation. That includes loading any dependencies but excludes non-essential stuff like a Git status report.
- successFlag←FAILURE ⋄ ∆LOG←''
+⍝ If something like loading dependencies goes wrong, then messages are printed to the session in case batch←0.\\
+⍝ In case `batch` is 1 things are different, however: in that case an error is thrown for all essential parts of
+⍝ the operation. That includes loading any dependencies but excludes non-essential stuff like a Git status report.\\
+⍝ The final message is "Project successfully [opened|imported and established in ... [with problems]". The
+⍝ optional "with problems" part as added only when something like loading dependencies, or executing the package's
+⍝ `lx` expression successfuly went wrong.
+ successFlag←FAILURE
+ ∆LOG←''                        ⍝ This is used to collect all messages
+ ∆Problems←0                    ⍝ Use as a counter of any problems; only relevant when batch←0
  :If 80=⎕DR y
      parms←CreateOpenParms''
      parms.folder←y
@@ -89,7 +94,10 @@
  ⍝ ---------------------------------------------------------------------------
  (1 parms.batch)p ReportLinkSettings linkOptions
  :If 0=parms.noPkgLoad
-     pkgStatus←parms CheckForTatinPackages config
+     loadDependencies←1
+     :If ¯1=pkgStatus←parms CheckForTatinPackages config
+         loadDependencies←0
+     :EndIf
      :If 0<pkgStatus
          :If 0=parms.importFlag
              :Trap 0
@@ -100,14 +108,18 @@
                  buff←''
                  buff,←⊂'ERROR: Checking Tatin package status in ',parms.folder
                  buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
-                 (1↓⊃,/(⎕UCS 13),¨buff)Assert 0=parms.batch
+                 ∆Problems+←1
+                 loadDependencies←0
+                 (1↓⊃,/(⎕UCS 13),¨buff)Assert parms.batch
                  (1 parms.batch)p buff
              :EndTrap
          :EndIf
          :Trap 0
-             :If 0=parms.(verbose batch)LoadTatinDependencies config parms.folder(⍕projectSpace_)
+             :If loadDependencies
+             :AndIf 0=parms.(verbose batch)LoadTatinDependencies config parms.folder(⍕projectSpace_)
                  buff←'Package folder ',parms.folder,' needs attention!'
-                 buff Assert 0=parms.batch
+                 ∆Problems+←1
+                 buff Assert~parms.batch
                  1 p buff
              :EndIf
          :Else
@@ -117,8 +129,9 @@
              buff,←⊂'ERROR: loading Tatin packages from ',parms.folder
              buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
              buff←1↓⊃,/(⎕UCS 13),¨buff
-             buff Assert 0=parms.batch
-             (1 parms.batch)p buff
+             ∆Problems+←1
+             buff Assert~parms.batch
+             1 p buff
          :EndTrap
      :EndIf
      :If 0<config.⎕NC'CIDER.dependencies.nuget'
@@ -127,16 +140,18 @@
              :Trap 11
                  {}parms.(verbose batch)LoadNuGetDependencies parms.folder projectSpace_
              :Else
-                 ⎕SE._Tatin.Client.CloseConnections 1                               ⍝ Just in case...
+                 ⎕SE._Tatin.Client.CloseConnections 1                           ⍝ Just in case...
                  qdmx←⎕DMX
                  buff←''
                  buff,←⊂'ERROR: loading NuGet packages from ',parms.folder
                  buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
-                 buff Assert 0=parms.batch
-                 (1 parms.batch)p buff
+                 ∆Problems+←1
+                 buff Assert~parms.batch
+                 1 p buff
              :EndTrap
          :Else
-             p'Cannot load NuGet packages: .NET is not available'
+             'Cannot load NuGet packages: .NET is not available'Assert~parms.batch
+             1 p'Cannot load NuGet packages: .NET is not available'
          :EndIf
      :EndIf
  :EndIf
@@ -151,5 +166,10 @@
  successFlag←SUCCESS
  {}CheckForDropboxConflicts⍣flag⊢parms.folder
  {}CheckForGit⍣flag⊢parms.folder config parms
- p'Project successfully ',((1+parms.importFlag)⊃'opened' 'imported'),' and established in "',parms.parent,,{(,'#')≡,⍵:'"' ⋄ '.',⍵,'"'}parms.projectSpace
+ msg←'Project successfully ',(1+parms.importFlag)⊃'opened' 'imported'
+ :If 0<∆Problems
+     msg,←' (though with ',(⍕∆Problems),' problem',((1<∆Problems)/'s'),')'
+ :EndIf
+ msg,←' and established in: ',parms.parent,{(,'#')≡,⍵:'' ⋄ '.',⍵}parms.projectSpace
+ p msg
 ⍝Done

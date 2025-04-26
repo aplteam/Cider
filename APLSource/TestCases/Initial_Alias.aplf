@@ -1,4 +1,4 @@
  Initial_Alias
  ∆ALIAS_TEMP_FOLDER←∆GetFolderInTempDir'Cider-Test-Aliase'
- ∆ALIAS_TEMP_FOLDER ⎕NCOPY FilesAndDirs.ListDirs ##.CiderConfig.HOME,'/Tests/Test_Alias/'
+ ∆ALIAS_TEMP_FOLDER ⎕NCOPY FilesAndDirs.ListDirs2 ##.CiderConfig.HOME,'/Tests/Test_Alias/'
 ⍝Done

@@ -23,7 +23,7 @@
      :If ⎕NEXISTS buildFilename
          r⍪←(⊂{¯1↓1⊃⎕NPARTS ⍵}buildFilename)ListTatinDependencies_⊂buildFilename
      :Else
-         list←F.ListDirs folder
+         list←F.ListDirs2 folder
          :For folder2 :In list
              buff←1 ListTatinDependencies folder2
              :If 0<≢buff

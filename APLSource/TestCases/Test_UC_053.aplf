@@ -36,7 +36,7 @@
  #.TEMP.(⎕EX ⎕NL-⍳9)
  (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
  Assert rc=0
- →T.GoToTidyUp'Project successfully opened and established in "#.TEMP"'≢res~⎕TC
+ →T.GoToTidyUp'Project successfully opened and established in: #.TEMP'≢res~⎕TC
  →T.GoToTidyUp~4=≢#.TEMP.⎕NL⍳16
  →T.GoToTidyUp 9≠#.TEMP.⎕NC'FilesAndDirs'
  →T.GoToTidyUp 9≠#.TEMP.TestCases.⎕NC'Tester2'

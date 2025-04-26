@@ -1,4 +1,4 @@
-{r}←x ExecProjectFunction_ init;fns;config;projectSpace;qdmx;valence;parms
+ {r}←x ExecProjectFunction_ init;fns;config;projectSpace;qdmx;valence;parms;msg
  r←⍬
  (projectSpace config parms)←x
  :If 3=projectSpace.⎕NC init
@@ -28,8 +28,13 @@
          :EndTrap
      :EndSelect
      :If ⍬≢qdmx
-         (1 parms.batch)p'>>> Executing "init" crashed: ',qdmx.Message{0=≡⍺:⍵ ⋄ ⍵,'; ',⍺}qdmx.EM
+         msg←'>>> Executing "init" crashed: ',qdmx.Message{0=≡⍺:⍵ ⋄ ⍵,'; ',⍺}qdmx.EM
+         msg Assert~parms.batch
+         1 PrintToSession msg
      :EndIf
  :Else
-     (1 parms.batch)p'>>> Could not execute "',init,'": function not found; check config file!'
+     ∆Problems+←1
+     msg←'>>> Could not execute "',init,'": function not found; check config file!'
+     msg Assert~parms.batch
+     1 PrintToSession msg
  :EndIf

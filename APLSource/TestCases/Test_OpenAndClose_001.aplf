@@ -15,7 +15,7 @@
  Assert rc=0
  #.Foo.⎕FX'r←Hello' 'r←''World'''
  {}⎕SE.Link.Add'#.Foo.Hello'
- list←FilesAndDirs.ListFiles projectFolder1
+ list←FilesAndDirs.ListFiles2 projectFolder1
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
  aliase←##.Cider.GetCiderAliasFileContent ⍬
@@ -29,7 +29,7 @@
  #.Goo.⎕FX'r←Hello' 'r←''Galaxy'''
  (rc msg buff)←∆UCMD'CreateProject "',projectFolder2,'" #.Goo -alias=test-case-alias-Goo -noEdit -acceptConfig  -batch -ignoreUserExec'
  Assert rc=0
- list←FilesAndDirs.ListFiles projectFolder2
+ list←FilesAndDirs.ListFiles2 projectFolder2
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
  aliase←##.Cider.GetCiderAliasFileContent ⍬

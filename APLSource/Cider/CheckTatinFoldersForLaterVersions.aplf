@@ -1,5 +1,6 @@
  report←report CheckTatinFoldersForLaterVersions(parms folders);folder;folder_;qdmx;msg
 ⍝ Loop through all Tatin install folders
+ msg←''
  :For folder :In folders
      folder_←⊃'='(≠⊆⊢)folder
      :If F.Exists parms.folder,'/',folder_
@@ -10,17 +11,16 @@
                  report,←⊂parms.major ⎕SE.Tatin.CheckForLaterVersion folder_
              :Else
                  qdmx←⎕DMX
-                 :If qdmx.EM≡'The build list carries entries that are not on the Tatin Registry search path'
-                     msg←''
-                     msg,←⊂'ERROR: Checking for later versions of Tatin packages failed:'
-                     msg,←⊂' ',qdmx.EM
-                     (1 parms.batch)p msg
-                 :Else
-                     qdmx.EM ⎕SIGNAL 998
-                 :EndIf
+                 qdmx.EM Assert~parms.batch
+                 msg←''
+                 msg,←⊂'ERROR: Checking for later versions of Tatin packages failed:'
+                 msg,←⊂' ',qdmx.EM
              :EndTrap
          :Else
-             (1 parms.batch)p'Installation folder <',parms.folder,'/',folder,'> is empty'
+             msg←'Installation folder <',parms.folder,'/',folder,'> is empty'
+             msg Assert~parms.batch
          :EndIf
      :EndIf
  :EndFor
+ 1 PrintToSession msg
+⍝Done

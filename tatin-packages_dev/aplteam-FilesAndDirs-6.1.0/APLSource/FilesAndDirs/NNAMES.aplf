@@ -1,5 +1,0 @@
- r←NNAMES
-⍝ Same as `⎕NNAMES` but...
-⍝ * returns a vector rather than a matrix.
-⍝ * normalizes all filenames
- r←NormalizePath{⍵↓⍨-+/∧\' '=⌽⍵}¨↓⎕NNAMES

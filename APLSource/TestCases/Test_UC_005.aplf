@@ -17,7 +17,7 @@
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -batch -ignoreUserExec'
  Assert rc=0
 
- →T.GoToTidyUp~∨/∨/¨'TheAnswerIs.aplf'∘⍷¨⊃('recursive' 1)FilesAndDirs.Dir tempDir,'/'
+ →T.GoToTidyUp~∨/∨/¨'TheAnswerIs.aplf'∘⍷¨⊃('recurse' 1)FilesAndDirs.Dir2 tempDir,'/'
  →T.GoToTidyUp 42≢#.Foo.TheAnswerIs
 
  r←T._OK

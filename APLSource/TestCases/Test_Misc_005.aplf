@@ -25,9 +25,9 @@
  →T.GoToTidyUp∨/'ERROR'⍷log
 
  →T.GoToTidyUp 0≠FilesAndDirs.IsDir dir,'/packages/aplteam-MarkAPL-11.0.0'
- →T.GoToTidyUp 1≠≢⊃FilesAndDirs.Dir dir,'/packages/aplteam-MarkAPL-11*'
+ →T.GoToTidyUp 1≠≢⊃FilesAndDirs.Dir2 dir,'/packages/aplteam-MarkAPL-11*'
  →T.GoToTidyUp 0≠FilesAndDirs.IsDir dir,'/packages_dev/aplteam-Tester2-3.1.1'
- →T.GoToTidyUp 0=≢⊃FilesAndDirs.Dir dir,'/packages_dev/aplteam-Tester2-3.*'
+ →T.GoToTidyUp 0=≢⊃FilesAndDirs.Dir2 dir,'/packages_dev/aplteam-Tester2-3.*'
 
  r←T._OK
 

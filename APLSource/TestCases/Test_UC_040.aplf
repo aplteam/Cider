@@ -13,7 +13,7 @@
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" -noEdit -ignoreUserExec -batch'
  Assert rc=0
 
- list←FilesAndDirs.ListFiles tempDir
+ list←FilesAndDirs.ListFiles2 tempDir
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
  config←##.Cider.ReadProjectConfigFile tempDir

@@ -1,0 +1,16 @@
+ success←batch RemoveFolder folder;msg;rc;flag
+⍝ Attempts to remove a folder by force, but asks the user what to do in case that fails unless
+⍝ `batch` is 1 when an error is thrown instead.\\
+⍝ Returns a 1 in cs
+ flag←0
+ :Repeat
+     (rc msg)←F.RmDirByForce folder
+     :If rc=0
+         flag←success←1
+     :Else
+         ('Could not remove the folder ',folder)Assert~batch
+         :If ~1 C.YesOrNo'TryAgainRemovingDir@Could not remove this folder:',CR,'   ',folder,CR,'Try again?'
+             success←0
+         :EndIf
+     :EndIf
+ :Until flag

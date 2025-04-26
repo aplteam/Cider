@@ -13,7 +13,7 @@
      nuGetFolder←(-1+≢targetNamespace)↓nuGetFolder
  :EndIf
  :If F.IsDir nuGetFolder
- :AndIf 0<≢list2←F.ListFiles nuGetFolder,'/*.csproj'
+ :AndIf 0<≢list2←F.ListFiles2 nuGetFolder,'/*.csproj'
      :If 1≠1⊃2250⌶0
          Frame'Cannot load NuGet packages because .NET is not available'
          list←''

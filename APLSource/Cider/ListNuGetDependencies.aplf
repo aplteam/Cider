@@ -9,6 +9,6 @@
      nuGetFolder←{~'='∊2⊃⎕NPARTS ⍵:⍵ ⋄ ⊃{⍺,RemoveTargetDefinition ⍵}/⎕NPARTS ⍵}nuGetFolder
      folder←projectFolder,'/',nuGetFolder
  :AndIf ⎕NEXISTS folder
- :AndIf 0<≢F.ListFiles folder,'/*.csproj'
+ :AndIf 0<≢F.ListFiles2 folder,'/*.csproj'
      r←↑NuGet.Packages folder
  :EndIf

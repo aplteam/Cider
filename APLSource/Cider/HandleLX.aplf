@@ -9,8 +9,11 @@
      :OrIf 1 C.YesOrNo'ExecLX@lx←',ns.lx,'  -- execute?'
          (success rc msg)←ExecUnderTrap(⍕projectSpace_),'.',parms.projectSpace,'.',ns.lx
          :If ~success
-             1 p'>>> Executing "lx" (according to the package conf) caused an error:'
-             1 p'    RC=',⍕rc,(⎕UCS 13),¨(⊂4⍴' '),¨msg
+             ∆Problems+←1
+             msg←'>>> Executing "lx" (according to the package conf) caused an error:'
+             msg,←CR,'    RC=',⍕rc,(⎕UCS 13),¨(⊂4⍴' '),¨msg
+             msg Assert~parms.batch
+             1 PrintToSession msg
          :EndIf
      :EndIf
  :EndIf

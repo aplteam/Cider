@@ -13,7 +13,7 @@
  ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" # -noEdit -acceptConfig -batch -ignoreUserExec'
  msg Assert 0=rc
- list←FilesAndDirs.ListFiles tempDir
+ list←FilesAndDirs.ListFiles2 tempDir
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
 

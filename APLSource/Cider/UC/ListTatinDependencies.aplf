@@ -43,7 +43,7 @@
                      r←'--- Investigated: ',path,r
                  :EndIf
              :Else
-                 list←F.ListDirs path
+                 list←F.ListDirs2 path
                  r←''
                  :For path2 :In list
                      buildFilename←path2,'/apl-buildlist.json'

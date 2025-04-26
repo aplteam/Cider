@@ -1,8 +1,9 @@
- status←parms CheckForTatinPackages config;folders;list;bool;report;this;parms;parms2;askForMajor;q
-⍝ Checks whether at least one Tatin install folder is defined, does exist and is not empty, in which case a 1 is returned.
-⍝ In case at least one install folder contains just a dependency file and a build file but nothing else then...
+ status←parms CheckForTatinPackages config;folders;list;bool;report;this;parms;parms2;askForMajor;q;qdmx;msg
+⍝ Checks whether at least one Tatin install folder is defined, does exist and carries packages, in which case a 1 is returned.
+⍝ In case at least one install folder contains just a dependency file (and maybe also a build file) but nothing else then...
 ⍝ * when the user goes for re-installing the packages, a 2 is returned
 ⍝ * when she does not a 3 is returned
+⍝ * In case an error of any kind makes all this impossible, ¯1 is returned
  status←0
  folders←GetTatinDependencyFolders config
  :If 0<≢folders
@@ -10,7 +11,7 @@
  :AndIf 0<≢folders←(0<≢¨folders)/folders
  :AndIf 0<≢folders←(F.Exists(⊂parms.folder,'/'),¨folders)/folders
      status←0<+/≢¨list←{⊃0 ⎕NINFO⍠('Wildcard' 1)⊣⍵}¨(⊂parms.folder,'/'),¨folders,¨⊂'/*'
- :AndIf 1∊bool←0=≢¨F.ListDirs¨(⊂parms.folder,'/'),¨folders,¨'/'
+ :AndIf 1∊bool←0=≢¨F.ListDirs2¨(⊂parms.folder,'/'),¨folders,¨'/'
  :AndIf 1∊bool←bool∧⎕NEXISTS(⊂parms.folder,'/'),¨folders,¨⊂'/apl-dependencies.txt'
      :If parms.batch
      :OrIf 1 C.YesOrNo'ReinstallInEmptyFolder@Tatin install folder',((1+1=+/bool)⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
@@ -37,7 +38,19 @@
          :EndIf
          folders←bool/folders
          :For this :In (⊂parms.folder,'/'),¨folders
-             report←parms2 ⎕SE.Tatin.ReInstallDependencies this
+             :Trap 998
+                 report←parms2 ⎕SE.Tatin.ReInstallDependencies this
+             :Else
+                 qdmx←⎕DMX
+                 :If parms.batch
+                     ('Re-installing dependencies failed: ',qdmx.EM)Assert 0
+                 :Else
+                     msg←'Re-installing dependencies abandoned, dependencies need attention:',CR,qdmx.EM
+                     1 PrintToSession msg
+                     status←¯1
+                     ∆Problems+←1
+                 :EndIf
+             :EndTrap
          :EndFor
      :Else
          status←3

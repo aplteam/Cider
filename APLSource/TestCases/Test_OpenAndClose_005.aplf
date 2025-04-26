@@ -15,7 +15,7 @@
  Assert rc=0
  #.TEMP.Foo.⎕FX'r←Hello' 'r←''World'''
  {}⎕SE.Link.Add'#.TEMP.Foo.Hello'
- list←FilesAndDirs.ListFiles projectFolder1
+ list←FilesAndDirs.ListFiles2 projectFolder1
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
 

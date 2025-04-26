@@ -18,7 +18,7 @@
 
  →T.GoToTidyUp 2≠≢#.Foo.⎕NL⍳16  ⍝ TheAnswerIs plus CiderConfig = 2
  expected←1+⎕NEXISTS tempDir,'/APLSource/.linkconfig'  ⍝ introduced with Link 4.0
- →T.GoToTidyUp expected≠≢⊃FilesAndDirs.Dir tempDir,'/APLSource/'
+ →T.GoToTidyUp expected≠≢⊃FilesAndDirs.Dir2 tempDir,'/APLSource/'
 
  R←T._OK
 

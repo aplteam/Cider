@@ -5,7 +5,7 @@
  ('Not found: ',folder)Assert ⎕NEXISTS folder
  aliase←P.GetCiderAliasFileContent ⍬
  noOf←0
- :If 0<≢subFolders←P.##.F.ListDirs folder
+ :If 0<≢subFolders←P.##.F.ListDirs2 folder
      bool←~⎕NEXISTS subFolders,¨⊂'/Cider.config'
      subFolders←bool/subFolders
      newAliase←aliase ScanFolder_ folder

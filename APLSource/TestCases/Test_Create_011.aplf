@@ -16,7 +16,7 @@
  Assert 0=rc
  Assert 0=≢msg
  →T.GoToTidyUp 2≠≢#.Foo.⎕NL⍳16  ⍝ TheAnswerIs plus CiderConfig = 2
- →T.GoToTidyUp 1≠≢⊃FilesAndDirs.Dir tempDir,'/APLSource/'
+ →T.GoToTidyUp 1≠≢⊃FilesAndDirs.Dir2 tempDir,'/APLSource/'
 
  R←T._OK
 

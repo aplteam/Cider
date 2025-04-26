@@ -9,7 +9,7 @@
          rep.report,←⊂filename
      :EndIf
  :EndIf
- list←F.ListDirs folder
+ list←F.ListDirs2 folder
  :If 0<≢list
      RenameInfo_url_¨list
  :EndIf

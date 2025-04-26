@@ -10,7 +10,7 @@
  recursive←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'recursive'
  F←⎕SE.FilesAndDirs
  Assert ⎕NEXISTS startAt
- list←F.ListDirs startAt
+ list←F.ListDirs2 startAt
  :For this :In list
      :If ⎕NEXISTS this,'/cider.config'
          r,←⊂this,'/cider.config'
