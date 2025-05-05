@@ -1,7 +1,7 @@
 {
   api: "API",
   assets: "",
-  date: 20250426.132116,
+  date: 20250505.104938,
   description: "Git interface from Dyalog APL via Git Bash",
   documentation: "",
   files: "",
@@ -21,5 +21,5 @@
   tags: "apl-git-interface",
   uri: "https://tatin.dev/",
   userCommandScript: "APLSource/APLGit2_UC.dyalog",
-  version: "0.24.1+423",
+  version: "0.25.0+424",
 }
