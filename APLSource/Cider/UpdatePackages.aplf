@@ -14,7 +14,7 @@
          buff←{id←(1⊃⍵)/⍨2>+\'-'=1⊃⍵ ⋄ (⊂id),((1+≢id)↓¨2↑⍵),2↓⍵}¨↓report
          buff←↑{⍵[1 2 4],(⊂' ==> '),⍵[3 6]}¨buff
          buff←({(⍵⍳⍵)=⍳≢⍵}↓buff[;1 5 6])⌿buff
-         parms.(verbose batch)PrintToSession ⎕FMT buff
+         1 parms.batch PrintToSession ⎕FMT buff
          :If ~updateFlag←2≡parms.checkPackageVersions
              updateFlag←1 C.YesOrNo'ReinstallLatest@Re-install latest versions in <',(AddSlash folder),'> ?'
          :EndIf
