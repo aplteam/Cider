@@ -60,6 +60,7 @@
      parms.targetPath←C.CIDER.distributionFolder
      parms.version←cfg.version
      zipFilename←⎕SE.Tatin.BuildPackage parms
+     MakeZipForDyalog 1
      ⎕←'*** New version built successfully:',M.CR,'   ',zipFilename
      r←1
      ⎕←'   ',4↓0 #.Cider.Admin.InstallCider 1
