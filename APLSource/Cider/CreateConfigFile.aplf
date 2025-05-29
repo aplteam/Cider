@@ -17,8 +17,9 @@
          config.LINK.watch←(1+HasDotNet)⊃'ns' 'both'
      :EndIf
  :EndIf
- :If (⊃name)∊'#⎕'
-     name←{⍵↓⍨⍵⍳'.'}name
+ :If '.'∊name
+     config.CIDER.parent←{⌽⍵↓⍨+'.'⍳⍨⍵}⌽name
+     name←(1+≢config.CIDER.parent)↓name
  :EndIf
  ((~name∊⎕D,⎕A,'_∆⍙',⎕C ⎕A)/name)←'_'
  config.CIDER.projectSpace←⍕name

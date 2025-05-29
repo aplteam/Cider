@@ -1,7 +1,8 @@
 (
- '* 0.48.1 ⋄ 2025-05-29'
+ '* 0.48.1 ⋄ 2025-05-30'
  '  * Bug fixes'
- '    * ]Cider.OpenProject''s Help was wrong: watch is not a flag '
+ '    * `]Cider.OpenProject`''s Help was wrong: watch is not a flag'
+ '    * `GetUserHomPath` renamed to `GetUserHomePath`'
  '* 0.48.0 ⋄ 2025-04-23'
  '  * Updating packages improved: now even later principal major versions can be handled if desired'
  '  * Reporting of later versions improved when opening a project'
