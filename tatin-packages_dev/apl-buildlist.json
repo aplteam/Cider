@@ -1,9 +1,9 @@
 {
   packageID: [
-    "aplteam-Tester2-4.0.0",
+    "aplteam-Tester2-4.2.0",
     "aplteam-FilesAndDirs-7.0.0",
     "aplteam-CommTools-2.0.1",
-    "aplteam-CodeCoverage-0.10.7",
+    "aplteam-CodeCoverage-0.11.1",
     "aplteam-APLTreeUtils2-1.4.1",
     "aplteam-APLProcess-0.8.0",
     "aplteam-OS-4.0.0",

@@ -1,7 +1,7 @@
 {
   api: "Tester2",
   assets: "html/",
-  date: 20250403.134952,
+  date: 20250605.103136,
   description: "Dyalog APL test framework",
   documentation: "",
   files: "",
@@ -21,5 +21,5 @@
   tags: "test,test-framework",
   uri: "https://tatin.dev/",
   userCommandScript: "",
-  version: "4.0.0+54",
+  version: "4.2.0+64",
 }

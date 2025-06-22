@@ -19,7 +19,6 @@
 
     ⎕IO←1 ⋄ ⎕ML←1
 
-
     ∇ r←Version;ref
       :Access Public shared
     ⍝ Returns the version number from `TatinVars` if possible.
@@ -43,6 +42,24 @@
 
     ∇ r←History
       :Access Public shared
+      ⍝ * 4.2.0 ⋄ 2025-06-05
+      ⍝   * `Cleanup` (as well as group-specific `Cleanup` functions) may now return a (optional) boolean indicating success (1) or failure (0).\\
+      ⍝      (Up to version 4.2 a result, if any, was ignored.
+      ⍝   * The reports on `Cleanup` and `Cleanup_<group>` is now more precise
+      ⍝   * `Cleanup` and `Cleanup_<group>` are now executed under :Trap. Problems are reported in the log rather than crashing the test suite.  
+      ⍝   * Bug fixes
+      ⍝     * The message concerning the "Cleanup" function repeated "found and executed" twice
+      ⍝ * 4.1.0 ⋄ 2025-05-30
+      ⍝   * `EstablishHelpers` now prints a `]Link.Add` statement to the session when appropriate
+      ⍝   * `EstablishHelpers` does not do anything anymore in case the helpers are already established
+      ⍝   * `GetTestTemplate` now prints a `]Link.Add` statement to the session when appropriate
+      ⍝   * Dependencies updated (FilesAndDirs)
+      ⍝   * Bug fixes
+      ⍝     * `Prepare` did not work without `Tester2` being opened as a Cider project
+      ⍝     * `Prepare` does not ask for code coverage reports when the CodeCoverage class is not around
+      ⍝     * The documentation did not embedd the CSS
+      ⍝     * Some minor issues fixed in the documentation
+      ⍝     * Assigning a custom return code could crash `Tester2.ReportTestResults`
       ⍝ * 4.0.0 ⋄ 2025-04-03
       ⍝   * Potenially breaking change: `Version` now returns the package config version number as a char vector
       ⍝   * Packages updated
@@ -866,7 +883,6 @@
               :EndIf
               ps AddReturnCodeToGrid rc i
               comment←2↓ref GetFirstCommentLine testFns
-               ⍝TODO⍝ desc←(⎕PW-length2){⍺<≢⍵:'...',⍨⍵↑⍨⍺-4 ⋄ ⍵}⍣(~ps.guiFlag)⊢comment
               desc←⊢comment
               :If rc∊0 1
                   marker←('*✓'[1+rc=0])
@@ -893,7 +909,6 @@
               ps.errCounter+←1
               ps.totalCounter+←1
               comment←2↓ref GetFirstCommentLine testFns
-               ⍝TODO⍝ desc←(⎕PW-length2){⍺<≢⍵:'...',⍨⍵↑⍨⍺-4 ⋄ ⍵}⍣(~ps.guiFlag)⊢comment
               desc←⊢comment
               marker←'#'
               ¯2 ShowLog marker' ',desc
@@ -943,7 +958,7 @@
               :AndIf 0<≢comment
               :AndIf 0<noOf←ps.returnCodes+.=-⊃(//)⎕VFI(≢'_custom_')↓constant
                   log,←⊂'  ',(⍕noOf),' test cases not executed because of "',comment,'" (flagged with "⍝")'
-              :ElseIf 0<noOf←ps.returnCodes+.=⍎constant
+              :ElseIf 0<noOf←+/ps.returnCodes∊⍎constant
                   log,←⊂'  ',(⍕noOf),' test cases not executed because of "',(1↓constant),'" (flagged with "⍝")'
               :EndIf
           :EndFor
@@ -954,7 +969,7 @@
       rc←0<ps.failedCounter+ps.errCounter
     ∇
 
-    ∇ {r}←ExecuteCleanup(ref ps);report
+    ∇ {r}←ExecuteCleanup(ref ps);report;resultFlag;rc
       r←⍬
       report←'Looking for a function "Cleanup": '
       :If 3=ref.⎕NC'Cleanup'
@@ -963,15 +978,31 @@
           :Else
               ((⎕STOP 1⊃⎕SI)~∆stop_before_cleanup_1 ∆stop_before_cleanup_2)⎕STOP 1⊃⎕SI
           :EndIf
-          :If 0=1 2⊃ref.⎕AT'Cleanup'
+          resultFlag←1 1⊃ref.⎕AT'Cleanup'
+          rc←¯1 ⍝ Undefined
+          :Trap 0
+              :If 0=1 2⊃ref.⎕AT'Cleanup'
      ∆stop_before_cleanup_1:  ⍝ To switch off the stopping mechanism permanently, enter:   ps.stop←0
-              ref.Cleanup
-              report,←'found and executed'
-          :Else
+                  ⍎(resultFlag/'rc←'),'ref.Cleanup'
+              :Else
      ∆stop_before_cleanup_2:  ⍝ To switch off the stopping mechanism permanently, enter:   ps.stop←0
-              ref.Cleanup ps
-          :EndIf
-          report,←' found and executed successfully'
+                  ⍎(resultFlag/'rc←'),'ref.Cleanup ps'
+              :EndIf
+          :Else
+              report,←' found but crashed (',⎕DMX.EM,')'
+              ShowLog report
+              :Return
+          :EndTrap
+          :Select ⊃rc
+          :Case ¯1
+              report,←' found and executed'
+          :Case 1
+              report,←' found and executed successfully'
+          :Case 0
+              report,←' found and executed but indicated failure by its result'
+          :Else
+              report,←' found and executed but returned an invalid result'
+          :EndSelect
       :Else
           report,←'not found'
       :EndIf
@@ -1334,7 +1365,7 @@
     ∇
 
     ∇ r←{label}GoToTidyUp flag;ref;flag2
-⍝ Returns either an empty vector or `label, which defaults to `∆TidyUp`.\\
+⍝ Returns either an empty vector or `label`, which defaults to `∆TidyUp`.\\
 ⍝ Signals 999 when `flag` is 1 and `debugFlag` is 1.
       :Access Public Instance
       ⎕EX'∆FAILING_LINE'
@@ -1457,9 +1488,9 @@
     ∇
 
     ∇ r←ListGroups
-  ⍝ Returns all groups as a two-column matrix.
-  ⍝ The first column carries the group name.
-  ⍝ The second column carries the number of test cases within that group.
+  ⍝ Returns all groups as a two-column matrix:\\
+  ⍝ * `[;1]` carries the group name.
+  ⍝ * `[;2]` carries the number of test cases within that group.
       :Access Public Instance
       r←' '~¨⍨↓'Test_'{⍵⌿⍨((≢⍺)↑[2]⍵)∧.=⍺}'T'_ref.⎕NL 3
       :If 0≠≢r←(2≤'_'+.=⍉↑r)⌿r
@@ -1504,7 +1535,9 @@
     ∇ r←{currentVersion}AtLeastVersion min;currentVersion
       ⍝ Returns 1 if the currently running version is at least `min`.
       ⍝ If the current version is 17.1 then:
+      ⍝ ```
       ⍝ 0 0 1 1 ←→ AtLeastVersion¨16 17 17.1 18
+      ⍝ ```
       :Access Public Instance
       currentVersion←{0<⎕NC ⍵:⍎⍵ ⋄ {⊃⊃(//)⎕VFI ⍵/⍨2>+\⍵='.'}2⊃'#'⎕WG'APLVersion'}'currentVersion'
       'Right argument must be length 1'Assert 1=≢min
@@ -1513,7 +1546,7 @@
     ∇
 
     ∇ r←{target}FindSpecialString what
-    ⍝ Use this to search for stuff like "CHECK" or "TODO" enclosed between lamps `⍝`.
+    ⍝ Use this to search for stuff like "CHECK" or "TODO" enclosed between lamps (`⍝`).
     ⍝ Without left argument the search starts in `_ref`.
       :Access Public Instance
       target←{0<⎕NC ⍵:⍎⍵ ⋄ ⍕_ref}'target'
@@ -1659,11 +1692,16 @@
           :If 1 YesOrNo'Cannot fix function in  a script; shall the body be copied to the clipboard?'
               'cl'⎕WC'Clipboard'
               cl.Text←2↓⊃,/(⊂CRLF),¨body
+              :Return
           :Else
-              ⎕←'No action taken'
+              ⎕←'No action taken' ⋄ →0
           :EndIf
       :Else
           _ref.⎕FX body
+      :EndIf
+      :If ∨/IsLinked _ref
+          ⎕←'You might want to tell Link:'
+          ⎕←']Link.Add ',(⍕_ref),'.',newName
       :EndIf
     ∇
 
@@ -1679,17 +1717,25 @@
           ref←⊃⎕RSI
       :EndIf
       'Cannot establish helpers in class instances/unnamed namespaces'Assert~'['∊⍕ref
-      :If force
-      :OrIf YesOrNo'Helpers@Sure you wanna establish three helpers "Prepare", "RunTests" & "RunTestsInBatchMode" in ',(⍕ref),' ?'
-          res←ref.⎕FX ⎕CR'Prepare'
-          ('Fixing helper "Prepare" in ',(⍕ref),' failed on line(s) ',⍕res)Assert' '=1↑0⍴res
-          res←ref.⎕FX ⎕CR'RunTests'
-          ('Fixing helper "RunTests" in ',(⍕ref),' failed on line(s) ',⍕res)Assert' '=1↑0⍴res
-          res←ref.⎕FX ⎕CR'RunTestsInBatchMode'
-          ('Fixing helper "RunBatchTests" in ',(⍕ref),' failed on line(s) ',⍕res)Assert' '=1↑0⍴res
-          r←(~force)/'"Prepare", "RunTests" & "RunTestsInBatchMode" successfully established in ',⍕ref
-          r,←CR,'⍝ You might want to inform Link:'
-          r,←CR,'⍝ ⎕SE.Link.Add ',⊃,/('''','.',⍨⍕ref)∘,¨'Prepare'' ' 'RunTests'' ' 'RunTestsInBatchMode'' '
+      :If 3=+/ref.⎕NC↑'Prepare' 'RunTests' 'RunTestsInBatchMode'
+          ⎕←'Prepare, RunTests and RunTestsInBatchMode are all already established in ',⍕ref
+      :Else
+          :If force
+          :OrIf YesOrNo'Helpers@Sure you wanna establish three helpers "Prepare", "RunTests" & "RunTestsInBatchMode" in ',(⍕ref),' ?'
+              res←ref.⎕FX ⎕CR'Prepare'
+              ('Fixing helper "Prepare" in ',(⍕ref),' failed on line(s) ',⍕res)Assert' '=1↑0⍴res
+              res←ref.⎕FX ⎕CR'RunTests'
+              ('Fixing helper "RunTests" in ',(⍕ref),' failed on line(s) ',⍕res)Assert' '=1↑0⍴res
+              res←ref.⎕FX ⎕CR'RunTestsInBatchMode'
+              ('Fixing helper "RunBatchTests" in ',(⍕ref),' failed on line(s) ',⍕res)Assert' '=1↑0⍴res
+              r←(~force)/'"Prepare", "RunTests" & "RunTestsInBatchMode" successfully established in ',⍕ref
+              r,←CR,'⍝ You might want to inform Link:'
+              r,←CR,'⍝ ⎕SE.Link.Add ',⊃,/('''','.',⍨⍕ref)∘,¨'Prepare'' ' 'RunTests'' ' 'RunTestsInBatchMode'' '
+          :EndIf
+          :If IsLinked ref
+              ⎕←'You might want to tell Link:'
+              ⎕←']Link.Add ',⊃,/(⊂⍕ref),¨'.Prepare ' '.RunTests ' '.RunTestsInBatchMode'
+          :EndIf
       :EndIf
     ∇
 
@@ -1867,9 +1913,10 @@
       :EndIf
     ∇
 
-    ∇ {r}←HandleCleanup(ref ps currentGroup i);at
+    ∇ {r}←HandleCleanup(ref ps currentGroup i);at;rc;resultFlag;report
       r←0
       currentGroup←Remove∆Test_ currentGroup
+      report←'Looking for a group function "Cleanup_',currentGroup,'": '
       :If i=≢ps.list                                                            ⍝ Last one?
       :OrIf currentGroup{0=≢⍺:0 ⋄ ⍺≢Remove∆Test_ GetGroupName(i+1)⊃⍵}ps.list    ⍝ Group change?!
           :If 3=ref.⎕NC'Cleanup_',currentGroup
@@ -1878,15 +1925,30 @@
               :Else
                   ((⎕STOP 1⊃⎕SI)~,∆stop_before_cleanup_1,∆stop_before_cleanup_2)⎕STOP 1⊃⎕SI
               :EndIf
+              rc←¯1  ⍝ Undefined
               at←1⊃ref.⎕AT'Cleanup_',currentGroup
+              resultFlag←1=|1⊃at
               :If (2⊃at)∊1 ¯2                                                   ⍝ Accepts a right argument (1=monadic, ¯2=ambivalent)?
      ∆stop_before_cleanup_1:  ⍝ To switch off the stopping mechanism permanently, enter:   ps.stop←0
-                  ps ref.{6::1 ⋄ ⍎⍵,' ⍺'}'Cleanup_',currentGroup
+                  ⍎(resultFlag/'rc←'),'ref.Cleanup_',currentGroup,' ps'
               :Else
      ∆stop_before_cleanup_2:  ⍝ To switch off the stopping mechanism permanently, enter:   ps.stop←0
-                  ref.⍎'Cleanup_',currentGroup
+                  ⍎(resultFlag/'rc←'),'ref.Cleanup_',currentGroup
               :EndIf
+              :Select rc
+              :Case ¯1
+                  report,←' found and executed'
+              :Case 0
+                  report,←' found and executed successfully'
+              :Case 1
+                  report,←' found and executed but indicated failure by its result'
+              :Else
+                  report,←' found and executed but returned an invalid result'
+              :EndSelect
+          :Else
+              report,←'not found'
           :EndIf
+          ShowLog report
       :EndIf
     ∇
 
@@ -1915,6 +1977,11 @@
       r←⎕UCS 13 10
     ∇
 
+    ∇ r←IsLinked ref;buff
+      buff←⎕SE.Link.Status¨1↓{{⍺,'.',⍵}/¨(⍳≢⍵)↑¨⊂⍵}{'.'(≠⊆⊢)⍕⍵}⍕ref
+      r←∨/~∨/¨'No active links in '∘⍷∘∊¨buff
+    ∇
+
     :Section Helpers
     ∇ Prepare;testPath;testFilename;ask;answer;options;flag;ind
 ⍝ Creates an instance of the class `Tester2` named `T` and configures it for
@@ -1927,7 +1994,8 @@
       testPath←##.CiderConfig.HOME,'/TestResults'
       testFilename←testPath,'/CodeCoverage'
       flag←0
-      :If ⎕NEXISTS testPath
+      :If 9=⎕NC'CodeCoverage'
+      :AndIf ⎕NEXISTS testPath
           :If ⎕NEXISTS testFilename,'.profile'
               ind←('Code Coverage' 0 1)CommTools.Select'Append' 'Replace' 'Neither'
               →(3=ind)/0
