@@ -7,4 +7,6 @@
  'If you change the data it will be written to file if you confirm that.'
  'Note that changing the config file does not affect the currently running instance of Cider.'
  ''
+ 'The full Cider documentation is available via '
+ ']open https://aplteam.github.io/Cider/ '
 )

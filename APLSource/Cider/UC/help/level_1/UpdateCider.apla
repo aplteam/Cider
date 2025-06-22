@@ -7,4 +7,7 @@
  'argument if you want to replace the current version not by the latest but a specific version.'
  ''
  'The update is performed automatically. However, the current WS will stay on the old version.'
+ ''
+ 'The full Cider documentation is available via '
+ ']open https://aplteam.github.io/Cider/ '
 )

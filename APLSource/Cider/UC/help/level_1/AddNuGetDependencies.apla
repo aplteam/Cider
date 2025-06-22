@@ -15,4 +15,6 @@
  '          "dependencies_dev" parameter with a "=". If there is already such a target namespace'
  '          an error is thrown; you need to edit the project''s config file in such a case.'
  ''
+ 'The full Cider documentation is available via '
+ ']open https://aplteam.github.io/Cider/ '
 )

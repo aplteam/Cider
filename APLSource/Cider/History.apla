@@ -1,9 +1,10 @@
 (
- '* 0.48.1 ⋄ 2025-06-01'
+ '* 0.48.1 ⋄ 2025-06-22'
+ '  * Reference added to all help pages regarding the full documentation'
  '  * Bug fixes'
- '    * `]Cider.OpenProject`''s Help was wrong: watch is not a flag'
+ '    * `]Cider.OpenProject`''s Help was wrong: `watch` is not a flag'
  '    * `GetUserHomPath` renamed to `GetUserHomePath`'
- '    * The "Sure you want to..." question in `]OpenProject` did not honour the `-import` flag'
+ '    * The "Sure you want to..." question asked by `]OpenProject` did not honour the `-import` flag'
  '* 0.48.0 ⋄ 2025-04-23'
  '  * Updating packages improved: now even later principal major versions can be handled if desired'
  '  * Reporting of later versions improved when opening a project'

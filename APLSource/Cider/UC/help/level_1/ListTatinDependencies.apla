@@ -23,4 +23,7 @@
  '         Note that due to minimum version selection they might end up not being used.'
  '-latest  When this is specified, the version numbers of later versions are listed as well.'
  '         Is ignored when specified with -full'
+ '         '
+ 'The full Cider documentation is available via '
+ ']open https://aplteam.github.io/Cider/ '
 )

@@ -16,4 +16,7 @@
  '        add all of them (or most/some of them) as aliases. This flag puts all sub-folders'
  '        into an edit window, and, after closing the edit window, will add all remaining '
  '        ones as aliases.'
+ ''
+ 'The full Cider documentation is available via '
+ ']open https://aplteam.github.io/Cider/ '
 )

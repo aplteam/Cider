@@ -17,4 +17,7 @@
  ''
  '-fast  Use this to tell CloseProject that is should not perform any checks, see global Cider'
  '       config parameter `CheckForDropboxConflicts`.'
+ '       '
+ 'The full Cider documentation is available via '
+ ']open https://aplteam.github.io/Cider/ '
 )

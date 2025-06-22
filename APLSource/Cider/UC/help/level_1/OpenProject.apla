@@ -26,5 +26,6 @@
  ''
  ''
  'Fore more help enter -???'
- ''
+ 'The full Cider documentation is available via '
+ ']open https://aplteam.github.io/Cider/ '
 )
