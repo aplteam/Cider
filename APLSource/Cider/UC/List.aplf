@@ -4,7 +4,7 @@
 
      c←⎕NS''
      c.Name←'OpenProject'
-     c.Desc←'Load all source files into the WS and keep it linked by default'
+     c.Desc←'Load all source files into the WS and keep them linked by default'
      c.Group←'Cider'
      c.Parse←'1s -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns dir both none -verbose -batch'
      r,←c
@@ -102,7 +102,7 @@
 
      c←⎕NS''
      c.Name←'Help'
-     c.Desc←'Offers to put the HTML files on display'
+     c.Desc←'Shows how to show the Cider documentation in your default browser'
      c.Group←'Cider'
      c.Parse←'0'
      r,←c
