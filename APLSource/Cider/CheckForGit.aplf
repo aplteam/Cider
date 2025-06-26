@@ -6,44 +6,44 @@
  gitIssues←GetGlobalGitIssues
  :If gitStatus≠0
      :If gitStatus=3  ⍝ We need to ask the user
-         ind←'HowToReportGitStaus@Report Git status (if anything is to report) ?' 0 1 C.Select'Nope!' 'Yes, in ⎕ED' 'Yes, in the session'
+         ind←'HowToReportGitStaus@Report Git status?' 0 1 C.Select'Nope!' 'Yes, in ⎕ED' 'Yes, in the session'
          →(1=ind)/0
          gitStatus←(2 3⍳ind)⊃1 2
      :EndIf
- :EndIf
- :Trap 0
-     status←G.Status path
- :Else
-     dmx←⎕DMX
-     :If 127=dmx.EN
-         (1 parms.batch)p'The project appears to be managed by Git but Git is not installed?!'
-     :ElseIf 128=dmx.EN
-         (1 parms.batch)p'The project appears to be managed by Git but user.email and/or user.name are not defined'
-     :ElseIf 0<≢dmx.Message
-         (1 parms.batch)p'The Git status of the project could not be determined due to an error:'
-         (1 parms.batch)p dmx.Message,'; rc=',⍕dmx.EN
-     :ElseIf 0<≢dmx.DM
-         (1 parms.batch)p'The Git status of the project could not be determined due to an error:'
-         (1 parms.batch)p(⊃dmx.DM),'; rc=',⍕dmx.EN
+     :Trap 0
+         status←G.Status path
      :Else
-         (1 parms.batch)p'The Git status of the project could not be determined due to an error'
+         dmx←⎕DMX
+         :If 127=dmx.EN
+             (1 parms.batch)p'The project appears to be managed by Git but Git is not installed?!'
+         :ElseIf 128=dmx.EN
+             (1 parms.batch)p'The project appears to be managed by Git but user.email and/or user.name are not defined'
+         :ElseIf 0<≢dmx.Message
+             (1 parms.batch)p'The Git status of the project could not be determined due to an error:'
+             (1 parms.batch)p dmx.Message,'; rc=',⍕dmx.EN
+         :ElseIf 0<≢dmx.DM
+             (1 parms.batch)p'The Git status of the project could not be determined due to an error:'
+             (1 parms.batch)p(⊃dmx.DM),'; rc=',⍕dmx.EN
+         :Else
+             (1 parms.batch)p'The Git status of the project could not be determined due to an error'
+             :Return
+         :EndIf
          :Return
-     :EndIf
-     :Return
- :EndTrap
- :If 0=parms.batch
-     :If ∨/'No commits yet'⍷∊status
-         (3⊃status)←'Nothing has been commited yet, therefore branches cannot be reported'
-     :Else
-         (3⊃status)←'Git branches: '{0=≢⍵:'No other branches' ⋄ ⍺,⊃{⍺,', ',⍵}/⍵}2↓¨APLGit2.ListBranches path
-     :EndIf
-     :If 0<≢stashes←APLGit2.StashList path
-         status,←⊂'Number of stashes: ',⍕≢status
-     :EndIf
-     status←(↓(,[0.5]'Git status report')⍪'='),status
-     :If gitStatus=1
-         {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
-     :Else
-         ⎕←↑status
+     :EndTrap
+     :If 0=parms.batch
+         :If ∨/'No commits yet'⍷∊status
+             (3⊃status)←'Nothing has been commited yet, therefore branches cannot be reported'
+         :Else
+             (3⊃status)←'Git branches: '{0=≢⍵:'No other branches' ⋄ ⍺,⊃{⍺,', ',⍵}/⍵}2↓¨APLGit2.ListBranches path
+         :EndIf
+         :If 0<≢stashes←APLGit2.StashList path
+             status,←⊂'Number of stashes: ',⍕≢status
+         :EndIf
+         status←(↓(,[0.5]'Git status report')⍪'='),status
+         :If gitStatus=1
+             {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
+         :Else
+             ⎕←↑status
+         :EndIf
      :EndIf
  :EndIf

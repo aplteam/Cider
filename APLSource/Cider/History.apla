@@ -1,7 +1,8 @@
 (
  '* 0.48.1 ⋄ 2025-06-26'
  '  * Reference added to all help pages regarding the full documentation'
- '  * Bug fixes                         '
+ '  * Bug fixes'
+ '    * #118, #119                        '
  '    * README corrected and polished'
  '    * Help for user commands corrected'
  '    * `]Cider.OpenProject`''s Help was wrong: `watch` is not a flag'
