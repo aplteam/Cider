@@ -2,6 +2,7 @@
  '* 0.48.1 ⋄ 2025-06-26'
  '  * Reference added to all help pages regarding the full documentation'
  '  * Bug fixes'
+ '    * ]Cider.Config -? provided incorrect information'
  '    * #118, #119                        '
  '    * README corrected and polished'
  '    * Help for user commands corrected'
