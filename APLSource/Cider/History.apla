@@ -1,7 +1,9 @@
 (
- '* 0.48.1 ⋄ 2025-06-22'
+ '* 0.48.1 ⋄ 2025-06-26'
  '  * Reference added to all help pages regarding the full documentation'
- '  * Bug fixes'
+ '  * Bug fixes                         '
+ '    * README corrected and polished'
+ '    * Help for user commands corrected'
  '    * `]Cider.OpenProject`''s Help was wrong: `watch` is not a flag'
  '    * `GetUserHomPath` renamed to `GetUserHomePath`'
  '    * The "Sure you want to..." question asked by `]OpenProject` did not honour the `-import` flag'

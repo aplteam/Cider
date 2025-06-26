@@ -32,10 +32,8 @@ These commands are available:
 * `]Cider.ListNuGetDependencies`
 * `]Cider.ListOpenProjects`
 * `]Cider.ListTatinDependencies`
-* `]Cider.Make`
 * `]Cider.OpenProject`
 * `]Cider.ProjectConfig`
-* `]Cider.RunTests`
 * `]Cider.UpdateCider`
 * `]Cider.Version`
 
@@ -74,7 +72,7 @@ However, the API only becomes available after executing any Cider user command. 
 If that is not good enough for you, this article explains how to load user commands into `⎕SE` at a very early stage: <https://aplwiki.com/wiki/Dyalog_User_Commands>
 
 
-## Methods
+## User Commands
 
 
 ### `OpenProject`
@@ -108,8 +106,8 @@ Once a folder is established that holds a Cider config file, the user command pe
 1. Ask the user whether Cider should check all Tatin packages (if there are any) for later versions 
 1. Load all Tatin packages specified in the file `cider.config`, if any; see `dependencies.tatin` and `dependencies_dev.tatin`
 1. Inject a namespace `CiderConfig` into the project space and...
-   * populates it with the contents of the configuration file as APL arrays
-   * adds a variable `HOME` that remembers the path the project was loaded from   
+   * populate it with the contents of the configuration file as APL arrays
+   * add a variable `HOME` that remembers the path the project was loaded from   
 1. Inject a namespace `TatinVars` in case the project ends up as a package
 1. Check whether the project's config file does carry a non-empty value for `init`. If that's the case, it must be a function that is then called by Cider, typically for initializing the project
 1. If there is a variable `ToDo` in the root of the project, and the variable is not empty, then this variable is printed to the session
@@ -151,7 +149,7 @@ You may specify the `-all` flag to close all projects in `#` (*not* `⎕SE`!), b
 
 ### `CreateProject`
 
-Requires one mandatory parameter: a folder that is going to be a project. 
+Requires one parameter: a folder that is going to be a project. 
 
 Creates a file `cider.config` in that folder.
 
@@ -162,7 +160,7 @@ Allows the user to edit Cider's global config file.
  
 ### `Help`
 
-Offers the user the ability to view selected or all of the documentation.
+Prints a statement to the session that would open Cider's documentation in your default browser.
 
 ### `LinkConfig`
 
@@ -178,7 +176,7 @@ Use this to add Tatin (and probably also load) Tatin dependencies.
 
 ### `ListOpenProjects`
 
-Lists the project spaces of all currently linked projects together with the fully qualified paths of all projects currently open.
+Lists the project spaces of all currently linked projects together with the fully qualified paths of all projects that are currently open.
 
 ### `ListNuGetDependencies`
 
@@ -196,24 +194,27 @@ Lists all Cider aliases together with their folders.
 
 Puts a project's config file on display and allows the user to edit it.
 
-### `Make`
+### `HowToMakeNewVersion`
 
 Prints an APL statement to the session which, when executed, will build a new version of the project.
 
 
-### `RunTests`
+### `HowToRunTests`
 
 Prints an APL statement to the session which, when executed, runs the project's test suite.
 
 
 ### `Version`
 
-Returns a three-item-vector with "Name", "Version number" and "Version date".
+Returns a character vector with the version number.
 
 
 ### `UpdateCider`
 
 Updates Cider if a later version is available as a package on [https://tatin.dev](https://tatin.dev).
+
+Alternatively a specific version number can be specified as an argument in order to get that precise version
+
 
 
 
