@@ -1,7 +1,7 @@
  r←{self}ListTatinDependencies folder;cfgFilename;cfg;buildFilenames;buildLists;b;tatinFolders;buildFolders;list;folder2;buildFilename;buff
 ⍝ `y` must point to a project, either as alias ([]) or as a project folder.
 ⍝ The actual Tatin dependency folders are established from the project config file.
-⍝ `self` is only passed when this function calles itself.
+⍝ `self` is only passed when this function calls itself.
  r←0 5⍴''
  :If IsAlias folder
      folder←GetFolderFromAlias2 folder
