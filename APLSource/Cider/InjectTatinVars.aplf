@@ -13,7 +13,15 @@
 ⍝ point to a sub-namespace in the project's root.
  ref←⎕NULL
  :If ⎕NEXISTS folder,'/',⎕SE._Tatin.Registry.CFG_Name
-     cfg←⎕SE._Tatin.Registry.ReadPackageConfigFile folder
+
+     ⍝ With Tatin 120.1 "ReadPackageConfigFile" was renamed to "GetPackageConfigFileAsNS"
+     ⍝ For compatability we make sure that Cider works with both versions:
+     :If 3=⎕SE._Tatin.Registry.⎕NC'ReadPackageConfigFile'
+         cfg←⎕SE._Tatin.Registry.ReadPackageConfigFile folder
+     :Else
+         cfg←⎕SE._Tatin.Registry.GetPackageConfigFileAsNS folder
+     :EndIf
+
      ⎕SE._Tatin.Client.EstablishStuffInTatinVars projectRoot cfg folder
      ref←projectRoot.TatinVars
      :If 0<projectRoot.CiderConfig.CIDER.⎕NC'tatinVars'

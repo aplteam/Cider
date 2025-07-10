@@ -1,4 +1,6 @@
 (
+ '* 0.48.2 ⋄ 2025-06-30'
+ '  * A rename operation in Tatin required a change in Cider''s `InjectTatinVars` function'
  '* 0.48.1 ⋄ 2025-06-26'
  '  * Reference added to all help pages regarding the full documentation'
  '  * Bug fixes'
