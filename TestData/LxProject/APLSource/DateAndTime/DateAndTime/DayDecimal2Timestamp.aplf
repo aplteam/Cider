@@ -1,1 +1,0 @@
-DayDecimal2Timestamp←{⍺←⊢ ⋄ 1:shy←⍺ ##.DayDecimal2Timestamp ⍵}

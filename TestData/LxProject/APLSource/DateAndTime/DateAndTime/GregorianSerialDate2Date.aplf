@@ -1,1 +1,0 @@
-GregorianSerialDate2Date←{⍺←⊢ ⋄ 1:shy←⍺ ##.GregorianSerialDate2Date ⍵}

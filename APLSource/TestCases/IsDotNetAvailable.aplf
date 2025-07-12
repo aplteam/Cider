@@ -1,12 +1,14 @@
- r←IsDotNetAvailable;res;parms;I
+ r←IsDotNetAvailable;res;parms;I;debug
 ⍝ Checks whether .NET (rather than .NET framework) is available at all.
 ⍝ We cannot do this in the current APL session on Windows because that might use .NET Framework but
 ⍝ .NET might still be available, so we start a process which will exit with 125 for "yes", 126 for "no"
 ⍝ and "123" for "error".
  :If 'Win'≡APLTreeUtils2.GetOperatingSystem ⍬
-     :If 0=r←1 1≡2↑2250⌶0  ⍝ The current APL ight already be configured for .NET
-         parms←∆NuGetTestProcessParms ⍬ ⍬
+     :If 0=r←1 1≡2↑2250⌶0  ⍝ The current APL might already be configured for .NET, so we know already
+         debug←0
+         parms←debug ∆NuGetTestProcessParms ⍬ ⍬
          I←⎕NEW APLProcess(,⊂parms)
+         'Something is wrong!'Assert I.ExitCode∊125 126
          r←125=I.ExitCode
      :EndIf
  :Else

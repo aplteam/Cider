@@ -1,13 +1,15 @@
- R←Test_NuGet_003(stopFlag batchFlag);⎕TRAP;parms;I;tempFolder;msg;rc
+ R←Test_NuGet_003(stopFlag batchFlag);⎕TRAP;parms;I;tempFolder;msg;rc;debug
 ⍝ Open a project which has a Tatin dependency, add a NuGet package, close and reopen
 ⍝ The real test function (∆Test_NuGet_003) is executed in its own APL process
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  tempFolder←∆GetFolderInTempDir⊃⎕SI
- parms←∆NuGetTestProcessParms(⊃⎕SI)tempFolder
+ debug←0
+ parms←debug ∆NuGetTestProcessParms(⊃⎕SI)tempFolder
  I←⎕NEW APLProcess(,⊂parms)
- R←I.ExitCode
+ 'Something went wrong!'Assert 0=I.ExitCode
+ R←T._OK
 
 ∆TidyUp:
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder

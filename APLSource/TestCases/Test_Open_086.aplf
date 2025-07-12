@@ -20,7 +20,8 @@
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp~∧/(⊂log){∨/⍵⍷⍺}¨'Project successfully opened (though with 1 problem) and established in' '#.TEMP.UpdatePkgs'
- →T.GoToTidyUp~∨/'>>> aplteam-MarkAPL-99.1.2 not found anywhere'⍷log
+ ⍝ Depending on the Tatin registries configures on the current machine, the result may slightly differ
+ →T.GoToTidyUp~∨/∨/¨'Not found: aplteam-MarkAPL-99.1.2' '>>> aplteam-MarkAPL-99.1.2 not found'⍷¨⊂log
 
  R←T._OK
 

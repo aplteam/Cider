@@ -1,4 +1,4 @@
- R←Test_NuGet_001(stopFlag batchFlag);⎕TRAP;parms;I;tempFolder;msg;rc;alias;res
+ R←Test_NuGet_001(stopFlag batchFlag);⎕TRAP;parms;I;tempFolder;msg;rc;alias;res;debug
 ⍝ Open a project with no dependencies, add a NuGet dependency by alias, close and reopen
 ⍝ The real test function (∆Test_NuGet_001) is executed in its own APL process
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
@@ -8,9 +8,11 @@
  alias←'MyAlias_',⊃⎕SI
  res←⎕SE.Cider.AddAlias tempFolder alias
  Assert 0=≢res
- parms←∆NuGetTestProcessParms(⊃⎕SI)('[',alias,']')
+ debug←0
+ parms←debug ∆NuGetTestProcessParms(⊃⎕SI)('[',alias,']')
  I←⎕NEW APLProcess(,⊂parms)
- R←I.ExitCode
+ 'Something went wrong!'Assert 0=I.ExitCode
+ R←T._OK
 
 ∆TidyUp:
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder

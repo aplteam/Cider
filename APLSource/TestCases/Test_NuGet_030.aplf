@@ -17,13 +17,14 @@
  parms.CommandLineArgs,←' DYALOG_NETCORE=1'
  parms.WorkspaceName←##.CiderConfig.HOME,'/Tests/ExecTestCase.dws'
  parms.WindowsStyle←'Normal'
+ parms.SessionFile←1            ⍝ Only for development/debugging
  :If 0
-     parms.SessionFile←1            ⍝ Only for development/debugging
      parms.CommandLineArgs,←' -x'
  :EndIf
 
  I←⎕NEW APLProcess(,⊂parms)
- R←I.ExitCode
+ 'Something went wrong!'Assert 0=I.ExitCode
+ R←T._OK
 
 ∆TidyUp:
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder

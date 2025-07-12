@@ -1,1 +1,0 @@
-WeekNo_ISO←{##.WeekNo_ISO ⍵}

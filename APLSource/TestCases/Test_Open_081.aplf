@@ -7,7 +7,7 @@
  parms.folder←∆GetTestPath⊃⎕SI
  parms.watch←'ns'
  parms.ignoreUserExec←1
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  :Trap 11
      {}##.Cider.OpenProject parms
      →T.GoToTidyUp 1

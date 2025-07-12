@@ -4,14 +4,15 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If ~∆IsDotNetAvailable
+ :If ~∆DotNetIsAvailable
      R←T._NotApplicable ⋄ →0
  :EndIf
 
  tempFolder←∆GetFolderInTempDir⊃⎕SI
  parms←∆NuGetTestProcessParms(⊃⎕SI)tempFolder
  I←⎕NEW APLProcess(,⊂parms)
- R←I.ExitCode
+ 'Something went wrong!'Assert 0=I.ExitCode
+ R←T._OK
 
 ∆TidyUp:
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder

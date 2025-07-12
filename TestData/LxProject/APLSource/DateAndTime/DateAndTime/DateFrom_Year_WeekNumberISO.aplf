@@ -1,1 +1,0 @@
-DateFrom_Year_WeekNumberISO←{⍺←⊢ ⋄ ⍺ ##.DateFrom_Year_WeekNumberISO ⍵}

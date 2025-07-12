@@ -1,1 +1,0 @@
-FileDate2Timestap←{⍺←⊢ ⋄ 1:shy←⍺ ##.FileDate2Timestap ⍵}

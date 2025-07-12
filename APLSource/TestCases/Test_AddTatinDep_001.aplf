@@ -13,7 +13,7 @@
  config.CIDER.dependencies.tatin←'tatin-packages'
  config ##.Cider.Put_JSON5 configfile
 
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  parms←##.Cider.CreateOpenParms''
  parms.folder←tempDir
  parms.batch←1

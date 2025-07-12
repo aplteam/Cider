@@ -1,1 +1,0 @@
-FormatDateTime←{⍺←⊢ ⋄ 1:shy←⍺ ##.FormatDateTime ⍵}

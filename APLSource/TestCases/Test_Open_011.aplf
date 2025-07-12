@@ -8,7 +8,7 @@
  'TEMP'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI
 
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (success log)←##.Cider.OpenProject folder
  →T.GoToTidyUp~success
  →T.GoToTidyUp∨/'ERROR'⍷log

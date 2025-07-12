@@ -22,7 +22,6 @@
  parms.parent←'#.Foo'
  parms.ignoreUserExec←1
  parms.batch←1
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
  (res log)←##.Cider.OpenProject parms
 
  →T.GoToTidyUp 0=≢list←##.Cider.ListOpenProjects 0

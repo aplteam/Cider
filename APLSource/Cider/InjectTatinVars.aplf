@@ -14,7 +14,7 @@
  ref←⎕NULL
  :If ⎕NEXISTS folder,'/',⎕SE._Tatin.Registry.CFG_Name
 
-     ⍝ With Tatin 120.1 "ReadPackageConfigFile" was renamed to "GetPackageConfigFileAsNS"
+     ⍝ With Tatin 121.0 "ReadPackageConfigFile" was renamed to "GetPackageConfigFileAsNS"
      ⍝ For compatability we make sure that Cider works with both versions:
      :If 3=⎕SE._Tatin.Registry.⎕NC'ReadPackageConfigFile'
          cfg←⎕SE._Tatin.Registry.ReadPackageConfigFile folder

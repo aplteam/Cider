@@ -1,1 +1,0 @@
-AddPeriod2DateTime←{⍺←⊢ ⋄ 1:shy←⍺ ##.AddPeriod2DateTime ⍵}

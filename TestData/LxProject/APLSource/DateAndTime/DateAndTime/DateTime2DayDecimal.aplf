@@ -1,1 +1,0 @@
-DateTime2DayDecimal←{⍺←⊢ ⋄ 1:shy←⍺ ##.DateTime2DayDecimal ⍵}

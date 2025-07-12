@@ -1,1 +1,0 @@
-Timestamp2DateTime←{⍺←⊢ ⋄ 1:shy←⍺ ##.Timestamp2DateTime ⍵}

@@ -1,1 +1,0 @@
-DayOfWeek←{⍺←⊢ ⋄ 1:shy←⍺ ##.DayOfWeek ⍵}
