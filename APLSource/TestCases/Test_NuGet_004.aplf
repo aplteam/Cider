@@ -8,7 +8,7 @@
  debug←0
  parms←debug ∆NuGetTestProcessParms(⊃⎕SI)tempFolder
  I←⎕NEW APLProcess(,⊂parms)
- 'Something went wrong!'Assert 0=I.ExitCode
+ 'Something went wrong!'Assert I.ExitCode=130
  R←T._OK
 
 ∆TidyUp:

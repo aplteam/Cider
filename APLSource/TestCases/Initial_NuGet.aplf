@@ -3,7 +3,6 @@
  ∆DotNetIsAvailable←netcore←IsDotNetAvailable
  :If 0=netcore
  :AndIf ~ps.batchFlag
- :AndIf 0<≢info
-     CommTools.Pause info,(⎕UCS 13),'Therefore the NuGet tests cannot be executed.'
+     CommTools.Pause '.NET is not available.',(⎕UCS 13),'Therefore the NuGet tests cannot be executed.'
      r←0
  :EndIf
