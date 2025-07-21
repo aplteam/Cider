@@ -15,7 +15,7 @@
      q←'UpdateCider@Are you sure that you want to update Cider ',P.Version,' to version ',({1↓⍵/⍨2≤+\⍵='-'}noOf⊃allVersions),' ?'
      pkg←'[tatin]aplteam-Cider'
  :EndIf
- :If flag←P.##.C.YesOrNo q
+ :If flag←1 P.##.C.YesOrNo q
      tempFolder←P.##.F.GetTempSubDir'Cider'
      res←⎕SE.Tatin.InstallPackages pkg tempFolder
      targetFolder←1 P.GetProgramFilesFolder'/SessionExtensions/CiderTatin/Cider'
