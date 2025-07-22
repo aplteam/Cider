@@ -1,7 +1,7 @@
 {
   api: "APLProcess",
   assets: "",
-  date: 20250422.081957,
+  date: 20250721.18524,
   description: "Start an APL process from within Dyalog APL",
   documentation: "",
   files: "",
@@ -21,5 +21,5 @@
   tags: "process",
   uri: "https://tatin.dev/",
   userCommandScript: "",
-  version: "0.8.0+52",
+  version: "0.9.0+53",
 }
