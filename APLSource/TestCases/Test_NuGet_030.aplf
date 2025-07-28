@@ -9,8 +9,8 @@
  parms←APLProcess.CreateParms
  parms.Exe←1⊃2 ⎕NQ #'GetCommandLineArgs' 'DYALOG'
  parms.OutputFilename←(739⌶0),'/',(⊃⎕SI),'.txt'
- parms.CommandLineArgs,←'path=''',tempFolder,''''
- parms.CommandLineArgs,←' fns=∆',(⊃⎕SI)
+ parms.CommandLineArgs,←'cider_path=''',tempFolder,''''
+ parms.CommandLineArgs,←' cider_fns=',(⊃⎕SI)
  :If 0<T.⎕NC'codeCoverage'
      parms.CommandLineArgs,←' codeCoverageFile=''',(T.codeCoverage.filename~''''),''''
  :EndIf
@@ -18,11 +18,9 @@
  parms.WorkspaceName←##.CiderConfig.HOME,'/Tests/ExecTestCase.dws'
  parms.WindowsStyle←'Normal'
  parms.SessionFile←1            ⍝ Only for development/debugging
- :If 0
-     parms.CommandLineArgs,←' -x'
- :EndIf
+ parms.LX←1
 
- I←⎕NEW APLProcess(,⊂parms)
+ I←APLProcess.New parms
  'Something went wrong!'Assert I.ExitCode=130
  R←T._OK
 

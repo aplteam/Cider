@@ -7,7 +7,7 @@
      :If 0=r←1 1≡2↑2250⌶0  ⍝ The current APL might already be configured for .NET, so we know already
          debug←0
          parms←debug ∆NuGetTestProcessParms ⍬ ⍬
-         I←⎕NEW APLProcess(,⊂parms)
+         I←APLProcess.New parms
          'Something is wrong!'Assert I.ExitCode∊125 126
          r←125=I.ExitCode
      :EndIf

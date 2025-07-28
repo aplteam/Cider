@@ -10,19 +10,17 @@
      parms.OutputFilename←(739⌶0),'/',name,'.txt'
  :EndIf
  :If 0<≢folder
-     parms.CommandLineArgs,←'path=''',folder,''''
+     parms.CommandLineArgs,←' cider_path=''',folder,''''
  :EndIf
  :If 0<≢name
-     parms.CommandLineArgs,←' fns=∆',name
+     parms.CommandLineArgs,←' cider_fns=',name
  :EndIf
  :If 0<T.⎕NC'codeCoverage'
      parms.CommandLineArgs,←' codeCoverageFile=''',(T.codeCoverage.filename~''''),''''
  :EndIf
  parms.CommandLineArgs,←' DYALOG_NETCORE=1'
  parms.SessionFile←1  ⍝ We need ⎕se.Cider!
- :If debug
-     parms.CommandLineArgs,←' -x'
- :EndIf
+ parms.LX←~debug
  parms.WorkspaceName←##.CiderConfig.HOME,'/Tests/ExecTestCase.dws'
  parms.WindowsStyle←'Normal'
 ⍝Done

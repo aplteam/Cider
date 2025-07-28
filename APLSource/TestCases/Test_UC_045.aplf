@@ -10,7 +10,7 @@
 
  tempFolder←∆GetFolderInTempDir⊃⎕SI
  parms←∆NuGetTestProcessParms(⊃⎕SI)tempFolder
- I←⎕NEW APLProcess(,⊂parms)
+ I←APLProcess.New parms
  :If I.ExitCode=130
      R←T._OK
  :EndIf

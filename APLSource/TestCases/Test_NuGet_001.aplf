@@ -10,7 +10,7 @@
  Assert 0=≢res
  debug←0
  parms←debug ∆NuGetTestProcessParms(⊃⎕SI)('[',alias,']')
- I←⎕NEW APLProcess(,⊂parms)
+ I←APLProcess.New parms
  'Something went wrong!'Assert I.ExitCode=130
  R←T._OK
 
