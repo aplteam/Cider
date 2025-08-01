@@ -19,6 +19,7 @@ Here we highlight incompatabilities, if any.
 </style>
 
 -------|------------|----------------------------------------
+0.48.3 | 2025-08-09 | No compatability issues
 0.48.2 | 2025-07-12 | From 0.121.0 onwards, Tatin requires at least Cider 0.48.2
 0.48.1 | 2025-06-29 | No compatability issues
 0.48.0 | 2025-04-06 | No compatability issues
@@ -34,6 +35,7 @@ Here we highlight incompatabilities, if any.
 0.42.3 | 2024-09-05 | No compatability issues
 0.42.2 | 2024-08-04 | Bug fixes.
 0.42.1 | 2024-07-12 | Injecting `TatinVars` has changed.<br><br>`]Cider.ProjectConfig`'s `-print` option replaced by `-edit`.
+
 
 
 

@@ -12,7 +12,7 @@
  debug←0
  parms←debug ∆NuGetTestProcessParms(⊃⎕SI)tempFolder
  I←APLProcess.New parms
- 'Something went wrong!'Assert I.ExitCode=130
+ →T.GoToTidyUp I.ExitCode≠130
  R←T._OK
 
 ∆TidyUp:
