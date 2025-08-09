@@ -1,0 +1,1276 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Complete reference for the Cider user commands, most convenient way to use the Cider project manager for Dyalog APL.">
+      
+      
+      
+      
+        <link rel="prev" href="../get-started/">
+      
+      
+        <link rel="next" href="../open-project/">
+      
+      
+      <link rel="icon" href="../img/cider-logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>Cider user commands - Cider User Guide</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Be+Vietnam+Pro:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Be Vietnam Pro";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../style/main.css">
+    
+      <link rel="stylesheet" href="../style/extra.css">
+    
+      <link rel="stylesheet" href="../style/admonition-ucmdhelp.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#user-commands" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Cider User Guide" class="md-header__button md-logo" aria-label="Cider User Guide" data-md-component="logo">
+      
+  <img src="../img/cider-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cider User Guide
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Cider user commands
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aplteam/Cider" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    aplteam/Cider
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Cider User Guide" class="md-nav__button md-logo" aria-label="Cider User Guide" data-md-component="logo">
+      
+  <img src="../img/cider-logo.svg" alt="logo">
+
+    </a>
+    Cider User Guide
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aplteam/Cider" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    aplteam/Cider
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About Cider
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../get-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Get started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    User commands
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    User commands
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#identifying-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identifying projects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-nuget-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add NuGet dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-tatin-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add Tatin dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#close-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Close project
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Config
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create project
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#help" class="md-nav__link">
+    <span class="md-ellipsis">
+      Help
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      List aliases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-nuget-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      List NuGet dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-open-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      List open projects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-tatin-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      List Tatin dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#make" class="md-nav__link">
+    <span class="md-ellipsis">
+      Make
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open project
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project config
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run tests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-cider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Cider
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version" class="md-nav__link">
+    <span class="md-ellipsis">
+      Version
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../open-project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Open project
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Release notes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#identifying-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identifying projects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-nuget-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add NuGet dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-tatin-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add Tatin dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#close-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Close project
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Config
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create project
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#help" class="md-nav__link">
+    <span class="md-ellipsis">
+      Help
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      List aliases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-nuget-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      List NuGet dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-open-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      List open projects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-tatin-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      List Tatin dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#make" class="md-nav__link">
+    <span class="md-ellipsis">
+      Make
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open project
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project config
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run tests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-cider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Cider
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version" class="md-nav__link">
+    <span class="md-ellipsis">
+      Version
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="user-commands">User commands</h1>
+<div class="admonition abstract">
+<p class="admonition-title">User commands are Cider’s user interface</p>
+</div>
+<p class="typewriter"><a href="#add-nuget-dependencies">AddNuGetDependencies</a>    <a href="#list-open-projects">ListOpenProjects</a>
+<a href="#add-tatin-dependencies">AddTatinDependencies</a>    <a href="#list-tatin-dependencies">ListTatinDependencies</a>
+<a href="#close-project">CloseProject</a>            <a href="#make">Make</a>
+<a href="#config">Config</a>                  <a href="#open-project">OpenProject</a>
+<a href="#create-project">CreateProject</a>           <a href="#project-config">ProjectConfig</a>
+<a href="#help">Help</a>                    <a href="#run-tests">RunTests</a>
+<a href="#list-aliases">ListAliases</a>             <a href="#update-cider">UpdateCider</a>
+<a href="#list-nuget-dependencies">ListNuGetDependencies</a>   <a href="#version">Version</a></p>
+<p>Cider user commands and their options are case-insensitive.
+They all have help built in, for example</p>
+<pre><code>]cider -?
+]cider -??
+]CIDER.AddNuGetDependencies -?
+</code></pre>
+<h2 id="identifying-projects">Identifying projects</h2>
+<p>You can always identify a project by its <strong>project path</strong>.</p>
+<pre><code>]CIDER.OpenProject path/to/project
+</code></pre>
+<p>If you have assigned it an <strong>alias</strong> (e.g. <code>foo</code>) you can use the alias,
+embraced with square brackets to mark it as an alias.</p>
+<pre><code>]CIDER.OpenProject [foo]
+</code></pre>
+<p>If a project is open, you can identify it by its <strong>project space</strong>.</p>
+<pre><code>]CIDER.ListTatinDependencies #.bar
+</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Square brackets in the command syntax</p>
+<p>Square brackets in the command sytaxes shown on this page indicate <strong>optional command arguments</strong>, not aliases.
+For example, the <code>ListTatinDependencies</code> command has syntax</p>
+<pre><code>]CIDER.ListTatinDependencies [project]
+</code></pre>
+<p>If the project has alias <code>foo</code>, has been opened in <code>#.bar</code>,
+and is the only project open, then the following are equivalent.</p>
+<pre><code>]CIDER.ListTatinDependencies path/to/project
+]CIDER.ListTatinDependencies [foo]
+]CIDER.ListTatinDependencies #.bar
+]CIDER.ListTatinDependencies
+</code></pre>
+</div>
+<h2 id="command-options">Command options</h2>
+<p>Options are further optional arguments to the command.</p>
+<p>Specify all the command’s arguments <em>before</em> any options.
+Prefix options with dashes, e.g.</p>
+<pre><code>]CIDER.CreateProject path/to/foo path/to/bar -noEdit
+]CIDER.OpenProject path/to/foo -alias=ted
+</code></pre>
+<p>Options affect only the current command.
+They override settings in the <a href="../configuration/#project">project</a> and <a href="../configuration/#global">global</a> configurations and leave them unchanged.</p>
+<p>Each command’s options are tabulated below its definition.</p>
+<hr />
+<h2 id="add-nuget-dependencies"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> Add NuGet dependencies</h2>
+<pre><code>]CIDER.AddNuGetDependencies pkglist [project]
+</code></pre>
+<p>Where <code>pkglist</code> is a comma-separated list of NuGet packages to be installed,
+Cider registers the listed dependencies in the project.</p>
+<p>If you omit <code>project</code> Cider uses the one open project or, if you have more than one open, asks you which.</p>
+<p>If the project config does not specify a NuGet dependency folder, Cider asks you to edit it.</p>
+<table>
+<tbody>
+<tr>
+<td><code>target=</code></td>
+<td>Name of a namespace to be created and added to the project config’s <code>dependencies</code> or the <code>dependencies_dev</code> setting.<br><br>If it exists, Cider signals an error. You then need to edit the project’s config file.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="add-tatin-dependencies"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> Add Tatin dependencies</h2>
+<pre><code>]CIDER.AddTatinDependency pkglist [project]
+</code></pre>
+<p>Where <code>pkglist</code> is a comma-separated list of Tatin packages to be installed,
+Cider registers the listed dependencies in the project.</p>
+<p>If you omit <code>project</code> Cider uses the one open project or, if you have more than one open, asks you which.</p>
+<p>If the project config does not specify a Tatin dependency folder, Cider asks you to edit it.</p>
+<table>
+<tbody>
+<tr>
+<td><code>development</code></td>
+<td>By default the packages are added as project dependencies. This option makes them development dependencies instead.</td>
+</tr>
+<tr>
+<td><code>target=</code></td>
+<td>Name of a namespace to be created and added to the <code>dependencies</code> or the <code>dependencies_dev</code> parameter.<br><br>If the namespace exists, Cider signals an error. You then need to edit the project’s config file.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="close-project"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> Close project</h2>
+<pre><code>]CIDER.CloseProject [projects]
+</code></pre>
+<p>Where <code>projects</code> is one or more projects, Cider breaks the link between their namespaces and the associated files on disk.</p>
+<p>If you omit <code>projects</code> Cider uses the one open project or, if you have more than one open, asks you which.</p>
+<p>Separate multiple projects with spaces or commas.</p>
+<p>Where a particular project is specified, success or failure is reported as a boolean.
+Otherwise attempts to close projects are reported in detail.</p>
+<table>
+<tbody>
+<tr>
+<td><code>fast</code></td>
+<td>Close project without <a href="../configuration/#checkfordropboxconflicts" title="CheckForDropboxConflicts">checking for Dropbox conflicts</a>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="config"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> Config</h2>
+<pre><code>]CIDER.Config
+</code></pre>
+<p>Cider prints the content of its global config file to the session.</p>
+<table>
+<tbody>
+<tr>
+<td><code>edit</code></td>
+<td>Display the global config for editing. Changes are saved to file but do not affect the currently running instance of Cider.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="highlight"><pre><span></span><code>      ]CIDER.Config
+ --- Cider Config File: /Users/sjt/.cider/config.json ---
+ {
+   // AskForDirChange: 1,
+   // CheckForDropboxConflicts: 1,
+   // ExecuteAfterProjectOpen: &quot;⎕SE.Path.To.Function&quot;,
+   // ReportGitStatus: 1,
+   // verbose: 1,
+ }
+</code></pre></div>
+</div>
+<h2 id="create-project"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> Create project</h2>
+<pre><code>]CIDER.CreateProject [path [space] ]
+</code></pre>
+<p>Where</p>
+<ul>
+<li><code>path</code> (optional) is a path to the project folder</li>
+<li><code>space</code> (optional) is a namespace in the active workspace to be linked to the project</li>
+</ul>
+<p>Cider initialises the project folder, links it to the project space, and offers the project config for editing, checking required settings are specified correctly.</p>
+<p>Finally, Cider offers to open the new project.</p>
+<p>If you omit <code>path</code>, Cider proposes the current working directory.
+If you omit <code>space</code>, Cider uses the name of the project folder.</p>
+<p>If the project folder already contains a file <code>cider.config</code> Cider signals an error, unless the <code>acceptConfig</code> flag is set.</p>
+<table>
+<tbody>
+<tr>
+<td><code>acceptConfig</code></td>
+<td>Accept an already existing config file.</td>
+</tr>
+<tr>
+<td><code>alias=</code></td>
+<td>Remember this alias for the project. Aliases are not case sensitive.</td>
+</tr>
+<tr>
+<td><code>batch</code></td>
+<td>Open the new project without asking me for confirmation.</td>
+</tr>
+<tr>
+<td><code>ignoreUserExec</code></td>
+<td>Open the project without executing the global config’s <a href="../configuration/#executeafterprojectopen">initialisation</a> function.</td>
+</tr>
+<tr>
+<td><code>noEdit</code></td>
+<td>Do not offer me the configuration for editing.</td>
+</tr>
+</tbody>
+</table>
+<details class="tip">
+<summary>Keep the workspace root empty</summary>
+<p>Good practice keeps the active workspace root empty.
+Cider is designed to associate each project with a namespace.</p>
+<p>To create a root project (NOT recommended) specify <code>#</code> as the project space.</p>
+</details>
+<h2 id="help"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> Help</h2>
+<pre><code>]CIDER.Help
+</code></pre>
+<p>Displays the Cider User Guide.</p>
+<h2 id="list-aliases"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> List aliases</h2>
+<pre><code>]CIDER.ListAliases
+</code></pre>
+<p>Lists all defined aliases with their folders.</p>
+<table>
+<tbody>
+<tr>
+<td><code>batch</code></td>
+<td>With <code>prune</code> delete without asking me for confirmation.</td>
+</tr>
+<tr>
+<td><code>edit</code></td>
+<td>Let me edit the file of aliases.</td>
+</tr>
+<tr>
+<td><code>prune</code></td>
+<td>Delete aliases whose folders cannot be found. (Ask me first for confirmation.)</td>
+</tr>
+<tr>
+<td><code>scan=</code></td>
+<td>Scan the specified folder for projects and ask me which to add as aliases.</td>
+</tr>
+</tbody>
+</table>
+<p>Only options <code>prune</code> and <code>batch</code> can be used together.</p>
+<h2 id="list-nuget-dependencies"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> List NuGet dependencies</h2>
+<pre><code>]CIDER.ListNuGetDependencies [project]
+</code></pre>
+<p>Lists the project’s NuGet dependencies.</p>
+<p>If you omit <code>project</code> Cider uses the one open project or, if you have more than one open, asks you which.</p>
+<h2 id="list-open-projects"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> List open projects</h2>
+<pre><code>]CIDER.ListOpenProjects
+</code></pre>
+<p>Prints a list of all open projects.</p>
+<table>
+<tbody>
+<tr>
+<td><code>verbose</code></td>
+<td>Instead of a list, print a table.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="list-tatin-dependencies"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> List Tatin dependencies</h2>
+<pre><code>]CIDER.ListTatinDependencies [project]
+</code></pre>
+<p>Lists Tatin packages installed as its dependencies.</p>
+<p>If you omit <code>project</code> Cider uses the one open project or, if you have more than one open, asks you which.</p>
+<table>
+<tbody>
+<tr>
+<td><code>full</code></td>
+<td>Print a hierarchical report on all dependencies.</td>
+</tr>
+</tbody>
+</table>
+<!-- `raw`  | Print dependency data unformatted. -->
+
+<p>The full report does not show what is actually used, but what the packages themselves require.
+(Due to minimum version selection they might end up using a later version.)
+This can help show why a particular (typically old) package is required.</p>
+<h2 id="make"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> Make</h2>
+<pre><code>]CIDER.Make [project]
+</code></pre>
+<p>Prints the project’s Make expression:
+the expression that builds a new version of the project.</p>
+<p>If you omit <code>project</code> Cider uses the one open project or, if you have more than one open, asks you which.</p>
+<h2 id="open-project"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> Open project</h2>
+<pre><code>]CIDER.OpenProject project
+</code></pre>
+<p>Builds the project in the active workspace, linked to its source files.
+<a href="../open-project/">More detail…</a></p>
+<table>
+<tbody>
+<tr>
+<td><code>alias=</code></td>
+<td>Remember this alias for the project.</td>
+</tr>
+<tr>
+<td><code>batch</code></td>
+<td>Do not ask me for confirmation; print nothing to the session.[^batch]</td>
+</tr>
+<tr>
+<td><code>ignoreUserExec</code></td>
+<td>Do not execute the global <a href="../configuration/#executeafterprojectopen">initialisation</a> function.</td>
+</tr>
+<tr>
+<td><code>import</code></td>
+<td>Do not link APL objects to their source files. (Ignore the <a href="../configuration/#watch"><code>watch</code></a> setting in the project config.)</td>
+</tr>
+<tr>
+<td><code>noPkgLoad</code></td>
+<td>Do not load the project’s Tatin packages.</td>
+</tr>
+<tr>
+<td><code>parent=</code></td>
+<td>Override the <a href="../configuration/#parent"><code>parent</code></a> setting in the project config.</td>
+</tr>
+<tr>
+<td><code>projectSpace=</code></td>
+<td>Override the <a href="../configuration/#projectspace"><code>projectSpace</code></a> setting in the project config.</td>
+</tr>
+<tr>
+<td><code>suppressInit</code></td>
+<td>Do not execute the project’s <a href="../configuration/#init">initialisation</a> function</td>
+</tr>
+<tr>
+<td><code>verbose</code></td>
+<td>Report command actions in more detail.</td>
+</tr>
+<tr>
+<td><code>watch=</code></td>
+<td>Override the <a href="../configuration/#watch"><code>watch</code></a> setting in the project config.</td>
+</tr>
+</tbody>
+</table>
+<p>Options <code>import</code> and <code>watch=</code> cannot be used together.</p>
+<p>The <code>batch</code> option is intended for test cases. Consider instead using the <a href="../api/#open-project"><code>OpenProject</code></a> API function.</p>
+<h2 id="project-config"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> Project config</h2>
+<pre><code>]CIDER.ProjectConfig [project]
+</code></pre>
+<p>Displays or edits the project configuration.</p>
+<p>If you omit <code>project</code> Cider uses the one open project or, if you have more than one open, asks you which.</p>
+<table>
+<tbody>
+<tr>
+<td><code>edit</code></td>
+<td>Display the config for editing.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="run-tests"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> Run tests</h2>
+<pre><code>]CIDER.RunTests [project]
+</code></pre>
+<p>Prints the APL expression that executes the project’s test suite.</p>
+<p>If you omit <code>project</code> Cider uses the one open project or, if you have more than one open, asks you which.</p>
+<h2 id="update-cider"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> Update Cider</h2>
+<pre><code>]CIDER.UpdateCider [version]
+</code></pre>
+<p>Where <code>version</code> is <code>&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</code>,
+tries to update Cider to it.</p>
+<p>If you omit <code>version</code> and a later version is available,
+Cider asks whether you want to update to it.</p>
+<p>The update is performed automatically,
+but does not change Cider in the current workspace.
+When the update is complete, restart Dyalog, rebuild the user commands, and print the current version.</p>
+<pre><code>      ]UReset
+153 commands reloaded
+      ]CIDER.Version
+0.44.0+835
+</code></pre>
+<details class="danger">
+<summary>Do not use the command for Cider versions prior to 0.37.3</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Versions 0.37.1 and 0.37.2</label><label for="__tabbed_1_2">Versions prior to 0.37.0</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>These versions were installed into the new folder but with a level missing.</p>
+<p><a href="../get-started/#install">Reinstall Cider</a>.</p>
+<p>The next time you use <code>]CIDER.UpdateCider</code> it will remove Cider from the wrong folder.</p>
+</div>
+<div class="tabbed-block">
+<p>Uninstall: delete the <code>Cider/</code> folder from your <code>MyUCMDs/</code> folder.</p>
+<p><a href="../get-started/#install">Reinstall Cider</a>.</p>
+</div>
+</div>
+</div>
+</details>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M480-16c6.9 0 13 4.4 15.2 10.9l13.5 40.4 40.4 13.5C555.6 51 560 57.1 560 64s-4.4 13-10.9 15.2l-40.4 13.5-13.5 40.4c-2.2 6.5-8.3 10.9-15.2 10.9s-13-4.4-15.2-10.9l-13.5-40.4-40.4-13.5C404.4 77 400 70.9 400 64s4.4-13 10.9-15.2l40.4-13.5 13.5-40.4C467-11.6 473.1-16 480-16M321.4 97.4c12.5-12.5 32.8-12.5 45.3 0l80 80c12.5 12.5 12.5 32.8 0 45.3l-10.9 10.9c7.9 22 12.2 45.7 12.2 70.5 0 114.9-93.1 208-208 208S32 418.9 32 304 125.1 96 240 96c24.7 0 48.5 4.3 70.5 12.3zM144 304c0-53 43-96 96-96 13.3 0 24-10.7 24-24s-10.7-24-24-24c-79.5 0-144 64.5-144 144 0 13.3 10.7 24 24 24s24-10.7 24-24"/></svg></span>
+Troubleshooting: <a href="../troubleshooting/#updating-cider">Updating Cider</a></p>
+<h2 id="version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg></span> Version</h2>
+<pre><code>]CIDER.Version
+</code></pre>
+<p>Prints major, minor and patch numbers:</p>
+<pre><code>      ]CIDER.Version
+0.44.0+835
+</code></pre>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    2025-08-09
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link", "navigation.instant", "navigation.path", "navigation.sections", "navigation.tracking"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.50899def.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
