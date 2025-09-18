@@ -20,8 +20,8 @@
      parms←CreateOpenParms y
  :EndIf
  '"folder" must be specified'Assert 0<parms.⎕NC'folder'
- parms.folder←F.EnforceSlash parms.folder
  '"folder" must be specified'Assert 0<≢parms.folder
+ parms.folder←F.EnforceSlash'expand'F.NormalizePath{('/'≠1⍴⍵)∧~':'∊⍵:F.PWD,'/',⍵ ⋄ ⍵}{⍵↓⍨+/∧\' '=⍵}parms.folder
  '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
  '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both' 'none' 0
  p←{⍺←parms.(verbose batch) ⋄ ⍺ PrintToSession ⍵}

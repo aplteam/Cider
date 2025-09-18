@@ -1,0 +1,51 @@
+r←{opt}Add args;project_dir;newpkgs;new;p;newv;old;oldv;pkgs;i;same;bad;add;z;mask;v;cmd
+⍝ ⊃args: project_dir
+⍝ 1↓args: new packages, either 'name' or 'name/version'
+⍝ e.g. Add 'c:\tmp\clocktest\ 'Clock'
+⍝ opt is a boolean flag (Default=1) that controls if we should Publish the project.
+
+ args←,⊆args
+ project_dir←⊃args
+ :If 0=⎕NC'opt'
+     opt←1
+ :EndIf
+ ('directory not found: ',project_dir)⎕SIGNAL(⎕NEXISTS project_dir)↓11
+ ('not a directory: ',project_dir)⎕SIGNAL(1=1 ⎕NINFO project_dir)↓11
+ project_dir,←('/\'∊⍨⊢/project_dir)↓'/'
+
+ newpkgs←1↓args
+ new←(¯1+p←newpkgs⍳¨'/')↑¨newpkgs
+ newv←p↓¨newpkgs
+
+ (old oldv)←↓⍉↑pkgs←Packages project_dir
+
+ i←⍸(new∊old)∧0=≢¨newv    ⍝ Actually already registered and version not specified
+ newv[i]←oldv[old⍳new[i]] ⍝ Update to existing version
+
+ same←⍸new∊old            ⍝ Already registered
+ same←(⍳≢new)∊(newv[same]≡oldv[old⍳new[same]])/i ⍝ With the same version
+⍝ research suggests the following is wrong, just "dotnet add" again to change version
+⍝:If 0≠≢i←i/⍨newv[i]≢oldv[old⍳new[i]]
+⍝ ('already registered with a different version: ',,⍕pkgs[old⍳new[i]])⎕SIGNAL 11
+⍝:EndIf
+
+ bad←0⍨¨new
+ r←''
+ r,←'Already registered: '∘,¨same/new
+ :For i :In ⍸~same
+     add←(i⊃new),(0≠≢v)/' --version ',v←i⊃newv
+     cmd←'dotnet add ',project_dir,' package ',add
+     z←CMD cmd
+     mask←∨/¨'error: '∘⍷¨z
+     :If bad[i]←∨/mask
+         r,←⊂'Error: ',add
+         r,←mask/z
+     :Else
+         r,←⊂'Added/Updated: ',add
+     :EndIf
+ :EndFor
+
+ :If opt∧bad∧.⍱same ⍝ Publish if something was added
+     z←Publish project_dir ⍝ Returns contents of published folder
+ :EndIf
+ r←⍪r

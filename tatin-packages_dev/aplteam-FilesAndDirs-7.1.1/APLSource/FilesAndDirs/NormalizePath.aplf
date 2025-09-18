@@ -1,0 +1,25 @@
+ path←{expandFlag}NormalizePath path;isScalar;isWin
+⍝ `path` might be either a simple text vector or scalar representing a single path or a
+⍝ vector of text vectors with each item representing a single path.
+⍝ Enforces either `\` or `/` as separator in `path` depending on the current operating system.\\
+⍝ If you need a particular separator no matter what the current OS is, then use either
+⍝ `EnforceBackslash` or `EnforceSlash`.\\
+⍝ Note that by default a relative path remains relative and any `../` (or `..\`) is not touched.
+⍝ You can change this by specifying `'expand'` as the (optional) left argument; then `path` is
+⍝ expanded to an absolute path. As a side effect any `../` is transformed appropriately as well.\\
+⍝ On Mac and Linux however only trailing `/..` are transformed.
+⍝ Notes:
+⍝ * The left argument is not case sensitive.
+⍝ * Any pair of `//` or `\\` is reduced to a single one except the first two.
+⍝ * Environment variables (ENVs) are expanded on all operating systems. However, if an ENV is not
+⍝   defined or is empty, it is **not** expanded.
+ isScalar←⍬≡⍴path
+ :If 0≠≢path←,path
+     expandFlag←{0<⎕NC ⍵:{0=1↑0⍴⍵:⍵ ⋄ 'expand'≡⎕C ⍵}w←⍎⍵ ⋄ 0}'expandFlag'
+     isWin←'Win'≡APLTreeUtils2.GetOperatingSystem ⍬
+     path←(expandFlag isWin)NormalizePath_ path
+     :If isScalar
+     :AndIf 1=≢path
+         path←⊃path
+     :EndIf
+ :EndIf
