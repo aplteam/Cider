@@ -1,0 +1,22 @@
+(
+ '# Repack'
+ ''
+ ']Repack is used to clean up and optimise Git''s internal storage by consolidating loose objects into packfiles.'
+ ''
+ 'Over time, as you commit, Git stores objects (blobs, trees, commits) as individual files. That gets inefficient.'
+ ''
+ 'This is what ]Repack does:'
+ ' * Compresses those loose objects into a single (or few) .pack file(s)'
+ ' * Removes the original loose objects (unless you tell it not to)'
+ ' * Optionally removes old packfiles and replaces them with a new one'
+ ''
+ ']Repack uses 50 as default value for "depth" and 10 for "window", but check the corresponding options.'
+ ''
+ ']Repack always uses the following flags and arguments:'
+ (' '⋄)
+ '-a       : Repack all objects, not just loose ones'
+ '-d       : Delete redundant packs after the new one is written'
+ '-f       : Force recompression even for objects already in packs'
+ '-depth=  : Use this to override the Git default which is 50'
+ '-window= : Use this to override the Git default which is 10 '
+)

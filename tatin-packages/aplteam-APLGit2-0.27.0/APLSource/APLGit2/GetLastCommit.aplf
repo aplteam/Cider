@@ -1,0 +1,11 @@
+ hash←{branch}GetLastCommit folder;⎕TRAP;rc;more;buff;cmd;errMsg
+⍝ Returns the hash of the latest commit of the given (or, by default, current) branch.
+ ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
+ branch←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'branch'
+ cmd←'log -n 1 --pretty=format:"%H" ',branch
+ (rc more buff)←folder U.RunGitCommand cmd
+ errMsg←'ambiguous argument ''',branch,''': unknown revision or path not in the working'
+ 'Branch is unknown'Assert 0=∨/errMsg⍷∊more
+ more U.Assert 0=rc
+ hash←' '~⍨∊buff
+⍝Done

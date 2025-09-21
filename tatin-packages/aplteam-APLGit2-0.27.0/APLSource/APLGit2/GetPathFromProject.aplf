@@ -1,0 +1,33 @@
+ r←GetPathFromProject space;row;list;acreFlag
+⍝ Takes the name (top container) of an opened Cider/acre project and returns its path name.
+⍝ Throws an error in case that path does not contain a folder .git/
+ list←⎕SE.Cider.ListOpenProjects 0
+ row←(list[;1])⍳⊂⍕space
+ :If row≤≢list
+     r←2⊃list[row;]
+ :Else
+     :If 0=⎕SE.⎕NC'acre'
+         :Trap 0
+             {}⎕SE.UCMD'acre.Version'
+             acreFlag←1
+         :Else
+             acreFlag←0
+         :EndTrap
+     :Else
+         acreFlag←1
+     :EndIf
+     :If acreFlag
+         list←⎕SE.acre.Projects 0
+     :Else
+         list←0 2⍴⍬
+     :EndIf
+     row←(list[;1])⍳⊂⍕space
+     :If row≤≢list
+         r←2⊃list[row;]
+     :Else
+         r←''
+     :EndIf
+ :EndIf
+ r←FilesAndDirs.AddTrailingSep r
+ ('Not a Git-managed folder: ',r)Assert FilesAndDirs.IsDir r,'.git'
+⍝Done

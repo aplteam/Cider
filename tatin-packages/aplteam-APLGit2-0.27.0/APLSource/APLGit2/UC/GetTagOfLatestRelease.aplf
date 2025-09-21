@@ -1,0 +1,14 @@
+ r←GetTagOfLatestRelease(project path args);username;wsPathRef;project;l;lop
+ r←''
+ :If 0≡args.username
+     :If 0=≢lop←⎕SE.Cider.ListOpenProjects 0   ⍝ List Of Projcts
+         :Return
+     :EndIf
+     wsPathRef←⍎lop[lop[;2]⍳⊂path;]
+     username←{(¯1+≢⍵)⊃⍵}'/'(≠⊆⊢)wsPathRef.CiderConfig.CIDER.project_url
+ :Else
+     username←args.username
+ :EndIf
+ project←wsPathRef.CiderConfig.CIDER.projectSpace
+ r←args.verbose ##.GetTagOfLatestRelease username project
+⍝Done

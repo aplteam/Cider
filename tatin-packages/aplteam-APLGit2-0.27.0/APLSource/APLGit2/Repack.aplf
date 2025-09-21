@@ -1,0 +1,16 @@
+ r←Repack(folder args);rc;more;buff;cmd;a;d;f;depth;window
+ a←0 args.Switch'a'
+ d←0 args.Switch'd'
+ f←0 args.Switch'f'
+ depth←50 args.Switch'depth'
+ window←10 args.Switch'window'
+ cmd←'repack '
+ cmd,←a/'-a '
+ cmd,←d/'-d '
+ cmd,←f/'-f '
+ cmd,←'--depth=',(⍕depth),' '
+ cmd,←'--window=',(⍕window),' '
+ (rc more buff)←folder U.RunGitCommand cmd
+ more U.Assert 0=rc
+ r←more
+⍝Done

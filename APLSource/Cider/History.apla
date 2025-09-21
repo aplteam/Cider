@@ -1,7 +1,8 @@
 (
- '* 0.49.0 ⋄ 2025-09-18'
+ '* 0.49.0 ⋄ 2025-10-03'
  '  * Licenses of dependencies are now handled properly '
  '  * Packages updated '
+ '  * License issues fixed'
  '  * Bug fixes'
  '    * #125'
  '* 0.48.3 ⋄ 2025-08-09'

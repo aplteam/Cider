@@ -1,6 +1,7 @@
 {
   api: "GitHubAPIv3",
   assets: "",
+  checkLICENSEfile: 1,
   date: 20250421.170554,
   description: "Utilities for dealing with GitHub repositories",
   documentation: "",

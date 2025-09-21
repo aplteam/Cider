@@ -1,6 +1,7 @@
 {
   api: "API",
   assets: "",
+  checkLICENSEfile: 1,
   date: 20250825.174448,
   description: "Utilities for doing gymnastics with files and directories",
   documentation: "",

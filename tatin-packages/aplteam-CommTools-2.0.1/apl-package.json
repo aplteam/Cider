@@ -1,6 +1,7 @@
 {
   api: "",
   assets: "",
+  checkLICENSEfile: 1,
   date: 20250119.122932,
   description: "Communication tools for interactions in the session: YesOrNo and Select",
   documentation: "",
