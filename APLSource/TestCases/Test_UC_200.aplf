@@ -9,4 +9,5 @@
  :If ~∨/'Not found:'⍷∊res
      →T.PassesIf∨/'*** Link config file'⍷∊res
  :EndIf
+ R←T._OK
 ⍝Done

@@ -21,6 +21,7 @@
  →T.GoToTidyUp~∧/res[;1]∊0 1
  →T.GoToTidyUp~∧/res[;1]∊0 1
  →T.GoToTidyUp~∧/{2≤⍵+.='-'}¨res[;2]
+ R←T._OK
 
 ∆TidyUp:
  #.Cider.Cider.CommTools.Cleanup

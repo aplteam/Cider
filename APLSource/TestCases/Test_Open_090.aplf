@@ -5,7 +5,7 @@
 
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
  parms←##.Cider.CreateOpenParms ⍬
- parms.folder←##.CiderConfig.HOME,'\TestData\LxProject'
+ parms.folder←##.CiderConfig.HOME,'/TestData/LxProject'
  parms.parent←'#.TEMP'
  ##.Cider.C.AddAutomation'YesOrNo' 'ExecLX@' 'y'
  (success log)←##.Cider.OpenProject parms

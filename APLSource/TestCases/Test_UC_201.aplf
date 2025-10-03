@@ -20,6 +20,7 @@
  json←⊃⎕NGET tempDir,'/Boo-Project/APLSource/.linkconfig'
  ns←⎕JSON⍠('Dialect' 'JSON5')⊢json
  →T.GoToTidyUp 2≠ns.CiderTest
+ R←T._OK
 
 ∆TidyUp:
  ref.Cleanup
