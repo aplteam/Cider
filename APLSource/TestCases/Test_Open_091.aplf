@@ -1,0 +1,22 @@
+ R←Test_Open_091(stopFlag batchFlag);⎕TRAP;parms;success;log
+⍝ Opens a project with a path that starts with a "/" but later uses "\"; was once a bug
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←##.CiderConfig.HOME,'\TestData\LxProject'
+ parms.parent←'#.TEMP'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ExecLX@' 'y'
+ (success log)←##.Cider.OpenProject parms
+ 'Something is very wrong'Assert 1=success
+
+ →T.GoToTidyUp 1≠#.TEMP.DateAndTime.⎕IO
+ →T.GoToTidyUp 0≠#.TEMP.DateAndTime.DateAndTime.⎕IO
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
+ {}##.Cider.CloseProject #.TEMP.DateAndTime
+⍝Done

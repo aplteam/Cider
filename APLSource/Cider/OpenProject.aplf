@@ -21,7 +21,8 @@
  :EndIf
  '"folder" must be specified'Assert 0<parms.⎕NC'folder'
  '"folder" must be specified'Assert 0<≢parms.folder
- parms.folder←{('/'≠1⍴⍵)∧(~':'∊⍵)∧('[]'≢⍵[1,≢⍵]):F.EnforceSlash'expand'F.NormalizePath F.PWD,'/',⍵ ⋄ ⍵}{⍵↓⍨+/∧\' '=⍵}parms.folder
+ parms.folder←{(~(1⍴⍵)∊'/\')∧(~':'∊⍵)∧('[]'≢⍵[1,≢⍵]):⊢F.EnforceSlash'expand'F.NormalizePath F.PWD,'/',⍵ ⋄ ⍵}{⍵↓⍨+/∧\' '=⍵}parms.folder
+ parms.folder←F.NormalizePath parms.folder
  '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
  '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both' 'none' 0
  p←{⍺←parms.(verbose batch) ⋄ ⍺ PrintToSession ⍵}
