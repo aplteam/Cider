@@ -1,4 +1,6 @@
 (
+ '* 0.49.1 ⋄ 2025-10-??'
+ '  * Cider''s test cases are now resilient against `//` in a file path, see `∆GetTestPath`'
  '* 0.49.0 ⋄ 2025-10-03'
  '  * Licenses of dependencies are now handled properly '
  '  * Packages updated '

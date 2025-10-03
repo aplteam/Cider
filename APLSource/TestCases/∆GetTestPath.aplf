@@ -1,2 +1,2 @@
  r←∆GetTestPath add
- r←##.CiderConfig.HOME,'/Tests/',add
+ r←(FilesAndDirs.AddTrailingSep ##.CiderConfig.HOME),'Tests/',add  ⍝ Under some corcumstances, "//" in a file path makes Dyalog disappear on Mac-OS, so we must make sure this does not happen
