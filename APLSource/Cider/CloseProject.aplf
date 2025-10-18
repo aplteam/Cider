@@ -18,6 +18,7 @@
      :If 0=≢projects
          res←{⎕SE.Link.Break ⍵}¨list
          r←+/{'Unlinked: '{⍺≡(≢⍺)↑⍵}⍵}¨res[;1]
+         HandleLinkSourceFlags¨list[;2]
      :Else
          closed←''
          list[;2]←F.NormalizePath list[;2]
@@ -43,6 +44,7 @@
                  res←⎕SE.Link.Break 1⊃list[ind;]
                  r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
                  closed,←list[ind;2]
+                 HandleLinkSourceFlags⊃list[ind;3]  ⍝TODO⍝
              :EndIf
          :EndFor
          :If performChecks

@@ -16,9 +16,9 @@ Non-default settings can be saved in a folder `.cider` in your home folder.
 
 For example, for user JohnDoe:
 
-	Linux     /home/JohnDoe/.cider
-	macOS     /Users/JohnDoe/.cider
-	Windows   C:\Users\JohnDoe\.cider
+    Linux     /home/JohnDoe/.cider
+    macOS     /Users/JohnDoe/.cider
+    Windows   C:\Users\JohnDoe\.cider
 
 The default name for the global configuration is  `config.json`.
 
@@ -29,6 +29,7 @@ Example:
   AskForDirChange: 1,
   CheckForDropboxConflicts: 1,
   ExecuteAfterProjectOpen: "⎕SE.Path.To.Function",
+  HandleLinkStops: 1,
   ReportGitStatus: 1,
   verbose: 1,
 }
@@ -52,9 +53,9 @@ This folder also contains
 
 On opening the first project in the current workspace
 
-	0 - Take no action
-	1 - Change the current directory to the project root (default)
-	2 - Ask me if I want to change the directory
+    0 - Take no action
+    1 - Change the current directory to the project root (default)
+    2 - Ask me if I want to change the directory
 
 
 
@@ -66,9 +67,9 @@ Absent this flag, if your home folder contains a folder `Dropbox/`, Cider will p
 
 !!! detail "How Dropbox reports conflicts"
 
-	If Dropbox cannot decide what the last version of a file is, it will create a file with "conflicted copy" in its name. Dropbox leaves it to you to compare such files and resolve the conflict.
+    If Dropbox cannot decide what the last version of a file is, it will create a file with "conflicted copy" in its name. Dropbox leaves it to you to compare such files and resolve the conflict.
 
-	Dropbox does not actually alert you to such conflicts, it just silently creates the files. So you can configure Cider to look for them.
+    Dropbox does not actually alert you to such conflicts, it just silently creates the files. So you can configure Cider to look for them.
 
 
 :fontawesome-solid-terminal:
@@ -92,25 +93,32 @@ Any result it returns is ignored.
 
 !!! tip "Use cases"
 
-	Suppose you use a source code manager (SCM) other than Git.
-	With Git, Cider would execute the `status` command and show you the result.
-	With another SCM, it does not know what to do.
+    Suppose you use a source code manager (SCM) other than Git.
+    With Git, Cider would execute the `status` command and show you the result.
+    With another SCM, it does not know what to do.
 
-	You can fix that: add the required code as a function you load early into `⎕SE`, then have `ExecuteAfterProjectOpen` call it.
+    You can fix that: add the required code as a function you load early into `⎕SE`, then have `ExecuteAfterProjectOpen` call it.
 
-	Or, your initialisation function couild bring in non-Tatin dependencies defined in the `dependencies` and/or the `dependencies_dev` settings.
+    Or, your initialisation function couild bring in non-Tatin dependencies defined in the `dependencies` and/or the `dependencies_dev` settings.
 
 
+### :fontawesome-solid-gear: `HandleLinkStops`
+
+This defaults to 0 if it does not exist.
+
+If it is 1 then `OpenProject`  and `CloseProject` will check the source folder for a file `.linkconfig`. If there is one, and there are stop defined in it, the user will be asked whether she wants the stops to be honored (`OpenProject`) or removed from the file `.linkconfig` (`CloseProject`).
+
+As a side effect, the file `.linkconfig` will be deleted if it contained nothing but stops.
 
 
 ### :fontawesome-solid-gear: `ReportGitStatus`
 
 On opening a Git-controlled project without a clean working tree Cider reports its status acccording to the `ReportGitStatus` setting:
 
-	0 - Don't report
-	1 - Report in a read-only edit window (default)
-	2 - Print it to the session
-	3 - Ask me what to do
+    0 - Don't report
+    1 - Report in a read-only edit window (default)
+    2 - Print it to the session
+    3 - Ask me what to do
 
 If the project path has no `.git` folder, or if the `batch` flag is set, nothing is reported.
 
@@ -177,7 +185,7 @@ Above, all packages in folder `tatin-packages_dev` (a child of the project folde
 
 ??? warning "There is no  `nuget` subkey in `dependencies_dev`."
 
-	This restriction may be removed in a future release.
+    This restriction may be removed in a future release.
 
 
 #### :fontawesome-solid-gear: `distributionFolder`
@@ -241,7 +249,7 @@ Example settings:
 
 The user command and API function can override this setting, e.g.
 
-	]CIDER.OpenProject {path} -parent=#.MyProjects
+    ]CIDER.OpenProject {path} -parent=#.MyProjects
 
 
 #### :fontawesome-solid-gear: `projectSpace`
@@ -251,7 +259,7 @@ Name of the namespace that will contain the project.
 
 The user command and API function can override this setting, e.g.
 
-	]CIDER.OpenProject {path} -projectspace=Foo
+    ]CIDER.OpenProject {path} -projectspace=Foo
 
 
 #### :fontawesome-solid-gear: `project_url`
@@ -327,10 +335,10 @@ then Cider will use its `LINK` section settings, and recommend you
 
 Which source/s to watch for changes to linked APL definitions. Changes in one environment (workspace or file) can be synchronised with the other according to this setting.
 
-	ns   - watch the active workspace
-	dir  - watch the file definitions
-	both - watch both (default)
-	none - watch neither
+    ns   - watch the active workspace
+    dir  - watch the file definitions
+    both - watch both (default)
+    none - watch neither
 
 <!--
 Irrelevant: we assume Link is installed
@@ -372,7 +380,8 @@ USER: {
 
 After opening the project into, say, `#.MyProject`, the setting is accessible:
 
-	#.MyProject.CiderConfig.USER.Foo
+    #.MyProject.CiderConfig.USER.Foo
+
 
 
 

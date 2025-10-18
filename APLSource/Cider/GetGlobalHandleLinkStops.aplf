@@ -1,0 +1,8 @@
+ r←GetGlobalHandleLinkStops;globalUserConfig
+⍝ Checks whether Cider's global configuration file carries a value for `HandleLinkStops`,
+⍝ and if so, returns its value.
+ r←0
+ :If ⍬≢globalUserConfig←GetCiderGlobalConfigFileContent
+ :AndIf 2=globalUserConfig.⎕NC'HandleLinkStops'
+     r←globalUserConfig.HandleLinkStops
+ :EndIf

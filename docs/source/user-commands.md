@@ -21,9 +21,9 @@ keywords: api, apl, cider, dependency, dyalog, link, reference, source, tatin, u
 Cider user commands and their options are case-insensitive.
 They all have help built in, for example
 
-	]cider -?
-	]cider -??
-	]CIDER.AddNuGetDependencies -?
+    ]cider -?
+    ]cider -??
+    ]CIDER.AddNuGetDependencies -?
 
 
 
@@ -31,31 +31,31 @@ They all have help built in, for example
 
 You can always identify a project by its **project path**.
 
-	]CIDER.OpenProject path/to/project
+    ]CIDER.OpenProject path/to/project
 
 If you have assigned it an **alias** (e.g. `foo`) you can use the alias,
 embraced with square brackets to mark it as an alias.
 
-	]CIDER.OpenProject [foo]
+    ]CIDER.OpenProject [foo]
 
 If a project is open, you can identify it by its **project space**.
 
-	]CIDER.ListTatinDependencies #.bar
+    ]CIDER.ListTatinDependencies #.bar
 
 !!! warning "Square brackets in the command syntax"
 
-	Square brackets in the command sytaxes shown on this page indicate **optional command arguments**, not aliases.
-	For example, the `ListTatinDependencies` command has syntax
+    Square brackets in the command sytaxes shown on this page indicate **optional command arguments**, not aliases.
+    For example, the `ListTatinDependencies` command has syntax
 
-		]CIDER.ListTatinDependencies [project]
+        ]CIDER.ListTatinDependencies [project]
 
-	If the project has alias `foo`, has been opened in `#.bar`,
-	and is the only project open, then the following are equivalent.
+    If the project has alias `foo`, has been opened in `#.bar`,
+    and is the only project open, then the following are equivalent.
 
-		]CIDER.ListTatinDependencies path/to/project
-		]CIDER.ListTatinDependencies [foo]
-		]CIDER.ListTatinDependencies #.bar
-		]CIDER.ListTatinDependencies
+        ]CIDER.ListTatinDependencies path/to/project
+        ]CIDER.ListTatinDependencies [foo]
+        ]CIDER.ListTatinDependencies #.bar
+        ]CIDER.ListTatinDependencies
 
 
 
@@ -66,8 +66,8 @@ Options are further optional arguments to the command.
 Specify all the command’s arguments _before_ any options.
 Prefix options with dashes, e.g.
 
-	]CIDER.CreateProject path/to/foo path/to/bar -noEdit
-	]CIDER.OpenProject path/to/foo -alias=ted
+    ]CIDER.CreateProject path/to/foo path/to/bar -noEdit
+    ]CIDER.OpenProject path/to/foo -alias=ted
 
 Options affect only the current command.
 They override settings in the [project](configuration.md#project) and [global](configuration.md#global) configurations and leave them unchanged.
@@ -135,17 +135,18 @@ Cider prints the content of its global config file to the session.
 
 !!! example "Example"
 
-	```
-	      ]CIDER.Config
-	 --- Cider Config File: /Users/sjt/.cider/config.json ---
-	 {
-	   // AskForDirChange: 1,
-	   // CheckForDropboxConflicts: 1,
-	   // ExecuteAfterProjectOpen: "⎕SE.Path.To.Function",
-	   // ReportGitStatus: 1,
-	   // verbose: 1,
-	 }
-	```
+    ```
+          ]CIDER.Config
+     --- Cider Config File: /Users/sjt/.cider/config.json ---
+     {
+       // AskForDirChange: 1,
+       // CheckForDropboxConflicts: 1,
+       // ExecuteAfterProjectOpen: "⎕SE.Path.To.Function",
+       // HandleLinkStops: 0,
+       // ReportGitStatus: 1,
+       // verbose: 1,
+     }
+    ```
 
 
 
@@ -176,10 +177,10 @@ If the project folder already contains a file `cider.config` Cider signals an er
 
 ??? tip "Keep the workspace root empty"
 
-	Good practice keeps the active workspace root empty.
-	Cider is designed to associate each project with a namespace.
+    Good practice keeps the active workspace root empty.
+    Cider is designed to associate each project with a namespace.
 
-	To create a root project (NOT recommended) specify `#` as the project space.
+    To create a root project (NOT recommended) specify `#` as the project space.
 
 
 ## :fontawesome-solid-terminal: Help
@@ -311,27 +312,27 @@ The update is performed automatically,
 but does not change Cider in the current workspace.
 When the update is complete, restart Dyalog, rebuild the user commands, and print the current version.
 
-	      ]UReset
-	153 commands reloaded
-	      ]CIDER.Version
-	0.44.0+835
+          ]UReset
+    153 commands reloaded
+          ]CIDER.Version
+    0.44.0+835
 
 ??? danger "Do not use the command for Cider versions prior to 0.37.3"
 
-	=== "Versions 0.37.1 and 0.37.2"
+    === "Versions 0.37.1 and 0.37.2"
 
-		These versions were installed into the new folder but with a level missing.
+        These versions were installed into the new folder but with a level missing.
 
 
-		[Reinstall Cider](get-started.md#install).
+        [Reinstall Cider](get-started.md#install).
 
-		The next time you use `]CIDER.UpdateCider` it will remove Cider from the wrong folder.
+        The next time you use `]CIDER.UpdateCider` it will remove Cider from the wrong folder.
 
-	=== "Versions prior to 0.37.0"
+    === "Versions prior to 0.37.0"
 
-		Uninstall: delete the `Cider/` folder from your `MyUCMDs/` folder.
+        Uninstall: delete the `Cider/` folder from your `MyUCMDs/` folder.
 
-		[Reinstall Cider](get-started.md#install).
+        [Reinstall Cider](get-started.md#install).
 
 :fontawesome-solid-bomb:
 Troubleshooting: [Updating Cider](troubleshooting.md#updating-cider)
@@ -344,8 +345,9 @@ Troubleshooting: [Updating Cider](troubleshooting.md#updating-cider)
 
 Prints major, minor and patch numbers:
 
-	      ]CIDER.Version
-	0.44.0+835
+          ]CIDER.Version
+    0.44.0+835
+
 
 
 
