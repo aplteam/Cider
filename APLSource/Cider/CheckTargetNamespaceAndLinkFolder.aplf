@@ -1,5 +1,5 @@
  ref←CheckTargetNamespaceAndLinkFolder(ref parms source);nsIsEmpty;folderIsEmpty;nc
-⍝ 1. In case `ref` does not point to a namespace or a script but the name is already taken
+⍝ 1. In case `ref` does not point to a namespace or a script but the name is already taken an error is thrown
 ⍝ 2. In case the namespace `ref` and the folder are both empty no action is taken
 ⍝ 3. In case only the namespace `ref` is empty no action is taken
 ⍝ 4. In case only the folder is empty no action is taken
