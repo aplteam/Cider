@@ -88,9 +88,7 @@
          parms.ignoreUserExec←ignoreUserExec
          parms.batch←batch
          (success log)←P.OpenProject parms
-         :If success
-             r←{⍵↑⍨-¯1+(⌽⍵)⍳⎕UCS 13}{(-(¯1↑⍵)=⎕UCS 13)↓⍵}log
-         :Else
+         :If ~success
              r←'Project created but not opened'
          :EndIf
      :EndIf
