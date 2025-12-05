@@ -8,7 +8,7 @@
 ⍝ In case `batch` is 1 things are different, however: in that case an error is thrown for all essential parts of
 ⍝ the operation. That includes loading any dependencies but excludes non-essential stuff like a Git status report.\\
 ⍝ The final message is "Project successfully [opened|imported and established in ... [with problems]". The
-⍝ optional "with problems" part as added only when something like loading dependencies, or executing the package's
+⍝ optional "with problems" part as added only when something like loading dependencies, or executing the projects's
 ⍝ `lx` expression successfuly went wrong.
  successFlag←FAILURE
  ∆LOG←''                        ⍝ This is used to collect all messages
@@ -89,11 +89,6 @@
          res Assert 0
      :EndIf
  :EndIf
- ⍝ --- Change of strategy: "watch is now handled like any other parameter: ---
- ⍝ Only reported when it is not set to the default.
- ⍝ (1 parms.batch)p 'watch'ReportLinkSettings linkOptions    ⍝ Exclude "watch"
- ⍝ 1 p parms.batch ReportWatch res                           ⍝ Always
- ⍝ ---------------------------------------------------------------------------
  (1 parms.batch)p ReportLinkSettings linkOptions
  :If 0=parms.noPkgLoad
      loadDependencies←1
