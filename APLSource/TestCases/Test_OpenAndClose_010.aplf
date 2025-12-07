@@ -17,7 +17,7 @@
  ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  ref.AddAutomation'YesOrNo' 'OpenAsWell@' 'y'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" # -noEdit -acceptConfig -ignoreUserExec -batch'
- Assert∨/'#.Foo'⍷res
+ Assert'World'≡#.Foo.Hello
  list←FilesAndDirs.ListFiles2 tempDir
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list

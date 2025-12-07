@@ -44,7 +44,7 @@
                  res←⎕SE.Link.Break 1⊃list[ind;]
                  r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
                  closed,←list[ind;2]
-                 HandleLinkSourceFlags⊃list[ind;3]  ⍝TODO⍝
+                 HandleLinkSourceFlags⊃list[ind;3]
              :EndIf
          :EndFor
          :If performChecks

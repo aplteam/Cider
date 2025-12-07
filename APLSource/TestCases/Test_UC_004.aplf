@@ -16,7 +16,7 @@
  ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -ignoreUserExec -batch'
  Assert rc=0
- 'You did not just press <enter>!'Assert∨/'Project successfully opened and established in'⍷res
+ Assert 9=#.⎕NC'Foo.CiderConfig'
  →T.GoToTidyUp~(⊂'#.Foo')∊{⍵[;1]}##.Cider.ListOpenProjects 0
 
  r←T._OK

@@ -2,7 +2,7 @@
   api: "API",
   assets: "",
   checkLICENSEfile: 1,
-  date: 20251002.210541,
+  date: 20251030.104947,
   description: "Use NuGet packages from Dyalog APL",
   documentation: "",
   exclude: "⎕IO.apla,⎕ML.apla",
@@ -23,5 +23,5 @@
   tags: "dotnet,nuget,packages",
   uri: "https://tatin.dev/",
   userCommandScript: "",
-  version: "0.2.5",
+  version: "0.2.6",
 }
