@@ -1,4 +1,7 @@
 (
+ '* 0.50.1 ⋄ 2025-12-08'
+ '  * Bug fixes'
+ '    * #127'
  '* 0.50.0 ⋄ 2025-12-07'
  '  * New global Cider parameter `HandleLinkStops` introduced'
  '  * `OpenProject` and `CloseProject` now both honour the global `HandleLinkStops` if set '

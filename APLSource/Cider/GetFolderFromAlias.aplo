@@ -5,7 +5,7 @@
  :If IsAlias parms.folder
      alias←1↓¯1↓parms.folder
      folder←GetFolderFromAlias2 alias
-     ('"',alias,'" is not a valid alias')Assert 0<≢folder
+     ('"[',alias,']" is not a defined alias')Assert 0<≢folder
      parms.folder←folder
      :If 0=≢parms.alias
          parms.alias←alias
