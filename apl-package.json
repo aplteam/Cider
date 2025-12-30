@@ -22,5 +22,5 @@
   tags: "project-management",
   tatin_version: "0.103.0",
   userCommandScript: "APLSource/Cider_UC.dyalog",
-  version: "0.50.0+972",
+  version: "0.50.1+973",
 }

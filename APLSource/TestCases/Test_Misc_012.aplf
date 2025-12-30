@@ -15,7 +15,7 @@
  :Else
      qdmx←⎕DMX
      →T.PassesIf 11=qdmx.EN
-     →T.PassesIf'"aliasdoesnotexist" is not a valid alias'≡qdmx.EM
+     →T.PassesIf'"[aliasdoesnotexist]" is not a defined alias'≡qdmx.EM
  :EndTrap
 
  r←T._OK
