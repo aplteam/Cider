@@ -18,7 +18,8 @@ Here we highlight incompatabilities, if any.
   }
 </style>
 
--------|------------|----------------------------------------
+-------|-----------|----------------------------------------
+0.50.1 | 2025-12-30 | No compatability issues
 0.50.0 | 2025-12-07 | No compatability issues
 0.49.0 | 2025-09-15 | No compatability issues
 0.48.3 | 2025-08-09 | No compatability issues
