@@ -1,7 +1,7 @@
  r←aliase ScanFolder_ folder;bool;newAliase;subFolders
  r←0 2⍴⍬
  :If 0<≢subFolders←P.##.F.ListDirs2 folder
-     bool←⎕NEXISTS subFolders,¨⊂'/Cider.config'
+     bool←⎕NEXISTS subFolders,¨⊂'/cider.config'
  :AndIf 0<≢subFolders←bool/subFolders
      newAliase←⎕C 2⊃¨⎕NPARTS subFolders
      :If 0∊bool←~newAliase∊aliase[;1]

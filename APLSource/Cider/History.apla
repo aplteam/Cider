@@ -1,4 +1,8 @@
 (
+ '* 0.50.2 ⋄ 2026-01-01'
+ '  * Bug fixes'
+ '    * On non-Windows platforms, ]ListAliases -scan=/path/2/projects failed due to an upperase problem:'
+ '      Tatin looked for "Cider.config" when it should have looked for "cider.config"'
  '* 0.50.1 ⋄ 2025-12-30'
  '  * Bug fixes'
  '    * #127'
