@@ -1,7 +1,11 @@
- R←Test_UC_046(stopFlag batchFlag);⎕TRAP;res;msg;rc;folder;parms;tempDir;success;log;stop;expected;C
+ R←Test_UC_046(stopFlag batchFlag);C;expected;folder;log;msg;parms;rc;res;stop;success;tempDir;⎕TRAP
 ⍝ Exercise ]Cider.AddTatinDependencies and ListTatinDependencies
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
+
+ :If 0=IsDotNetAvailable
+     R←T._NotApplicable ⋄ →0
+ :EndIf
 
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI
