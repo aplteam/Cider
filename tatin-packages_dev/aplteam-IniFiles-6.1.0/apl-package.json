@@ -1,6 +1,7 @@
 {
   api: "IniFiles",
   assets: "",
+  checkLICENSEfile: 1,
   date: 20250910.064007,
   description: "Allows instantiating good old INI files in APL; comes with extended syntax supporting APL-like data structures",
   documentation: "",

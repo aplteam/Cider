@@ -1,6 +1,7 @@
 {
   api: "Tester2",
   assets: "html/",
+  checkLICENSEfile: 1,
   date: 20250913.075649,
   description: "Dyalog APL test framework",
   documentation: "",

@@ -1,6 +1,6 @@
- {r}←CheckForGit(path config parms);status;dmx;gitStatus;ind;stashes;gitIssues
+ {success}←CheckForGit(path config parms);status;dmx;gitStatus;ind;stashes;gitIssues
 ⍝ Checks whether the project is managed by Git, and if so offers some help, unless parms.batch=1
- r←⍬
+ success←1
  →(~G.IsGitProject path)/0
  gitStatus←GetGlobalGitStatus
  gitIssues←GetGlobalGitIssues
@@ -13,8 +13,11 @@
      :Trap 0
          status←G.Status path
      :Else
+         success←0
          dmx←⎕DMX
-         :If 127=dmx.EN
+         :If ∨/'Check ⎕EXCEPTION for details'⍷dmx.Message
+             (1 parms.batch)p'A .NET exception has occurred: ',{(⎕UCS 13)@(⍸⍵=⎕UCS 10)⊢⍵}⍕⎕EXCEPTION
+         :ElseIf 127=dmx.EN
              (1 parms.batch)p'The project appears to be managed by Git but Git is not installed?!'
          :ElseIf 128=dmx.EN
              (1 parms.batch)p'The project appears to be managed by Git but user.email and/or user.name are not defined'
@@ -26,7 +29,6 @@
              (1 parms.batch)p(⊃dmx.DM),'; rc=',⍕dmx.EN
          :Else
              (1 parms.batch)p'The Git status of the project could not be determined due to an error'
-             :Return
          :EndIf
          :Return
      :EndTrap

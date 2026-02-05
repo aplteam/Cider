@@ -1,6 +1,7 @@
 {
   api: "OS",
   assets: "",
+  checkLICENSEfile: 1,
   date: 20250328.131321,
   description: "OS-related tools for all major platforms",
   documentation: "",

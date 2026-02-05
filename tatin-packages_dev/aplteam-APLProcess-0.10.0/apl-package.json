@@ -1,6 +1,7 @@
 {
   api: "APLProcess",
   assets: "",
+  checkLICENSEfile: 1,
   date: 20250801.182648,
   description: "Start an APL process from within Dyalog APL",
   documentation: "",

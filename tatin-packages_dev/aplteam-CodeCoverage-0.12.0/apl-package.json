@@ -1,6 +1,7 @@
 {
   api: "CodeCoverage",
   assets: "",
+  checkLICENSEfile: 1,
   date: 20250913.07421,
   description: "Monitors which parts of an application got actually executed",
   documentation: "",
