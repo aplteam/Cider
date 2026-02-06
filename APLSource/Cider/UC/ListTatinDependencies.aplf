@@ -4,7 +4,7 @@
  P_←P.##
  F←P_.F
  :If 0=≢path←GetProjectPath Args._1
-     ⎕←'Cancelled by user'
+     ⍞←'Cancelled by user',⎕UCS 10
  :Else
      full←Args.Switch'full'
      latest←Args.Switch'latest'

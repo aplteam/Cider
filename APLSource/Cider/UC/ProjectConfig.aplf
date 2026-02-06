@@ -3,7 +3,7 @@
  path←''Args.Switch Args._1
  editFlag←Args.edit
  :If 0=≢path←GetProjectPath path
-     →0,≢⎕←'Cancelled by user'
+     →0,≢⍞←'Cancelled by user',⎕UCS 10
  :Else
      res←editFlag P.ProjectConfig path
      :If 0=1↑0⍴res

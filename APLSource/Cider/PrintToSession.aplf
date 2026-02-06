@@ -12,7 +12,8 @@
      (sessionFlag quiet)←2↑flags,0
      :If sessionFlag
      :AndIf ~quiet
-         ⎕←↑,⊆msg
+         ⍞←↑,⊆msg
+         ⍞←⎕UCS 10
      :EndIf
      :If 0<⎕NC'∆LOG'
          :If 1<|≡msg

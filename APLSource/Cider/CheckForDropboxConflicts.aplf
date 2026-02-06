@@ -23,9 +23,11 @@
      :EndIf
  :EndIf
  :If found
-     ⎕←↑msg
+     ⍞←↑msg
+     ⍞←⎕UCS 10
  :ElseIf 0<≢msg
      :If GetGlobalVerbose
-         ⎕←↑msg
+         ⍞←↑msg
+         ⍞←⎕UCS 10
      :EndIf
  :EndIf

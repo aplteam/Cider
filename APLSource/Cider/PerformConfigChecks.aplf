@@ -40,5 +40,6 @@
  successFlag←∧/successFlag
  :If reportFlag
  :AndIf 0<≢report
-     ⎕←⍪report
+     ⍞←⍪report
+     ⍞←⎕UCS 10
  :EndIf

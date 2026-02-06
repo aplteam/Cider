@@ -45,7 +45,8 @@
          :If gitStatus=1
              {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
          :Else
-             ⎕←↑status
+             ⍞←↑status
+             ⍞←⎕UCS 10
          :EndIf
      :EndIf
  :EndIf

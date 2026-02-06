@@ -11,7 +11,7 @@
      r←#.Cider.Cider.API
      r.##.##.(C A F G)←r.##.(C A F G)
      :If 1=⎕SE.Cider.DEVELOPMENT
-         ⎕←'*** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!'
+         ⍞←'*** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!',⎕UCS 10
      :EndIf
  :Else
      r←⎕SE.Cider

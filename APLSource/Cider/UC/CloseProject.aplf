@@ -4,7 +4,7 @@
  fast←Args.Switch'fast'
  :If 0=≢Args.Arguments
      :If 0=noop←≢list←P.ListOpenProjects 0   ⍝ noop ←→ NoOf Open Projects
-         ⎕←'There are no open Cider projects that could be closed'
+         ⍞←'There are no open Cider projects that could be closed',⎕UCS 10
          :Return
      :Else
          :If Args.all

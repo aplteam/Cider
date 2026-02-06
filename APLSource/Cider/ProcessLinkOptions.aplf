@@ -28,7 +28,8 @@
                  msg,←⊂'and delete the "LINK" section from Cider''s project config file.'
                  msg,←⊂'Note that Cider''s Linksection were introduced at a time when'
                  msg,←⊂'there was no Link config file available (prior version 4).'
-                 ⎕←Box Frame msg
+                 ⍞←Box Frame msg
+                 ⍞←⎕UCS 10
              :EndIf
          :Else
              :If 0=parms.batch
@@ -42,7 +43,8 @@
                  msg,←⊂'project config file, maybe after reconciling it with .linkconfig.'
                  msg,←⊂'Note that Cider''s Link options were invented at a time when'
                  msg,←⊂'there was no Link config file available (prior to version 4).'
-                 ⎕←Box Frame msg
+                 ⍞←Box Frame msg
+                 ⍞←⎕UCS 10
              :EndIf
              linkOptions←ExtractLinkOptions config             ⍝ Merge the default options with Cider's options
          :EndIf

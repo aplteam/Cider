@@ -1,5 +1,6 @@
 (
- '* 0.50.2 ⋄ 2026-01-011'
+ '* 0.50.2 ⋄ 2026-02-05'
+ '  * Packages updated (CommTools)'
  '  * Bug fixes'
  '    * In case of a .NET error while checking Git''s status, the information available via ⎕EXCEPTION was not provided  '
  '    * On non-Windows platforms, ]ListAliases -scan=/path/2/projects failed due to an uppercase problem:'

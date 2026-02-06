@@ -1,7 +1,7 @@
  r←HowToMakeNewVersion Args;config;path;list;index;home
  r←''
  :If 0=≢path←GetProjectPath Args._1
-     ⎕←'Cancelled by user' ⋄ →0
+     ⍞←'Cancelled by user',⎕UCS 10 ⋄ →0
  :Else
      home←(P.ListOpenProjects 0){⊃⍺[⍺[;2]⍳⊂⍵;1]}path
      :If 2≠⎕NC home,'.ToDo'
