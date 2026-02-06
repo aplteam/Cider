@@ -8,7 +8,7 @@
       :If 3=⎕NC'⎕SE.Cider.Version'
           msg←' Cider is not installed correctly. Please remove and install again.'
       :EndIf
-      ⎕←msg
+      ⍞←msg,⎕UCS 10
     ∇
 
     ∇ r←List;ref
@@ -33,7 +33,7 @@
               PrintError''
           :EndIf
       :Else
-          ⎕←'Cider not found'
+          ⍞←'Cider not found',⎕UCS 10
       :EndIf
     ∇
 
@@ -47,7 +47,7 @@
               PrintError''
           :EndIf
       :Else
-          ⎕←'Cider not found'
+          ⍞←'Cider not found',⎕UCS 10
       :EndIf
     ∇
 
