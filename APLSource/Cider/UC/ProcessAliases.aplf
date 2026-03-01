@@ -7,9 +7,8 @@
          flag←0
          :Repeat
              :If batch
-                 ⍞←'--- To be pruned:',⎕UCS 10
-                 ⍞←' ',' ',{('[',¨⍵[;1],¨']'),⍵[;,2]}(~bool)⌿r
-                 ⍞←⎕UCS 10
+                 ⎕←'--- To be pruned:'
+                 ⎕←' ',' ',{('[',¨⍵[;1],¨']'),⍵[;,2]}(~bool)⌿r
              :OrIf 1 YesOrNo'PruneAliases@Sure you want to prune ',((1+1=+/~bool)⊃'them' 'this'),'?'
                  :If 0=≢r←bool⌿r
                      ⎕NDELETE P.GetCiderAliasFilename
