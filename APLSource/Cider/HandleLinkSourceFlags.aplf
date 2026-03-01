@@ -1,9 +1,9 @@
  {r}←HandleLinkSourceFlags path;linkcfgFile;linkconfig;nameList;type;q
 ⍝ Stops and traces are potentially stored in a file .link.config
-⍝ If such a file exists and carries SourceFlags *and* the global Cider setting `HandleLinkStops` is greater than 1
-⍝ then those settings are removed from the file .linkconfig. If the file did not contain anything else (apart
-⍝ from the Link version the file was written with) then the file will be deleted.
-⍝ `path` must be the source folder of a project; that's where Link stores .linkconfig, but see HandleLinkSourceFlags
+⍝ If such a file exists and carries SourceFlags *and* the global Cider setting `HandleLinkStops` is greater than 0
+⍝ then the user is asked whether she wants to erase stop and trace settings from `.linkconfig`.
+⍝ The file will be deleted if it does not contain anything but the Link version the file was written with.
+⍝ `path` must be the source folder of a project; that's where Link stores `.linkconfig`.
  linkcfgFile←path,'/.linkconfig'
  :If F.IsFile linkcfgFile
      linkconfig←Get_JSON5 linkcfgFile
