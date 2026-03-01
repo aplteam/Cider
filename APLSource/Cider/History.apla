@@ -4,7 +4,7 @@
  '  * Aliase are now checked for starting with a letter followed by zero or more letters, digits, underscores or hyphens'
  '  * All JSON5-related stuff consolidated, see #110m for details'
  '  * Packages updated (CommTools)'
- '  * Documentation issues fixed: #109, #96'
+ '  * Documentation issues fixed: #109, #96, #89'
  '  * Bug fixes'
  '    * In case of a .NET error while checking Git''s status, the information available via ⎕EXCEPTION was not provided  '
  '    * On non-Windows platforms, ]ListAliases -scan=/path/2/projects failed due to an uppercase problem:'

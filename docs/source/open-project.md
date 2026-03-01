@@ -174,6 +174,13 @@ Cider executes it unless the `ignoreUserExec` option or parameter is set.
 
 If neither `import`, `importFlag` nor `batch` is set; and the project space contains a non-empty variable `ToDo`, Cider prints it.
 
+## Dropbox check
+
+If Dropbox cannot decide what the last version of a file is, it will create a file with "conflicted copy" in its name. Dropbox leaves it to the user to compare such files and resolve the conflict.
+
+Dropbox does not actually alert the user to such conflicts, it just silently creates the files. For that reason Cider checks for such files under some circumstances and alerts the user if it finds some.
+
+Refer to the [configuration paramter `CheckForDropboxConflicts`](configuration.md#checkfordropboxconflicts) for details.
 
 ## Report Git status
 
@@ -184,5 +191,6 @@ If
 -   the global config setting `ReportGitStatus` is greater than 0
 
 Cider reports all local branches, the current branch and its status.
+
 
 
