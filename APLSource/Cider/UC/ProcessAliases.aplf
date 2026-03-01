@@ -1,19 +1,20 @@
- r←ProcessAliases(prune edit batch);bool;flag
+ r←ProcessAliases(prune edit batch);bool;flag;plural
  r←P.GetCiderAliasFileContent ⍬
+ bool←⎕NEXISTS¨r[;2]
  :If prune
      :If 0<≢r
-         bool←⎕NEXISTS¨r[;2]
      :AndIf ~∧/bool
          flag←0
          :Repeat
              :If batch
-                 ⎕←'--- To be pruned:'
+                 ⎕←'--- Folder(s) that do not exist:'
                  ⎕←' ',' ',{('[',¨⍵[;1],¨']'),⍵[;,2]}(~bool)⌿r
-             :OrIf 1 YesOrNo'PruneAliases@Sure you want to prune ',((1+1=+/~bool)⊃'them' 'this'),'?'
+                 plural←1<+/~bool
+             :OrIf 1 YesOrNo'PruneAliases@Sure you want to remove ',((1+plural)⊃'this' 'these'),' alias',(plural/'es'),'?'
                  :If 0=≢r←bool⌿r
                      ⎕NDELETE P.GetCiderAliasFilename
                  :Else
-                     (⊂⊃¨{⍺,'=',⍵}/¨↓r)⎕NPUT P.GetCiderAliasFilename 1
+                     (⊂⊃¨{⍺,'=',⍵}/¨↓r[;1 2])⎕NPUT P.GetCiderAliasFilename 1
                  :EndIf
                  flag←1
              :Else
@@ -21,4 +22,7 @@
              :EndIf
          :Until flag
      :EndIf
+ :Else
+     r,←' '
+     r[⍸~bool;3]←⊂'(Folder not found!)'
  :EndIf

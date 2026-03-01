@@ -1,5 +1,6 @@
 (
- '* 0.50.2 ⋄ 2026-02-06'
+ '* 0.51.0 ⋄ 2026-03-01'
+ '  * ]ListAliases now marks folders that are not available anymore'
  '  * Packages updated (CommTools)'
  '  * Bug fixes'
  '    * In case of a .NET error while checking Git''s status, the information available via ⎕EXCEPTION was not provided  '
