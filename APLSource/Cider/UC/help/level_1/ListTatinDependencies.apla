@@ -4,7 +4,7 @@
  ' * If no argument is provided, a list with all open projects is presented to the user, unless'
  '   there is only one project open anyway.'
  ' * If an argument is provided then it must be one of:'
- '   * Folder of a Cider-managed project'
+ '   * A folder holding a Cider-managed project'
  '   * An alias of a Cider-managed project'
  '   * A path to a folder with installed packages, for example [MyUCMDs]'
  '   * A folder that contains folders fulfilling the above criteria'
