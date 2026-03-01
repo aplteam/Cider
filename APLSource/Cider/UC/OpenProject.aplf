@@ -49,10 +49,9 @@
  parms.batch←0 Args.Switch'batch'
  parms.checkPackageVersions←⍬
  (success log)←P.OpenProject parms
- :If Args.verbose
-     r←''
- :ElseIf success
-     r←{⍵↑⍨-(⎕UCS 13)⍳⍨1↓⌽⍵}log
+ :If ~Args.verbose
+ :AndIf success
+     ⍞←({⍵↑⍨-(⎕UCS 10)⍳⍨1↓⌽⍵}log),⎕UCS 10
  :Else
-     r←'Attempt to open the project failed'
+     ⍞←'Attempt to open the project failed',⎕UCS 10
  :EndIf

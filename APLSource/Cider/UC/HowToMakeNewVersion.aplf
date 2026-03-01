@@ -7,6 +7,6 @@
      :If 2≠⎕NC home,'.ToDo'
      :OrIf 0=≢(∊home⍎'ToDo')~' '
      :OrIf 1 P.##.C.YesOrNo'IgnoreToDo@There is a non-empty variable "ToDo" in <',home,'> - carry on anyway?'
-         r←P.RunMake path
+         ⍞←(P.RunMake path),⎕UCS 10
      :EndIf
  :EndIf

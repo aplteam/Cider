@@ -79,7 +79,10 @@
          :If ' '=1↑0⍴∊r
              r←('These projects were closed:'),(⎕UCS 13),r
          :Else
-             r←'One project was closed.'
+             r←'One project was closed.',⎕UCS 10
          :EndIf
      :EndIf
  :EndIf
+ r,←((¯1↑r)≢⎕UCS 10)/⎕UCS 10
+ ⍞←r
+ r←''
