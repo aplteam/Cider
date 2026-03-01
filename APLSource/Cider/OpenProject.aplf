@@ -43,6 +43,9 @@
  :If parms.alias≡'.'
      parms.alias←⎕C 2⊃{1 ⎕NPARTS(-(¯1↑⍵)∊'/\')↓⍵}parms.folder
  :EndIf
+ :If 0<≢parms.alias
+     'An alias must start with a letter followed by zero or more letters, digits, underscores or hyphens'Assert((1↑parms.alias)∊⎕A,⎕C ⎕A)∧∧/((1↓parms.alias)∊'_-',⎕D,⎕A,⎕C ⎕A)
+ :EndIf
  AddAlias parms.folder parms.alias
  configFilename←parms.folder,'/cider.config'
  ('No file "cider.config" found in ',parms.folder)Assert F.Exists configFilename

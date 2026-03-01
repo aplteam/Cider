@@ -1,0 +1,19 @@
+ R←Test_Alias_009(stopFlag batchFlag);⎕TRAP;folder;ref;res;msg;rc
+⍝ Open a project and assign an invalid alias
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+
+ folder←##.CiderConfig.HOME,'/Tests/TestAlias2/Project1'
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ (rc msg res)←∆UCMD'OpenProject ',folder,' -parent=#.TEMP -alias=1invalid& -watch=ns -batch -ignoreUserExec'
+ →T.GoToTidyUp 0=rc
+ →T.GoToTidyUp~∨/'An alias must start with a letter followed by zero or more letters, digits, underscores or hyphens'⍷msg
+
+ R←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+⍝Done

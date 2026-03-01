@@ -1,5 +1,5 @@
  R←Test_Alias_003(stopFlag batchFlag);⎕TRAP;mat
-⍝ Exercise the user command `GetCiderAliasFileContent ⍬`
+⍝ Exercise `GetCiderAliasFileContent ⍬`
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

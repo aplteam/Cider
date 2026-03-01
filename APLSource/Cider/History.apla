@@ -1,6 +1,7 @@
 (
  '* 0.51.0 ⋄ 2026-03-01'
  '  * ]ListAliases now marks folders that are not available anymore'
+ '  * Aliase are now checked for starting with a letter followed by zero or more letters, digits, underscores or hyphens'
  '  * All JSON5-related stuff consolidated, see #110m for details'
  '  * Packages updated (CommTools)'
  '  * Bug fixes'
