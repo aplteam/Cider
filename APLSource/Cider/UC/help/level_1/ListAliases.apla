@@ -1,5 +1,5 @@
 (
- 'Prints all defined aliases  with their associated folders to the session.'
+ 'Prints all defined aliases with their associated folders to the session.'
  ''
  'There are two mutually exclusive options available:'
  ''
