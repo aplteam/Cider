@@ -231,15 +231,18 @@ Prints a list of all open projects.
 
 Lists Tatin packages installed as its dependencies.
 
-If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
+If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which. When specified, `project` must be a project folder or a Cider alias.
 
 -------|--------
 `full` | Print a hierarchical report on all dependencies.
 <!-- `raw`  | Print dependency data unformatted. -->
 
-The full report does not show what is actually used, but what the packages themselves require.
-(Due to minimum version selection they might end up using a later version.)
+The full report does not show what is actually used, but what the packages themselves require. Due to minimum version selection the project might end up using a later version. 
+
 This can help show why a particular (typically old) package is required.
+
+-------|--------
+`latest`|  When this is specified, the version numbers of later versions are listed as well. Is ignored when specified with -full                                             
 
 
 ## :fontawesome-solid-terminal: Make
@@ -347,6 +350,7 @@ Prints major, minor and patch numbers:
 
           ]CIDER.Version
     0.44.0+835
+
 
 
 
