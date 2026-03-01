@@ -1,0 +1,3 @@
+ ∆PutJSON5←{
+     ⍺ ##.Cider.Put_JSON5 ⍵
+ }

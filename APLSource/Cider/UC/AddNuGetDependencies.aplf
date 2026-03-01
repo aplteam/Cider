@@ -11,12 +11,12 @@
  :If 0=≢projectFolder
      r←'Cancelled by user' ⋄ →0
  :EndIf
- cfg←P.ReadProjectConfigFile projectFolder
+ cfg←P.ReadProjectConfig projectFolder
  ref←cfg.CIDER.dependencies
  :If 0<≢targetNamespace
      'There is already a target namespace defined; edit the project config file to change that'Assert~'='∊ref.nuget
      ref.nuget,←'=',targetNamespace
-     cfg P.WriteProjectConfigFile projectFolder
+     cfg P.WriteProjectConfig projectFolder
  :EndIf
  flag←0
  :Repeat
@@ -26,7 +26,7 @@
          q←'EditProjectConfig@',q
          :If 1 P.##.C.YesOrNo q
              1 P.ProjectConfig projectFolder
-             cfg←P.ReadProjectConfigFile projectFolder
+             cfg←P.ReadProjectConfig projectFolder
              ref←cfg.CIDER.dependencies
          :Else
              r←'Cancelled by user' ⋄ →0

@@ -9,12 +9,12 @@
  folder←∆GetTestPath⊃⎕SI
 
  filename←##.Cider.GetCiderGlobalConfigFilename
- cfg←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
+ cfg←∆GetJSON5 filename
 
  was←cfg.{0=⎕NC'ExecuteAfterProjectOpen':'' ⋄ ExecuteAfterProjectOpen}⍬
  cfg.ExecuteAfterProjectOpen←'#.TEMP2.ExecuteAfterProjectOpen'
  #.TEMP2.⎕FX'ExecuteAfterProjectOpen config' '∆FLAG←1'
- (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣cfg)⎕NPUT filename 1
+ cfg ∆PutJSON5 filename
 
  parms←⎕NS''
  parms.folder←folder,'/Project1'
@@ -30,7 +30,7 @@
 ∆TidyUp:
  ##.Cider.C.Cleanup
  cfg.ExecuteAfterProjectOpen←was
- (⊂⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣cfg)⎕NPUT filename 1
+ cfg ∆PutJSON5 filename
  res←∆LINK'Break' '#.TEMP'
  Assert res ∆StartsWith'Unlinked:'
  #.⎕EX¨'TEMP' 'TEMP2'

@@ -1,4 +1,4 @@
- cfg←HandleLinkParameters(cfg cfgFilename);linkDefaults;i;list;name;ind;value;flag;json
+ cfg←HandleLinkParameters(cfg cfgFilename);linkDefaults;i;list;name;ind;value;flag
 ⍝ With version 0.34.0 Cider removes all Link settings that are defaults anyway from the Cider config file.
 ⍝ That's what this function is doing. This implies that as a side effect it writes the configuration
 ⍝ back to file.
@@ -19,7 +19,6 @@
          :EndIf
      :EndFor
      :If flag
-         json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣cfg
-         (⊂json)⎕NPUT cfgFilename 1
+         cfg Put_JSON5 cfgFilename
      :EndIf
  :EndIf

@@ -11,7 +11,7 @@
  stop←0
  (rc msg res)←stop ∆UCMD'ListTatinDependencies'
  Assert rc=0
- ns←##.Cider.Get_JSON5 #.Cider.CiderConfig.HOME,'/cider.config'
+ ns←##.Cider.ReadProjectConfig #.Cider.CiderConfig.HOME,'/cider.config'
  expected←FilesAndDirs.EnforceSlash∘FilesAndDirs.AddTrailingSep¨{⍵↑⍨¯1+⍵⍳'='}¨ns.CIDER.(dependencies dependencies_dev).tatin
  →T.PassesIf∧/expected∊res[;1]
  R←T._OK

@@ -1,48 +1,6 @@
-:Class APLTreeUtils2
-⍝ This is the predecessor of the namespace `APLTreeUtils`.\\
-⍝ While `APLTreeUtils` was a namespace scipt designed to be included into pretty much every member of the
-⍝ APLTree library, `APLTreeUtils2` is a class with shared methods. You are supposed to call those methods.
-⍝ This has some major advantageous over the old approach:
-⍝ * It's possible to add new functions to `APLTreeUtils`. With the old approach there was always the possibility
-⍝   of a name clash, so adding new function was practically impossible.
-⍝ * The sequence of fixing does not matter (though with lazy fixing that should not be an issue anymore anyway,
-⍝    but at the time of writing it still is).
-⍝ * Over the years we have seen rare `⎕IO` and `⎕ML` issues with `:Include`. We just avoid the possibility now.\\
-⍝ For a list with the precise differences between `APLTreeUtils` and `APLTreeUtils2` see the project ReadMe on
-⍝ GitHub. Note that there are many. Most importantly, `APLTreeUtils2` requires Dyalog 18.0.
-⍝ Kai Jaeger\\
-⍝ Homepage: <https://github.com/aplteam/APLTreeUtils2/>
+:Class ATU
 
     ⎕ML←⎕IO←1
-
-    ∇ r←Version
-      :Access Public Shared
-      r←'APLTreeUtils2' '1.2.0+62' '2023-05-08'
-    ∇
-
-    ∇ History
-    ⍝ * 1.2.0 from 2023-05-08
-    ⍝   * Bug fix: version number corrected
-    ⍝ * 1.1.4 from 2023-04-09
-    ⍝   * New function `LazyMatch` added
-    ⍝   * Admin.Make introduced; uses the MakeHelper package which is expected in ⎕SE
-    ⍝   * Development dependencies updated
-    ⍝   * README polished
-    ⍝   * Bug fix: GoToWebPage did not work on a Mac
-    ⍝   * Internal changes
-    ⍝     * Test cases added for perfect coverage
-    ⍝     * acre replaced by Cider
-    ⍝ * 1.1.3 from 2021-04-07
-    ⍝   * `AtLeastVersion` was NOT buggy, its test case was
-    ⍝ * 1.1.2 from 2021-04-06
-    ⍝   * `AtLeastVersion` was buggy
-    ⍝ * 1.1.1 from 2021-03-01
-    ⍝   * Package config file corrected (new format)
-    ⍝ * 1.1.0 from 2020-09-26
-    ⍝   * Method `IsRunningAsAdmin` added
-    ⍝ * 1.0.0 from 2020-09-06
-    ⍝   * This is the predecessor of `APLTreeUtils`
-    ∇
 
     ∇ r←{x}Lowercase txt
     ⍝ `txt` is transformed into lowercase.\\

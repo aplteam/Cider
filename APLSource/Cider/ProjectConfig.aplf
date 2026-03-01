@@ -45,7 +45,7 @@
                      :EndIf
                  :Else
                      :If 1 C.YesOrNo'JsonSaveChanges@Would you like to save your changes?'
-                         data Put_JSON5 filename
+                         data WriteProjectConfig filename
                          r←flag←1
                      :Else
                          flag←1

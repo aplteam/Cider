@@ -8,7 +8,7 @@
  #.⎕SHADOW'Foo' ⋄ 'Foo'#.⎕NS''
 
  config←∆GetJSON5 tempDir,'/cider.config'
- (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
+ config ∆PutJSON5 tempDir,'/cider.config'
 
  ref←∆GetRefToCommTools
  ref.AddAutomation'YesOrNo' 'TargetNotEmpty@' 'y'

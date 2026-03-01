@@ -1,6 +1,5 @@
  {r}←config Put_JSON5 filename;json
  r←0
- config←AddCiderVersionNumber config
  json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣config
  (⊂json)⎕NPUT⍠('NEOL' 2)⊣filename 1
 ⍝Done

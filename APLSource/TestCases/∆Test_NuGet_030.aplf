@@ -1,6 +1,6 @@
  R←∆Test_NuGet_030(stopFlag batchFlag);⎕TRAP;folder;tempDir;config;parms;success;log;list;res
 ⍝ Open a project, add a NuGet dependency where package name and namespace differ, load, call, list, close, re-open, close
-⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
@@ -8,9 +8,9 @@
  tempDir←∆GetFolderInTempDir⊃⎕SI
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
 
- config←##.Cider.ReadProjectConfigFile tempDir
+ config←##.Cider.ReadProjectConfig tempDir
  config.CIDER.dependencies.nuget←'MyNugetPkgs=Utils'
- config ##.Cider.WriteProjectConfigFile tempDir
+ config ##.Cider.WriteProjectConfig tempDir
 
  parms←##.Cider.CreateOpenParms''
  parms.folder←tempDir
@@ -29,8 +29,8 @@
  list←0 1 ##.Cider.LoadNuGetDependencies tempDir #.TEMP
  →T.GoToTidyUp~(⊂'Parquet.Net')∆LazyMatch list
 
- →T.GoToTidyUp~9.6≡⎕NC ⊂'#.TEMP.Utils.Parquet.ParquetException'
- →T.GoToTidyUp~9.6≡⎕NC ⊂'#.TEMP.Utils.Parquet.ParquetActor'
+ →T.GoToTidyUp~9.6≡⎕NC⊂'#.TEMP.Utils.Parquet.ParquetException'
+ →T.GoToTidyUp~9.6≡⎕NC⊂'#.TEMP.Utils.Parquet.ParquetActor'
 
  res←##.Cider.ListNuGetDependencies tempDir
  →T.GoToTidyUp 2≠≡res
@@ -43,8 +43,8 @@
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp∨/'ERROR'⍷log
- →T.GoToTidyUp~9.6≡⎕NC ⊂'#.TEMP.Utils.Parquet.ParquetException'
- →T.GoToTidyUp~9.6≡⎕NC ⊂'#.TEMP.Utils.Parquet.ParquetActor'
+ →T.GoToTidyUp~9.6≡⎕NC⊂'#.TEMP.Utils.Parquet.ParquetException'
+ →T.GoToTidyUp~9.6≡⎕NC⊂'#.TEMP.Utils.Parquet.ParquetActor'
 
  res←(~parms.batch)##.Cider.CloseProject tempDir
  →T.GoToTidyUp res≠1

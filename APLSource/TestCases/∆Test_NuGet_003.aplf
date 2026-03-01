@@ -8,9 +8,9 @@
  tempDir←∆TranslateAlias tempDir
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
 
- config←##.Cider.ReadProjectConfigFile tempDir
+ config←##.Cider.ReadProjectConfig tempDir
  config.CIDER.dependencies.nuget←'My-nuget-packages'   ⍝ Overwrite the default
- config ##.Cider.WriteProjectConfigFile tempDir
+ config ##.Cider.WriteProjectConfig tempDir
 
  parms←##.Cider.CreateOpenParms''
  parms.folder←tempDir
@@ -25,7 +25,7 @@
  list←##.Cider.AddNuGetDependencies'Clock'tempDir
  →T.GoToTidyUp~(⊂'Clock')∆LazyMatch list
 
- config←##.Cider.Get_JSON5 tempDir,'/cider.config'
+ config←##.Cider.ReadProjectConfig tempDir,'/cider.config'
  {}0 1 ##.Cider.LoadNuGetDependencies tempDir #.TEMP
  →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
 

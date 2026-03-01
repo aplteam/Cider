@@ -16,7 +16,7 @@
  list←FilesAndDirs.ListFiles2 tempDir
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
- config←##.Cider.ReadProjectConfigFile tempDir
+ config←##.Cider.ReadProjectConfig tempDir
  →T.GoToTidyUp'config.CIDER.projectSpace'≡config.CIDER.projectSpace
 
  R←T._OK

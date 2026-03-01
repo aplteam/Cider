@@ -1,5 +1,5 @@
  {changeFlag}←MassageConfig filename;config
-⍝ Checks whether the config data comes with all expected antries.
+⍝ Checks whether the config data comes with all expected entries.
 ⍝ If anything is missing (late arrivals) those are added.
 ⍝ Returns a 1 in case data was added, otherwise 0.
  changeFlag←0
@@ -14,5 +14,5 @@
      changeFlag∨←1
  :EndIf
  :If changeFlag
-     config Put_JSON5 filename
+     config WriteProjectConfig filename
  :EndIf

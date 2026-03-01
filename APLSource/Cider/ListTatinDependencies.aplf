@@ -8,7 +8,7 @@
  :EndIf
  cfgFilename←folder,'/cider.config'
  :If F.Exists cfgFilename
-     cfg←ReadProjectConfigFile cfgFilename
+     cfg←ReadProjectConfig cfgFilename
      tatinFolders←GetTatinDependencyFolders cfg
      :If 0<≢tatinFolders
          tatinFolders←RemoveTargetDefinition¨tatinFolders

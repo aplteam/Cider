@@ -1,6 +1,7 @@
 (
  '* 0.51.0 ⋄ 2026-03-01'
  '  * ]ListAliases now marks folders that are not available anymore'
+ '  * All JSON5-related stuff consolidated, see #110m for details'
  '  * Packages updated (CommTools)'
  '  * Bug fixes'
  '    * In case of a .NET error while checking Git''s status, the information available via ⎕EXCEPTION was not provided  '
@@ -83,7 +84,7 @@
  '  * Bug fixes'
  '    * `]ListTatinDependencies` did not always report the folder that was investigated (#93)'
  '    * `]ListTatinDependencies` had a problem with -full: only one level of sub-folders was investigated (#94)'
- '    * `ReadProjectConfigFile` now injects `dependencies` into the config file when undefined.'
+ '    * `ReadProjectConfig` now injects `dependencies` into the config file when undefined.'
  '    * The `TatinVars` namespace was created as a ref pointing to another namespace `TatinVars` which was'
  '      then deleted. That can cause confusion. Now the namespace is copied.'
  '    * `ListTatinDependencies` crashed under rare circumstances'

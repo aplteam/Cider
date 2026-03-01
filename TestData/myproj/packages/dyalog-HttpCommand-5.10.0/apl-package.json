@@ -2,7 +2,7 @@
   api: "HttpCommand",
   assets: "",
   checkLICENSEfile: 1,
-  date: 20251117.135746,
+  date: 20260206.195551,
   description: "Utility to execute HTTP requests",
   documentation: "https://dyalog.github.io/HttpCommand",
   files: "",
@@ -22,5 +22,5 @@
   tags: "http,pi",
   uri: "https://tatin.dev/",
   userCommandScript: "",
-  version: "5.9.4",
+  version: "5.10.0",
 }

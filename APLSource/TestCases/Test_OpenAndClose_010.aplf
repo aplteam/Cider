@@ -9,7 +9,7 @@
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
  cfg←∆GetJSON5 tempDir,'/cider.config'
  cfg.CIDER.init←'Init'
- (⊂⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣cfg)FilesAndDirs.NPUT(tempDir,'/cider.config')1
+ cfg ∆PutJSON5 tempDir,'/cider.config'
  (⊂'Init' '∆INIT←1')FilesAndDirs.NPUT tempDir,'/APLSource/Init.aplf'
  (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
 

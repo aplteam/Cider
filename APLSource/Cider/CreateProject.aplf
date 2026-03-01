@@ -16,6 +16,6 @@
      ⎕MKDIR parms.folder
  :EndIf
  CreateConfigFile filename parms.namespace
- config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
+ config←Get_JSON5 filename
  ('Invalid config file: ',filename)Assert 0 PerformConfigChecks config
 ⍝Done

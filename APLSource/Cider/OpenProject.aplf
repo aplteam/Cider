@@ -46,7 +46,7 @@
  AddAlias parms.folder parms.alias
  configFilename←parms.folder,'/cider.config'
  ('No file "cider.config" found in ',parms.folder)Assert F.Exists configFilename
- config←ReadProjectConfigFile configFilename
+ config←ReadProjectConfig configFilename
  config(CopyParms)←parms
  :If 0=≢parms.projectSpace                                                      ⍝ Was it specified as argument?
  :AndIf 0=≢parms.projectSpace←config.CIDER.projectSpace                         ⍝ Nope, so the config file rules...

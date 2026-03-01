@@ -6,6 +6,8 @@
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI
  tempDir←∆TEMP_PATH
+ {}FilesAndDirs.RmDirByForce tempDir
+ {}FilesAndDirs.MkDir tempDir
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
 
  ref←∆GetRefToCommTools
@@ -31,7 +33,7 @@
  #.TEMP.(⎕EX ⎕NL-⍳9)
  (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
  Assert rc=0
- →T.GoToTidyUp'Project successfully opened and established in: #.TEMP'≢res~⎕TC
+ →T.GoToTidyUp~∨/'Project successfully opened and established in: #.TEMP'⍷∊res
  →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Clock.⎕NL-2
  →T.GoToTidyUp~∧/'Julian' 'Gregorian'∊⍕¨#.TEMP.NodaTime.CalendarSystem.⎕NL-2
 
@@ -43,4 +45,5 @@
 ∆TidyUp:
  ref.Cleanup
  res←∆LINK'Break' '#.TEMP'
+ ⍝ {}FilesAndDirs.RmDirByForce tempDir   ⍝ This does not work at the time of implementing (2026-03)
 ⍝Done

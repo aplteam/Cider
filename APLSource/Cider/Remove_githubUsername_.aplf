@@ -2,10 +2,10 @@
  r←0
  filename←folder,'/cider.config'
  :If F.IsFile filename
-     ns←ReadProjectConfigFile filename
+     ns←ReadProjectConfig filename
      :If 0<ns.CIDER.⎕NC'githubUsername'
          ns.CIDER.⎕EX'githubUsername'
-         {}ns WriteProjectConfigFile filename
+         {}ns WriteProjectConfig filename
          rep.report,←⊂filename
      :EndIf
  :EndIf

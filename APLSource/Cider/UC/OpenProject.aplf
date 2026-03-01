@@ -51,7 +51,7 @@
  (success log)←P.OpenProject parms
  :If ~Args.verbose
  :AndIf success
-     ⍞←({⍵↑⍨-(⎕UCS 10)⍳⍨1↓⌽⍵}log),⎕UCS 10
+     r←({⍵↑⍨-(⎕UCS 10)⍳⍨1↓⌽⍵}log),⎕UCS 10
  :Else
-     ⍞←'Attempt to open the project failed',⎕UCS 10
+     r←'Attempt to open the project failed',⎕UCS 10
  :EndIf

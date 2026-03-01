@@ -14,7 +14,7 @@
          :EndIf
          cfgFilename←(F.AddTrailingSep path),'cider.config'
          :If F.Exists cfgFilename
-             cfg←P_.ReadProjectConfigFile cfgFilename
+             cfg←P_.ReadProjectConfig cfgFilename
              :If 0<≢tatinFolders←P_.GetTatinDependencyFolders cfg
                  tatinFolders←P_.RemoveTargetDefinition¨tatinFolders
                  :If 1=≢tatinFolders

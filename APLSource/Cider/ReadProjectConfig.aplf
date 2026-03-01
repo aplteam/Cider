@@ -1,0 +1,38 @@
+ config←ReadProjectConfig projectFolder;projectFolder2;saveFlag
+⍝ Reads a project config file and returns it as a namespace with variables.
+⍝ `projectFolder` may or may not carry the filename as such.
+⍝ Checks the config file for some entries and adds them if they are missing.
+⍝ In such case the config file is also written back to file.
+ projectFolder2←ConfigFilename{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}projectFolder
+ config←Get_JSON5 projectFolder2
+ saveFlag←0
+ :If 0<config.⎕NC'CIDER'
+     :If 0=config.CIDER.⎕NC'dependencies'
+         'dependencies'config.CIDER.⎕NS''
+     :EndIf
+     :If 0=config.CIDER.dependencies.⎕NC'tatin'
+         config.CIDER.dependencies.tatin←''
+         saveFlag←1
+     :EndIf
+     :If 0=config.CIDER.dependencies.⎕NC'nuget'
+         config.CIDER.dependencies.nuget←''
+         saveFlag←1
+     :EndIf
+     :If 0<config.CIDER.⎕NC'lx'  ⍝ Renamed from `lx` to `init` in 2022-07
+         config.CIDER.init←config.CIDER.lx
+         config.CIDER.⎕EX'lx'
+         saveFlag←1
+     :EndIf
+     :If 0=config.CIDER.⎕NC'tests'
+         config.CIDER.tests←''
+         saveFlag←1
+     :EndIf
+     :If 0=config.CIDER.⎕NC'make'
+         config.CIDER.make←''
+         saveFlag←1
+     :EndIf
+ :EndIf
+ :If saveFlag
+     {}config WriteProjectConfig projectFolder
+ :EndIf
+⍝Done

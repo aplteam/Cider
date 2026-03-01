@@ -11,9 +11,9 @@
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
 
  configfile←tempDir,'/cider.config'
- config←##.Cider.Get_JSON5 configfile
+ config←##.Cider.ReadProjectConfig configfile
  config.CIDER.dependencies.nuget←'nuget-packages'
- config ##.Cider.Put_JSON5 configfile
+ config ##.Cider.WriteProjectConfig configfile
 
  parms←##.Cider.CreateOpenParms''
  parms.folder←∊⎕NPARTS tempDir

@@ -14,10 +14,10 @@
  (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
  Assert rc=0
 
- cfg←##.Cider.ReadProjectConfigFile tempDir
+ cfg←##.Cider.ReadProjectConfig tempDir
  cfg.CIDER.dependencies.tatin←'tatin-packages'
  cfg.CIDER.dependencies_dev.tatin←'tatin-packages_dev'
- cfg ##.Cider.WriteProjectConfigFile tempDir
+ cfg ##.Cider.WriteProjectConfig tempDir
 
  package←##.CiderConfig.HOME,'/TestData/APLTreeUtils2/aplteam-APLTreeUtils2-1.2.0.zip,'
  ref.AddAutomation'YesOrNo' 'AddTatinDeps@' 'y'
@@ -39,7 +39,7 @@
 
  (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
  Assert rc=0
- →T.GoToTidyUp'Project successfully opened and established in: #.TEMP'≢res~⎕TC
+ →T.GoToTidyUp~∨/'Project successfully opened and established in: #.TEMP'⍷∊res
  →T.GoToTidyUp~(⊂#.TEMP.APLTreeUtils2.GetOperatingSystem ⍬)∊'Win' 'Mac' 'Lin'
 
  (rc msg res)←∆UCMD'CloseProject ',tempDir,' -fast'

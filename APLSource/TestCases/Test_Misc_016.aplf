@@ -34,7 +34,7 @@
  Assert 1=(~parms.batch)##.Cider.CloseProject⍕ref
  #.⎕EX name
  cfg.CIDER.tatinVars←'Project'
- cfg #.Cider.Cider.Put_JSON5 folder,'/cider.config'
+ cfg #.Cider.Cider.WriteProjectConfig folder,'/cider.config'
  (success log)←##.Cider.OpenProject parms
  ref←⍎'#.',name
  Assert 9=#.⎕NC name

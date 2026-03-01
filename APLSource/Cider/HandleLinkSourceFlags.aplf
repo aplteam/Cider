@@ -1,4 +1,4 @@
- {r}←HandleLinkSourceFlags path;linkcfgFile;linkconfig;nameList;type;q;json
+ {r}←HandleLinkSourceFlags path;linkcfgFile;linkconfig;nameList;type;q
 ⍝ Stops and traces are potentially stored in a file .link.config
 ⍝ If such a file exists and carries SourceFlags *and* the global Cider setting `HandleLinkStops` is greater than 1
 ⍝ then those settings are removed from the file .linkconfig. If the file did not contain anything else (apart
@@ -20,7 +20,6 @@
          F.DeleteFile linkcfgFile
      :Else
      ⍝ There is other stuff as well, so we write it back
-         json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣linkconfig
-         (⊂json)⎕NPUT⍠('NEOL' 2)⊣linkcfgFile 1
+         linkconfig Put_JSON5 linkcfgFile
      :EndIf
  :EndIf

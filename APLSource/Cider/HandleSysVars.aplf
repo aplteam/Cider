@@ -16,6 +16,6 @@
          'SYSVARS'config.⎕NS''
          config.SYSVARS.(io ml)←config.CIDER.(io ml)
          config.CIDER.⎕EX¨'io' 'ml' 'wx'
-         json←Put_JSON5 configFilename
+         json←WriteProjectConfig configFilename
      :EndIf
  :EndIf

@@ -5,7 +5,7 @@
  (verbose batch)←2↑x,0
  list←''
  ('"',folder,'" is not a Cider project directory')Assert F.IsDir folder
- cfg←ReadProjectConfigFile folder
+ cfg←ReadProjectConfig folder
  nuGetFolder←folder,'/','dependencies'GetNuGetDependencies cfg
  targetNamespace←''
  :If '='∊buff←2⊃⎕NPARTS nuGetFolder

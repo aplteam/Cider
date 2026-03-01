@@ -1,11 +1,11 @@
  RenameInfo_url_ folder;filename;list;ns
  filename←folder,'/cider.config'
  :If F.IsFile filename
-     ns←ReadProjectConfigFile filename
+     ns←ReadProjectConfig filename
      :If 0<ns.CIDER.⎕NC'info_url'
          ns.CIDER.project_url←ns.CIDER.info_url
          ns.CIDER.⎕EX'info_url'
-         ns WriteProjectConfigFile filename
+         ns WriteProjectConfig filename
          report,←⊂filename
      :EndIf
  :EndIf

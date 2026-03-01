@@ -9,9 +9,9 @@
  tempDir←∆TranslateAlias tempDir
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
 
- config←##.Cider.ReadProjectConfigFile tempDir
+ config←##.Cider.ReadProjectConfig tempDir
  config.CIDER.dependencies.nuget←'MyNugetPkgs=Utils'
- config ##.Cider.WriteProjectConfigFile tempDir
+ config ##.Cider.WriteProjectConfig tempDir
 
  parms←##.Cider.CreateOpenParms''
  parms.folder←tempDir
