@@ -1,7 +1,6 @@
  cfg←HandleLinkParameters(cfg cfgFilename);linkDefaults;i;list;name;ind;value;flag
 ⍝ With version 0.34.0 Cider removes all Link settings that are defaults anyway from the Cider config file.
-⍝ That's what this function is doing. This implies that as a side effect it writes the configuration
-⍝ back to file.
+⍝ That's what this function is doing. This implies that as a side effect it writes the configuration back to file.
  :If 9=cfg.⎕NC'LINK'
      linkDefaults←{⍵.{⍵,[1.5]⍎¨⍵}' '~⍨¨↓⍵.⎕NL 2}⎕SE.Link.U.DefaultOpts ⎕NS''
      list←' '~⍨¨↓cfg.LINK.⎕NL 2

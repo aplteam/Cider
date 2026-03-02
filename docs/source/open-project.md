@@ -53,6 +53,12 @@ If a setting in `SYSVARS` cannot be used to set a system variable, Cider prints 
     Link sets the values of system variables defined in files before it brings other code into the workspace.
 
 
+## Check stops and traces defined in .linkconfig
+
+Cider checks its global configuration. If `HandleLinkStops` is defined and greater than 0 then it will process stops and traces defined in Link's `'linkconfig` file accordingly.
+
+Refer to the [configuration parameter `HandleLinkStops`](configuration.md#handlelinkstops) for details.
+
 ## Define objects in the project space
 
 Cider uses Link to find all files in the project’s `source` folder (and its children) with [supported file extensions](https://dyalog.github.io/link/4.0/Usage/Arrays/) and define them in the project space.
@@ -191,6 +197,7 @@ If
 -   the global config setting `ReportGitStatus` is greater than 0
 
 Cider reports all local branches, the current branch and its status.
+
 
 
 

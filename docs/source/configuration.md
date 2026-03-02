@@ -106,9 +106,13 @@ Any result it returns is ignored.
 
 This defaults to 0 if it does not exist.
 
-If it is 1 then `OpenProject`  and `CloseProject` will check the source folder for a file `.linkconfig`. If there is one, and there are stop defined in it, the user will be asked whether she wants the stops to be honored (`OpenProject`) or removed from the file `.linkconfig` (`CloseProject`).
+If it is greater than 0 then `OpenProject`  and `CloseProject` will check the source folder for a file `.linkconfig`. If there is one, and there are stops or traces defined in it:
 
-As a side effect, the file `.linkconfig` will be deleted if it contained nothing but stops.
+With `HandleLinkStops=1`, the user will be asked whether she wants the stops/traces to be honored or ignored and removed from the file `.linkconfig`.
+
+With `HandleLinkStops=2`, stops and traces will be ignored and removed from the file `.linkconfig` without asking.
+
+As a side effect, the file `.linkconfig` will be deleted if it contained nothing but stops/traces and the Link version number.
 
 
 ### :fontawesome-solid-gear: `ReportGitStatus`
@@ -381,6 +385,7 @@ USER: {
 After opening the project into, say, `#.MyProject`, the setting is accessible:
 
     #.MyProject.CiderConfig.USER.Foo
+
 
 
 

@@ -29,7 +29,7 @@
          :If 0<≢newAliase←bool⌿newAliase   ⍝ Insurance against user typos
              {}{P.AddAlias ⍵}¨↓⌽newAliase
              noOf←≢newAliase
-             r←(⍕noOf),' aliase added'
+             r←(⍕noOf),' alias',((1<noOf)/'es'),' added'
          :Else
              r←'No action taken.' ⋄ →0
          :EndIf
