@@ -18,7 +18,8 @@ Here we highlight incompatabilities, if any.
   }
 </style>
 
--------|-----------|----------------------------------------
+-------|------------|----------------------------------------
+0.51.0 | 2026-03-02 | No compatability issues
 0.50.1 | 2025-12-30 | No compatability issues
 0.50.0 | 2025-12-07 | No compatability issues
 0.49.0 | 2025-09-15 | No compatability issues
@@ -38,6 +39,7 @@ Here we highlight incompatabilities, if any.
 0.42.3 | 2024-09-05 | No compatability issues
 0.42.2 | 2024-08-04 | Bug fixes.
 0.42.1 | 2024-07-12 | Injecting `TatinVars` has changed.<br><br>`]Cider.ProjectConfig`'s `-print` option replaced by `-edit`.
+
 
 
 
