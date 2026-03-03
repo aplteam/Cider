@@ -1,0 +1,6 @@
+ config←ReadProjectConfigFile projectFolder
+⍝ The only purpose of this function: to allow Tatin prior to version 0.123.1 to function with Cider 0.51.0
+⍝ or later: `ReadProjectConfigFile` got renamed in Cider 0.51.0 to `ReadProjectConfig` but older versions
+⍝ of Tatin would still try to call `ReadProjectConfigFile`, so we have to have this function for a while
+⍝TODO⍝ One day in a not to distant future this function can be removed.
+ config←ReadProjectConfig projectFolder

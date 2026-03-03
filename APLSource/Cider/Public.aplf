@@ -24,6 +24,7 @@
  r,←⊂'OpenProject'
  r,←⊂'ProjectConfig'
  r,←⊂'ReadProjectConfig'
+ r,←⊂'ReadProjectConfigFile'  ⍝TODO⍝ To be removed soon!
  r,←⊂'Remove_githubUsername'
  r,←⊂'RenameInfo_url'
  r,←⊂'RunMake'

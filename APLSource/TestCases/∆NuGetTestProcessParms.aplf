@@ -3,6 +3,7 @@
 ⍝ * have a session file
 ⍝ * suppress automatic execution of ⎕LX
 ⍝ On Windows, this allows you to investigate in the started APL.
+⍝ Elsewhere you also need to set RidePort sensibly.
  debug←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'debug'
  parms←APLProcess.CreateParms
  parms.Exe←1⊃2 ⎕NQ #'GetCommandLineArgs' 'DYALOG'

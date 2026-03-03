@@ -1,8 +1,22 @@
- r←{x}Initial_NuGet ps;info;rc;netcore
+ r←{x}Initial_NuGet ps;info;netcore;rc;msg
  r←1
  ∆DotNetIsAvailable←netcore←IsDotNetAvailable
+ msg←''
  :If 0=netcore
- :AndIf ~ps.batchFlag
-     CommTools.Pause '.NET is not available.',(⎕UCS 13),'Therefore the NuGet tests cannot be executed.'
      r←0
+     msg←'.NET is not available.',(⎕UCS 13),'Therefore the NuGet tests cannot be executed.'
+ :Else
+     :Trap 0
+         :If 0=≢⎕SH'dotnet --list-sdks'
+             r←0
+             msg←'It appears that no .NET SDK is installed, therefore the NuGet tests cannot be executed'
+         :EndIf
+     :Else
+         r←0
+         msg←'Executing:  dotnet --info  caused an error, therefore the NuGet tests cannot be executed'
+     :EndTrap
+ :EndIf
+ :If 0<≢msg
+ :AndIf ~ps.batchFlag
+     CommTools.Pause msg
  :EndIf
