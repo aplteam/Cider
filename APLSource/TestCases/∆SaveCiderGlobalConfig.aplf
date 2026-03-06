@@ -1,0 +1,4 @@
+ ∆SaveCiderGlobalConfig ns;filename;json
+ filename←##.Cider.GetCiderGlobalConfigFilename
+ json←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣ns
+ (⊂json)⎕NPUT filename 1

@@ -1,4 +1,4 @@
- {r}←HandleLinkSourceFlags path;linkcfgFile;linkconfig;nameList;opCode;q;checkForDelete
+ {r}←HandleLinkSourceFlags path;linkcfgFile;linkconfig;nameList;opCode;q;deleteFlag
 ⍝ Stops and traces are potentially stored in a file .link.config
 ⍝ If such a file exists and carries SourceFlags *and* the global Cider setting `HandleLinkStops` is greater
 ⍝ than 0 then this function takes action://
@@ -6,6 +6,8 @@
 ⍝ * HandleLinkStops=2 stop and trace settings are erase from `.linkconfig` without asking\\
 ⍝ The file will be deleted if it does not contain anything but the Link version the file was written with.
 ⍝ `path` must be the source folder of a project; that's where Link stores the `.linkconfig` file.
+⍝ Returns 0 for "na action taken", 1 for "file was deleted" and 2 for "file was changed".
+ r←0
  linkcfgFile←path,'/.linkconfig'
  :If F.IsFile linkcfgFile
      linkconfig←Get_JSON5 linkcfgFile
@@ -13,22 +15,24 @@
  :AndIf (⊂'SourceFlags')∊nameList
      opCode←GetGlobalHandleLinkStops
  :AndIf 0<opCode
-     checkForDelete←0
+     deleteFlag←0
      :If 2=opCode
-         ∘∘∘
-         checkForDelete←1
-     :Else
+         linkconfig.⎕EX'SourceFlags'
+         deleteFlag←1
+     :ElseIf 0=≢nameList~⊂'SourceFlags'
          q←'StopsAndTraces@There are ',⊃{⍺,' and ',⍵}/(0<⊃¨linkconfig.SourceFlags.⎕NC'Stop' 'Trace')/'stops' 'traces'
          q,←' saved in .linkconfig',(⎕UCS 13),'Would you like to delete those?'
          :If 1 CommTools.YesOrNo q
              linkconfig.⎕EX'SourceFlags'
-             checkForDelete←1
+             deleteFlag←1
          :EndIf
      :EndIf
-     :If checkForDelete
+     :If deleteFlag
      :AndIf 0=≢nameList~⊂'SourceFlags'
          F.DeleteFile linkcfgFile           ⍝ There was nothing else in it, se we delete it
+         r←1
      :Else
          linkconfig Put_JSON5 linkcfgFile   ⍝ There is other stuff as well, so we write it back
+         r←2
      :EndIf
  :EndIf
