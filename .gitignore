@@ -11,5 +11,5 @@ conga.crash
 !/packages_dev/apl-buildlist.json
 
 **/.DS_Store
-mkdocs/site/
+/docs/site/
 /.venv/
