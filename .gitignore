@@ -12,3 +12,4 @@ conga.crash
 
 **/.DS_Store
 mkdocs/site/
+/.venv/
