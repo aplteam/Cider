@@ -37,6 +37,7 @@ extra_javascript = [
 
 [project.theme]
 
+variant = "classic"
 custom_dir = "overrides"
 favicon = "img/cider-logo.png"
 logo = "img/cider-logo.svg"
@@ -54,6 +55,8 @@ text = "Be Vietnam Pro"
 
 [[project.theme.palette]]
 scheme = "default"
+primary = "custom"
+accent = "custom"
 
 [project.markdown_extensions.abbr]
 [project.markdown_extensions.admonition]
@@ -61,6 +64,7 @@ scheme = "default"
 [project.markdown_extensions.def_list]
 [project.markdown_extensions.footnotes]
 [project.markdown_extensions.md_in_html]
+[project.markdown_extensions.markdown_tables_extended]
 [project.markdown_extensions.sane_lists]
 
 [project.markdown_extensions.toc]
@@ -80,6 +84,7 @@ generic = true
 [project.markdown_extensions.pymdownx.emoji]
 emoji_generator = "zensical.extensions.emoji.to_svg"
 emoji_index = "zensical.extensions.emoji.twemoji"
+options = { custom_icons = ["overrides/.icons"] }
 
 [project.markdown_extensions.pymdownx.tabbed]
 alternate_style = true
