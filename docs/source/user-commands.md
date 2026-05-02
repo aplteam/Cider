@@ -38,7 +38,7 @@ embraced with square brackets to mark it as an alias.
 
     ]CIDER.OpenProject [foo]
 
-If a project is open, you can identify it by its **project space**.
+If a project is open, you can identify it by its fully qualified **project space**.
 
     ]CIDER.ListTatinDependencies #.bar
 
@@ -66,7 +66,7 @@ Options are further optional arguments to the command.
 Specify all the command’s arguments _before_ any options.
 Prefix options with dashes, e.g.
 
-    ]CIDER.CreateProject path/to/foo path/to/bar -noEdit
+    ]CIDER.CreateProject path/to/foo #.path.to.bar -noEdit
     ]CIDER.OpenProject path/to/foo -alias=ted
 
 Options affect only the current command.
@@ -88,7 +88,7 @@ If you omit `project` Cider uses the one open project or, if you have more than 
 If the project config does not specify a NuGet dependency folder, Cider asks you to edit it.
 
 ---|---
-`target=` | Name of a namespace to be created and added to the project config’s `dependencies` or the `dependencies_dev` setting.<br><br>If it exists, Cider signals an error. You then need to edit the project’s config file.
+`target=` | Name of a namespace to create and add to the project config’s `dependencies` or the `dependencies_dev` setting.<br><br>If it is already configured, Cider signals an error. You then need to edit the project’s config.
 
 
 ## :fontawesome-solid-terminal: Add Tatin dependencies
@@ -121,6 +121,7 @@ Where a particular project is specified, success or failure is reported as a boo
 Otherwise attempts to close projects are reported in detail.
 
 ---|---
+`all`  | Close all open projects
 `fast` | Close project without [checking for Dropbox conflicts](configuration.md#checkfordropboxconflicts "CheckForDropboxConflicts").
 
 
@@ -152,7 +153,7 @@ Cider prints the content of its global config file to the session.
 
 ## :fontawesome-solid-terminal: Create project
 
-    ]CIDER.CreateProject [path [space] ]
+    ]CIDER.CreateProject [path] [space]
 
 Where
 
@@ -175,12 +176,9 @@ If the project folder already contains a file `cider.config` Cider signals an er
 `ignoreUserExec` | Open the project without executing the global config’s [initialisation](configuration.md#executeafterprojectopen) function.
 `noEdit`         | Do not offer me the configuration for editing.
 
-??? tip "Keep the workspace root empty"
+??? tip "Encapsulate a project in its own namespace"
 
-    Good practice keeps the active workspace root empty.
-    Cider is designed to associate each project with a namespace.
-
-    To create a root project (NOT recommended) specify `#` as the project space.
+    To create a root project specify `#` as the project space.
 
 
 ## :fontawesome-solid-terminal: Help
@@ -248,7 +246,7 @@ This can help show why a particular (typically old) package is required.
 
 ## :fontawesome-solid-terminal: Make
 
-    ]CIDER.Make [project]
+    ]CIDER.HowToMakeNewVersion [project]
 
 Prints the project’s Make expression:
 the expression that builds a new version of the project.
@@ -285,7 +283,7 @@ The `batch` option is intended for test cases. Consider instead using the [`Open
 
     ]CIDER.ProjectConfig [project]
 
-Displays or edits the project configuration.
+Opens the project configuration in the Editor.
 
 If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
 
@@ -347,7 +345,7 @@ Troubleshooting: [Updating Cider](troubleshooting.md#updating-cider)
 
     ]CIDER.Version
 
-Prints major, minor and patch numbers:
+Prints major, minor, patch and build numbers:
 
           ]CIDER.Version
     0.44.0+835

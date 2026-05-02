@@ -4,7 +4,7 @@ description: How to spot and handle problems with Cider, the project manager for
 keywords: apl, cider, dotnet, dyalog, link, source, tatin
 ---
 
-# Troubleshooting
+# :fontawesome-solid-bugs: Troubleshooting
 
 
 ??? quote "I don’t mind a reasonable amount of trouble."
@@ -13,7 +13,7 @@ keywords: apl, cider, dotnet, dyalog, link, source, tatin
 
 
 
-## How Link watches for changes
+## :fontawesome-solid-eye: How Link watches for changes
 
 To detect changes on the file system, Link uses a .NET File System Watcher.
 
@@ -25,9 +25,10 @@ The Link handlers set a Hold under some circumstances.
 Depending on your actions, this might result in a deadlock. Dyalog would appear to hang until you use the session’s _System_ menu to issue a strong interrupt.
 
 
-## Updating Cider
+## :fontawesome-solid-download: Updating Cider
 
-If the update process fails, calling it again rarely helps. You need an escape route.
+If the update process fails for any reason other than network interruptions,
+calling it again rarely helps. You need an escape route.
 
 === "Dyalog v19.0 and later"
 

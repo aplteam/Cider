@@ -120,8 +120,6 @@ The packages are loaded into the project space unless the subkeys specify anothe
 
 !!! warning "NuGet packages and generics"
 
-    The ability to load NuGet packages is most useful for loading your own NuGet packages, written in C#.
-
     Packages that use [generics](https://learn.microsoft.com/en-us/dotnet/standard/generics/) cannot be used, as Dyalog’s .NET interface does not support them.
     This restriction may be removed in a future release.
 
