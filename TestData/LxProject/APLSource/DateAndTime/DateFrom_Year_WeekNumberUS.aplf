@@ -1,0 +1,24 @@
+ r←{day}DateFrom_Year_WeekNumberUS(Y weekNo);ind;corr;fd;fw;ord;month
+⍝ `⍵` Year and week number (US method).\\
+⍝ `⍺` Optional day (as char vector).\\
+⍝ `←` Depends on whether "day" was specified or not:
+⍝    * If "day" was specified the date of that day is returned.
+⍝    * If "day" was not specified then the start date of the week is returned.
+⍝
+⍝ Note that "day" is case sensitive and must be specified as, say, "Sunday".\\
+⍝ For details see <https://www.wikiwand.com/en/ISO_week_date#Calculation>.\\
+⍝ Examples:
+⍝ ~~~
+⍝ (2008 9 27) ← 'Saturday' DateFrom_Year_WeekNumberISO_Day 2008 39
+⍝ (2015 12 28) ← 'Saturday' DateFrom_Year_WeekNumberISO_Day 2015 53
+⍝ ~~~
+⍝ See also [`WeekNo_US`](#).\\
+⍝ Kai Jaeger
+ day←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'day'
+ 'Invalid week number'⎕SIGNAL 11/⍨~weekNo∊1+⍳53
+ 'Invalid day (Monday, ..., Sunday)'⎕SIGNAL 11/⍨0=+/(⊂day)∊(⊂''),WeekDays
+ fd←DayOfWeek Y 1 1                ⍝ First day
+ fw←(weekNo>1)×7-1+WeekDays⍳fd     ⍝ No of days in first week
+ ord←1++/fw,(0⌈weekNo-2)⍴7         ⍝ Ordinal number of first day
+ month←1+1⍳⍨ord<+\DaysInMonth Y
+ r←Y,month,(ord-+/(month-1)↑DaysInMonth Y)+(~0∊⍴day)×(¯1⌽WeekDays)⍳⊂day

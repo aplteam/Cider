@@ -1,0 +1,13 @@
+r←GetNamespaces name;⎕using;mine;assemblies
+⍝ Return Namespaces which begin with name
+⍝   Note that the namespaces must have been references to be loaded
+⍝   (just setting ⎕USING is not enough)
+
+⎕using←'System' 'System.Reflection'
+assemblies←AppDomain.CurrentDomain.GetAssemblies
+mine←name  {(((≢⍺)↑¨⍕¨⍵)∊⊂⍺)/⍵} assemblies
+:If 0≠≢mine
+    r←mine.GetExportedTypes.ToString
+:Else
+    r←0⍴⊂''
+:EndIf

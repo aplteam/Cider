@@ -24,8 +24,7 @@
 
 ∆TidyUp:
  {}⎕SE.Link.Break'#.Foo'
- rc←⊃FilesAndDirs.RmDir tempDir,'/..'
- Assert rc∧.=0
+ {}FilesAndDirs.RmDirByForce tempDir,'/..'
  #.⎕EX'Foo'
  ref.Cleanup
 ⍝Done

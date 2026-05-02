@@ -1,44 +1,69 @@
- {batch}Make flag;M;C;path;zipFilename;res;version;cfg;parms;folder1;folder2;targetFolder;developmentWas;noOf
-⍝ "Make" a new version of this project.
-⍝ If called by a program rather executed by a human specify a 1 as left arguments: not questions are asked, but
-⍝ Cider won't be installed as a user command then.
- :If flag
-     'Runs only on Windows'Assert'Win'≡##.Cider.APLTreeUtils2.GetOperatingSystem ⍬
-     :If 0=⎕SE.⎕NC'MakeHelpers' ⋄ {}⎕SE.Tatin.LoadPackages'[tatin]MakeHelpers'⎕SE ⋄ :EndIf
-     batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
-     M←⎕SE.MakeHelpers
-     C←##.CiderConfig
-     path←C.HOME,'/',C.CIDER.distributionFolder
-     cfg←⎕SE.Tatin.ReadPackageConfigFile C.HOME
-     targetFolder←##.Cider.GetCurrentAPLsFolderInDocuments,'SessionExtensions\CiderTatin\Cider'
-     :If 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
-         targetFolder←##.Cider.GetUserDocumentsFolder,'Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
-     :AndIf 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
-     :AndIf ~1 M.YesOrNo'Could not find the user command script in the user''s home folder anywhere - continue?'
-         :Return
-     :EndIf
-     :If batch
-         version←⍬
+ {r}←{refToMakeHelpers}Make flag;M;C;path;zipFilename;res;parms;cfg;noOf;answer;q;targetFolder;buff;msg;rc
+⍝ "Make"s this projects.
+⍝ You may pass a ref pointing to `MakeHelpers` as `⍺`.
+⍝ If you don't, the function checks whether it's available in `⎕SE`.
+⍝ If it is, the user is asked whether she wants to use that.
+⍝ If she refuses or if it's not available in `⎕SE`, then the function
+⍝ attempts to load the package into `⎕SE` with ]Tatin.LoadPackages.
+⍝ Returns 1 in case a new version was created and 0 otherwise.
+ r←0
+ :If ~flag ⋄ ⎕←'No action taken' ⋄ :Return ⋄ :EndIf
+ :Section  ⍝ Establish ref to "MakeHelpers"
+     :If 0=⎕NC'refToMakeHelpers'
+         :If 9=⎕SE.⎕NC'MakeHelpers'
+             flag←¯1
+             :Repeat
+                 answer←⍞,0/⍞←q←'Do you want to use "MakeHelpers" ',⎕SE.MakeHelpers.Version,' in ⎕SE (n=re-load) (Y/n)?'
+                 answer←(≢q)↓answer
+                 :If 0=≢answer
+                 :OrIf 'Yy'∊⍨¯1↑answer
+                     flag←1
+                 :ElseIf 'Nn'∊⍨¯1↑answer
+                     flag←0
+                 :EndIf
+             :Until flag∊0 1
+             :If flag
+                 M←⎕SE.MakeHelpers
+             :Else
+                 noOf←⎕SE.Tatin.LoadPackages'MakeHelpers'⎕SE
+                 'Could not load the package "MakeHelpers"'⎕SIGNAL 6/⍨0=noOf
+                 M←⎕SE.MakeHelpers
+             :EndIf
+         :Else
+             noOf←⎕SE.Tatin.LoadPackages'MakeHelpers'⎕SE
+             'Could not load the package "MakeHelpers"'⎕SIGNAL 6/⍨0=noOf
+             M←⎕SE.MakeHelpers
+         :EndIf
      :Else
-         cfg←M.EditVersion cfg
-         version←cfg.version
+         M←refToMakeHelpers
      :EndIf
-     M.FetchLaterUserCommand cfg C targetFolder
-     M.RecreateFolder path
-     parms←⎕SE.Tatin.CreateBuildParms C.HOME
-     parms.targetPath←path
-     parms.projectSpace←'#.Cider'
-     :If ⍬≢version
-         parms.version←version
-     :EndIf
-     noOf←⎕SE.Tatin.CreateAPIfromCFG ##.Cider cfg
-     'Tally of the API is unexpected'Assert 30=noOf
-     zipFilename←⎕SE.Tatin.BuildPackage parms
-     MakeZipForDyalog 1
-     ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
-     :If 0=batch
-         ⎕←'   ',4↓0 #.Cider.Admin.InstallCider 1
-         ⎕←'Cider in ⎕SE is out of date, restart APL'
-     :EndIf
+ :EndSection
+ ⎕←'Using "MakeHelpers" version ',⎕SE.MakeHelpers.Version
+ C←##.CiderConfig
+ :If ⎕NULL≡cfg←M.EditPackageConfigFile ##.Cider.TatinVars
+     ⎕←'Cancelled by user' ⋄ →0
  :EndIf
- ⍝Done
+ path←C.HOME,'/',C.CIDER.distributionFolder
+ targetFolder←##.Cider.GetCurrentAPLsFolderInDocuments,'SessionExtensions\CiderTatin\Cider'
+ :If 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
+     targetFolder←##.Cider.GetUserDocumentsFolder,'Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
+ :AndIf 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
+ :AndIf ~1 M.YesOrNo'Could not find the user command script in the user''s home folder anywhere - continue?'
+     :Return
+ :EndIf
+ M.FetchLaterUserCommand cfg C targetFolder
+ noOf←⎕SE.Tatin.CreateAPIfromCFG ##.Cider cfg
+ 'Tally of the API is unexpected'Assert noOf∊30 31  ⍝ Depending on the existence of ReadProjectConfigFile (soon to be deleted)
+ M.RecreateFolder path
+ parms←⎕SE.Tatin.CreateBuildParms C.HOME
+ parms.targetPath←C.CIDER.distributionFolder
+ parms.version←cfg.version
+ zipFilename←⎕SE.Tatin.BuildPackage parms
+ MakeZipForDyalog 1
+ (rc msg)←##.Cider.FilesAndDirs.RmDirByForce C.HOME,'/',C.CIDER.distributionFolder,'/Licenses'
+ msg Assert rc=0
+ ⎕←'*** New version built successfully:',M.CR,'   ',zipFilename
+ r←1
+ ⎕←'   ',4↓0 #.Cider.Admin.InstallCider 1
+ ⎕←'Cider in ⎕SE is out of date, restart APL'
+⍝Done

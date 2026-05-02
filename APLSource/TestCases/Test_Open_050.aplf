@@ -18,7 +18,7 @@
  filename←parms.folder,'/APLSource/Hello.aplf'
  {}'Create!'FilesAndDirs.CheckPath parms.folder,'/APLSource'
  (⊂'r←Hello' 'r←''World''')⎕NPUT filename 1
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
 
  (success log)←##.Cider.OpenProject parms
  Assert success

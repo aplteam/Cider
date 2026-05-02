@@ -7,12 +7,13 @@
  'TEMP'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI
  tempDir←∆TEMP_PATH
+ tempDir←∆TranslateAlias tempDir
  tempDir ⎕NCOPY⍠1⊢folder,'/*'
 
  configfile←tempDir,'/cider.config'
- config←##.Cider.Get_JSON5 configfile
+ config←##.Cider.ReadProjectConfig configfile
  config.CIDER.dependencies.nuget←'nuget-packages'
- config ##.Cider.Put_JSON5 configfile
+ config ##.Cider.WriteProjectConfig configfile
 
  parms←##.Cider.CreateOpenParms''
  parms.folder←∊⎕NPARTS tempDir
@@ -20,7 +21,7 @@
  parms.batch←1
  parms.ignoreUserExec←1
 
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (success log)←##.Cider.OpenProject parms
  →T.GoToTidyUp~success
  →T.GoToTidyUp∨/'ERROR'⍷log

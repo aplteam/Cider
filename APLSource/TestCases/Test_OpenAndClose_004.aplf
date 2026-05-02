@@ -10,12 +10,12 @@
  (projectFolder1,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
  #.⎕EX'Foo' ⋄ 'Foo'#.⎕NS''
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (rc msg buff)←∆UCMD'CreateProject "',projectFolder1,'" #.Foo -alias=test-case-alias-Foo -noEdit -acceptConfig  -batch -ignoreUserExec'
  Assert rc=0
  #.Foo.⎕FX'r←Hello' 'r←''World'''
  {}⎕SE.Link.Add'#.Foo.Hello'
- list←FilesAndDirs.ListFiles projectFolder1
+ list←FilesAndDirs.ListFiles2 projectFolder1
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
  aliase←##.Cider.GetCiderAliasFileContent ⍬
@@ -29,7 +29,7 @@
  #.Goo.⎕FX'r←Hello' 'r←''Galaxy'''
  (rc msg buff)←∆UCMD'CreateProject "',projectFolder2,'" #.Goo -alias=test-case-alias-Goo -noEdit -acceptConfig  -batch -ignoreUserExec'
  Assert rc=0
- list←FilesAndDirs.ListFiles projectFolder2
+ list←FilesAndDirs.ListFiles2 projectFolder2
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
  aliase←##.Cider.GetCiderAliasFileContent ⍬
@@ -43,7 +43,7 @@
  #.Zoo.⎕FX'r←Hello' 'r←''Universe'''
  (rc msg buff)←∆UCMD'CreateProject "',projectFolder3,'" #.Zoo -noEdit -acceptConfig  -batch -ignoreUserExec'
  Assert rc=0
- list←FilesAndDirs.ListFiles projectFolder3
+ list←FilesAndDirs.ListFiles2 projectFolder3
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
 

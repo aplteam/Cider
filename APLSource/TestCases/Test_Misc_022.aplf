@@ -1,0 +1,41 @@
+ r←Test_Misc_022(stopFlag batchFlag);⎕TRAP;name;rc;en;msg;globalConfig;targetFolder;sourceFolder;C;ns;opCode;filename
+⍝ Test the global config parameter "HandleLinkStops"
+⍝ *** Note that this function temporarily replaces Cider's global config file!
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+
+ name←⊃⎕SI
+ globalConfig←##.Cider.GetCiderGlobalConfigFilename
+ 'Left-over from earlier test case?! Needs to be resoved!'Assert 0=⎕NEXISTS(globalConfig,'.bkp')
+ (globalConfig,'.bkp')⎕NMOVE globalConfig  ⍝ Save Cider's original global config file
+ ns←⎕NS''
+ ns.HandleLinkStops←0
+ ∆SaveCiderGlobalConfig ns
+ sourceFolder←##.CiderConfig.HOME,'/TestData/Link.Config'
+ targetFolder←∆GetFolderInTempDir name
+ filename←targetFolder,'/.linkconfig'
+ filename ⎕NCOPY sourceFolder,'/.linkconfig-3'      ⍝ Contains "watch" parameter but no stops
+ C←∆GetRefToCommTools
+ C.AddAutomation'YesOrNo' 'StopsAndTraces@' 'y'
+
+ →T.GoToTidyUp 0≠opCode←##.Cider.HandleLinkSourceFlags targetFolder
+ →T.GoToTidyUp 1≠⎕NEXISTS filename
+
+ ns.HandleLinkStops←1
+ ∆SaveCiderGlobalConfig ns
+ →T.GoToTidyUp 0≠opCode←##.Cider.HandleLinkSourceFlags targetFolder
+ →T.GoToTidyUp 1≠⎕NEXISTS filename
+
+ ns.HandleLinkStops←2
+ ∆SaveCiderGlobalConfig ns
+ →T.GoToTidyUp 0≠opCode←##.Cider.HandleLinkSourceFlags targetFolder
+ →T.GoToTidyUp 1≠⎕NEXISTS filename
+
+ r←T._OK
+
+∆TidyUp:
+ ⎕NDELETE globalConfig
+ globalConfig ⎕NMOVE globalConfig,'.bkp'   ⍝ Restore original
+ C.Cleanup
+ (rc en msg)←FilesAndDirs.RmDir targetFolder
+ msg Assert rc=0
+⍝Done

@@ -1,0 +1,5 @@
+ LeapYear←{
+⍝ Returns 1 in case integer `⍵` represents a leap year otherwise 0.\\
+⍝ Phil Last
+     0≠.=4 100 400∘.|⍵
+ }

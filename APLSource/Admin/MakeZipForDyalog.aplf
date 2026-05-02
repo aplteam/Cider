@@ -1,5 +1,5 @@
  MakeZipForDyalog flag;list;ID;path;F;tempFolder;C;zipFilename
-⍝ Create the ZIP file that can be put on the relase page for Dyalog
+⍝ Create the ZIP file that can be put on the release page for Dyalog's purposes
  :If flag
      :If 0=⎕SE.⎕NC'MakeHelpers'
          {}⎕SE.Tatin.LoadPackages'[tatin]MakeHelpers'⎕SE

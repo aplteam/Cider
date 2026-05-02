@@ -4,4 +4,6 @@
  'Takes a path to a project or a project alias as (optional) argument.'
  'If no argument is provided the command looks for open Cider projects.'
  ''
+ 'The full Cider documentation is available via '
+ ']open https://aplteam.github.io/Cider/ '
 )

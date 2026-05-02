@@ -1,0 +1,21 @@
+ (filename path)←x IdentifyObject name;allProjects;path;bool;buff;project;space
+ :If ∨/'/\:'∊name
+     filename←F.EnforceSlash name
+     buff←⎕SE.Cider.ListOpenProjects 0
+     :If ':'∊filename
+     :OrIf (⊃filename)∊'/\'
+         allProjects←buff[;2],¨'/'
+         path←⊃⎕NPARTS filename
+         'No fitting project found'U.Assert∨/bool←allProjects∊(≢¨allProjects)↑¨⊂filename
+         path←(bool⍳1)⊃allProjects
+     :EndIf
+ :Else
+     project←EstablishProject x
+     'Not a Cider/acre project'⎕SIGNAL 11/⍨0=≢project
+     (space path)←2↑project
+     :If ~(⊃name)∊'#⎕'
+         name←space,'.',name
+     :EndIf
+     filename←(1+≢{⍵↓⍨-'/\'∊⍨¯1↑⍵}path)↓⎕SE.Link.GetFileName name
+     ('APL  object not found: ',name)Assert 0<≢filename
+ :EndIf

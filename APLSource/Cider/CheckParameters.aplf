@@ -16,5 +16,5 @@
  list←' '~⍨¨↓config.CIDER.⎕NL 2 9
  bool←(GetValidCiderParams 0)∊list
  ('Missing Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams 0)Assert∧/bool
- p'Parameters are okay'
+ p'   Parameters are okay'
 ⍝Done

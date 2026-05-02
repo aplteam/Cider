@@ -23,10 +23,11 @@
  r,←⊂'ListTatinDependencies'
  r,←⊂'OpenProject'
  r,←⊂'ProjectConfig'
- r,←⊂'ReadProjectConfigFile'
+ r,←⊂'ReadProjectConfig'
+ r,←⊂'ReadProjectConfigFile'  ⍝TODO⍝ To be removed soon!
  r,←⊂'Remove_githubUsername'
  r,←⊂'RenameInfo_url'
  r,←⊂'RunMake'
  r,←⊂'RunTests'
  r,←⊂'Version'
- r,←⊂'WriteProjectConfigFile'
+ r,←⊂'WriteProjectConfig'

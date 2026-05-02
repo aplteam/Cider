@@ -6,14 +6,10 @@
  folder←∆GetFolderInTempDir name
  FilesAndDirs.MkDir folder,'/APLSource/Project'
  FilesAndDirs.MkDir folder,'/APLSource/Tests'
- :If 0<⎕SE.Cider.⎕NC'DEVELOPMENT'
- :AndIf 0<⎕SE.Cider.DEVELOPMENT
-     C←##.Cider.CommTools
- :Else
-     C←⎕SE.Cider.##.CommTools
- :EndIf
+ C←∆GetRefToCommTools
  C.AddAutomation'YesOrNo' 'OpenAsWell@' 'n'
  stop←0
+
  (rc msg res)←stop ∆UCMD'CreateProject ',folder,' -noEdit -ignoreUserExec'
  msg Assert rc=0
  cfg←∆GetJSON5 folder,'/cider.config'
@@ -38,7 +34,7 @@
  Assert 1=(~parms.batch)##.Cider.CloseProject⍕ref
  #.⎕EX name
  cfg.CIDER.tatinVars←'Project'
- cfg #.Cider.Cider.Put_JSON5 folder,'/cider.config'
+ cfg #.Cider.Cider.WriteProjectConfig folder,'/cider.config'
  (success log)←##.Cider.OpenProject parms
  ref←⍎'#.',name
  Assert 9=#.⎕NC name
@@ -49,6 +45,7 @@
  r←T._OK
 
 ∆TidyUp:
+ C.Cleanup
  {}(~parms.batch)##.Cider.CloseProject⍕ref
  #.⎕EX name
  ⎕EX'#.Test_Misc_016'

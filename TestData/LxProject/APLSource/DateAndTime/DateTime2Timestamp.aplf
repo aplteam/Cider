@@ -1,0 +1,7 @@
+ DateTime2Timestamp←{
+    ⍝ `⍵` date.time - yyyymmdd.hhmmssmmm      - Either a simple scalar or a nested vector or a simple matrix\\
+    ⍝ `←` timestamp - yyyy mm dd hh mm ss mmm - shape is 7 for a simple scalar and (⍴,⍵),7 otherwise\\
+    ⍝ See also [`Timestamp2DateTime`](#).\\
+    ⍝ Phil Last
+     ⍉⌊(1 5 1/0,10*2 3)⊤⍉⍵×10*9
+ }

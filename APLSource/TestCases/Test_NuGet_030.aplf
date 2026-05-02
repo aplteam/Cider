@@ -9,21 +9,20 @@
  parms←APLProcess.CreateParms
  parms.Exe←1⊃2 ⎕NQ #'GetCommandLineArgs' 'DYALOG'
  parms.OutputFilename←(739⌶0),'/',(⊃⎕SI),'.txt'
- parms.CommandLineArgs,←'path=''',tempFolder,''''
- parms.CommandLineArgs,←' fns=∆',(⊃⎕SI)
+ parms.ConfigParms⍪←'cider_path'tempFolder
+ parms.ConfigParms⍪←'cider_fns'(⊃⎕SI)
  :If 0<T.⎕NC'codeCoverage'
-     parms.CommandLineArgs,←' codeCoverageFile=''',(T.codeCoverage.filename~''''),''''
+     parms.ConfigParms⍪←'codeCoverageFile'T.codeCoverage.filename
  :EndIf
- parms.CommandLineArgs,←' DYALOG_NETCORE=1'
+ parms.ConfigParms⍪←'DYALOG_NETCORE' 1
  parms.WorkspaceName←##.CiderConfig.HOME,'/Tests/ExecTestCase.dws'
  parms.WindowsStyle←'Normal'
- :If 0
-     parms.SessionFile←1            ⍝ Only for development/debugging
-     parms.CommandLineArgs,←' -x'
- :EndIf
+ parms.SessionFile←1            ⍝ Only for development/debugging
+ parms.LX←1
 
- I←⎕NEW APLProcess(,⊂parms)
- R←I.ExitCode
+ I←APLProcess.New parms
+ →T.GoToTidyUp I.ExitCode≠130
+ R←T._OK
 
 ∆TidyUp:
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder

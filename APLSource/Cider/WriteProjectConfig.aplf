@@ -1,0 +1,8 @@
+ {r}←config WriteProjectConfig path;json;filename
+⍝ Writes project configuration "config" to file.\\
+⍝ `path` may or may not carry the filename as such.
+ r←0
+ filename←ConfigFilename{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}path
+ config←AddCiderVersionNumber config
+ config Put_JSON5 filename
+⍝Done

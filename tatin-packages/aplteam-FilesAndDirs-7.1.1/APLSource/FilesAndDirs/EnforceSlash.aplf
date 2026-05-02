@@ -1,0 +1,6 @@
+ EnforceSlash←{
+⍝ Use this if you must make sure that `path` contains `/` rather than `\`.\\
+     ~'\'∊r←⍵:r
+     ((r='\')/r)←'/'
+     r
+ }

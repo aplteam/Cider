@@ -1,22 +1,33 @@
- {r}←UpdatePackages(folders reports parms);i;folder;updateFlag;report;updateParms
-⍝ Update Tatin install folders by running ReInstallDependencies with the updateFlag set
+ {r}←UpdatePackages(folders reports parms);i;folder;updateFlag;report;updateParms;buff;qdmx
+⍝ Update Tatin install folders by running ReInstallDependencies with the updateFlag set.
 ⍝ Returns the number of install folders updated.
  r←0
  updateParms←⎕SE.Tatin.CreateReInstallParms
  updateParms.update←1
  updateParms.quiet←parms.batch
+ updateParms.major←parms.major
  :For i :In ⍳≢reports
      report←i⊃reports
      :If 0<≢report
          folder←RemoveTargetDefinition i⊃folders
          1 parms.batch p'Later versions in <',(AddSlash folder),'> :'
-         1 parms.batch p ⎕FMT↑{(1⊃⍵),' ==> ',(2⊃⍵)}¨↓report
+         buff←{id←(1⊃⍵)/⍨2>+\'-'=1⊃⍵ ⋄ (⊂id),((1+≢id)↓¨2↑⍵),2↓⍵}¨↓report
+         buff←↑{⍵[1 2 4],(⊂' ==> '),⍵[3 6]}¨buff
+         buff←({(⍵⍳⍵)=⍳≢⍵}↓buff[;1 5 6])⌿buff
+         1 parms.batch PrintToSession ⎕FMT buff
          :If ~updateFlag←2≡parms.checkPackageVersions
              updateFlag←1 C.YesOrNo'ReinstallLatest@Re-install latest versions in <',(AddSlash folder),'> ?'
          :EndIf
          :If updateFlag
              1 parms.batch p'Re-installing all packages in <',(AddSlash folder),'> ...'
-             updateParms ⎕SE.Tatin.ReInstallDependencies parms.folder,'/',folder
+             :Trap 0
+                 updateParms ⎕SE.Tatin.ReInstallDependencies parms.folder,'/',folder
+             :Else
+                 qdmx←⎕DMX
+                 qdmx.EM Assert~parms.batch
+                 1 PrintToSession qdmx.EM
+                 :Return
+             :EndTrap
              r+←1
          :EndIf
      :EndIf

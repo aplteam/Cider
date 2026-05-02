@@ -13,7 +13,7 @@
  parms.watch←'ns'
  parms.ignoreUserExec←1
  parms.batch←1
- ⎕SE.Cider.##.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ⎕SE.Cider.##.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (success log)←⎕SE.Cider.OpenProject parms
  Assert success
  →T.GoToTidyUp∨/'ERROR'⍷log

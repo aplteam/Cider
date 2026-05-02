@@ -1,10 +1,11 @@
  {r}←ExecUserFunction config;fn;qdmx;msg
 ⍝ Check whether the config parameter "ExecuteAfterProjectOpen" is defined in Cider's global config file
 ⍝ and execute it if it's a function.
+⍝ If this fails in a batch run, an error is thrown.
  r←⍬
  msg←''
  :If 0<≢fn←GetFunctionNameFromCiderConfigFile ⍬
-     p'Attempting to execute user function ',fn,'...'
+     parms.verbose PrintToSession'Attempting to execute user function ',fn,'...'
      :If 1=1 1⊃⎕AT fn
          :Trap 0
              ⍎'{}',fn,' config'
@@ -21,6 +22,8 @@
          :EndTrap
      :EndIf
      :If 0<≢msg
-         (1 parms.batch)p msg
+         ∆Problems+←1
+         msg Assert~parms.batch
+         1 PrintToSession msg
      :EndIf
  :EndIf

@@ -41,17 +41,23 @@ Cider sets in the project space the values of `⎕IO` and `⎕ML` and any other 
 
 !!! detail "System variables have priority"
 
-	System variables must be set before code is brought into the workspace because defining classes or namespaces potentially entails executing code that relies on them.
+    System variables must be set before code is brought into the workspace because defining classes or namespaces potentially entails executing code that relies on them.
 
 If a setting in `SYSVARS` cannot be used to set a system variable, Cider prints a warning message.
 
 !!! tip "Set system variables in your source code"
 
-	You can also set system variables in your source code in files like `⎕IO.apla`.
+    You can also set system variables in your source code in files like `⎕IO.apla`.
 
-	System variables are set as early as possible.
-	Link sets the values of system variables defined in files before it brings other code into the workspace.
+    System variables are set as early as possible.
+    Link sets the values of system variables defined in files before it brings other code into the workspace.
 
+
+## Check stops and traces defined in .linkconfig
+
+Cider checks its global configuration. If `HandleLinkStops` is defined and greater than 0 then it will process stops and traces defined in Link's `'linkconfig` file accordingly.
+
+Refer to the [configuration parameter `HandleLinkStops`](configuration.md#handlelinkstops) for details.
 
 ## Define objects in the project space
 
@@ -72,11 +78,11 @@ Cider checks whether any of the Tatin installation folders (specified in the `de
 
 ??? detail "Why the checks"
 
-	Since version 0.21.0 Cider itself has an enhanced `.gitignore` file: it defines that the contents of the Tatin installation folder(s) but the two definition files shall be ignored. Only these two definition files are therefore uploaded to GitHub, but _none of the packages_.
+    Since version 0.21.0 Cider itself has an enhanced `.gitignore` file: it defines that the contents of the Tatin installation folder(s) but the two definition files shall be ignored. Only these two definition files are therefore uploaded to GitHub, but _none of the packages_.
 
-	So when somebody downloads the Cider project now _the Tatin installation folder contains just those two definition files but no packages!_
+    So when somebody downloads the Cider project now _the Tatin installation folder contains just those two definition files but no packages!_
 
-	Note this is in line with the majority of other package managers.
+    Note this is in line with the majority of other package managers.
 
 If a Tatin installation folder contains the two definition files but no packages, Cider will ask you if it should re-install the packages.
 
@@ -89,7 +95,7 @@ If Cider finds a later version of a package it proposes to update it.
 
 !!! warning "Tatin registries only"
 
-	The check is offered only for packages loaded from a Tatin registry that is in your config file _and_ has a priority greater than 0.
+    The check is offered only for packages loaded from a Tatin registry that is in your config file _and_ has a priority greater than 0.
 
 :fontawesome-solid-book:
 [Tatin documentation](https://tatin.dev/v1/documentation)
@@ -114,8 +120,8 @@ The packages are loaded into the project space unless the subkeys specify anothe
 
 !!! warning "NuGet packages and generics"
 
-	Packages that use [generics](https://learn.microsoft.com/en-us/dotnet/standard/generics/) cannot be used, as Dyalog’s .NET interface does not support them.
-	This restriction may be removed in a future release.
+    Packages that use [generics](https://learn.microsoft.com/en-us/dotnet/standard/generics/) cannot be used, as Dyalog’s .NET interface does not support them.
+    This restriction may be removed in a future release.
 
 NuGet packages can be included your application, but not loaded only as development tools, as only a single installation folder may be specified.
 (This restriction may be removed in a later release.)
@@ -142,11 +148,11 @@ If so, specify it in the optional setting `tatinVars` in the `CIDER` section of 
 
 === "Cider version 0.46.0"
 
-	Cider will move the namespace from the root of the project to that sub-namespace.
+    Cider will move the namespace from the root of the project to that sub-namespace.
 
 === "Earlier Cider versions"
 
-	Cider will then create a reference `TatinVars` in that namespace, pointing to `TatinVars` in the project space.
+    Cider will then create a reference `TatinVars` in that namespace, pointing to `TatinVars` in the project space.
 
 
 ## Change the current working directory
@@ -172,6 +178,13 @@ Cider executes it unless the `ignoreUserExec` option or parameter is set.
 
 If neither `import`, `importFlag` nor `batch` is set; and the project space contains a non-empty variable `ToDo`, Cider prints it.
 
+## Dropbox check
+
+If Dropbox cannot decide what the last version of a file is, it will create a file with "conflicted copy" in its name. Dropbox leaves it to the user to compare such files and resolve the conflict.
+
+Dropbox does not actually alert the user to such conflicts, it just silently creates the files. For that reason Cider checks for such files under some circumstances and alerts the user if it finds some.
+
+Refer to the [configuration paramter `CheckForDropboxConflicts`](configuration.md#checkfordropboxconflicts) for details.
 
 ## Report Git status
 
@@ -181,5 +194,8 @@ If
 -   the project is version-controlled by Git; and
 -   the global config setting `ReportGitStatus` is greater than 0
 
-Cider reports the current branch and its status.
+Cider reports all local branches, the current branch and its status.
+
+
+
 

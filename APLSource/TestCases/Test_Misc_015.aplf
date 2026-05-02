@@ -6,9 +6,7 @@
  →T.PassesIf 0<≢res
  res←##.Cider.GetCiderAliasFilename
  →T.PassesIf∨/'/aliase.txt'⍷FilesAndDirs.EnforceSlash res
- res←##.Cider.GetCiderGlobalConfigFileContent
- res←##.Cider.GetCiderGlobalConfigFilename
- →T.PassesIf∨/'/config.json'⍷FilesAndDirs.EnforceSlash res
+ ⍝ ##.Cider.GetCiderGlobalConfigFilename has its own test cases
  res←##.Cider.GetCiderGlobalConfigHomeFolder
  →T.PassesIf∨/'/.cider/'⍷FilesAndDirs.EnforceSlash res
 

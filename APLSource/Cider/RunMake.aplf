@@ -4,7 +4,7 @@
      projectFolder←GetFolderFromAlias projectFolder
  :EndIf
  ('No file "cider.config" found in ',projectFolder)Assert F.Exists projectFolder,'/cider.config'
- config←ReadProjectConfigFile projectFolder
+ config←ReadProjectConfig projectFolder
  :If 0<config.CIDER.⎕NC'make'
  :AndIf 0<≢config.CIDER.make
      :If (1⍴config.CIDER.make~' ')∊'])'

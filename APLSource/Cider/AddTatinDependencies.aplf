@@ -7,7 +7,7 @@
  :If ∧/'[]'∊projectFolder
      projectFolder←GetFolderFromAlias2 projectFolder
  :EndIf
- cfg←ReadProjectConfigFile projectFolder
+ cfg←ReadProjectConfig projectFolder
  :If dev
      ref←cfg.CIDER.dependencies_dev
  :Else

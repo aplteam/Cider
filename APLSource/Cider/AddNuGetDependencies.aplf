@@ -13,7 +13,7 @@
      projectFolder←GetFolderFromAlias2 projectFolder
  :EndIf
  'No Cider config file found'Assert F.Exists projectFolder,'/cider.config'
- cfg←ReadProjectConfigFile projectFolder
+ cfg←ReadProjectConfig projectFolder
  nuGetFolder←projectFolder,'/',⊃GetNuGetDependencyFolders cfg
  targetNamespace←''
  :If '='∊buff←2⊃⎕NPARTS nuGetFolder

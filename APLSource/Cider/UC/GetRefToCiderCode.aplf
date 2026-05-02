@@ -1,4 +1,4 @@
- r←GetRefToCiderCode(cmd arg)
+  r←GetRefToCiderCode(cmd arg);buff
 ⍝ Checks whether it makes sense to execute code in #.Cider rather than in ⎕SE.Cider
 ⍝ Note that when the Cider project itself is about to be opened, the code is not yet available in #,
 ⍝ and even if it is as a left-over from earlier operations, it's potentially an outdated version.
@@ -6,11 +6,12 @@
  :If {2≠⎕SE.Cider.⎕NC ⍵:0 ⋄ 0<⎕SE.Cider⍎⍵}'DEVELOPMENT'    ⍝ Does the developer really want this?
  :AndIf 0<#.⎕NC'Cider'                                     ⍝ And is there no...
  :AndIf 0<#.Cider.⎕NC'Cider'                               ⍝ ... namespace #.Cider yet?
- :AndIf (⊂'#.Cider')∊(1↓⎕SE.Link.Status ⍬)[;1]             ⍝ And is that namespace LINKed?
+ :AndIf 'No active links'≢buff←⎕SE.Link.Status ⍬
+ :AndIf (⊂'#.Cider')∊(1↓buff)[;1]                          ⍝ And is that namespace LINKed?
      r←#.Cider.Cider.API
      r.##.##.(C A F G)←r.##.(C A F G)
      :If 1=⎕SE.Cider.DEVELOPMENT
-         ⎕←'*** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!'
+         ⍞←'*** Warning: Code is executed in #.Cider.Cider rather than ⎕SE.Cider!',⎕UCS 10
      :EndIf
  :Else
      r←⎕SE.Cider

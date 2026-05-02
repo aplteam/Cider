@@ -1,4 +1,4 @@
- msg←InjectTatinVars(projectRoot folder);cfg;ref
+ ref←InjectTatinVars(projectRoot folder);cfg;ref2
 ⍝ When a package is loaded, a namespace `TatinVars` is injected into the root of the package by Tatin.
 ⍝ When Cider opens a project that carries a file apl-package.json in the projects's root folder, it
 ⍝ injects such a namespace in the root of the project by default.\\
@@ -9,21 +9,31 @@
 ⍝ Cider will then inject `TatinVars` into that sub-namespace rather than the root of the project,
 ⍝ This allows a developer to access `TatinVars` while working on the project as if it were loaded
 ⍝ as a package.\\
-⍝ `msg` should be empty but might be an error message in case "tatinVars" is specified but does not
+⍝ `ref←⎕NULL` if the project does not have a package config file and a ref to `TatinVars` otherwise.
 ⍝ point to a sub-namespace in the project's root.
- msg←''
+ ref←⎕NULL
  :If ⎕NEXISTS folder,'/',⎕SE._Tatin.Registry.CFG_Name
-     cfg←⎕SE._Tatin.Registry.ReadPackageConfigFile folder
+
+     ⍝ With Tatin 121.0 "ReadPackageConfigFile" was renamed to "GetPackageConfigFileAsNS"
+     ⍝ For compatability we make sure that Cider works with both versions:
+     :If 3=⎕SE._Tatin.Registry.⎕NC'ReadPackageConfigFile'
+         cfg←⎕SE._Tatin.Registry.ReadPackageConfigFile folder
+     :Else
+         cfg←⎕SE._Tatin.Registry.GetPackageConfigFileAsNS folder
+     :EndIf
+
      ⎕SE._Tatin.Client.EstablishStuffInTatinVars projectRoot cfg folder
+     ref←projectRoot.TatinVars
      :If 0<projectRoot.CiderConfig.CIDER.⎕NC'tatinVars'
      :AndIf 0<≢projectRoot.CiderConfig.CIDER.tatinVars
          :If '⎕this'≢⎕C projectRoot.CiderConfig.CIDER.tatinVars
              :If 9=projectRoot.⎕NC projectRoot.CiderConfig.CIDER.tatinVars
-                 ref←projectRoot⍎projectRoot.CiderConfig.CIDER.tatinVars
-                 ((⍕ref),'.TatinVars')⎕NS projectRoot.TatinVars
+                 ref2←projectRoot⍎projectRoot.CiderConfig.CIDER.tatinVars
+                 ((⍕ref2),'.TatinVars')⎕NS projectRoot.TatinVars
                  projectRoot.⎕EX'TatinVars' ⍝ Policy change in 2024-07
+                 ref←ref2.TatinVars
              :Else
-                 msg←'"tatinVars" does not point to a sub-namespace in the project''s root'
+                 ⍞←'"tatinVars" does not point to a sub-namespace in the project''s root',⎕UCS 10
              :EndIf
          :EndIf
      :EndIf

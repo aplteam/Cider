@@ -16,7 +16,7 @@
  :AndIf ~⎕NEXISTS folder,'config.json'
      oldFolder←(2 ⎕NQ #'GetEnvironment' 'APPDATA'),'/.cider/'
      :If ⎕NEXISTS oldFolder
-         res←folder∘{⍺(⎕NMOVE⍠('IfExists' 'Skip')F.ExecNfunction)⍵}¨F.ListFiles oldFolder
+         res←folder∘{⍺(⎕NMOVE⍠('IfExists' 'Skip')F.ExecNfunction)⍵}¨F.ListFiles2 oldFolder
          F.RmDir oldFolder
      :EndIf
  :EndIf

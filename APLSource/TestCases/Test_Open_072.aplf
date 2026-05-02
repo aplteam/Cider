@@ -11,9 +11,9 @@
  parms.watch←'ns'
  parms.ignoreUserExec←1
  parms.batch←1
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
- ##.Cider.C.YesOrNo_Answers⍪←1 2⍴'ReInstallMissingPkgs@' 'y'
- ##.Cider.C.YesOrNo_Answers⍪←'LaterVersions@' 'y'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ReInstallMissingPkgs@' 'y'
+ ##.Cider.C.AddAutomation'YesOrNo' 'LaterVersions@' 'y'
  (success log)←##.Cider.OpenProject parms
  Assert success
  →T.GoToTidyUp∨/'ERROR'⍷log
@@ -23,6 +23,6 @@
 
 ∆TidyUp:
  ##.Cider.C.Cleanup
- Assert (~parms.batch)⎕SE.Cider.CloseProject'#.TEMP.fooproj'
+ Assert(~parms.batch)⎕SE.Cider.CloseProject'#.TEMP.fooproj'
  #.⎕EX'TEMP'
 ⍝Done

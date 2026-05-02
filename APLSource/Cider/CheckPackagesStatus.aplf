@@ -1,4 +1,4 @@
- {r}←CheckPackagesStatus(config parms pkgStatus);checkFlag;folder;folders;folder_;updateFlag;updateParms;report;buff;plural
+  {r}←CheckPackagesStatus(config parms pkgStatus);checkFlag;folder;folders;folder_;updateFlag;updateParms;report;buff;plural
 ⍝ Check whether Tatin packages should be updated in case parms.importFlag is not 1.
 ⍝ When pkgStatus is 2 it means that packages have just been re-installed, so no need to check for later versions.
 ⍝ This is ruled by parms.checkPackageVersions:
@@ -7,13 +7,16 @@
 ⍝ 1 means yes, check, but ask before updating
 ⍝ 2 means update without further ado
  r←⍬
+ parms.major←0    ⍝ By default we don't check on latermajor versions
  folders←GetTatinDependencyFolders config
  :If 0<≢folders
      :If 0≢parms.checkPackageVersions
      :AndIf 2>pkgStatus
          :If (⊂parms.checkPackageVersions)∊⍬ 1
          :AndIf 0=parms.batch
-             checkFlag←0 C.YesOrNo' Report availability of later versions of installed Tatin packages?'
+             :If checkFlag←0 C.YesOrNo'ReportLaterVersions@ Report availability of later versions of installed Tatin packages?'
+                 parms.major←0 C.YesOrNo'ReportLaterMajorVersions@ Report even later MAJOR versions?'
+             :EndIf
          :Else
              checkFlag←2≡parms.checkPackageVersions
          :EndIf
@@ -23,7 +26,7 @@
      :If checkFlag
          report←⍬
          1 ⎕SE._Tatin.Client.EstablishRumbaClients ⍬
-         :If 0<≢report←report CheckTatinFoldersForLaterVersions parms folders
+         :If 0<≢report←report CheckTatinFoldersForLaterVersions parms(RemoveTargetDefinition¨folders)
          :AndIf 0=+/⊃,/4⌷[2]¨report
              (1 parms.batch)p'No later versions found '
              :If 0<≢buff←(⊂'https://tatin.dev/')~⍨⊃,/3⌷[2]¨report
@@ -32,7 +35,7 @@
              :EndIf
          :Else
              report←{⍵[;4]⌿⍵}¨report
-             UpdatePackages folders report parms
+             UpdatePackages(RemoveTargetDefinition¨folders)report parms
          :EndIf
          ⎕SE._Tatin.Client.CloseConnections 1
      :EndIf

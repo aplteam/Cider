@@ -1,0 +1,8 @@
+ r←GetLastCommit(space folder args);full;branch
+ full←0 args.Switch'full'
+ branch←''args.Switch'branch'
+ r←branch ##.GetLastCommit folder
+ :If ~full
+     r←7↑r
+ :EndIf
+⍝Done

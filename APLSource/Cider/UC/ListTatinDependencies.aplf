@@ -1,32 +1,33 @@
- r←ListTatinDependencies Args;path;full;cfgFilename;cfg;tatinFolders;list;path2;buildFilename;buff;F;P_
+ r←ListTatinDependencies Args;path;full;cfgFilename;cfg;tatinFolders;list;path2;buildFilename;buff;F;P_;latest
 ⍝ List all Tatin dependencies
  r←''
  P_←P.##
  F←P_.F
  :If 0=≢path←GetProjectPath Args._1
-     ⎕←'Cancelled by user'
+     ⍞←'Cancelled by user',⎕UCS 10
  :Else
      full←Args.Switch'full'
+     latest←Args.Switch'latest'
      :If full
          :If IsAlias path
-             path←GetFolderFromAlias2 path
+             path←P.##.GetFolderFromAlias2 path
          :EndIf
          cfgFilename←(F.AddTrailingSep path),'cider.config'
          :If F.Exists cfgFilename
-             cfg←P_.ReadProjectConfigFile cfgFilename
+             cfg←P_.ReadProjectConfig cfgFilename
              :If 0<≢tatinFolders←P_.GetTatinDependencyFolders cfg
                  tatinFolders←P_.RemoveTargetDefinition¨tatinFolders
                  :If 1=≢tatinFolders
                      :If 0<≢r←P_.ListTatinDependenciesFull path,'/',⊃tatinFolders
-                         r←⊃,/CR,¨((r[;1])⍴¨' '),¨r[;2]
-                         r←'--- Investigated: ',(F.Exists path),CR,'-- Sub-folder: ',tatinFolders,'/',r
+                         r←{0=≢⍵:'' ⋄ ⊃,/CR,¨((2×⍵[;1])⍴¨' '),¨⍵[;2]}r
+                         r←'--- Install folder: ',path,'/',(1⊃tatinFolders),'/',r
                      :Else
                          r←'No dependencies found'
                      :EndIf
                  :Else
                      :If 0<≢r←path∘{P_.ListTatinDependenciesFull ⍺,'/',⍵}¨tatinFolders
-                         r←{0=≢⍵:'' ⋄ ⊃,/CR,¨' ',¨((⍵[;1])⍴¨' '),¨⍵[;2]}¨r
-                         r←'--- Investigated: ',path,CR,⊃,/('-- Sub-folder: '∘,¨tatinFolders,¨'/'),¨r,¨CR
+                         r←{0=≢⍵:'' ⋄ ⊃,/CR,¨((2×⍵[;1])⍴¨' '),¨⍵[;2]}¨r
+                         r←1↓⊃,/((⊂CR,'--- Install folder: '),¨(⊂path,'/'),¨tatinFolders,¨'/'),¨r
                      :Else
                          r←'No dependencies found'
                      :EndIf
@@ -42,7 +43,7 @@
                      r←'--- Investigated: ',path,r
                  :EndIf
              :Else
-                 list←F.ListDirs path
+                 list←F.ListDirs2 path
                  r←''
                  :For path2 :In list
                      buildFilename←path2,'/apl-buildlist.json'
@@ -57,10 +58,16 @@
          :EndIf
      :Else
          :If 0<≢r←P_.ListTatinDependencies path
+             :If latest
+                 GetLatestVersionNumbers r[;2 4]
+             :EndIf
              r[⍸{(⍵⍳⍵)≠⍳≢⍵}r[;1];1]←⊂''
              r←('Source' 'Package-ID' 'Principal' 'URL' '?')⍪('' '' '' '' '')⍪r
              (2⌷r)←(⊃¨⌈⌿≢¨r)⍴¨'-'
              r←{w←⍵ ⋄ w[2;2⊃⍴w]←' ' ⋄ w}r
+             :If latest
+
+             :EndIf
          :Else
              r←'No dependencies found'
          :EndIf

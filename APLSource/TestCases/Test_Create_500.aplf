@@ -18,12 +18,13 @@
  parms2.parent←'#'
  parms2.projectSpace←'Foo'
  res←##.Cider.OpenProject parms2
- →T.GoToTidyUp~∨/'Project successfully opened and established in "#.Foo"'⍷∊res
+ →T.GoToTidyUp~∧/(⊂2⊃res,' '){∨/⍵⍷∊⍺}¨'Project successfully opened and established in'('#.Foo',⎕UCS 13)
+ →T.GoToTidyUp 0≠∨/'though with'⍷∊2⊃res
 
  R←T._OK
 
 ∆TidyUp:
- Assert 0 ##.Cider.CloseProject'#.Foo'
+ Assert 1=##.Cider.CloseProject'#.Foo'
  rc←⊃FilesAndDirs.RmDir tempDir,'/..'
  Assert rc∧.=0
 ⍝Done

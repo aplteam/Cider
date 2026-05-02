@@ -1,0 +1,4 @@
+ Initial_UC
+ :If 0=⎕NC'∆DotNetIsAvailable'
+     ∆DotNetIsAvailable←IsDotNetAvailable
+ :EndIf

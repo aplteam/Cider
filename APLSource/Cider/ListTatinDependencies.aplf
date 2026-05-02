@@ -1,14 +1,14 @@
  r←{self}ListTatinDependencies folder;cfgFilename;cfg;buildFilenames;buildLists;b;tatinFolders;buildFolders;list;folder2;buildFilename;buff
 ⍝ `y` must point to a project, either as alias ([]) or as a project folder.
 ⍝ The actual Tatin dependency folders are established from the project config file.
-⍝ `self` is only passed when this function calles itself.
+⍝ `self` is only passed when this function calls itself.
  r←0 5⍴''
  :If IsAlias folder
      folder←GetFolderFromAlias2 folder
  :EndIf
  cfgFilename←folder,'/cider.config'
  :If F.Exists cfgFilename
-     cfg←ReadProjectConfigFile cfgFilename
+     cfg←ReadProjectConfig cfgFilename
      tatinFolders←GetTatinDependencyFolders cfg
      :If 0<≢tatinFolders
          tatinFolders←RemoveTargetDefinition¨tatinFolders
@@ -23,7 +23,7 @@
      :If ⎕NEXISTS buildFilename
          r⍪←(⊂{¯1↓1⊃⎕NPARTS ⍵}buildFilename)ListTatinDependencies_⊂buildFilename
      :Else
-         list←F.ListDirs folder
+         list←F.ListDirs2 folder
          :For folder2 :In list
              buff←1 ListTatinDependencies folder2
              :If 0<≢buff

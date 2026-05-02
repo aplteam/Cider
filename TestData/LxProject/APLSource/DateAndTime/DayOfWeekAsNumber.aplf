@@ -1,0 +1,9 @@
+ DayOfWeekAsNumber←{
+⍝ `⍵` date (like `3↑⎕ts`). Can be either a vector with 3 elements (Y M D) or a matrix with
+⍝ n rows and 3 columns.\\
+⍝ `←` 1 for Monday, ..., 7 for Sunday.\\
+⍝ First year in the domain of this function is 1753. Anything earlier is a DOMAIN Error.\\
+⍝ Kai Jaeger
+     'Year must be 1753 or later'⎕SIGNAL 11/⍨1752∧.≥0⌷⍤1⊣date
+     1+7|¯1+Date2GregorianSerialDate 3↑⍤1⊣⍵
+ }

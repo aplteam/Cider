@@ -9,17 +9,16 @@
  (tempDir,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
  cfg←∆GetJSON5 tempDir,'/cider.config'
  cfg.CIDER.init←'Init'
- (⊂⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣cfg)FilesAndDirs.NPUT(tempDir,'/cider.config')1
+ cfg ∆PutJSON5 tempDir,'/cider.config'
  (⊂'Init' '∆INIT←1')FilesAndDirs.NPUT tempDir,'/APLSource/Init.aplf'
  (⊂'r←Hello' 'r←''World''')FilesAndDirs.NPUT sourceFolder,'/hello.aplf'
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←0 2⍴''
- ref.YesOrNo_Answers⍪←'ChangeCurrentDir@' 'n'
- ref.YesOrNo_Answers⍪←'OpenAsWell@' 'y'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'OpenAsWell@' 'y'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" # -noEdit -acceptConfig -ignoreUserExec -batch'
- Assert'Project successfully opened and established in '{⍺≡(≢⍺)↑⍵}res
- list←FilesAndDirs.ListFiles tempDir
+ Assert'World'≡#.Foo.Hello
+ list←FilesAndDirs.ListFiles2 tempDir
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
  →T.GoToTidyUp 1≠#.Foo.∆INIT
@@ -29,7 +28,7 @@
 
  (⊂'Init x' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
  (rc msg res)←∆UCMD'OpenProject "',tempDir,'" -ignoreUserExec -batch'
- Assert'Project successfully opened and established in '{⍺≡(≢⍺)↑⍵}res
+ Assert∨/'#.Foo'⍷res
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
  Assert res ∆StartsWith'Unlinked:'
@@ -37,7 +36,7 @@
 
  (⊂'{x} Init y' '∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
  (rc msg res)←∆UCMD'OpenProject "',tempDir,'" -ignoreUserExec -batch'
- Assert'Project successfully opened and established in '{⍺≡(≢⍺)↑⍵}res
+ Assert∨/'#.Foo'⍷res
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
  Assert res ∆StartsWith'Unlinked:'
@@ -45,7 +44,7 @@
 
  (⊂'{r}←Init y' 'r←∆INIT←1')FilesAndDirs.NPUT(tempDir,'/APLSource/Init.aplf')1
  (rc msg res)←∆UCMD'OpenProject "',tempDir,'" -ignoreUserExec -batch'
- Assert'Project successfully opened and established in '{⍺≡(≢⍺)↑⍵}res
+ Assert∨/'#.Foo'⍷res
  →T.GoToTidyUp 1≠#.Foo.∆INIT
  res←∆LINK'Break' '#.Foo'
  Assert res ∆StartsWith'Unlinked:'

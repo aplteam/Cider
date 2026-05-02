@@ -7,10 +7,11 @@
 
  folder←##.CiderConfig.HOME,'/Tests/TestAlias2/Project1'
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (rc msg res)←∆UCMD'OpenProject ',folder,' -parent=#.TEMP -alias=Firlefanz1 -watch=ns -batch -ignoreUserExec'
  msg Assert 0=rc
 
+ ref.AddAutomation'YesOrNo' 'ClearWS@' 'n'
  (rc msg res)←∆UCMD'CloseProject [firlefanz1] -fast'
  msg Assert 0=rc
  →T.GoToTidyUp'Number of projects closed: 1'≢res

@@ -1,8 +1,9 @@
- status←parms CheckForTatinPackages config;folders;list;bool;report;this;parms;parms2
-⍝ Checks whether at least one Tatin install folder is defined, does exist and is not empty, in which case a 1 is returned.
-⍝ In case at least one install folder contains just a dependency file and a build file but nothing else then...
+ status←parms CheckForTatinPackages config;folders;list;bool;report;this;parms;parms2;askForMajor;q;qdmx;msg
+⍝ Checks whether at least one Tatin install folder is defined, does exist and carries packages, in which case a 1 is returned.
+⍝ In case at least one install folder contains just a dependency file (and maybe also a build file) but nothing else then...
 ⍝ * when the user goes for re-installing the packages, a 2 is returned
 ⍝ * when she does not a 3 is returned
+⍝ * In case an error of any kind makes all this impossible, ¯1 is returned
  status←0
  folders←GetTatinDependencyFolders config
  :If 0<≢folders
@@ -10,20 +11,46 @@
  :AndIf 0<≢folders←(0<≢¨folders)/folders
  :AndIf 0<≢folders←(F.Exists(⊂parms.folder,'/'),¨folders)/folders
      status←0<+/≢¨list←{⊃0 ⎕NINFO⍠('Wildcard' 1)⊣⍵}¨(⊂parms.folder,'/'),¨folders,¨⊂'/*'
- :AndIf 1∊bool←0=≢¨F.ListDirs¨(⊂parms.folder,'/'),¨folders,¨'/'
+ :AndIf 1∊bool←0=≢¨F.ListDirs2¨(⊂parms.folder,'/'),¨folders,¨'/'
  :AndIf 1∊bool←bool∧⎕NEXISTS(⊂parms.folder,'/'),¨folders,¨⊂'/apl-dependencies.txt'
      :If parms.batch
-     :OrIf 1 C.YesOrNo'Tatin install folder',((1+1=+/bool)⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
+     :OrIf 1 C.YesOrNo'ReinstallInEmptyFolder@Tatin install folder',((1+1=+/bool)⊃'s do' ' does'),' not contain packages - do you want them re-installed?'
          status←2
          parms2←⎕SE.Tatin.CreateReInstallParms
+         :If 0=parms2.⎕NC'major'
+             ⍝ This can only happen when this version of Cider (or a later one) is used with Tatin 0.119.0 or earlier, meaning
+             ⍝ that Tatin can't do a major update yet.
+             ⍝ Therefore we have to make sure that this works anyway.
+             askForMajor←0
+         :Else
+             askForMajor←1
+         :EndIf
          :If parms.batch
              parms2.quiet←1
          :Else
-             parms2.update←1 C.YesOrNo'Would you like to install later versions, if available (NOT later major versions) ?'
+             q←'ReinstallLaterVersions@Would you like to install later versions, if available',((~askForMajor)/' (NOT later major versions'),' ?'
+             parms2.update←1 C.YesOrNo q
+             :If parms2.update
+             :AndIf askForMajor
+                 q←'ReinstallLaterMajorVersions@Would you like to install even later MAJOR versions, if available ?'
+                 parms2.major←0 C.YesOrNo q
+             :EndIf
          :EndIf
          folders←bool/folders
          :For this :In (⊂parms.folder,'/'),¨folders
-             report←parms2 ⎕SE.Tatin.ReInstallDependencies this
+             :Trap 998
+                 report←parms2 ⎕SE.Tatin.ReInstallDependencies this
+             :Else
+                 qdmx←⎕DMX
+                 :If parms.batch
+                     ('Re-installing dependencies failed: ',qdmx.EM)Assert 0
+                 :Else
+                     msg←'Re-installing dependencies abandoned, dependencies need attention:',CR,qdmx.EM
+                     1 PrintToSession msg
+                     status←¯1
+                     ∆Problems+←1
+                 :EndIf
+             :EndTrap
          :EndFor
      :Else
          status←3

@@ -1,0 +1,29 @@
+ R←Test_Open_100(stopFlag batchFlag);⎕TRAP;parms;success;log;tempFolder
+⍝ Opens a project and updates all packages but not major ones
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempFolder←∆GetFolderInTempDir⊃⎕SI
+ tempFolder ⎕NCOPY ##.CiderConfig.HOME,'/TestData/UpdatePkgs'
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←tempFolder,'/UpdatePkgs'
+ parms.parent←'#.TEMP'
+ parms.checkPackageVersions←1
+
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ReinstallLatest@' 'y'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ReportLaterVersions@' 'y'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ReportLaterMajorVersions@' 'n'
+ (success log)←##.Cider.OpenProject parms
+ 'Something is very wrong'Assert 1=success
+
+ →T.GoToTidyUp'11.1.0'≢{⍵↑⍨¯1+⍵⍳'+'}2⊃#.TEMP.UpdatePkgs.MarkAPL.Version
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
+ {}##.Cider.CloseProject #.TEMP.UpdatePkgs
+ {}FilesAndDirs.RmDirByForce tempFolder
+⍝Done

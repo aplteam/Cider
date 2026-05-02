@@ -1,5 +1,5 @@
- {r}←CheckForDropboxConflicts path;dmx;list;msg;found;dropbox
-⍝ Checks whether there are any Dropbox files indicating conflictes, and if so print them to the session.
+ {r}←CheckForDropboxConflicts path;dmx;list;msg;found;dropbox;parms
+⍝ Checks whether there are any Dropbox files indicating a conflict, and if so print them to the session.
 ⍝ Returns 0 in case there are not any such conflict files, otherwise the number of files found.
  r←found←0
  msg←''
@@ -9,7 +9,9 @@
      :EndIf
  :AndIf dropbox
      msg,←⊂'Checking for Dropbox conflicts: ',path,' ...'
-     r←≢list←'recursive'F.ListFiles path,'/*conflicted copy*'
+     parms←⎕NS''
+     parms.recurse←2
+     r←≢list←parms F.ListFiles2 path,'/*conflicted copy*'
      :If 0<r
          found←1
          msg,←⊂'  ********** The project has conflicting files! ************'
@@ -21,9 +23,11 @@
      :EndIf
  :EndIf
  :If found
-     ⎕←↑msg
+     ⍞←↑msg
+     ⍞←⎕UCS 10
  :ElseIf 0<≢msg
      :If GetGlobalVerbose
-         ⎕←↑msg
+         ⍞←↑msg
+         ⍞←⎕UCS 10
      :EndIf
  :EndIf

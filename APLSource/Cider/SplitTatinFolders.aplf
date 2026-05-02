@@ -1,5 +1,5 @@
  r←SplitTatinFolders pkgFolder;buff;msg
- msg←'Something is wrong with the "dependencies" or "dependencies_dev" setting in Cider.config'
+ msg←'Something is wrong with the "dependencies" or "dependencies_dev" setting in cider.config'
  :Trap 0
      r←'='(≠⊆⊢)pkgFolder
  :Else

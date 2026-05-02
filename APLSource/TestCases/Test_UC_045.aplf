@@ -4,14 +4,14 @@
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If ~∆IsDotNetAvailable
-     R←T._NotApplicable ⋄ →0
+ :If ~∆DotNetIsAvailable
+     R←T._NotApplicable
  :EndIf
 
  tempFolder←∆GetFolderInTempDir⊃⎕SI
  parms←∆NuGetTestProcessParms(⊃⎕SI)tempFolder
- I←⎕NEW APLProcess(,⊂parms)
- :If 0=I.ExitCode
+ I←APLProcess.New parms
+ :If I.ExitCode=130
      R←T._OK
  :EndIf
 

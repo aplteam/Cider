@@ -1,22 +1,27 @@
- parms←∆NuGetTestProcessParms(name folder)
+ parms←{debug}∆NuGetTestProcessParms(name folder)
+⍝ `debug` defaults to 0. Set this to 1 to...
+⍝ * have a session file
+⍝ * suppress automatic execution of ⎕LX
+⍝ On Windows, this allows you to investigate in the started APL.
+⍝ Elsewhere you also need to set RidePort sensibly.
+ debug←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'debug'
  parms←APLProcess.CreateParms
  parms.Exe←1⊃2 ⎕NQ #'GetCommandLineArgs' 'DYALOG'
  :If 0<≢name
      parms.OutputFilename←(739⌶0),'/',name,'.txt'
  :EndIf
  :If 0<≢folder
-     parms.CommandLineArgs,←'path=''',folder,''''
+     parms.ConfigParms⍪←'cider_path'folder
  :EndIf
  :If 0<≢name
-     parms.CommandLineArgs,←' fns=∆',name
+     parms.ConfigParms⍪←'cider_fns'name
  :EndIf
  :If 0<T.⎕NC'codeCoverage'
-     parms.CommandLineArgs,←' codeCoverageFile=''',(T.codeCoverage.filename~''''),''''
+     parms.ConfigParms⍪←'codeCoverageFile'T.codeCoverage.filename
  :EndIf
- parms.CommandLineArgs,←' DYALOG_NETCORE=1'
+ parms.ConfigParms⍪←'DYALOG_NETCORE' 1
+ parms.SessionFile←1  ⍝ We need ⎕se.Cider!
+ parms.LX←~debug
  parms.WorkspaceName←##.CiderConfig.HOME,'/Tests/ExecTestCase.dws'
  parms.WindowsStyle←'Normal'
- parms.SessionFile←1            ⍝ Because we need Cider in ⎕SE
- :If 0
-     parms.CommandLineArgs,←' -x'
- :EndIf
+⍝Done

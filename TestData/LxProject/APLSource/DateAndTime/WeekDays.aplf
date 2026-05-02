@@ -1,0 +1,2 @@
+ r←WeekDays
+ r←'Monday' 'Tuesday' 'Wednesday' 'Thursday' 'Friday' 'Saturday' 'Sunday'

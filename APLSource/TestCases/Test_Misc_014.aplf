@@ -5,7 +5,7 @@
  tempFolder←∆GetFolderInTempDir⊃⎕SI
  filename←tempFolder,'/cider.config'
  filename ⎕NCOPY⍠('IfExists' 'Replace')⊣##.CiderConfig.HOME,'/TestData/cider.config.GitHubUserName'
- config1←##.Cider.Get_JSON5 filename
+ config1←##.Cider.ReadProjectConfig filename
  Assert'JohnDoe'≡config1.CIDER.githubUsername
  res←##.Cider.Remove_githubUsername tempFolder
  →T.GoToTidyUp filename≢∊res

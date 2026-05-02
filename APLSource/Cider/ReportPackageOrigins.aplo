@@ -1,8 +1,10 @@
- msg←(reportFns ReportPackageOrigins)folder;data;noOf
-⍝ Report where the package got installed from but not if all came from https://tatin.dev/
+ msg←(reportFns ReportPackageOrigins)folder;data;noOf;filename
+⍝ Report where the package got installed from in case they did NOT come from https://tatin.dev/
  msg←''
- data←Get_JSON5 folder,'/apl-buildlist.json'
- :If ~∧/'https://tatin.dev/'∘≡¨data.url
+ filename←folder,'/apl-buildlist.json'
+ :If F.IsFile filename
+     data←Get_JSON5 filename
+ :AndIf ~∧/'https://tatin.dev/'∘≡¨data.url
      noOf←{≢⍵}⌸data.url
      :If 1=≢noOf
          msg←'All packages (',(⍕noOf),') were originally installed from ',⊃data.url

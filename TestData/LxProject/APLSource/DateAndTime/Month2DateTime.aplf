@@ -1,0 +1,7 @@
+ Month2DateTime←{
+    ⍝ `⍵` months       - shape any\\
+    ⍝ `←` date.time    - shape ⍴⍵\\
+    ⍝ See also [`DateTime2Month`](#).\\
+    ⍝ Phil Last
+     r←101+100×100⊥0 12⊤⍵-1
+ }

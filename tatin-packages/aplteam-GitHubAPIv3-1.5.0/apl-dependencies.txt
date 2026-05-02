@@ -1,3 +1,0 @@
-aplteam-APLTreeUtils2-1.4.0
-dyalog-HttpCommand-5.8.0
-aplteam-CommTools-1.8.2

@@ -1,0 +1,32 @@
+ R←Test_Open_086(stopFlag batchFlag);⎕TRAP;parms;r;rc;tempDir;log;success;qdmx
+⍝ Open project with a dependency install folder that's empty apart from the dependency file which carries a non-existent version number
+⍝
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ tempDir ⎕NCOPY⍠('Wildcard' 1)⊣##.CiderConfig.HOME,'/TestData/InvalidVersionNumber/*'
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←tempDir
+ parms.parent←'#.TEMP'
+ parms.watch←'ns'
+ parms.ignoreUserExec←1
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ReinstallInEmptyFolder@' 'y'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ReinstallLaterVersions@' 'n'
+
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp~∧/(⊂log){∨/⍵⍷⍺}¨'Project successfully opened (though with 1 problem) and established in' '#.TEMP.UpdatePkgs'
+ ⍝ Depending on the Tatin registries configures on the current machine, the result may slightly differ
+ →T.GoToTidyUp~∨/∨/¨'Not found: aplteam-MarkAPL-99.1.2' '>>> aplteam-MarkAPL-99.1.2 not found'⍷¨⊂log
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
+ {}⎕SE.Link.Break'#.TEMP.UpdatePkgs'
+ {}FilesAndDirs.RmDirByForce tempDir,'/..'
+⍝Done

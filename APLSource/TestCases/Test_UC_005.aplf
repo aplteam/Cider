@@ -10,14 +10,14 @@
  #.Foo.⎕FX'r←TheAnswerIs' 'r←42'
 
  config←∆GetJSON5 tempDir,'/cider.config'
- (⊂⎕JSON⍠('Compact' 0)('Dialect' 'JSON5')⊣config)⎕NPUT(tempDir,'/cider.config')1
+ config ∆PutJSON5 tempDir,'/cider.config'
 
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (rc msg res)←∆UCMD'CreateProject "',tempDir,'" #.Foo -noEdit -acceptConfig -batch -ignoreUserExec'
  Assert rc=0
 
- →T.GoToTidyUp~∨/∨/¨'TheAnswerIs.aplf'∘⍷¨⊃('recursive' 1)FilesAndDirs.Dir tempDir,'/'
+ →T.GoToTidyUp~∨/∨/¨'TheAnswerIs.aplf'∘⍷¨⊃('recurse' 1)FilesAndDirs.Dir2 tempDir,'/'
  →T.GoToTidyUp 42≢#.Foo.TheAnswerIs
 
  r←T._OK

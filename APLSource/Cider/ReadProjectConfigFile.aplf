@@ -1,23 +1,6 @@
- config←ReadProjectConfigFile projectFolder;projectFolder2;saveFlag
-⍝ Reads a project config file and returns it as a namespace with variables.
-⍝ `projectFolder` may or may not carry the filename as such.
-⍝ Check the config file for some entries and adds them if they are missing. In such a
-⍝ case the config file is also written back to file.
- projectFolder2←ConfigFilename{⍺≡(-≢⍺)↑⍵:⍵ ⋄ ({⍵,'/'/⍨~(¯1↑⍵)∊'/\'}⍵),⍺}projectFolder
- config←Get_JSON5 projectFolder2
- saveFlag←0
- :If 0=config.CIDER.⎕NC'dependencies'
-     'dependencies'config.CIDER.⎕NS''
- :EndIf
- :If 0=config.CIDER.dependencies.⎕NC'tatin'
-     config.CIDER.dependencies.tatin←''
-     saveFlag←1
- :EndIf
- :If 0=config.CIDER.dependencies.⎕NC'nuget'
-     config.CIDER.dependencies.nuget←''
-     saveFlag←1
- :EndIf
- :If saveFlag
-     {}config WriteProjectConfigFile projectFolder
- :EndIf
-⍝Done
+ config←ReadProjectConfigFile projectFolder
+⍝ The only purpose of this function: to allow Tatin prior to version 0.123.1 to function with Cider 0.51.0
+⍝ or later: `ReadProjectConfigFile` got renamed in Cider 0.51.0 to `ReadProjectConfig` but older versions
+⍝ of Tatin would still try to call `ReadProjectConfigFile`, so we have to have this function for a while
+⍝TODO⍝ One day in a not to distant future this function can be removed.
+ config←ReadProjectConfig projectFolder

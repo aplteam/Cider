@@ -1,14 +1,14 @@
 :Namespace Cider_UC
 ⍝ This script directs calls to the Cider user commands to Cider itself.
 ⍝ It's just an interface that does not do anything by itself.
-⍝ Version 0.1.0 ⋄ 2024-03-07 ⋄ Kai Jaeger
+⍝ Version 1.0.0 ⋄ 2026-02-06 ⋄ Kai Jaeger
 
     ∇ PrintError dummy;msg
       msg←''
       :If 3=⎕NC'⎕SE.Cider.Version'
           msg←' Cider is not installed correctly. Please remove and install again.'
       :EndIf
-      ⎕←msg
+      ⍞←msg,⎕UCS 10
     ∇
 
     ∇ r←List;ref
@@ -33,7 +33,7 @@
               PrintError''
           :EndIf
       :Else
-          ⎕←'Cider not found'
+          ⍞←'Cider not found',⎕UCS 10
       :EndIf
     ∇
 
@@ -47,7 +47,7 @@
               PrintError''
           :EndIf
       :Else
-          ⎕←'Cider not found'
+          ⍞←'Cider not found',⎕UCS 10
       :EndIf
     ∇
 

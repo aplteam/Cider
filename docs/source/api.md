@@ -200,12 +200,12 @@ Parameters in `y` overwrite the defaults, which are:
     batch                 0
     checkPackageVersions  ⍬
     folder                ''
+    handleLinkStops       0
     ignoreUserExec        0
     importFlag            0
     noPkgLoad             0
     parent                ''
     projectSpace          ''
-    quietFlag             0
     suppressInit          0
     verbose               0
     watch                 0
@@ -532,12 +532,6 @@ If `y` is a parameter space, all parameters are optional except `folder`.
     :fontawesome-solid-gear:
     [`projectSpace`](configuration.md#projectspace)
 
-
-`quietFlag`
-
-: Flag to stop Cider printing messages to the session. (They are still returned in the function‘s result.)
-
-
 `suppressInit`
 
 : Flag to stop Cider executing the project’s [initialisation](configuration.md#init) function. Defaults to 0.
@@ -602,6 +596,8 @@ Returns a string with major and minor versions, patch number and timestamp, e.g.
     0.44.0+835
 
 This could be just e.g. `1.2.3`,  but might be something like `1.2.3-beta-1+113`.
+
+
 
 
 

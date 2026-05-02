@@ -1,3 +1,0 @@
- r←GetDefaultProject dummy
- r←##.GetDefaultProject dummy
-⍝Done

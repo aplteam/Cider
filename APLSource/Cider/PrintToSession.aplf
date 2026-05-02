@@ -5,14 +5,15 @@
 ⍝ `msg` might be a simple character vector or a vector of character vectors.\\
 ⍝ `flags` must be a scalar Boolean or a vector of two Booleans, defaulting to 0 0:
 ⍝ * `flags[1]` must be 1 in order to print `msg` to the session
-⍝ * `flags[2]` must be 1 in order to suppress output and only add `msg` to `∆LOG`
+⍝ * `flags[2]` must be 1 in order to add `msg` to `∆LOG` but not print it to the session, ignoring flags[1]
  r←0 0⍴⍬
- Assert∧/flags∊0 1
- (sessionFlag quiet)←2↑flags,0
  :If 0<≢msg
+     Assert∧/flags∊0 1
+     (sessionFlag quiet)←2↑flags,0
      :If sessionFlag
      :AndIf ~quiet
-         ⎕←↑,⊆msg
+         ⍞←↑,⊆msg
+         ⍞←⎕UCS 10
      :EndIf
      :If 0<⎕NC'∆LOG'
          :If 1<|≡msg

@@ -4,7 +4,7 @@
 
      c←⎕NS''
      c.Name←'OpenProject'
-     c.Desc←'Load all source files into the WS and keep it linked by default'
+     c.Desc←'Load all source files into the WS and keep them linked by default'
      c.Group←'Cider'
      c.Parse←'1s -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns dir both none -verbose -batch'
      r,←c
@@ -28,9 +28,9 @@
      c.Desc←'Prints Cider''s config file to the session, and allow the user to edit it'
      c.Group←'Cider'
      c.Parse←'-edit'
-     r,←c 
+     r,←c
 
-	 c←⎕NS''
+     c←⎕NS''
      c.Name←'HowToMakeNewVersion'
      c.Desc←'Tells how to make a new version of the project'
      c.Group←'Cider'
@@ -43,13 +43,13 @@
      c.Group←'Cider'
      c.Parse←'1s'
      r,←c
-	 
-	 c←⎕NS''
+
+     c←⎕NS''
      c.Name←'LinkConfig'
      c.Desc←'List the Link config file, if any, or edit or delete it'
      c.Group←'Cider'
      c.Parse←'1s -edit -delete'
-	 r,←c
+     r,←c
 
      c←⎕NS''
      c.Name←'ListOpenProjects'
@@ -76,7 +76,7 @@
      c.Name←'ListTatinDependencies'
      c.Desc←'List Tatin packages installed as dependencies'
      c.Group←'Cider'
-     c.Parse←'1s -full'
+     c.Parse←'1s -full -latest'
      r,←c
 
      c←⎕NS''
@@ -102,7 +102,7 @@
 
      c←⎕NS''
      c.Name←'Help'
-     c.Desc←'Offers to put the HTML files on display'
+     c.Desc←'Shows how to show the Cider documentation in your default browser'
      c.Group←'Cider'
      c.Parse←'0'
      r,←c

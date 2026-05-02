@@ -1,0 +1,8 @@
+ Timestamp2DateTime←{
+    ⍝ `⍵` timestamp - yyyy mm dd [hh [mm [ss [mmm]]]] - Either a simple vector or a simple matrix\\
+    ⍝ `←` date.time - yyyymmdd.hhmmssmmm              - shape `¯1↓⍴⍵`\\
+    ⍝ Does not support negatives.\\
+    ⍝ See also [`DateTime2Timestamp`](#).\\
+    ⍝ Phil Last
+     ⍉1E¯9×(1 5 1/0,10*2 3)⊥⍉7↑[0⊥⍳⍴⍴⍵]⍵
+ }

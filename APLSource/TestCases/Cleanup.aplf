@@ -7,5 +7,5 @@
      ⎕SE.Cider.DEVELOPMENT←∆QSE_CIDER_DEVELOPMENT
      ⎕←'Restored: ⎕SE.Cider.DEVELOPMENT←',⍕∆QSE_CIDER_DEVELOPMENT
  :EndIf
- ⎕EX'∆IsDotNetAvailable'
+ ⎕EX'∆DotNetIsAvailable'
  ⍝Done

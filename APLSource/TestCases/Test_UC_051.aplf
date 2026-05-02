@@ -1,17 +1,19 @@
- R←Test_UC_051(stopFlag batchFlag);⎕TRAP;tempFolder;parms;I;rc;msg
+ R←Test_UC_051(stopFlag batchFlag);⎕TRAP;tempFolder;parms;I;rc;msg;debug
 ⍝ Open project, add 2 NuGet packages to non-default folder, load, call, list, close, re-open, close
  ⍝ The real test function (∆Test_UC_051) is executed in its own APL process
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If ~∆IsDotNetAvailable
+ :If ~∆DotNetIsAvailable
      R←T._NotApplicable ⋄ →0
  :EndIf
 
  tempFolder←∆GetFolderInTempDir⊃⎕SI
- parms←∆NuGetTestProcessParms(⊃⎕SI)tempFolder
- I←⎕NEW APLProcess(,⊂parms)
- R←I.ExitCode
+ debug←0
+ parms←debug ∆NuGetTestProcessParms(⊃⎕SI)tempFolder
+ I←APLProcess.New parms
+ →T.GoToTidyUp I.ExitCode≠130
+ R←T._OK
 
 ∆TidyUp:
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder

@@ -32,10 +32,8 @@ These commands are available:
 * `]Cider.ListNuGetDependencies`
 * `]Cider.ListOpenProjects`
 * `]Cider.ListTatinDependencies`
-* `]Cider.Make`
 * `]Cider.OpenProject`
 * `]Cider.ProjectConfig`
-* `]Cider.RunTests`
 * `]Cider.UpdateCider`
 * `]Cider.Version`
 
@@ -43,17 +41,13 @@ These commands are available:
 
 Only `OpenProject` is discussed in detail in this document because it is the main command.
 
-For all other commands only basic information is provided. A comprehensive User Guide is available as an HTML document, see [Cider-User-Guide.html](https://html-preview.github.io/?url=https://github.com/aplteam/Cider/blob/main/html/Cider-User-Guide.html).
-
-The user command help is also pretty exhaustive.
-
-Regarding the API, the document [Cider-API-Reference.html](https://html-preview.github.io/?url=https://github.com/aplteam/Cider/blob/main/html/Cider-API-Reference.html) is available.
+For all other commands, only basic information is provided. A comprehensive [User Guide](https://aplteam.github.io/Cider/) is available. The user command help is also pretty exhaustive.
 
 ## Installation
 
-In version 19.0 Cider is part of a standard installation of Dyalog, although it needs activation before it is available. Therefore you only have to worry about installing it with versions 18.0 and 18.2. Cider does not run on earlier versions of Dyalog.
+In version 19.0 Cider is part of a standard installation of Dyalog, although it needs activation before it is available. Therefore you only have to worry about installing it with version 18.2; Cider does not run on earlier versions of Dyalog.
 
-Cider can be activated with `]Activate Cider` (after first activating Tatin in a similar way because Tatin is required by Cider) or by activating Cider and Tatin in one step with `]Activate all`.
+Cider can be activated with `]Activate Cider` (after first activating Tatin in a similar way because Cider requires Tatin) or by activating Cider and Tatin in one step with `]Activate all`.
 
 With version 0.23 Cider became a Tatin package. That simplifies the installation process: all you need to do is issue this command:
 
@@ -61,9 +55,9 @@ With version 0.23 Cider became a Tatin package. That simplifies the installation
       ]Tatin.InstallPackages [tatin]Cider <targetFolder>
 ```
 
-If it is installed into a folder that is scanned for user command scripts by Dyalog, then when a new instance of Dyalog is started,`]Cider` will be available. For an instance that was already running when Cider was installed, execute `]UReset`.
+If it is installed into a folder that is scanned for user command scripts by Dyalog, then when a new instance of Dyalog is started,`]Cider` will be available. For an instance already running when Cider was installed, execute `]UReset`.
 
-If it is installed into a folder that is not scanned for user command scripts, you need to add that folder to the `cmddir` parameter of SALT.
+If it is installed into a folder not scanned for user command scripts, you must add that folder to the `cmddir` parameter of SALT.
 
 Example:
 
@@ -78,7 +72,7 @@ However, the API only becomes available after executing any Cider user command. 
 If that is not good enough for you, this article explains how to load user commands into `⎕SE` at a very early stage: <https://aplwiki.com/wiki/Dyalog_User_Commands>
 
 
-## Methods
+## User Commands
 
 
 ### `OpenProject`
@@ -93,7 +87,7 @@ Accepts an optional parameter that must be one of:
 
 If no such parameter is specified, then the current directory is searched for a file `cider.config`. 
 
-* If such a file exists the user is asked whether she really wants to open that project
+* If such a file exists, the user is asked whether she wants to open that project
 * If no such file exists, then under Windows a dialog box is opened that allows the user to navigate to a Cider project
 
   On non-Windows platforms an error is thrown.
@@ -106,14 +100,14 @@ Once a folder is established that holds a Cider config file, the user command pe
 1. Creates the project space (namespace)
 1. Sets the system variables `⎕IO` and `⎕ML` in the project space
 1. Brings all code and variables into the project space
-1. Checks whether any Tatin install folders do not actually have any packages installed but have a non-empty dependency file.
+1. Checks whether any Tatin install folders do not have any packages installed but have a non-empty dependency file.
 
    This may happen if the package install folders are not uploaded to, say, GitHub (`.gitignore`) and the project has just been downloaded.
 1. Ask the user whether Cider should check all Tatin packages (if there are any) for later versions 
 1. Load all Tatin packages specified in the file `cider.config`, if any; see `dependencies.tatin` and `dependencies_dev.tatin`
 1. Inject a namespace `CiderConfig` into the project space and...
-   * populates it with the contents of the configuration file as APL arrays
-   * adds a variable `HOME` that remembers the path the project was loaded from   
+   * populate it with the contents of the configuration file as APL arrays
+   * add a variable `HOME` that remembers the path the project was loaded from   
 1. Inject a namespace `TatinVars` in case the project ends up as a package
 1. Check whether the project's config file does carry a non-empty value for `init`. If that's the case, it must be a function that is then called by Cider, typically for initializing the project
 1. If there is a variable `ToDo` in the root of the project, and the variable is not empty, then this variable is printed to the session
@@ -148,27 +142,25 @@ Notes:
 
 ### `CloseProject`
 
-Takes one or more folders or a aliases and breaks the Link between the namespace and its folder for all of them.
-
-Separate projects with space or commas.
+Takes one or more folders or aliases and breaks the Link between the namespace and its folder for all of them. Separate projects with space or commas.
 
 You may specify the `-all` flag to close all projects in `#` (*not* `⎕SE`!), but check the user command's detailed help (`-??`) for details.
 
 
 ### `CreateProject`
 
-Requires one mandatory parameter: a folder that is going to be a project. 
+Requires one parameter: a folder that is going to be a project. 
 
 Creates a file `cider.config` in that folder.
 
 ### `Config`
 
-Allow the user to edit Cider's global config file.
+Allows the user to edit Cider's global config file.
 
  
 ### `Help`
 
-Offers the user the ability to view selected or all of the documentation.
+Prints a statement to the session that would open Cider's documentation in your default browser.
 
 ### `LinkConfig`
 
@@ -176,7 +168,7 @@ Prints the contents of a `.linkconfig` file to the session. Alternatively, the u
 
 ### `AddNuGetDependencies`
 
-Use this to add NuGet dependencies
+Use this to add NuGet dependencies.
 
 ### `AddTatinDependencies`
 
@@ -184,7 +176,7 @@ Use this to add Tatin (and probably also load) Tatin dependencies.
 
 ### `ListOpenProjects`
 
-Lists the project spaces of all currently linked projects together with the fully qualified paths of all projects currently open.
+Lists the project spaces of all currently linked projects together with the fully qualified paths of all projects that are currently open.
 
 ### `ListNuGetDependencies`
 
@@ -202,24 +194,27 @@ Lists all Cider aliases together with their folders.
 
 Puts a project's config file on display and allows the user to edit it.
 
-### `Make`
+### `HowToMakeNewVersion`
 
 Prints an APL statement to the session which, when executed, will build a new version of the project.
 
 
-### `RunTests`
+### `HowToRunTests`
 
 Prints an APL statement to the session which, when executed, runs the project's test suite.
 
 
 ### `Version`
 
-Returns a three-item-vector with "Name", "Version number" and "Version date".
+Returns a character vector with the version number.
 
 
 ### `UpdateCider`
 
-Update Cider in case a later version is available as a package on [https://tatin.dev](https://tatin.dev).
+Updates Cider if a later version is available as a package on [https://tatin.dev](https://tatin.dev).
+
+Alternatively a specific version number can be specified as an argument in order to get that precise version
+
 
 
 

@@ -8,4 +8,7 @@
  ''
  '* Both -edit and -delete will ask the user for confirmation'
  '* The -edit and the -delete flags are mutually exclusive '
+ ''
+ 'The full Cider documentation is available via '
+ ']open https://aplteam.github.io/Cider/ '
 )

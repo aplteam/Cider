@@ -8,7 +8,7 @@
      →0 ⋄ R←T._Inactive
  :EndIf
 
- #.Cider.Cider.CommTools.Select_Choices←1 2⍴'SelectPkgFolder@Select package install folder to report on:' 'tatin-packages'
+ #.Cider.Cider.CommTools.AddAutomation'Select' 'SelectPkgFolder@Select package install folder to report on:' 'tatin-packages'
 
  stop←0
  (rc msg res)←stop ∆UCMD'ListTatinDependencies -full'
@@ -21,6 +21,7 @@
  →T.GoToTidyUp~∧/res[;1]∊0 1
  →T.GoToTidyUp~∧/res[;1]∊0 1
  →T.GoToTidyUp~∧/{2≤⍵+.='-'}¨res[;2]
+ R←T._OK
 
 ∆TidyUp:
  #.Cider.Cider.CommTools.Cleanup

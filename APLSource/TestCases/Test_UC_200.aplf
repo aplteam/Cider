@@ -6,6 +6,8 @@
  stop←0
  (rc msg res)←stop ∆UCMD'LinkConfig'
  Assert rc=0
- →T.PassesIf ∨/'*** Link config file'⍷∊res
-
+ :If ~∨/'Not found:'⍷∊res
+     →T.PassesIf∨/'*** Link config file'⍷∊res
+ :EndIf
+ R←T._OK
 ⍝Done

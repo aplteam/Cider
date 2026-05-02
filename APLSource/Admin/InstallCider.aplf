@@ -42,7 +42,7 @@
              ∘∘∘  ⍝ Huh?!
          :EndIf
      :EndIf
-     ZIPs←C.FilesAndDirs.ListFiles ##.CiderConfig.HOME,'/Dist/*.zip'
+     ZIPs←C.FilesAndDirs.ListFiles2 ##.CiderConfig.HOME,'/Dist/*.zip'
      ZIPs←{⍵/⍨'Installed-'{⍺∘≢¨(≢⍺)↑¨{2⊃⎕NPARTS ⍵}¨⍵}⍵}ZIPs
      Assert 1=≢ZIPs
      zipFilename←⊃ZIPs

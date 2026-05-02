@@ -1,0 +1,4 @@
+ path←∆TranslateAlias path
+ :If '[]'≡path[1,≢path]
+     path←##.Cider.GetFolderFromAlias2 path
+ :EndIf

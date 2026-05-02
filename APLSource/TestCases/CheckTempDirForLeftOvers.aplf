@@ -1,6 +1,6 @@
  CheckTempDirForLeftOvers(testFnName ps);F;⎕TRAP;list
  F←#.Cider.Cider.FilesAndDirs
- :If 0<≢list←F.ListDirs F.GetTempPath,'Cider-Tests*'
+ :If 0<≢list←F.ListDirs2 F.GetTempPath,'Cider-Tests*'
  :AndIf ~∨/'_Alias_'⍷testFnName   ⍝ The group "Alias" cleans up in the Cleanup_Alias function
 ⍝     ⎕TRAP←0 'S'
 ⍝     ∘∘∘

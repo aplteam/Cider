@@ -1,0 +1,7 @@
+(
+ 'Returns the short hash of the latest commit of the current branch (but check -branch=)'
+ '       '
+ '-branch=  By default the hash of the current branch is returned. You may specify a different branch'
+ '          by doing something like -branch=main'
+ '-full     If specified the full hash is returned rather than just the first 7 characters'
+)

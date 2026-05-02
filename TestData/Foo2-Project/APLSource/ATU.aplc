@@ -1,0 +1,380 @@
+:Class ATU
+
+    ⎕ML←⎕IO←1
+
+    ∇ r←{x}Lowercase txt
+    ⍝ `txt` is transformed into lowercase.\\
+    ⍝ This function is kept for compatability reasons.
+      :Access Public Shared
+      x←{0<⎕NC ⍵:⍎⍵ ⋄ ¯3}'x'
+      r←x ⎕C txt
+    ∇
+
+    ∇ r←Uppercase txt
+    ⍝ `txt` is transformed into uppercase.\\
+    ⍝ This function is kept for compatability reasons.
+      :Access Public Shared
+      r←1 ⎕C txt
+    ∇
+
+    ∇ r←IsChar y
+    ⍝ Checks `y` for being text
+      :Access Public Shared
+      r←0 2∊⍨10|⎕DR y
+    ∇
+
+    ∇ r←ToNum y
+    ⍝ Transforms `y` into number(s)
+      :Access Public Shared
+      r←⊃(//)⎕VFI y
+    ∇
+
+    ∇ r←IsScripted y
+    ⍝ Returns a 1 for classes, interfaces and scripted namespaces and 0 otherwise.
+      :Access Public Shared
+      r←{11 16::0 ⋄ 1⊣⎕SRC ⍵}y
+    ∇
+
+    ∇ r←x LazyMatch y
+      :Access Public Shared
+      r←(∧/x∊y)∧(∧/y∊x)
+    ∇
+
+    ∇ {r}←{msg}Assert y;EN;success
+    ⍝ Use this to ensure certain conditions. If the condition is not met an error is signalled, otherwise a 1 is returned.\\
+    ⍝ The optional left argument would become the message that is signalled.\\
+    ⍝ `y` might be a scalar or a vector of length one: that must be a Boolean. 1 means "success".\\
+    ⍝ `y` can also be a two-item vector:
+    ⍝ 1. A Boolean as before
+    ⍝ 2. An error number to be signalle; defaults to 11.
+      :Access Public Shared
+      r←1
+      msg←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'msg'
+      (success EN)←2↑y,11
+      :If (,1)≢,success
+          msg ⎕SIGNAL EN
+      :EndIf
+    ∇
+
+    ∇ r←IsDevelopment
+      :Access Public Shared
+    ⍝ Returns 1 in case the function is running under a Dyalog development (EXE or DLL).
+      r←'Development'≡4⊃'#'⎕WG'APLVersion'
+      r∨←'DLL'≡4⊃'#'⎕WG'APLVersion'   ⍝ May be DLLRT instead!
+    ∇
+
+    ∇ r←{sep}SplitPath y;l
+    ⍝ Separates the path from the filename and returns both.\\
+    ⍝ Default for the optional left argument (the separator) are `\/`.\\
+    ⍝ `'C:\Buffer\' 'my.txt' ←→ SplitPath 'C:\Buffer\my.txt'`
+    ⍝ `(,¨'1.2.3.4.') (,'5') ←→ '.' SplitPath '1.2.3.4.5'`
+      :Access Public Shared
+      sep←,{0<⎕NC ⍵:⍎⍵ ⋄ '/\'}'sep'
+      :If 0=≢y
+          r←2⍴⊂y
+      :Else
+          l←1+-⌊/sep⍳⍨⌽y
+          r←(l↓y)(l↑y)
+      :EndIf
+    ∇
+
+    ∇ r←{sep}Split y;b
+      :Access Public Shared
+      ⍝  `'First' 'Second' ←→ Split 'First',(⎕UCS 13 10),'Second'`\\
+      ⍝ `(,¨'1' '2' '3' '' '4') ←→ '.' Split '1.2.3..4'`\\
+      ⍝ That's _different_ from what `(≠⊆⊢)` is doing:\\
+      ⍝ `(,¨'1' '2' '3' '4') ←→ '.' (≠⊆⊢) '1.2.3..4'`\\
+      ⍝ Default for the optional left argument (the separator) is CR+LF.
+      sep←{0<⎕NC ⍵:⍎⍵ ⋄ ⎕UCS 13 10}'sep'
+      b←(1↑⍨≢sep),sep⍷y     ⍝ This is more efficient in terms of memory then doing it one one line
+      r←(≢sep)↓¨b⊂sep,y
+    ∇
+
+    ∇ r←{sep}Last y;where
+      :Access Public Shared
+      ⍝ Returns the last part in `y`.\\
+      ⍝ Default separator is the dot (`.`), so for a filename it would return the extension:\\
+      ⍝ `BAT ←→ Last '/path/to/file.BAT'`\\
+      ⍝ You can also use this to get the filename from a path:\\
+      ⍝ `file.BAT ←→ '/\' Last '/path/to/file.BAT'`\\
+      ⍝ Returns always a vector:\\
+      ⍝ `(,¨'3') ←→ Last '1.2.3'`
+      sep←{0<⎕NC ⍵:⍎⍵ ⋄ '.'}'sep'
+      :If (≢y)=where←¯1+⌊/sep⍳⍨⌽,y
+          r←0⍴y
+      :ElseIf ~0 1∊⍨≡r←(-where)↑y
+          r←⍬⍴r
+      :EndIf
+    ∇
+
+    ∇ r←{x}DMB y;w
+      :Access Public Shared
+      ⍝ Delete leading, trailing and multiple blanks by default. Accepts scalar, vector and matrix as argument.
+      x←{0<⎕NC ⍵:⍎⍵ ⋄ ' '}'x'
+      r←x{~0 1∊⍨≡⍵:⍺ ∇¨⍵
+          2=⍴⍴⍵:↑⍺ ∇¨↓⍵
+          (,⍺)≡,⍵:''
+          w←1↓¯1↓⍺{⍵/⍨~(2⍴⍺)⍷⍵}⍺,⍵,⍺
+          (0=⍴⍴⍵)∧1=≢w:⍬⍴⍵
+          w
+      }y
+    ∇
+
+    ∇ r←DLB y
+      :Access Public Shared
+      ⍝ Delete leading blanks. Accepts scalar, vector and matrix as argument.
+      :If 2=|≡y
+          r←DLB¨y
+      :ElseIf 1=⍴⍴y
+          r←(+/∧\' '=y)↓y                 ⍝ Vectors (main application)
+      :ElseIf 2=⍴⍴y
+          r←(+/∧\' '=y)⌽y                 ⍝ Matrix
+      :ElseIf 0=⍴⍴y
+          r←(1+' '≡y)⊃y''                 ⍝ Scalar
+      :EndIf
+    ∇
+
+    ∇ r←DTB y
+      :Access Public Shared
+      ⍝ Delete trailing blanks. Accepts scalar, vector and matrix as argument.
+      :If 2=|≡y
+          r←DTB¨y
+      :ElseIf 1=⍴⍴y
+          r←⌽{(+/∧\' '=⍵)↓⍵}⌽y            ⍝ Vectors (main application)
+      :ElseIf 2=⍴⍴y
+          r←(-+/∧⌿∧\' '=⌽y)↓[2]y          ⍝ Matrix
+      :ElseIf 0=⍴⍴y
+          r←(1+' '≡y)⊃y''                 ⍝ Scalar
+      :EndIf
+    ∇
+
+    ∇ {success}←{browser}GoToWebPage Url;wsh;url;html;title;EncodeBlanksForNix;⎕WX
+      :Access Public Shared
+    ⍝ Fires up the default browser and displays "Url". Exception is when the current
+    ⍝ session is connected to Ride: then "Url" is displayed in the Ride browser.\\
+    ⍝ Instead of using the default browser you can specify an EXE (Windows) or command
+    ⍝ as the left argument. That will then be used to show "Url". Note that the left
+    ⍝ argument is ignored in case the current session is connected to Ride.\\
+    ⍝ For displaying a local file rather then a url add "file:///".\\
+    ⍝ However, note that "file:///" does not work on some systems / with some browsers.\\
+    ⍝ Returns 1 for success and 0 for failure. That can happen for example when the
+    ⍝ Windows Scripting Host throws a DOMAIN ERROR.\\
+    ⍝ Examples:
+    ⍝ ~~~
+    ⍝ GoToWebPage 'file:///c:/my.html'
+    ⍝ GoToWebPage 'file://localhost/c:/my.html'
+    ⍝ GoToWebPage 'http://aplwiki.com'
+    ⍝ GoToWebPage 'https://en.wikipedia.org/wiki/Main_Page'
+    ⍝ ~~~
+      ⎕WX←1
+      success←1
+      url←Lowercase Url
+      :If ∨/'file:'{⍺≡(≢⍺)↑⍵}url
+          :If 'Win'≡GetOperatingSystem ⍬
+              Url←'"',('"'~⍨'file://'{⍺,(≢⍺)↓⍵}Url),'"'
+          :EndIf
+      :ElseIf ∨/'https:'{⍺≡(≢⍺)↑⍵}url
+          Url←'https://'{⍺,(≢⍺)↓⍵}Url
+      :ElseIf ∨/'http:'{⍺≡(≢⍺)↑⍵}url
+          Url←'http://'{⍺,(≢⍺)↓⍵}Url
+      :Else
+          :If ∨/'//:'∊Url  ⍝ Any protocol at all?!
+              ⍝ ? No idea what that protocol is, so we just allow it going through.
+          :Else
+              Url←'https://',Url    ⍝ That's the default
+          :EndIf
+      :EndIf
+      (('\'=Url)/Url)←'/'
+      Url←{l←3+1⍳⍨'://'⍷⍵ ⋄ (l↑⍵),{(~'//'⍷⍵)/⍵}l↓Url}Url
+      :If 3501⌶⍬ ⍝ Connected to Ride?
+          :If 'file://'{⍺≡(≢⍺)↑⍵}Url
+              ⍝Url←∊(⊂'\ ')@(⍸' '=Url)⊣Url
+              Url←(≢'file://')↓Url
+              html←⊃⎕NGET Url 1
+              :If 0=≢title←'<title'{{⍵↑⍨¯1+⍵⍳'<'}⍵↓⍨(≢⍺)+1⍳⍨⍺⍷⍵}∊html
+                  title←Url
+              :EndIf
+              success←0=title(3500⌶)∊html
+          :Else
+              html←'<html>' '<head>'
+              html,←⊂'<meta http-equiv="refresh" content="0;url=',Url,'" />'
+              html,←'</head>' '</html>'
+              success←0=Url(3500⌶)∊html
+          :EndIf
+      :Else
+          browser←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'browser'
+          browser←{'"',(⍵~'"'),'" '}⍣(0<≢browser)⊢browser
+          :Select GetOperatingSystem ⍬
+          :Case 'Win'
+              'wsh'⎕WC'OLEClient' 'WScript.Shell'
+              :Trap 11
+                  :If 0=≢browser
+                      {}wsh.Run Url
+                  :Else
+                      {}wsh.Run browser,Url
+                  :EndIf
+              :Else
+                  success←0
+              :EndTrap
+          :Case 'Lin'
+              :Trap 11
+                  :If 0=≢browser
+                      {}⎕SH'xdg-open ',Url,'</dev/null > /dev/null 2>&1 &'
+                  :Else
+                      {}⎕SH browser,' ',Url,'</dev/null > /dev/null 2>&1 &'
+                  :EndIf
+              :Else
+                  success←0
+              :EndTrap
+          :Case 'Mac'
+              :Trap 11
+                  {}⎕SH'open -a Safari ',Url
+              :Else
+                  success←0
+              :EndTrap
+          :EndSelect
+      :EndIf
+    ∇
+
+    ∇ r←IsRunningAsAdmin;IsUserAnAdmin
+      ⍝ Tells whether this process is being "Run as Administrator" (Windows) or has sudo rights (others)
+      :Access Public Shared
+      :If 'Win'≡APLTreeUtils2.GetOperatingSystem''
+          :Trap r←0
+              r←⍎⎕NA'I Shell32|IsUserAnAdmin'
+          :EndTrap
+      :Else
+          r←{∨/' sudo '⍷' ',⍵,' '}⊃⎕SH'groups ',⎕AN
+      :EndIf
+    ∇
+
+    ∇ r←GetOperatingSystem dummy
+      :Access Public Shared
+   ⍝ Returns one of: "Win", "Mac", "AIX", "Lin".\\
+   ⍝ Note that under Linux you might need more information.
+      r←3↑⊃'.'⎕WG'APLVersion'
+    ∇
+
+    ∇ r←Create_UUID;⎕RL
+    ⍝ Produces a UUID
+      :Access Public Shared
+      ⎕RL←+/⎕TS
+      r←'-'@(+\9,3⍴5)⊢(⎕D,⎕C ⎕A)[?36⍴16]
+    ∇
+
+    ∇ r←{type}Base64 txt;charset
+      :Access Public Shared
+    ⍝ Base64 encoding. `txt` must be a simple character vector.\\
+    ⍝ `type` defaults to 1 which specifies the default alphabet: `[a-zA-z0-9+/=]`.\\
+    ⍝ If you want a file and URL-save alphabet specify `type` as 2. Then `- is used instead of `+`, and `_` instead of `/`.\\
+    ⍝ See [RFC 4648](http://www.rfc-editor.org/rfc/rfc4648.txt) for details.\\
+    ⍝ Whitespace in `txt` is ignored on decode.
+      type←{0<⎕NC ⍵:⍎⍵ ⋄ 1}'type'
+      :If (,1)≡,type
+          charset←'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+      :ElseIf (,2)≡,type
+          charset←'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
+      :Else
+          'Invalid left argument: "type" must be either 1 or 2'⎕SIGNAL 11
+      :EndIf
+      :If ∧/('='~⍨∪txt)∊charset
+          r←charset base64 txt
+      :Else
+          r←charset base64'UTF-8'⎕UCS txt
+      :EndIf
+    ∇
+
+    ∇ r←{currentVersion}AtLeastVersion min
+      :Access Public Shared
+    ⍝ Returns 1 if the currently running version is at least `min`.\\
+    ⍝ If the current version is 17.1 then:\\
+    ⍝ `1 1 1 0 ←→ AtLeastVersion¨16 17 17.1 18`\\
+    ⍝ You may specify a version different from the currently running one via `⍺`:\\
+    ⍝ `1 1 0 0 ←→ 17 AtLeastVersion¨16 17 17.1 18`
+      currentVersion←{0<⎕NC ⍵:⍎⍵ ⋄ {⊃⊃(//)⎕VFI ⍵/⍨2>+\⍵='.'}2⊃'#'⎕WG'APLVersion'}'currentVersion'
+      'Right argument must be length 1'⎕SIGNAL 11/⍨1≠≢min
+      r←⊃min≤currentVersion
+    ∇
+
+    ∇ r←{length}FormatDateTime ts;ts2;formatstring;bool;buffer
+      :Access Public Shared
+    ⍝ Formats the right argument (defaults to `⎕TS` if empty) as a string with 'YYYY-MM-DD hh:mm:ss by default\\
+    ⍝ The right argument can be one of:
+    ⍝ * A single float (like 20120102030405) representing date and time.
+    ⍝ * A simple vector of length 6 or 7 representing a timestamp (`⎕TS`).
+    ⍝ * A matrix of either floats or vectors (length 6 or 7) representing a DateTime.
+    ⍝ Note that you cannot mix floats and time stamps.\\
+    ⍝ If the right argument has not 7 but 6 or 3 elements, formatting is done accordingly.\\
+    ⍝ Via the left argument the length can be set to
+    ⍝ ⍬, 3, 6 or 7; default is 6; ⍬ Accepts any length of the right argument which is 3, 6 or 7.\\
+    ⍝ If the right argument is a...
+    ⍝ * simple vector, a string is returned.
+    ⍝ * matrix, a matrix is returned.
+      :If 645≡⎕DR ts
+          :If (⍴⍴ts)∊0 1
+              :If 1=≢ts
+                  ts←{0=≢,⍵:⍬ ⋄ ⎕ML←3 ⋄ ⍎¨(4 2 2 2 2 2/⍳6)⊂14 0⍕⍵}ts
+              :EndIf
+          :Else
+              ts←↑,{0=⍵:6⍴0 ⋄ v←14 0⍕⍵ ⋄ ⎕ML←3 ⋄ ⍎¨(4 2 2 2 2 2/⍳6)⊂v}¨ts
+          :EndIf
+      :EndIf
+      :If ⍬≡length←{2=⎕NC ⍵:⍎⍵ ⋄ 6}'length'
+          length←''⍴¯1↑⍴ts
+      :EndIf
+      :If ~0=≢ts
+          :If 2=⍴⍴ts
+              buffer←{⍵/⍨0<≢¨⍵~¨⊂' ' 0}↓ts
+              'Invalid right argument: must be integer'⎕SIGNAL 11/⍨~326 163∊⍨∪⎕DR¨buffer
+              'Invalid right argument: must not be negative'⎕SIGNAL 11/⍨∨/¯1∊¨×¨buffer
+              'Invalid right argument: must be simple'⎕SIGNAL 11/⍨1≠∪≡¨buffer
+          :Else
+              'Invalid right argument: must be integer'⎕SIGNAL 11/⍨~326 163∊⍨⎕DR ts
+              'Invalid right argument: must not be negative'⎕SIGNAL 11/⍨¯1∊×,ts
+              'Invalid right argument: must be simple'⎕SIGNAL 11/⍨1≠≡ts
+          :EndIf
+      :EndIf
+      :If 2=⍴⍴ts
+          ts2←length↑[2]ts
+      :Else
+          ts2←,[0.5]length↑{0=≢⍵:⎕TS ⋄ ts}ts
+      :EndIf
+      :Select ⊃length
+      :Case 3
+          formatstring←'ZI4,<->,ZI2,<->,ZI2'
+      :CaseList 6 7
+          formatstring←'ZI4,<->,ZI2,<->,ZI2,< >,ZI2,<:>,ZI2,<:>,ZI2'
+      :Else
+          'Invalid left argument'⎕SIGNAL 11
+      :EndSelect
+      bool←(ts2∨.≠' ')∧ts2∨.≠0
+      r←bool⍀formatstring ⎕FMT(6⌊length)↑[2]bool⌿ts2
+      :If 7=2⊃⍴ts2
+          r←⊃(↓r),¨{0=⍵:'' ⋄ 0=≢⍵~' ':'' ⋄ '.',⍕⍵}¨ts2[;7]
+      :EndIf
+      :If 2≠⍴⍴ts
+          r←,r
+      :EndIf
+    ∇
+
+      base64←{
+          ⎕IO←0
+          ⍺←''
+          chars←⍺
+          bits←{,⍉(⍺⍴2)⊤⍵}                   ⍝ encode each element of ⍵ in ⍺ bits,
+                                             ⍝ and catenate them all together
+          part←{((⍴⍵)⍴⍺↑1)⊂⍵}                ⍝ partition ⍵ into chunks of length ⍺
+     
+          0=2|⎕DR ⍵:'UTF-8'⎕UCS 2∘⊥∘(8∘↑)¨8 part{(-8|≢⍵)↓⍵}6 bits{(⍵≠64)/⍵}chars⍳⍵
+                                             ⍝ decode a string into octets
+     
+          four←{                             ⍝ use 4 characters to encode either
+              8=≢⍵:'=='∇ ⍵,0 0 0 0           ⍝   1,
+              16=≢⍵:'='∇ ⍵,0 0               ⍝   2
+              chars[2∘⊥¨6 part ⍵],⍺          ⍝   or 3 octets of input
+          }
+          cats←⊃∘(,/)∘((⊂'')∘,)              ⍝ catenate zero or more strings
+          cats''∘four¨24 part 8 bits ⍵
+      }
+
+:EndClass

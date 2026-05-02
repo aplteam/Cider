@@ -10,12 +10,12 @@
  (projectFolder1,'/cider.config')⎕NCOPY(##.CiderConfig.HOME,'/TestData/cider.config.Foo')
  #.⎕EX'TEMP' ⋄ 'TEMP.Foo'#.⎕NS''
  ref←∆GetRefToCommTools
- ref.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  (rc msg buff)←∆UCMD'CreateProject "',projectFolder1,'" #.TEMP.Foo -noEdit -acceptConfig -batch -ignoreUserExec'
  Assert rc=0
  #.TEMP.Foo.⎕FX'r←Hello' 'r←''World'''
  {}⎕SE.Link.Add'#.TEMP.Foo.Hello'
- list←FilesAndDirs.ListFiles projectFolder1
+ list←FilesAndDirs.ListFiles2 projectFolder1
  →T.GoToTidyUp 1≠≢list
  →T.GoToTidyUp ##.Cider.ConfigFilename≢⊃,/1↓⎕NPARTS 1⊃list
 

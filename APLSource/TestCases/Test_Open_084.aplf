@@ -1,0 +1,29 @@
+ R←Test_Open_084(stopFlag batchFlag);⎕TRAP;parms;r;rc;tempDir;log;success;qdmx
+⍝ Open project with a dependency install folder that's empty apart from the dependency file which carries only <group>-<name>
+⍝
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ tempDir ⎕NCOPY⍠('Wildcard' 1)⊣##.CiderConfig.HOME,'/TestData/JustGroupAndName/*'
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←tempDir
+ parms.parent←'#.TEMP'
+ parms.watch←'ns'
+ parms.ignoreUserExec←1
+ parms.batch←1
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp~∧/(⊂∊log){∨/⍵⍷⍺}¨'Project successfully opened and established in' '#.TEMP.UpdatePkgs'
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
+ {}⎕SE.Link.Break'#.TEMP.UpdatePkgs'
+ {}FilesAndDirs.RmDirByForce tempDir,'/..'
+⍝Done

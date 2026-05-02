@@ -1,0 +1,7 @@
+ DayDecimal2DateTime←{
+⍝ `⍵` days.decs - ddddd.dddddd          - scalar or vector\\
+⍝ `←` date.time - yyyymmdd.hhmmssmmm    - shape ⍴⍵\\
+⍝ See also [`DateTime2DayDecimal`](#).\\
+⍝ Phil Last
+     Timestamp2DateTime DayDecimal2Timestamp ⍵
+ }

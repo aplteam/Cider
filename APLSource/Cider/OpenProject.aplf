@@ -1,13 +1,18 @@
- (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag
+ (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag;ref2TatinVars;∆Problems;loadDependencies
 ⍝ Open a Cider project.\\
 ⍝ `y` must be one of:
 ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
 ⍝  * A character vector holding the full path to a project\\
 ⍝ The function returns either FAILURE or SUCCESS. This refers to the principal operation: opening the project.
-⍝ However, if something like loading dependencies goes wrong then messages are printed to the session.\\
-⍝ In case `batch` is 1 things are different, however: in that case an error is thrown for all essential parts
-⍝ of the operation. That includes loading any dependencies but excludes non-essential stuff like a Git status report.
- successFlag←FAILURE ⋄ ∆LOG←''
+⍝ If something like loading dependencies goes wrong, then messages are printed to the session in case batch←0.\\
+⍝ In case `batch` is 1 things are different, however: in that case an error is thrown for all essential parts of
+⍝ the operation. That includes loading any dependencies but excludes non-essential stuff like a Git status report.\\
+⍝ The final message is "Project successfully [opened|imported and established in ... [with problems]". The
+⍝ optional "with problems" part as added only when something like loading dependencies, or executing the projects's
+⍝ `lx` expression successfuly went wrong.
+ successFlag←FAILURE
+ ∆LOG←''                        ⍝ This is used to collect all messages
+ ∆Problems←0                    ⍝ Use as a counter of any problems; only relevant when batch←0
  :If 80=⎕DR y
      parms←CreateOpenParms''
      parms.folder←y
@@ -16,6 +21,8 @@
  :EndIf
  '"folder" must be specified'Assert 0<parms.⎕NC'folder'
  '"folder" must be specified'Assert 0<≢parms.folder
+ parms.folder←{(~(1⍴⍵)∊'/\')∧(~':'∊⍵)∧('[]'≢⍵[1,≢⍵]):⊢F.EnforceSlash'expand'F.NormalizePath F.PWD,'/',⍵ ⋄ ⍵}{⍵↓⍨+/∧\' '=⍵}parms.folder
+ parms.folder←F.NormalizePath parms.folder
  '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
  '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both' 'none' 0
  p←{⍺←parms.(verbose batch) ⋄ ⍺ PrintToSession ⍵}
@@ -36,10 +43,13 @@
  :If parms.alias≡'.'
      parms.alias←⎕C 2⊃{1 ⎕NPARTS(-(¯1↑⍵)∊'/\')↓⍵}parms.folder
  :EndIf
+ :If 0<≢parms.alias
+     'An alias must start with a letter followed by zero or more letters, digits, underscores or hyphens'Assert((1↑parms.alias)∊⎕A,⎕C ⎕A)∧∧/((1↓parms.alias)∊'_-',⎕D,⎕A,⎕C ⎕A)
+ :EndIf
  AddAlias parms.folder parms.alias
  configFilename←parms.folder,'/cider.config'
  ('No file "cider.config" found in ',parms.folder)Assert F.Exists configFilename
- config←ReadProjectConfigFile configFilename
+ config←ReadProjectConfig configFilename
  config(CopyParms)←parms
  :If 0=≢parms.projectSpace                                                      ⍝ Was it specified as argument?
  :AndIf 0=≢parms.projectSpace←config.CIDER.projectSpace                         ⍝ Nope, so the config file rules...
@@ -64,6 +74,7 @@
  configFilename HandleSysVars config
  source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source           ⍝ For linking we are only interested in the code folder
  ('Source folder does not exist: ',parms.folder)Assert F.Exists parms.folder
+ HandleLinkSourceFlags source
  (linkOptions parms)←ProcessLinkOptions parms config
  p'Bringing in the source code...'
  projectSpace_←CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
@@ -78,18 +89,15 @@
      ('LINK failed to load the code (',dmx.EM,')')Assert~∨/'Error:'⍷res
      ('LINK failed to load the code from <(',source,'>')Assert~∨/'Unknown Debug options in'⍷res
      :If ∨/'ERRORS ENCOUNTERED:'⍷res
-         res Assert 0=parms.batch
-         (1 parms.batch)p res
+         res Assert 0
      :EndIf
  :EndIf
- ⍝ --- Change of strategy: "watch is now handled like any other parameter: ---
- ⍝ Only reported when it is not set to the default.
- ⍝ (1 parms.batch)p 'watch'ReportLinkSettings linkOptions    ⍝ Exclude "watch"
- ⍝ 1 p parms.batch ReportWatch res                           ⍝ Always
- ⍝ ---------------------------------------------------------------------------
  (1 parms.batch)p ReportLinkSettings linkOptions
  :If 0=parms.noPkgLoad
-     pkgStatus←parms CheckForTatinPackages config
+     loadDependencies←1
+     :If ¯1=pkgStatus←parms CheckForTatinPackages config
+         loadDependencies←0
+     :EndIf
      :If 0<pkgStatus
          :If 0=parms.importFlag
              :Trap 0
@@ -100,14 +108,18 @@
                  buff←''
                  buff,←⊂'ERROR: Checking Tatin package status in ',parms.folder
                  buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
-                 buff Assert 0=parms.batch
+                 ∆Problems+←1
+                 loadDependencies←0
+                 (1↓⊃,/(⎕UCS 13),¨buff)Assert parms.batch
                  (1 parms.batch)p buff
              :EndTrap
          :EndIf
          :Trap 0
-             :If 0=parms.(verbose batch)LoadTatinDependencies config parms.folder(⍕projectSpace_)
+             :If loadDependencies
+             :AndIf 0=parms.(verbose batch)LoadTatinDependencies config parms.folder(⍕projectSpace_)
                  buff←'Package folder ',parms.folder,' needs attention!'
-                 buff Assert 0=parms.batch
+                 ∆Problems+←1
+                 buff Assert~parms.batch
                  1 p buff
              :EndIf
          :Else
@@ -117,8 +129,9 @@
              buff,←⊂'ERROR: loading Tatin packages from ',parms.folder
              buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
              buff←1↓⊃,/(⎕UCS 13),¨buff
-             buff Assert 0=parms.batch
-             (1 parms.batch)p buff
+             ∆Problems+←1
+             buff Assert~parms.batch
+             1 p buff
          :EndTrap
      :EndIf
      :If 0<config.⎕NC'CIDER.dependencies.nuget'
@@ -127,22 +140,24 @@
              :Trap 11
                  {}parms.(verbose batch)LoadNuGetDependencies parms.folder projectSpace_
              :Else
-                 ⎕SE._Tatin.Client.CloseConnections 1                               ⍝ Just in case...
+                 ⎕SE._Tatin.Client.CloseConnections 1                           ⍝ Just in case...
                  qdmx←⎕DMX
                  buff←''
                  buff,←⊂'ERROR: loading NuGet packages from ',parms.folder
                  buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
-                 buff Assert 0=parms.batch
-                 (1 parms.batch)p buff
+                 ∆Problems+←1
+                 buff Assert~parms.batch
+                 1 p buff
              :EndTrap
          :Else
-             p'Cannot load NuGet packages: .NET is not available'
+             'Cannot load NuGet packages: .NET is not available'Assert~parms.batch
+             1 p'Cannot load NuGet packages: .NET is not available'
          :EndIf
      :EndIf
  :EndIf
  InjectConfigDataIntoProject config projectSpace_ parms.folder
- msg←InjectTatinVars projectSpace_ parms.folder
- 1 p msg
+ ref2TatinVars←InjectTatinVars projectSpace_ parms.folder
+ parms HandleLX ref2TatinVars projectSpace_
  flag←(0=parms.batch)∧(0=parms.importFlag)
  {}ChangeCurrentDir⍣flag⊢parms.folder
  {}parms ExecProjectInitFunction⍣(0=parms.suppressInit)⊢config projectSpace_
@@ -151,5 +166,10 @@
  successFlag←SUCCESS
  {}CheckForDropboxConflicts⍣flag⊢parms.folder
  {}CheckForGit⍣flag⊢parms.folder config parms
- p'Project successfully ',((1+parms.importFlag)⊃'opened' 'imported'),' and established in "',parms.parent,,{(,'#')≡,⍵:'"' ⋄ '.',⍵,'"'}parms.projectSpace
+ msg←'Project successfully ',(1+parms.importFlag)⊃'opened' 'imported'
+ :If 0<∆Problems
+     msg,←' (though with ',(⍕∆Problems),' problem',((1<∆Problems)/'s'),')'
+ :EndIf
+ msg,←' and established in: ',parms.parent,{(,'#')≡,⍵:'' ⋄ '.',⍵}parms.projectSpace
+ p msg
 ⍝Done

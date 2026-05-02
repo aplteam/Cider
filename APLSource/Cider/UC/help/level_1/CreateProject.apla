@@ -25,4 +25,7 @@
  '                 wants to open the project as well. You can enforce that without the user being'
  '                 questioned by setting the -batch flag. Mainly useful for test cases.'
  '-ignoreUserExec  Suppress execution of a user function defined in Cider''s config file on this occasion.'
+ ''
+ 'The full Cider documentation is available via '
+ ']open https://aplteam.github.io/Cider/ '
 )

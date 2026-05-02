@@ -1,18 +1,30 @@
- r←GetCiderGlobalConfigFileContent;filename;json;qdmx
+ r←GetCiderGlobalConfigFileContent;filename;json;qdmx;txt
 ⍝ Returns a namespace with all settings (if any) in the (optional) global Cider config file.
-⍝ Note that the file might not exist or be empty, in which case `⍬` is returned.
+⍝ If the file does not exist it is created.
  r←⍬
  filename←GetCiderGlobalConfigFilename
- :If F.IsFile filename
+ :If ~F.IsFile filename
+     ⍝ Create a global Cider config file with default entries (all comments)
+     txt←''
+     txt,←⊂,'{'
+     txt,←⊂,'  // AskForDirChange: 1,'
+     txt,←⊂,'  // CheckForDropboxConflicts: 0,'
+     txt,←⊂,'  // HandleLinkStops: 0,'
+     txt,←⊂,'  // ExecuteAfterProjectOpen: "",'   ⍝ ⎕SE.Path2Function for example
+     txt,←⊂,'  // ReportGitStatus: 1,'
+     txt,←⊂,'  // verbose: 0,'
+     txt,←⊂,'}'
+     (⊂txt)⎕NPUT filename
+ :EndIf
+ :Trap 0
+     json←⊃F.NGET filename
+ :Else
+     qdmx←⎕DMX
+     ('Reading Cider''s global configuration file "',filename,'" failed: ',2⊃qdmx.DM)Assert 0
+ :EndTrap
+ :If 0<≢json
      :Trap 0
-         json←F.NGET filename
-     :Else
-         qdmx←⎕DMX
-         ('Reading Cider''s global configuration file "',filename,'" failed: ',2⊃qdmx.DM)Assert 0
-     :EndTrap
- :AndIf 0<≢json
-     :Trap 0
-         r←⎕JSON⍠('Dialect' 'JSON5')⊣⊃json
+         r←⎕JSON⍠('Dialect' 'JSON5')⊣json
      :Else
          qdmx←⎕DMX
          ('Reading Cider''s global configuration file "',filename,'" failed: ',2⊃qdmx.DM)Assert 0

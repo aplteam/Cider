@@ -12,11 +12,11 @@
  Assert 0=≢res
 
  configfile←tempDir,'/cider.config'
- config←##.Cider.Get_JSON5 configfile
+ config←##.Cider.ReadProjectConfig configfile
  config.CIDER.dependencies.tatin←'tatin-packages'
- config ##.Cider.Put_JSON5 configfile
+ config ##.Cider.WriteProjectConfig configfile
 
- ##.Cider.C.YesOrNo_Answers←1 2⍴'ChangeCurrentDir@' 'n'
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
  parms←##.Cider.CreateOpenParms''
  parms.folder←tempDir
  parms.batch←1

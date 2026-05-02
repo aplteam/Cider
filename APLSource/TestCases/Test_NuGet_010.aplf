@@ -1,12 +1,14 @@
- R←Test_NuGet_010(stopFlag batchFlag);⎕TRAP;tempFolder;parms;I;rc;msg
+ R←Test_NuGet_010(stopFlag batchFlag);⎕TRAP;tempFolder;parms;I;rc;msg;debug
 ⍝ Open a project that has already two NuGet dependencies
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  tempFolder←∆GetFolderInTempDir⊃⎕SI
- parms←∆NuGetTestProcessParms(⊃⎕SI)tempFolder
- I←⎕NEW APLProcess(,⊂parms)
- R←I.ExitCode
+ debug←0
+ parms←debug ∆NuGetTestProcessParms(⊃⎕SI)tempFolder
+ I←APLProcess.New parms
+ →T.GoToTidyUp I.ExitCode≠130
+ R←T._OK
 
 ∆TidyUp:
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder

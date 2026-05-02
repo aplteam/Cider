@@ -7,4 +7,7 @@
  ' [;2] Path'
  ' [;3] Number of objects in the project'
  ' [;4] Alias name (if any)'
+ (' '⋄)
+ 'The full Cider documentation is available via '
+ ']open https://aplteam.github.io/Cider/ '
 )

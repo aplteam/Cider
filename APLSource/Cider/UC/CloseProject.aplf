@@ -4,7 +4,7 @@
  fast←Args.Switch'fast'
  :If 0=≢Args.Arguments
      :If 0=noop←≢list←P.ListOpenProjects 0   ⍝ noop ←→ NoOf Open Projects
-         ⎕←'There are no open Cider projects that could be closed'
+         ⍞←'There are no open Cider projects that could be closed',⎕UCS 10
          :Return
      :Else
          :If Args.all
@@ -21,6 +21,8 @@
                  r←+/(~fast)P.CloseProject list[ind;1]
                  'Something went wrong'Assert r=≢ind
                  r←1↓∊(⎕UCS 13),¨↓⎕FMT list[ind;]
+             :Else
+                 r←'Cancelled by user' ⋄ →0
              :EndIf
          :EndIf
      :EndIf
@@ -58,7 +60,7 @@
      report←0
  :EndIf
  :If 0=≢⎕SE.Cider.ListOpenProjects 0
- :AndIf 1 YesOrNo'Do you wish to )CLEAR the workspace?'
+ :AndIf 1 YesOrNo'ClearWS@Do you wish to )CLEAR the workspace?'
      :If report
          :If ' '=1↑0⍴∊r
              r←('These projects were closed:'),(⎕UCS 13),r,(⎕UCS 13),(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'
@@ -77,7 +79,7 @@
          :If ' '=1↑0⍴∊r
              r←('These projects were closed:'),(⎕UCS 13),r
          :Else
-             r←'One project was closed.'
+             r←'One project was closed.',⎕UCS 10
          :EndIf
      :EndIf
  :EndIf

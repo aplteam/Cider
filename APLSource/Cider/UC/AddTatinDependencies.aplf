@@ -12,7 +12,7 @@
  :If 0=≢projectFolder
      r←'Cancelled by user' ⋄ →0
  :EndIf
- cfg←P.ReadProjectConfigFile projectFolder
+ cfg←P.ReadProjectConfig projectFolder
  :If development
      ref←cfg.CIDER.dependencies_dev
  :Else
@@ -21,7 +21,7 @@
  :If 0<≢targetNamespace
      'There is already a target namespace defined; edit the project config file to change that'Assert~'='∊ref.tatin
      ref.tatin,←'=',targetNamespace
-     cfg P.WriteProjectConfigFile projectFolder
+     cfg P.WriteProjectConfig projectFolder
  :EndIf
  flag←0
  :Repeat
@@ -31,10 +31,10 @@
          q←'EditProjectConfig@',q
          :If 1 P.##.C.YesOrNo q
              1 P.ProjectConfig projectFolder
-             cfg←P.ReadProjectConfigFile projectFolder
+             cfg←P.ReadProjectConfig projectFolder
              ref←cfg.CIDER.dependencies
          :Else
-             →0,≢r←'Cancelled by user'
+             r←'Cancelled by user' ⋄ →0
          :EndIf
      :Else
          q←'AddTatinDeps@',(2⊃⎕NPARTS projectFolder),': add dependencies to the folder ',({⍵↑⍨¯1+⍵⍳'='}ref.tatin),'/'
@@ -63,7 +63,7 @@
      :If targetNS≡targetNS2    ⍝  Only when "normal" dependencies and development dependencies go into the same namespace...
          sourceFolder2←projectFolder,'/',P.##.RemoveTargetDefinition ref2.tatin
          :If P.##.F.IsDir sourceFolder2
-         :AndIf 0<≢P.##.F.ListDirs sourceFolder2
+         :AndIf 0<≢P.##.F.ListDirs2 sourceFolder2
          :AndIf P.##.F.IsFile sourceFolder2,⎕SE._Tatin.Client.Reg.BuildListFilename
              list2←⎕SE.Tatin.LoadDependencies sourceFolder2 targetNS2          ⍝... do we need to (re-)load both
              noOf←+/≢¨list list2

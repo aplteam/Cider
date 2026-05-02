@@ -61,7 +61,7 @@
              config.CIDER.projectSpace(⍎config.CIDER.parent).⎕NS''
          :Else
              :If 0<≢(' '~⍨¨↓((⍎config.CIDER.parent)⍎config.CIDER.projectSpace).⎕NL 9~⍨⍳16)~⊂'CiderConfig'
-                 :If 1<≢list←⊃P.##.F.Dir projectFolder
+                 :If 1<≢list←⊃P.##.F.Dir2 projectFolder
                  :OrIf P.##.ConfigFilename≢{1≠≢⍵:0 ⋄ ⊃,/1↓⎕NPARTS⊃⍵}list
                      :If batch
                       ⍝In batch mode there is nothing we can do but throw an error
@@ -88,9 +88,7 @@
          parms.ignoreUserExec←ignoreUserExec
          parms.batch←batch
          (success log)←P.OpenProject parms
-         :If success
-             r←{⍵↑⍨-(⎕UCS 13)⍳⍨1↓⌽⍵}log
-         :Else
+         :If ~success
              r←'Project created but not opened'
          :EndIf
      :EndIf

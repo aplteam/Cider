@@ -25,7 +25,7 @@
          :If ~dry
              {}F.Cd path
          :EndIf
-         ⎕←'The current directory is now ',F.PWD
+         (~parms.batch)PrintToSession'The current directory is now ',F.PWD
          r←~dry
      :EndIf
  :EndIf

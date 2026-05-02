@@ -1,0 +1,30 @@
+ r←{day}DateFrom_Year_WeekNumberISO(Y weekNo);corr;ind;ord;month
+⍝ `⍵` Year and week number (ISO standard)\\
+⍝ `⍺` Optional day (as char vector).\\
+⍝ `←` Depends on whether "day" was specified or not:\\
+⍝ * If "day" was specified the date of that day is returned.
+⍝ * If "day" was not specified then the start date of the week is returned.
+⍝
+⍝ Note that "day" is case sensitive and must be specified as, say, "Sunday".\\
+⍝ For details see <https://www.wikiwand.com/en/ISO_week_date#Calculation> \\
+⍝ Examples:
+⍝ ~~~
+⍝ (2008 9 22)   ←            DateFrom_Year_WeekNumberISO 2008 39
+⍝ (2015 12 33)  ← 'Saturday' DateFrom_Year_WeekNumberISO 2015 53
+⍝ ~~~
+⍝ See also [`WeekNo_ISO`](#).\\
+⍝ Kai Jaeger
+ :Access Public Shared
+ day←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'day'
+ 'Invalid week number'⎕SIGNAL 11/⍨~weekNo∊1+⍳53
+ corr←3+DayOfWeekAsNumber Y 1 4
+ ord←1+(weekNo×7)-corr
+ month←1+1⍳⍨ord<+\DaysInMonth Y
+ :If 0∊⍴day
+     r←Y,month,(ord-+/(1+⍳month-1)DaysInMonth Y)
+ :Else
+     ind←WeekDays⍳⊂day
+     ord+←ind
+     'Invalid day (Monday, ..., Sunday)'⎕SIGNAL 11/⍨ind=⍴WeekDays
+     r←Y,month,(ord-+/(1+⍳month-1)DaysInMonth Y)
+ :EndIf
