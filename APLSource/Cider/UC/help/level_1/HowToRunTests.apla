@@ -5,6 +5,6 @@
  'In case no path is provided Cider will present all currently opened projects to the user for'
  'selecting one, except when there is only one project open anyway.'
  ''
- 'The full Cider documentation is available via '
- ']open https://aplteam.github.io/Cider/ '
+ 'To view the relevant section in the online documentation, execute this: '
+ ']open https://aplteam.github.io/Cider/user-commands/#how-to-run-tests'
 )

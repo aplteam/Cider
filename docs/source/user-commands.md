@@ -21,29 +21,37 @@ keywords: api, apl, cider, dependency, dyalog, link, reference, source, tatin, u
 Cider user commands and their options are case-insensitive.
 They all have help built in, for example
 
+```
     ]cider -?
     ]cider -??
     ]CIDER.AddNuGetDependencies -?
-
+```
 
 
 ## Identifying projects
 
 You can always identify a project by its **project path**.
 
+```
     ]CIDER.OpenProject path/to/project
+```
 
 If you have assigned it an **alias** (e.g. `foo`) you can use the alias,
 embraced with square brackets to mark it as an alias.
 
+```
     ]CIDER.OpenProject [foo]
+````
 
 If a project is open, you can identify it by its **project space**.
 
+```
     ]CIDER.ListTatinDependencies #.bar
+```
 
 !!! warning "Square brackets in the command syntax"
 
+```
     Square brackets in the command sytaxes shown on this page indicate **optional command arguments**, not aliases.
     For example, the `ListTatinDependencies` command has syntax
 
@@ -56,7 +64,7 @@ If a project is open, you can identify it by its **project space**.
         ]CIDER.ListTatinDependencies [foo]
         ]CIDER.ListTatinDependencies #.bar
         ]CIDER.ListTatinDependencies
-
+```
 
 
 ## Command options
@@ -66,8 +74,10 @@ Options are further optional arguments to the command.
 Specify all the command’s arguments _before_ any options.
 Prefix options with dashes, e.g.
 
+```
     ]CIDER.CreateProject path/to/foo path/to/bar -noEdit
     ]CIDER.OpenProject path/to/foo -alias=ted
+```
 
 Options affect only the current command.
 They override settings in the [project](configuration.md#project) and [global](configuration.md#global) configurations and leave them unchanged.
@@ -78,7 +88,9 @@ Each command’s options are tabulated below its definition.
 
 ## :fontawesome-solid-terminal: Add NuGet dependencies
 
+```
     ]CIDER.AddNuGetDependencies pkglist [project]
+```
 
 Where `pkglist` is a comma-separated list of NuGet packages to be installed,
 Cider registers the listed dependencies in the project.
@@ -93,7 +105,9 @@ If the project config does not specify a NuGet dependency folder, Cider asks you
 
 ## :fontawesome-solid-terminal: Add Tatin dependencies
 
+```
     ]CIDER.AddTatinDependency pkglist [project]
+```
 
 Where `pkglist` is a comma-separated list of Tatin packages to be installed,
 Cider registers the listed dependencies in the project.
@@ -109,7 +123,9 @@ If the project config does not specify a Tatin dependency folder, Cider asks you
 
 ## :fontawesome-solid-terminal: Close project
 
+```
     ]CIDER.CloseProject [projects]
+```
 
 Where `projects` is one or more projects, Cider breaks the link between their namespaces and the associated files on disk.
 
@@ -126,7 +142,9 @@ Otherwise attempts to close projects are reported in detail.
 
 ## :fontawesome-solid-terminal: Config
 
+```
     ]CIDER.Config
+```
 
 Cider prints the content of its global config file to the session.
 
@@ -152,7 +170,9 @@ Cider prints the content of its global config file to the session.
 
 ## :fontawesome-solid-terminal: Create project
 
+```
     ]CIDER.CreateProject [path [space] ]
+```
 
 Where
 
@@ -177,22 +197,55 @@ If the project folder already contains a file `cider.config` Cider signals an er
 
 ??? tip "Keep the workspace root empty"
 
+```
     Good practice keeps the active workspace root empty.
     Cider is designed to associate each project with a namespace.
 
-    To create a root project (NOT recommended) specify `#` as the project space.
+    To create a root project (**_not_** recommended) specify `#` as the project space.
+```
 
 
 ## :fontawesome-solid-terminal: Help
 
+```
     ]CIDER.Help
+```
 
 Displays the Cider User Guide.
 
 
+
+
+## :fontawesome-solid-terminal: How to make a new version
+
+```
+    ]CIDER.HowToMakeNewVersion [project]
+```
+
+Prints the project’s "Make" expression:
+the expression that builds a new version of the project.
+
+If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
+
+
+
+## :fontawesome-solid-terminal: How to run tests
+
+```
+    ]CIDER.HowToRunTests [project]
+```
+
+Prints the APL expression that executes the project’s test suite.
+
+If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
+
+
+
 ## :fontawesome-solid-terminal: List aliases
 
+```
     ]CIDER.ListAliases
+```
 
 Lists all defined aliases with their folders.
 
@@ -207,7 +260,9 @@ Only options `prune` and `batch` can be used together.
 
 ## :fontawesome-solid-terminal: List NuGet dependencies
 
+```
     ]CIDER.ListNuGetDependencies [project]
+```
 
 Lists the project’s NuGet dependencies.
 
@@ -217,7 +272,9 @@ If you omit `project` Cider uses the one open project or, if you have more than 
 
 ## :fontawesome-solid-terminal: List open projects
 
+```
     ]CIDER.ListOpenProjects
+```
 
 Prints a list of all open projects.
 
@@ -227,7 +284,9 @@ Prints a list of all open projects.
 
 ## :fontawesome-solid-terminal: List Tatin dependencies
 
+```
     ]CIDER.ListTatinDependencies [project]
+```
 
 Lists Tatin packages installed as its dependencies.
 
@@ -245,21 +304,11 @@ This can help show why a particular (typically old) package is required.
 
 
 
-
-## :fontawesome-solid-terminal: Make
-
-    ]CIDER.Make [project]
-
-Prints the project’s Make expression:
-the expression that builds a new version of the project.
-
-If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
-
-
-
 ## :fontawesome-solid-terminal: Open project
 
+```
     ]CIDER.OpenProject project
+```
 
 Builds the project in the active workspace, linked to its source files.
 [More detail…](open-project.md)
@@ -283,7 +332,9 @@ The `batch` option is intended for test cases. Consider instead using the [`Open
 
 ## :fontawesome-solid-terminal: Project config
 
+```
     ]CIDER.ProjectConfig [project]
+```
 
 Displays or edits the project configuration.
 
@@ -293,18 +344,12 @@ If you omit `project` Cider uses the one open project or, if you have more than 
 `edit` | Display the config for editing.
 
 
-## :fontawesome-solid-terminal: Run tests
-
-    ]CIDER.RunTests [project]
-
-Prints the APL expression that executes the project’s test suite.
-
-If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
-
 
 ## :fontawesome-solid-terminal: Update Cider
 
+```
     ]CIDER.UpdateCider [version]
+```
 
 Where `version` is `<major>.<minor>.<patch>`,
 tries to update Cider to it.
@@ -316,13 +361,16 @@ The update is performed automatically,
 but does not change Cider in the current workspace.
 When the update is complete, restart Dyalog, rebuild the user commands, and print the current version.
 
+```
           ]UReset
     153 commands reloaded
           ]CIDER.Version
     0.44.0+835
+```
 
 ??? danger "Do not use the command for Cider versions prior to 0.37.3"
 
+```
     === "Versions 0.37.1 and 0.37.2"
 
         These versions were installed into the new folder but with a level missing.
@@ -337,6 +385,7 @@ When the update is complete, restart Dyalog, rebuild the user commands, and prin
         Uninstall: delete the `Cider/` folder from your `MyUCMDs/` folder.
 
         [Reinstall Cider](get-started.md#install).
+```
 
 :fontawesome-solid-bomb:
 Troubleshooting: [Updating Cider](troubleshooting.md#updating-cider)
@@ -345,18 +394,15 @@ Troubleshooting: [Updating Cider](troubleshooting.md#updating-cider)
 
 ## :fontawesome-solid-terminal: Version
 
+```
     ]CIDER.Version
+```
 
 Prints major, minor and patch numbers:
 
+```
           ]CIDER.Version
     0.44.0+835
-
-
-
-
-
-
-
+```
 
 

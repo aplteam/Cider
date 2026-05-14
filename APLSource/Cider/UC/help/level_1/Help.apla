@@ -1,5 +1,5 @@
 (
- 'Cider comes with some files in the sub-folder html/ with documentation. '
- 'This command offers to put selected ones on display in the default browser.'
+ 'Cider offers a detailed documentation online. '
+ 'This command opens it in your default browser.'
  ''
 )

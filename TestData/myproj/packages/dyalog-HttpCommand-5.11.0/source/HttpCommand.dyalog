@@ -1,4 +1,4 @@
-:Class HttpCommand
+﻿:Class HttpCommand
 ⍝ General HTTP Commmand utility
 ⍝ Documentation is found at https://dyalog.github.io/HttpCommand/
 
@@ -7,7 +7,7 @@
     ∇ r←Version
     ⍝ Return the current version
       :Access public shared
-      r←'HttpCommand' '5.10.0' '2026-02-06'
+      r←'HttpCommand' '5.11.0' '2026-05-14'
     ∇
 
 ⍝ Request-related fields
@@ -24,6 +24,11 @@
     :field public ChunkSize←0                      ⍝ set to size of chunk if using chunked transfer encoding
     :field public shared HeaderSubstitution←''     ⍝ delimiters to indicate environment/configuration settings be substituted in headers, set to '' to disable
 
+⍝ Server Sent Events (SSE)-related fields
+    :field public EnableSSE←0                      ⍝ do we allow SSE?
+    :field public ParseSSE←1                       ⍝ parse SSE payload into namespace
+    :field public CloseSSE←0                       ⍝ flag to tell listener thread to close
+    :field public OnSSEfn←''                       ⍝ function to call on receipt of SSE message
 
 ⍝ Proxy-related fields - only used if connecting through a proxy server
     :field public ProxyURL←''                      ⍝ address of the proxy server
@@ -62,6 +67,7 @@
     :field Client←''                               ⍝ Conga client ID
     :field ConxProps←''                            ⍝ when a client is made, its connection properties are saved so that if either changes, we close the previous client
     :field origCert←¯1                             ⍝ used to check if Cert changed between calls
+    :field SSEThread←⍬                             ⍝ thread that we listen on for SSE
 
     ∇ UpdateCommandMethod arg
     ⍝ keeps Command and its alias Method in sync
@@ -112,6 +118,25 @@
       {}{0::'' ⋄ LDRC.Names'.'⊣LDRC.Close ⍵}⍣(~0∊⍴Client)⊢Client
     ∇
 
+    ∇ r OnSSE payload
+      :Access public
+    ⍝ r is a ref to the HttpCommand result namespace
+    ⍝ payload is the SSE event message
+      :If ParseSSE=1
+          payload←parseSSE payload
+          :If ~0∊⍴payload.id ⋄ r.lastEventId←payload.id ⋄ :EndIf
+      :EndIf
+      :If ~0∊⍴OnSSEfn ⍝ user defined handler?
+          r onSSE payload
+      :Else           ⍝ otherwise just display the event message
+          :If 9.1=nameClass payload ⍝ namespace?
+              ⎕←1 ⎕JSON⍠'Compact' 0⊢payload
+          :Else
+              ⎕←payload
+          :EndIf
+      :EndIf
+    ∇
+
     ∇ r←Config;i
     ⍝ Returns current configuration
       :Access public
@@ -147,6 +172,7 @@
     ∇
 
     ∇ {r}←setDisplayFormat r;rc;msg;stat;data
+      :Access public shared
     ⍝ set the display format for the namespace result for most HttpCommand commands
       :If 9.1=nameClass r
           rc←'rc: ',⍕r.rc
@@ -191,7 +217,9 @@
           :Else
               r←##.⎕NEW(⊃⊃⎕CLASS ⎕THIS)(eis⍣(9.1≠nameClass⊃args)⊢args)
           :EndIf
-          r.RequestOnly←requestOnly
+          :If requestOnly≠¯1
+              r.RequestOnly←requestOnly
+          :EndIf
       :Else
           r←initResult #.⎕NS''
           r.(rc msg)←¯1 ⎕DMX.EM
@@ -208,7 +236,7 @@
       :If 0=⎕NC'requestOnly' ⋄ requestOnly←¯1 ⋄ :EndIf
      
       :If isSimpleChar args ⍝ simple character vector args?
-      :AndIf (args≡'localhost')≥∧/args∊over lc ⎕A ⋄ args←'GET'args ⋄ :EndIf ⍝ localhost or only alphabetics?
+      :AndIf (args≡'localhost')≥∧/args∊over lc ⎕A ⋄ args←'GET'args ⋄ :EndIf ⍝ localhost or not only alphabetics?
      
       →∆EXIT⍴⍨9.1=nameClass cmd←r←requestOnly New args
       :If 0∊⍴cmd.Command ⋄ cmd.Command←(1+0∊⍴cmd.Params)⊃'POST' 'GET' ⋄ :EndIf
@@ -423,7 +451,7 @@
      ∆FAIL:(rc secureParams)←¯1 msg ⍝ failure
     ∇
 
-    ∇ {r}←certs HttpCmd args;url;parms;hdrs;urlparms;p;b;secure;port;host;path;auth;req;err;done;data;datalen;rc;donetime;ind;len;obj;evt;dat;z;msg;timedOut;certfile;keyfile;simpleChar;defaultPort;cookies;domain;t;replace;outFile;toFile;startSize;options;congaPath;progress;starttime;outTn;secureParams;ct;forceClose;headers;cmd;file;protocol;conx;proxied;proxy;cert;noCT;simpleParms;noContentLength;connectionClose;tmpFile;tmpTn;redirected;encoding;compType;isutf8;boundary
+    ∇ {r}←certs HttpCmd args;url;parms;hdrs;urlparms;p;b;secure;port;host;path;auth;req;err;done;data;datalen;sse;rc;donetime;ind;len;obj;evt;dat;z;msg;timedOut;certfile;keyfile;simpleChar;defaultPort;cookies;domain;t;replace;outFile;toFile;startSize;options;congaPath;progress;starttime;outTn;secureParams;ct;forceClose;headers;cmd;file;protocol;conx;proxied;proxy;cert;noCT;simpleParms;noContentLength;connectionClose;tmpFile;tmpTn;redirected;encoding;compType;isutf8;boundary
     ⍝ issue an HTTP command
     ⍝ certs - X509Cert|(PublicCertFile PrivateKeyFile) SSLValidation Priority PublicCertFile PrivateKeyFile
     ⍝ args  - [1] HTTP method
@@ -440,7 +468,7 @@
       :If 0∊⍴cmd ⋄ cmd←'GET' ⋄ :EndIf
      
       r←Result
-      toFile←redirected←outTn←tmpTn←0 ⍝ initial settings
+      sse←toFile←redirected←outTn←tmpTn←0 ⍝ initial settings
       tmpFile←''
      
       url←,url
@@ -452,6 +480,17 @@
       →∆END↓⍨0∊⍴r.msg←'URL is not a simple character vector'/⍨~isSimpleChar url
       →∆END↓⍨0∊⍴r.msg←'Cookies are not character'/⍨(0∊⍴cookies)⍱1↑isChar cookies
       →∆END↓⍨0∊⍴r.msg←'Headers are not character'/⍨(0∊⍴headers)⍱1↑isChar headers
+     
+      :If EnableSSE
+          :If ~0∊⍴OnSSEfn
+              →∆END↓⍨0∊⍴r.msg←'OnSSEfn is not the name of a function'/⍨3≠{0::0 ⋄ 40 ##.⎕ATX ⍵}OnSSEfn
+              →∆END↓⍨0∊⍴r.msg←('OnSSEfn (',OnSSEfn,') is not a dyadic function')/⍨2≠|11 ##.⎕ATX OnSSEfn
+              onSSE←##⍎OnSSEfn
+          :EndIf
+          :Trap Debug↓0
+              r.⎕FX'Update' ':Implements trigger rc, msg, HttpStatus, HttpMsg' '{0:: ⋄ ref.setDisplayFormat ⍵} ⎕THIS'
+          :EndTrap
+      :EndIf
      
       :If ~RequestOnly  ⍝ don't bother initializing Conga if only returning request
           →∆END↓⍨0∊⍴(Initialize r).msg
@@ -750,7 +789,7 @@
      
      ∆LISTEN:
           forceClose←~KeepAlive
-          (timedOut done data progress noContentLength connectionClose)←0 0 ⍬ 0 0 0
+          (timedOut done data progress noContentLength connectionClose sse)←0 0 ⍬ 0 0 0 0
      
           :Trap 1000 ⍝ in case break is pressed while listening
               :While ~done
@@ -769,6 +808,22 @@
                               noContentLength←datalen=¯1
                               done←(cmd≡'HEAD')∨(0=datalen)∨204=r.HttpStatus
                               →∆END⍴⍨forceClose←r CheckPayloadSize datalen             ⍝ we have a payload size limit
+                              :If (r.GetHeader'Content-Type')(beginsWith ci)'text/event-stream'
+                                  :If EnableSSE
+                                      :If 0≠tmpTn ⍝ if sending SSE output to file, we don't use the temporary that "normal" requests would write to
+                                          ⎕NUNTIE tmpTn
+                                          {0:: ⋄ ⎕NDELETE ⍵}tmpFile
+                                          tmpTn←0
+                                      :EndIf
+                                      sse←1
+                                      r.ref←⎕THIS
+                                      r.⎕FX'Close' 'ref.CloseSSE←1'
+                                      r.SSEThread←outTn SSEListen&r
+                                      →∆END⊣r.(rc msg)←0('SSE listener running on thread ',⍕r.SSEThread)
+                                  :Else
+                                      →∆END⊣r.(rc msg)←¯1 'Server responded with SSE, but EnableSSE=0'
+                                  :EndIf
+                              :EndIf
                           :EndIf
                       :Case 'HTTPBody'
                           →∆END⍴⍨forceClose←r CheckPayloadSize(≢data)+≢dat
@@ -809,12 +864,12 @@
                               r.(rc msg)←0 ''
                               done←1
                           :Else
-                              rc.msg←'Response payload not completely received'
+                              r.msg←'Response payload not completely received'
                               →∆END
                           :EndIf
                       :Case 'BlockLast' ⍝ BlockLast included for pre-Conga v3.4 compatibility for RFC7230 (Sec 3.3.3 item 7)
                           →∆END⍴⍨forceClose←r CheckPayloadSize(≢data)+≢dat
-                          :If toFile<redirected
+                          :If toFile>redirected
                               →∆END⍴⍨forceClose←r CheckPayloadSize(⎕NSIZE tmpTn)+≢dat
                               dat ⎕NAPPEND tmpTn
                               ⎕NUNTIE ⍬
@@ -866,7 +921,7 @@
               compType←¯2 ¯3 0['deflate' 'gzip'⍳⊂encoding]
      
      
-              :If toFile≤redirected
+              :If toFile⍱redirected
                   :Trap Debug↓0 ⍝ If any errors occur, abandon conversion
                       :If ~0∊⍴data
                           :If ~0∊⍴encoding
@@ -906,7 +961,7 @@
                       r.Data←data
                   :EndIf
      
-              :Else ⍝ toFile and not redirected
+              :ElseIf toFile>redirected ⍝ toFile and not redirected
                   :If ~0∊⍴encoding ⍝ content-encoding header?
                       :If 0≠compType
                           :If 0≠z←compType UnzipFile tmpTn
@@ -953,7 +1008,7 @@
       :EndIf
       r.rc←1⊃rc ⍝ set the return code to the Conga return code
      ∆END:
-      ⎕NUNTIE tmpTn,outTn
+      ⎕NUNTIE tmpTn,sse↓outTn
       {0:: ⋄ ⎕NDELETE ⍵}tmpFile
       Client←{0::'' ⋄ KeepAlive>forceClose:⍵ ⋄ ''⊣LDRC.Close ⍵}Client
      ∆EXIT:
@@ -972,6 +1027,54 @@
       r[⍸~mask]←2⌽∊NL∘,¨hlens,¨⊂NL ⍝ insert chunk information
     ∇
 
+    ∇ outTn SSEListen r;err;rc;obj;evt;dat
+    ⍝ Listener for SSEs
+    ⍝ r is the HttpCommand result namespace
+    ⍝ outTn is tie number of OutFile if specified
+      CloseSSE←0 ⍝ set by ∇Close in HttpCommand result namespace
+      r.lastEventId←''
+      :While ~CloseSSE
+          :Trap Debug↓0 1000
+              :If 0=err←1⊃rc←LDRC.Wait Client WaitTime
+                  (err obj evt dat)←4↑rc
+                  :Select evt
+                  :Case 'HTTPChunk'
+                      dat←1⊃dat ⍝ actual message data is in first element
+                      :If 0≠outTn
+                          :If ~CloseSSE←r CheckPayloadSize(⎕NSIZE outTn)+≢dat
+                              dat ⎕NAPPEND outTn
+                          :EndIf
+                      :EndIf
+                      r OnSSE dat
+                  :Case 'Timeout'
+                  :Case 'Error'
+                      r.rc←4⊃rc
+                      r.msg←'Conga error processing your request: ',,⍕r.rc
+                      CloseSSE←1
+                  :Case 'Closed'
+                      r.msg←'Socket closed by server'
+                      CloseSSE←1
+                  :Else
+                      r.(rc msg)←¯1('Unhandled Conga event type: ',evt) ⍝ This shouldn't happen
+                      CloseSSE←1
+                  :EndSelect
+              :Else
+                  r.(rc msg)←¯1('Conga wait error ',,⍕rc) ⍝ some other error (very unlikely)
+                  CloseSSE←1
+              :EndIf
+          :Case 1002
+              CloseSSE←1
+              r.msg←'SSE listener on thread ',(⍕⎕TID),' closed due to interrupt'
+          :Else
+              r.(rc msg)←¯1('Unexpected ',⊃{⍺,' at ',⍵}/2↑⎕DMX.DM)
+              CloseSSE←1
+          :EndTrap
+      :EndWhile
+      ⎕NUNTIE outTn
+      {}{0::'' ⋄ LDRC.Close ⍵}Client
+      ⎕TKILL ⎕TID
+    ∇
+
     ∇ rc←r CheckPayloadSize size
     ⍝ checks if payload exceeds MaxPayloadSize
       rc←0
@@ -987,13 +1090,49 @@
       →∆EXIT↓⍨timedOut←⎕AI[3]>donetime ⍝ exit unless donetime hasn't passed
       →∆EXIT↓⍨Timeout<0                ⍝ if Timeout<0, reset donetime if there's progress
       →∆EXIT↓⍨0=⊃tmp←LDRC.Tree obj     ⍝ look at the current state of the connection
-      snap←2 2⊃tmp                     ⍝ second element shoulf contain the state
+      snap←2 2⊃tmp                     ⍝ second element should contain the state
       :If ~0∊⍴snap                     ⍝ if we have any...
           snap←(⊂∘⍋⌷⊢)↑(↑2 2⊃tmp)[;1]  ⍝ ...progress should be in elements [4 5]
       :EndIf
       →∆EXIT⍴⍨progress≡snap            ⍝ exit if nothing further received
       (timedOut donetime progress)←0(donetime+WaitTime)snap ⍝ reset ticker
      ∆EXIT:
+    ∇
+
+    ∇ r←parseSSE txt;lf;lines;line;name;value;i
+    ⍝ Parse a single SSE "chunk" into a namespace
+    ⍝ based on: https://html.spec.whatwg.org/multipage/server-sent-events.html#event-stream-interpretation
+    ⍝ txt: character vector — raw event text (one event block)
+    ⍝ r:   namespace with fields:
+    ⍝        event - event type ('message' if unset)
+    ⍝        data  - payload (vector of vectors)
+    ⍝        id    - event ID (if present, used to set LastEventID)
+    ⍝        retry - reconnection time in ms (⍬ if unset)
+      lf←⎕UCS 10
+      txt←'\r\n|\r'⎕R lf⍠'Mode' 'D'⊢txt ⍝ Normalize line endings to LF
+      lines←lf(≠⊆⊢)txt       ⍝ Split into non-empty lines
+      r←⎕NS''
+      r.(event data id retry)←'message'⍬''⍬
+      :For line :In lines
+          i←line⍳':'
+          :Select i
+          :Case 1 ⍝ comment - do nothing
+          :Case 1+≢line ⍝ no colon: name-only field
+              (name value)←line''
+          :Else
+              name←(i-1)↑line ⋄ value←i↓line
+              value←(' '=⊃value)↓value ⍝ Strip at most one leading space (per spec §9.2.6)
+              :Select name
+              :Case 'event' ⋄ r.event←value
+              :Case 'data' ⋄ r.data,←⊂value
+              :Case 'id' ⋄ r.id←value
+              :Case 'retry'
+                  :If (0<≢value)∧∧/value∊⎕D
+                      r.retry←⊃⊃(//)⎕VFI value
+                  :EndIf
+              :EndSelect
+          :EndSelect
+      :EndFor
     ∇
 
     ∇ {r}←type UnzipFile tn;data
@@ -1327,7 +1466,7 @@
           :For cookie :In new
               :If 0≠ind←cookies.Name iotaz⊂cookie.Name
                   :If 0∊⍴cookie.Value ⍝ deleted cookie?
-                      cookie←(ind≠⍳≢cookies)/cookies
+                      cookies←(ind≠⍳≢cookies)/cookies
                   :Else
                       cookies[ind]←cookie
                   :EndIf
@@ -1533,17 +1672,17 @@
     ∇ ParseUrlEncodedForm r;data;name;value;formData
     ⍝ parse application/x-www-form-urlencoded content
       :Trap 0
-        data←UrlDecode¨¨(r.Data splitOn'&')splitOn¨'='
-        formData←⎕NS''
-        :For (name value) :In data
-            →Oops⍴⍨('.'∊name)∨¯1=⎕NC name
-            :If 0=formData.⎕NC name ⋄ formData{⍺⍎⍵,'←⍬'}name ⋄ :EndIf
-            formData(name{⍺⍎⍺⍺,',←⍵'})value
-        :EndFor
-        r.Data←formData
+          data←UrlDecode¨¨(r.Data splitOn'&')splitOn¨'='
+          formData←⎕NS''
+          :For (name value) :In data
+              →Oops⍴⍨('.'∊name)∨¯1=⎕NC name
+              :If 0=formData.⎕NC name ⋄ formData{⍺⍎⍵,'←⍬'}name ⋄ :EndIf
+              formData(name{⍺⍎⍺⍺,',←⍵'})value
+          :EndFor
+          r.Data←formData
       :Else
      Oops:
-        r.(rc msg)←¯2 'Could not translate URL Encoded Form payload'
+          r.(rc msg)←¯2 'Could not translate URL Encoded Form payload'
       :EndTrap
     ∇
 

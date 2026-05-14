@@ -24,6 +24,6 @@
  '-latest  When this is specified, the version numbers of later versions are listed as well.'
  '         Is ignored when specified with -full'
  '         '
- 'The full Cider documentation is available via '
- ']open https://aplteam.github.io/Cider/ '
+ 'To view the relevant section in the online documentation, execute this: '
+ ']open https://aplteam.github.io/Cider/user-commands/#list-tatin-dependencies'
 )

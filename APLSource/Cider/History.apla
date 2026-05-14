@@ -1,4 +1,6 @@
 (
+ '* 0.52.0 ⋄ 2026-05-??'
+ '  * All user commands carry an ]Open-statement for the correct help page '
  '* 0.51.1 ⋄ 2026-03-04'
  '  * Fix for issue #129 including test cases'
  '* 0.51.0 ⋄ 2026-03-03'

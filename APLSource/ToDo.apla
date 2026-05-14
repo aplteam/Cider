@@ -1,3 +1,6 @@
 (
+ 'Waiting for Stephen: I need to know how to get a new version of the documentation locally.'
  ''
+ 'Once this is solved, implement a test function that makes sure that all user commands'
+ 'are represented in the documentation. '
 )

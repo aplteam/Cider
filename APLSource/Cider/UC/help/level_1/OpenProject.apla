@@ -24,8 +24,8 @@
  '                Specifyingn this does NOT change the config file on disk: it''s a temporary measure.'
  '-ignoreUserExec Suppress execution of a user function defined in Cider''s config file once'
  ''
- ''
  'Fore more help enter -???'
- 'The full Cider documentation is available via '
- ']open https://aplteam.github.io/Cider/ '
+ ''
+ 'To view the relevant section in the online documentation, execute this: '
+ ']open https://aplteam.github.io/Cider/user-commands/#open-project'
 )

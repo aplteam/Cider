@@ -8,6 +8,6 @@
  ''
  'The update is performed automatically. However, the current WS will stay on the old version.'
  ''
- 'The full Cider documentation is available via '
- ']open https://aplteam.github.io/Cider/ '
+ 'To view the relevant section in the online documentation, execute this: '
+ ']open https://aplteam.github.io/Cider/user-commands/#update-cider'
 )
