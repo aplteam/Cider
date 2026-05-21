@@ -5,7 +5,11 @@
  :If 0≡Args._1
  :OrIf Args._1≡'[?]'
      :If 0=≢path←SelectFromAliases aliasDefs
-         r←'Cancelled by user'
+         :If Args._1≡'[?]'
+             r←'No aliase defined'
+         :Else
+             r←'Cancelled by user'
+         :EndIf
          :Return
      :EndIf
  :Else
