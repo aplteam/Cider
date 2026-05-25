@@ -1,5 +1,5 @@
 (
- 'Breaks the Link between one or more projects and their associated files on disk.'
+ 'Breaks the link between one or more projects and their associated files on disk.'
  ''
  'You may specify one of:'
  ' 1. One or more projects via a fully qualified namespace name'
@@ -15,7 +15,7 @@
  ' * In case a particular project was specified, a Boolean is reported, 1 indicating success'
  ' * Otherwise the closed projects are reported in detail'
  ''
- '-fast  Use this to tell CloseProject that is should not perform any checks, see global Cider'
+ '-fast  Use this to tell CloseProject that it should not perform any checks, see global Cider'
  '       config parameter `CheckForDropboxConflicts`.'
  '       '
  'To view the relevant section in the online documentation, execute this: '

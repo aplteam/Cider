@@ -1,5 +1,5 @@
 (
- 'Prints the content of Cider''s global config file to the session.'
+ 'Print the contents of Cider''s global config file to the session.'
  ''
  'By specifying the -edit flag you can force the user command to put the content of that file '
  'into the editor, and allow the user to change it.'
@@ -9,4 +9,5 @@
  ''
  'To view the relevant section in the online documentation, execute this: '
  ']open https://aplteam.github.io/Cider/user-commands/#config'
+ ''
 )

@@ -1,5 +1,5 @@
 (
- 'Prints the statement to the session that is designed to run the project''''s "make" function, if any.'
+ 'Print the statement to the session that runs the project''''s "make" function, if any.'
  (' '⋄)
  'The optional parameter must be the path to a folder holding a cider.config file (a project).'
  'In case no path is provided, Cider will present all currently opened projects to the user for'
