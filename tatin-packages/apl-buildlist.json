@@ -4,9 +4,9 @@
     "aplteam-FilesAndDirs-7.1.1",
     "aplteam-CommTools-2.0.2",
     "aplteam-APLTreeUtils2-1.4.1",
-    "aplteam-APLGit2-0.27.0",
-    "dyalog-HttpCommand-5.9.3",
-    "aplteam-OS-4.0.0",
+    "aplteam-APLGit2-0.28.0",
+    "dyalog-HttpCommand-5.8.0",
+    "aplteam-OS-4.1.0",
     "aplteam-GitHubAPIv3-2.1.0",
   ],
   principal: [

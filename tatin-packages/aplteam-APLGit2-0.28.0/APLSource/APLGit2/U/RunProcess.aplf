@@ -1,0 +1,99 @@
+ {r}←RunProcess(EXE command);cmd;folder;i;msg;op;p;pfn;re;ro;rtc;t;⎕IO;⎕USING;tfn;buff;dmx;success;rc;dotnet;exception
+⍝ Runs EXE and returns a namespace with all sorts of variables, among them StdOut and StdErr.
+⍝ Cannot run in elevated mode because for that we would need to set i.Verb to 'runas' which
+⍝ we can't because "UseShellEexecute" must be set to 1 for this which we can't because we must
+⍝ redirect StdOut and StdErr, something we can only do with "UseShellExecute←0"
+⍝ ⍵[0] ←→ Executable
+⍝ ⍵[1] ←→ Argument
+⎕IO←0
+r←⎕NS''
+r.⎕io←1
+ dotnet←2250⌶0
+ :If 1=1⊃dotnet                  ⍝ Bridge successfully loaded?
+    :Select 0⊃dotnet
+     :Case 1            ⍝ .NET
+         ⎕USING←'System' 'System.IO' 'System.Diagnostics,System.Diagnostics.Process'
+     :Case 2            ⍝ .NET Framework
+         ⎕USING←'System' 'System.IO' 'System.Diagnostics,System.dll'
+     :EndSelect
+     p←⎕NEW Process
+     i←p.StartInfo
+     i.FileName←EXE
+     i.Arguments←command
+     i.RedirectStandardOutput←1
+     i.RedirectStandardInput←1
+     i.RedirectStandardError←1
+     i.UseShellExecute←0
+     i.CreateNoWindow←1
+     :Trap 90
+         {}p.Start ⍬
+     :Else
+         dmx←⎕DMX
+         :If ∨/'Check ⎕EXCEPTION for details'⍷dmx.Message
+             exception←{(⎕UCS 13)@(⍸⍵=⎕UCS 10)⊢⍵}⍕⎕EXCEPTION
+             :If ∨/': The system cannot find the file specified'⍷exception
+                r.ExitCode←127    ⋄ r.StdOut←'' ⋄ r.StdErr←'It appears that Git is not installed'
+     :return
+             :Else
+                 ('.NET error: ',(⎕UCS 13),exception)⎕SIGNAL 11
+             :EndIf
+         :Else
+dmx.Message ⎕signal dmx.EN
+         :EndIf
+     :EndTrap
+     re←⎕NEW StreamReader p.StandardError.BaseStream
+     ro←⎕NEW StreamReader p.StandardOutput.BaseStream
+     t←r{⍺.StdErr←⍵.ReadToEnd}&re
+     r.StdOut←ro.ReadToEnd
+     op←{6::0 ⋄ z←⍺⍺ ⍵}
+     {}p.WaitForExit op ⍬
+     {}⎕TSYNC op t
+     r.ExitCode←p.ExitCode
+     rtc←{' '@((⎕UCS 9)∘=)⍵}
+     :If 0<≢r.StdOut
+         :If ∨/(⎕UCS 10 13)⍷r.StdOut
+             pfn←{(⎕UCS 10 13)A.Split ⍵}
+         :Else
+             pfn←{(⎕UCS 10)A.Split ⍵}
+         :EndIf
+         r.StdOut←pfn rtc r.StdOut
+     :EndIf
+     :If 0<≢r.StdErr
+         :If (⎕UCS 13)∊r.StdErr
+             pfn←{(⎕UCS 10 13)A.Split ⍵}
+         :Else
+             pfn←{(⎕UCS 10)A.Split ⍵}
+         :EndIf
+         r.StdErr←pfn rtc r.StdErr
+     :EndIf
+     :If 1<|≡r.StdOut
+         r.StdOut←(-+/∧\0=⌽≢¨r.StdOut)↓r.StdOut  ⍝ Remove trailing empty lines
+     :EndIf
+ :Else
+     '.NET is not available but required on Windows'Assert'Win'≢A.GetOperatingSystem ⍬
+     ⎕IO←1
+     r.ExitCode←0
+     r.StdErr←r.StdOut←''
+     folder←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'folder'
+     tfn←##.F.GetTempFilename2'APLGit'   ⍝ Temp FileName
+     cmd←EXE,' ',command,' 2>"',tfn,'"'
+     :Trap 11
+         buff←⎕SH cmd
+     :Else
+         dmx←⎕DMX
+         r.ExitCode←1
+         r.StdErr←dmx.Message
+         :If ∨/'code 127 '⍷dmx.Message,' '
+             r.ExitCode←127
+            r.StdErr←'It appears that Git is not installed'
+         :ElseIf ∨/'code 128 '⍷dmx.Message,' '
+             r.ExitCode←128
+         :EndIf
+         :Return
+     :EndTrap
+     r.StdOut←{'UTF-8'⎕UCS ⎕UCS ⍵}¨buff
+     :If 0<≢msg←{22::'' ⋄ ⊃⎕NGET ⍵ 1}tfn
+         r.StdErr←⊃{⍺,' ',⍵}/msg
+     :EndIf
+     ##.F.DeleteFile tfn
+ :EndIf

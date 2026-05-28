@@ -1,0 +1,45 @@
+ r←type FetchHeader body;firstLine;nc
+⍝ Returns the name of a function, operator or class/namespace script
+⍝ "body" must be the code of a single APL object.
+⍝ Leading blank lines and comment lines are removed.
+⍝ "type" must be one of:
+⍝ * An integer with 3 for a function, 4 for an operator and 9 for a script
+⍝ * A single character: "f" for function, "o" for operator or "n" for a script
+ :If ' '=⊃0⍴type
+     nc←('fonc'⍳¯1↑∊type)⊃3 4 9 9 0
+ :Else
+     nc←type
+ :EndIf
+ 'Invalid left argument; must be one of: 3 4 9'⎕SIGNAL 11/⍨~(⊂nc)∊3 4 9
+ body←↓⍣(2=⊃⍴⍴body)⊢body
+ body←(+/∧\' '=↑body)↓¨body
+ body←(+/∧\'⍝'=⊃¨body)↓body
+ firstLine←⊃body
+ firstLine←(~'  '⍷firstLine)/firstLine
+ firstLine←{⍵/⍨~{(∧\⍵)∨(⌽∧\⌽⍵)}' '=⍵}firstLine
+ :Select ⊃nc
+ :Case 3
+     :If 1 0≡'{}'∊firstLine     ⍝ Single-line dfn?
+     :OrIf {'}'=¯1↑⍵}{⍵↓⍨-+/∧\' '=⌽⍵}{⍵↑⍨¯1+⍵⍳'⍝'}firstLine  ⍝ Multi-line dfn?
+         r←{' '~⍨⍵↑⍨¯1+⍵⍳'←'}firstLine
+     :Else                      ⍝ It's a tfn
+         r←{'←'∊⍵:⍵↓⍨⍵⍳'←' ⋄ ⍵}firstLine
+         r←{⍵↑⍨¯1+⌊/⍵⍳';('}r
+         r←{'}'∊⍵:⍵↓⍨⍵⍳'}' ⋄ ⍵}r
+         r←{⍵/⍨~{(∧\⍵)∨(⌽∧\⌽⍵)}' '=⍵}r
+         :If 2=r+.=' '
+             r←2⊃{(' '≠⍵)⊆⍵}r
+         :Else
+             r←{⍵↑⍨¯1+⍵⍳' '}r
+         :EndIf
+     :EndIf
+ :Case 4
+     r←{'←'∊⍵:⍵↓⍨⍵⍳'←' ⋄ ⍵}firstLine
+     r←{⍵↑⍨¯1+⌊/⍵⍳')'}r
+     r←{'}'∊⍵:⍵↓⍨⍵⍳'}' ⋄ ⍵}r
+     r←{⍵↓⍨-+/∧\' '=⌽⍵}r
+     r←{⍵↑⍨-¯1+' '⍳⍨⌽⍵}r
+ :Case 9
+     r←{⍵↓⍨⍵⍳' '}firstLine
+     r←' '~⍨{⍵↑⍨⌈/⍵⍳' ⍝'}r
+ :EndSelect
