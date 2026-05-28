@@ -7,7 +7,7 @@
     ∇ r←Version
     ⍝ Return the current version
       :Access public shared
-      r←'HttpCommand' '5.11.0' '2026-05-14'
+      r←'HttpCommand' '5.11.1' '2026-05-18'
     ∇
 
 ⍝ Request-related fields
@@ -1102,7 +1102,7 @@
     ∇ r←parseSSE txt;lf;lines;line;name;value;i
     ⍝ Parse a single SSE "chunk" into a namespace
     ⍝ based on: https://html.spec.whatwg.org/multipage/server-sent-events.html#event-stream-interpretation
-    ⍝ txt: character vector — raw event text (one event block)
+    ⍝ txt: character vector - raw event text (one event block)
     ⍝ r:   namespace with fields:
     ⍝        event - event type ('message' if unset)
     ⍝        data  - payload (vector of vectors)
