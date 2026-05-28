@@ -12,21 +12,6 @@ The API functions are similar to the [user-commands](user-commands.md), but not 
 Not all have equivalent user commands.
 
 
-[AddAlias](#add-alias)                            [GetMyUCMDsFolder](#get-ucmds-folder)
-[AddNuGetDependencies](#add-nuget-dependencies)                [GetNuGetDependencies](#get-nuget-dependencies)
-[AddTatinDependencies](#add-tatin-dependencies)                [GetProgramFilesFolder](#get-program-files-folder)
-[CloseProject](#close-project)                        [GetTatinDependencies](#get-tatin-dependencies)
-[CreateCreateProjectParms](#create-createproject-parms)            [HasDotNet](#has-dotnet)
-[CreateOpenParms](#create-open-parms)                     [ListNuGetDependencies](#list-nuget-dependencies)
-[CreateProject](#create-project)                       [ListOpenProjects](#list-open-projects)
-[DropAlias](#drop-alias)                           [ListTatinDependencies](#list-tatin-dependencies)
-[GetCiderAliasFileContent](#get-alias-file-content)            [OpenProject](#open-project)
-[GetCiderAliasFilename](#get-alias-filename)               [ProjectConfig](#project-config)
-[GetCiderGlobalConfigFileContent](#get-global-config-file-content)     [ReadProjectConfigFile](#read-project-config-file)
-[GetCiderGlobalConfigFilename](#get-global-config-filename)        [WriteProjectConfigFile](#write-project-config-file)
-[GetCiderGlobalConfigHomeFolder](#get-global-config-home-folder)      [Version](#version)
-{: .typewriter}
-
 Unlike user commands, API function names are case-sensitive.
 
 The API is exposed in `⎕SE.Cider` so, for example, call `AddAlias` as `⎕SE.Cider.AddAlias`.
@@ -596,6 +581,7 @@ Returns a string with major and minor versions, patch number and timestamp, e.g.
     0.44.0+835
 
 This could be just e.g. `1.2.3`,  but might be something like `1.2.3-beta-1+113`.
+
 
 
 

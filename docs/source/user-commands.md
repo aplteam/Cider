@@ -8,16 +8,6 @@ keywords: api, apl, cider, dependency, dyalog, link, reference, source, tatin, u
 
 !!! abstract "User commands are Cider’s user interface"
 
-[AddNuGetDependencies](#add-nuget-dependencies)    [ListOpenProjects](#list-open-projects)
-[AddTatinDependencies](#add-tatin-dependencies)    [ListTatinDependencies](#list-tatin-dependencies)
-[CloseProject](#close-project)            [Make](#make)
-[Config](#config)                  [OpenProject](#open-project)
-[CreateProject](#create-project)           [ProjectConfig](#project-config)
-[Help](#help)                    [RunTests](#run-tests)
-[ListAliases](#list-aliases)             [UpdateCider](#update-cider)
-[ListNuGetDependencies](#list-nuget-dependencies)   [Version](#version)
-{: .typewriter}
-
 Cider user commands and their options are case-insensitive.
 They all have help built in, for example
 
@@ -404,5 +394,6 @@ Prints major, minor and patch numbers:
           ]CIDER.Version
     0.44.0+835
 ```
+
 
 
