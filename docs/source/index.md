@@ -37,20 +37,20 @@ You use Cider through its [user commands](user-commands.md) or its [API function
 
 !!! detail "Related tools"
 
-	Cider cooperates with
+    Cider cooperates with
 
-	-    [Link](https://dyalog.github.io/link), which maintains the source of Dyalog APL objects as text files
-	-    [Tatin](https://tatin.dev), the community APL package manager
-	-    [NuGet](https://www.nuget.org), the package manager for .NET
-	-    [Git](https://git-scm.com), a source-control manager[^git]
-	-    [Dropbox](https://dropbox.com), a file-sharing service
+    -    [Link](https://dyalog.github.io/link), which maintains the source of Dyalog APL objects as text files
+    -    [Tatin](https://tatin.dev), the community APL package manager
+    -    [NuGet](https://www.nuget.org), the package manager for .NET
+    -    [Git](https://git-scm.com), a source-control manager[^git]
+    -    [Dropbox](https://dropbox.com), a file-sharing service
 
-	[^git]: Cider is designed to work with the popular Git source control manager,  but can be used with others.
+    [^git]: Cider is designed to work with the popular Git source control manager,  but can be used with others.
 
 
 ## Requirements
 
-1.  Dyalog Unicode Edition version 18.2 or better
+1.  Dyalog Unicode Edition v18.2 or better
 1.  Your APL source kept in text files
 1.  Tatin version 0.116.0 or better
 
@@ -66,8 +66,8 @@ alias
 flag
 : The meaning depends on context:
 
-	-   In the API or configuration, a boolean; a flag is ‘set’ with 1.
-	-   In the user commands, a parameter without a corresponding value: for example in `]CIDER.OpenProject path/2/project -watch`, the `watch` flag is set.
+    -   In the API or configuration, a boolean; a flag is ‘set’ with 1.
+    -   In the user commands, a parameter without a corresponding value: for example in `]CIDER.OpenProject path/2/project -watch`, the `watch` flag is set.
 
 list of strings
 : A nested vector of strings, e.g. `'quick' 'brown' 'fox'`
@@ -91,3 +91,4 @@ string
 ## Acknowledgements
 
 Cider is developed from more than a decade of earlier work, primarily by Phil Last and Paul Mansour on the Acre source-code manager.
+

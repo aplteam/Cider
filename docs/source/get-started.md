@@ -11,7 +11,7 @@ keywords: apl, command, cider, dyalog, install, link, source, tatin
 
 ## Install
 
-Dyalog version 19.0 has Tatin and Cider already installed.
+Dyalog v19.0 has Tatin and Cider already installed.
 Nothing to do here.
 
 ??? info "For Dyalog v18.2 install Tatin and Cider"
