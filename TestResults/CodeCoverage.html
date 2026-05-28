@@ -127,7 +127,7 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr><th>Executed at</th><th>APLVersion</th><th>Memory (MB)</th></tr>
 </thead>
 <tbody>
-<tr><td>2026-05-25 16:05:49</td><td>Windows-64 ⋄ 20.0.53725.0 ⋄ W ⋄ Development ⋄ Unicode</td><td>109</td></tr>
+<tr><td>2026-05-28 11:12:35</td><td>Windows-64 ⋄ 20.0.53725.0 ⋄ W ⋄ Development ⋄ Unicode</td><td>109</td></tr>
 </tbody>
 </table>
 <p>Overall 58% of the testable code is covered.</p>
@@ -243,13 +243,13 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr><td><a href="#listing_102" title="Link to listing">#.Cider.Cider.Version</a></td><td>6</td><td>80</td><td>5</td></tr>
 <tr><td><a href="#listing_103" title="Link to listing">#.Cider.Cider.UC.GetRefToCiderCode</a></td><td>13, 16</td><td>80</td><td>10</td></tr>
 <tr><td><a href="#listing_104" title="Link to listing">#.Cider.Cider.CheckForTatinPackages</a></td><td>6←≢23,33-35,45,55</td><td>83</td><td>36</td></tr>
-<tr><td><a href="#listing_105" title="Link to listing">#.Cider.Cider.CheckPackagesStatus</a></td><td>4←≢30-33</td><td>83</td><td>24</td></tr>
-<tr><td><a href="#listing_106" title="Link to listing">#.Cider.Cider.UpdatePackages</a></td><td>4←≢25-28</td><td>84</td><td>25</td></tr>
-<tr><td><a href="#listing_107" title="Link to listing">#.Cider.Cider.GetFolderFromAlias</a></td><td>10</td><td>86</td><td>7</td></tr>
-<tr><td><a href="#listing_108" title="Link to listing">#.Cider.Cider.InjectTatinVars</a></td><td>19, 35</td><td>88</td><td>16</td></tr>
-<tr><td><a href="#listing_109" title="Link to listing">#.Cider.Cider.AddTatinDependencies</a></td><td>4</td><td>90</td><td>10</td></tr>
-<tr><td><a href="#listing_110" title="Link to listing">#.Cider.Cider.CloseProject</a></td><td>18, 19, 20</td><td>90</td><td>30</td></tr>
-<tr><td><a href="#listing_111" title="Link to listing">#.Cider.Cider.Remove_githubUsername_</a></td><td>13</td><td>91</td><td>11</td></tr>
+<tr><td><a href="#listing_105" title="Link to listing">#.Cider.Cider.UpdatePackages</a></td><td>4←≢25-28</td><td>84</td><td>25</td></tr>
+<tr><td><a href="#listing_106" title="Link to listing">#.Cider.Cider.GetFolderFromAlias</a></td><td>10</td><td>86</td><td>7</td></tr>
+<tr><td><a href="#listing_107" title="Link to listing">#.Cider.Cider.InjectTatinVars</a></td><td>19, 35</td><td>88</td><td>16</td></tr>
+<tr><td><a href="#listing_108" title="Link to listing">#.Cider.Cider.AddTatinDependencies</a></td><td>4</td><td>90</td><td>10</td></tr>
+<tr><td><a href="#listing_109" title="Link to listing">#.Cider.Cider.CloseProject</a></td><td>18, 19, 20</td><td>90</td><td>30</td></tr>
+<tr><td><a href="#listing_110" title="Link to listing">#.Cider.Cider.Remove_githubUsername_</a></td><td>13</td><td>91</td><td>11</td></tr>
+<tr><td><a href="#listing_111" title="Link to listing">#.Cider.Cider.CheckPackagesStatus</a></td><td>32, 33</td><td>92</td><td>24</td></tr>
 <tr><td><a href="#listing_112" title="Link to listing">#.Cider.Cider.UC.Help</a></td><td>4←≢65-68</td><td>94</td><td>67</td></tr>
 <tr><td><a href="#listing_113" title="Link to listing">#.Cider.Cider.ListOpenProjects</a></td><td>24</td><td>95</td><td>22</td></tr>
 <tr><td><a href="#listing_114" title="Link to listing">#.Cider.Cider.CreateOpenParms</a></td><td>21</td><td>96</td><td>24</td></tr>
@@ -799,7 +799,7 @@ $(document).ready(function() {
 </div>
 <code class="header" id="listing_30">#.Cider.Cider.TatinVars.ID &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code> r←ID</code>
-<code class="emphasize">→[1]  r←'aplteam-Cider-0.52.0-beta-doc3+1004'</code>
+<code class="emphasize">→[1]  r←'aplteam-Cider-0.52.0+1005'</code>
 </div>
 <code class="header" id="listing_31">#.Cider.Cider.TatinVars.URI &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code> r←URI</code>
@@ -1271,7 +1271,7 @@ $(document).ready(function() {
 <code class="emphasize">→[22]   tags: "project-management",</code>
 <code class="emphasize">→[23]   tatin_version: "0.103.0",</code>
 <code class="emphasize">→[24]   userCommandScript: "APLSource/Cider_UC.dyalog",</code>
-<code class="emphasize">→[25]   version: "0.52.0-beta-doc3+1004",</code>
+<code class="emphasize">→[25]   version: "0.52.0+1005",</code>
 <code> [26] }'</code>
 </div>
 <code class="header" id="listing_53">#.Cider.Cider.CheckForGit &mdash; 5%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
@@ -3327,51 +3327,7 @@ $(document).ready(function() {
 <code> [56]      :EndIf</code>
 <code> [57]  :EndIf</code>
 </div>
-<code class="header" id="listing_105">#.Cider.Cider.CheckPackagesStatus &mdash; 83%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
-<div class="code-block"><code>  {r}←CheckPackagesStatus(config parms pkgStatus)</code>
-<code> [1]  ⍝ Check whether Tatin packages should be updated in case parms.importFlag is not 1.</code>
-<code> [2]  ⍝ When pkgStatus is 2 it means that packages have just been re-installed, so no need to check for later versions.</code>
-<code> [3]  ⍝ This is ruled by parms.checkPackageVersions:</code>
-<code> [4]  ⍝ ⍬ means the user will be asked for both checking and updating</code>
-<code> [5]  ⍝ 0 means don't update</code>
-<code> [6]  ⍝ 1 means yes, check, but ask before updating</code>
-<code> [7]  ⍝ 2 means update without further ado</code>
-<code> [8]   r←⍬</code>
-<code> [9]   parms.major←0    ⍝ By default we don't check on latermajor versions</code>
-<code> [10]  folders←GetTatinDependencyFolders config</code>
-<code> [11]  :If 0&lt;≢folders</code>
-<code> [12]      :If 0≢parms.checkPackageVersions</code>
-<code> [13]      :AndIf 2&gt;pkgStatus</code>
-<code> [14]          :If (⊂parms.checkPackageVersions)∊⍬ 1</code>
-<code> [15]          :AndIf 0=parms.batch</code>
-<code> [16]              :If checkFlag←0 C.YesOrNo'ReportLaterVersions@ Report availability of later versions of installed Tatin packages?'</code>
-<code> [17]                  parms.major←0 C.YesOrNo'ReportLaterMajorVersions@ Report even later MAJOR versions?'</code>
-<code> [18]              :EndIf</code>
-<code> [19]          :Else</code>
-<code> [20]              checkFlag←2≡parms.checkPackageVersions</code>
-<code> [21]          :EndIf</code>
-<code> [22]      :Else</code>
-<code> [23]          checkFlag←0</code>
-<code> [24]      :EndIf</code>
-<code> [25]      :If checkFlag</code>
-<code> [26]          report←⍬</code>
-<code> [27]          1 ⎕SE._Tatin.Client.EstablishRumbaClients ⍬</code>
-<code> [28]          :If 0&lt;≢report←report CheckTatinFoldersForLaterVersions parms(RemoveTargetDefinition¨folders)</code>
-<code> [29]          :AndIf 0=+/⊃,/4⌷[2]¨report</code>
-<code class="emphasize">→[30]              (1 parms.batch)p'No later versions found '</code>
-<code class="emphasize">→[31]              :If 0&lt;≢buff←(⊂'https://tatin.dev/')~⍨⊃,/3⌷[2]¨report</code>
-<code class="emphasize">→[32]                  plural←1&lt;≢buff</code>
-<code class="emphasize">→[33]                  (1 parms.batch)p{'Note that ',(⍕≢⍵),' package',(plural/'s'),((1+plural)⊃' was' ' were'),' loaded from ',⊃{⍺,',',⍵}/∪⍵}buff</code>
-<code> [34]              :EndIf</code>
-<code> [35]          :Else</code>
-<code> [36]              report←{⍵[;4]⌿⍵}¨report</code>
-<code> [37]              UpdatePackages(RemoveTargetDefinition¨folders)report parms</code>
-<code> [38]          :EndIf</code>
-<code> [39]          ⎕SE._Tatin.Client.CloseConnections 1</code>
-<code> [40]      :EndIf</code>
-<code> [41]  :EndIf</code>
-</div>
-<code class="header" id="listing_106">#.Cider.Cider.UpdatePackages &mdash; 84%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<code class="header" id="listing_105">#.Cider.Cider.UpdatePackages &mdash; 84%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code>  {r}←UpdatePackages(folders reports parms)</code>
 <code> [1]  ⍝ Update Tatin install folders by running ReInstallDependencies with the updateFlag set.</code>
 <code> [2]  ⍝ Returns the number of install folders updated.</code>
@@ -3407,7 +3363,7 @@ $(document).ready(function() {
 <code> [32]      :EndIf</code>
 <code> [33]  :EndFor</code>
 </div>
-<code class="header" id="listing_107">#.Cider.Cider.GetFolderFromAlias &mdash; 86%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<code class="header" id="listing_106">#.Cider.Cider.GetFolderFromAlias &mdash; 86%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code>  parms←(fns GetFolderFromAlias)parms</code>
 <code> [1]  ⍝ Translates the alias in "folder" (if any) into a path from a parameter namespace and save</code>
 <code> [2]  ⍝ the folder in parms under the name "folder".\\</code>
@@ -3422,7 +3378,7 @@ $(document).ready(function() {
 <code> [11]      :EndIf</code>
 <code> [12]  :EndIf</code>
 </div>
-<code class="header" id="listing_108">#.Cider.Cider.InjectTatinVars &mdash; 88%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<code class="header" id="listing_107">#.Cider.Cider.InjectTatinVars &mdash; 88%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code>  ref←InjectTatinVars(projectRoot folder)</code>
 <code> [1]  ⍝ When a package is loaded, a namespace `TatinVars` is injected into the root of the package by Tatin.</code>
 <code> [2]  ⍝ When Cider opens a project that carries a file apl-package.json in the projects's root folder, it</code>
@@ -3464,7 +3420,7 @@ $(document).ready(function() {
 <code> [38]      :EndIf</code>
 <code> [39]  :EndIf</code>
 </div>
-<code class="header" id="listing_109">#.Cider.Cider.AddTatinDependencies &mdash; 90%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<code class="header" id="listing_108">#.Cider.Cider.AddTatinDependencies &mdash; 90%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code>  r←AddTatinDependencies(packageIDs projectFolder dev)</code>
 <code> [1]  ⍝ Add one or more Tatin packages as dependencies.</code>
 <code> [2]  ⍝ `dev` is a flag that decides whether `dependencies` or `dependencies_dev` is the target.</code>
@@ -3484,7 +3440,7 @@ $(document).ready(function() {
 <code> [16]  r←⎕SE.Tatin.InstallPackages packageIDs targetFolder</code>
 <code> [17] ⍝Done</code>
 </div>
-<code class="header" id="listing_110">#.Cider.Cider.CloseProject &mdash; 90%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<code class="header" id="listing_109">#.Cider.Cider.CloseProject &mdash; 90%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code>  r←{performChecks}CloseProject projects</code>
 <code> [1]  ⍝ Breaks the Link between a project and its folder on disk, and potentially executes a check functon afterwards.</code>
 <code> [2]  ⍝ In case ⍵ is empty, ALL projects are closed.</code>
@@ -3540,7 +3496,7 @@ $(document).ready(function() {
 <code> [52]      :EndIf</code>
 <code> [53]  :EndIf</code>
 </div>
-<code class="header" id="listing_111">#.Cider.Cider.Remove_githubUsername_ &mdash; 91%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<code class="header" id="listing_110">#.Cider.Cider.Remove_githubUsername_ &mdash; 91%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code>  {r}←rep Remove_githubUsername_ folder</code>
 <code> [1]   r←0</code>
 <code> [2]   filename←folder,'/cider.config'</code>
@@ -3557,6 +3513,50 @@ $(document).ready(function() {
 <code class="emphasize">→[13]      RenameInfo_url_¨list</code>
 <code> [14]  :EndIf</code>
 <code> [15] ⍝Done</code>
+</div>
+<code class="header" id="listing_111">#.Cider.Cider.CheckPackagesStatus &mdash; 92%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←CheckPackagesStatus(config parms pkgStatus)</code>
+<code> [1]  ⍝ Check whether Tatin packages should be updated in case parms.importFlag is not 1.</code>
+<code> [2]  ⍝ When pkgStatus is 2 it means that packages have just been re-installed, so no need to check for later versions.</code>
+<code> [3]  ⍝ This is ruled by parms.checkPackageVersions:</code>
+<code> [4]  ⍝ ⍬ means the user will be asked for both checking and updating</code>
+<code> [5]  ⍝ 0 means don't update</code>
+<code> [6]  ⍝ 1 means yes, check, but ask before updating</code>
+<code> [7]  ⍝ 2 means update without further ado</code>
+<code> [8]   r←⍬</code>
+<code> [9]   parms.major←0    ⍝ By default we don't check on latermajor versions</code>
+<code> [10]  folders←GetTatinDependencyFolders config</code>
+<code> [11]  :If 0&lt;≢folders</code>
+<code> [12]      :If 0≢parms.checkPackageVersions</code>
+<code> [13]      :AndIf 2&gt;pkgStatus</code>
+<code> [14]          :If (⊂parms.checkPackageVersions)∊⍬ 1</code>
+<code> [15]          :AndIf 0=parms.batch</code>
+<code> [16]              :If checkFlag←0 C.YesOrNo'ReportLaterVersions@ Report availability of later versions of installed Tatin packages?'</code>
+<code> [17]                  parms.major←0 C.YesOrNo'ReportLaterMajorVersions@ Report even later MAJOR versions?'</code>
+<code> [18]              :EndIf</code>
+<code> [19]          :Else</code>
+<code> [20]              checkFlag←2≡parms.checkPackageVersions</code>
+<code> [21]          :EndIf</code>
+<code> [22]      :Else</code>
+<code> [23]          checkFlag←0</code>
+<code> [24]      :EndIf</code>
+<code> [25]      :If checkFlag</code>
+<code> [26]          report←⍬</code>
+<code> [27]          1 ⎕SE._Tatin.Client.EstablishRumbaClients ⍬</code>
+<code> [28]          :If 0&lt;≢report←report CheckTatinFoldersForLaterVersions parms(RemoveTargetDefinition¨folders)</code>
+<code> [29]          :AndIf 0=+/⊃,/4⌷[2]¨report</code>
+<code> [30]              (1 parms.batch)p'No later versions found '</code>
+<code> [31]              :If 0&lt;≢buff←(⊂'https://tatin.dev/')~⍨⊃,/3⌷[2]¨report</code>
+<code class="emphasize">→[32]                  plural←1&lt;≢buff</code>
+<code class="emphasize">→[33]                  (1 parms.batch)p{'Note that ',(⍕≢⍵),' package',(plural/'s'),((1+plural)⊃' was' ' were'),' loaded from ',⊃{⍺,',',⍵}/∪⍵}buff</code>
+<code> [34]              :EndIf</code>
+<code> [35]          :Else</code>
+<code> [36]              report←{⍵[;4]⌿⍵}¨report</code>
+<code> [37]              UpdatePackages(RemoveTargetDefinition¨folders)report parms</code>
+<code> [38]          :EndIf</code>
+<code> [39]          ⎕SE._Tatin.Client.CloseConnections 1</code>
+<code> [40]      :EndIf</code>
+<code> [41]  :EndIf</code>
 </div>
 <code class="header" id="listing_112">#.Cider.Cider.UC.Help &mdash; 94%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code>  r←level Help Cmd</code>
