@@ -1,0 +1,90 @@
+[project]
+
+site_name = "Cider User Guide"
+site_description = "Cider is a project manager for Dyalog APL projects."
+site_author = "aplteam"
+site_url = "https://5jt.github.io/Cider/"
+
+repo_url = "https://github.com/aplteam/Cider"
+repo_name = "aplteam/Cider"
+
+docs_dir = "source"
+
+nav = [
+  { "About Cider" = "index.md" },
+  { "Get started" = "get-started.md" },
+  { "User commands" = "user-commands.md" },
+  { "Open project" = "open-project.md" },
+  { "API functions" = "api.md" },
+  { "Configuration" = "configuration.md" },
+  { "Tutorial" = "tutorial.md" },
+  { "Troubleshooting" = "troubleshooting.md" },
+  { "Release notes" = "release-notes.md" },
+  { "Contribute" = "contribute.md" },
+]
+
+extra_css = [
+  "style/main.css",
+  "style/extra.css",
+  "style/admonition-ucmdhelp.css",
+]
+
+extra_javascript = [
+  "javascripts/mathjax.js",
+  "https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6",
+  "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js",
+]
+
+[project.theme]
+
+variant = "classic"
+custom_dir = "overrides"
+favicon = "img/cider-logo.png"
+logo = "img/cider-logo.svg"
+
+features = [
+  "content.tabs.link",
+  "navigation.instant",
+  "navigation.path",
+  "navigation.sections",
+  "navigation.tracking",
+]
+
+[project.theme.font]
+text = "Be Vietnam Pro"
+
+[[project.theme.palette]]
+scheme = "default"
+primary = "custom"
+accent = "custom"
+
+[project.markdown_extensions.abbr]
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.def_list]
+[project.markdown_extensions.footnotes]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.markdown_tables_extended]
+[project.markdown_extensions.sane_lists]
+
+[project.markdown_extensions.toc]
+title = "On this page"
+permalink = true
+
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
+
+[project.markdown_extensions.pymdownx.caret]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.keys]
+[project.markdown_extensions.pymdownx.mark]
+[project.markdown_extensions.pymdownx.superfences]
+[project.markdown_extensions.pymdownx.tilde]
+
+[project.markdown_extensions.pymdownx.emoji]
+emoji_generator = "zensical.extensions.emoji.to_svg"
+emoji_index = "zensical.extensions.emoji.twemoji"
+options = { custom_icons = ["overrides/.icons"] }
+
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true

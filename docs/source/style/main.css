@@ -9,16 +9,6 @@
 code {
 	font-family: APL;
 }
-.md-logo > img{
-	width: 7rem!important;
-	height: 1.2rem!important;
-}
-@media screen and (max-width: 76.1875em) {
-	.md-logo > img{
-		width: 10rem!important;
-		height: 1.8rem!important;
-	}
-}
 /*
 	Dyalog palette
 	#FF6A13   rgba(256,106,19,1)    Retina Searing Orange
@@ -89,4 +79,9 @@ pre + pre > code, hr + pre > code {
 	font-family: APL;
 	margin-left: 1em;
 	white-space: preserve;
+}
+
+/*relax space between icon and following text*/
+span.twemoji svg {
+    margin-right: .15em;
 }

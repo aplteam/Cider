@@ -4,7 +4,7 @@ description: How to configure the global and project settings for Cider, the pro
 keywords: api, apl, cider, configuration, dyalog, key, link, setting, source, subkey, tatin
 ---
 
-# Configuration
+# :fontawesome-solid-gears: Configuration
 
 !!! abstract "Project settings, and settings that apply to all your projects"
 
@@ -63,7 +63,7 @@ On opening the first project in the current workspace
 
 If this flag is set, when opening and closing projects Cider will report files where the name contains the string "conflicted copy".
 
-Absent this flag, if your home folder contains a folder `Dropbox/`, Cider will perform the check.
+Absent this flag, if your home folder contains a folder `Dropbox/`, Cider will also perform the check.
 
 !!! detail "How Dropbox reports conflicts"
 
@@ -117,7 +117,7 @@ As a side effect, the file `.linkconfig` will be deleted if it contained nothing
 
 ### :fontawesome-solid-gear: `ReportGitStatus`
 
-On opening a Git-controlled project without a clean working tree Cider reports its status acccording to the `ReportGitStatus` setting:
+On opening a Git-controlled project Cider reports its status acccording to the `ReportGitStatus` setting:
 
     0 - Don't report
     1 - Report in a read-only edit window (default)
@@ -142,6 +142,7 @@ When a Cider project is created, a copy of the file `cider.config.template` in t
 
 
 The Cider configuration file comes with four sections: `CIDER`, `LINK`, `SYSVARS`, `USER`.
+(The `LINK` section is now deprecated.)
 
 
 ### `CIDER`
@@ -219,7 +220,7 @@ Empty, or an expression (relative to the project) that would create a new versio
 See how to create a new version of the project, e.g.
 
 ```
-      ]Cider.Make
+      ]Cider.HowToMakeNewVersion
 #.Cider.Admin.Make 1 ⍝ Execute this for creating a new version
 ```
 
@@ -253,7 +254,12 @@ Example settings:
 
 The user command and API function can override this setting, e.g.
 
-    ]CIDER.OpenProject {path} -parent=#.MyProjects
+    ]CIDER.OpenProject path/to/project -parent=#.Foo
+
+    ⎕SE.Cider.OpenProject ⎕SE.Cider.CreateOpenParms (
+        folder:'path/to/project'
+        parent:'#.Foo'
+        )
 
 
 #### :fontawesome-solid-gear: `projectSpace`
@@ -305,7 +311,7 @@ Empty, or an expression (relative to the project) that would execute the test ca
 See how to execute the test cases, e.g.
 
 ```
-      ]Cider.RunTests
+      ]Cider.HowToRunTests
 #.Cider.TestCases.RunTests
 ```
 Above, execute `#.Cider.TestCases.RunTests` to run the test suite.
@@ -317,27 +323,35 @@ However, if the first non-white space character of `tests` is a `]` (making it a
 
 ### `LINK`
 
-These parameters are passed to Link when Cider uses it to define APL objects in the workspace.
+!!! warning "DEPRECATED This section of the Cider config is optional"
 
-Since Version 4.0.0, Link has its own config file, but, until all supported versions of Link deal with it, Cider saves non-default values in a Cider project config.
+Link has its own config file since version 4.0.0, but, until all supported versions of Link deal with it, Cider saves non-default values in a Cider project config.
 
 Cider looks for `.linkconfig` at the path specified in [`source`](#source);
 if `source` is empty, then the root of the project.
 
-As of Cider version 0.46.0,
-if Cider finds a Link config file, it ignores the `LINK` section of its config
-and reminds you to delete it.
+#### :fontawesome-solid-right-left: Conflicts in Link settings
 
-But if the Link config file contains only stop and trace vectors and the Link version number,
-then Cider will use its `LINK` section settings, and recommend you
+!!! info inline end ""
+
+	As of Cider version 0.46.0
+
+If Cider finds a Link config file,
+it ignores the `LINK` section of its config
+and reminds you to delete it
+
+**unless**
+the Link config file contains only stop and trace vectors and the Link version number –
+then Cider will use its `LINK` settings, and recommend you
 
 -   reconcile the two sources of Link options
--   delete the `LINK` section from the Cider config file.
+-   delete the `LINK` section from the Cider config
 
 
 #### :fontawesome-solid-gear: `watch`
 
-Which source/s to watch for changes to linked APL definitions. Changes in one environment (workspace or file) can be synchronised with the other according to this setting.
+The source/s to watch for changes to linked APL definitions.
+Changes in one environment (workspace or file) can be synchronised with the other according to this setting.
 
     ns   - watch the active workspace
     dir  - watch the file definitions
@@ -347,10 +361,11 @@ Which source/s to watch for changes to linked APL definitions. Changes in one en
 <!--
 Irrelevant: we assume Link is installed
 Note that for "both" and "dir," .NET or .NET Core is required. Under Windows, this is a given, but not so on Linux and Mac-OS: it may or may not be available. If it is not, the default for "watch" will be "ns".
- -->
 
+No longer true:
 The `watch` setting is very important, so Cider always reports it.
 Other Link settings are reported only when they diverge from the default.
+-->
 
 The `watch` setting is ignored when a project is opened with the `import` option.
 
@@ -360,11 +375,12 @@ The `watch` setting is ignored when a project is opened with the `import` option
 
 ### `SYSVARS`
 
-This section lets set system variables.
-`⎕IO` and `⎕ML` should always be set explicitly.
-(They default to 1.)
+This section lets you set system variables.
 
-You can set other system variables here like, say, `⎕CT` as `ct`, and so on.
+**Always set `⎕IO` and `⎕ML` explicitly.**
+
+You can set other system variables here,
+for example, `⎕CT` as `ct`, and so on.
 
 System variable names are case-insensitive.
 
