@@ -1,6 +1,8 @@
 (
+ '* 0.52.2-beta-1 ⋄ 2016-06-??'
+ '  * `OpenProject` and `CreateOpenParms` polished and comments clarified'
  '* 0.52.1 ⋄ 2016-05-28'
- '  * Packages udpdated'
+ '  * Packages updated'
  '* 0.52.0 ⋄ 2026-05-22'
  '  * All user commands carry an ]Open-statement for the correct help page'
  '  * Bug fixes'

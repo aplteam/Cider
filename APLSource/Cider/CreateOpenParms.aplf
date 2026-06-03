@@ -1,7 +1,7 @@
  parms←CreateOpenParms y;list;b;l
 ⍝ Creates a namespace with all parameters one might pass to `OpenProject`.\\
 ⍝ `y` might be an empty vector or a namespace with some such parameters.
-⍝ Any parameters passed this way overwrites any defaults.
+⍝ Parameters passed this way overwrite defaults.
  parms←(1⊃1↓⎕RSI,⎕THIS).⎕NS''      ⍝ Create namespace where we got called from
  parms.folder←''
  parms.projectSpace←''
@@ -13,9 +13,9 @@
  parms.noPkgLoad←0
  parms.verbose←GetGlobalVerbose     ⍝ Effects messaging
  parms.handleLinkStops←GetGlobalHandleLinkStops
- parms.batch←0                      ⍝ A 1 has an effect on messaging and which steps are performed after opening the project
- parms.watch←0                      ⍝ 0 allows recognizing whether the user has set this; eventually 0 will become "both", the default.
- parms.checkPackageVersions←0       ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes, check, but ask before updating, 2 means update
+ parms.batch←0                      ⍝ Setting to 1 affects messaging and determines which steps are performed after opening the project
+ parms.watch←0                      ⍝ 0 allows recognizing whether the user has set this; eventually 0 will become "both", the default
+ parms.checkPackageVersions←0       ⍝ ⍬ means the user will be asked; 0 means don't. 1 means yes but ask before updating, 2 means: update
  :If ~(⊂y)∊''⍬
  :AndIf 9=⎕NC'y'
      :If 9=y.⎕NC'projectSpace'

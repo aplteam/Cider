@@ -1,4 +1,4 @@
- (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;parms;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag;ref2TatinVars;∆Problems;loadDependencies
+ (successFlag ∆LOG)←OpenProject y;parms;configFilename;config;bool;res;linkOptions;source;p;dmx;projectSpace_;fn;qdmx;pkgStatus;buff;nugetFolder;msg;flag;ref2TatinVars;∆Problems;loadDependencies
 ⍝ Open a Cider project.\\
 ⍝ `y` must be one of:
 ⍝  * a namespace holding all required parameters. Such a namespace can be created by calling `CreateOpenParms`
