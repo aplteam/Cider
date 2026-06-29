@@ -3,7 +3,7 @@
 site_name = "Cider User Guide"
 site_description = "Cider is a project manager for Dyalog APL projects."
 site_author = "aplteam"
-site_url = "https://5jt.github.io/Cider/"
+site_url = "https://aplteam.github.io/Cider/"
 
 repo_url = "https://github.com/aplteam/Cider"
 repo_name = "aplteam/Cider"
