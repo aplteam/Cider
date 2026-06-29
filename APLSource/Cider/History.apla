@@ -1,6 +1,7 @@
 (
- '* 0.52.2-beta-2 ⋄ 2016-06-04'
+ '* 0.52.2-beta-3 ⋄ 2016-06-29'
  '  * `OpenProject` and `CreateOpenParms` polished and comments clarified'
+ '  * Documentation polished'
  '  * Bug fixes'
  '    * `UC.ProjectConfig` did not print to the session when no argument was provided'
  '* 0.52.1 ⋄ 2016-05-28'
