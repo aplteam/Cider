@@ -12,8 +12,8 @@ Cider user commands and their options are case-insensitive.
 They all have help built in, for example
 
 ```
-    ]cider -?
-    ]cider -??
+    ]CIDER -?
+    ]CIDER -??
     ]CIDER.AddNuGetDependencies -?
 ```
 
@@ -31,7 +31,7 @@ embraced with square brackets to mark it as an alias.
 
 ```
     ]CIDER.OpenProject [foo]
-````
+```
 
 If a project is open, you can identify it by its fully qualified **project space**.
 
@@ -41,20 +41,23 @@ If a project is open, you can identify it by its fully qualified **project space
 
 !!! warning "Square brackets in the command syntax"
 
-```
     Square brackets in the command sytaxes shown on this page indicate **optional command arguments**, not aliases.
     For example, the `ListTatinDependencies` command has syntax
 
+    ```
         ]CIDER.ListTatinDependencies [project]
+    ```
 
     If the project has alias `foo`, has been opened in `#.bar`,
-    and is the only project open, then the following are equivalent.
+    and is the only project open, then the following are equivalent:
 
+    ```
         ]CIDER.ListTatinDependencies path/to/project
         ]CIDER.ListTatinDependencies [foo]
         ]CIDER.ListTatinDependencies #.bar
         ]CIDER.ListTatinDependencies
-```
+    ```
+
 
 
 ## Command options
@@ -76,7 +79,7 @@ Each command’s options are tabulated below its definition.
 
 ---
 
-## :fontawesome-solid-terminal: Add NuGet dependencies
+## Add NuGet dependencies
 
 ```
     ]CIDER.AddNuGetDependencies pkglist [project]
@@ -93,7 +96,7 @@ If the project config does not specify a NuGet dependency folder, Cider asks you
 `target=` | Name of a namespace to create and add to the project config’s `dependencies` or the `dependencies_dev` setting.<br><br>If it is already configured, Cider signals an error. You then need to edit the project’s config.
 
 
-## :fontawesome-solid-terminal: Add Tatin dependencies
+## Add Tatin dependencies
 
 ```
     ]CIDER.AddTatinDependency pkglist [project]
@@ -111,7 +114,7 @@ If the project config does not specify a Tatin dependency folder, Cider asks you
 `target=` | Name of a namespace to be created and added to the `dependencies` or the `dependencies_dev` parameter.<br><br>If the namespace exists, Cider signals an error. You then need to edit the project’s config file.
 
 
-## :fontawesome-solid-terminal: Close project
+## Close project
 
 ```
     ]CIDER.CloseProject [projects]
@@ -131,7 +134,7 @@ Otherwise attempts to close projects are reported in detail.
 `fast` | Close project without [checking for Dropbox conflicts](configuration.md#checkfordropboxconflicts "CheckForDropboxConflicts").
 
 
-## :fontawesome-solid-terminal: Config
+## Config
 
 ```
     ]CIDER.Config
@@ -159,7 +162,7 @@ Cider prints the content of its global config file to the session.
 
 
 
-## :fontawesome-solid-terminal: Create project
+## Create project
 
 ```
     ]CIDER.CreateProject [path [space] ]
@@ -188,14 +191,13 @@ If the project folder already contains a file `cider.config` Cider signals an er
 
 ??? tip "Encapsulate a project in its own namespace"
 
-```
     Good practice keeps the active workspace root empty.
     Cider is designed to associate each project with a namespace.
 
     To create a root project (**_not_** recommended) specify `#` as the project space.
-```
 
-## :fontawesome-solid-terminal: Help
+
+## Help
 
 ```
     ]CIDER.Help
@@ -206,7 +208,7 @@ Displays the Cider User Guide.
 
 
 
-## :fontawesome-solid-terminal: How to make a new version
+## How to make a new version
 
 ```
     ]CIDER.HowToMakeNewVersion [project]
@@ -219,7 +221,7 @@ If you omit `project` Cider uses the one open project or, if you have more than 
 
 
 
-## :fontawesome-solid-terminal: How to run tests
+## How to run tests
 
 ```
     ]CIDER.HowToRunTests [project]
@@ -231,7 +233,7 @@ If you omit `project` Cider uses the one open project or, if you have more than 
 
 
 
-## :fontawesome-solid-terminal: List aliases
+## List aliases
 
 ```
     ]CIDER.ListAliases
@@ -248,7 +250,7 @@ Lists all defined aliases with their folders.
 Only options `prune` and `batch` can be used together.
 
 
-## :fontawesome-solid-terminal: List NuGet dependencies
+## List NuGet dependencies
 
 ```
     ]CIDER.ListNuGetDependencies [project]
@@ -260,7 +262,7 @@ If you omit `project` Cider uses the one open project or, if you have more than 
 
 
 
-## :fontawesome-solid-terminal: List open projects
+## List open projects
 
 ```
     ]CIDER.ListOpenProjects
@@ -272,7 +274,7 @@ Prints a list of all open projects.
 `verbose` | Instead of a list, print a table.
 
 
-## :fontawesome-solid-terminal: List Tatin dependencies
+## List Tatin dependencies
 
 ```
     ]CIDER.ListTatinDependencies [project]
@@ -293,7 +295,7 @@ Note that the full report does not show what is actually used, but what the pack
 This can help show why a particular (typically old) package is required.
 
 
-## :fontawesome-solid-terminal: Make
+## Make
 
     ]CIDER.HowToMakeNewVersion [project]
 
@@ -303,7 +305,7 @@ the expression that builds a new version of the project.
 If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
 
 
-## :fontawesome-solid-terminal: Open project
+## Open project
 
 ```
     ]CIDER.OpenProject project
@@ -329,7 +331,7 @@ Options `import` and `watch=` cannot be used together.
 The `batch` option is intended for test cases. Consider instead using the [`OpenProject`](api.md#open-project) API function.
 
 
-## :fontawesome-solid-terminal: Project config
+## Project config
 
 ```
     ]CIDER.ProjectConfig [project]
@@ -344,7 +346,7 @@ If you omit `project` Cider uses the one open project or, if you have more than 
 
 
 
-## :fontawesome-solid-terminal: Update Cider
+## Update Cider
 
 ```
     ]CIDER.UpdateCider [version]
@@ -369,7 +371,6 @@ When the update is complete, restart Dyalog, rebuild the user commands, and prin
 
 ??? danger "Do not use the command for Cider versions prior to 0.37.3"
 
-```
     === "Versions 0.37.1 and 0.37.2"
 
         These versions were installed into the new folder but with a level missing.
@@ -384,14 +385,14 @@ When the update is complete, restart Dyalog, rebuild the user commands, and prin
         Uninstall: delete the `Cider/` folder from your `MyUCMDs/` folder.
 
         [Reinstall Cider](get-started.md#install).
-```
+
 
 :fontawesome-solid-bomb:
 Troubleshooting: [Updating Cider](troubleshooting.md#updating-cider)
 
 
 
-## :fontawesome-solid-terminal: Version
+## Version
 
 ```
     ]CIDER.Version

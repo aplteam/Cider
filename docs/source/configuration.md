@@ -4,7 +4,7 @@ description: How to configure the global and project settings for Cider, the pro
 keywords: api, apl, cider, configuration, dyalog, key, link, setting, source, subkey, tatin
 ---
 
-# :fontawesome-solid-gears: Configuration
+# Configuration
 
 !!! abstract "Project settings, and settings that apply to all your projects"
 
@@ -35,9 +35,7 @@ Example:
 }
 ```
 
-:fontawesome-solid-code:
 [`GetCiderGlobalConfigFilename`](api.md#getciderglobalconfigfilename)<br>
-:fontawesome-solid-code:
 [`GetCiderGlobalConfigHomeFolder`](api.md#getciderglobalconfighomefolder)
 
 This folder also contains
@@ -49,7 +47,7 @@ This folder also contains
 -----
 
 
-### :fontawesome-solid-gear: `AskForDirChange`
+### `AskForDirChange`
 
 On opening the first project in the current workspace
 
@@ -59,7 +57,7 @@ On opening the first project in the current workspace
 
 
 
-### :fontawesome-solid-gear: `CheckForDropboxConflicts`
+### `CheckForDropboxConflicts`
 
 If this flag is set, when opening and closing projects Cider will report files where the name contains the string "conflicted copy".
 
@@ -72,14 +70,13 @@ Absent this flag, if your home folder contains a folder `Dropbox/`, Cider will a
     Dropbox does not actually alert you to such conflicts, it just silently creates the files. So you can configure Cider to look for them.
 
 
-:fontawesome-solid-terminal:
+
 [`CIDER.CloseProject`](user-commands.md#close-project)<br>
-:fontawesome-solid-terminal:
-[`CIDER.OpenProject`](user-commands.md#open-project)<br>
+[`CIDER.OpenProject`](user-commands.md#open-project)
 
 
 
-### :fontawesome-solid-gear: `ExecuteAfterProjectOpen`
+### `ExecuteAfterProjectOpen`
 
 If defined and not empty, the fully qualified name of a monadic function.
 
@@ -102,7 +99,7 @@ Any result it returns is ignored.
     Or, your initialisation function couild bring in non-Tatin dependencies defined in the `dependencies` and/or the `dependencies_dev` settings.
 
 
-### :fontawesome-solid-gear: `HandleLinkStops`
+### `HandleLinkStops`
 
 This defaults to 0 if it does not exist.
 
@@ -115,7 +112,7 @@ With `HandleLinkStops=2`, stops and traces will be ignored and removed from the 
 As a side effect, the file `.linkconfig` will be deleted if it contained nothing but stops/traces and the Link version number.
 
 
-### :fontawesome-solid-gear: `ReportGitStatus`
+### `ReportGitStatus`
 
 On opening a Git-controlled project Cider reports its status acccording to the `ReportGitStatus` setting:
 
@@ -127,11 +124,10 @@ On opening a Git-controlled project Cider reports its status acccording to the `
 If the project path has no `.git` folder, or if the `batch` flag is set, nothing is reported.
 
 
-### :fontawesome-solid-gear: `verbose`
+### `verbose`
 
 Setting this flag increases the information Cider prints.
 
-:fontawesome-solid-terminal:
 [`]CIDER.OpenProject`](user-commands.md#open-project) and the `-verbose` option.
 
 
@@ -147,7 +143,7 @@ The Cider configuration file comes with four sections: `CIDER`, `LINK`, `SYSVARS
 
 ### `CIDER`
 
-#### :fontawesome-solid-gear: `dependencies`
+#### `dependencies`
 
 The setting has two subkeys: `tatin` and `nuget`:
 
@@ -174,7 +170,7 @@ dependencies: {
 Cider will ignore any other subkeys of `dependencies`.
 
 
-#### :fontawesome-solid-gear: `dependencies_dev`
+#### `dependencies_dev`
 
 As for `dependencies`, but with dependencies required only for development and testing, not for producing the final package or application.
 
@@ -193,7 +189,7 @@ Above, all packages in folder `tatin-packages_dev` (a child of the project folde
     This restriction may be removed in a future release.
 
 
-#### :fontawesome-solid-gear: `distributionFolder`
+#### `distributionFolder`
 
 The default destination for the ZIP file produced by Tatin’s `BuildPackage` function: either empty or the path to a folder, usually relative to the project root.
 There is no default.
@@ -201,7 +197,7 @@ There is no default.
 If you always create your package ZIP files in the same  child folder of each project, define this in the project config template file.
 
 
-#### :fontawesome-solid-gear: `init`
+#### `init`
 
 Empty, or the name of a function in the project space.
 
@@ -213,7 +209,7 @@ Any right argument is the project config as a namespace.
 Any result should be shy.
 
 
-#### :fontawesome-solid-gear: `make`
+#### `make`
 
 Empty, or an expression (relative to the project) that would create a new version.
 
@@ -229,7 +225,7 @@ The output is compiled from the config parameter values `CIDER.parent`, `CIDER.p
 However, if the first non-white space character of `make` is a `]`, its definition would just be printed to the session together with a comment because then it is obviously a user command.
 
 
-#### :fontawesome-solid-gear: `parent`
+#### `parent`
 
 __Required.__
 Fully-qualified name of the parent of the project space.
@@ -262,7 +258,7 @@ The user command and API function can override this setting, e.g.
         )
 
 
-#### :fontawesome-solid-gear: `projectSpace`
+#### `projectSpace`
 
 __Required.__
 Name of the namespace that will contain the project.
@@ -272,7 +268,7 @@ The user command and API function can override this setting, e.g.
     ]CIDER.OpenProject {path} -projectspace=Foo
 
 
-#### :fontawesome-solid-gear: `project_url`
+#### `project_url`
 
 Empty, or the URL of, say, a GitHub project. For information only.
 
@@ -283,7 +279,7 @@ Those functions will investigate `project_url`.
 If it points to GitHub, the owner is established from its contents.
 
 
-#### :fontawesome-solid-gear: `source`
+#### `source`
 
 Path (relative to the project folder) of the folder that contains all its APL code.
 Defaults to `APLSource`.
@@ -293,7 +289,7 @@ This could be empty, for example, if the project is a single script (class or na
 Note that this might differ from the Tatin `source` parameter, which could point to a child folder of Cider's `source` containing just the code that is a package. Cider’s `source` could also contain test cases, development tools, and other things.
 
 
-#### :fontawesome-solid-gear: `tatinVars`
+#### `tatinVars`
 
 Optional. Either
 
@@ -304,7 +300,7 @@ Optional. Either
 See [Injecting a namespace `TatinVars`](open-project.md#inject-a-tatinvars-namespace) for what happens.
 
 
-#### :fontawesome-solid-gear: `tests`
+#### `tests`
 
 Empty, or an expression (relative to the project) that would execute the test cases of the project.
 
@@ -348,7 +344,7 @@ then Cider will use its `LINK` settings, and recommend you
 -   delete the `LINK` section from the Cider config
 
 
-#### :fontawesome-solid-gear: `watch`
+#### `watch`
 
 The source/s to watch for changes to linked APL definitions.
 Changes in one environment (workspace or file) can be synchronised with the other according to this setting.

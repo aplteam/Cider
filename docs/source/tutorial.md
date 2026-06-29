@@ -21,7 +21,7 @@ A worked example needs packages that are simple but not trivial
 [NiceTime](https://github.com/5jt/nicetime) | Take a `⎕TS` timestamp as argument and return a text string describing the offset from the present.
 [Translate](https://github.com/5jt/translate) | For a text string, return from a dictionary its equivalent in another language.
 [Text](https://github.com/5jt/text) | An APL equivalent of Python’s interpolated string, e.g. `f'2+2={2+2}'` => `'2+2=4'`.
-[TinyTest](https://githb.com/5jt/tinytest)| A minimal test framework: operators to compare against an expected result, and catch an expected error.
+[TinyTest](https://github.com/5jt/tinytest)| A minimal test framework: operators to compare against an expected result, and catch an expected error.
 
 Usage examples:
 
@@ -37,7 +37,7 @@ hier
 depuis 2 mois
 
       ec←0 ⍝ error count
-      ec+←2(+ #.tinytest.match 4)2
+      ec+←2(+ #.tinytest.match 
       ec+←2 3(+ #.tinytest.catch 5 'LENGTH ERROR')4 5 6
       #.tinytest.report ec
 All tests passed
@@ -143,7 +143,7 @@ Cider uses the Editor to show me its draft of the Cider configuration
 
 This looks all right.
 The `CIDER` subkeys `dependencies.tatin` and `dependencies_dev.tatin` are empty, which is fine:
-TinyText has no dependencies.
+TinyTest has no dependencies.
 
 <kbd>Esc</kbd> to save the config as is and close the Editor.
 
@@ -427,7 +427,9 @@ As for TinyTest, create the APL source files and set up the GitHub repository.
 
 If Text were a class it would expose `f` as a method and `DEBUG` as an instance property.
 But for a (lightweight) namespace, we follow the Tatin convention of listing the exposed objects in a constant `Public`.
-<!-- FIXME Link to Public Interface page in Tatin user guide -->
+
+!!! detail "For details regarding the public interface refer to its [documentation](https://aplteam.github.io/Tatin/public-interface)."
+
 ```apl
  Z←Public
 ⍝ niladic function as an immutable constant
@@ -494,7 +496,6 @@ and install TinyTest in it:
 ```
       ]CIDER.AddTatinDependency sjt-tinytest -development
 ```
-<!-- FIXME Confirm the command installs the dependency as well as listing it. -->
 
 Git should take care of the dependency file and the build list
 but not the dependency or distribution packages themselves, therefore:
@@ -502,8 +503,8 @@ but not the dependency or distribution packages themselves, therefore:
 !!! example "text/.gitignore"
 
         tatin-packages-dev/*
-        !/tatin-packages-dev//apl-dependencies.txt
-        !/tatin-packages-dev//apl-buildlist.json
+        !/tatin-packages-dev/apl-dependencies.txt
+        !/tatin-packages-dev/apl-buildlist.json
         /Dist
 
 Our project now looks like this:

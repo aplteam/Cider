@@ -7,7 +7,7 @@ keywords: apl, cider, dotnet, dyalog, link, source, tatin
 # :fontawesome-solid-bugs: Troubleshooting
 
 
-??? quote "I don’t mind a reasonable amount of trouble."
+!!! quote "I don’t mind a reasonable amount of trouble."
 
 	Sam Spade in Dashiel Hammett’s _The Maltese Falcon_
 

@@ -25,7 +25,7 @@ The API is exposed in `⎕SE.Cider` so, for example, call `AddAlias` as `⎕SE.C
 
 ---
 
-## :fontawesome-solid-code: Add alias
+## Add alias
 
     {r}←AddAlias(projectpath alias)
 
@@ -40,7 +40,7 @@ The shy result is an error message, empty if successful.
 If the alias is already in use Cider asks you to confirm the change.
 
 
-## :fontawesome-solid-code: Add NuGet dependencies
+## Add NuGet dependencies
 
     list←AddNuGetDependencies(packages project)
 
@@ -59,11 +59,10 @@ Specify `packages` as either a list of strings or a comma-separated string.
 
     However, the correct name is returned, and is required for using a package.
 
-:fontawesome-solid-terminal:
 [`]CIDER.AddNugetDependencies`](user-commands.md#add-nuget-dependencies)
 
 
-## :fontawesome-solid-code: Add Tatin dependencies
+## Add Tatin dependencies
 
     r←AddTatinDependencies(packages project dev)
 
@@ -104,12 +103,11 @@ Not found: boobly-boo
 
     The default project configuration file name is `dependencies.tatin`.
 
-:fontawesome-solid-terminal:
 [`]CIDER.AddTatinDependencies`](user-commands.md#add-tatin-dependencies).
 
 
 
-## :fontawesome-solid-code: Close project
+## Close project
 
     r←{performChecks} CloseProject projects
 
@@ -145,13 +143,12 @@ Example: close three projects without checking for Dropbox conflicts.
 0 ⎕SE.Cider.CloseProject 'path/to/project' #.util '[test]'
 ```
 
-:fontawesome-solid-gear:
-[`CheckForDropboxConflicts`](configuration.md#checkfordropboxconflicts)<br>
-:fontawesome-solid-terminal:
+[`CheckForDropboxConflicts`](configuration.md#checkfordropboxconflicts)
+
 [`]CIDER.CloseProject`](user-commands.md#close-project)
 
 
-## :fontawesome-solid-code: Create `CreateProject` parms
+## Create `CreateProject` parms
 
     parms←{parms} CreateCreateProjectParms folder
 
@@ -169,11 +166,10 @@ Cider returns a namespace with parameters required by [`CreateProject`](#create-
 
 Defaults are overwritten by any specified in the `parms` argument.
 
-:fontawesome-solid-terminal:
 [`]CIDER.CreateProject`](user-commands.md#create-project)
 
 
-## :fontawesome-solid-code: Create Open parms
+## Create Open parms
 
     parms←CreateOpenParms y
 
@@ -198,24 +194,23 @@ Parameters in `y` overwrite the defaults, which are:
 !!! detail "Setting `watch` to 0 shows Cider you have not set it. Eventually 0 becomes `both`, the default."
 
 
-## :fontawesome-solid-code: Create project
+## Create project
 
     r←CreateProject parms
 
 Where `parms` is a namespace of parameter values, typically the result of [`CreateCreateProjectParms`](#create-createproject-parms), Cider creates a project.
 
-:fontawesome-solid-terminal:
 [`]CIDER.CreateProject`](user-commands.md#create-project)
 
 
-## :fontawesome-solid-code: Drop alias
+## Drop alias
 
     {flag}←DropAlias alias
 
 Where `alias` is a project alias, Cider removes it from the file named by `GetCiderAliasFilename` and returns a flag indicating success.
 
 
-## :fontawesome-solid-code: Get alias file content
+## Get alias file content
 
     r←{filename} GetCiderAliasFileContent dummy
 
@@ -231,12 +226,11 @@ Cider ignores `dummy` and returns as a matrix of strings the contents of the fil
 
 If the file is empty the result has zero rows.
 
-:fontawesome-solid-terminal:
 [`]CIDER.ListAliases`](user-commands.md#list-aliases)
 
 
 
-## :fontawesome-solid-code: Get alias filename
+## Get alias filename
 
     filename←GetCiderAliasFilename
 
@@ -244,24 +238,23 @@ Returns the path to the file used to record alias names and their paths.
 
 
 
-## :fontawesome-solid-code: Get global config file content
+## Get global config file content
 
     parms←GetCiderGlobalConfigFileContent
 
 Cider returns the [global config](configuration.md#global) – if found – as a parameter namespace; otherwise the result is `⍬`.
 
-:fontawesome-solid-terminal:
 [`]CIDER.Config`](user-commands.md#config)
 
 
-## :fontawesome-solid-code: Get global config filename
+## Get global config filename
 
     path←GetCiderGlobalConfigFilename
 
 Returns the path to Cider’s global config file.
 
 
-## :fontawesome-solid-code: Get global config home folder
+## Get global config home folder
 
     path←GetCiderGlobalConfigHomeFolder
 
@@ -271,7 +264,7 @@ On Windows, this is typically `C:/Users/<⎕AN>/.cider/config.json`
 
 
 
-## :fontawesome-solid-code: Get MyUCMDs folder
+## Get MyUCMDs folder
 
     path←GetMyUCMDsFolder
 
@@ -283,7 +276,7 @@ Returns the path to the `MyUCMDs/` folder.
     Not so on other platforms.
 
 
-## :fontawesome-solid-code: Get NuGet dependencies
+## Get NuGet dependencies
 
     r←name GetNuGetDependencies config
 
@@ -296,12 +289,11 @@ returns either the value of `nuget` in the given branch or an empty vector if `n
 
 The `config` argument is typically derived from a project’s configuration file.
 
-:fontawesome-solid-terminal:
 [`]CIDER.ListNuGetDependencies`](user-commands.md#list-nuget-dependencies)
 
 
 
-## :fontawesome-solid-code: Get Program Files folder
+## Get Program Files folder
 
     path←{current}GetProgramFilesFolder suffix
 
@@ -328,7 +320,7 @@ C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files
 ```
 
 
-## :fontawesome-solid-code: Get TatinD dependencies
+## Get TatinD dependencies
 
     r←name GetTatinDependencies config
 
@@ -343,21 +335,21 @@ The `config` argument is typically derived from the project config.
 
 
 
-## :fontawesome-solid-code: Has DotNet
+## Has DotNet
 
     flag←HasDotNet
 
 Result indicates whether .NET Core or .NET is available and the bridge DLL was successfully loaded.
 
 
-## :fontawesome-solid-code: List NuGet dependencies
+## List NuGet dependencies
 
     r←ListNuGetDependencies projectPath
 
 Where `projectPath` is a project path, returns a matrix of names and versions of its NuGet dependencies.
 
 
-## :fontawesome-solid-code: List open projects
+## List open projects
 
     r←ListOpenProjects verbose
 
@@ -376,11 +368,10 @@ Where `verbose` is a flag, returns the open projects as a matrix of 2 or 4 colum
  #.Cider  /path/to/Cider  32  cider
 ```
 
-:fontawesome-solid-terminal:
 [`]CIDER.ListOpenProjects`](user-commands.md#list-open-projects).
 
 
-## :fontawesome-solid-code: List Tatin dependencies
+## List Tatin dependencies
 
     r←ListTatinDependencies projectpath
 
@@ -411,12 +402,11 @@ Where `projectpath` is a project path, returns as a 5-column matrix the dependen
 
 !!! detail "Until Cider version 0.34.0 this was named `ListTatinPackages`"
 
-:fontawesome-solid-terminal:
 [`]CIDER.ListTatinDependencies`](user-commands.md#list-tatin-dependencies).
 
 
 
-## :fontawesome-solid-code: Open project
+## Open project
 
     (flag log)←OpenProject y
 
@@ -530,11 +520,10 @@ If `y` is a parameter space, all parameters are optional except `folder`.
     :fontawesome-solid-bomb:
     [How Link watches for changes](troubleshooting.md#how-link-watches-for-changes)
 
-:fontawesome-solid-terminal:
 [`]CIDER.OpenProject`](user-commands.md#open-project)
 
 
-## :fontawesome-solid-code: Project config
+## Project config
 
     {r}←ProjectConfig projectpath
 
@@ -543,7 +532,7 @@ Where `projectpath` is a project path, Cider displays the project config for edi
 Asks your permission before writing changes back to file, and performs checks before doing so.
 
 
-## :fontawesome-solid-code: Read project config file
+## Read project config file
 
     config←ReadProjectConfigFile projectpath
 
@@ -553,11 +542,10 @@ The path may or may not terminate in the filename `cider.config`.
 
 __Side effect__ If the function does not find the sub-keys `dependency.tatin` and `dependency.nuget` in the file it creates them and writes them there.
 
-:fontawesome-solid-terminal:
 [`]CIDER.ProjectConfig`](user-commands.md#project-config).
 
 
-## :fontawesome-solid-code: Write project config file
+## Write project config file
 
     {r}←config WriteProjectConfigFile project
 
@@ -571,7 +559,7 @@ Cider writes the contents of `config` as the project’s configuration file.
 The path may or may not terminate in the filename `cider.config`.
 
 
-## :fontawesome-solid-code: Version
+## Version
 
     r←Version
 
