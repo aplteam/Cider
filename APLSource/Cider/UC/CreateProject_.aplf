@@ -1,4 +1,4 @@
- r←{namespace}CreateProject_(folder acceptFlag noEditFlag batch ignoreUserExec);filename;success;config;projectFolder;parms;list;log
+ r←{namespace}CreateProject_(folder acceptFlag noEditFlag batch ignoreUserExec);filename;config;projectFolder;parms;list;log;msg;success
  r←''
  :If 0≡folder
      folder←⊃1 ⎕NPARTS''
@@ -49,7 +49,8 @@
  :Else
      success←1
      config←⎕JSON⍠('Dialect' 'JSON5')⊣⊃⎕NGET filename
-     PerformConfigChecks config
+     (success msg)←##.PerformConfigChecks config
+     msg Assert success
  :EndIf
  :If success
      :If namespace≢⍬

@@ -1,4 +1,5 @@
  flag←CheckJsonSyntax json
+⍝ Checks for correct syntax and everything that is required
  :Trap 0
      {}⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆json
      flag←1

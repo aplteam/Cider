@@ -1,4 +1,4 @@
- {r}←{editFlag}ProjectConfig path;filename;ns;orig;flag;edit;data
+ {r}←{editFlag}ProjectConfig path;filename;ns;orig;flag;edit;data;msg;rc
 ⍝ Puts the contents of the file cider.config in "path" into the editor.
 ⍝ If `editFlag` is 0 it's running in read-only mode.
 ⍝ The result depends on `editFlag`
@@ -22,7 +22,7 @@
  MassageConfig filename
  orig←ns.cider_config←⊃F.NGET filename 1
  :If ~CheckJsonSyntax ns.cider_config
- :OrIf ~0 PerformConfigChecks ⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
+ :OrIf ~1⊃PerformConfigChecks ⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
      orig←'' ⍝ This can happen in case the user edited the file with an external editor and introduced a mistake
  :EndIf
  :If editFlag
@@ -36,12 +36,15 @@
              :ElseIf ~CheckJsonSyntax ns.cider_config
                  :If ~1 C.YesOrNo'JsonSyntaxProblem@The JSON is syntactially incorrect. Would you like to try again? (no=changes are lost)'
                      flag←1
+                     r←¯1 ⍝ Cancelled by user
                  :EndIf
              :Else
                  data←⎕JSON⍠('Dialect' 'JSON5')('Compact' 0)⊣1↓∊(⎕UCS 10),¨⊆ns.cider_config
-                 :If ~PerformConfigChecks data
-                     :If ~1 C.YesOrNo'JsonCheckFailed@Something is wrong with the JSON, see above. Would you like to try again? (no=changes are lost)'
+                 (rc msg)←PerformConfigChecks data
+                 :If ~rc
+                     :If ~1 C.YesOrNo'JsonCheckFailed@',msg,'. Try again? (no=changes are lost)'
                          flag←1
+                         r←¯1 ⍝ Cancelled by user
                      :EndIf
                  :Else
                      :If 1 C.YesOrNo'JsonSaveChanges@Would you like to save your changes?'

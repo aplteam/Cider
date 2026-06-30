@@ -1,5 +1,4 @@
- successFlag←{reportFlag}PerformConfigChecks config;namespace;path;tatinFolders;tatinFolder;i;this;report;buff
- reportFlag←{0<⎕NC ⍵:⍎⍵ ⋄ 1}'reportFlag'
+ (successFlag msg)←PerformConfigChecks config;namespace;path;tatinFolders;tatinFolder;i;this;report;buff
  successFlag←⍬
  report←''
  tatinFolders←('dependencies' 'dependencies_dev'GetTatinDependencies¨⊂config)~⊂''
@@ -35,11 +34,18 @@
      report,←⊂'"tests" is defined with an absolute path; must be relative to the project (check "make")'
  :ElseIf 0<≢config.CIDER.tests
  :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.tests
+     successFlag,←FAILURE
      report,←⊂'Warning: "test" does not point to a function'
+ :ElseIf 0=config.⎕NC'SYSVARS'
+     successFlag,←FAILURE
+     report,←⊂'Warning: section "SYSVARS" is missing (must define at least "ml" and "io")'
+ :ElseIf 0=config.SYSVARS.⎕NC'ml'
+     successFlag,←FAILURE
+     report,←⊂'Warning: "SYSVARS" is missing a setting for "ml"'
+ :ElseIf 0=config.SYSVARS.⎕NC'io'
+     successFlag,←FAILURE
+     report,←⊂'Warning: "SYSVARS" is missing a setting for "io"'
  :EndIf
  successFlag←∧/successFlag
- :If reportFlag
- :AndIf 0<≢report
-     ⍞←⍪report
-     ⍞←⎕UCS 10
- :EndIf
+ msg←1↓⊃,/';',¨report
+⍝Done⍝

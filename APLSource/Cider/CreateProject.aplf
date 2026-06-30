@@ -1,4 +1,4 @@
- {r}←CreateProject parms;filename;config;projectFolder;list
+ {r}←CreateProject parms;filename;config;projectFolder;list;success;msg
 ⍝ Create a project according to what's specified in parms.
 ⍝ Returns always ''. Throws errors in case the project cannot be created
  parms←parms CreateCreateProjectParms ⍬
@@ -17,5 +17,6 @@
  :EndIf
  CreateConfigFile filename parms.namespace
  config←Get_JSON5 filename
- ('Invalid config file: ',filename)Assert 0 PerformConfigChecks config
+ (success msg)← PerformConfigChecks config
+ ('Invalid config file: ',filename,' (',msg,')')Assert success
 ⍝Done
