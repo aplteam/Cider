@@ -12,7 +12,7 @@
              (path namespace)←'='(≠⊆⊢)tatinFolder
              successFlag,←(1+0=(⎕NS'').{⎕NC ⍵}namespace)⊃FAILURE SUCCESS
              :If 0=¯1↑successFlag
-                 report,←⊂'Something is wrong with "',this,'"'
+                 report,←⊂'Something is wrong with "',this,'" (',tatinFolder,')'
              :EndIf
          :EndIf
      :ElseIf ~','∊tatinFolder
@@ -22,30 +22,43 @@
          report,←⊂'Something is wrong with "',this,'"'
      :EndIf
  :EndFor
- :If (⊃config.CIDER.make)∊'#⎕'
+ :If 0=config.CIDER.⎕NC'make'
      successFlag,←FAILURE
-     report,←⊂'"make" is defined with an absolute path; must be relative to the project'
- :ElseIf 0<≢config.CIDER.make
- :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.make
-     report,←⊂'Warning: "make" does not point to a function!'
+     report,←⊂'"CIDER.make" is not defined'
+ :Else
+     :If (⊃config.CIDER.make)∊'#⎕'
+         successFlag,←FAILURE
+         report,←⊂'"CIDER.make" is defined with an absolute path; must be relative to the project'
+     :ElseIf 0<≢config.CIDER.make
+     :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.make
+         report,←⊂'"CIDER.make" does not point to a function!'
+     :EndIf
  :EndIf
- :If (⊃config.CIDER.tests)∊'#⎕'
+ :If 0=config.CIDER.⎕NC'tests'
      successFlag,←FAILURE
-     report,←⊂'"tests" is defined with an absolute path; must be relative to the project (check "make")'
- :ElseIf 0<≢config.CIDER.tests
- :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.tests
+     report,←⊂'"CIDER.tests" is not defined'
+ :Else
+     :If (⊃config.CIDER.tests)∊'#⎕'
+         successFlag,←FAILURE
+         report,←⊂'"CIDER.tests" is defined with an absolute path; must be relative to the project (check "make")'
+     :ElseIf 0<≢config.CIDER.tests
+     :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.tests
+         successFlag,←FAILURE
+         report,←⊂'"CIDER.test" does not point to a function'
+     :EndIf
+ :EndIf
+ :If 0=config.⎕NC'SYSVARS'
      successFlag,←FAILURE
-     report,←⊂'Warning: "test" does not point to a function'
- :ElseIf 0=config.⎕NC'SYSVARS'
+     report,←⊂'section "SYSVARS" is missing (must define at least "ml" and "io")'
+ :EndIf
+ :If 0=config.SYSVARS.⎕NC'ml'
      successFlag,←FAILURE
-     report,←⊂'Warning: section "SYSVARS" is missing (must define at least "ml" and "io")'
- :ElseIf 0=config.SYSVARS.⎕NC'ml'
+     report,←⊂'"SYSVARS.ml" is not defined'
+ :EndIf
+ :If 0=config.SYSVARS.⎕NC'io'
      successFlag,←FAILURE
-     report,←⊂'Warning: "SYSVARS" is missing a setting for "ml"'
- :ElseIf 0=config.SYSVARS.⎕NC'io'
-     successFlag,←FAILURE
-     report,←⊂'Warning: "SYSVARS" is missing a setting for "io"'
+     report,←⊂'"SYSVARS.io" is not defined'
  :EndIf
  successFlag←∧/successFlag
- msg←1↓⊃,/';',¨report
+ msg←1↓⊃,/'; '∘,¨report
 ⍝Done⍝

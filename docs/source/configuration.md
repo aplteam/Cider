@@ -227,7 +227,6 @@ However, if the first non-white space character of `make` is a `]`, its definiti
 
 #### `parent`
 
-__Required.__
 Fully-qualified name of the parent of the project space.
 Defaults to `#` but could be e.g. `⎕SE` or `#.MyNamespace1.MyNamespace2`.
 
@@ -260,7 +259,6 @@ The user command and API function can override this setting, e.g.
 
 #### `projectSpace`
 
-__Required.__
 Name of the namespace that will contain the project.
 
 The user command and API function can override this setting, e.g.
@@ -330,7 +328,7 @@ if `source` is empty, then the root of the project.
 
 !!! info inline end ""
 
-	As of Cider version 0.46.0
+    As of Cider version 0.46.0
 
 If Cider finds a Link config file,
 it ignores the `LINK` section of its config
@@ -397,6 +395,7 @@ USER: {
 After opening the project into, say, `#.MyProject`, the setting is accessible:
 
     #.MyProject.CiderConfig.USER.Foo
+
 
 
 

@@ -11,7 +11,7 @@
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -noEdit -acceptConfig -ignoreUserExec'
  →T.GoToTidyUp 0=rc
- →T.GoToTidyUp 1≠+/'Invalid config parameter ("dependencies.tatin")'⍷msg
+ →T.GoToTidyUp 1≠+/'Something is wrong with "dependencies" (folder=TestCases/)'⍷msg
 
  R←T._OK
 
