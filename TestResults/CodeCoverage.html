@@ -127,12 +127,12 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr><th>Executed at</th><th>APLVersion</th><th>Memory (MB)</th></tr>
 </thead>
 <tbody>
-<tr><td>2026-06-30 08:22:02</td><td>Windows-64 ⋄ 20.0.53725.0 ⋄ W ⋄ Development ⋄ Unicode</td><td>109</td></tr>
+<tr><td>2026-07-01 21:32:08</td><td>Windows-64 ⋄ 20.0.53725.0 ⋄ W ⋄ Development ⋄ Unicode</td><td>108</td></tr>
 </tbody>
 </table>
-<p>Overall 58% of the testable code is covered.</p>
+<p>Overall 57% of the testable code is covered.</p>
 <p>(Comment lines, empty lines, all <code>:End</code>* lines etc. are ignored)</p>
-<p>82 of the fns/opr are 100% covered.</p>
+<p>81 of the fns/opr are 100% covered.</p>
 <div id="partly-covered" class="keep-together">
 <table id="percent">
 <thead>
@@ -158,6 +158,7 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr class="uncovered"><td>#.Cider.Cider.ReportWatch</td><td>8←≢4-10,13</td><td>0</td><td>8</td></tr>
 <tr class="uncovered"><td>#.Cider.Cider.RunMake</td><td>13←≢1-3,5-12,14,17</td><td>0</td><td>13</td></tr>
 <tr class="uncovered"><td>#.Cider.Cider.RunTests</td><td>12←≢1-3,5-12,14</td><td>0</td><td>12</td></tr>
+<tr class="uncovered"><td>#.Cider.Cider.API.GetCiderAliasFilename</td><td>1</td><td>0</td><td>1</td></tr>
 <tr class="uncovered"><td>#.Cider.Cider.API.GetCiderGlobalConfigFileContent</td><td>1</td><td>0</td><td>1</td></tr>
 <tr class="uncovered"><td>#.Cider.Cider.API.GetCiderGlobalConfigFilename</td><td>1</td><td>0</td><td>1</td></tr>
 <tr class="uncovered"><td>#.Cider.Cider.API.GetCiderGlobalConfigHomeFolder</td><td>1</td><td>0</td><td>1</td></tr>
@@ -193,6 +194,7 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr><td>#.Cider.Cider.CheckForGit</td><td>36←≢4-10,12-13,15-28,30,32,34-36,38,40-41,43-45,47-48</td><td>5</td><td>38</td></tr>
 <tr><td>#.Cider.Cider.ChangeCurrentDir</td><td>13←≢13-20,23-25,27-28</td><td>19</td><td>16</td></tr>
 <tr><td>#.Cider.Cider.LoadNuGetDependencies</td><td>27←≢11-12,15-19,21-24,26-28,30-33,35,37-38,40,43-46,48</td><td>23</td><td>35</td></tr>
+<tr><td>#.Cider.Cider.UC.ProcessAliases</td><td>15←≢6-14,16,18,20,22,25-26</td><td>25</td><td>20</td></tr>
 <tr><td>#.Cider.Cider.PolishProperties</td><td>26←≢16-24,26-27,29,32-33,35,37-39,41,43-45,49-50,61-62</td><td>32</td><td>38</td></tr>
 <tr><td>#.Cider.Cider.TatinVars.HOME</td><td>6←≢5-10</td><td>33</td><td>9</td></tr>
 <tr><td>#.Cider.Cider.GetCiderGlobalConfigFileContent</td><td>14←≢7-16,21-22,28-29</td><td>36</td><td>22</td></tr>
@@ -217,7 +219,6 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr><td>#.Cider.Cider.GetFunctionNameFromCiderConfigFile</td><td>4←≢7-8,11-12</td><td>60</td><td>10</td></tr>
 <tr><td>#.Cider.Cider.UC.CheckAPLversion</td><td>5, 6</td><td>60</td><td>5</td></tr>
 <tr><td>#.Cider.Cider.UC.GetSourceFilename</td><td>2, 6</td><td>60</td><td>5</td></tr>
-<tr><td>#.Cider.Cider.UC.ProcessAliases</td><td>8←≢9-12,14,20,25-26</td><td>60</td><td>20</td></tr>
 <tr><td>#.Cider.Cider.UC.OpenProject</td><td>18←≢6-8,10,12,19-27,30-32,42</td><td>61</td><td>46</td></tr>
 <tr><td>#.Cider.Cider.CheckTargetNamespaceAndLinkFolder</td><td>6←≢21,23,25-27,29</td><td>63</td><td>16</td></tr>
 <tr><td>#.Cider.Cider.LoadTatinDependencies</td><td>18←≢32-34,39-40,42-47,49-50,54-55,58-59,63</td><td>63</td><td>48</td></tr>
@@ -308,7 +309,6 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr class="fullyCovered"><td>#.Cider.Cider.API.CreateProject</td><td></td><td>100</td><td>0</td></tr>
 <tr class="fullyCovered"><td>#.Cider.Cider.API.DropAlias</td><td></td><td>100</td><td>0</td></tr>
 <tr class="fullyCovered"><td>#.Cider.Cider.API.GetCiderAliasFileContent</td><td></td><td>100</td><td>0</td></tr>
-<tr class="fullyCovered"><td>#.Cider.Cider.API.GetCiderAliasFilename</td><td></td><td>100</td><td>1</td></tr>
 <tr class="fullyCovered"><td>#.Cider.Cider.API.GetNuGetDependencies</td><td></td><td>100</td><td>0</td></tr>
 <tr class="fullyCovered"><td>#.Cider.Cider.API.GetProgramFilesFolder</td><td></td><td>100</td><td>0</td></tr>
 <tr class="fullyCovered"><td>#.Cider.Cider.API.GetTatinDependencies</td><td></td><td>100</td><td>0</td></tr>
@@ -372,7 +372,7 @@ $(document).ready(function() {
             }
         },
         {
-            text: "Uncovered (50)",
+            text: "Uncovered (51)",
             titleAttr: "0%",
             className: "active",
             action: function ( e, dt, node, config ) {
@@ -386,7 +386,7 @@ $(document).ready(function() {
             }
         },
         {
-            text: "Fully covered (82)",
+            text: "Fully covered (81)",
             titleAttr: "100%",
             className: "active",
             action: function ( e, dt, node, config ) {
