@@ -1,5 +1,5 @@
 (
- '* 0.53.0-beta-4 ⋄ 2016-06-30'
+ '* 0.53.0 ⋄ 2016-07-01'
  '  * `OpenProject` and `CreateOpenParms` polished and comments clarified'
  '  * Documentation polished'
  '  * Checking project connfig file improved'
