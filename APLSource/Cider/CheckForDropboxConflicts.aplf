@@ -4,7 +4,8 @@
  r←found←0
  msg←''
  :If 0<≢path~' '
-     :If ⍬≡dropbox←GetGlobalDropboxConflicts
+     dropbox←(,1)≡,GetGlobalDropboxConflicts
+     :If dropbox
          dropbox←⎕NEXISTS GetUserHomPath,'\Dropbox'
      :EndIf
  :AndIf dropbox
