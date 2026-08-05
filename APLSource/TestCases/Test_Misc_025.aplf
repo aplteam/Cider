@@ -1,0 +1,19 @@
+ r←Test_Misc_025(stopFlag batchFlag);⎕TRAP;successFlag;msg
+⍝ Exercise `PerformConfigChecks`: an incomplete "=" definition is invalid.
+⍝ Used to throw a LENGTH ERROR out of `PerformConfigChecks` because such a definition
+⍝ partitions into a single part, not two.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ ⍝ Nothing to the right of the "="
+ (successFlag msg)←##.Cider.PerformConfigChecks ∆GetConfigForChecks'packages_dev='
+ →T.PassesIf 0≡successFlag
+ →T.PassesIf 0<≢msg
+
+ ⍝ Nothing to the left of the "="
+ (successFlag msg)←##.Cider.PerformConfigChecks ∆GetConfigForChecks'=TestCases'
+ →T.PassesIf 0≡successFlag
+ →T.PassesIf 0<≢msg
+
+ r←T._OK
+⍝Done

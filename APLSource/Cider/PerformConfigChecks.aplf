@@ -6,10 +6,13 @@
      tatinFolder←i⊃tatinFolders
      this←i⊃'dependencies' 'dependencies_dev'
      :If '='∊tatinFolder
-         :If 1<'='+.=tatinFolder
-             successFlag,←SUCCESS
+         buff←'='(≠⊆⊢)tatinFolder
+         :If (2≠≢buff)∨1≠'='+.=tatinFolder
+             ⍝ Anything but exactly <folder>=<namespace> is invalid
+             successFlag,←FAILURE
+             report,←⊂'Something is wrong with "',this,'" (',tatinFolder,'); expected <folder>=<namespace>'
          :Else
-             (path namespace)←'='(≠⊆⊢)tatinFolder
+             (path namespace)←buff
              successFlag,←(1+0=(⎕NS'').{⎕NC ⍵}namespace)⊃FAILURE SUCCESS
              :If 0=¯1↑successFlag
                  report,←⊂'Something is wrong with "',this,'" (',tatinFolder,')'
@@ -19,6 +22,7 @@
          successFlag,←SUCCESS
      :Else
               ⍝ More than one is invalid
+         successFlag,←FAILURE
          report,←⊂'Something is wrong with "',this,'"'
      :EndIf
  :EndFor
@@ -31,6 +35,7 @@
          report,←⊂'"CIDER.make" is defined with an absolute path; must be relative to the project'
      :ElseIf 0<≢config.CIDER.make
      :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.make
+         successFlag,←FAILURE
          report,←⊂'"CIDER.make" does not point to a function!'
      :EndIf
  :EndIf

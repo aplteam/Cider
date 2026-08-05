@@ -1,6 +1,7 @@
 (
- '* 0.53.1 ⋄ 2026-07-15'
- '  * A check for Dropbox conflicts was performed no matter what the globl configuration.'
+ '* 0.53.1 ⋄ 2026-08-05'
+ '  * A check for Dropbox conflicts was performed no matter what the globl configuration ruled.'
+ '  * Ill-formed dependency folder definitions could cause harm. Now properly reported. '
  '* 0.53.0 ⋄ 2026-07-01'
  '  * `OpenProject` and `CreateOpenParms` polished and comments clarified'
  '  * Documentation polished'

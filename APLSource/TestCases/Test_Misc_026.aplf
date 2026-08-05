@@ -1,0 +1,13 @@
+ r←Test_Misc_026(stopFlag batchFlag);⎕TRAP;successFlag;msg
+⍝ Exercise `PerformConfigChecks`: more than one Tatin dependency folder is invalid.
+⍝ Used to be reported to the caller as valid although a message was compiled: because
+⍝ the message is only put on display when the check failed, the user never saw it.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ (successFlag msg)←##.Cider.PerformConfigChecks ∆GetConfigForChecks'packages_dev,packages_dev_2'
+ →T.PassesIf 0≡successFlag
+ →T.PassesIf 0<≢msg
+
+ r←T._OK
+⍝Done

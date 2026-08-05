@@ -1,0 +1,23 @@
+ r←Test_Misc_027(stopFlag batchFlag);⎕TRAP;config;successFlag;msg
+⍝ Exercise `PerformConfigChecks`: "CIDER.make" must point to a function.
+⍝ A "make" that did not point to a function used to be reported to the caller as valid
+⍝ although a message was compiled: because the message is only put on display when the
+⍝ check failed, the user never saw it.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ ⍝ "make" is checked as `parent`.`projectSpace`.`make`, so point it at a function that exists
+ config←∆GetConfigForChecks'packages_dev'
+ config.CIDER.projectSpace←'Cider'
+ config.CIDER.make←'Cider.Version'
+ (successFlag msg)←##.Cider.PerformConfigChecks config
+ →T.PassesIf 1≡successFlag
+ →T.PassesIf 0=≢msg
+
+ config.CIDER.make←'ThisIsNotAFunction'
+ (successFlag msg)←##.Cider.PerformConfigChecks config
+ →T.PassesIf 0≡successFlag
+ →T.PassesIf 0<≢msg
+
+ r←T._OK
+⍝Done

@@ -1,0 +1,11 @@
+ ∆GetConfigForChecks←{
+⍝ Returns a minimal but otherwise valid Cider config namespace with
+⍝ "dependencies_dev.tatin" set to ⍵. Used for exercising `PerformConfigChecks`.
+⍝ "make" and "tests" are empty on purpose: that is valid, and it stops
+⍝ `PerformConfigChecks` from looking at anything but the Tatin dependency folders.
+     json←'{ CIDER: { dependencies: { tatin: "packages", nuget: "" },'
+     json,←' dependencies_dev: { tatin: "',⍵,'" },'
+     json,←' make: "", parent: "#", projectSpace: "Foo", source: "APLSource", tests: "" },'
+     json,←' SYSVARS: { io: 1, ml: 1 } }'
+     ⎕JSON⍠('Dialect' 'JSON5')⊣json
+ }

@@ -1,0 +1,18 @@
+ r←Test_Misc_023(stopFlag batchFlag);⎕TRAP;successFlag;msg
+⍝ Exercise `PerformConfigChecks`: valid Tatin dependency folders are accepted.
+⍝ This is the control for Test_Misc_024 to Test_Misc_026.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ ⍝ No target namespace: packages go into the project space
+ (successFlag msg)←##.Cider.PerformConfigChecks ∆GetConfigForChecks'packages_dev'
+ →T.PassesIf 1≡successFlag
+ →T.PassesIf 0=≢msg
+
+ ⍝ With a target namespace
+ (successFlag msg)←##.Cider.PerformConfigChecks ∆GetConfigForChecks'packages_dev=TestCases'
+ →T.PassesIf 1≡successFlag
+ →T.PassesIf 0=≢msg
+
+ r←T._OK
+⍝Done

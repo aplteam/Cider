@@ -1,0 +1,17 @@
+ r←Test_Misc_024(stopFlag batchFlag);⎕TRAP;successFlag;msg
+⍝ Exercise `PerformConfigChecks`: more than one "=" in a Tatin dependency folder is invalid.
+⍝ Used to be reported as valid, and `SplitTatinFolders` then crashed when the project was opened.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ (successFlag msg)←##.Cider.PerformConfigChecks ∆GetConfigForChecks'packages_dev=A=B'
+ →T.PassesIf 0≡successFlag
+ →T.PassesIf 0<≢msg
+
+ ⍝ Two adjacent "=" partition into two parts, so the count must be checked as well
+ (successFlag msg)←##.Cider.PerformConfigChecks ∆GetConfigForChecks'packages_dev==TestCases'
+ →T.PassesIf 0≡successFlag
+ →T.PassesIf 0<≢msg
+
+ r←T._OK
+⍝Done
