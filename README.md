@@ -111,7 +111,6 @@ Once a folder is established that holds a Cider config file, the user command pe
 1. Inject a namespace `TatinVars` in case the project ends up as a package
 1. Check whether the project's config file does carry a non-empty value for `init`. If that's the case, it must be a function that is then called by Cider, typically for initializing the project
 1. If there is a variable `ToDo` in the root of the project, and the variable is not empty, then this variable is printed to the session
-1. Cider can check for Dropbox conflicts at this stage (configurable)
 1. If the project is managed by Git, then Cider executes the `git status` command on the project folder and puts the result on view (configurable)
 
 Notes:

@@ -114,7 +114,7 @@ Not found: boobly-boo
 Where
 
 <!-- -   `x` (optional) is a list of projects and/or a flag -->
--   `performChecks` (optional) is whether to check for Dropbox conflicts (default is 1)
+-   `performChecks` (optional) has no effect anymore; it is kept for compatibility (default is 1)
 -   `projects` is
     -   one or more open projects
     -   an empty vector (all open projects)
@@ -131,19 +131,17 @@ Identify projects as (any of)
 The __optional left argument__ can be either or both (in any order) of
 
 -   a list of projects as returned by [`ListOpenProjects`](#list-open-projects)
--   a flag (defaults to 1): whether Dropbox conflict checks are made.
+-   a flag (defaults to 1): whether checks are made.
 
  -->
 Example: close all open projects.
 ```apl
 ⎕SE.Cider.CloseProject ⍬
 ```
-Example: close three projects without checking for Dropbox conflicts.
+Example: close three projects.
 ```apl
-0 ⎕SE.Cider.CloseProject 'path/to/project' #.util '[test]'
+⎕SE.Cider.CloseProject 'path/to/project' #.util '[test]'
 ```
-
-[`CheckForDropboxConflicts`](configuration.md#checkfordropboxconflicts)
 
 [`]CIDER.CloseProject`](user-commands.md#close-project)
 

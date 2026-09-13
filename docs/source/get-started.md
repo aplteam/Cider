@@ -79,7 +79,6 @@ Cider creates the folder as a Cider project, with an empty `APLSource` child fol
 	Project successfully created; open as well? (Y/n) Y
 	Link parameter "watch" is <both>
 	The current directory is now /Users/sjt/tmp/myproj
-	  No Dropbox conflicts found
 	Project successfully opened and established in "#.myproj"
 
 Now Link will save APL objects in the `#.myproj` namespace as text files in `APLSource`.
@@ -109,7 +108,6 @@ Clear the workspace and open the project.
 	      ]CIDER.OpenProject /Users/sjt/tmp/myproj
 	Link parameter "watch" is <both>
 	The current directory is now /Users/sjt/tmp/myproj
-	  No Dropbox conflicts found
 	Project successfully opened and established in "#.myproj"
 	      myproj.mean ⍳20
 	10.5

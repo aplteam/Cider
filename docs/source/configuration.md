@@ -27,7 +27,6 @@ Example:
 ```json
 {
   AskForDirChange: 1,
-  CheckForDropboxConflicts: 1,
   ExecuteAfterProjectOpen: "⎕SE.Path.To.Function",
   HandleLinkStops: 1,
   ReportGitStatus: 1,
@@ -54,25 +53,6 @@ On opening the first project in the current workspace
     0 - Take no action
     1 - Change the current directory to the project root (default)
     2 - Ask me if I want to change the directory
-
-
-
-### `CheckForDropboxConflicts`
-
-If this flag is set, when opening and closing projects Cider will report files where the name contains the string "conflicted copy".
-
-Absent this flag, if your home folder contains a folder `Dropbox/`, Cider will also perform the check.
-
-!!! detail "How Dropbox reports conflicts"
-
-    If Dropbox cannot decide what the last version of a file is, it will create a file with "conflicted copy" in its name. Dropbox leaves it to you to compare such files and resolve the conflict.
-
-    Dropbox does not actually alert you to such conflicts, it just silently creates the files. So you can configure Cider to look for them.
-
-
-
-[`CIDER.CloseProject`](user-commands.md#close-project)<br>
-[`CIDER.OpenProject`](user-commands.md#open-project)
 
 
 

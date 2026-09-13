@@ -1,7 +1,7 @@
 ---
 title: About Cider
 description: Cider is a project manager for Dyalog APL authors who make software for others to use.
-keywords: api, apl, cider, dropbox, dyalog, git, link, nuget, source, tatin
+keywords: api, apl, cider, dyalog, git, link, nuget, source, tatin
 ---
 
 # About Cider
@@ -43,7 +43,6 @@ You use Cider through its [user commands](user-commands.md) or its [API function
     -    [Tatin](https://tatin.dev), the community APL package manager
     -    [NuGet](https://www.nuget.org), the package manager for .NET
     -    [Git](https://git-scm.com), a source-control manager[^git]
-    -    [Dropbox](https://dropbox.com), a file-sharing service
 
     [^git]: Cider is designed to work with the popular Git source control manager,  but can be used with others.
 

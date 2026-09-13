@@ -131,7 +131,7 @@ Otherwise attempts to close projects are reported in detail.
 
 ---|---
 `all`  | Close all open projects
-`fast` | Close project without [checking for Dropbox conflicts](configuration.md#checkfordropboxconflicts "CheckForDropboxConflicts").
+`fast` | Has no effect anymore; kept for compatibility.
 
 
 ## Config
@@ -152,7 +152,6 @@ Cider prints the content of its global config file to the session.
      --- Cider Config File: /Users/sjt/.cider/config.json ---
      {
        // AskForDirChange: 1,
-       // CheckForDropboxConflicts: 1,
        // ExecuteAfterProjectOpen: "⎕SE.Path.To.Function",
        // HandleLinkStops: 0,
        // ReportGitStatus: 1,
