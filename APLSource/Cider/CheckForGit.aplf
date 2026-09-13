@@ -11,7 +11,7 @@
          gitStatus←(2 3⍳ind)⊃1 2
      :EndIf
      :Trap 0
-         status←G.Status path
+         status←↓1 G.Status path
      :Else
          success←0
          dmx←⎕DMX
@@ -36,14 +36,14 @@
          :If ∨/'No commits yet'⍷∊status
              (3⊃status)←'Nothing has been commited yet, therefore branches cannot be reported'
          :Else
-             (3⊃status)←'Git branches: '{0=≢⍵:'No other branches' ⋄ ⍺,⊃{⍺,', ',⍵}/⍵}2↓¨APLGit2.ListBranches path
+             (3⊃status)←⊂'Git branches: '{0=≢⍵:'No other branches' ⋄ ⍺,⊃{⍺,', ',⍵}/⍵}2↓¨APLGit2.ListBranches path
          :EndIf
          :If 0<≢stashes←APLGit2.StashList path
-             status,←⊂'Number of stashes: ',⍕≢status
+             status,←⊂'Number of stashes: ',⍕≢stashes
          :EndIf
-         status←(↓(,[0.5]'Git status report')⍪'='),status
+         status←(⊂¨↓(,[0.5]'Git status report')⍪'='),status
          :If gitStatus=1
-             {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍪status
+             {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍕↑status
          :Else
              ⍞←↑status
              ⍞←⎕UCS 10
