@@ -110,7 +110,7 @@
                  buff,←⊂' failed: ',{(1⊃⍵),' in ',{⍵↑⍨⍵⍳']'}(2⊃⍵)}qdmx.DM
                  ∆Problems+←1
                  loadDependencies←0
-                 (1↓⊃,/(⎕UCS 13),¨buff)Assert parms.batch
+                 (1↓⊃,/(⎕UCS 13),¨buff)Assert~parms.batch
                  (1 parms.batch)p buff
              :EndTrap
          :EndIf
@@ -164,7 +164,6 @@
  {}ExecUserFunction⍣((0=parms.importFlag)∧0=parms.ignoreUserExec)⊣config
  {}parms CheckOnToDo⍣flag⊣projectSpace_
  successFlag←SUCCESS
- {}CheckForDropboxConflicts⍣flag⊢parms.folder
  {}CheckForGit⍣flag⊢parms.folder config parms
  msg←'Project successfully ',(1+parms.importFlag)⊃'opened' 'imported'
  :If 0<∆Problems
