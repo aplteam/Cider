@@ -9,7 +9,7 @@
  3 ⎕MKDIR tempDir,'/APLSource'
  sourceFolder←##.CiderConfig.HOME,'/TestData/Link.Config'
  linkconfigFile←tempDir,'/APLSource/.linkconfig'
- {}⎕NDELETE linkconfigFile                 ⍝ In case an earlier run failed
+ 1 ⎕NDELETE linkconfigFile                 ⍝ In case an earlier run failed
 
 ⍝ No .linkconfig: the LINK section is passed on
  (linkOptions watchSetting)←tempDir ∆ProcessLinkOptions 0

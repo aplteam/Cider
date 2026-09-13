@@ -7,6 +7,10 @@
  :If 0<≢data
      data[;1]←{'[',⍵,']'}¨data[;1]
      caption←'Select project to be opened',({0=≢⍵:⍵ ⋄ ' ',⍵,' '}caption),':'
- :AndIf ⍬≢row←'SelecProject@Select project to be opened:'P.##.CommTools.Select↓⎕FMT data
-     r←row⊃data[;2]
+ :Else
+     row←'SelecProject@Select project to be opened:'P.##.CommTools.Select↓⎕FMT data
+     :If ¯1≢row
+     :AndIf ⍬≢row
+         r←row⊃data[;2]
+     :EndIf
  :EndIf

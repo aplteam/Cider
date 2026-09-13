@@ -1,0 +1,17 @@
+ SelectProject←{
+⍝ Presents all currently opened Cider/acre projects and lets the user choose one.\\
+⍝ Returns a matrix with the selected project in the same format ]Cider.Projects does, possibly `(⍬ ⍬ ⍬)`.
+⍝ The mandatory left argument defines the type:
+⍝ 1 = Cider
+⍝ 2 = acre
+⍝ 3 = Both
+     type←⍺
+     ~(⊂⍺)∊1 2 3:'Invalid left argument: must be either 1, 2 or 3'⎕SIGNAL 11
+     l←⍵
+     0=≢l:l
+     caption←'SelectPrjForAPLGIT2@APLGit2: please select a',(type⊃' Cider' 'n acre' ' Cider or acre'),' project'
+     i←caption ##.CommTools.Select↓⎕FMT l
+     ¯1≡i::'' ''  ⍝ Cancelled?
+     0=≢i:'' ''   ⍝ Nothing selected?
+     l[i;]
+ }

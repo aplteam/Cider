@@ -135,7 +135,8 @@ MinimumVersionOfDyalog←'18.0'
                       :Else
                           :If (,'?')≡,Args._2
                               ind←'SelectForStash@Select what to stash:' 1 G.##.CommTools.Select list[;3]
-                              :If 0=≢ind
+                              :If ¯1≢ind
+                              :OrIf 0=≢ind
                                   r←'Cancelled by user' ⋄ →0
                               :Else
                                   Args._2←list←list[ind;2]

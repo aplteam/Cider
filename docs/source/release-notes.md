@@ -19,6 +19,7 @@ Here we highlight incompatabilities, if any.
 </style>
 
 -------|------------|----------------------------------------
+0.54.0 | 2026-09-13 | No compatability issues, but be aware that due to a bug in Cider, Link always used `watch←'both'`, no matter what the Cider config was saying. That changed with this release.
 0.53.1 | 2026-08-05 | No compatability issues
 0.53.0 | 2026-06-30 | Config options "make" & "tests" are mandatory now
 0.52.0 | 2026-05-14 | No compatability issues
@@ -43,6 +44,7 @@ Here we highlight incompatabilities, if any.
 0.42.3 | 2024-09-05 | No compatability issues
 0.42.2 | 2024-08-04 | Bug fixes.
 0.42.1 | 2024-07-12 | Injecting `TatinVars` has changed.<br><br>`]Cider.ProjectConfig`'s `-print` option replaced by `-edit`.
+
 
 
 
