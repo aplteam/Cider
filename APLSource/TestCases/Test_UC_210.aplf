@@ -1,0 +1,22 @@
+ r←Test_UC_210(stopFlag batchFlag);⎕TRAP;tempDir;ref;rc;msg;res
+⍝ Call ]Cider.ProjectConfig with the path of a project that is not open.
+⍝ Used to ignore the argument: it reported on an open project instead, cancelled, or failed when none was open.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠('Wildcard' 1)('IfExists' 'Replace')⊢##.CiderConfig.HOME,'/Tests/Test_Alias/*'
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'Select' 'Select a Cider project:'⍬  ⍝ Only asked when the argument is ignored and several projects are open
+
+ (rc msg res)←∆UCMD'ProjectConfig "',tempDir,'/Project2"'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~∨/'Project2/cider.config'⍷∊res
+
+ r←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert 0=rc
+⍝Done

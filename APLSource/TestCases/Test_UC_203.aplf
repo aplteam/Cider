@@ -1,0 +1,38 @@
+ r←Test_UC_203(stopFlag batchFlag);⎕TRAP;tempDir;project;parms;success;log;ref;rc;msg;res
+⍝ Call ]Cider.LinkConfig without an argument while more than one project is open, and select nothing.
+⍝ Used to crash with a VALUE ERROR because the result was not set.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ #.⎕EX¨'TEMP' 'TEMP2'
+ 'TEMP'#.⎕NS''
+ 'TEMP2'#.⎕NS''
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠('Wildcard' 1)('IfExists' 'Replace')⊢##.CiderConfig.HOME,'/Tests/Test_Alias/*'
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ :For project :In 'Project1' 'Project2'
+     parms←##.Cider.CreateOpenParms ⍬
+     parms.folder←tempDir,'/',project
+     parms.watch←'ns'
+     parms.ignoreUserExec←1
+     parms.batch←1
+     (success log)←##.Cider.OpenProject parms
+     →T.GoToTidyUp~success
+ :EndFor
+
+ ref.AddAutomation'Select' 'Select a Cider project:'⍬
+ (rc msg res)←∆UCMD'LinkConfig'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~∨/'Cancelled by user'⍷res
+
+ r←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ {}⎕SE.Link.Break'#.TEMP'
+ {}⎕SE.Link.Break'#.TEMP2'
+ #.⎕EX¨'TEMP' 'TEMP2'
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert 0=rc
+⍝Done

@@ -1,0 +1,26 @@
+ R←Test_Alias_013(stopFlag batchFlag);⎕TRAP;filename;moved;rc;msg;res
+⍝ Call ]Cider.OpenProject without an argument when no aliases are defined.
+⍝ *** Note that this test temporarily moves the user's alias file away!
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ filename←##.Cider.GetCiderAliasFilename
+ 'Left-over from earlier test case?! Needs to be resolved!'Assert 0=⎕NEXISTS filename,'.bkp'
+ :If moved←⎕NEXISTS filename
+     (filename,'.bkp')⎕NMOVE filename
+ :EndIf
+ (rc msg res)←∆UCMD'OpenProject -watch=ns -batch -ignoreUserExec'  ⍝ ∆UCMD traps errors, so the file gets restored
+ :If moved
+     :If ⎕NEXISTS filename                 ⍝ In case the call created a new one
+         ⎕NDELETE filename
+     :EndIf
+     filename ⎕NMOVE filename,'.bkp'
+ :EndIf
+
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~∨/'There are no aliases defined'⍷res
+
+ R←T._OK
+
+∆TidyUp:
+⍝Done

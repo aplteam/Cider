@@ -1,0 +1,14 @@
+ r←Test_Misc_031(stopFlag batchFlag);⎕TRAP;config;successFlag;msg
+⍝ Exercise `PerformConfigChecks`: a missing "SYSVARS" section must be reported.
+⍝ Used to crash with a VALUE ERROR right after detecting that the section is missing.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ config←∆GetConfigForChecks'packages_dev'
+ config.⎕EX'SYSVARS'
+ (successFlag msg)←##.Cider.PerformConfigChecks config
+ →T.PassesIf 0≡successFlag
+ →T.PassesIf∨/'"SYSVARS" is missing'⍷msg
+
+ r←T._OK
+⍝Done

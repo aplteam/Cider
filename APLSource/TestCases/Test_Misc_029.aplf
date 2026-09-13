@@ -1,0 +1,37 @@
+ r←Test_Misc_029(stopFlag batchFlag);⎕TRAP;globalConfig;ns;parms;qdmx;success
+⍝ Exercise `CheckForGit` the way `OpenProject` calls it when `batch` is 0, reporting the Git status.
+⍝ APLGit2 1.0 changed the result of `Status` to a matrix, and `CheckForGit` crashed on it.
+⍝ No other test noticed because they all open projects with batch←1, which skips `CheckForGit`.
+⍝ The Git status of the Cider project is printed to the session.
+⍝ *** Note that this function temporarily replaces Cider's global config file!
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ :If ~##.Cider.G.IsGitInstalled
+     r←T._NotApplicable ⋄ →0
+ :EndIf
+
+ globalConfig←##.Cider.GetCiderGlobalConfigFilename
+ 'Left-over from earlier test case?! Needs to be resolved!'Assert 0=⎕NEXISTS globalConfig,'.bkp'
+ (globalConfig,'.bkp')⎕NMOVE globalConfig   ⍝ Save Cider's original global config file
+ ns←⎕NS''
+ ns.ReportGitStatus←2                      ⍝ Report in the session: 1 would open ⎕ED, 3 would ask
+ ∆SaveCiderGlobalConfig ns
+ parms←⎕NS''
+ parms.batch←0
+ qdmx←⍬
+ :Trap 0
+     success←##.Cider.CheckForGit ##.CiderConfig.HOME(⎕NS'')parms
+ :Else
+     qdmx←⎕DMX
+ :EndTrap
+ ⎕NDELETE globalConfig
+ globalConfig ⎕NMOVE globalConfig,'.bkp'   ⍝ Restore the original before checking anything
+
+ →T.GoToTidyUp ⍬≢qdmx
+ →T.GoToTidyUp 1≢success
+
+ r←T._OK
+
+∆TidyUp:
+⍝Done

@@ -1,0 +1,25 @@
+ R←Test_Alias_010(stopFlag batchFlag);⎕TRAP;ref;rc;msg;res;alias
+⍝ Open a project with ]Cider.OpenProject without an argument, selecting it from the list of aliases.
+⍝ Was a bug in 0.54.0-beta-2: the list was only offered when no aliases were defined at all.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ alias←'test-alias-010'
+ ##.Cider.AddAlias(∆ALIAS_TEMP_FOLDER,'/Project1')alias
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'Select' 'SelecProject@'('[',alias,']')
+
+ (rc msg res)←∆UCMD'OpenProject -watch=ns -batch -ignoreUserExec'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~(⊂'#.TEMP')∊{⍵[;1]}##.Cider.ListOpenProjects 0
+
+ R←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ {}⎕SE.Link.Break'#.TEMP'
+ #.⎕EX'TEMP'
+ {}##.Cider.DropAlias alias
+⍝Done

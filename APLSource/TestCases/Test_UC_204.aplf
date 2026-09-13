@@ -1,0 +1,44 @@
+ r←Test_UC_204(stopFlag batchFlag);⎕TRAP;tempDir;project;parms;success;log;ref;rc;msg;res;buff
+⍝ Call ]Cider.LinkConfig without an argument while more than one project is open, and quit with "q".
+⍝ `UC.GetProjectPath` used to crash with an INDEX ERROR on the ¯1 that CommTools 3 returns for "q".
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ ⍝ Automating "q" requires CommTools 3.0.1 or later; without it this test would prove nothing
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'Select' 'CheckQ@' 'q'
+ buff←'CheckQ@Check:'ref.Select,¨'a' 'b'
+ ref.Cleanup
+ 'CommTools automation does not return ¯1 for "q"'Assert ¯1≡buff
+
+ #.⎕EX¨'TEMP' 'TEMP2'
+ 'TEMP'#.⎕NS''
+ 'TEMP2'#.⎕NS''
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠('Wildcard' 1)('IfExists' 'Replace')⊢##.CiderConfig.HOME,'/Tests/Test_Alias/*'
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ :For project :In 'Project1' 'Project2'
+     parms←##.Cider.CreateOpenParms ⍬
+     parms.folder←tempDir,'/',project
+     parms.watch←'ns'
+     parms.ignoreUserExec←1
+     parms.batch←1
+     (success log)←##.Cider.OpenProject parms
+     →T.GoToTidyUp~success
+ :EndFor
+
+ ref.AddAutomation'Select' 'Select a Cider project:' 'q'
+ (rc msg res)←∆UCMD'LinkConfig'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~∨/'Cancelled by user'⍷res
+
+ r←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ {}⎕SE.Link.Break'#.TEMP'
+ {}⎕SE.Link.Break'#.TEMP2'
+ #.⎕EX¨'TEMP' 'TEMP2'
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert 0=rc
+⍝Done

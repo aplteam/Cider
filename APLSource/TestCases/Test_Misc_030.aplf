@@ -1,0 +1,14 @@
+ r←Test_Misc_030(stopFlag batchFlag);⎕TRAP;config;successFlag;msg
+⍝ Exercise `PerformConfigChecks`: an invalid Tatin dependency folder must be reported under the right key.
+⍝ With an empty "dependencies.tatin", a problem in "dependencies_dev.tatin" used to be reported as "dependencies".
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ config←∆GetConfigForChecks'packages_dev=A=B'
+ config.CIDER.dependencies.tatin←''
+ (successFlag msg)←##.Cider.PerformConfigChecks config
+ →T.PassesIf 0≡successFlag
+ →T.PassesIf∨/'"dependencies_dev"'⍷msg
+
+ r←T._OK
+⍝Done

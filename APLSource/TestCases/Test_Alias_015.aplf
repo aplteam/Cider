@@ -1,0 +1,39 @@
+ R←Test_Alias_015(stopFlag batchFlag);⎕TRAP;alias;expected;qdmx
+⍝ Call the API functions `RunMake`, `RunTests` and `ProjectConfig` with an alias that is not defined.
+⍝ Each must throw an error naming the alias. `RunMake` and `RunTests` did not check for this at all.
+⍝ The alias is a valid APL name on purpose: otherwise `GetFolderFromAlias2` complains about the name instead.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ alias←'[test_alias_015_undefined]'
+ {}##.Cider.DropAlias alias~'[]'           ⍝ Just in case
+ expected←'Alias "',alias,'" not found'
+
+ :Trap 11
+     {}##.Cider.RunMake alias
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp~∨/expected⍷qdmx.EM
+ :EndTrap
+
+ :Trap 11
+     {}##.Cider.RunTests alias
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp~∨/expected⍷qdmx.EM
+ :EndTrap
+
+ :Trap 11
+     {}##.Cider.ProjectConfig alias
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp~∨/expected⍷qdmx.EM
+ :EndTrap
+
+ R←T._OK
+
+∆TidyUp:
+⍝Done

@@ -10,7 +10,7 @@
  parms.folder←'[aliasdoesnotexist]'
 
  :Trap 11
-     {}({⍵}#.Cider.Cider.GetFolderFromAlias)parms
+     {}#.Cider.Cider.GetFolderFromAlias parms
      →T.FailsIf 1
  :Else
      qdmx←⎕DMX

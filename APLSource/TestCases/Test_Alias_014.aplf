@@ -1,0 +1,29 @@
+ R←Test_Alias_014(stopFlag batchFlag);⎕TRAP;tempDir;folder;alias;config;res;rc;msg
+⍝ Call the API functions `RunMake`, `RunTests` and `ProjectConfig` with an alias rather than a folder.
+⍝ All three used to fail with a SYNTAX ERROR: they called `GetFolderFromAlias`, then an operator, as a function.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠('Wildcard' 1)('IfExists' 'Replace')⊢##.CiderConfig.HOME,'/Tests/Test_Alias/*'
+ folder←tempDir,'/Project1'
+ config←##.Cider.ReadProjectConfig folder
+ config.CIDER.(make tests)←'Admin.Make' 'TestCases.RunTests'
+ config ##.Cider.WriteProjectConfig folder
+ alias←'test-alias-014'
+ ##.Cider.AddAlias folder alias
+
+ res←##.Cider.RunMake'[',alias,']'
+ →T.GoToTidyUp~∨/'#.TEMP.Admin.Make'⍷res
+ res←##.Cider.RunTests'[',alias,']'
+ →T.GoToTidyUp~∨/'#.TEMP.TestCases.RunTests'⍷res
+ res←##.Cider.ProjectConfig'[',alias,']'
+ →T.GoToTidyUp~∨/'Admin.Make'⍷∊res
+
+ R←T._OK
+
+∆TidyUp:
+ {}##.Cider.DropAlias alias
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert 0=rc
+⍝Done

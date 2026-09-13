@@ -1,0 +1,29 @@
+ r←Test_Misc_033(stopFlag batchFlag);⎕TRAP;tempDir;filename;before;res;rc;msg
+⍝ Exercise `ProjectConfig` in read-only mode.
+⍝ It used to add missing entries ("make", "tests") to the file although nothing was edited, and it
+⍝ crashed on a file that was not valid JSON5 instead of displaying it.
+⍝ Both cases print a warning to the session.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ filename←tempDir,'/cider.config'
+
+ ⍝ Neither "make" nor "tests" defined: the file must not be changed
+ (⊂'{ CIDER: { parent: "#", projectSpace: "Foo", source: "APLSource", dependencies: { tatin: "", nuget: "" }, dependencies_dev: { tatin: "" } }, SYSVARS: { io: 1, ml: 1 }, USER: { } }')⎕NPUT filename 1
+ before←⊃⎕NGET filename
+ res←##.Cider.ProjectConfig tempDir
+ →T.GoToTidyUp before≢⊃⎕NGET filename
+ →T.GoToTidyUp~∨/'projectSpace'⍷∊res
+
+ ⍝ Not valid JSON5: must be displayed anyway
+ (⊂'{ CIDER: { parent: "#", ')⎕NPUT filename 1
+ res←##.Cider.ProjectConfig tempDir
+ →T.GoToTidyUp~∨/'CIDER'⍷∊res
+
+ r←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert 0=rc
+⍝Done

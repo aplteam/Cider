@@ -1,0 +1,21 @@
+ R←Test_Alias_011(stopFlag batchFlag);⎕TRAP;ref;rc;msg;res;alias
+⍝ Call ]Cider.OpenProject [?] with aliases defined, but select nothing from the list.
+⍝ Used to report "No aliase defined" although there were aliases.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ alias←'test-alias-011'
+ ##.Cider.AddAlias(∆ALIAS_TEMP_FOLDER,'/Project2')alias
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'Select' 'SelecProject@'⍬
+
+ (rc msg res)←∆UCMD'OpenProject [?] -watch=ns -batch -ignoreUserExec'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~∨/'Cancelled by user'⍷res
+
+ R←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ {}##.Cider.DropAlias alias
+⍝Done

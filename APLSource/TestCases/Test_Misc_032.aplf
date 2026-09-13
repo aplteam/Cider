@@ -1,0 +1,27 @@
+ r←Test_Misc_032(stopFlag batchFlag);⎕TRAP;config;successFlag;msg
+⍝ Exercise `PerformConfigChecks`: "make" and "tests" can only be checked for a project that is open, and
+⍝ not at all when they are user or system commands. They used to be rejected in both cases, so the config
+⍝ of a project that is not open could not be saved with ]Cider.ProjectConfig -edit.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ config←∆GetConfigForChecks'packages_dev'
+ config.CIDER.projectSpace←'ThisProjectIsNotOpen'
+ config.CIDER.(make tests)←'Admin.Make 1' 'TestCases.RunTests'
+ (successFlag msg)←##.Cider.PerformConfigChecks config
+ →T.PassesIf 1≡successFlag
+ →T.PassesIf 0=≢msg
+
+ config.CIDER.projectSpace←'Cider'                          ⍝ Open, so "make" and "tests" would be checked...
+ config.CIDER.(make tests)←']Cider.Version' ']Tatin.Version' ⍝ ... but not user commands
+ (successFlag msg)←##.Cider.PerformConfigChecks config
+ →T.PassesIf 1≡successFlag
+ →T.PassesIf 0=≢msg
+
+ config.CIDER.make←'#.Absolute.Make'                        ⍝ An absolute name is still rejected
+ (successFlag msg)←##.Cider.PerformConfigChecks config
+ →T.PassesIf 0≡successFlag
+ →T.PassesIf 0<≢msg
+
+ r←T._OK
+⍝Done

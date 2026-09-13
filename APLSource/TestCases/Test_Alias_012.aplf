@@ -1,0 +1,25 @@
+ R←Test_Alias_012(stopFlag batchFlag);⎕TRAP;ref;rc;msg;res;alias
+⍝ Open a project with ]Cider.OpenProject [prefix*], the prefix matching exactly one alias.
+⍝ No test covered this form; an interim change during 0.54.0 broke it with a VALUE ERROR.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ alias←'test-alias-012'
+ ##.Cider.AddAlias(∆ALIAS_TEMP_FOLDER,'/Project1')alias
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'SureToOpen@' 'y'
+
+ (rc msg res)←∆UCMD'OpenProject [',alias,'*] -watch=ns -batch -ignoreUserExec'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~(⊂'#.TEMP')∊{⍵[;1]}##.Cider.ListOpenProjects 0
+
+ R←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ {}⎕SE.Link.Break'#.TEMP'
+ #.⎕EX'TEMP'
+ {}##.Cider.DropAlias alias
+⍝Done

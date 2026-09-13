@@ -1,0 +1,34 @@
+ r←Test_UC_024(stopFlag batchFlag);⎕TRAP;tempDir;cmd;ref;rc;msg;res
+⍝ Open a project with ]Cider.OpenProject -verbose: the result must be empty, because the log has been printed already.
+⍝ Used to report "Attempt to open the project failed" although the project had been opened.
+⍝ Also checks that without -verbose the result still reports success.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ #.⎕EX'TEMP' ⋄ 'TEMP'#.⎕NS''
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠('Wildcard' 1)('IfExists' 'Replace')⊢##.CiderConfig.HOME,'/Tests/Test_Alias/*'
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ cmd←'OpenProject "',tempDir,'/Project1" -watch=ns -batch -ignoreUserExec'
+
+ (rc msg res)←∆UCMD cmd,' -verbose'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp 0≠≢res
+ →T.GoToTidyUp~(⊂'#.TEMP')∊{⍵[;1]}##.Cider.ListOpenProjects 0
+ {}0 ⎕SE.Cider.CloseProject'#.TEMP'
+ #.⎕EX'TEMP' ⋄ 'TEMP'#.⎕NS''
+
+ (rc msg res)←∆UCMD cmd
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~∨/'Project successfully opened'⍷res
+
+ r←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ {}0 ⎕SE.Cider.CloseProject'#.TEMP'
+ #.⎕EX'TEMP'
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert 0=rc
+⍝Done
