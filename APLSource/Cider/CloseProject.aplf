@@ -8,7 +8,6 @@
 ⍝ 4. One or more paths of currently open projects
 ⍝ 5. A mixture of 2, 3 and 4
 ⍝ `performChecks` can be a Boolean that defaults to 1, meaning "perform checks, if any".
-⍝ See "CheckForDropboxConflicts" as an example.
 ⍝ A 0 as left argument would therefore prevent such checks from being performed.\\
 ⍝ Returns the number of projects closed.
  r←0
@@ -48,7 +47,7 @@
              :EndIf
          :EndFor
          :If performChecks
-             {}CheckForDropboxConflicts¨closed
+             ⍝ Right place for any checks...
          :EndIf
      :EndIf
  :EndIf
