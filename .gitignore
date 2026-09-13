@@ -13,3 +13,8 @@ conga.crash
 /docs/site/
 /.venv/
 /TestResults/
+
+# Internal documents, kept local
+/claude-findings.md
+/design-issue.md
+/design-issue-orig.md
