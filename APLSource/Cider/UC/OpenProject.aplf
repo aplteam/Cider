@@ -4,13 +4,12 @@
  aliasDefs←P.GetCiderAliasFileContent ⍬
  :If 0≡Args._1
  :OrIf Args._1≡'[?]'
-     :If 0=≢path←SelectFromAliases aliasDefs
-         :If Args._1≡'[?]'
-             r←'No aliase defined'
-         :Else
-             r←'Cancelled by user'
+     :If 0=≢aliasDefs
+         r←'There are no aliases defined' ⋄ →0
+     :Else
+         :If 0=≢path←SelectFromAliases aliasDefs
+             r←'Cancelled by user' ⋄ →0
          :EndIf
-         :Return
      :EndIf
  :Else
      path←Args._1
@@ -53,9 +52,10 @@
  parms.batch←0 Args.Switch'batch'
  parms.checkPackageVersions←⍬
  (success log)←P.OpenProject parms
- :If ~Args.verbose
- :AndIf success
-     r←({⍵↑⍨-(⎕UCS 10)⍳⍨1↓⌽⍵}log),⎕UCS 10
- :Else
+ :If ~success
      r←'Attempt to open the project failed',⎕UCS 10
+ :ElseIf Args.verbose
+     r←''                                  ⍝ The log has already been printed
+ :Else
+     r←({⍵↑⍨-(⎕UCS 10)⍳⍨1↓⌽⍵}log),⎕UCS 10
  :EndIf

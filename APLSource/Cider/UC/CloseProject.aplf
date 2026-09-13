@@ -4,12 +4,11 @@
  fast←Args.Switch'fast'
  :If 0=≢Args.Arguments
      :If 0=noop←≢list←P.ListOpenProjects 0   ⍝ noop ←→ NoOf Open Projects
-         ⍞←'There are no open Cider projects that could be closed',⎕UCS 10
-         :Return
+         r←'There are no open Cider projects that could be closed' ⋄ →0
      :Else
          :If Args.all
              {}P.CloseProject¨list[;1]
-             r←1↓⊃,/(⎕UCS 13),¨list[;1]
+             r←1↓⊃,/CR,¨list[;1]
          :ElseIf 1=noop
              :If 1 YesOrNo'Sure you want to close the project <',(⊃list[1;]),'>?'
                  r←fast P.CloseProject ⍬
@@ -17,10 +16,12 @@
                  r←'Cancelled by user' ⋄ →0
              :EndIf
          :Else
-             :If 0<≢ind←'Select Cider project(s) to be closed' 1 Select list[;1]
+             ind←'Select Cider project(s) to be closed' 1 Select list[;1]
+             :If ¯1≢ind
+             :AndIf 0<≢ind
                  r←+/(~fast)P.CloseProject list[ind;1]
                  'Something went wrong'Assert r=≢ind
-                 r←1↓∊(⎕UCS 13),¨↓⎕FMT list[ind;]
+                 r←1↓∊CR,¨↓⎕FMT list[ind;]
              :Else
                  r←'Cancelled by user' ⋄ →0
              :EndIf
@@ -52,8 +53,8 @@
  :EndIf
  :If 0<≢r
      :If ' '=1↑0⍴∊r
-         noOf←1+r+.=⎕UCS 13
-         r←((1+1<noOf)⊃'This' 'These'),' project',((1<noOf)/'s'),((1+1<noOf)⊃' was' ' were'),' closed: ',(⎕UCS 13),r
+         noOf←1+r+.=CR
+         r←((1+1<noOf)⊃'This' 'These'),' project',((1<noOf)/'s'),((1+1<noOf)⊃' was' ' were'),' closed: ',CR,r
      :Else
          r←'Number of projects closed: ',⍕r
      :EndIf
@@ -63,13 +64,13 @@
  :AndIf 1 YesOrNo'ClearWS@Do you wish to )CLEAR the workspace?'
      :If report
          :If ' '=1↑0⍴∊r
-             r←('These projects were closed:'),(⎕UCS 13),r,(⎕UCS 13),(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'
+             r←('These projects were closed:'),CR,r,CR,(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'
          :Else
-             r←('One project was closed.'),(⎕UCS 13),(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'
+             r←('One project was closed'),CR,(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'
          :EndIf
      :Else
          :If ' '=1↑0⍴∊r
-             r,←(⎕UCS 13),(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'
+             r,←CR,(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'
          :Else
              r,←(6⍴' '),')CLEAR  ⍝ Execute this for a clear WS'
          :EndIf
@@ -77,9 +78,9 @@
  :Else
      :If report
          :If ' '=1↑0⍴∊r
-             r←('These projects were closed:'),(⎕UCS 13),r
+             r←('These projects were closed:'),CR,r
          :Else
-             r←'One project was closed.',⎕UCS 10
+             r←'One project was closed'
          :EndIf
      :EndIf
  :EndIf

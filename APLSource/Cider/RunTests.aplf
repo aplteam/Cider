@@ -1,7 +1,9 @@
- r←RunTests projectFolder;config
+ r←RunTests projectFolder;config;folder
  r←''
  :If IsAlias projectFolder
-     projectFolder←GetFolderFromAlias projectFolder
+     folder←GetFolderFromAlias2 projectFolder
+     ('Alias "',projectFolder,'" not found')Assert 0<≢folder
+     projectFolder←folder
  :EndIf
  ('No file "cider.config" found in ',projectFolder)Assert F.Exists projectFolder,'/cider.config'
  config←ReadProjectConfig projectFolder

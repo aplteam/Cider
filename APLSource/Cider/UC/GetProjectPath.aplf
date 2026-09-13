@@ -13,7 +13,9 @@
      :Case 1
          path←⊃list[1;2]                                           ⍝ There is just one open project
      :Else
-         :If 0=≢index←caption Select↓⎕FMT list    ⍝ Let the user select one of the open projects
+         index←caption Select↓⎕FMT list    ⍝ Let the user select one of the open projects
+         :If ¯1≡index
+         :OrIf 0=≢index
              :Return
          :EndIf
          path←2⊃list[index;]

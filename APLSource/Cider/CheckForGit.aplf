@@ -16,7 +16,7 @@
          success←0
          dmx←⎕DMX
          :If ∨/'Check ⎕EXCEPTION for details'⍷dmx.Message
-             (1 parms.batch)p'A .NET exception has occurred: ',{(⎕UCS 13)@(⍸⍵=⎕UCS 10)⊢⍵}⍕⎕EXCEPTION
+             (1 parms.batch)p'A .NET exception has occurred: ',{CR@(⍸⍵=⎕UCS 10)⊢⍵}⍕⎕EXCEPTION
          :ElseIf 127=dmx.EN
              (1 parms.batch)p'The project appears to be managed by Git but Git is not installed?!'
          :ElseIf 128=dmx.EN
@@ -46,7 +46,7 @@
              {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'GIT_Status_Report'}GIT_Status_Report←⍵)}⍕↑status
          :Else
              ⍞←↑status
-             ⍞←⎕UCS 10
+             ⍞←CR
          :EndIf
      :EndIf
  :EndIf

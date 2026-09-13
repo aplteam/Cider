@@ -47,7 +47,7 @@
               PrintError''
           :EndIf
       :Else
-          ⍞←'Cider not found',⎕UCS 10
+          ⍞←'Cider not found',⎕UCS 13
       :EndIf
     ∇
 

@@ -8,7 +8,6 @@
      txt←''
      txt,←⊂,'{'
      txt,←⊂,'  // AskForDirChange: 1,'
-     txt,←⊂,'  // CheckForDropboxConflicts: 0,'
      txt,←⊂,'  // HandleLinkStops: 0,'
      txt,←⊂,'  // ExecuteAfterProjectOpen: "",'   ⍝ ⎕SE.Path2Function for example
      txt,←⊂,'  // ReportGitStatus: 1,'

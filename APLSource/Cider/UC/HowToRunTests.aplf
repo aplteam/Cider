@@ -1,11 +1,11 @@
  r←HowToRunTests Args;config;path;list;index;buff
  r←''
  :If 0=≢path←GetProjectPath Args._1
-     →0,≢⍞←'Cancelled by user',⎕UCS 10
+     →0,≢⍞←'Cancelled by user',CR
  :Else
      :If 0<≢buff←P.RunTests path
-         ⍞←buff,⎕UCS 10
+         ⍞←buff,CR
      :Else
-         ⍞←'>>> No expression found for executing ',path,'''s test suite',⎕UCS 10
+         ⍞←'>>> No expression found for executing ',path,'''s test suite',CR
      :EndIf
  :EndIf

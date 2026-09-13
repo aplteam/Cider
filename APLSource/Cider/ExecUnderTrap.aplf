@@ -12,7 +12,7 @@
          cmd←(hasResult/'{}'),expr,' ⎕NULL'
          ⍎cmd
      :Else                      ⍝ That leaves a dyadic call
-         ⍞←'>>> "lx" funcion ',expr,' is dyadic and therefore cannot called!',⎕UCS 10
+         ⍞←'>>> "lx" funcion ',expr,' is dyadic and therefore cannot called!',CR
      :EndIf
      success←1
      rc←0

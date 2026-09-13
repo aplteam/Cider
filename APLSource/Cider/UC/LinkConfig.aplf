@@ -4,7 +4,7 @@
  deleteFlag←Args.delete
  '-edit and -delete are mutually exclusive'Assert(deleteFlag+editFlag)∊0 1
  :If 0=≢path←GetProjectPath path
-     →0,≢⍞←'Cancelled by user',⎕UCS 10
+     r←'Cancelled by user' ⋄ →0
  :Else
      cfg←P.##.ReadProjectConfig path,'/cider.config'
      linkCfgPath←##.FilesAndDirs.NormalizePath path,'/',cfg.CIDER.source,'/.linkconfig'

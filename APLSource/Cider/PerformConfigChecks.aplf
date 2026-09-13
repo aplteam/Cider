@@ -1,10 +1,10 @@
- (successFlag msg)←PerformConfigChecks config;namespace;path;tatinFolders;tatinFolder;i;this;report;buff
+ (successFlag msg)←PerformConfigChecks config;namespace;path;tatinFolder;this;report;buff
  successFlag←⍬
  report←''
- tatinFolders←('dependencies' 'dependencies_dev'GetTatinDependencies¨⊂config)~⊂''
- :For i :In ⍳≢tatinFolders
-     tatinFolder←i⊃tatinFolders
-     this←i⊃'dependencies' 'dependencies_dev'
+ :For this :In 'dependencies' 'dependencies_dev'
+     :If 0=≢tatinFolder←this GetTatinDependencies config
+         :Continue
+     :EndIf
      :If '='∊tatinFolder
          buff←'='(≠⊆⊢)tatinFolder
          :If (2≠≢buff)∨1≠'='+.=tatinFolder
@@ -34,6 +34,8 @@
          successFlag,←FAILURE
          report,←⊂'"CIDER.make" is defined with an absolute path; must be relative to the project'
      :ElseIf 0<≢config.CIDER.make
+     :AndIf ~(⊃config.CIDER.make~' ')∊'])'                                  ⍝ User and system commands cannot be checked
+     :AndIf 9=⎕NC config.CIDER.parent,'.',config.CIDER.projectSpace          ⍝ Only an open project can be checked
      :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.make
          successFlag,←FAILURE
          report,←⊂'"CIDER.make" does not point to a function!'
@@ -47,22 +49,25 @@
          successFlag,←FAILURE
          report,←⊂'"CIDER.tests" is defined with an absolute path; must be relative to the project (check "make")'
      :ElseIf 0<≢config.CIDER.tests
+     :AndIf ~(⊃config.CIDER.tests~' ')∊'])'                                 ⍝ User and system commands cannot be checked
+     :AndIf 9=⎕NC config.CIDER.parent,'.',config.CIDER.projectSpace          ⍝ Only an open project can be checked
      :AndIf 3≠⎕NC buff←{⍵↑⍨¯1+⌊/⍵⍳' ⍝'}config.CIDER.parent,'.',config.CIDER.projectSpace,'.',config.CIDER.tests
          successFlag,←FAILURE
-         report,←⊂'"CIDER.test" does not point to a function'
+         report,←⊂'"CIDER.tests" does not point to a function'
      :EndIf
  :EndIf
  :If 0=config.⎕NC'SYSVARS'
      successFlag,←FAILURE
      report,←⊂'section "SYSVARS" is missing (must define at least "ml" and "io")'
- :EndIf
- :If 0=config.SYSVARS.⎕NC'ml'
-     successFlag,←FAILURE
-     report,←⊂'"SYSVARS.ml" is not defined'
- :EndIf
- :If 0=config.SYSVARS.⎕NC'io'
-     successFlag,←FAILURE
-     report,←⊂'"SYSVARS.io" is not defined'
+ :Else
+     :If 0=config.SYSVARS.⎕NC'ml'
+         successFlag,←FAILURE
+         report,←⊂'"SYSVARS.ml" is not defined'
+     :EndIf
+     :If 0=config.SYSVARS.⎕NC'io'
+         successFlag,←FAILURE
+         report,←⊂'"SYSVARS.io" is not defined'
+     :EndIf
  :EndIf
  successFlag←∧/successFlag
  msg←1↓⊃,/'; '∘,¨report

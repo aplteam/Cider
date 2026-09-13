@@ -13,7 +13,7 @@
      :If sessionFlag
      :AndIf ~quiet
          ⍞←↑,⊆msg
-         ⍞←⎕UCS 10
+         ⍞←CR
      :EndIf
      :If 0<⎕NC'∆LOG'
          :If 1<|≡msg

@@ -4,7 +4,7 @@
  projectFolder←Args._2
  targetNamespace←''Args.Switch'target'
  :If IsAlias projectFolder
-     projectFolder←P.GetFolderFromAlias projectFolder
+     projectFolder←P.##.GetFolderFromAlias2 projectFolder
  :Else
      projectFolder←'GetProjectPathForAddingNuGetPkgs@Which project would you like to add NuGet packages to?'GetProjectPath projectFolder
  :EndIf

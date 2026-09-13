@@ -26,7 +26,7 @@
  '"projectSpace" must be specified'Assert 0<parms.⎕NC'projectSpace'
  '"watch" must be one of: ns|dir|both'Assert(⊂⎕C parms.watch)∊'ns' 'dir' 'both' 'none' 0
  p←{⍺←parms.(verbose batch) ⋄ ⍺ PrintToSession ⍵}
- parms←(p GetFolderFromAlias)parms
+ parms←GetFolderFromAlias parms
  ('Folder does not exist: ',parms.folder)Assert F.Exists parms.folder
  p((1+parms.importFlag)⊃'Loading' 'Importing'),' project from ',parms.folder
  parms.projectSpace←⍕parms.projectSpace
