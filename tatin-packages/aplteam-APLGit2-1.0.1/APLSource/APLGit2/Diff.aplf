@@ -1,0 +1,26 @@
+ r←{op}Diff y;rc;more;path;⎕TRAP;short;space;folder;buff;cmd
+⍝ Returns a diff for all changes either...
+⍝ * staged
+⍝ * in the working area
+⍝ * all changes
+⍝ Option op-code "op" must be one of: "all" (default), "stage" or "work".
+⍝ r is a matrix with two columns and zero or more rows.
+⍝ `y` must be one of:
+⍝   * Fully qualfied name of a namespace  that is an opened Cider project
+⍝   * Fully qualified path to a Git-managed project
+ ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
+ op←{0<⎕NC ⍵:⍎⍵ ⋄ 'all'}'op'
+ 'Invalid left argument'Assert 0<≡op
+ (space folder)←EstablishProject y
+ cmd←'diff'
+ :Select ⎕C op
+ :Case 'stage'
+     cmd,←' --staged'
+ :Case 'work'
+         ⍝ No action required
+ :Case 'all'
+     cmd,←' HEAD'
+ :EndSelect
+ (rc more r)←folder U.RunGitCommand cmd
+ more U.Assert 0=rc
+⍝Done

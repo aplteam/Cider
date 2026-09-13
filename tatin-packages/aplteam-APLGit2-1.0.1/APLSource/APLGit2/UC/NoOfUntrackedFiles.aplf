@@ -1,0 +1,6 @@
+ r←NoOfUntrackedFiles(space folder Args)
+⍝ Desc: Returns the number of untracked files
+⍝ Parse: 1s
+⍝ Project: 1
+ r←##.NoOfUntrackedFiles folder
+⍝Done

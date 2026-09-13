@@ -1,0 +1,36 @@
+ success←OpenGitShell y;term;terms;exe;path;space;cmd
+⍝ Open an interactive shell window in `path`. Does not block the interpreter.
+⍝ Returns 1 if a terminal was launched, 0 if none was found.
+ success←0
+ :If (,'.')≡,y
+     path←'.'
+     space←''
+ :Else
+     (space path)←EstablishProject y
+ :EndIf
+ :If ~⎕NEXISTS path
+     ⎕SIGNAL⊂('EN' 22)('Message'('No such directory: ',path))
+ :EndIf
+
+ :Select ⎕C A.GetOperatingSystem ⍬
+ :Case 'win'
+     exe←FindGitBash ⍬
+     :If 0<≢exe
+         cmd←'"',exe,'" --cd="',path,'"'
+         {}⎕CMD cmd''
+         success←1
+     :EndIf
+ :Case 'lin'
+     terms←'x-terminal-emulator' 'konsole' 'gnome-terminal'
+     'xfce4-terminal' 'xterm'
+     term←⊃⎕SH'command -v ',(⊃,/terms,¨⊂' '),'2>/dev/null'
+     :If ~0∊⍴term
+         {}⎕SH'cd "',path,'" && setsid ',term,' >/dev/null 2>&1 &'
+         success←1
+     :EndIf
+ :Case 'mac'
+     {}⎕SH'open -a Terminal "',path,'"'
+     success←1
+ :Else
+     'Unknown operating system'⎕SIGNAL 11
+ :EndSelect

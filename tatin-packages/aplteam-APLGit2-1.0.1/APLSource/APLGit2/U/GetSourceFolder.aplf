@@ -1,0 +1,15 @@
+ source←GetSourceFolder folder;cfg;ns
+⍝ Returns the source folder of the Cider project in `folder`, relative to `folder` and with a
+⍝ trailing separator, or an empty vector in case it cannot be established.\\
+⍝ Example: for this very project the result is `APLSource/`.
+ source←''
+ :If F.IsFile folder,'/cider.config'
+     cfg←⊃F.NGET folder,'/cider.config'
+     ns←⎕JSON⍠('Dialect' 'JSON5')⊣cfg
+ :AndIf 9=ns.⎕NC'CIDER'
+ :AndIf 2=ns.CIDER.⎕NC'source'
+ :AndIf 0<≢ns.CIDER.source
+ :AndIf F.IsDir folder,'/',ns.CIDER.source
+     source←F.EnforceSlash{⍵,'/'/⍨~'/\'∊⍨¯1↑⍵}ns.CIDER.source
+ :EndIf
+⍝Done

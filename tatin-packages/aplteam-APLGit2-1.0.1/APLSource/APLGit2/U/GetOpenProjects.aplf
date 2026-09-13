@@ -1,0 +1,28 @@
+ (list type)←GetOpenProjects;listCider;listAcre
+⍝ Returns all opened Cider and acre projects that are Git-managed: a matrix with the name of
+⍝ the namespace in [;1] and the folder in [;2]. When both managers contribute there is a third
+⍝ column saying which project came from which.\\
+⍝ `type` tells where they come from: 1=Cider, 2=acre, 3=both, 0=none. That is what
+⍝ `SelectProject` needs in order to get its caption right.\\
+⍝ When the global `∆OPEN_PROJECTS` exists it is returned instead, with `type` 3. That is a seam
+⍝ for the test suite: it allows a test case to define what "open" means without opening or
+⍝ closing anything, so a test run does not depend on what the user happens to have open, and
+⍝ does not disturb it either.
+ :If 2=⎕NC'∆OPEN_PROJECTS'
+     (list type)←∆OPEN_PROJECTS 3
+     :Return
+ :EndIf
+ listCider←⎕SE.Cider.ListOpenProjects 0
+ :If AcreIsAvailable
+     listAcre←⎕SE.acre.Projects 0
+ :Else
+     listAcre←0 2⍴⍬
+ :EndIf
+ :If 0∧.<≢¨listCider listAcre
+     list←(listCider,⊂'(Cider)')⍪listAcre,⊂'(acre)'
+ :Else
+     list←listCider⍪listAcre
+ :EndIf
+ list←(F.IsDir(F.AddTrailingSep¨list[;2]),¨⊂'.git')⌿list
+ type←{2=+/⍵:3 ⋄ 0=+/⍵:0 ⋄ ⊃⍵/1 2}0<≢¨listCider listAcre
+⍝Done

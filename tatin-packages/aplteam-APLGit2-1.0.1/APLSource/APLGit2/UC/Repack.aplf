@@ -1,0 +1,6 @@
+ r←Repack(space folder args);project
+⍝ Desc: Cleans up and optimises Git's internal storage by consolidating loose objects into packfiles
+⍝ Parse: 1s -window= -depth=
+⍝ Project: 1
+ r←##.Repack folder args
+⍝Done

@@ -1,0 +1,9 @@
+ (space folder)←GetSpaceAndFolder_ data
+ :If ∨/'/\:'∊data
+ :OrIf ~(⊃data)∊'#⎕'
+     folder←##.U.NormalizeFolder data
+     space←##.GetProjectFromPath folder
+ :Else
+     space←data
+     folder←##.GetPathFromProject space
+ :EndIf

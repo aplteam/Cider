@@ -1,3 +1,0 @@
- r←NoOfUntrackedFiles(space folder Args)
- r←##.NoOfUntrackedFiles folder
-⍝Done

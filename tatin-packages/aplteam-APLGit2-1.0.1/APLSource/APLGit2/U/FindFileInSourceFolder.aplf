@@ -1,0 +1,29 @@
+ filename←root FindFileInSourceFolder token;source;list;bool;ind;caption
+⍝ Searches the source folder of the project in `root` for a file named `token` and returns its
+⍝ name relative to `root`, or an empty vector in case there is no match at all.\\
+⍝ `token` must be a filename without any path information, like `Add.aplf`.\\
+⍝ When there is more than one match the user is asked which one she means; quitting that
+⍝ selection returns an empty vector as well.
+ filename←''
+ root←NormalizeFolder root
+ :If 0<≢source←GetSourceFolder root
+ :AndIf 0<≢list←⊃('recursive' 2)F.Dir root,'/',source,'*'
+     list←F.EnforceSlash¨list
+     bool←(⊂⎕C token)≡¨⎕C¨{∊1↓⎕NPARTS ⍵}¨list
+     list←bool/list
+     :Select ≢list
+     :Case 0
+     :Case 1
+         filename←⊃list
+     :Else
+         caption←'SelectFileForAPLGit2@There is more than one file called "',token,'" - which one do you mean?'
+         ind←caption ##.CommTools.Select list
+         :If 0<≢ind
+             filename←ind⊃list
+         :EndIf
+     :EndSelect
+ :EndIf
+ :If 0<≢filename
+     filename←(1+≢root)↓filename
+ :EndIf
+⍝Done

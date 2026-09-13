@@ -1,0 +1,24 @@
+ r←{dry}CloneRepo y;⎕TRAP;url;path;branch;depth;cmd;rc;msg;buff
+⍝ Clone a repository from given URL into given folder.
+⍝ y[1] (user id & repo name) is mandatory
+⍝ y[2] (path) is mandatory
+ ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
+ dry←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'dry'
+ y←⊆y
+ (url path branch depth)←4↑(⊆y),(≢y)↓'' '' '' 0
+ cmd←'clone'
+ :If 0<≢branch
+     cmd,←' -b ',branch
+ :EndIf
+ :If 0≠depth
+     cmd,←' --depth ',(⍕depth)
+ :EndIf
+ cmd,←' ',url,' ',path
+ :If dry
+     r←cmd,' ⍝ dry run'
+ :Else
+     (rc msg buff)←path U.RunGitCommand cmd
+     ('*** ERROR',(⎕UCS 13),⊃{⍺,(⎕UCS 13),⍵}/{⍵/⍨0<≢¨⍵}msg)Assert 0=rc
+     r←msg
+ :EndIf
+⍝Done

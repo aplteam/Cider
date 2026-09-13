@@ -1,0 +1,40 @@
+ (namespace folder)←EstablishProject y;list;bool;type
+⍝ If `y` is empty:
+⍝  * In case of a single open Cider or acre project its project path is taken.
+⍝  * If there are several Cider/acre projects open then the user will be prompted.\\
+⍝ Otherwise `y` must be the name of an open Cider/acre project or a path to a project.\\
+⍝ Returns a two-element vector with a namespace name and folder, possibly both empty.\\
+⍝ In case a path is specified it does not have to be an opened Cider/acre project. However, this will effect only a few
+⍝ commands (like `IsDirty`, `OpenGitShell` and `Init`) since most commands are bound to be executed on a Cider/acre project.\\
+ y←⍕y
+ (namespace folder)←'' ''
+ :If (,'.')≡,y
+     folder←U.NormalizeFolder⊃1 ⎕NPARTS''
+ :Else
+     (list type)←U.GetOpenProjects
+     :If 0=≢y
+         :If 0=≢list
+             :Return
+         :ElseIf 1=≢list
+             (namespace folder)←2↑list[1;]
+         :Else
+             (namespace folder)←2↑type U.SelectProject list
+         :EndIf
+     :Else
+         :If ∨/'/\:'∊y
+             folder←y
+             :If 1=+/bool←(F.EnforceSlash¨list[;2])≡¨⊂F.EnforceSlash{⍵↓⍨-'/\'∊⍨¯1↑⍵}folder
+                 namespace←⊃list[bool⍳1;]
+             :EndIf
+         :Else
+             'Is not a fully qualified namespace name'U.Assert(⊃y)∊'#⎕'
+             'There are no open Cider projects'U.Assert 0<≢list
+             bool←list[;1]≡¨⊂y
+             'Is not an opened Cider project'U.Assert 1=+/bool
+             (namespace folder)←2↑list[bool⍳1;]
+         :EndIf
+         'Folder does not exist'U.Assert ⎕NEXISTS folder
+     :EndIf
+ :EndIf
+ folder←U.NormalizeFolder folder
+⍝Done

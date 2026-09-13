@@ -1,0 +1,9 @@
+ r←Init(space folder args)
+⍝ Desc: Initialises a folder for managing it by Git
+⍝ Parse: 1s -quiet
+⍝ Project: 1
+ ('This folder is already managed by Git: ',folder)Assert~##.IsGitProject folder
+ :If args.quiet
+ :OrIf ##.CommTools.YesOrNo'Sure that you want to make ',folder,' a Git-managed folder?'
+     r←args.quiet ##.Init folder
+ :EndIf

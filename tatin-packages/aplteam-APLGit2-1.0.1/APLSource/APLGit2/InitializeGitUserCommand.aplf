@@ -1,0 +1,6 @@
+ {r}←InitializeGitUserCommand dummy
+⍝ Propagate refs
+ r←⍬
+ U.A←A←APLTreeUtils2
+ U.F←F←FilesAndDirs
+⍝Done

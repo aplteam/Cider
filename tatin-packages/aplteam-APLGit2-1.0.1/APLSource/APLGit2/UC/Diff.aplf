@@ -1,0 +1,10 @@
+ r←Diff(space folder args);filter;op
+⍝ Desc: Produces a list with changed/deleted/added files by comparing what "op" defines
+⍝ Parse: 1s -op=all stage work
+⍝ Project: 1
+ op←args.op
+ :If 0≡op
+     op←'all'
+ :EndIf
+ r←⍪op ##.Diff folder
+⍝Done

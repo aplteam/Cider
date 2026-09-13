@@ -1,4 +1,0 @@
- r←Status(space folder args);short
- short←args.Switch'short'
- r←↑short ##.Status folder
-⍝Done

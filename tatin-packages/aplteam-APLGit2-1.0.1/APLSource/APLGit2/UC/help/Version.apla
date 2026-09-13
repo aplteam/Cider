@@ -1,0 +1,10 @@
+(
+ '"Version" returns a text vector with version information:'
+ ''
+ 'Major, minor, patch and build number, and optionally additional information.'
+ ''
+ 'It also reports the namespace the user commands execute their code in. That is either the'
+ 'installed package ⎕SE.APLGit2 or, when DEVELOPMENT is set in ⎕SE.APLGit2 and the project is'
+ 'open, #.APLGit2.APLGit2 - the code you are working on. Since that setting survives closing'
+ 'the project it is easy to lose track of, so ]APLGit2.Version tells you.'
+)

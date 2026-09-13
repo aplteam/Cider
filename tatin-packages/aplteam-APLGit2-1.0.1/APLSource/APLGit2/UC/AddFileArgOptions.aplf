@@ -1,0 +1,4 @@
+ r←AddFileArgOptions
+⍝ Returns the help text that explains how a file or an APL object passed as an argument is
+⍝ identified. Shared by all commands that accept such an argument.
+ r←help.FileArgOptions

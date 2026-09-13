@@ -1,0 +1,9 @@
+ r←Push y;rc;more;space;path
+⍝ Pushes the current branch
+⍝ `y` must be one of:
+⍝   * Fully qualfied name of a namespace that is an opened Cider project
+⍝   * Fully qualified path to a Git-managed project
+ (space path)←EstablishProject y
+ (rc more r)←path U.RunGitCommand'push'
+ more U.Assert 0=rc
+⍝Done

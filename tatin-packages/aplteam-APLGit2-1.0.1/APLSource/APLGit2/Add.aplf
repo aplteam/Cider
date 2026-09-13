@@ -1,0 +1,31 @@
+ {r}←{x}Add fileList;path;rc;msg;buff;space
+⍝ Stage files defined by `fileList` which defaults to "." (all unstaged files).\\
+⍝ Alternatively you may specify a specific file (string) or a list of files (vector of strings).
+⍝ It can also be a wildcard expression that catches a number of files like *.txt or invoice_??.txt.\\
+⍝ `x` must be one of:
+⍝   * Fully qualified name of a namespace that is an opened Cider project
+⍝   * Fully qualified path to a Git-managed project\\
+⍝ Returns a 0.\\
+⍝ Examples:
+⍝ Add ''  ⍝ With Cider
+⍝ #.MyProject Add ''
+⍝ '/path/2/project'Add'.'
+⍝ #.MyProject Add'APLSource/Hello.aplf'
+⍝ #.MyProject Add'APLSource/*.aplf'
+⍝ #.MyProject Add'APLSource/Hello.aplf' 'APLSource/Pi.aplf'
+ r←0
+ x←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'x'
+ (space path)←EstablishProject x
+ :If 0=≢fileList
+     fileList←'.'
+ :Else
+     fileList←⊆fileList
+ :EndIf
+ :If (,'.')≡,fileList
+     (rc msg buff)←path U.RunGitCommand'add ',fileList
+ :Else
+     fileList←⊃,/' ',¨{' '∊⍵:'"',⍵,'"' ⋄ ⍵}¨fileList
+     (rc msg buff)←path U.RunGitCommand'add ',fileList
+ :EndIf
+ msg U.Assert 0=rc
+⍝Done

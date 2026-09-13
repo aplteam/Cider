@@ -1,0 +1,6 @@
+ r←StashClear(space folder Args)
+⍝ Desc: Delete all stashes
+⍝ Parse: 1s
+⍝ Project: 1
+ r←↑##.StashClear folder
+⍝Done

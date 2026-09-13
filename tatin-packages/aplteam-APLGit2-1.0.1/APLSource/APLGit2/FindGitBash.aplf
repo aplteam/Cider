@@ -1,0 +1,25 @@
+ pathToGitBash←FindGitBash dummy;paths;cands;p;i;var;pf
+⍝ Full path of git-bash.exe, or '' if not found. Windows only.
+ pathToGitBash←''
+ cands←⍬
+ paths←';'A.Split 2 ⎕NQ #'GetEnvironment' 'PATH'
+ :For p :In (0<≢¨paths)/paths
+     i←⍸'\git\'⍷⎕C p,'\'
+     :If 0<≢i
+         cands,←⊂(3+⊃⌽i)↑p,'\'
+     :EndIf
+ :EndFor
+ :For var :In 'ProgramW6432' 'ProgramFiles' 'ProgramFiles(x86)'
+     pf←2 ⎕NQ #'GetEnvironment'var
+     :If 0<≢pf
+         cands,←⊂pf,'\Git'
+     :EndIf
+ :EndFor
+ pf←2 ⎕NQ #'GetEnvironment' 'LOCALAPPDATA'
+ :If 0<≢pf
+     cands,←⊂pf,'\Programs\Git'
+ :EndIf
+ cands←(∪cands),¨⊂'\git-bash.exe'
+ :If 0<≢i←⍸⎕NEXISTS¨cands
+     pathToGitBash←(⊃i)⊃cands
+ :EndIf

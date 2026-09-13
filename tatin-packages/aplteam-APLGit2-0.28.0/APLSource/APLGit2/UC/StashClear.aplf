@@ -1,3 +1,0 @@
- r←StashClear(space folder Args)
- r←↑##.StashClear folder
-⍝Done

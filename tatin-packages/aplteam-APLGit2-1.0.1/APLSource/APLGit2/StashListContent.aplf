@@ -1,0 +1,34 @@
+ r←{noAPLnames}StashListContent(projectID n);rc;more;path;⎕TRAP;space;cmd;data;hasUntrackedFiles
+⍝ Lists all files, tracked and untracked, in a stash.
+⍝ Specify projectID and the stash number via ⍵.
+⍝ `projectID` must be one of:\\
+⍝   * Fully qualified name of a namespace that is managed by Git
+⍝   * Path to a Git-managed project\\
+⍝ `n` is the number of the stash.\\
+ ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
+ noAPLnames←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'noAPLnames'
+ (space path)←EstablishProject projectID
+ r←''
+
+⍝ First we need to find out whether untracked files were actually captured.
+ cmd←'log -1 --format=%P stash@{',(⍕n),'}'
+ (rc more data)←path U.RunGitCommand cmd
+ more U.Assert 0=rc
+ ((≢'fatal:')↓more)U.Assert'fatal:'{⍺≢(≢⍺)↑⍵}more
+ data←' '(≠⊆⊢)⊃,/data
+ hasUntrackedFiles←3=≢data
+
+ cmd←'stash show --name-only ',(hasUntrackedFiles/'-u '),'stash@{',(⍕n),'}'
+ (rc more r)←path U.RunGitCommand cmd
+ :If ∨/'No stash entries found'⍷∊more
+     r←''
+ :Else
+     more U.Assert 0=rc
+     ((≢'fatal:')↓more)U.Assert'fatal:'{⍺≢(≢⍺)↑⍵}more
+ :EndIf
+ r←(F.AddTrailingSep path)∘,¨r
+ :If ~noAPLnames
+     r←⍪r
+     r,←⊂''
+     r[;2]←space∘{⎕NEXISTS ⍵:⍺ GetItemName ⍵ ⋄ ''}¨,r[;1]
+ :EndIf

@@ -1,4 +1,0 @@
- r←OpenGitShell(space folder args)
- r←''
- {}##.OpenGitShell folder
-⍝Done

@@ -1,0 +1,7 @@
+ r←OpenGitShell(space folder args)
+⍝ Desc: Opens a Git shell for a Git-managed project
+⍝ Parse: 1s
+⍝ Project: 1
+ r←''
+ {}##.OpenGitShell folder
+⍝Done

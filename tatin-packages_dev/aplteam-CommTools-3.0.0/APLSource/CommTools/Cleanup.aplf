@@ -1,0 +1,7 @@
+ Cleanup
+⍝ Removes the global variable `∆Automation` as well as the automation variables used by versions
+⍝ prior to 2.0.0.\\
+⍝ Calling this is safer than deleting `∆Automation` yourself, because a future version of `CommTools`
+⍝ might have more to clean up.
+ ⎕EX¨'Select_Choices' 'YesOrNo_Answers' 'NoPause' 'AskForNumber_Answers' 'AskForText_Answers' '∆LogAutoResponses' ⍝ Old stuff
+ ⎕EX'∆Automation'

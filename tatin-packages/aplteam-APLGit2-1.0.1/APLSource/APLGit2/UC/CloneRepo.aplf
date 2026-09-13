@@ -1,0 +1,51 @@
+ r←CloneRepo(space folder args);branch;depth;repo;path;cmd;dry;name;isSSH;short
+⍝ Clone a repository, by default from GitHub and into the current directory.
+⍝ Desc: Creates a clone of the given repository
+⍝ Parse: 2s -branch= -depth= -dry
+⍝ Project: 0
+ r←''
+ 'Right argument is invalid (empty)'Assert 0<≢args.Arguments
+ branch←''args.Switch'branch'
+ depth←args.Switch'depth'
+ dry←args.Switch'dry'
+ (repo path)←args.(_1 _2)
+ 'First arguement is invalid (no "/"separating group and repo-name)'Assert'/'∊repo
+ :If isSSH←'@'∊repo
+     :If short←'@'=1⍴repo
+         repo←'git@github.com:',1↓repo
+     :EndIf
+     'Invalid SSH address'Assert'git@'{⍺≡(≢⍺)↑⍵}repo
+ :ElseIf ∧/'http://' 'https://'{⍺≢(≢⍺)↑⍵}¨⊂repo
+     repo←'https://github.com/',repo
+ :EndIf
+ :If isSSH
+ :AndIf short∨∨/'github.com'⍷repo   ⍝ Short syntax default to GitHub
+     :If {0=⎕NC ⍵:1 ⋄ ~⍎⍵}'∆SSH_OK'
+         ∆SSH_OK←##.GitHub_SSH_OK
+     :EndIf
+     'Cannot access GitHub via SSH'Assert ∆SSH_OK
+ :EndIf
+ repo,←('.git'{⍺≢(-≢⍺)↑⍵}repo)/'.git'
+ name←⊃⊣/'.'(≠⊆⊢)⊃(⊢/'/'(≠⊆⊢)repo)
+ :If 0≡path
+     path←##.F.EnforceSlash ##.F.PWD,'/',name
+ :AndIf ~dry
+     :If 0=##.CommTools.YesOrNo'Sure you want to clone into ',path,' ?'
+         r←'Cancelled by user' ⋄ →0
+     :EndIf
+ :Else
+     path←##.F.EnforceSlash path
+     :If name≢⊃⊢/'/'(≠⊆⊢)path
+         path,←'/',name
+     :EndIf
+ :EndIf
+ :If ⎕NEXISTS path
+     ('Not empty: ',path)Assert 0=≢⊃##.F.Dir path,'/*'
+ :Else
+     ⎕MKDIR path
+ :EndIf
+ r←dry ##.CloneRepo repo path branch depth
+ :If dry
+     r←'git ',r
+ :EndIf
+ ⍝Done
