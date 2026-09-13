@@ -1,5 +1,5 @@
 aplteam-APLTreeUtils2-1.4.1
 dyalog-NuGet-0.2.6
-aplteam-CommTools-3.0.0
+aplteam-CommTools-3.0.1
 aplteam-APLGit2-1.1.0
 aplteam-FilesAndDirs-7.1.1
