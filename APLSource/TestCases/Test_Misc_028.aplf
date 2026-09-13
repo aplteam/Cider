@@ -1,0 +1,45 @@
+ r←Test_Misc_028(stopFlag batchFlag);⎕TRAP;tempDir;sourceFolder;linkconfigFile;linkOptions;watchSetting;rc;msg
+⍝ Exercise `ProcessLinkOptions`: which settings of the LINK section in the project config reach Link.
+⍝ From 0.46.0 on, the LINK section was ignored unless a file .linkconfig carried Link options,
+⍝ and a -watch= setting never reached Link at all.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ 3 ⎕MKDIR tempDir,'/APLSource'
+ sourceFolder←##.CiderConfig.HOME,'/TestData/Link.Config'
+ linkconfigFile←tempDir,'/APLSource/.linkconfig'
+ {}⎕NDELETE linkconfigFile                 ⍝ In case an earlier run failed
+
+⍝ No .linkconfig: the LINK section is passed on
+ (linkOptions watchSetting)←tempDir ∆ProcessLinkOptions 0
+ →T.GoToTidyUp'none'≢{6::⍬ ⋄ ⍵.watch}linkOptions
+ →T.GoToTidyUp 1≢{6::⍬ ⋄ ⍵.forceFilenames}linkOptions
+ →T.GoToTidyUp'none'≢watchSetting
+
+⍝ No .linkconfig, but -watch= specified: that wins
+ (linkOptions watchSetting)←tempDir ∆ProcessLinkOptions'dir'
+ →T.GoToTidyUp'dir'≢{6::⍬ ⋄ ⍵.watch}linkOptions
+ →T.GoToTidyUp 1≢{6::⍬ ⋄ ⍵.forceFilenames}linkOptions
+ →T.GoToTidyUp'dir'≢watchSetting
+
+⍝ .linkconfig with nothing but stops: the LINK section is still passed on
+ linkconfigFile ⎕NCOPY sourceFolder,'/.linkconfig-2'
+ (linkOptions watchSetting)←tempDir ∆ProcessLinkOptions 0
+ →T.GoToTidyUp'none'≢{6::⍬ ⋄ ⍵.watch}linkOptions
+ →T.GoToTidyUp 1≢{6::⍬ ⋄ ⍵.forceFilenames}linkOptions
+
+⍝ .linkconfig with Link options: the LINK section is ignored, but -watch= still wins
+ linkconfigFile ⎕NCOPY⍠('IfExists' 'Replace')⊢sourceFolder,'/.linkconfig-3'
+ (linkOptions watchSetting)←tempDir ∆ProcessLinkOptions 0
+ →T.GoToTidyUp ⍬≢{6::⍬ ⋄ ⍵.forceFilenames}linkOptions
+ →T.GoToTidyUp ⍬≢{6::⍬ ⋄ ⍵.watch}linkOptions
+ (linkOptions watchSetting)←tempDir ∆ProcessLinkOptions'dir'
+ →T.GoToTidyUp'dir'≢{6::⍬ ⋄ ⍵.watch}linkOptions
+
+ r←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert 0=rc
+⍝Done

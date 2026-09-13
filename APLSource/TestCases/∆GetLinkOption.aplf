@@ -1,0 +1,13 @@
+ ∆GetLinkOption←{
+⍝ Returns the value of the Link option ⍺ (like 'watch') that Link actually uses for the linked namespace ⍵.
+⍝ ⍵ may be a name or a ref. This checks what reached Link, not what Cider put into CiderConfig.LINK.
+⍝ Relies on the Link-internal ⎕SE.Link.Links; returns ⍬ when ⍵ is not linked or ⍺ is not set.
+     0=⎕NC'⎕SE.Link.Links':⍬
+     links←⎕SE.Link.Links
+     0=≢links:⍬
+     ind←links.ns⍳⊂⍕⍵
+     ind>≢links:⍬
+     link←ind⊃links
+     0=link.⎕NC ⍺:⍬
+     link⍎⍺
+ }

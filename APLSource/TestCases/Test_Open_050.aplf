@@ -23,6 +23,7 @@
  (success log)←##.Cider.OpenProject parms
  Assert success
  →T.GoToTidyUp∨/'ERROR'⍷log
+ →T.GoToTidyUp'dir'≢'watch'∆GetLinkOption'#.TEMP.Foo'     ⍝ What Link actually uses
 
  body1←⊃⎕NGET filename
  {}'#.TEMP'⎕SE.Link.Fix'r←Hello' 'r←''World'''

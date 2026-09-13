@@ -1,0 +1,12 @@
+ ∆ProcessLinkOptions←{
+⍝ Runs `ProcessLinkOptions` for the project folder ⍺, with ⍵ as the -watch= setting (0 = not specified).
+⍝ The project config carries a LINK section with forceFilenames←1 and watch←'none'. Neither is a Link
+⍝ default, so the result tells whether the LINK section got passed on to Link.
+⍝ Returns (linkOptions watch): the options that would be passed to Link, and the resulting parms.watch.
+     json←'{ CIDER: { source: "APLSource" }, LINK: { forceFilenames: 1, watch: "none" } }'
+     config←⎕JSON⍠('Dialect' 'JSON5')⊣json
+     parms←##.Cider.CreateOpenParms ⍬
+     parms.(folder batch watch)←⍺ 1 ⍵
+     (linkOptions parms)←##.Cider.ProcessLinkOptions parms config
+     linkOptions parms.watch
+ }

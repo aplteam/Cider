@@ -1,0 +1,43 @@
+ R←Test_Open_054(stopFlag batchFlag);⎕TRAP;parms;tempDir;config;expected;success;log;rc;msg
+⍝ Open a project whose LINK section defines "watch" and "forceFilenames", with neither -watch= nor .linkconfig.
+⍝ Checks what Link actually uses rather than what ended up in CiderConfig.LINK.
+⍝ From 0.46.0 on the LINK section was ignored in this case, and Link used its own defaults.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ 'TEMP'#.⎕NS''
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠('Wildcard' 1)('IfExists' 'Replace')⊢(∆GetTestPath⊃⎕SI),'/*'
+ 'The test project must not have a .linkconfig file'Assert~⎕NEXISTS tempDir,'/APLSource/.linkconfig'
+
+⍝ "watch" must differ from Link's own default ("both" with .NET, otherwise "ns"),
+⍝ or the test cannot tell whether the setting got through
+ expected←(1+##.Cider.HasDotNet)⊃'none' 'ns'
+ config←##.Cider.ReadProjectConfig tempDir
+ config.LINK.watch←expected
+ config ##.Cider.WriteProjectConfig tempDir
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←tempDir
+ parms.parent←'#.TEMP'
+ parms.ignoreUserExec←1
+ parms.batch←1
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+
+ (success log)←##.Cider.OpenProject parms
+ Assert success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+
+ →T.GoToTidyUp expected≢'watch'∆GetLinkOption'#.TEMP.Foo'
+ →T.GoToTidyUp 1≢'forceFilenames'∆GetLinkOption'#.TEMP.Foo'
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
+ {}(~parms.batch)⎕SE.Cider.CloseProject'#.TEMP.Foo'
+ #.⎕EX'TEMP'
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert 0=rc
+⍝Done

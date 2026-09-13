@@ -12,6 +12,7 @@
  (rc msg result)←stop ∆UCMD cmd,' -watch=ns'
  Assert rc=0
  →T.GoToTidyUp'ns'≢#.TEMP.Foo.CiderConfig.LINK.watch
+ →T.GoToTidyUp'ns'≢'watch'∆GetLinkOption'#.TEMP.Foo'      ⍝ What Link actually uses
  {}0 ⎕SE.Cider.CloseProject'#.TEMP.Foo'
 
  :If ##.Cider.HasDotNet
@@ -19,12 +20,14 @@
      (rc msg result)←stop ∆UCMD cmd,' -watch=dir'
      Assert rc=0
      →T.GoToTidyUp'dir'≢#.TEMP.Foo.CiderConfig.LINK.watch
+     →T.GoToTidyUp'dir'≢'watch'∆GetLinkOption'#.TEMP.Foo'
      {}0 ⎕SE.Cider.CloseProject'#.TEMP.Foo'
 
      #.⎕EX'TEMP' ⋄ 'TEMP'#.⎕NS''
      (rc msg result)←stop ∆UCMD cmd,' -watch=both'
      Assert rc=0
      →T.GoToTidyUp'both'≢#.TEMP.Foo.CiderConfig.LINK.watch
+     →T.GoToTidyUp'both'≢'watch'∆GetLinkOption'#.TEMP.Foo'
      {}0 ⎕SE.Cider.CloseProject'#.TEMP.Foo'
  :EndIf
 

@@ -20,6 +20,7 @@
  →T.GoToTidyUp∨/'ERROR'⍷log
 
  →T.GoToTidyUp'ns'≢#.TEMP.Foo.CiderConfig.LINK.watch
+ →T.GoToTidyUp'ns'≢'watch'∆GetLinkOption'#.TEMP.Foo'      ⍝ What Link actually uses
 
  R←T._OK
 
