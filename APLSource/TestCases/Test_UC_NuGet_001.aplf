@@ -1,4 +1,4 @@
- R←Test_UC_045(stopFlag batchFlag);⎕TRAP;tempFolder;parms;I;rc;msg
+ R←Test_UC_NuGet_001(stopFlag batchFlag);⎕TRAP;tempFolder;parms;I;rc;msg
 ⍝ Exercise ]Cider.AddNuGetDependencies and ListNuGetDependencies
 ⍝ The real test function (∆Test_UC_045) is executed in its own APL process
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')

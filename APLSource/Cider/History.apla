@@ -1,4 +1,6 @@
 (
+ '* 0.54.1 ⋄ 2026-09-15'
+ '  * New version of APLGit2 should show the line-drawing chars (]Status) correctly.'
  '* 0.54.0 ⋄ 2026-09-13'
  '  * Check for Dropbox conflicts removed: a Git managed folder should *never* be watched by'
  '    something like Dropbox!'

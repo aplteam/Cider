@@ -1,4 +1,4 @@
- R←∆Test_UC_045(stopFlag batchFlag);⎕TRAP;res;msg;rc;folder;parms;tempDir;success;log
+ R←∆Test_UC_NuGet_001(stopFlag batchFlag);⎕TRAP;res;msg;rc;folder;parms;tempDir;success;log
 ⍝ Exercise ]Cider.AddNuGetDependencies and ListNuGetDependencies
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed

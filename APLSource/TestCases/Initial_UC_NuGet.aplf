@@ -1,0 +1,11 @@
+ r←Initial_UC_NuGet ps
+ :If 0=⎕NC'∆ExecNuGetTest'
+     :If ~ps.batchFlag
+     :AndIf ~∨/' cider_fns="Test_NuGet_'⍷#.GetCommandLine
+         ∆ExecNuGetTest←CommTools.YesOrNo'Do you want to execute NuGet-related test cases?'
+     :Else
+         ∆ExecNuGetTest←1
+     :EndIf
+ :EndIf
+ r←∆ExecNuGetTest
+⍝Done

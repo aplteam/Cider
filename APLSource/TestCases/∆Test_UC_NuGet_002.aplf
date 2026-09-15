@@ -1,5 +1,5 @@
- R←∆Test_UC_051(stopFlag batchFlag);⎕TRAP;folder;res;log;cals;success;tempDir;config;msg;rc;stop;batch;ref
-⍝ Open project, add 2 NuGet packages to non-default folder, load, call, list, close, re-open, close
+ R←∆Test_UC_NuGet_002(stopFlag batchFlag);⎕TRAP;folder;res;log;cals;success;tempDir;config;msg;rc;stop;batch;Cleanup;ref
+⍝ Open project, add 2 NuGet packages to default folder, load, call, list, close, re-open, close
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -17,9 +17,9 @@
  Assert rc=0
 
  ref.AddAutomation'YesOrNo' 'LoadNuGetDependenciesAfterAdding@' 'y'
- (rc msg res)←stop ∆UCMD'AddNuGetDependencies clock,NODATIME ',tempDir
+ (rc msg res)←stop ∆UCMD'AddNuGetDependencies Clock,NodaTime ',tempDir
  Assert rc=0
- →T.GoToTidyUp~'clock' 'nodatime'∆LazyMatch ⎕C res
+ →T.GoToTidyUp 2≠+/'Clock' 'NodaTime'{0<≢('\b',⍺,'\b')⎕S 0⊣⍵}¨⊂res
 
  (rc msg res)←stop ∆UCMD'ListNuGetDependencies ',tempDir
  Assert rc=0

@@ -8,4 +8,5 @@
      ⎕←'Restored: ⎕SE.Cider.DEVELOPMENT←',⍕∆QSE_CIDER_DEVELOPMENT
  :EndIf
  ⎕EX'∆DotNetIsAvailable'
+ ⎕EX'∆ExecNuGetTest'
  ⍝Done
