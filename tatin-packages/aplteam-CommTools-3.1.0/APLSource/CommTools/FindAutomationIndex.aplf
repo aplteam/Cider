@@ -1,0 +1,20 @@
+ ind←FindAutomationIndex(type id);bool
+⍝ Returns the number of the row in `∆Automation` (if that exists) where `type` and `id` match
+⍝ `∆Automation[;1 2]`.\\
+⍝ If `id` contains an "@" then only the part up to and including the "@" is compared, so a comment
+⍝ following the alias is ignored.\\
+⍝ In case `∆Automation` does not exist or no row fits, `⍬` is returned.\\
+⍝ `type` must be one of `YesOrNo`, `Select`, `Pause`, `AskForText` or `AskForNumber`.
+ ind←⍬
+ 'Invalid type'Assert(⊂type)∊'YesOrNo' 'AskForNumber' 'AskForText' 'Pause' 'Select'
+ :If 0<⎕NC'∆Automation'
+ :AndIf 0<≢∆Automation
+     :If AliasChar∊id
+         bool←(∆Automation[;1]≡¨⊂type)∧((TakeAlias¨∆Automation[;2])≡¨⊂TakeAlias id)
+     :Else
+         bool←(∆Automation[;1]≡¨⊂type)∧(∆Automation[;2]≡¨⊂id)
+     :EndIf
+     :If ⍬≢ind←⍸,bool
+         ind←⊃ind
+     :EndIf
+ :EndIf
