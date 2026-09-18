@@ -1,9 +1,0 @@
- r←Version(space folder args)
-⍝ Returns the version number together with the namespace the user commands actually execute
-⍝ their code in. Which one that is depends on `DEVELOPMENT` in `⎕SE.APLGit2`; see
-⍝ `GetRefToAPLGit2`. Since that is sticky session state, it is worth reporting.
-⍝ Desc: Returns the version number as a text vector
-⍝ Parse: 
-⍝ Project: 0
- r←##.Version,' (executing in ',(⍕##),')'
-⍝Done

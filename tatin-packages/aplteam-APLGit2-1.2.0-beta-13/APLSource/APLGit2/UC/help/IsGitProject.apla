@@ -1,6 +1,0 @@
-(
- 'Returns either "yes" or "no"'
- ''
- 'For more information execute:'
- ']APLGit2.IsGitProject -???'
-)

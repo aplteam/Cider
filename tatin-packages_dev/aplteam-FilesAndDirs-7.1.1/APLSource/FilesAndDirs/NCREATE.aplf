@@ -1,3 +1,0 @@
- r←filename NCREATE tieNo
-⍝ Same as `⎕NCREATE` but normalizes `filename`.
- r←(NormalizePath filename)⎕NCREATE tieNo

@@ -1,2 +1,0 @@
- yesNo←IsGitInstalled
- yesNo←##.IsGitInstalled

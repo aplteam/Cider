@@ -1,6 +1,0 @@
- r←IsGitProject(space folder args)
-⍝ Desc: Returns "yes" or "no" depending on whether there is a ./.git folder
-⍝ Parse: 1s
-⍝ Project: 1
- r←(1+##.IsGitProject folder)⊃'no' 'yes'
-⍝Done

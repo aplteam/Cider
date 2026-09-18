@@ -1,1 +1,0 @@
-AddAutomation←{⍺←⊢ ⋄ 1:shy←⍺ ##.AddAutomation ⍵}

@@ -1,1 +1,0 @@
-EnforceSlash←{⍺←⊢ ⋄ 1:shy←⍺ ##.EnforceSlash ⍵}

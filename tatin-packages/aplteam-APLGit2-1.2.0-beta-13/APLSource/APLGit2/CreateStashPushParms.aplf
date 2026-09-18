@@ -1,7 +1,0 @@
- r←CreateStashPushParms
-⍝ Creates a parameter space with variables suitable for being passed to StashPush
- r←⎕NS''
- r.folder←''
- r.addUntracked←0
- r.msg←''
- r.files←''

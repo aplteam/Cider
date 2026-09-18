@@ -1,7 +1,0 @@
- r←IsDirty(space folder args)
-⍝ Desc: Reports whether there are uncommitted changes
-⍝ Parse: 1s
-⍝ Project: 1
- r←##.IsDirty folder
- r←(r+1)⊃'Clean' 'Dirty'
-⍝Done

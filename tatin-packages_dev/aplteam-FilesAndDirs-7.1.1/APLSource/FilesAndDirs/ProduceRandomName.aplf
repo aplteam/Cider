@@ -1,3 +1,0 @@
- r←ProduceRandomName
-⍝ Expensive but successful very soon
- r←{(,'ZI2,ZI2,ZI2'⎕FMT 3↑⍵),⍕3↓⍵}3↓⎕TS  ⍝ Expensive but successful very soon
