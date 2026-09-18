@@ -1,4 +1,4 @@
- MakeZipForDyalog flag;list;ID;path;F;tempFolder;C;zipFilename
+ MakeZipForDyalog flag;list;ID;path;F;tempFolder;C;zipFilename;dropped
 ⍝ Create the ZIP file that can be put on the release page for Dyalog's purposes
  :If flag
      :If 0=⎕SE.⎕NC'MakeHelpers'
@@ -13,6 +13,13 @@
      :EndIf
      tempFolder←F.GetTempSubDir'NewCiderVersion'
      {}⎕SE.Tatin.InstallPackages(⊃list)tempFolder
+⍝ Minimal version selection fetches every minimum it is asked for and leaves the ones that lost
+⍝ behind. Only the selected ones are ever loaded, so only those belong in what we hand over.
+     dropped←RemoveSupersededPackages tempFolder
+     :If 0<≢dropped
+         ⎕←'Superseded within their major version line, therefore not bundled:'
+         ⎕←↑dropped
+     :EndIf
      zipFilename←path,'/Installed-',ID,'.zip'
      {}tempFolder ⎕SE.MakeHelpers.##.ZipArchive.ZipFolder zipFilename
      {}F.RmDirByForce tempFolder

@@ -1,0 +1,25 @@
+ {r}←RemoveSupersededPackages folder;F;ns;listed;names;types;dirs;keep;i;rc;msg
+⍝ Removes from `folder` every package that was fetched but not selected, and returns what went.\\
+⍝ Tatin resolves dependencies by minimal version selection: a version named in a dependency file is
+⍝ a *minimum*, and within a major version line the highest of those minimums is the one selected.
+⍝ The ones that lost stay behind in the install folder, while `apl-buildlist.json` names the selected
+⍝ ones only - so the build list, not the folder listing, says what the code actually loads.\\
+⍝ For an install folder that is correct and there is nothing to do. A distribution is a different
+⍝ matter: it should carry what is loaded and nothing besides, which is why this runs before the ZIP
+⍝ is built.\\
+⍝ Nothing happens when there is no build list, because then there is nothing to go by.
+ F←##.Cider.FilesAndDirs
+ r←⍬
+ :If ⎕NEXISTS folder,'/apl-buildlist.json'
+     ns←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET folder,'/apl-buildlist.json'
+     listed←'/'∘,¨,⊆ns.packageID                            ⍝ Anchored on the separator because one group name may end with another
+     (names types)←0 1 ⎕NINFO⍠('Wildcard' 1)⊢folder,'/*'
+     dirs←{'/'@('\'∘=)⊢⍵↓⍨-(¯1↑⍵)∊'/\'}¨(types=1)/names     ⍝ 1 is a directory, 2 a regular file
+     keep←(⊂listed){∨/⍺{⍺≡(-≢⍺)↑⍵}¨⊂⍵}¨dirs
+     :For i :In ⍸~keep
+         (rc msg)←F.RmDirByForce i⊃dirs
+         msg Assert rc=0
+     :EndFor
+     r←(~keep)/dirs
+ :EndIf
+⍝Done
