@@ -16,5 +16,6 @@ conga.crash
 
 # Internal documents, kept local
 /claude-findings.md
+/claude-findings-0.54.1.md
 /design-issue.md
 /design-issue-orig.md
