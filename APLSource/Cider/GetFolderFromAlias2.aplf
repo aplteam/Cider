@@ -1,7 +1,8 @@
  folder←{globalAliasFilename}GetFolderFromAlias2 alias;data
 ⍝ Translates an alias (if any) into a folder.\\
 ⍝ In case no global alias file can be found an empty vector is returned.\\
-⍝ If the alias cannot be found an error is thrown.\\
+⍝ So is an alias that is simply not defined. Only an alias that is not a valid APL name at all is
+⍝ rejected with an error.\\
 ⍝ `globalAliasFilename` should only be specified by test cases
  folder←''
  globalAliasFilename←{0<⎕NC ⍵:⍎⍵ ⋄ GetCiderAliasFilename}'globalAliasFilename'
