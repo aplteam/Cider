@@ -1,3 +1,0 @@
- Help
-⍝ Puts the documentation of `CommTools` on display; same as `]ADoc CommTools`
- ⎕SE.UCMD'ADOC ',⍕⎕THIS
