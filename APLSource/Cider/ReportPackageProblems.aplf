@@ -1,11 +1,15 @@
- {r}←parms ReportPackageProblems report;rows;markers;buff;plural
+ {r}←parms ReportPackageProblems report;rows;markers;buff;plural;elsewhere
 ⍝ Prints whatever the check for later versions turned up that is not a later version.\\
 ⍝ `report` is what `CheckTatinFoldersForLaterVersions` collected: one matrix per install folder,
 ⍝ with the columns Tatin's `CheckForLaterVersion` defines.\\
-⍝ Two things are worth saying, and neither of them is an offer to update:
+⍝ Three things are worth saying, and none of them is an offer to update:
 ⍝ * A package whose [;2] carries one of Tatin's "<<< ... >>>" markers. "Not available any more"
 ⍝   is the one that matters: nobody can install that version again, so the project cannot be set
 ⍝   up from scratch any more, and the sooner that is known the better.
+⍝ * A package the very same version of which is hosted by a Registry other than the one it was
+⍝   installed from: [;2] repeats [;1], yet [;5] names a Registry. That is what a package looks
+⍝   like that was installed from a local Registry before being published. Re-installing it
+⍝   changes no version, it only corrects the URL the build list records.
 ⍝ * Packages that did not come from tatin.dev. This used to be said only when no later version
 ⍝   was found for anything, which is exactly when nobody is looking.
  r←0
@@ -14,6 +18,10 @@
      :If 0<≢markers←('<'=⊃¨rows[;2])⌿rows
          (1 parms.batch)PrintToSession'These installed packages need attention:'
          (1 parms.batch)PrintToSession↓⎕FMT markers[;1 2]
+     :EndIf
+     :If 0<≢elsewhere←((rows[;1]≡¨rows[;2])∧0<≢¨rows[;5])⌿rows
+         (1 parms.batch)PrintToSession'The very same version of these packages is available from another Registry:'
+         (1 parms.batch)PrintToSession↓⎕FMT elsewhere[;1 3],(((≢elsewhere),1)⍴⊂' ==> '),elsewhere[;,5]
      :EndIf
      :If 0<≢buff←(⊂'https://tatin.dev/')~⍨rows[;3]
          plural←1<≢buff
