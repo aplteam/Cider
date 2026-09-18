@@ -1,0 +1,26 @@
+ r←Test_Misc_036(stopFlag batchFlag);⎕TRAP;report
+⍝ Exercise `IsAvailableElsewhere`, which decides which rows of Tatin's "later versions" report name
+⍝ a package the very same version of which is hosted by a Registry other than the one it came from.
+⍝ Those rows are reported, and they are what makes `ReInstallFromDependencies` offer its re-install.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+⍝ The columns are: installed, latest, original URL, flag, new URL
+⍝ [1] A later version: that is an update, not this
+ report←1 5⍴'aplteam-Foo-1.1.0' 'aplteam-Foo-1.2.0' 'https://tatin.dev/' 1 'https://tatin.dev/'
+⍝ [2] Nothing later, and the same Registry: nothing to say at all
+ report⍪←'aplteam-Goo-2.0.0' 'aplteam-Goo-2.0.0' 'https://tatin.dev/' 0 ''
+⍝ [3] Same version, different Registry: the only row that qualifies
+ report⍪←'aplteam-Moo-1.0.0' 'aplteam-Moo-1.0.0' 'http://localhost:444/' 1 'https://tatin.dev/'
+⍝ [4] A marker rather than a package ID, although [;5] names a Registry
+ report⍪←'aplteam-Zoo-1.2.0-beta-2' '<<< Not available any more >>>' 'http://localhost:444/' 1 'https://tatin.dev/'
+⍝ [5] Server did not answer
+ report⍪←'aplteam-Woo-1.0.0' '<<< No response >>>' 'https://tatin.dev/' 0 ''
+
+ →T.PassesIf 0 0 1 0 0≡##.Cider.IsAvailableElsewhere report
+
+⍝ No row may be both: the two decide what happens to a row between them
+ →T.PassesIf 0=+/(##.Cider.IsUpdateCandidate report)∧##.Cider.IsAvailableElsewhere report
+
+ r←T._OK
+⍝Done

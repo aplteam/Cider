@@ -1,0 +1,42 @@
+ {r}←ReInstallFromDependencies(folders reports parms);i;folder;report;reInstallFlag;reInstallParms;qdmx
+⍝ Offers to re-install an install folder from its dependency list, and does so when the user agrees.
+⍝ Returns the number of install folders re-installed.\\
+⍝ This is offered for a folder that has no later versions on offer but holds at least one package
+⍝ the very same version of which is hosted by a Registry other than the one it was installed from;
+⍝ see `IsAvailableElsewhere`.\\
+⍝ `ReInstallDependencies` copies nothing but `apl-dependencies.txt` into a temporary folder, installs
+⍝ everything from scratch there and replaces the install folder only once that has worked. The result
+⍝ therefore carries exactly what the dependency list asks for - no package left over from an earlier
+⍝ install - and a build list naming the Registries the packages really came from.\\
+⍝ Without "update" no version moves anywhere: every pin in the dependency list is honoured as it
+⍝ stands, which is what makes this safe to offer while a project is being opened.\\
+⍝ A folder carrying one of Tatin's "<<< ... >>>" markers is passed over: such a re-install could only
+⍝ fail, because what it would have to fetch is not available.
+ r←0
+ reInstallParms←⎕SE.Tatin.CreateReInstallParms      ⍝ Both "update" and "major" default to 0: that is the point here
+ reInstallParms.quiet←parms.batch
+ :For i :In ⍳≢reports
+     report←i⊃reports
+     :If 0<≢report
+     :AndIf ~∨/IsUpdateCandidate report             ⍝ Those are `UpdatePackages`'s business
+     :AndIf ~∨/'<'=⊃¨report[;2]
+     :AndIf ∨/IsAvailableElsewhere report
+         folder←i⊃folders
+         :If ~reInstallFlag←2≡parms.checkPackageVersions
+             reInstallFlag←1 C.YesOrNo'ReInstallFromDependencies@Re-install <',(AddSlash folder),'> from its dependency list? No version changes'
+         :EndIf
+         :If reInstallFlag
+             1 parms.batch p'Re-installing <',(AddSlash folder),'> from its dependency list ...'
+             :Trap 0
+                 reInstallParms ⎕SE.Tatin.ReInstallDependencies parms.folder,'/',folder
+             :Else
+                 qdmx←⎕DMX
+                 qdmx.EM Assert~parms.batch
+                 1 PrintToSession qdmx.EM
+                 :Return
+             :EndTrap
+             r+←1
+         :EndIf
+     :EndIf
+ :EndFor
+⍝Done

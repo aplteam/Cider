@@ -1,4 +1,4 @@
-  {r}←CheckPackagesStatus(config parms pkgStatus);checkFlag;folder;folders;folder_;updateFlag;updateParms;report
+  {r}←CheckPackagesStatus(config parms pkgStatus);checkFlag;folders;report;updates
 ⍝ Check whether Tatin packages should be updated in case parms.importFlag is not 1.
 ⍝ When pkgStatus is 2 it means that packages have just been re-installed, so no need to check for later versions.
 ⍝ This is ruled by parms.checkPackageVersions:
@@ -28,12 +28,14 @@
          1 ⎕SE._Tatin.Client.EstablishRumbaClients ⍬
          :If 0<≢report←report CheckTatinFoldersForLaterVersions parms(RemoveTargetDefinition¨folders)
              parms ReportPackageProblems report            ⍝ Always: it is not about later versions
-             report←{(IsUpdateCandidate ⍵)⌿⍵}¨report
-             :If 0=+/≢¨report
+             updates←{(IsUpdateCandidate ⍵)⌿⍵}¨report
+             :If 0=+/≢¨updates
                  (1 parms.batch)p'No later versions found '
              :Else
-                 UpdatePackages(RemoveTargetDefinition¨folders)report parms
+                 UpdatePackages(RemoveTargetDefinition¨folders)updates parms
              :EndIf
+⍝ Takes the full report, not `updates`: it deals with the folders `UpdatePackages` has left alone
+             ReInstallFromDependencies(RemoveTargetDefinition¨folders)report parms
          :EndIf
          ⎕SE._Tatin.Client.CloseConnections 1
      :EndIf

@@ -19,7 +19,7 @@
          (1 parms.batch)PrintToSession'These installed packages need attention:'
          (1 parms.batch)PrintToSession↓⎕FMT markers[;1 2]
      :EndIf
-     :If 0<≢elsewhere←((rows[;1]≡¨rows[;2])∧0<≢¨rows[;5])⌿rows
+     :If 0<≢elsewhere←(IsAvailableElsewhere rows)⌿rows
          (1 parms.batch)PrintToSession'The very same version of these packages is available from another Registry:'
          (1 parms.batch)PrintToSession↓⎕FMT elsewhere[;1 3],(((≢elsewhere),1)⍴⊂' ==> '),elsewhere[;,5]
      :EndIf

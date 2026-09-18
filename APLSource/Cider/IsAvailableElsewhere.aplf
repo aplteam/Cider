@@ -1,0 +1,11 @@
+ r←IsAvailableElsewhere report
+⍝ Takes one of the matrices Tatin's `CheckForLaterVersion` returns and marks with a 1 exactly those
+⍝ rows whose installed version is hosted by a Registry other than the one it was installed from:
+⍝ [;2] repeats [;1], so there is nothing later, yet [;5] names a Registry.\\
+⍝ That is what a package looks like that was installed from a local Registry before being published.
+⍝ Re-installing it from the dependency list changes no version, it only corrects the URL the build
+⍝ list records; see `ReInstallFromDependencies`.\\
+⍝ Rows carrying one of Tatin's "<<< ... >>>" markers are ruled out by [;1]≢[;2] already.\\
+⍝ See `IsUpdateCandidate` for the rows that do offer a later version.
+ r←(report[;1]≡¨report[;2])∧0<≢¨report[;5]
+⍝Done
