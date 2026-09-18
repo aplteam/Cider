@@ -20,12 +20,12 @@
 
 ⍝ Simple character vectors throughout: an empty line is depth 0, anything nested would be 2 or more
  →T.GoToTidyUp~∧/1≥≡¨report
- →T.GoToTidyUp~∧/{' '=1↑0⍴⍵}¨report
+ →T.GoToTidyUp~∧/{' '=⊃0⍴⍵}¨report      ⍝ `⊃`, not `1↑`: inside `¨` the latter yields a nested result
 
 ⍝ ... so that mixing them yields a character matrix rather than a nested one
  matrix←↑report
  →T.GoToTidyUp~2=⍴⍴matrix
- →T.GoToTidyUp~' '=1↑0⍴matrix
+ →T.GoToTidyUp~' '=1↑0⍴,matrix          ⍝ Ravel first: `1↑` of a matrix takes a row, not an element
 
 ⍝ The branch under test
  →T.GoToTidyUp~∨/∨/¨'Nothing has been commited yet'∘⍷¨report
