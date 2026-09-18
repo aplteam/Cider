@@ -1,6 +1,0 @@
- r←FetchFromIndex(space folder args)
-⍝ Desc: Brings back files from the index that were modified or deleted
-⍝ Parse: 1s
-⍝ Project: 1
- r←##.FetchFromIndex space folder args
-⍝Done

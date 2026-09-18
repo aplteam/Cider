@@ -11,7 +11,7 @@
    ⍝ Everything between "⍝ >>>>> Start*" and "⍝ >>>>> End*" is injected as part of
    ⍝ the build process of the package - don't edit this!
       ⍝ >>>>> StartListInject
-MinimumVersionOfDyalog←'18.0'
+MinimumVersionOfDyalog←'18.2'
 ⍝ Returns a vector of namespaces, one per user command, carrying `Name`, `Desc`, `Group`,
 ⍝ `Parse` and `_Project`.\\
 ⍝ `_Project` is 1 for commands that accept the project as an argument; those that do not
@@ -32,7 +32,7 @@ MinimumVersionOfDyalog←'18.0'
  :If AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
 ⍝ >>>>> StartTableInject
      table⍪←'Add' '1 -project=' 0 'Executes the git "Add" command'
-     table⍪←'AddGitIgnore' '1s' 0 'Create a file .gitignore, or merge default values with an existing one'
+     table⍪←'AddGitIgnore' '1s' 1 'Create a file .gitignore, or merge default values with an existing one'
      table⍪←'ChangeLog' '1 -project=' 0 'Takes an APL name and lists all commits the object was part of'
      table⍪←'CloneRepo' '2s -branch= -depth= -dry' 0 'Creates a clone of the given repository'
      table⍪←'Commit' '1s -m= -amend' 1 'Performs a commit on the current branch'
@@ -61,7 +61,7 @@ MinimumVersionOfDyalog←'18.0'
      table⍪←'StashListContent' '2s -noAPLnames' 1 'List all files captured in a stash'
      table⍪←'StashPop' '1s -n=' 1 'Apply a stash to the working area & remove from stash stack, by default the last one'
      table⍪←'StashPush' '999s -m= -u' 1 'Save your local modifications to a new stash entry and roll them back to HEAD (in the working tree and in the index)'
-     table⍪←'Status' '1s -verbose -view -noAPLnames' 1 'Reports all untracked files and/or all uncommitted changes'
+     table⍪←'Status' '1s -verbose -view -noAPLnames -allUntracked' 1 'Reports all untracked files and/or all uncommitted changes'
      table⍪←'Version' '' 0 'Returns the version number as a text vector'
 ⍝ >>>>> EndTableInject
      :For row :In ⍳≢table
@@ -77,6 +77,7 @@ MinimumVersionOfDyalog←'18.0'
 
     ∇ r←Run(Cmd Args);folder;G;space;ns;noProjectSelected;func;list;ind;msg
       :Access Shared Public
+      r←''
       :If 0=⎕SE.⎕NC'APLGit2'
           {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)'⎕SE'
       :EndIf
@@ -91,11 +92,7 @@ MinimumVersionOfDyalog←'18.0'
               (r space folder)←G.##.UC.GetSpaceAndFolder Cmd ns
           :EndIf
       :Else
-          :If (⊂⎕C Cmd)∊⎕C'AddGitIgnore' 'Add'
-          :AndIf ∨/'/\'∊Args._1
-              folder←Args._1
-              space←''
-          :ElseIf ≡/⎕C'StashListContent'Cmd
+          :If ≡/⎕C'StashListContent'Cmd
               :Select ≢Args.Arguments
               :Case 0
                   (space folder)←G.##.EstablishProject''
@@ -135,11 +132,11 @@ MinimumVersionOfDyalog←'18.0'
                       :Else
                           :If (,'?')≡,Args._2
                               ind←'SelectForStash@Select what to stash:' 1 G.##.CommTools.Select list[;3]
-                              :If ¯1≢ind
+                              :If ¯1≡ind
                               :OrIf 0=≢ind
                                   r←'Cancelled by user' ⋄ →0
                               :Else
-                                  Args._2←list←list[ind;2]
+                                  Args._2←list←list[ind;3]
                               :EndIf
                           :Else
                               Args._2←list←list[;3]
@@ -151,16 +148,21 @@ MinimumVersionOfDyalog←'18.0'
               :EndIf
           :EndIf
       :EndIf
-      :If (⊂⎕C Cmd)∊,⊂'version'
+      :If (⊂⎕C Cmd)∊⎕C'Version' 'CloneRepo'   ⍝ Neither needs a project; <GetSpaceAndFolder> skips both as well
       :OrIf ~noProjectSelected←∧/space folder∊''⍬
           func←G.##.UC⍎Cmd
           r←func space folder Args
+      :ElseIf 0=≢r
+          r←'No project specified, and no Cider/acre project is open'
       :EndIf
     ⍝Done
     ∇
 
     ∇ r←level Help cmd;ref
       :Access Shared Public
+      :If 0=⎕SE.⎕NC'APLGit2'
+          {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)'⎕SE'
+      :EndIf
       r←0⍴⊂''
       :If 9=⎕NC'⎕SE.APLGit2'
           ref←GetRefToAPLGit2''
@@ -181,9 +183,9 @@ MinimumVersionOfDyalog←'18.0'
     ∇
 
     ∇ PrintError dummy;msg
-      msg←''
+      msg←'APLGit2 is not installed correctly. Please remove and install again.'
       :If 3=⎕NC'⎕SE.APLGit2.Version'
-          msg←' APLGit2 is not installed correctly. Please remove and install again.'
+          msg,←' (found version ',⎕SE.APLGit2.Version,')'
       :EndIf
       ⎕←msg
     ∇

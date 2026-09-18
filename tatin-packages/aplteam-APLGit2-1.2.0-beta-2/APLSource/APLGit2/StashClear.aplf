@@ -1,6 +1,0 @@
- {more}←StashClear folder;cmd;rc;more;buff
-⍝ Deletes ALL saved stashes!
- cmd←'stash clear'
- (rc more buff)←folder U.RunGitCommand cmd
- more U.Assert 0=rc
-⍝Done

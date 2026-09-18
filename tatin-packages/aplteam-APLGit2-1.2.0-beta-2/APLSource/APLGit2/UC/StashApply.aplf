@@ -1,8 +1,0 @@
- r←StashApply(space folder Args);stashNo
-⍝ Applies the given or last stash and remove it from the stash stack
-⍝ Desc: (Re)-apply stash (by default the last one) to the working area & DO NOT remove from stash stack
-⍝ Parse: 1s -n=
-⍝ Project: 1
- stashNo←0 Args.Switch'n'
- r←↑stashNo ##.StashApply folder
-⍝Done

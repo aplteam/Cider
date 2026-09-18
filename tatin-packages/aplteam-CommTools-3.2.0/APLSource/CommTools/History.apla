@@ -1,6 +1,6 @@
 (
  '* 3.2.0 from 2026-09-16'
- '  * `CommTools` had no public interface'
+ '  * `CommTools` had no public interface from the start, although that was always intended.'
  '* 3.1.0 from 2026-09-16'
  '  * `SetOnWait` and `UnsetOnWait` added: `SetOnWait` establishes a function that is called whenever a'
  '    `CommTools` function is about to wait for input from the user, typically for notifying the user'

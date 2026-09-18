@@ -2,7 +2,7 @@
   api: "API",
   assets: "",
   checkLICENSEfile: 1,
-  date: 20260917.10265,
+  date: 20260917.180027,
   description: "Communication tools for interactions in the session: YesOrNo and Select",
   documentation: "",
   files: "",
@@ -20,7 +20,7 @@
   project_url: "https://github.com/aplteam/CommTools",
   source: "APLSource/CommTools",
   tags: "communication-tools,yes-or-no,select-tool",
-  uri: "http://localhost:444/",
+  uri: "https://tatin.dev/",
   userCommandScript: "",
-  version: "3.2.0+112",
+  version: "3.2.0+113",
 }

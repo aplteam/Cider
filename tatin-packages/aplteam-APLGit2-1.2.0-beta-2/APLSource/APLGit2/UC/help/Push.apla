@@ -1,6 +1,0 @@
-(
- 'Pushes the current branch.'
- ''
- 'Always asks the user for confirmation.'
- 'In the question it provides the current branch name and whether the branch is dirty.'
-)
