@@ -2,12 +2,12 @@ aplcore
 /Dist/
 CONTINUE.dws
 conga.crash
-/packages/*
-!/packages/apl-dependencies.txt
-!/packages/apl-buildlist.json
-/packages_dev/*
-!/packages_dev/apl-dependencies.txt
-!/packages_dev/apl-buildlist.json
+/tatin-packages/*
+!/tatin-packages/apl-dependencies.txt
+!/tatin-packages/apl-buildlist.json
+/tatin-packages_dev/*
+!/tatin-packages_dev/apl-dependencies.txt
+!/tatin-packages_dev/apl-buildlist.json
 
 **/.DS_Store
 /docs/site/
