@@ -1,0 +1,51 @@
+ R←Test_Open_087(stopFlag batchFlag);⎕TRAP;tempDir;parms;success;log;qdmx;threw;list
+⍝ A project that fails to open half-way must still be recognised as an open one, and must therefore
+⍝ be closable.\\
+⍝ The Link is created early in `OpenProject` and the configuration used to be injected at the very
+⍝ end. `ListOpenProjects` keeps only namespaces carrying a `CiderConfig`, so anything that threw in
+⍝ between became invisible to it - and `]Cider.CloseProject` works from that list, while
+⍝ `CheckForAlreadyOpened` asks Link alone and so refused to open the project again. The only way out
+⍝ was `⎕SE.Link.Break` by hand or `)CLEAR`.\\
+⍝ Batch mode makes this deterministic: the `Assert~parms.batch` calls throw by design there.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ tempDir ⎕NCOPY⍠('Wildcard' 1)⊣##.CiderConfig.HOME,'/TestData/InvalidVersionNumber/*'
+⍝ The sub-directory stops `CheckForTatinPackages` from re-installing, which would need a Registry.
+⍝ The invalid entry then makes `LoadTatinDependencies` fail, and in batch mode it fails without
+⍝ asking anybody, so no Registry is involved at any point.
+ 3 ⎕MKDIR tempDir,'/packages/dummy-pkg-1.0.0'
+ (⊂'this is not a package id')⎕NPUT(tempDir,'/packages/apl-dependencies.txt')1
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←tempDir
+ parms.parent←'#.TEMP'
+ parms.batch←1
+ parms.ignoreUserExec←1
+
+ threw←0
+ :Trap 0
+     (success log)←##.Cider.OpenProject parms
+ :Else
+     threw←1
+     qdmx←⎕DMX
+ :EndTrap
+ →T.GoToTidyUp~threw                                    ⍝ In batch mode this must throw ...
+ →T.GoToTidyUp~∨/'needs attention'⍷qdmx.EM              ⍝ ... and for the expected reason
+
+⍝ The Link is there, so the project must be recognisable as open, which takes a `CiderConfig`
+ →T.GoToTidyUp 9≠#.TEMP.UpdatePkgs.⎕NC'CiderConfig'
+ →T.GoToTidyUp~(⊂'#.TEMP.UpdatePkgs')∊(##.Cider.ListOpenProjects 0)[;1]
+
+⍝ ... and closing it must work, which is the point of all of the above
+ →T.GoToTidyUp 1≠0 ##.Cider.CloseProject'#.TEMP.UpdatePkgs'
+ →T.GoToTidyUp(⊂'#.TEMP.UpdatePkgs')∊(##.Cider.ListOpenProjects 0)[;1]
+
+ R←T._OK
+
+∆TidyUp:
+ {}⎕SE.Link.Break'#.TEMP.UpdatePkgs'                    ⍝ No check: when all is well it is not linked anymore
+ {}FilesAndDirs.RmDirByForce tempDir,'/..'
+⍝Done
