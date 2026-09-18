@@ -1,0 +1,52 @@
+ R←Test_Open_088(stopFlag batchFlag);⎕TRAP;tempDir;parms;json;qdmx;threw;success;log
+⍝ When the "lx" function of a project crashes, the report must name the error that occurred, rather
+⍝ than just saying that one did.\\
+⍝ `HandleLX` used to overwrite the message `ExecUnderTrap` had produced with its own headline, and
+⍝ then built the detail out of the overwritten value - so the user was told that something had gone
+⍝ wrong, was shown the headline spelled out one character per line, and never learned what the error
+⍝ actually was.\\
+⍝ Batch mode makes this deterministic: `HandleLX` then executes "lx" without asking, and throws.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ tempDir ⎕NCOPY⍠('Wildcard' 1)⊣##.CiderConfig.HOME,'/TestData/LxProject/*'
+
+⍝ A "lx" function that fails for a reason we can recognise again in the message. `⎕SIGNAL` rather
+⍝ than an expression that merely ought to fail: it cannot be defused by whatever system variables
+⍝ the project brings with it. A `1÷0` here was executed without failing, for reasons unexplained.\\
+⍝ `⎕NPUT`'s left argument is (content [encoding] [nl]), so the lines must be enclosed
+ (⊂' r←CrashOnPurpose' ' ⎕SIGNAL 11')⎕NPUT(tempDir,'/APLSource/DateAndTime/CrashOnPurpose.aplf')1
+ json←⊃⎕NGET tempDir,'/apl-package.json'
+ json←'lx: "Init"'⎕R'lx: "CrashOnPurpose"'⊢json
+ (⊂json)⎕NPUT(tempDir,'/apl-package.json')1
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←tempDir
+ parms.parent←'#.TEMP'
+ parms.batch←1
+ parms.ignoreUserExec←1
+
+ threw←0
+ :Trap 0
+     (success log)←##.Cider.OpenProject parms
+ :Else
+     threw←1
+     qdmx←⎕DMX
+ :EndTrap
+ →T.GoToTidyUp~threw
+
+⍝ The headline and the return code, but above all the error itself
+ →T.GoToTidyUp~∨/'Executing "lx"'⍷qdmx.EM
+ →T.GoToTidyUp~∨/'RC=11'⍷qdmx.EM
+ →T.GoToTidyUp~∨/'DOMAIN ERROR'⍷qdmx.EM
+ →T.GoToTidyUp~∨/'CrashOnPurpose'⍷qdmx.EM
+
+ R←T._OK
+
+∆TidyUp:
+ {}##.Cider.CloseProject'#.TEMP.DateAndTime'
+ {}⎕SE.Link.Break'#.TEMP.DateAndTime'
+ {}FilesAndDirs.RmDirByForce tempDir,'/..'
+⍝Done

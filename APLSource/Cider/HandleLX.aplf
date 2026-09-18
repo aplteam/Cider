@@ -7,11 +7,14 @@
  :AndIf 0<≢ns.lx
      :If parms.batch
      :OrIf 1 C.YesOrNo'ExecLX@lx←',ns.lx,'  -- execute?'
-         (success rc msg)←ExecUnderTrap(⍕projectSpace_),'.',parms.projectSpace,'.',ns.lx
+         (success rc msg)←ExecUnderTrap(⍕ref2project),'.',parms.projectSpace,'.',ns.lx
          :If ~success
              ∆Problems+←1
-             msg←'>>> Executing "lx" (according to the package conf) caused an error:'
-             msg,←CR,'    RC=',⍕rc,(⎕UCS 13),¨(⊂4⍴' '),¨msg
+⍝ `msg` is `⎕DM` as `ExecUnderTrap` returned it - three lines, and the only statement anywhere of what
+⍝ actually went wrong. It used to be overwritten by the headline, which then built its detail out of
+⍝ the overwritten value, so the user was told that something had failed and never what.
+             msg←(⊂'>>> Executing "lx" (according to the package conf) caused an error:'),(⊂'    RC=',⍕rc),(⊂4⍴' '),¨msg
+             msg←1↓⊃,/CR,¨msg
              msg Assert~parms.batch
              1 PrintToSession msg
          :EndIf
