@@ -1,0 +1,19 @@
+ report←GetGitStatusReport path;status;stashes
+⍝ Returns the Git status report for `path` as a vector of character vectors, ready for `CheckForGit`
+⍝ to print it or to put it into ⎕ED.\\
+⍝ **Every item must be a simple character vector.** The report is displayed with `↑`, so an item of
+⍝ any other depth is not shown as a line at all: it is spread out one character per column, and it
+⍝ pads the whole report to its own length. `G.Status` returns a one-column matrix in verbose mode,
+⍝ which makes every item of `↓` a one-element vector, so the disclose below is what keeps the rest
+⍝ of this function - and the two branches that replace an item - honest.
+ status←⊃¨↓1 G.Status path
+ :If ∨/'No commits yet'⍷∊status
+     (3⊃status)←'Nothing has been commited yet, therefore branches cannot be reported'
+ :Else
+     (3⊃status)←'Git branches: '{0=≢⍵:'No other branches' ⋄ ⍺,⊃{⍺,', ',⍵}/⍵}2↓¨G.ListBranches path
+ :EndIf
+ :If 0<≢stashes←G.StashList path
+     status,←⊂'Number of stashes: ',⍕≢stashes
+ :EndIf
+ report←(↓(,[0.5]'Git status report')⍪'='),status
+⍝Done

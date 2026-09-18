@@ -1,0 +1,39 @@
+ r←Test_Misc_034(stopFlag batchFlag);⎕TRAP;folder;report;matrix
+⍝ Exercise `GetGitStatusReport` on a repository without any commits - the branch that reports
+⍝ "Nothing has been commited yet". Only a project opened with batch←0 ever gets there.\\
+⍝ The report is displayed with `↑`, so every item must be a simple character vector. An item of a
+⍝ different depth is not shown as a line at all: it is spread out one character per column, and it
+⍝ pads the whole report to its own length. That is what `1 G.Status` returning a one-column matrix
+⍝ once did to this report, and what no test noticed.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ :If ~##.Cider.G.IsGitInstalled
+     r←T._NotApplicable ⋄ →0
+ :EndIf
+
+ folder←∆GetFolderInTempDir'Test_Misc_034'
+ {}1 ##.Cider.G.Init folder
+ →T.GoToTidyUp~##.Cider.G.IsGitProject folder
+
+ report←##.Cider.GetGitStatusReport folder
+
+⍝ Simple character vectors throughout: an empty line is depth 0, anything nested would be 2 or more
+ →T.GoToTidyUp~∧/1≥≡¨report
+ →T.GoToTidyUp~∧/{' '=1↑0⍴⍵}¨report
+
+⍝ ... so that mixing them yields a character matrix rather than a nested one
+ matrix←↑report
+ →T.GoToTidyUp~2=⍴⍴matrix
+ →T.GoToTidyUp~' '=1↑0⍴matrix
+
+⍝ The branch under test
+ →T.GoToTidyUp~∨/∨/¨'Nothing has been commited yet'∘⍷¨report
+
+ r←T._OK
+
+∆TidyUp:
+ :Trap 0
+     {}F.RmDirByForce folder
+ :EndTrap
+⍝Done
