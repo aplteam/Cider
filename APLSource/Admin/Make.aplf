@@ -45,9 +45,9 @@
  :EndIf
  path←C.HOME,'/',C.CIDER.distributionFolder
  targetFolder←##.Cider.GetCurrentAPLsFolderInDocuments,'SessionExtensions\CiderTatin\Cider'
- :If 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
+ :If 0=⎕NEXISTS targetFolder,'\Cider_uc.dyalog'
      targetFolder←##.Cider.GetUserDocumentsFolder,'Dyalog APL Files\SessionExtensions\CiderTatin\Cider'
- :AndIf 0=⎕NEXISTS targetFolder,'\Cider_UC.dyalog'
+ :AndIf 0=⎕NEXISTS targetFolder,'\Cider_uc.dyalog'
  :AndIf ~1 M.YesOrNo'Could not find the user command script in the user''s home folder anywhere - continue?'
      :Return
  :EndIf

@@ -11,7 +11,7 @@
   license: "MIT",
   lx: "InitPackage",
   maintainer: "kai@aplteam.com",
-  minimumAplVersion: "18.0",
+  minimumAplVersion: "18.2",
   ml: 1,
   name: "Cider",
   os_lin: 1,
@@ -21,6 +21,6 @@
   source: "APLSource/Cider/",
   tags: "project-management",
   tatin_version: "0.103.0",
-  userCommandScript: "APLSource/Cider_UC.dyalog",
-  version: "0.54.1-beta-3+1028",
+  userCommandScript: "APLSource/Cider_uc.dyalog",
+  version: "0.54.1-beta-5+1030",
 }
