@@ -93,6 +93,13 @@ If the project has Tatin packages installed in one or more folders, Cider propos
 
 If Cider finds a later version of a package it proposes to update it.
 
+Two other things the check can turn up are reported but never updated:
+
+* A package whose installed version is not hosted by any registry any more. Such a project cannot be set up from scratch: nobody, not even its author, can install that version again.
+* A package the very same version of which is hosted by a registry other than the one it was installed from. That is what a package looks like that was installed from a local registry before being published.
+
+For the second of these Cider proposes to re-install that folder from its dependency list. Everything is installed from scratch into a temporary folder, which replaces the installation folder only once that has worked, so the folder ends up carrying exactly what the dependency list asks for and a build list naming the registries the packages really came from. No version moves anywhere: every version pinned in the dependency list is honoured as it stands.
+
 !!! warning "Tatin registries only"
 
     The check is offered only for packages loaded from a Tatin registry that is in your config file _and_ has a priority greater than 0.

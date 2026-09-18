@@ -465,6 +465,8 @@ If `y` is a parameter space, all parameters are optional except `folder`.
         1 - Check and report findings but prompt for updating
         2 - Check and update without consulting me
 
+    With `2` Cider also carries out, rather than proposes, the re-installation of an installation folder that holds a package the very same version of which is hosted by a registry other than the one it came from. That changes no version, it only rebuilds the folder from its dependency list.
+
     This parameter is ignored if the project has no Tatin installation folder, or if `importFlag` is set.
 
 
