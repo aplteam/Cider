@@ -1,0 +1,23 @@
+ {r}←parms ReportPackageProblems report;rows;markers;buff;plural
+⍝ Prints whatever the check for later versions turned up that is not a later version.\\
+⍝ `report` is what `CheckTatinFoldersForLaterVersions` collected: one matrix per install folder,
+⍝ with the columns Tatin's `CheckForLaterVersion` defines.\\
+⍝ Two things are worth saying, and neither of them is an offer to update:
+⍝ * A package whose [;2] carries one of Tatin's "<<< ... >>>" markers. "Not available any more"
+⍝   is the one that matters: nobody can install that version again, so the project cannot be set
+⍝   up from scratch any more, and the sooner that is known the better.
+⍝ * Packages that did not come from tatin.dev. This used to be said only when no later version
+⍝   was found for anything, which is exactly when nobody is looking.
+ r←0
+ :If 0<≢report
+     rows←⊃⍪/report
+     :If 0<≢markers←('<'=⊃¨rows[;2])⌿rows
+         (1 parms.batch)PrintToSession'These installed packages need attention:'
+         (1 parms.batch)PrintToSession↓⎕FMT markers[;1 2]
+     :EndIf
+     :If 0<≢buff←(⊂'https://tatin.dev/')~⍨rows[;3]
+         plural←1<≢buff
+         (1 parms.batch)PrintToSession plural{'Note that ',(⍕≢⍵),' package',(⍺/'s'),((1+⍺)⊃' was' ' were'),' loaded from ',⊃{⍺,',',⍵}/∪⍵}buff
+     :EndIf
+ :EndIf
+⍝Done

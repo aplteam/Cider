@@ -1,0 +1,22 @@
+ r←Test_Misc_035(stopFlag batchFlag);⎕TRAP;report
+⍝ Exercise `IsUpdateCandidate`, which decides which rows of Tatin's "later versions" report are
+⍝ offered for updating. Going by column 4 once offered a package that was not available any more.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+⍝ The columns are: installed, latest, original URL, flag, new URL
+⍝ [1] A later version: the only row that is an update
+ report←1 5⍴'aplteam-Foo-1.1.0' 'aplteam-Foo-1.2.0' 'https://tatin.dev/' 1 'https://tatin.dev/'
+⍝ [2] Nothing later: Tatin repeats the installed version
+ report⍪←'aplteam-Goo-2.0.0' 'aplteam-Goo-2.0.0' 'https://tatin.dev/' 0 ''
+⍝ [3] Same version, different Registry: worth knowing, but not an update
+ report⍪←'aplteam-Moo-1.0.0' 'aplteam-Moo-1.0.0' 'http://localhost:444/' 1 'https://tatin.dev/'
+⍝ [4] Installed version withdrawn: must never be offered
+ report⍪←'aplteam-Zoo-1.2.0-beta-2' '<<< Not available any more >>>' 'http://localhost:444/' 1 'https://tatin.dev/'
+⍝ [5] Server did not answer
+ report⍪←'aplteam-Woo-1.0.0' '<<< No response >>>' 'https://tatin.dev/' 0 ''
+
+ →T.PassesIf 1 0 0 0 0≡##.Cider.IsUpdateCandidate report
+
+ r←T._OK
+⍝Done

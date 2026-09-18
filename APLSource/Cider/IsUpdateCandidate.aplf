@@ -1,0 +1,11 @@
+ r←IsUpdateCandidate report
+⍝ Takes one of the matrices Tatin's `CheckForLaterVersion` returns and marks with a 1 exactly
+⍝ those rows that offer a later version of an installed package.\\
+⍝ Column [;4] does not answer that question, although it looks as if it should: Tatin also sets
+⍝ it when the very same version turned up on a different Registry, which is worth knowing but is
+⍝ not an update. Column [;2] is the one to go by, but it may carry a marker like
+⍝ "<<< Not available any more >>>" instead of a package ID, and it repeats [;1] when nothing
+⍝ later was found. So a row offers an update when [;2] names a package ID other than [;1].\\
+⍝ See `ReportPackageProblems` for what happens to the rows this leaves out.
+ r←('<'≠⊃¨report[;2])∧report[;1]≢¨report[;2]
+⍝Done
