@@ -1,0 +1,5 @@
+ mat←BeautifyDateTime mat;b;ind
+ :If 0<+/b←mat[;1]≡¨⊂'updated_at'
+     ind←⊃⍸b
+     mat[ind;2]←⊂{⍵[⍳10],' ',⍵[11+⍳8]}2⊃mat[ind;]
+ :EndIf

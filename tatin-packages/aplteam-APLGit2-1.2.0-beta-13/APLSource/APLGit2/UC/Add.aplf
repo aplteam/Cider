@@ -1,0 +1,17 @@
+ r←Add(space folder args);filter;i
+⍝ Desc: Executes the git "Add" command
+⍝ Parse: 1 -project=
+⍝ Project: 0
+ filter←args._1
+ 'Invalid filter'Assert 0<≢filter
+ filter←','(≠⊆⊢)filter                    ⍝ A comma-separated list of files is permitted
+ :For i :In ⍳≢filter
+     :If ~(,'.')≡,i⊃filter                ⍝ "." means "everything"
+     :AndIf ~∨/'?*'∊i⊃filter              ⍝ Leave wildcard expressions to Git
+     :AndIf ~##.F.Exists folder,'/',i⊃filter   ⍝ An existing file or folder needs no interpretation
+         (i⊃filter)←⊃space ##.IdentifyObject i⊃filter
+     :EndIf
+ :EndFor
+ {}folder ##.Add filter
+ r←0 0⍴''
+⍝Done

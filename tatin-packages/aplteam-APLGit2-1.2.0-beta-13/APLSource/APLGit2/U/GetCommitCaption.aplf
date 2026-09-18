@@ -1,0 +1,13 @@
+ caption←folder GetCommitCaption hash;rc;msg;buff
+⍝ Returns a description of `hash`: the short hash, the commit date and the subject.\\
+⍝ Suitable both as a title in a comparison utility and for telling the user which
+⍝ commit is actually processed.\\
+⍝ A dot (".") stands for the working area.
+ :If (,'.')≡,hash
+     caption←'Working area'
+ :Else
+     (rc msg buff)←folder RunGitCommand'show -q --date=short --format="%h⍙%cd⍙%s" ',hash
+     msg Assert 0=rc
+     caption←'⍙'⎕R'  '⊢⊃buff  ⍝ Rather than blanks in the format string; see GetLogFormat for why
+ :EndIf
+⍝Done

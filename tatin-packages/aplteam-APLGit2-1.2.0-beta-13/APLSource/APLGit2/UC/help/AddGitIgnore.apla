@@ -1,0 +1,8 @@
+(
+ 'Add a file .gitignore to a particular path or project, or merges an existing file with'
+ 'default values.'
+ ''
+ 'The user will be asked a couple of questions, and she will be able to edit the result'
+ 'of her choices before it is written to file.'
+ ''
+)

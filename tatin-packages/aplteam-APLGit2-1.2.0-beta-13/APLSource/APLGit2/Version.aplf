@@ -1,0 +1,14 @@
+ r←Version
+⍝ Returns the version number from TatinVars
+⍝ See also `History`
+ r←''
+ :If 0<⎕NC'TatinVars.CONFIG'
+     r←(⎕JSON⍠('Dialect' 'JSON5')⊢TatinVars.CONFIG).version
+ :ElseIf 0<##.⎕NC'TatinVars.CONFIG'
+     r←(⎕JSON⍠('Dialect' 'JSON5')⊢##.TatinVars.CONFIG).version
+ :Else
+     ⍝ When a script is not loaded with Tatin, there will be no namespace `TatinVars`.
+     ⍝ In such cases we cannot provide a version number, so we return an empty char vector
+     r←''
+ :EndIf
+ ⍝Done

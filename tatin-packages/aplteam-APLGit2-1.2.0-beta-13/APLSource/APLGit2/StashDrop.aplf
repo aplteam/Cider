@@ -1,0 +1,9 @@
+ r←{stashNo}StashDrop folder;msg;rc;cmd;buff;more
+⍝ Drop the latest or the given stash from the stash cache
+ stashNo←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'stashNo'
+ 'Invalid stash number'⎕SIGNAL 11/⍨0≠1↑0⍴stashNo
+ cmd←'stash drop stash@{',(⍕stashNo),'}'
+ (rc more buff)←folder U.RunGitCommand cmd
+ more U.Assert 0=rc
+ r←(⊂more),buff
+⍝Done

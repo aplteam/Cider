@@ -1,0 +1,6 @@
+ r←StashList(space folder Args)
+⍝ Desc: List all stashes, if any
+⍝ Parse: 1s
+⍝ Project: 1
+ r←↑##.StashList folder
+⍝Done

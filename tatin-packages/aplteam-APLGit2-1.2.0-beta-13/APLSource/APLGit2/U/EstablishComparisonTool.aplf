@@ -1,0 +1,19 @@
+ (exe name)←EstablishComparisonTool default;qdmx
+⍝ Establishes the comparison utility that is going to be used for comparing two files.\\
+⍝ `default` is the name of a preferred utility; it may well be empty. Typically this is
+⍝ what the user specified via the `-use=` modifier.\\
+⍝ Returns the name of the executable together with the name of the utility, or two empty
+⍝ vectors in case the user command `CompareFiles` is not available, the user cancelled the
+⍝ selection, or `CompareFiles` did not cooperate. Therefore a caller **must** check `exe`
+⍝ rather than assuming that a comparison utility is available.
+ (exe name)←'' ''
+ :If 9=⎕SE.⎕NC'CompareFiles'
+     :Trap 911
+         (exe name)←⎕SE.CompareFiles.EstablishCompareEXE default
+     :Else
+         qdmx←⎕DMX
+         ⎕←'Comparison with "CompareFiles" crashed'{0=≢⍵:⍺ ⋄ ⍺,' with "',⍵,'"'}qdmx.EM
+         (exe name)←'' ''
+     :EndTrap
+ :EndIf
+⍝Done

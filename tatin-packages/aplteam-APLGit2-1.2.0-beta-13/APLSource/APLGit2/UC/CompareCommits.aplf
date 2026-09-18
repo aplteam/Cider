@@ -1,0 +1,23 @@
+ {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;exe;name;buff
+⍝ Desc: Compares two different commits
+⍝ Parse: 2s -project= -use= -files
+⍝ Project: 0
+ (hash1 hash2)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
+ 'Argument is invalid'Assert(,'.')≢hash2
+ buff←folder ##.CompareCommits hash1 hash2
+ (filename1 filename2 hash1 hash2)←4↑buff,'' ''    ⍝ Because old versions of CompareCommits did not return the hashes
+ (hash1 hash2)←{⍵↑⍨¨8⌊≢¨⍵}hash1 hash2              ⍝ Short version suffices
+ :If 0<+/⎕NEXISTS filename1 filename2
+     :If args.files
+         exe←''                                    ⍝ The user asked for the filenames, so don't bother the comparison utility
+     :Else
+         (exe name)←##.U.EstablishComparisonTool''args.Switch'use'
+     :EndIf
+     :If 0=≢exe
+         ⎕←filename1 filename2
+     :Else
+         {}name ##.U.CompareTwoFiles(filename1 filename2)(folder∘##.U.GetCommitCaption¨hash1 hash2)
+         ⎕NDELETE filename1 filename2
+         (filename1 filename2)←⊂''
+     :EndIf
+ :EndIf

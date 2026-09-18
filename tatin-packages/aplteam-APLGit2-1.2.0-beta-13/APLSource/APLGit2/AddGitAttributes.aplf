@@ -1,0 +1,34 @@
+ {r}←{quiet}AddGitAttributes path;buff;filename
+⍝ Creates a file `.gitattributes` with defaults useful for APLers in `path`.\\
+⍝ When the file already exists the user is asked whether it should be replaced; with `quiet`
+⍝ set to 1 nothing is asked and an existing file is left alone.\\
+⍝ Returns a message saying what was done.
+ r←⍬
+ quiet←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'quiet'
+ filename←path,'/.gitattributes'
+ :If quiet
+ :OrIf CommTools.YesOrNo'AddGitattributes@Add .gitattributes for APLers to ',path,' ?'
+     :If F.IsFile filename
+         :If quiet
+             r←'.gitattributes already exists in ',path,'; left alone'
+             :Return
+         :ElseIf ~CommTools.YesOrNo'ReplaceGitattributes@.gitattributes already exists in ',path,'; replace it?'
+             r←'Cancelled by user'
+             :Return
+         :EndIf
+     :EndIf
+     buff←''
+     buff,←⊂'# Auto detect text files (for EOL-auto conversion)'
+     buff,←⊂'* text=auto'
+     buff,←⊂''
+     buff,←⊂'*.apl? linguist-language=apl'
+     buff,←⊂'*.dyapp linguist-language=apl'
+     buff,←⊂'*.dyalog linguist-language=apl'
+     buff,←⊂'*.dws linguist-language=apl'
+     (⊂buff)⎕NPUT filename 1
+     r←'.gitattributes created in ',path,' but check content!'
+     :If ~quiet
+         ⎕←r
+     :EndIf
+ :EndIf
+⍝Done

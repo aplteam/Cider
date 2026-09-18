@@ -1,0 +1,13 @@
+ r←Status(space folder args);verbose;noAPLnames;allUntracked
+⍝ Desc: Reports all untracked files and/or all uncommitted changes
+⍝ Parse: 1s -verbose -view -noAPLnames -allUntracked
+⍝ Project: 1
+ verbose←args.Switch'verbose'
+ noAPLnames←args.Switch'noAPLnames'
+ allUntracked←args.Switch'allUntracked'
+ r←verbose noAPLnames allUntracked ##.Status folder
+ :If args.view
+     {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'ed'}ed←⍵)}⍕(⎕UCS 13),¨↓r
+     r←''
+ :EndIf
+⍝Done

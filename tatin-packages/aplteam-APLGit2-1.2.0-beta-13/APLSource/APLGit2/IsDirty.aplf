@@ -1,0 +1,8 @@
+ r←IsDirty y;rc;more;path;buff
+⍝ Are there uncommited changes?
+ path←2⊃EstablishProject y
+ 'Not a Cider/acre project'⎕SIGNAL 6/⍨0=≢path
+ (rc more buff)←path U.RunGitCommand'status --porcelain'
+ more U.Assert 0=rc
+ r←0<'?'+.≠⊃¨buff
+⍝Done

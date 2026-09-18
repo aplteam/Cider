@@ -1,0 +1,7 @@
+ r←AddGitIgnore y;args;folder;space
+⍝ Desc: Create a file .gitignore, or merge default values with an existing one
+⍝ Parse: 1s
+⍝ Project: 1
+ (space folder args)←y
+ r←##.AddGitIgnore folder
+⍝Done

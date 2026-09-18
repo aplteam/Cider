@@ -1,0 +1,1 @@
+FetchFromIndex←{##.FetchFromIndex ⍵}

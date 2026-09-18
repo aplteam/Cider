@@ -1,0 +1,14 @@
+ r←MinimumVersionOfDyalog;cfg
+⍝ Returns the minimum version of Dyalog APL this package requires.\\
+⍝ It comes from the package config, so there is just one source of truth: `Make` injects that
+⍝ very same value into the user command script; see `InjectListOfObjectsIntoUserCommandScript`.
+ r←''
+ :If 0<##.⎕NC'TatinVars.CONFIG'
+     cfg←##.TatinVars.CONFIG
+ :ElseIf 0<##.##.⎕NC'TatinVars.CONFIG'
+     cfg←##.##.TatinVars.CONFIG
+ :Else
+     :Return                        ⍝ Not loaded by Tatin: no config, so no restriction either
+ :EndIf
+ r←(⎕JSON⍠('Dialect' 'JSON5')⊢cfg).minimumAplVersion
+⍝Done

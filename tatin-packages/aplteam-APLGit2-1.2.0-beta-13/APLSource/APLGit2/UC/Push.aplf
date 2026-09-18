@@ -1,0 +1,13 @@
+ r←Push(space folder args);msg;branch;isDirty
+⍝ Desc: Pushes the current branch after user confirmation
+⍝ Parse: 1s
+⍝ Project: 1
+ branch←##.CurrentBranch folder
+ isDirty←##.IsDirty folder
+ msg←'SurePush@Sure you want to push branch <',branch,'>',(isDirty/' (which is dirty!)'),' of <',(⍕space),'> ?'
+ :If ##.CommTools.YesOrNo msg
+     r←##.Push folder
+ :Else
+     r←'Cancelled by user'
+ :EndIf
+⍝Done

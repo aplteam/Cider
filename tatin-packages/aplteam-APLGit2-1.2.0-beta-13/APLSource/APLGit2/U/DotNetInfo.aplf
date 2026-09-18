@@ -1,0 +1,5 @@
+ r←DotNetInfo
+⍝ Returns what `2250⌶0` reports about the .NET bridge as a two-element vector:
+⍝ `[1]` the flavour - 1 is .NET, 2 is .NET Framework - and `[2]` 1 if the bridge was loaded.
+ r←2250⌶0
+⍝Done

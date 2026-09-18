@@ -1,0 +1,7 @@
+ r←StashListContent(space folder Args);n;noAPLnames
+⍝ Desc: List all files captured in a stash
+⍝ Parse: 2s -noAPLnames
+⍝ Project: 1
+ noAPLnames←0 Args.Switch'noAPLnames'
+ r←noAPLnames ##.StashListContent folder Args._2
+⍝Done

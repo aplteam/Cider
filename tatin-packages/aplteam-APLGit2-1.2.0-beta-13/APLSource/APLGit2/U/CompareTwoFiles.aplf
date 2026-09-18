@@ -1,0 +1,19 @@
+ {r}←name CompareTwoFiles(filenames captions);parms
+⍝ Compares two files with the comparison utility `name` as established by `EstablishComparisonTool`.\\
+⍝ `filenames` must be two filenames, `captions` two character vectors; an empty caption leaves
+⍝ the utility's own default in place.\\
+⍝ Does not return before the user has closed a utility that allows editing, so the caller may
+⍝ safely delete the two files afterwards.\\
+⍝ Returns 0.
+ parms←⎕SE.CompareFiles.ComparisonTools.⍎'CreateParmsFor',name
+ parms.(file1 file2)←filenames
+ :If 0<≢1⊃captions
+     parms.caption1←1⊃captions
+ :EndIf
+ :If 0<≢2⊃captions
+     parms.caption2←2⊃captions
+ :EndIf
+ {}⎕SE.CompareFiles.Compare parms
+ {}⎕DL 1.2×{0=⍵.⎕NC'edit1':0 ⋄ 0=⍵.(edit1+edit2)}parms ⍝ Avoid deletion/early deletion
+ r←0
+⍝Done

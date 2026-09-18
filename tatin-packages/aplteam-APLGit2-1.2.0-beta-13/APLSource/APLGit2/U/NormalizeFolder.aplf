@@ -1,0 +1,15 @@
+ folder←NormalizeFolder folder
+⍝ Returns `folder` in the one and only form APLGit2 uses internally: slashes rather than
+⍝ backslashes, and NO trailing separator.\\
+⍝ Rationale: almost every consumer builds a path with `folder,'/',whatever`, so a trailing
+⍝ separator would result in a double one. An empty argument is returned unchanged, and so are
+⍝ "/" and "C:/" - dropping the separator would change their meaning.
+ :If 0<≢folder
+     folder←F.EnforceSlash folder
+     :If 2<≢folder
+     :AndIf '/'=¯1↑folder
+     :AndIf ':'≠⊃¯1↑¯1↓folder
+         folder←¯1↓folder
+     :EndIf
+ :EndIf
+⍝Done

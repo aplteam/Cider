@@ -1,0 +1,12 @@
+ r←{parms}Repack folder;rc;more;buff;cmd;depth;window
+⍝ Cleans up and optimises Git's internal storage by consolidating loose objects into packfiles.
+⍝ The optional `parms` is `(window depth)`; it defaults to `10 50`.
+ parms←{0<⎕NC ⍵:⍎⍵ ⋄ 10 50}'parms'
+ (window depth)←2↑parms
+ cmd←'repack '
+ cmd,←'--depth=',(⍕depth),' '
+ cmd,←'--window=',(⍕window),' '
+ (rc more buff)←folder U.RunGitCommand cmd
+ more U.Assert 0=rc
+ r←more
+⍝Done

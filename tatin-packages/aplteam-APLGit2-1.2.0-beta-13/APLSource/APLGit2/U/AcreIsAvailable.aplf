@@ -1,0 +1,23 @@
+ flag←AcreIsAvailable
+⍝ Returns 1 if acre is available, and 0 otherwise.\\
+⍝ Note that acre may well be installed as a user command without `⎕SE.acre` being around yet:
+⍝ executing `]acre.Version` is what materialises it, hence the probe.\\
+⍝ Since that probe is expensive - and, when acre is not installed at all, expensive on every
+⍝ single call - the answer is cached in the global `∆ACRE_IS_AVAILABLE`. Expunge that variable
+⍝ in case acre gets installed while the session is already up and running.
+ :If 2=⎕NC'∆ACRE_IS_AVAILABLE'
+     flag←∆ACRE_IS_AVAILABLE
+ :Else
+     :If 0=⎕SE.⎕NC'acre'
+         :Trap 0
+             {}⎕SE.UCMD'acre.Version'
+             flag←1
+         :Else
+             flag←0
+         :EndTrap
+     :Else
+         flag←1
+     :EndIf
+     ∆ACRE_IS_AVAILABLE←flag
+ :EndIf
+⍝Done

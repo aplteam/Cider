@@ -1,0 +1,10 @@
+ r←Squash(space folder Args);msg;noOf
+⍝ Desc: Squashes some commits in the current branch into a single one
+⍝ Parse: 2s -m=
+⍝ Project: 1
+ msg←''Args.Switch'm'
+ noOf←⊃(//)⎕VFI(⍕(1+∧/Args._1∊⎕D)⊃Args.(_2 _1)),' +0'
+ 'Number of commits to be squashed must be an integer'Assert(⎕DR noOf)∊83 163 323
+ 'Number of commits to be squashed must not be negative; 0 means "let me choose"'Assert noOf≥0
+ r←⍪folder ##.Squash msg noOf
+⍝Done

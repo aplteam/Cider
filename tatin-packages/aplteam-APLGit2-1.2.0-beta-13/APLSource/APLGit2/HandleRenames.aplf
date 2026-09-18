@@ -1,0 +1,6 @@
+ HandleRenames←{
+⍝ Takes a path as reported by `git status --short` and returns `(oldPath newPath)`.
+⍝ For a rename Git reports "old -> new"; for anything else the two are the same.
+     ∧/~b←'->'⍷⍵:⍵ ⍵
+     ((¯2+b⍳1)↑⍵)((2+b⍳1)↓⍵)
+ }

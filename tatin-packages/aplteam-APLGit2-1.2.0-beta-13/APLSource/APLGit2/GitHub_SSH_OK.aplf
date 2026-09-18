@@ -1,0 +1,10 @@
+ success←GitHub_SSH_OK;cmd;r
+⍝ 1 if SSH auth to GitHub works right now, else 0
+⍝ Does not get stuck on "Enter passphrase" but would return a 0.
+ cmd←'ssh -o BatchMode=yes -o ConnectTimeout=5 '
+ cmd,←'-o StrictHostKeyChecking=accept-new -T git@github.com 2>&1'
+ success←0
+ :Trap 0
+     r←⎕SH cmd
+     success←∨/∨/¨('successfully authenticated'∘⍷)¨r
+ :EndTrap

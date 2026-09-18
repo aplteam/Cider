@@ -1,0 +1,13 @@
+(
+ 'How a file or an APL object is identified:'
+ ''
+ ' * A name without any path separator is tried in this order: as an APL object of the'
+ '   project, as a file in the root of the project, and finally as a file in the source'
+ '   folder; when that last one finds more than one match, you are asked which you mean.'
+ ' * Any other name is a filename, and is interpreted relative to the ROOT of the project.'
+ '   A leading "./" is permitted; it just emphasises that, and is removed.'
+ ' * An absolute path must point into an opened Cider/acre project.'
+ ''
+ 'Note that every path this package reports - ]Status, ]Log, ]Diff etc. - is relative to the'
+ 'root of the project as well, so whatever they show can be fed straight back in.'
+)

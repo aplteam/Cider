@@ -1,0 +1,9 @@
+ r←space GetAcreItemName filename;buff
+⍝ acre is peculiar about "filename": if it cannot establish the item name,
+⍝ it might return something strange that results in ¯1 ←→ ⎕NC on it.
+ r←''
+ :If ⎕NEXISTS filename
+     buff←⊃⎕SE.acre.Itemname F.EnforceSlash filename
+ :AndIf 0≤⎕NC buff
+     r←space,'.',buff
+ :EndIf

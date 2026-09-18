@@ -1,0 +1,7 @@
+ r←StashPop(space folder Args);stashNo
+⍝ Desc: Apply a stash to the working area & remove from stash stack, by default the last one
+⍝ Parse: 1s -n=
+⍝ Project: 1
+ stashNo←0 Args.Switch'n'
+ r←↑stashNo ##.StashPop folder
+⍝Done

@@ -1,0 +1,15 @@
+(
+ 'Prints a list with all files captured in a stash, including untracked files.'
+ ''
+ 'If no argument is specified, it attempts to find open Cider/acre project(s).'
+ 'If it finds one, it will act on it.'
+ 'If it finds multiple open Cider/acre projects, it will ask the user which one to act on.'
+ 'If it does not find any open projects it will ask the user whether it should act on the current directory.'
+ 'If the user negates the question an error will be thrown.'
+ ''
+ 'You may specify the number of the stash you are interested in as argument, or as second argument.'
+ 'If you do not specify such an argument it defaults to 0 (the latest stash).'
+ ''
+ 'By default, a two-column matrix is returned with APL names (if any) in the second column.'
+ 'You can suppress this by specifying the flag -noAPLnames. Then a vector of filenames is returned.'
+)

@@ -1,0 +1,6 @@
+(
+ 'Bring back APL objects that have been modified in the working area (or deleted from it)'
+ 'and restore the version from the index.'
+ ''
+ 'It will present a list of possible candidates to the user for selection.'
+)

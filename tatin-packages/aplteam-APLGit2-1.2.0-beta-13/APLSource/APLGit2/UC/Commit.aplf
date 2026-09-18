@@ -1,0 +1,65 @@
+ r←Commit(space folder args);ref;branch;rc;data;flag;currentBranch;status;ind;noOf;buff;amend;commitMsg;msg
+⍝ Desc: Performs a commit on the current branch
+⍝ Parse: 1s -m= -amend
+⍝ Project: 1
+ branch←##.CurrentBranch folder
+ amend←0 args.Switch'amend'
+ commitMsg←''args.Switch'm'
+ :If 0<noOf←##.NoOfUntrackedFiles folder
+     buff←branch,'" has ',(⍕noOf),' unstaged change',((1<noOf)/'s'),' - shall Git''s "Add -A" command be executed?'
+     :If ##.CommTools.YesOrNo'StageAll@Branch "',buff
+         (rc msg data)←folder ##.U.RunGitCommand'add -A'
+         msg Assert 0=rc
+     :Else
+         status←##.Status folder
+         :If ∨/(↓status[;1 2])∊'UU' 'AA' 'DD' '!!'
+             r←'There is a merge conflict - you cannot continue' ⋄ :Return
+         :Else
+             status←(status[;2]≠' ')⌿status
+             status←(status[;2]∊'MD?')⌿status
+             ind←'SelectFiles2Stage@Select file(s) to stage' 1 ##.CommTools.Select↓⍕status
+             :If ¯1≡ind
+                 r←'Cancelled by user' ⋄ :Return
+             :EndIf
+             :If 0<≢ind
+                 folder ##.Add status[ind;3]
+             :EndIf
+         :EndIf
+     :EndIf
+ :EndIf
+ :If amend
+     status←1 ##.Status folder
+     :If ∨/'nothing to commit, working tree clean'⍷∊status
+     :AndIf 0=≢commitMsg
+         r←'There is nothing to commit and you have not specified a message either?!' ⋄ :Return
+     :EndIf
+     currentBranch←##.CurrentBranch folder
+     r←⍪commitMsg ##.Commit folder 1
+ :Else
+     :If 0=≢commitMsg
+         flag←0
+         :Repeat
+             ref←⎕NS''
+             ref.commitMsg←,⊂''
+             ref.⎕ED'commitMsg'
+             commitMsg←ref.commitMsg{⍺/⍨~(⌽∧\0=⌽⍵)∨(∧\0=⍵)}≢¨ref.commitMsg
+             :If (⊂branch)∊'main' 'master'
+             :AndIf 0=≢(∊commitMsg)~'.'
+                 :If 0=1 ##.CommTools.YesOrNo'You MUST specify a meaningful message for "',branch,'"; try again (no=cancel) ?'
+                     r←'Commit cancelled by user'
+                     :Return
+                 :EndIf
+             :ElseIf 0<≢(∊commitMsg)~'.'
+             :OrIf ##.CommTools.YesOrNo'Sure you don''t want to provide a message? ("No" cancels the whole operation)'
+                 flag←1
+             :Else
+                 r←'Operation cancelled by user'
+                 :Return
+             :EndIf
+             commitMsg←{0=≢⍵:'...' ⋄ ⍵}commitMsg
+             commitMsg←1↓⊃,/(⎕UCS 10),¨⊆commitMsg
+         :Until flag
+     :EndIf
+     r←commitMsg ##.Commit folder
+     r←⍪r
+ :EndIf

@@ -1,0 +1,18 @@
+ name←{space}GetItemName filename;extensions
+⍝ Returns the APL name of whatever `filename` holds, or an empty vector in case it cannot be established.\\
+⍝ A project is managed either by Link or by acre, never by both, therefore Link is asked first,
+⍝ and acre is consulted only when Link does not know the file.\\
+⍝ The optional `space` is the name of the project's namespace; acre needs it in order to
+⍝ qualify the name it returns.
+ space←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'space'
+ name←''
+ extensions←ListOfDyalogFilesExtensions,'.charlist' '.charmat' '.charstring'
+ :If 9=⎕SE.⎕NC'Link'
+     name←⎕SE.Link.GetItemName filename
+ :EndIf
+ :If 0=≢name
+ :AndIf (⊂⎕C 3⊃⎕NPARTS filename)∊extensions  ⍝ Cheap test first: it saves probing for acre
+ :AndIf U.AcreIsAvailable
+     name←space GetAcreItemName filename
+ :EndIf
+⍝Done

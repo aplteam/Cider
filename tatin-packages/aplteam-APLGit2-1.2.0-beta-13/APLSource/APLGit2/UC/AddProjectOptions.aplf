@@ -1,0 +1,6 @@
+ r←AddProjectOptions flag
+ r←help.ProjectOptions1
+ :If flag
+     r,←⊂''
+     r,←help.ProjectOptions2
+ :EndIf

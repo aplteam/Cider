@@ -1,0 +1,3 @@
+ path←AddSlash path
+ path,←(~(¯1↑path)∊'/\')/'/'
+⍝Done

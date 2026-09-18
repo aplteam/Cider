@@ -1,0 +1,8 @@
+ r←GetMainOrMaster folder;branches;bool
+⍝ Returns either "main" or "master" (deprecated but still valid), whichever the project has.\\
+⍝ Signals an error in case the project has neither of them.
+ branches←2↓¨ListBranches folder
+ bool←'main' 'master'∊branches
+ ('Neither a "main" nor a "master" branch found in ',folder)U.Assert∨/bool
+ r←(bool⍳1)⊃'main' 'master'
+⍝Done

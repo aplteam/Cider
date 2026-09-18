@@ -1,0 +1,7 @@
+ r←StashDrop(space folder Args);n
+⍝ Desc: Drop latest or given stash
+⍝ Parse: 1s -n=
+⍝ Project: 1
+ n←0 Args.Switch'n'
+ r←↑n ##.StashDrop folder
+⍝Done
