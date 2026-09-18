@@ -1,4 +1,4 @@
- {r}←RemoveSupersededPackages folder;F;ns;listed;names;types;dirs;keep;i;rc;msg
+ {r}←RemoveSupersededPackages folder;F;ns;listed;names;types;dirs;keep;i;rc;msg;ids;noticeFile;lines;encoding;nl;heads;sectionIDs;keepSection;sectionNo
 ⍝ Removes from `folder` every package that was fetched but not selected, and returns what went.\\
 ⍝ Tatin resolves dependencies by minimal version selection: a version named in a dependency file is
 ⍝ a *minimum*, and within a major version line the highest of those minimums is the one selected.
@@ -7,6 +7,9 @@
 ⍝ For an install folder that is correct and there is nothing to do. A distribution is a different
 ⍝ matter: it should carry what is loaded and nothing besides, which is why this runs before the ZIP
 ⍝ is built.\\
+⍝ `NOTICE.md` is pruned to match, because it carries a licence section per package *fetched*, and a
+⍝ notice naming software that is not in the ZIP is no more correct than one that omits software
+⍝ that is.\\
 ⍝ Nothing happens when there is no build list, because then there is nothing to go by.
  F←##.Cider.FilesAndDirs
  r←⍬
@@ -21,5 +24,19 @@
          msg Assert rc=0
      :EndFor
      r←(~keep)/dirs
+     ids←{⊃¯1↑(⍵≠'/')⊆⍵}¨r
+     noticeFile←folder,'/NOTICE.md'
+     :If 0<≢ids
+     :AndIf ⎕NEXISTS noticeFile
+⍝ The licence sections are a flat list of "## <packageID>" blocks, so a section runs up to the next
+⍝ such line. Anything before the first one is a preamble and is kept whatever happens.
+         (lines encoding nl)←⎕NGET noticeFile 1
+         heads←(⊂'## ')≡¨3↑¨lines
+         sectionIDs←3↓¨heads/lines
+         keepSection←~sectionIDs∊ids
+         sectionNo←+\heads
+         lines←((1,keepSection)[1+sectionNo])/lines
+         (lines encoding nl)⎕NPUT noticeFile 1
+     :EndIf
  :EndIf
 ⍝Done
