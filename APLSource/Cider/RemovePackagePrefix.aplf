@@ -1,0 +1,12 @@
+ r←prefix RemovePackagePrefix item
+⍝ Removes `prefix`, the "group-name-" part of a package ID, from `item`, so that only the version
+⍝ number is left to be displayed.\\
+⍝ Anything that does not start with `prefix` is returned unchanged. That matters for column [;2] of
+⍝ Tatin's "later versions" report: it may carry a marker like "<<< Not available any more >>>"
+⍝ rather than a package ID, and dropping a fixed number of characters off that used to leave a
+⍝ fragment like "e any more >>>".
+ r←item
+ :If prefix≡(≢prefix)↑item
+     r←(≢prefix)↓item
+ :EndIf
+⍝Done
