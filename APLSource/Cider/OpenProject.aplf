@@ -78,14 +78,24 @@
  (linkOptions parms)←ProcessLinkOptions parms config
  p'Bringing in the source code...'
  projectSpace_←CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
+⍝ From here on a Link exists, and from here on the project must be recognisable as an open one:
+⍝ `ListOpenProjects` keeps only namespaces that carry a `CiderConfig`, and `]Cider.CloseProject`
+⍝ works from that list, while `CheckForAlreadyOpened` asks Link alone and therefore refuses to
+⍝ open it again. Anything that throws before the config was injected used to leave a project that
+⍝ could neither be closed nor re-opened, with `⎕SE.Link.Break` or `)CLEAR` the only way out - and
+⍝ everything between here and `HandleLX` can throw, in batch mode deliberately so.
+⍝ Injecting it here rather than at the end costs nothing: `config` is only read in between, and
+⍝ `InjectConfigDataIntoProject` builds the namespace from `config` in one go.
  :If parms.importFlag
      res←linkOptions ⎕SE.Link.Import projectSpace_ source                       ⍝ Get the code into the WS
-     dmx←⎕DMX
+     dmx←⎕DMX                                                                  ⍝ Before anything else: a call of any kind may replace it
+     InjectConfigDataIntoProject config projectSpace_ parms.folder
      ('LINK failed to import the code (,',dmx.EM,')')Assert~∨/'Error:'⍷res
      p'Code imported'
  :Else
      res←linkOptions ⎕SE.Link.Create projectSpace_ source                       ⍝ Get the code into the WS
-     dmx←⎕DMX
+     dmx←⎕DMX                                                                  ⍝ Before anything else: a call of any kind may replace it
+     InjectConfigDataIntoProject config projectSpace_ parms.folder
      ('LINK failed to load the code (',dmx.EM,')')Assert~∨/'Error:'⍷res
      ('LINK failed to load the code from <(',source,'>')Assert~∨/'Unknown Debug options in'⍷res
      :If ∨/'ERRORS ENCOUNTERED:'⍷res
@@ -155,7 +165,6 @@
          :EndIf
      :EndIf
  :EndIf
- InjectConfigDataIntoProject config projectSpace_ parms.folder
  ref2TatinVars←InjectTatinVars projectSpace_ parms.folder
  parms HandleLX ref2TatinVars projectSpace_
  flag←(0=parms.batch)∧(0=parms.importFlag)
