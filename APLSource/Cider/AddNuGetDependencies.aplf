@@ -7,7 +7,7 @@
      packages←','(≠⊆⊢)packages
  :EndIf
  :If 0∊b←(⎕NS''){⊃0=⍺.⎕NC ⍵}¨packages
-     ('Invalid package name(s): ',⊃{⍺',',⍵}/'"',¨'"',⍨¨(~b)/packages)Assert 0
+     ('Invalid package name(s): ',⊃{⍺,',',⍵}/'"',¨'"',⍨¨(~b)/packages)Assert 0
  :EndIf
  :If IsAlias projectFolder
      projectFolder←GetFolderFromAlias2 projectFolder

@@ -11,7 +11,7 @@
              ⍎'{}',fn,' config'
          :Else
              qdmx←⎕DMX
-             msg←'Executing "',fn'" (ExecuteAfterProjectOpen) crashed: ',qdmx.EM
+             msg←'Executing "',fn,'" (ExecuteAfterProjectOpen) crashed: ',qdmx.EM
          :EndTrap
      :Else
          :Trap 0
