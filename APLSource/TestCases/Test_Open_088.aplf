@@ -15,7 +15,7 @@
 
 ⍝ A "lx" function that fails for a reason we can recognise again in the message. `⎕SIGNAL` rather
 ⍝ than an expression that merely ought to fail: it cannot be defused by whatever system variables
-⍝ the project brings with it. A `1÷0` here was executed without failing, for reasons unexplained.\\
+⍝ the project brings with it.\\
 ⍝ `⎕NPUT`'s left argument is (content [encoding] [nl]), so the lines must be enclosed
  (⊂' r←CrashOnPurpose' ' ⎕SIGNAL 11')⎕NPUT(tempDir,'/APLSource/DateAndTime/CrashOnPurpose.aplf')1
  json←⊃⎕NGET tempDir,'/apl-package.json'

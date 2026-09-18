@@ -1,7 +1,16 @@
  (success rc msg)←ExecUnderTrap expr;qdmx;valence;hasResult;cmd
 ⍝ Executes `expr` under a :Trap 0 and returns (1 0 '') in case of success and (0 ⎕en <errorMessage>) otherwise.
 ⍝ If `expr` is a function that returns a result, that result will be ignored.
-⍝ If `expr` is a function that requires a right argument, for the time bing ⎕NULL is passed.
+⍝ If `expr` is a function that requires a right argument, for the time being ⎕NULL is passed.
+⍝ A dyadic function cannot be called at all, and that is a failure like any other. `rc` is then ¯1
+⍝ because no ⎕EN applies. It used to be reported as a *success*: the complaint went straight to the
+⍝ session with `⍞←` and execution fell through to `success←1` below, so the caller was told all was
+⍝ well and carried on as though the function had run.\\
+⍝ `msg` is shaped the way `⎕DM` is, a vector of character vectors, because that is what the caller
+⍝ gets in every other failing case.
+ success←1
+ rc←0
+ msg←''
  :Trap 0
      hasResult←(10 ⎕ATX expr)∊1 ¯1
      valence←11 ⎕ATX expr
@@ -12,11 +21,10 @@
          cmd←(hasResult/'{}'),expr,' ⎕NULL'
          ⍎cmd
      :Else                      ⍝ That leaves a dyadic call
-         ⍞←'>>> "lx" funcion ',expr,' is dyadic and therefore cannot called!',CR
+         success←0
+         rc←¯1
+         msg←,⊂'The function ',expr,' is dyadic and can therefore not be called'
      :EndIf
-     success←1
-     rc←0
-     msg←''
  :Else
      qdmx←⎕DMX
      success←0

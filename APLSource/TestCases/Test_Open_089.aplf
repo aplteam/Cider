@@ -1,0 +1,46 @@
+ R←Test_Open_089(stopFlag batchFlag);⎕TRAP;tempDir;parms;json;qdmx;threw;success;log
+⍝ A "lx" function that is dyadic cannot be called at all, and that must be reported as a failure
+⍝ rather than passed over.\\
+⍝ `ExecUnderTrap` used to print its complaint straight to the session and then fall through to
+⍝ `success←1`, so `HandleLX` was told the function had run, said nothing, and the project opened as
+⍝ though all was well. A dyadic "lx" is a mistake in the package config and has to be visible.\\
+⍝ Batch mode makes it deterministic: `HandleLX` then executes "lx" without asking, and throws.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ tempDir ⎕NCOPY⍠('Wildcard' 1)⊣##.CiderConfig.HOME,'/TestData/LxProject/*'
+
+⍝ `⎕NPUT`'s left argument is (content [encoding] [nl]), so the lines must be enclosed
+ (⊂' r←a DyadicOnPurpose b' ' r←a+b')⎕NPUT(tempDir,'/APLSource/DateAndTime/DyadicOnPurpose.aplf')1
+ json←⊃⎕NGET tempDir,'/apl-package.json'
+ json←'lx: "Init"'⎕R'lx: "DyadicOnPurpose"'⊢json
+ (⊂json)⎕NPUT(tempDir,'/apl-package.json')1
+
+ parms←##.Cider.CreateOpenParms ⍬
+ parms.folder←tempDir
+ parms.parent←'#.TEMP'
+ parms.batch←1
+ parms.ignoreUserExec←1
+
+ threw←0
+ :Trap 0
+     (success log)←##.Cider.OpenProject parms
+ :Else
+     threw←1
+     qdmx←⎕DMX
+ :EndTrap
+ →T.GoToTidyUp~threw
+
+ →T.GoToTidyUp~∨/'Executing "lx"'⍷qdmx.EM
+ →T.GoToTidyUp~∨/'dyadic'⍷qdmx.EM
+ →T.GoToTidyUp~∨/'DyadicOnPurpose'⍷qdmx.EM
+
+ R←T._OK
+
+∆TidyUp:
+ {}##.Cider.CloseProject'#.TEMP.DateAndTime'
+ {}⎕SE.Link.Break'#.TEMP.DateAndTime'
+ {}FilesAndDirs.RmDirByForce tempDir,'/..'
+⍝Done
