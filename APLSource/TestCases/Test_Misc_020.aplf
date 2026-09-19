@@ -14,7 +14,10 @@
  targetFolder←∆GetFolderInTempDir name
  filename←targetFolder,'/.linkconfig'
  filename ⎕NCOPY sourceFolder,'/.linkconfig-1'  ⍝ Contains stops and "watch" parameter
- C←∆GetRefToCommTools
+ C←##.Cider.C     ⍝ Not `∆GetRefToCommTools`: this test calls `##.Cider.HandleLinkSourceFlags`
+⍝ direct, so the question is asked by the *source* project's CommTools. In batch mode `Initial`
+⍝ sets `⎕SE.Cider.DEVELOPMENT←0`, and the helper then hands back the *installed* Cider's instance,
+⍝ so the automation was registered where nothing asks and the question reached the user for real.
  C.AddAutomation'YesOrNo' 'StopsAndTraces@' 'y'
 
  →T.GoToTidyUp 0≠opCode←##.Cider.HandleLinkSourceFlags targetFolder
