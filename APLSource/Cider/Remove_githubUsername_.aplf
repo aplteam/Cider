@@ -11,6 +11,6 @@
  :EndIf
  list←F.ListDirs2 folder
  :If 0<≢list
-     RenameInfo_url_¨list
+     {}rep Remove_githubUsername_¨list      ⍝ Itself, not `RenameInfo_url_`, and `rep` collects the report
  :EndIf
 ⍝Done

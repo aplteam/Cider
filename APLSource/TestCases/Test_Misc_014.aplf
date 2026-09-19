@@ -1,16 +1,34 @@
- r←Test_Misc_014(stopFlag batchFlag);⎕TRAP;tempFolder;filename;res;config1;config2
-⍝ Exercise Remove_githubUsername
+ r←Test_Misc_014(stopFlag batchFlag);⎕TRAP;tempFolder;filename;res;config1;config2;subFolder;filename2
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
+⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
+⍝ Exercise Remove_githubUsername, including a sub-folder: the function walks the whole tree, and it
+⍝ used to recurse into `RenameInfo_url_` rather than into itself, so nothing below the top folder was
+⍝ ever cleaned. The sub-folder's config also carries `info_url`, which made that wrong call throw a
+⍝ VALUE ERROR on `report`, a name that exists only in `RenameInfo_url`'s own scope.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
 
  tempFolder←∆GetFolderInTempDir⊃⎕SI
  filename←tempFolder,'/cider.config'
  filename ⎕NCOPY⍠('IfExists' 'Replace')⊣##.CiderConfig.HOME,'/TestData/cider.config.GitHubUserName'
+
+ subFolder←tempFolder,'/sub'
+ 'Create!'FilesAndDirs.CheckPath subFolder
+ filename2←subFolder,'/cider.config'
+ filename2 ⎕NCOPY⍠('IfExists' 'Replace')⊣##.CiderConfig.HOME,'/TestData/cider.config.GitHubUserName'
+ config2←##.Cider.Get_JSON5 filename2
+ config2.CIDER.info_url←'https://example.com'
+ {}config2 ##.Cider.WriteProjectConfig filename2
+
  config1←##.Cider.ReadProjectConfig filename
  Assert'JohnDoe'≡config1.CIDER.githubUsername
+
  res←##.Cider.Remove_githubUsername tempFolder
- →T.GoToTidyUp filename≢∊res
- config2←##.Cider.Get_JSON5 filename
- →T.GoToTidyUp 0≠config2.CIDER.⎕nc'githubUsername'
+ →T.GoToTidyUp 2≠≢res                                                   ⍝ Both files must be reported
+ →T.GoToTidyUp 0≠(##.Cider.Get_JSON5 filename).CIDER.⎕NC'githubUsername'
+ →T.GoToTidyUp 0≠(##.Cider.Get_JSON5 filename2).CIDER.⎕NC'githubUsername'
+⍝ `info_url` is none of this function's business and must be left where it is
+ →T.GoToTidyUp 0=(##.Cider.Get_JSON5 filename2).CIDER.⎕NC'info_url'
 
  r←T._OK
 

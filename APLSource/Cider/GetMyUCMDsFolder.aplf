@@ -6,5 +6,5 @@
  :If 'Win'≡A.GetOperatingSystem ⍬
      r←GetUserDocumentsFolder,'MyUCMDs'
  :Else
-     r←(2 ⎕NQ'.' 'GetEnvironment' 'Home'),'/MyUCMDs'
+     r←(2 ⎕NQ'.' 'GetEnvironment' 'HOME'),'/MyUCMDs'   ⍝ "HOME": environment variables are case sensitive here
  :EndIf
