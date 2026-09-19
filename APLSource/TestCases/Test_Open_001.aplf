@@ -1,7 +1,7 @@
  R←Test_Open_001(stopFlag batchFlag);⎕TRAP;folder;parms;rc;success;log;res;list;msg
+⍝ Open a simple project without providing any parameter but the mandatory folder
 ⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
 ⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
-⍝ Open a simple project without providing any parameter but the mandatory folder
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

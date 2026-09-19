@@ -1,7 +1,7 @@
  R←Test_Open_081(stopFlag batchFlag);⎕TRAP;parms;r;rc;qdmx
+⍝ Tries to open a project with a syntactically invalid config file
 ⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
 ⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
-⍝ Tries to open a project with a syntactically invalid config file
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

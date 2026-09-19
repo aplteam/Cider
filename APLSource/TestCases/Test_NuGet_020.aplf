@@ -1,7 +1,7 @@
  R←Test_NuGet_020(stopFlag batchFlag);⎕TRAP;tempFolder;parms;I;rc;msg;debug
+⍝ Open a project and add some NuGet dependencies wrongly separated by a space
 ⍝ *** WARNING: want to rename this fn? Keep in mind to rename the "∆"-prefixed twin as well:
 ⍝ ***          the process started here runs the function called "∆",(this function's name).
-⍝ Open a project and add some NuGet dependencies wrongly separated by a space
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

@@ -1,9 +1,9 @@
  R←Test_Open_054(stopFlag batchFlag);⎕TRAP;parms;tempDir;config;expected;success;log;rc;msg
-⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
-⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
 ⍝ Open a project whose LINK section defines "watch" and "forceFilenames", with neither -watch= nor .linkconfig.
 ⍝ Checks what Link actually uses rather than what ended up in CiderConfig.LINK.
 ⍝ From 0.46.0 on the LINK section was ignored in this case, and Link used its own defaults.
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
+⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

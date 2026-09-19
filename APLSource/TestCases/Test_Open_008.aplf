@@ -1,7 +1,7 @@
  R←Test_Open_008(stopFlag batchFlag);⎕TRAP;parms;r;res;success;log
+⍝ Open a project without loading any packages (noPkgLoad)
 ⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
 ⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
-⍝ Open a project without loading any packages (noPkgLoad)
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

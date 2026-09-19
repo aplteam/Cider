@@ -1,7 +1,7 @@
  R←Test_Open_005(stopFlag batchFlag);⎕TRAP;parms;folder;r;res;rc;success;log
+⍝ Open a project with an initialisation function
 ⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
 ⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
-⍝ Open a project with an initialisation function
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

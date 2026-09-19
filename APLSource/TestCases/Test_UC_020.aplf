@@ -1,7 +1,7 @@
  r←Test_UC_020(stopFlag batchFlag);⎕TRAP;cmd;rc;msg;result;stop;ref
+⍝ Exercise OpenProject with all possible settings of -watch
 ⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
 ⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
-⍝ Exercise OpenProject with all possible settings of -watch
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
 

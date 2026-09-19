@@ -1,6 +1,4 @@
  r←Test_Misc_014(stopFlag batchFlag);⎕TRAP;tempFolder;filename;res;config1;config2;subFolder;filename2
-⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
-⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
 ⍝ Exercise Remove_githubUsername, including a sub-folder: the function walks the whole tree, and it
 ⍝ used to recurse into `RenameInfo_url_` rather than into itself, so nothing below the top folder was
 ⍝ ever cleaned. The sub-folder's config also carries `info_url`, which made that wrong call throw a

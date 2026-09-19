@@ -1,8 +1,8 @@
  R←Test_Tatin_005(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc;log;qdmx
-⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
-⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
 ⍝ Attempt to Open a project with Tatin packages via an absolute path (invalid)
 ⍝ Problem is reported but Cider carries on anyway
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
+⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
