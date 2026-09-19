@@ -1,33 +1,36 @@
- r←{x}Initial_NuGet ps;info;netcore;rc;msg
- r←1
+ r←{x}Initial_NuGet ps;netcore;msg
  ∆DotNetIsAvailable←netcore←IsDotNetAvailable
- :If ~ps.batchFlag
+⍝ Whether to ask at all is decided by `netcore`: without .NET the tests cannot be executed whatever
+⍝ the answer would be. Asking first and declaring them impossible afterwards, which is what this used
+⍝ to do, just wastes the user's time.
+ :If 0=netcore
+     ∆ExecNuGetTest←0
+ :ElseIf ~ps.batchFlag
  :AndIf ~∨/' cider_fns="Test_NuGet_'⍷#.GetCommandLine
      ∆ExecNuGetTest←CommTools.YesOrNo'Do you want to execute NuGet-related test cases?'
  :Else
      ∆ExecNuGetTest←1
  :EndIf
  msg←''
- :If ∆ExecNuGetTest
-     :If 0=netcore
-         r←0
-         msg←'.NET is not available.',(⎕UCS 13),'Therefore the NuGet tests cannot be executed.'
+ :If 0=netcore
+     msg←'.NET is not available.',(⎕UCS 13),'Therefore the NuGet tests cannot be executed.'
+ :ElseIf ∆ExecNuGetTest
+     :Trap 0
+         :If 0=≢⎕SH'dotnet --list-sdks'
+             msg←'It appears that no .NET SDK is installed, therefore the NuGet tests cannot be executed'
+         :EndIf
      :Else
-         :Trap 0
-             :If 0=≢⎕SH'dotnet --list-sdks'
-                 r←0
-                 msg←'It appears that no .NET SDK is installed, therefore the NuGet tests cannot be executed'
-             :EndIf
-         :Else
-             r←0
-             msg←'Executing:  dotnet --info  caused an error, therefore the NuGet tests cannot be executed'
-         :EndTrap
-     :EndIf
-     :If 0<≢msg
-     :AndIf ~ps.batchFlag
+         msg←'Executing:  dotnet --info  caused an error, therefore the NuGet tests cannot be executed'
+     :EndTrap
+ :EndIf
+⍝ A message means the tests cannot run, in batch mode just as much as interactively. The result used to
+⍝ be overwritten by the last line, so in batch a missing .NET was reported as success and the group was
+⍝ executed all the same.
+ :If 0<≢msg
+     ∆ExecNuGetTest←0
+     :If ~ps.batchFlag
          CommTools.Pause msg
-         r←0
-         :Return
      :EndIf
  :EndIf
  r←∆ExecNuGetTest
+⍝Done
