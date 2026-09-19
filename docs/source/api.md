@@ -115,7 +115,7 @@ Where
 -   `performChecks` (optional) has no effect anymore; it is kept for compatibility (default is 1)
 -   `projects` is
     -   one or more open projects
-    -   an empty vector (all open projects)
+    -   an empty vector (all open projects in `#`, but none in `⎕SE`)
 
 Cider closes the projects (unlinks the source files) and returns the number of projects closed.
 
@@ -353,7 +353,7 @@ Where `verbose` is a flag, returns the open projects as a matrix of 2 or 4 colum
 
 1. Fully qualified project namespace
 1. Path the project was loaded from
-1. Number of objects belonging to the project
+1. Source folder, i.e. the folder Link has linked the project space to
 1. Alias (if any)
 
 ```
@@ -361,7 +361,7 @@ Where `verbose` is a flag, returns the open projects as a matrix of 2 or 4 colum
  #.Cider  /path/to/Cider
 
       ⎕SE.Cider.ListOpenProjects 1
- #.Cider  /path/to/Cider  32  cider
+ #.Cider  /path/to/Cider  /path/to/Cider/APLSource  cider
 ```
 
 [`]CIDER.ListOpenProjects`](user-commands.md#list-open-projects).

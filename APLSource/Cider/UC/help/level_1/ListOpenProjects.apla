@@ -5,7 +5,7 @@
  ''
  ' [;1] Namespace name'
  ' [;2] Path'
- ' [;3] Number of objects in the project'
+ ' [;3] Source folder (the folder Link has linked the project space to)'
  ' [;4] Alias name (if any)'
  (' '⋄)
  'To view the relevant section in the online documentation, execute this: '

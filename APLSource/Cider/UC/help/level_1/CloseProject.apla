@@ -8,7 +8,7 @@
  ' 4. A mixture of 1, 2 and 3'
  ' 5. Nothing; if only one project is open it will be closed.'
  '    If multiple projects are opened a list will be presented to the user'
- ' 6. The -all flag, which closes all projects without further ado'
+ ' 6. The -all flag, which closes all projects in # without further ado; ⎕SE is left alone'
  ''
  'Multiple projects must be separated by spaces or by commas.'
  ''

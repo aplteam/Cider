@@ -1,6 +1,7 @@
- r←{performChecks}CloseProject projects;list;project;ind;res;list;closed;buff
+ r←{performChecks}CloseProject projects;list;project;ind;res;buff;sources;inHash
 ⍝ Breaks the Link between a project and its folder on disk, and potentially executes a check functon afterwards.
-⍝ In case ⍵ is empty, ALL projects are closed.
+⍝ In case ⍵ is empty, all projects in `#` are closed - but not any in `⎕SE`: opening one there is
+⍝ unusual enough that whoever did it had a reason. Such a project is still closed when named.
 ⍝ `projects` may be one of:
 ⍝ 1. Empty vector (=close all)
 ⍝ 2. One or more project names like `#.Foo`
@@ -14,12 +15,19 @@
  performChecks←{0<⎕NC ⍵:⍎⍵ ⋄ 1}'performChecks'
  list←ListOpenProjects 1
  :If 0<≢list
+⍝ `[;3]` is the source folder, which is where Link keeps its `.linkconfig` and therefore what
+⍝ `HandleLinkSourceFlags` must be given. It used to be handed `[;2]`, the project HOME, and further
+⍝ down even the namespace name, so `F.IsFile` was false either way and the global setting
+⍝ `HandleLinkStops` never took effect on closing a project.
+     sources←list[;3]
      :If 0=≢projects
-         res←{⎕SE.Link.Break ⍵}¨list
-         r←+/{'Unlinked: '{⍺≡(≢⍺)↑⍵}⍵}¨res[;1]
-         HandleLinkSourceFlags¨list[;2]
+⍝ Projects in `#` only: opening one in `⎕SE` is unusual enough that whoever did it had a reason, and
+⍝ "close all" must not interfere with it. Naming such a project explicitly still closes it.
+         inHash←'#'=⊃¨list[;1]
+         res←⎕SE.Link.Break¨inHash/list[;1]          ⍝ Only the first column names a namespace
+         r←+/{'Unlinked: '{⍺≡(≢⍺)↑⍵}⍵}¨res
+         {}HandleLinkSourceFlags¨{(0<≢¨⍵)/⍵}inHash/sources
      :Else
-         closed←''
          list[;2]←F.NormalizePath list[;2]
          projects←,⊆projects
          :For project :In projects
@@ -42,8 +50,7 @@
              :If ind≤≢list
                  res←⎕SE.Link.Break 1⊃list[ind;]
                  r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
-                 closed,←list[ind;2]
-                 HandleLinkSourceFlags⊃list[ind;]
+                 HandleLinkSourceFlags ind⊃sources
              :EndIf
          :EndFor
          :If performChecks
