@@ -1,4 +1,6 @@
  R←Test_NuGet_003(stopFlag batchFlag);⎕TRAP;parms;I;tempFolder;msg;rc;debug
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename the "∆"-prefixed twin as well:
+⍝ ***          the process started here runs the function called "∆",(this function's name).
 ⍝ Open a project which has a Tatin dependency, add a NuGet package, close and reopen
 ⍝ The real test function (∆Test_NuGet_003) is executed in its own APL process
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')

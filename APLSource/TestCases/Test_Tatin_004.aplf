@@ -1,4 +1,6 @@
  R←Test_Tatin_004(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc;log
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
+⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
 ⍝ Attempt to Open project with a path pointing to installed Tatin packages that is non-existent.
 ⍝ Will work from 0.9.0 onwards
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')

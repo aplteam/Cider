@@ -1,4 +1,6 @@
  R←∆Test_NuGet_020(stopFlag batchFlag);⎕TRAP;folder;tempDir;config;parms;success;log;qdmx;expected;res
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
+⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
 ⍝ Open a project and add some NuGet dependencies wrongly separated by a space
  #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
  folder←∆GetTestPath⊃⎕SI

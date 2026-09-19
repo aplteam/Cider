@@ -1,4 +1,6 @@
  R←Test_NuGet_001(stopFlag batchFlag);⎕TRAP;parms;I;tempFolder;msg;rc;alias;res;debug
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename the "∆"-prefixed twin as well:
+⍝ ***          the process started here runs the function called "∆",(this function's name).
 ⍝ Open a project with no dependencies, add a NuGet dependency by alias, close and reopen
 ⍝ The real test function (∆Test_NuGet_001) is executed in its own APL process
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')

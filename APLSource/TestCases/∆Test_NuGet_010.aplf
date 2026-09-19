@@ -1,4 +1,6 @@
  R←∆Test_NuGet_010(stopFlag batchFlag);⎕TRAP;folder;parms;res;log;cals;success;tempDir
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
+⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
 ⍝ Open a project that has already two NuGet dependencies
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed

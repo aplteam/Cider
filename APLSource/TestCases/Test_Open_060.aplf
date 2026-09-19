@@ -1,4 +1,6 @@
  R←Test_Open_060(stopFlag batchFlag);⎕TRAP;parms;defs;log;success
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
+⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
 ⍝ Open a project with an alias "."
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
