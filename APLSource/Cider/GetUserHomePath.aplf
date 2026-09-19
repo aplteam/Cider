@@ -1,4 +1,4 @@
- r←GetUserHomPath;os
+ r←GetUserHomePath;os
 ⍝ Returns the user's HOME path on the current operating system
  :Select os←APLTreeUtils2.GetOperatingSystem ⍬
  :Case 'Win'
