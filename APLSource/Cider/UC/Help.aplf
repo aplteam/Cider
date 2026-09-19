@@ -5,7 +5,7 @@
      :Select ⎕C Cmd
      :Case ⎕C'AddTatinDependencies'
          r,←⊂'Add one or more Tatin packages as dependencies'
-         r,←⊂']Cider.AddTatinDependency [packages] [projectpath] -development -target='
+         r,←⊂']Cider.AddTatinDependencies [packages] [projectpath] -development -target='
      :Case ⎕C'AddNuGetDependencies'
          r,←⊂'Add one or more NuGet packages as dependencies'
          r,←⊂']Cider.AddNuGetDependencies [packages] [projectpath] -target='
@@ -42,7 +42,7 @@
          r,←⊂']Cider.ListTatinDependencies [projectpath] -full -latest'
      :Case ⎕C'OpenProject'
          r,←⊂'Load all source files into the WS and keep them linked by default along with additonal actions'
-         r,←⊂']Cider.OpenProject [folder|alias] -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns|dir|both -verbose -batch'
+         r,←⊂']Cider.OpenProject [folder|alias] -projectSpace= -parent= -alias= -suppressInit -import -noPkgLoad -ignoreUserExec -watch=ns|dir|both|none -verbose -batch'
      :Case ⎕C'ProjectConfig'
          r,←⊂'Display the config file of a project'
          r,←⊂']Cider.ProjectConfig [path] -edit'
@@ -50,7 +50,7 @@
          r,←⊂'Attempt to update the currently running version of Cider'
          r,←⊂']Cider.UpdateCider'
      :Case ⎕C'Version'
-         r,←⊂'Return name, version number and version date as a three-element vector'
+         r,←⊂'Return Cider''s version number'
          r,←⊂']Cider.Version'
      :EndSelect
      :If ~(⊂⎕C Cmd)∊⎕C'Version' 'Help'

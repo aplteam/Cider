@@ -494,7 +494,7 @@ So we declare the `tatin-packages-dev/` folder that will hold TinyTest.
 
 and install TinyTest in it:
 ```
-      ]CIDER.AddTatinDependency sjt-tinytest -development
+      ]CIDER.AddTatinDependencies sjt-tinytest -development
 ```
 
 Git should take care of the dependency file and the build list
@@ -610,8 +610,8 @@ The Text package is ready to be built and published.
 
     and install the dependencies there.
     ```apl
-          ]CIDER.AddTatinDependency sjt-text
-          ]CIDER.AddTatinDependency sjt-tinytest -development
+          ]CIDER.AddTatinDependencies sjt-text
+          ]CIDER.AddTatinDependencies sjt-tinytest -development
     ```
 
     Use `.gitignore` to exclude the dependency and distribution folders from version control.
@@ -680,8 +680,8 @@ The Text package is ready to be built and published.
 
     and install the dependencies there.
     ```apl
-          ]CIDER.AddTatinDependency sjt-translate
-          ]CIDER.AddTatinDependency sjt-tinytest -development
+          ]CIDER.AddTatinDependencies sjt-translate
+          ]CIDER.AddTatinDependencies sjt-tinytest -development
     ```
 
     Translate itself depends on Text, which Cider therefore also installs.

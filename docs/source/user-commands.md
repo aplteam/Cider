@@ -99,7 +99,7 @@ If the project config does not specify a NuGet dependency folder, Cider asks you
 ## Add Tatin dependencies
 
 ```
-    ]CIDER.AddTatinDependency pkglist [project]
+    ]CIDER.AddTatinDependencies pkglist [project]
 ```
 
 Where `pkglist` is a comma-separated list of Tatin packages to be installed,
