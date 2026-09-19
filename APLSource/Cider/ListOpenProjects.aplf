@@ -1,15 +1,20 @@
- r←ListOpenProjects verboseFlag;res;aliases;ind
+ r←ListOpenProjects verboseFlag;res;aliases;ind;noOfObjectsCol
  '⍵ must be a Boolean'Assert(⊂verboseFlag)∊0 1
  r←(0(2+2×verboseFlag))⍴''
  res←⎕SE.Link.Status''
  ({1=≡,⍵:⍵ ⋄ 1↓⊃,/(⎕UCS 13),¨⍵}res)Assert~∨/'ERRORS ENCOUNTERED:'⍷∊res
  :If 'No active links'≢res
+⍝ The column is found by its header rather than by position, and it must be found before the header
+⍝ row is dropped. Link 3 (Dyalog 18.2) reports three columns, "Namespace | Directory | Files"; Link 4
+⍝ (19.0 and later) inserted one for the direction arrow and renamed "Directory" to "Source". A fixed
+⍝ index therefore meant the number of objects under Link 3 and the source folder under Link 4.
+     noOfObjectsCol←res[1;]⍳⊂'Files'
      :If 0<≢res←(∧/'Namespace' 'Files'∊res[1;])↓res   ⍝ Will become superfluous with a proper Link API but doesn't do damage
          'Link demands a Resync!'Assert~∨/'Link.Resync required'⍷∊res
      :AndIf 0<≢res←({⊃9=⍵.⎕NC'CiderConfig'}∘⍎¨res[;1])⌿res
          r←res[;,1],({6::'' ⋄ (⍎⍵).CiderConfig.HOME}¨res[;1])
          :If verboseFlag
-             r,←res[;3]
+             r,←res[;noOfObjectsCol]
          :EndIf
          r←(0<≢¨r[;2])⌿r
          r[;2]←DropTrailingSlash¨r[;2]

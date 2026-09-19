@@ -1,4 +1,6 @@
  r←HasDotNet;buff
-⍝ Returns a 1 if either .NET Core or .NET is available and the bridge DLL was successfully loaded
+⍝ Returns a 1 if either .NET or .NET Framework is available and the bridge DLL was successfully loaded.\
+⍝ This is what decides whether NuGet packages may be loaded: simple ones work under .NET Framework,
+⍝ and a package that does need .NET says so itself, which beats refusing them all in advance.
  buff←2250⌶0
  r←(1 2∊⍨1⊃buff)∧2⊃buff

@@ -14,7 +14,7 @@
  :EndIf
  :If F.IsDir nuGetFolder
  :AndIf 0<≢list2←F.ListFiles2 nuGetFolder,'/*.csproj'
-     :If 1≠1⊃2250⌶0
+     :If ~HasDotNet
          Frame'Cannot load NuGet packages because .NET is not available'
          list←''
          :Return

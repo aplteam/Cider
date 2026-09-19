@@ -1,4 +1,4 @@
- {r}←HandleLinkSourceFlags path;linkcfgFile;linkconfig;nameList;opCode;q;deleteFlag
+ {r}←{batch}HandleLinkSourceFlags path;linkcfgFile;linkconfig;nameList;opCode;q;deleteFlag
 ⍝ Stops and traces are potentially stored in a file .linkconfig
 ⍝ If such a file exists and carries SourceFlags *and* the global Cider setting `HandleLinkStops` is greater
 ⍝ than 0 then this function takes action://
@@ -6,8 +6,13 @@
 ⍝ * HandleLinkStops=2 stop and trace settings are erase from `.linkconfig` without asking\\
 ⍝ The file will be deleted if it does not contain anything but the Link version the file was written with.
 ⍝ `path` must be the source folder of a project; that's where Link stores the `.linkconfig` file.
-⍝ Returns 0 for "no action taken", 1 for "file was deleted" and 2 for "file was changed".
+⍝ Returns 0 for "no action taken", 1 for "file was deleted" and 2 for "file was changed".\\
+⍝ `batch` defaults to 0. Set it to 1 when there is nobody to answer a question: `HandleLinkStops=1`
+⍝ can then only mean "do nothing", because it means "ask me" and there is no-one to ask. `=2` still
+⍝ deletes without asking, which is what it is for. Pass it from any caller that may run unattended -
+⍝ `OpenProject` and `CloseProject` do, and the test suite relies on it as well.
  r←0
+ batch←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'batch'
  linkcfgFile←path,'/.linkconfig'
  :If F.IsFile linkcfgFile
      linkconfig←Get_JSON5 linkcfgFile
@@ -15,6 +20,7 @@
  :AndIf (⊂'SourceFlags')∊nameList
      opCode←GetGlobalHandleLinkStops
  :AndIf 0<opCode
+ :AndIf (2=opCode)∨~batch          ⍝ Nobody to ask means "ask me" cannot be honoured, so nothing is done
      deleteFlag←0
      :If 2=opCode
          linkconfig.⎕EX'SourceFlags'

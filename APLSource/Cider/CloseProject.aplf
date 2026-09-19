@@ -1,4 +1,4 @@
- r←{performChecks}CloseProject projects;list;project;ind;res;buff;sources;inHash
+ r←{parms}CloseProject projects;list;project;ind;res;buff;sources;inHash;performChecks;batch
 ⍝ Breaks the Link between a project and its folder on disk, and potentially executes a check functon afterwards.
 ⍝ In case ⍵ is empty, all projects in `#` are closed - but not any in `⎕SE`: opening one there is
 ⍝ unusual enough that whoever did it had a reason. Such a project is still closed when named.
@@ -8,25 +8,27 @@
 ⍝ 3. One or more alias names like `[my-alias]`
 ⍝ 4. One or more paths of currently open projects
 ⍝ 5. A mixture of 2, 3 and 4
-⍝ `performChecks` can be a Boolean that defaults to 1, meaning "perform checks, if any".
-⍝ A 0 as left argument would therefore prevent such checks from being performed.\\
+⍝ `parms` may be one or two integers, and a single one keeps its old meaning:
+⍝ * [1] `performChecks` defaults to 1, meaning "perform checks, if any". A 0 prevents them.
+⍝ * [2] `batch` defaults to 0. Set it to 1 when nobody is there to answer a question, so that a
+⍝   `.linkconfig` carrying stops is left alone rather than asked about; see `HandleLinkSourceFlags`.\\
 ⍝ Returns the number of projects closed.
  r←0
- performChecks←{0<⎕NC ⍵:⍎⍵ ⋄ 1}'performChecks'
+ (performChecks batch)←{0<⎕NC ⍵:2↑(,⍎⍵),0 ⋄ 1 0}'parms'
  list←ListOpenProjects 1
  :If 0<≢list
-⍝ `[;3]` is the source folder, which is where Link keeps its `.linkconfig` and therefore what
-⍝ `HandleLinkSourceFlags` must be given. It used to be handed `[;2]`, the project HOME, and further
-⍝ down even the namespace name, so `F.IsFile` was false either way and the global setting
+⍝ Asked while the projects are still linked. `HandleLinkSourceFlags` needs the folder where Link keeps
+⍝ its `.linkconfig`, and only Link knows it: this used to be handed `list[;2]`, the project HOME, and
+⍝ further down even the namespace name, so `F.IsFile` was false either way and the global setting
 ⍝ `HandleLinkStops` never took effect on closing a project.
-     sources←list[;3]
+     sources←GetLinkSourceFolders list[;1]
      :If 0=≢projects
 ⍝ Projects in `#` only: opening one in `⎕SE` is unusual enough that whoever did it had a reason, and
 ⍝ "close all" must not interfere with it. Naming such a project explicitly still closes it.
          inHash←'#'=⊃¨list[;1]
          res←⎕SE.Link.Break¨inHash/list[;1]          ⍝ Only the first column names a namespace
          r←+/{'Unlinked: '{⍺≡(≢⍺)↑⍵}⍵}¨res
-         {}HandleLinkSourceFlags¨{(0<≢¨⍵)/⍵}inHash/sources
+         {}batch HandleLinkSourceFlags¨{(0<≢¨⍵)/⍵}inHash/sources
      :Else
          list[;2]←F.NormalizePath list[;2]
          projects←,⊆projects
@@ -50,7 +52,7 @@
              :If ind≤≢list
                  res←⎕SE.Link.Break 1⊃list[ind;]
                  r+←'Unlinked: '{⍺≡(≢⍺)↑⍵}res
-                 HandleLinkSourceFlags ind⊃sources
+                 batch HandleLinkSourceFlags ind⊃sources
              :EndIf
          :EndFor
          :If performChecks

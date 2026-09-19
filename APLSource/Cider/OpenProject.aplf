@@ -75,7 +75,7 @@
  source←parms.folder,(0<≢config.CIDER.source)/'/',config.CIDER.source           ⍝ For linking we are only interested in the code folder
 ⍝ `source` is deliberately not checked for existence: Link creates it, which is what makes it possible
 ⍝ to open a project whose code folder is not there yet. `parms.folder` was checked further up.
- HandleLinkSourceFlags source
+ parms.batch HandleLinkSourceFlags source
  (linkOptions parms)←ProcessLinkOptions parms config
  p'Bringing in the source code...'
  projectSpace_←CheckTargetNamespaceAndLinkFolder projectSpace_ parms config.CIDER.source
@@ -147,7 +147,7 @@
      :EndIf
      :If 0<config.⎕NC'CIDER.dependencies.nuget'
      :AndIf 0<≢config.CIDER.dependencies.nuget
-         :If {(0<1⊃⍵)∧2⊃⍵}2250⌶0
+         :If HasDotNet
              :Trap 11
                  {}parms.(verbose batch)LoadNuGetDependencies parms.folder projectSpace_
              :Else

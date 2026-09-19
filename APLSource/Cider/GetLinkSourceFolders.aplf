@@ -1,0 +1,28 @@
+ r←GetLinkSourceFolders namespaces;res;ind;i;col
+⍝ Returns, for every name in `namespaces`, the folder Link has linked it to, and an empty vector for
+⍝ any name that is not linked.\\
+⍝ That folder is where Link keeps its `.linkconfig`, so it is what `HandleLinkSourceFlags` must be
+⍝ given. `ListOpenProjects` cannot provide it: its second column is the project's HOME, and the two
+⍝ differ whenever the config defines a "source" sub-folder, which is the normal case.\\
+⍝ The column is found by its header, because the header depends on the Link version: Link 3
+⍝ (Dyalog 18.2) reports three columns and calls it "Directory", while Link 4 (19.0 and later) calls it
+⍝ "Source" and inserted a column for the direction arrow. A fixed index would name different things
+⍝ on different interpreters, and under Link 3 it would hand over the number of objects.\\
+⍝ Must be called while the projects are still linked: once the Link is broken Link has forgotten.
+ r←(≢namespaces)⍴⊂''
+ res←⎕SE.Link.Status''
+ :If 2=⍴⍴res
+     col←(res[1;]⍳'Source' 'Directory')~1+2⊃⍴res    ⍝ Whichever of the two this version of Link uses
+     :If 0<≢col
+         res←1↓res                                  ⍝ Drop the header row
+         :If 0<≢res
+             ind←(⎕C res[;1])⍳⎕C¨namespaces
+             :For i :In ⍳≢namespaces
+                 :If (i⊃ind)≤≢res
+                     (i⊃r)←⊃res[i⊃ind;⊃col]
+                 :EndIf
+             :EndFor
+         :EndIf
+     :EndIf
+ :EndIf
+⍝Done

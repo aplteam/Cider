@@ -107,12 +107,14 @@ Not found: boobly-boo
 
 ## Close project
 
-    r←{performChecks} CloseProject projects
+    r←{parms} CloseProject projects
 
 Where
 
 <!-- -   `x` (optional) is a list of projects and/or a flag -->
--   `performChecks` (optional) has no effect anymore; it is kept for compatibility (default is 1)
+-   `parms` (optional) is one or two integers, and a single one keeps its former meaning:
+    -   `performChecks` defaults to 1. It has no effect at present but is kept for compatibility
+    -   `batch` defaults to 0. Set it to 1 when nobody is there to answer a question, so that a `.linkconfig` carrying stops is left alone rather than asked about
 -   `projects` is
     -   one or more open projects
     -   an empty vector (all open projects in `#`, but none in `⎕SE`)
@@ -353,7 +355,7 @@ Where `verbose` is a flag, returns the open projects as a matrix of 2 or 4 colum
 
 1. Fully qualified project namespace
 1. Path the project was loaded from
-1. Source folder, i.e. the folder Link has linked the project space to
+1. Number of objects belonging to the project
 1. Alias (if any)
 
 ```
@@ -361,7 +363,7 @@ Where `verbose` is a flag, returns the open projects as a matrix of 2 or 4 colum
  #.Cider  /path/to/Cider
 
       ⎕SE.Cider.ListOpenProjects 1
- #.Cider  /path/to/Cider  /path/to/Cider/APLSource  cider
+ #.Cider  /path/to/Cider  32  cider
 ```
 
 [`]CIDER.ListOpenProjects`](user-commands.md#list-open-projects).

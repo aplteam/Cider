@@ -32,7 +32,7 @@
  →T.GoToTidyUp 0≠≢(' '~¨⍨↓#.TEMP2.⎕NL(⍳16)~3)~⊂'CiderConfig'
 
  list←##.Cider.ListOpenProjects 1
- →T.GoToTidyUp 4≠2⊃⍴list   ⍝ Namespace, folder, source folder, alias
+ →T.GoToTidyUp 4≠2⊃⍴list   ⍝ Namespace, folder, object count, alias
  →T.GoToTidyUp 2>≢list
  →T.GoToTidyUp 2≠+/((-1+≢'Project1')↑¨list[;2])∊'/Project1' '/Project2' '\Project1' '\Project2'
  →T.GoToTidyUp~∧/'test-project-1' 'test-project-2'∊list[;4]
