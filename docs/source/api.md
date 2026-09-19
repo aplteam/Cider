@@ -35,7 +35,8 @@ Where
 -   `alias` is a string with no punctuation or spaces
 
 if the project folder exists the alias is registered in the file returned by [`GetCiderAliasFilename`](#get-alias-filename).
-The shy result is an error message, empty if successful.
+
+A folder that does not exist is an error and is thrown, not reported: the shy result is always `⍬`.
 
 If the alias is already in use Cider asks you to confirm the change.
 
@@ -69,11 +70,8 @@ Specify `packages` as either a list of strings or a comma-separated string.
 Where
 
 -   `packages` is one or more Tatin packages
--   `project` is a project path
+-   `project` is a project path, or an alias in square brackets
 -   `dev` is a flag
-<!-- ISSUE #99:
--  `project` is a project path or alias
--->
 
 Cider installs the packages in one of the Tatin dependency folders
 and returns as a list of strings the names of the packages installed.
@@ -101,7 +99,7 @@ Not found: boobly-boo
 
     The dependency folders are defined in the project’s configuration file.
 
-    The default project configuration file name is `dependencies.tatin`.
+    They are defined by the key `dependencies.tatin`, or `dependencies_dev.tatin` for a development dependency.
 
 [`]CIDER.AddTatinDependencies`](user-commands.md#add-tatin-dependencies).
 
@@ -177,16 +175,16 @@ Parameters in `y` overwrite the defaults, which are:
 
     alias                 ''
     batch                 0
-    checkPackageVersions  ⍬
+    checkPackageVersions  0
     folder                ''
-    handleLinkStops       0
+    handleLinkStops       from the global config
     ignoreUserExec        0
     importFlag            0
     noPkgLoad             0
     parent                ''
     projectSpace          ''
     suppressInit          0
-    verbose               0
+    verbose               from the global config
     watch                 0
 
 !!! detail "Setting `watch` to 0 shows Cider you have not set it. Eventually 0 becomes `both`, the default."
@@ -258,7 +256,7 @@ Returns the path to Cider’s global config file.
 
 Returns the path to the parent folder of Cider’s global config file.
 
-On Windows, this is typically `C:/Users/<⎕AN>/.cider/config.json`
+On Windows, this is typically `C:/Users/<⎕AN>/.cider/`
 
 
 
@@ -280,7 +278,7 @@ Returns the path to the `MyUCMDs/` folder.
 
 Where
 
--   `name` is `'development'` or `'development_dev'`
+-   `name` is `'dependencies'` or `'dependencies_dev'`
 -   `config` is a parameter namespace
 
 returns either the value of `nuget` in the given branch or an empty vector if `nuget` is not defined.
@@ -318,13 +316,13 @@ C:\Users\kai\Documents\Dyalog APL-64 18.2 Unicode Files
 ```
 
 
-## Get TatinD dependencies
+## Get Tatin dependencies
 
     r←name GetTatinDependencies config
 
 Where
 
--   `name` is `'development'` or `'development_dev'`
+-   `name` is `'dependencies'` or `'dependencies_dev'`
 -   `config` is a parameter namespace
 
 returns either the value of `tatin` in the given branch or an empty vector if `tatin` is not defined.
@@ -458,12 +456,14 @@ If `y` is a parameter space, all parameters are optional except `folder`.
 
 `checkPackageVersions`
 
-: By default Cider proposes to check principal packages for later versions and, if found, to update them.
+: Decides whether Cider checks principal packages for later versions, and what it does when it finds one.
 
-        ⍬ - Ask me whether to check (default)
+        ⍬ - Ask me whether to check
         0 - Do not check at all
         1 - Check and report findings but prompt for updating
         2 - Check and update without consulting me
+
+    `CreateOpenParms` sets this to **0**, so an API caller that does not set it gets no check at all. `]Cider.OpenProject` sets it to `⍬` instead, which is why an interactive open asks.
 
     With `2` Cider also carries out, rather than proposes, the re-installation of an installation folder that holds a package the very same version of which is hosted by a registry other than the one it came from. That changes no version, it only rebuilds the folder from its dependency list.
 
@@ -525,38 +525,89 @@ If `y` is a parameter space, all parameters are optional except `folder`.
 
 ## Project config
 
-    {r}←ProjectConfig projectpath
+    {r}←{editFlag}ProjectConfig path
 
-Where `projectpath` is a project path, Cider displays the project config for editing.
+Where
 
-Asks your permission before writing changes back to file, and performs checks before doing so.
+-   `editFlag` (optional) defaults to 0, which means read-only
+-   `path` is a project path, or an alias in square brackets
+
+With `editFlag` 0 the configuration is returned as a simple text matrix. Nothing is displayed and nothing is written.
+
+With `editFlag` 1 the configuration is put into the editor. Cider asks your permission before writing changes back to file, and performs checks before doing so. The result is then 1 if the file was modified and saved, 0 if nothing was changed and ¯1 if you cancelled. Deleting the contents of the edit window, or declining to save, counts as cancelling.
 
 
-## Read project config file
+## Read project config
 
-    config←ReadProjectConfigFile projectpath
+    config←ReadProjectConfig projectpath
 
 Where `projectpath` is a project path, Cider returns its project config as a parameter namespace.
 
 The path may or may not terminate in the filename `cider.config`.
 
-__Side effect__ If the function does not find the sub-keys `dependency.tatin` and `dependency.nuget` in the file it creates them and writes them there.
+__Side effect__ The function completes an incomplete config file and writes it back. It adds the sub-keys `dependencies.tatin` and `dependencies.nuget`, adds `tests` and `make` when they are missing, and renames the obsolete `lx` to `init`.
+
+!!! warning "`ReadProjectConfigFile` is deprecated"
+
+    It is a shim that does nothing but call `ReadProjectConfig`. It exists only so that Tatin before version 0.123.1 keeps working with Cider 0.51.0 or later, which is when the function was renamed, and it will be removed.
 
 [`]CIDER.ProjectConfig`](user-commands.md#project-config).
 
 
-## Write project config file
+## Write project config
 
-    {r}←config WriteProjectConfigFile project
+    {r}←config WriteProjectConfig path
 
 Where
 
 -   `config` is a parameter namespace
--   `project` is a project path
+-   `path` is a project path
 
 Cider writes the contents of `config` as the project’s configuration file.
 
 The path may or may not terminate in the filename `cider.config`.
+
+
+## Remove `githubUsername`
+
+    report←Remove_githubUsername folder
+
+Where `folder` is a directory, Cider searches it and all its sub-folders for project config files and removes the property `githubUsername` from each one. Cider 0.24.0 did away with that property: the owner of a project on GitHub is established from `project_url` instead.
+
+Returns a matrix naming the files that were changed.
+
+
+## Rename `info_url`
+
+    report←RenameInfo_url folder
+
+Where `folder` is a directory, Cider searches it and all its sub-folders for project config files and renames the property `info_url` to `project_url` in each one. Tatin 0.80.0 renamed it, and Cider followed with 0.22.0.
+
+Returns a matrix naming the files that were changed.
+
+
+## Run make
+
+    r←RunMake projectpath
+
+Where `projectpath` is a project path or an alias, returns the statement that creates a new version of the project, taken from `CIDER.make` in its config file.
+
+!!! detail "The statement is returned, not executed"
+
+    The result is a string ready to be executed, carrying a trailing comment saying what it is for. When `CIDER.make` is empty a message is printed to the session and the result is empty.
+
+[`]CIDER.HowToMakeNewVersion`](user-commands.md#how-to-make-a-new-version).
+
+
+## Run tests
+
+    r←RunTests projectpath
+
+Where `projectpath` is a project path or an alias, returns the statement that runs the project's test suite, taken from `CIDER.tests` in its config file.
+
+The statement is returned, not executed. When `CIDER.tests` is empty the result is empty.
+
+[`]CIDER.HowToRunTests`](user-commands.md#how-to-run-tests).
 
 
 ## Version
