@@ -1,4 +1,4 @@
- {success}←CheckForGit(path config parms);status;dmx;gitStatus;ind;gitIssues
+ {success}←CheckForGit(path config parms);status;dmx;gitStatus;ind;gitIssues;b;i
 ⍝ Checks whether the project is managed by Git, and if so offers some help, unless parms.batch=1
  success←1
  →(~G.IsGitProject path)/0
@@ -12,6 +12,10 @@
      :EndIf
      :Trap 0
          status←GetGitStatusReport path
+         :If ∨/b←CR∊¨status
+             i←⍸b
+             status←((i-1)↑status),(CR(≠⊆⊢)i⊃status),((i+1)↓status)
+         :EndIf
      :Else
          success←0
          dmx←⎕DMX
