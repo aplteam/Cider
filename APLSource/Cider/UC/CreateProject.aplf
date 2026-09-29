@@ -1,25 +1,24 @@
  r←CreateProject Args;folder;msg;namespace;parent
- :If 0=≢Args._1
-     folder←''
- :Else
-     folder←Args._1
+ folder←{(,0)≡,⍵:'' ⋄ ⍵}Args._1
+ namespace←{(,0)≡,⍵:'' ⋄ ⍵}Args._2
+ :If 0=≢folder
+     folder←⊃1 ⎕NPARTS''
+ :AndIf ~0 YesOrNo'Sure that you to convert ',folder,' into a project?'
+     r←'Cancelled by user' ⋄ →0
  :EndIf
- :If 0=≢Args._2
- :OrIf 0≡Args._2
-     namespace←''
- :Else
-     namespace←Args._2
-     :If '#'≠⊃namespace
-         parent←{⊃⍵↓⍨¯1++/∧\'⎕'≠⊃¨⍵}⌽⎕NSI
-         namespace←parent,'.',namespace
-         :If 0=1 YesOrNo'Sure you want create a namespace <',namespace,'>?'
-             r←'Cancelled by user' ⋄ →0
-         :EndIf
+ :If 0<≢namespace
+ :AndIf '#'≠⊃namespace
+     parent←{⊃⍵↓⍨¯1++/∧\'⎕'≠⊃¨⍵}⌽⎕NSI
+     namespace←parent,'.',folder{0<≢⍵:⍵ ⋄ 2⊃⎕NPARTS{⍵↓⍨-'\/'∊⍨¯1↑⍵}⍺}namespace
+     :If 0=1 YesOrNo'CreateNamespaceWhileCreatingProject@Sure you want create a namespace <',namespace,'>?'
+         r←'Cancelled by user' ⋄ →0
      :EndIf
  :EndIf
  r←namespace CreateProject_ folder(Args.acceptConfig)(Args.noEdit)(Args.batch)(Args.ignoreUserExec)
- :If 0≢Args.alias
-     :If 0<≢msg←P.AddAlias folder Args.alias
-         r,←(⎕UCS 13)msg
+ :If 'Cancelled by user'≢r
+     :If 0≢Args.alias
+         :If 0<≢msg←P.AddAlias folder Args.alias
+             r,←(⎕UCS 13)msg
+         :EndIf
      :EndIf
  :EndIf

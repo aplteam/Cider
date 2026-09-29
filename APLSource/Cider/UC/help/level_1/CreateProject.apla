@@ -1,7 +1,9 @@
 (
- 'Requires a path to a folder ("source") that is about to become a project.'
- 'You might also specify a namespace. If no namespace is provided, then its name is derived from'
- 'the path. If the namespace does not yet exist it will be created.'
+ 'Requires a path to a folder ("source") that is about to become a project. If no parameter is specified'
+ 'at all, the current directory is taken, but in that case the user is asked for confirmation. '
+ ''
+ 'You might also specify a namespace as a second parameter. If no namespace is provided, then its name '
+ 'is derived from the path. If the namespace does not yet exist it will be created.'
  'The namespace will be LINKed to "source". A namespace CiderConfig, holding the configuration'
  'data, will be injected into the namespace.'
  'For a root project (the whole of #, NOT recommended) you must specify # as 2nd argument.'

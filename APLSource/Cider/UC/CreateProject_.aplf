@@ -1,11 +1,5 @@
  r←{namespace}CreateProject_(folder acceptFlag noEditFlag batch ignoreUserExec);filename;config;projectFolder;parms;list;log;msg;success
  r←''
- :If 0≡folder
-     folder←⊃1 ⎕NPARTS''
-     :If ~0 YesOrNo'Sure that you to convert ',folder,' into a project?'
-         :Return
-     :EndIf
- :EndIf
  :If (⊂,folder)∊,¨'.' './'
      folder←⊃1 ⎕NPARTS'./'
      :If ~YesOrNo'SureCreateProj@Sure you want to create the project in ',folder,' ?'

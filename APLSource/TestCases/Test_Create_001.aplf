@@ -1,5 +1,5 @@
  R←Test_Create_001(stopFlag batchFlag);⎕TRAP;tempDir;list;res;stop;msg;rc;ref
-⍝ Attempts to create and then open a project with an empty namespace and a non-empty folder with
+⍝ Attempts to create and then open a project with an empty namespace and a non-empty folder
 ⍝ A config file is copied over in order to avoid user interaction
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -12,6 +12,7 @@
 
  ref←∆GetRefToCommTools
  ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ ref.AddAutomation'YesOrNo' 'CreateNamespaceWhileCreatingProject@' 'y'
  stop←0
  (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" -acceptConfig -batch -noEdit -ignoreUserExec'
  Assert 0=rc
