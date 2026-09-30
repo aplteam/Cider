@@ -1,6 +1,6 @@
 # Third-Party Licenses
 
-## dyalog-HttpCommand-5.11.1
+## dyalog-HttpCommand-5.11.2
 
 ```
 MIT License
