@@ -1,0 +1,30 @@
+ R←Test_Create_004(stopFlag batchFlag);⎕TRAP;tempDir;res;stop;msg;rc;ref
+⍝ Attempts to create a project with a namespace that is not fully qualified.
+⍝ Such a name is taken as relative to the namespace Cider was called from, therefore Cider must ask
+⍝ whether that namespace shall really be created. Here the question is answered with "No", so the
+⍝ operation must be cancelled with nothing created at all.
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕EX'Goo'
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'YesOrNo' 'CreateNamespaceWhileCreatingProject@' 'n'
+ stop←0
+ (rc msg res)←stop ∆UCMD'CreateProject "',tempDir,'" Goo -noEdit -ignoreUserExec'
+ Assert 0=rc
+ Assert 0=≢msg
+
+ →T.GoToTidyUp~∨/'Cancelled by user'⍷res
+ →T.GoToTidyUp 0≠#.⎕NC'Goo'                       ⍝ Neither in # ...
+ →T.GoToTidyUp 0≠⎕THIS.⎕NC'Goo'                   ⍝ ... nor relative to the caller
+ →T.GoToTidyUp 0≠≢⊃FilesAndDirs.Dir2 tempDir,'/'  ⍝ Not even a config file was written
+
+ R←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ rc←⊃FilesAndDirs.RmDir tempDir,'/..'
+ Assert rc∧.=0
+⍝Done

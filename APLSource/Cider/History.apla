@@ -1,6 +1,7 @@
 (
  '* 0.54.1 ⋄ 2026-09-29'
  '  * Bug fix: CreateProject did not behave well when no argument was provided'
+ '  * Missing test added'
  '  * Internal changes '
  '* 0.54.0 ⋄ 2026-09-19'
  '  * New version of APLGit2 should show the line-drawing chars (]Status) correctly.'
