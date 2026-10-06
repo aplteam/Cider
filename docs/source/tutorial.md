@@ -4,7 +4,7 @@ description: A worked example of using Cider to develop four Tatin packages
 keywords: api, apl, cider, dyalog, example, link, source, tatin
 ---
 
-# :fontawesome-solid-person-chalkboard: Tutorial
+# Tutorial
 
 
 !!! abstract "A worked example using Cider and Tatin"
@@ -12,7 +12,7 @@ keywords: api, apl, cider, dyalog, example, link, source, tatin
     Use Cider as the project manager to publish some Tatin packages, with test scripts, and dependencies on each other, all with public GitHub repos.
 
 
-## Four packages :fontawesome-solid-boxes-packing: :fontawesome-solid-box-open:
+## Four packages
 
 A worked example needs packages that are simple but not trivial
 – and preferably actually useful.
@@ -86,7 +86,7 @@ For the first package in this worked example, these steps are described in detai
 For subsequent packages, only the variations.
 
 
-## TinyTest :fontawesome-solid-vial: :fontawesome-solid-microscope:
+## TinyTest
 
 !!! abstract "The smallest testing framework that could possibly work"
 
@@ -96,7 +96,7 @@ So we publish TinyTest first.
 :fontawesome-brands-github: [TinyTest](https://github.com/5jt/tinytest)
 
 
-### :dyalog-cider-logo: Create a Cider project
+### Create a Cider project
 
 We begin in my `examples/` folder.
 (You will of course use your own file path.)
@@ -164,7 +164,7 @@ Nothing in the `APLSource/` folder yet.
 We can fix that.
 
 
-### :apl-apl-logo: APL source
+### APL source
 
 ```apl
       )CS #.tinytest
@@ -186,7 +186,7 @@ tinytest
 Now we have something worth backing up.
 
 
-### :fontawesome-brands-github: Git and GitHub
+### Git and GitHub
 
 On GitHub we create a new repo for TinyTest, with a `README.md` and a licence acceptable to Tatin.
 (Below, the GitHub username is `5jt`; you will, of course, use your own account and email address.)
@@ -220,7 +220,7 @@ tinytest
 ```
 
 
-### :dyalog-tatin-logo: Initialise as a Tatin package
+### Initialise as a Tatin package
 
 So far we have working APL code, managed by Cider, and backed by a GitHub repo.
 We do not yet have a Tatin package.
@@ -229,7 +229,7 @@ Back to the APL session.
 ```apl
       ]CD
 /Users/sjt/Projects/dyalog/examples
-      ]TATIN.CreateProject tinytest
+      ]Tatin.CreatePackage tinytest
 
 There is no file /Users/sjt/Projects/dyalog/examples/tinytest/apl-package.json yet; would you like to create it? (Y/n) Y
 Enter the group name (mandatory): sjt
@@ -311,7 +311,7 @@ Tatin configuration file `apl-package.json` now appears in the project folder.
 TinyTest has no dependencies, so we are ready to build the package.
 
 
-### :fontawesome-solid-file-zipper: Build the package
+### Build the package
 
 The last step before publishing is to build the Tatin package as a ZIP in the distribution folder specified in the Cider configuration.
 
@@ -352,7 +352,7 @@ We do not want it under version control:
 The package is ready to publish to the Test server.
 
 
-### :dyalog-tatin-logo: Publish to a Tatin server
+### Publish to a Tatin server
 
 The working directory is still the `examples/` folder, so the path to the project folder is simply `tinytest`.
 
@@ -366,7 +366,7 @@ Package published on https://test.tatin.dev/
  sjt-tinytest                           1
 ```
 
-## Text :fontawesome-solid-text-width: :fontawesome-solid-text-height:
+## Text
 
 ??? abstract "Interpolate a string, much like Python’s `f` does."
 
@@ -398,7 +398,7 @@ We deal with these as follows:
 We follow the same steps as for TinyTest but stop before building the Text package.
 
 
-### :dyalog-cider-logo: Declare the test script
+### Declare the test script
 
 Create the Cider project.
 
@@ -423,7 +423,7 @@ In the configuration declare the test script `tests`.
 As for TinyTest, create the APL source files and set up the GitHub repository.
 
 
-### :apl-apl-logo: Create the public API
+### Create the public API
 
 If Text were a class it would expose `f` as a method and `DEBUG` as an instance property.
 But for a (lightweight) namespace, we follow the Tatin convention of listing the exposed objects in a constant `Public`.
@@ -435,15 +435,16 @@ But for a (lightweight) namespace, we follow the Tatin convention of listing the
 ⍝ niladic function as an immutable constant
  Z←'f' 'DEBUG'
 ```
-and use a Tatin API function to create a public API for Text.
+and use a Tatin API function to create a public API for `Text`.
+
 ```apl
       ]CD
 /Users/sjt/Projects/Dyalog/examples
-      cfg←⎕SE.Tatin.ReadPackageConfigFile 'text'
-      ⎕SE.Tatin.CreateAPIfromCFG (#.text cfg)
+      cfg←⎕se.Tatin.GetPackageConfigFileAsNS 'text'
+      ⎕SE.Tatin.CreateAPIfromCFG #.text cfg
 ```
 
-### :apl-apl-logo: Core, admin and tests
+### Core, admin and tests
 
 !!! tip "Divide your code from the beginning"
 
@@ -475,7 +476,7 @@ With your own packages you will find it much easier
 to divide the objects from the start than to divide them later.
 
 
-### :dyalog-cider-logo: Install the dependency
+### Install the dependency
 
 A package’s dependencies are listed in the file `apl-dependencies.txt` in its root.
 
@@ -542,7 +543,7 @@ We see
 -   TinyTest installed in `tatin-packages-dev/`
 
 
-### :dyalog-tatin-logo: Build and publish
+### Build and publish
 
 ??? tip inline end "When to build"
 
@@ -554,11 +555,11 @@ We see
 
 The Text package is ready to be built and published.
 ```
-      ]TATIN.Publish text [tatin-test]
+      ]TATIN.PublishPackage text [tatin-test]
 ```
 
 
-## Translate :fontawesome-solid-right-left: :fontawesome-solid-earth-asia:
+## Translate
 
 ??? abstract "For a string, return from a dictionary its equivalent in another language."
 
@@ -628,12 +629,12 @@ The Text package is ready to be built and published.
 
 1.  :dyalog-tatin-logo: Build and publish the package.
 
-              ]TATIN.Publish translate [tatin-test]
+              ]TATIN.PublishPackage translate [tatin-test]
 
     The ZIP is made and published to the Test server.
 
 
-## NiceTime :fontawesome-solid-user: :fontawesome-solid-clock-rotate-left:
+## NiceTime
 
 !!! abstract "Take a timestamp and return a text string describing the offset from the present."
 
@@ -699,7 +700,7 @@ The Text package is ready to be built and published.
 
 1.  :dyalog-tatin-logo: Build and publish the package.
 
-              ]TATIN.Publish nicetime [tatin-test]
+              ]TATIN.PublishPackage nicetime [tatin-test]
 
     The ZIP is made and published to the Test server.
 
@@ -771,4 +772,10 @@ On your local machine the NiceTime project now looks something like this:
             │  └── match.aplo
             └── LICENSE
     ```
+
+
+
+
+
+
 

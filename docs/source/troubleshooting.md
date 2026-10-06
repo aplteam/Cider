@@ -4,16 +4,16 @@ description: How to spot and handle problems with Cider, the project manager for
 keywords: apl, cider, dotnet, dyalog, link, source, tatin
 ---
 
-# :fontawesome-solid-bugs: Troubleshooting
+# Troubleshooting
 
 
 !!! quote "I don’t mind a reasonable amount of trouble."
 
-	Sam Spade in Dashiel Hammett’s _The Maltese Falcon_
+    Sam Spade in Dashiel Hammett’s _The Maltese Falcon_
 
 
 
-## :fontawesome-solid-eye: How Link watches for changes
+## How Link watches for changes
 
 To detect changes on the file system, Link uses a .NET File System Watcher.
 
@@ -25,17 +25,18 @@ The Link handlers set a Hold under some circumstances.
 Depending on your actions, this might result in a deadlock. Dyalog would appear to hang until you use the session’s _System_ menu to issue a strong interrupt.
 
 
-## :fontawesome-solid-download: Updating Cider
+## Updating Cider
 
 If the update process fails for any reason other than network interruptions,
 calling it again rarely helps. You need an escape route.
 
 === "Dyalog v19.0 and later"
 
-	1. Execute `]DeActivate tatin` to remove Cider.
-	1. Execute `]Activate cider` to restore the version of Cider your installation originally came with.
-	1. Execute `]Cider.UpdateCider` to try to update to the latest version.
+    1. Execute `]DeActivate cider` to remove Cider.
+    1. Execute `]Activate cider` to restore the version of Cider your installation originally came with.
+    1. Execute `]Cider.UpdateCider` to try to update Cider to the latest version.
 
 === "Dyalog v18.2"
 
-	Uninstall and then install Cider again.
+    Uninstall and then install Cider again.
+

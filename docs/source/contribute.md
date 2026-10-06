@@ -129,7 +129,7 @@ If not, it proposes copying over the version that carries the latest changes.
 
 ### Changing user-command functions
 
-The user-command script calls functions in `#.Cider.UC` when DM is on, and in `⎕SE.Cider.##.UC` when DM is off.
+The user-command script calls functions in `#.Cider.Cider.UC` when DM is on, and in `⎕SE.Cider.##.UC` when DM is off.
 
 Because that namespace is part of the project, with DM on, your changes are recorded, and developing is easy.
 
@@ -235,3 +235,4 @@ Upload the ZIP file to the release page for the version, where Dyalog can fetch 
 
 
 *[DM]: Development Mode
+

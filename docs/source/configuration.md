@@ -275,6 +275,8 @@ Optional. Either
 -   `⎕THIS`: has the same effect as if the property were undefined
 -   the name of a child space of the project space
 
+Strictly speaking, `⎕THIS` does not make sense inside a config file: what does it refer to?! Here it is simply a convention meaning "not special action", resulting `TatnVars` to be injected into the project's root.
+
 See [Injecting a namespace `TatinVars`](open-project.md#inject-a-tatinvars-namespace) for what happens.
 
 
@@ -304,7 +306,7 @@ Link has its own config file since version 4.0.0, but, until all supported versi
 Cider looks for `.linkconfig` at the path specified in [`source`](#source);
 if `source` is empty, then the root of the project.
 
-#### :fontawesome-solid-right-left: Conflicts in Link settings
+#### Conflicts in Link settings
 
 !!! info inline end ""
 
@@ -375,6 +377,8 @@ USER: {
 After opening the project into, say, `#.MyProject`, the setting is accessible:
 
     #.MyProject.CiderConfig.USER.Foo
+
+
 
 
 

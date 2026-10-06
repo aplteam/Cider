@@ -294,16 +294,6 @@ Note that the full report does not show what is actually used, but what the pack
 This can help show why a particular (typically old) package is required.
 
 
-## Make
-
-    ]CIDER.HowToMakeNewVersion [project]
-
-Prints the project’s Make expression:
-the expression that builds a new version of the project.
-
-If you omit `project` Cider uses the one open project or, if you have more than one open, asks you which.
-
-
 ## Open project
 
 ```
@@ -403,6 +393,7 @@ Prints major, minor, patch and build numbers:
           ]CIDER.Version
     0.44.0+835
 ```
+
 
 
 
