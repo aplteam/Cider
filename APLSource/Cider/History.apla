@@ -1,6 +1,8 @@
 (
  '* 0.54.2 ⋄ 2026-10-06'
  '  * `GetFullPath2AssetsFolder` now always uses "/" as separator'
+ '  * `TatinVars` is now a first-class citizen of the INI file template. So far it was not, which'
+ '    was okay because it''s optional, but this has raised questions more than once.'
  '* 0.54.1 ⋄ 2026-09-30'
  '  * Bug fix: CreateProject did not behave well when no argument was provided'
  '  * Missing test added'
