@@ -9,9 +9,8 @@
  cfgFilename←folder,'/cider.config'
  :If F.Exists cfgFilename
      cfg←ReadProjectConfig cfgFilename
-     tatinFolders←GetTatinDependencyFolders cfg
+     tatinFolders←⊃¨GetTatinDependencyFolders cfg
      :If 0<≢tatinFolders
-         tatinFolders←RemoveTargetDefinition¨tatinFolders
          buildFolders←(⊂folder,'/'),¨tatinFolders
          buildFilenames←buildFolders,¨⊂'/apl-buildlist.json'
          buff←tatinFolders ListTatinDependencies_ buildFilenames

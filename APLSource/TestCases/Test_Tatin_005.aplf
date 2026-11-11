@@ -1,6 +1,7 @@
  R←Test_Tatin_005(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc;log;qdmx
 ⍝ Attempt to Open a project with Tatin packages via an absolute path (invalid)
-⍝ Problem is reported but Cider carries on anyway
+⍝ The setting is rejected before Link brings in any code, with a message naming it.
+⍝ It used to be noticed only when the packages were loaded, after Link.
 ⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
 ⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
  ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
@@ -20,15 +21,16 @@
      →T.GoToTidyUp 1
  :Else
      qdmx←⎕DMX
-     →T.GoToTidyUp~∨/'ERROR:'⍷qdmx.EM
+     →T.GoToTidyUp~∨/'"dependencies.tatin"'⍷qdmx.EM
+     →T.GoToTidyUp~∨/'relative to the project space'⍷qdmx.EM
  :EndTrap
+ →T.GoToTidyUp(⊂'#.TEMP')∊(##.Cider.ListOpenProjects 0)[;1]   ⍝ Link was never asked
 
  R←T._OK
 
 ∆TidyUp:
  ##.Cider.C.Cleanup
- res←∆LINK'Break' '#.TEMP'
- Assert res ∆StartsWith'Unlinked:'
+ {}∆LINK'Break' '#.TEMP'                                ⍝ No check: when all is well it was never linked
  #.⎕EX'TEMP'
  #.⎕EX'FOO'
 ⍝Done

@@ -5,10 +5,8 @@
 ⍝ * when she does not a 3 is returned
 ⍝ * In case an error of any kind makes all this impossible, ¯1 is returned
  status←0
- folders←GetTatinDependencyFolders config
+ folders←⊃¨GetTatinDependencyFolders config
  :If 0<≢folders
-     folders←{'='∊⍵:⍵↑⍨¯1+⍵⍳'=' ⋄ ⍵}¨folders
- :AndIf 0<≢folders←(0<≢¨folders)/folders
  :AndIf 0<≢folders←(F.Exists(⊂parms.folder,'/'),¨folders)/folders
      status←0<+/≢¨list←{⊃0 ⎕NINFO⍠('Wildcard' 1)⊣⍵}¨(⊂parms.folder,'/'),¨folders,¨⊂'/*'
  :AndIf 1∊bool←0=≢¨F.ListDirs2¨(⊂parms.folder,'/'),¨folders,¨'/'

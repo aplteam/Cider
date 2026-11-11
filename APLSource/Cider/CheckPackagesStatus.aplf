@@ -8,7 +8,7 @@
 ⍝ 2 means update without further ado
  r←⍬
  parms.major←0    ⍝ By default we don't check on latermajor versions
- folders←GetTatinDependencyFolders config
+ folders←⊃¨GetTatinDependencyFolders config
  :If 0<≢folders
      :If 0≢parms.checkPackageVersions
      :AndIf 2>pkgStatus
@@ -26,16 +26,16 @@
      :If checkFlag
          report←⍬
          1 ⎕SE._Tatin.Client.EstablishRumbaClients ⍬
-         :If 0<≢report←report CheckTatinFoldersForLaterVersions parms(RemoveTargetDefinition¨folders)
+         :If 0<≢report←report CheckTatinFoldersForLaterVersions parms folders
              parms ReportPackageProblems report            ⍝ Always: it is not about later versions
              updates←{(IsUpdateCandidate ⍵)⌿⍵}¨report
              :If 0=+/≢¨updates
                  (1 parms.batch)p'No later versions found '
              :Else
-                 UpdatePackages(RemoveTargetDefinition¨folders)updates parms
+                 UpdatePackages folders updates parms
              :EndIf
 ⍝ Takes the full report, not `updates`: it deals with the folders `UpdatePackages` has left alone
-             ReInstallFromDependencies(RemoveTargetDefinition¨folders)report parms
+             ReInstallFromDependencies folders report parms
          :EndIf
          ⎕SE._Tatin.Client.CloseConnections 1
      :EndIf

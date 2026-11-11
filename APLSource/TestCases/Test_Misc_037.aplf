@@ -1,0 +1,41 @@
+ r←Test_Misc_037(stopFlag batchFlag);⎕TRAP;msg;folder;target
+⍝ Exercise `ParseDependencySetting` with valid settings: split into folder and target, no message.
+⍝ This is the control for Test_Misc_038.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ ⍝ Empty: no such folder
+ (msg folder target)←'dependencies.tatin'##.Cider.ParseDependencySetting''
+ →T.PassesIf(0=≢msg)∧(0=≢folder)∧0=≢target
+
+ ⍝ No target namespace: packages go into the project space
+ (msg folder target)←'dependencies.tatin'##.Cider.ParseDependencySetting'tatin-packages'
+ →T.PassesIf 0=≢msg
+ →T.PassesIf'tatin-packages'≡folder
+ →T.PassesIf 0=≢target
+
+ (msg folder target)←'dependencies_dev.tatin'##.Cider.ParseDependencySetting'tatin-packages_dev=TestCases'
+ →T.PassesIf 0=≢msg
+ →T.PassesIf'tatin-packages_dev'≡folder
+ →T.PassesIf'TestCases'≡target
+
+ ⍝ A target below a child of the project space
+ (msg folder target)←'dependencies.nuget'##.Cider.ParseDependencySetting'nuget-packages=Foo.Goo'
+ →T.PassesIf 0=≢msg
+ →T.PassesIf'nuget-packages'≡folder
+ →T.PassesIf'Foo.Goo'≡target
+
+ ⍝ A folder that is not a direct child of the project folder
+ (msg folder target)←'dependencies.nuget'##.Cider.ParseDependencySetting'deps/nuget=Goo'
+ →T.PassesIf 0=≢msg
+ →T.PassesIf'deps/nuget'≡folder
+ →T.PassesIf'Goo'≡target
+
+ ⍝ A blank inside a folder name is fine
+ (msg folder target)←'dependencies.tatin'##.Cider.ParseDependencySetting'my packages=Foo'
+ →T.PassesIf 0=≢msg
+ →T.PassesIf'my packages'≡folder
+ →T.PassesIf'Foo'≡target
+
+ r←T._OK
+⍝Done

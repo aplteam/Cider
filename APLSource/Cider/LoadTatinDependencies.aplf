@@ -7,14 +7,8 @@
  :If 0<≢pkgFolders
      :For pkgFolder :In pkgFolders
 ∆Retry:
-         :If '='∊pkgFolder
-             (pkgFolder_ target)←SplitTatinFolders pkgFolder
-             'Target namespace for Tatin packages is addressed with absolute path (invalid)'Assert~(⊃target)∊'#⎕'
-             target←projectSpace,'.',target
-         :Else
-             target←projectSpace
-             pkgFolder_←pkgFolder
-         :EndIf
+         (pkgFolder_ target)←pkgFolder
+         target←projectSpace{0=≢⍵:⍺ ⋄ ⍺,'.',⍵}target
          p'Attempting to load Tatin packages from ',pkgFolder_,' into ',target,'...'
          folder←projectFolder,'/',pkgFolder_
          :If F.Exists folder

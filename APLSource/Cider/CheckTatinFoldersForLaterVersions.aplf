@@ -2,10 +2,9 @@
 ⍝ Loop through all Tatin install folders
  msg←''
  :For folder :In folders
-     folder_←⊃'='(≠⊆⊢)folder
-     :If F.Exists parms.folder,'/',folder_
-         p'Checking Tatin packages in <',(AddSlash folder_),'> ...'
-         folder_←parms.folder,'/',folder_
+     :If F.Exists parms.folder,'/',folder
+         p'Checking Tatin packages in <',(AddSlash folder),'> ...'
+         folder_←parms.folder,'/',folder
          :If 0<≢⊃0 ⎕NINFO⍠('Wildcard' 1)⊣folder_,'/*'
              :Trap 998
                  report,←⊂parms.major ⎕SE.Tatin.CheckForLaterVersion folder_

@@ -1,0 +1,43 @@
+ r←key ParseDependencySetting value;folder;target;msg
+⍝ Splits the value of a "tatin" or "nuget" dependency setting into folder and target namespace, and checks it.
+⍝ This is the only function that knows how such a setting is written: all other code works with its result.
+⍝ `key` names the setting, e.g. 'dependencies_dev.tatin'; it is used in the message only.
+⍝ `value` is either '<folder>' or '<folder>=<namespace>'; empty means there is no such folder.
+⍝ Blanks around the folder or in the target namespace are rejected rather than removed: they are typos.
+⍝ Returns (msg folder target):
+⍝ * `msg` is empty when `value` is valid; otherwise it says what is wrong, naming `key`.
+⍝ * `folder` and `target` are empty when `value` is empty or invalid.
+⍝ * An empty `target` means the project space; otherwise `target` is relative to the project space.
+ r←'' '' ''
+ value←,value       ⍝ A one-character value from an APL caller is a scalar
+ :If 0=≢value
+     :Return
+ :EndIf
+ folder←value↑⍨¯1+value⍳'='
+ target←value↓⍨value⍳'='
+ msg←'Something is wrong with "',key,'" (',value,'): '
+ :If 1<'='+.=value
+     msg,←'expected <folder> or <folder>=<namespace>'
+ :ElseIf ('='∊value)∧(0=≢folder)∨0=≢target
+     msg,←'expected <folder> or <folder>=<namespace>'
+ :ElseIf ','∊folder
+     msg,←'only one folder is allowed'
+ :ElseIf ' '∊(⊃folder),⊃⌽folder
+     msg,←'the folder must not start or end with a blank'
+ :ElseIf ' '∊target
+     msg,←'the target namespace must not contain blanks'
+ :ElseIf 0=≢target
+     msg←''
+ :ElseIf (⊃target)∊'#⎕'
+     msg,←'the target namespace must be relative to the project space'
+ :ElseIf 0≠⊃(⎕NS'').⎕NC target
+     msg,←'"',target,'" is not a valid namespace name'
+ :Else
+     msg←''
+ :EndIf
+ :If 0=≢msg
+     r←msg folder target
+ :Else
+     r←msg'' ''
+ :EndIf
+⍝Done

@@ -1,4 +1,4 @@
- {config}←CheckParameters config;list;bool;list2;linkFlag
+ {config}←CheckParameters config;list;bool;list2;linkFlag;msg
 ⍝ Check the parameters for being complete and valid
  p'Checking parameters...'
  :If linkFlag←9=config.⎕NC'LINK'
@@ -16,5 +16,12 @@
  list←' '~⍨¨↓config.CIDER.⎕NL 2 9
  bool←(GetValidCiderParams 0)∊list
  ('Missing Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams 0)Assert∧/bool
+⍝ The dependency settings are checked here, before anything is loaded, so that an invalid one never leaves a project half-opened
+ msg←⊃'dependencies.tatin'ParseDependencySetting'dependencies'GetTatinDependencies config
+ msg Assert 0=≢msg
+ msg←⊃'dependencies_dev.tatin'ParseDependencySetting'dependencies_dev'GetTatinDependencies config
+ msg Assert 0=≢msg
+ msg←⊃'dependencies.nuget'ParseDependencySetting'dependencies'GetNuGetDependencies config
+ msg Assert 0=≢msg
  p'   Parameters are okay'
 ⍝Done
