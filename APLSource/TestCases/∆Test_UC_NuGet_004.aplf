@@ -1,0 +1,48 @@
+ R←∆Test_UC_NuGet_004(stopFlag batchFlag);⎕TRAP;folder;res;tempDir;msg;rc;stop;ref
+⍝ Open project, add a NuGet package with -target=Goo and load it, check where the references are, close, re-open, check again, close.
+⍝ The user command used to add the target namespace twice, so the references ended up in #.TEMP.Goo.Goo.
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
+⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+ tempDir←∆TEMP_PATH
+ {}FilesAndDirs.RmDirByForce tempDir
+ {}FilesAndDirs.MkDir tempDir
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
+
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ stop←0
+ (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
+ Assert rc=0
+
+ ref.AddAutomation'YesOrNo' 'LoadNuGetDependenciesAfterAdding@' 'y'
+ (rc msg res)←stop ∆UCMD'AddNuGetDependencies Clock ',tempDir,' -target=Goo'
+ Assert rc=0
+ →T.GoToTidyUp 9≠#.TEMP.⎕NC'Goo'
+ →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Goo.Clock.⎕NL-2
+ →T.GoToTidyUp 0≠#.TEMP.Goo.⎕NC'Goo'
+
+ ref.AddAutomation'YesOrNo' 'ClearWS@' 'y'
+ (rc msg res)←∆UCMD'CloseProject ',tempDir,' -fast'
+ Assert rc=0
+ →T.GoToTidyUp~∨/'Number of projects closed: 1'∊res
+
+ #.TEMP.(⎕EX ⎕NL-⍳9)
+ (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
+ Assert rc=0
+ →T.GoToTidyUp~∨/'Project successfully opened and established in: #.TEMP'⍷∊res
+ →T.GoToTidyUp~(⊂'UtcNow')∊#.TEMP.Goo.Clock.⎕NL-2
+
+ (rc msg res)←∆UCMD'CloseProject ',tempDir,' -fast'
+ Assert rc=0
+
+ R←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ res←∆LINK'Break' '#.TEMP'
+⍝Done

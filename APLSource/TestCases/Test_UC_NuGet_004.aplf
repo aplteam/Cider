@@ -1,0 +1,23 @@
+ R←Test_UC_NuGet_004(stopFlag batchFlag);⎕TRAP;tempFolder;parms;I;rc;msg;debug
+⍝ Add a NuGet package with -target= and load it: the references must end up in the target namespace, not in target.target
+⍝ The real test function (∆Test_UC_NuGet_004) is executed in its own APL process
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename the "∆"-prefixed twin as well:
+⍝ ***          the process started here runs the function called "∆",(this function's name).
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If ~∆DotNetIsAvailable
+     R←T._NotApplicable ⋄ →0
+ :EndIf
+
+ tempFolder←∆GetFolderInTempDir⊃⎕SI
+ debug←0
+ parms←debug ∆NuGetTestProcessParms(⊃⎕SI)tempFolder
+ I←APLProcess.New parms
+ →T.GoToTidyUp I.ExitCode≠130
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempFolder
+ msg Assert 0=rc
+⍝Done
