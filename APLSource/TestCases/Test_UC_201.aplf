@@ -13,7 +13,7 @@
  tempDir ⎕NCOPY ##.CiderConfig.HOME,'/TestData/Boo-Project'
 
  ref←∆GetRefToCommTools
- ref.AddAutomation'YesOrNo' 'SaveLinkConfigChanges@' 'y'
+ 1 ref.AddAutomation'YesOrNo' 'SaveLinkConfigChanges@' 'y'
 
  stop←0
  (rc msg res)←stop ∆UCMD'LinkConfig  ',tempDir,'/Boo-Project -edit'
