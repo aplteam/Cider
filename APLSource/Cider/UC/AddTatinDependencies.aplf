@@ -32,7 +32,7 @@
          :If 1 P.##.C.YesOrNo q
              1 P.ProjectConfig projectFolder
              cfg←P.ReadProjectConfig projectFolder
-             ref←cfg.CIDER.dependencies
+             ref←(1+development)⊃cfg.CIDER.(dependencies dependencies_dev)
          :Else
              r←'Cancelled by user' ⋄ →0
          :EndIf
