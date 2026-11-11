@@ -1,0 +1,42 @@
+ R←Test_UC_054(stopFlag batchFlag);⎕TRAP;folder;res;tempDir;msg;rc;stop;ref
+⍝ Add a Tatin package to "dependencies" and another one to "dependencies_dev", both without a target namespace.
+⍝ Adding the second one with loading must re-load the first one as well, because both go into the project space.
+⍝ The test for the build list file of the other folder lacked a "/", so the first package used to vanish.
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
+⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
+
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ stop←0
+ (rc msg res)←stop ∆UCMD'OpenProject ',tempDir,' -projectSpace=TEMP -batch -ignoreUserExec'
+ Assert rc=0
+
+ ref.AddAutomation'YesOrNo' 'AddTatinDeps@' 'y'
+ ref.AddAutomation'YesOrNo' 'LoadTatinDependenciesAfterAdding@' 'y'
+ (rc msg res)←stop ∆UCMD'AddTatinDependencies [tatin]FilesAndDirs ',tempDir
+ Assert rc=0
+ →T.GoToTidyUp 9≠#.TEMP.⎕NC'FilesAndDirs'
+
+ (rc msg res)←stop ∆UCMD'AddTatinDependencies [tatin]Tester2 ',tempDir,' -development'
+ Assert rc=0
+ →T.GoToTidyUp 9≠#.TEMP.⎕NC'Tester2'
+ →T.GoToTidyUp 9≠#.TEMP.⎕NC'FilesAndDirs'
+
+ ref.AddAutomation'YesOrNo' 'ClearWS@' 'n'
+ (rc msg res)←∆UCMD'CloseProject ',tempDir,' -fast'
+ Assert rc=0
+
+ R←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+ res←∆LINK'Break' '#.TEMP'
+ FilesAndDirs.RmDir tempDir,'/..'
+⍝Done

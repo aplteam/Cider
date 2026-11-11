@@ -64,7 +64,7 @@
          sourceFolder2←projectFolder,'/',P.##.RemoveTargetDefinition ref2.tatin
          :If P.##.F.IsDir sourceFolder2
          :AndIf 0<≢P.##.F.ListDirs2 sourceFolder2
-         :AndIf P.##.F.IsFile sourceFolder2,⎕SE._Tatin.Client.Reg.BuildListFilename
+         :AndIf P.##.F.IsFile sourceFolder2,'/',⎕SE._Tatin.Client.Reg.BuildListFilename
              list2←⎕SE.Tatin.LoadDependencies sourceFolder2 targetNS2          ⍝... do we need to (re-)load both
              noOf←+/≢¨list list2
          :Else
