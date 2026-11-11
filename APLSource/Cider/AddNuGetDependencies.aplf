@@ -1,4 +1,4 @@
- list←AddNuGetDependencies(packages projectFolder);msg;cfg;nuGetFolder;package;buff;targetNamespace;b;qdmx
+ list←AddNuGetDependencies(packages projectFolder);msg;cfg;nuGetFolder;package;b;qdmx;folders
 ⍝ Add one or more NuGet packages to the NuGet-folder defined in the config file of `projectFolder`.
 ⍝ * `packages` must be either a nested vector with package names or a comma-separated list of package names
 ⍝ * `projectFolder` must carry a Cider config files used to establish the NuGet folder.\\
@@ -14,32 +14,27 @@
  :EndIf
  'No Cider config file found'Assert F.Exists projectFolder,'/cider.config'
  cfg←ReadProjectConfig projectFolder
- nuGetFolder←projectFolder,'/',⊃GetNuGetDependencyFolders cfg
- targetNamespace←''
- :If '='∊buff←2⊃⎕NPARTS nuGetFolder
-     targetNamespace←{⍵↓⍨⍵⍳'='}buff
-     nuGetFolder←(-1+≢targetNamespace)↓nuGetFolder
- :EndIf
- :If 0<≢nuGetFolder
-     nuGetFolder←FilesAndDirs.EnforceSlash nuGetFolder  ⍝ .NET requirement
-     {}⎕MKDIR⍣(~⎕NEXISTS nuGetFolder)⊣nuGetFolder
-     msg←NuGet.Setup nuGetFolder
-     msg Assert~∨/'error:'⍷⎕C msg
-     list←''
-     :For package :In packages
-         :Trap 99
-             msg←NuGet.Add(⊂nuGetFolder),⊂package
-             :If ∨/'error:'⍷⎕C∊msg
-                 1 PrintToSession msg
-             :ElseIf ∨/'Already registered:'∘{⍺≡(≢⍺)↑⍵}¨,msg
-                 1 PrintToSession msg
-             :Else
-                 list,←⊂package
-             :EndIf
+ folders←GetNuGetDependencyFolders cfg
+ 'No NuGet dependency folder is defined in "dependencies.nuget"'Assert 0<≢folders
+ nuGetFolder←projectFolder,'/',⊃⊃folders
+ nuGetFolder←FilesAndDirs.EnforceSlash nuGetFolder  ⍝ .NET requirement
+ {}⎕MKDIR⍣(~⎕NEXISTS nuGetFolder)⊣nuGetFolder
+ msg←NuGet.Setup nuGetFolder
+ msg Assert~∨/'error:'⍷⎕C msg
+ list←''
+ :For package :In packages
+     :Trap 99
+         msg←NuGet.Add(⊂nuGetFolder),⊂package
+         :If ∨/'error:'⍷⎕C∊msg
+             1 PrintToSession msg
+         :ElseIf ∨/'Already registered:'∘{⍺≡(≢⍺)↑⍵}¨,msg
+             1 PrintToSession msg
          :Else
-             qdmx←⎕DMX
-             ('Could not add NuGet package "',package,'"; (',qdmx.EM,')')Assert 0
-         :EndTrap
-     :EndFor
- :EndIf
+             list,←⊂package
+         :EndIf
+     :Else
+         qdmx←⎕DMX
+         ('Could not add NuGet package "',package,'"; (',qdmx.EM,')')Assert 0
+     :EndTrap
+ :EndFor
 ⍝Done

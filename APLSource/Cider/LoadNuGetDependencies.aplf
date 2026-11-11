@@ -1,4 +1,4 @@
- list←x LoadNuGetDependencies(folder ns);p;verbose;batch;cfg;nuGetFolder;list;name;list2;targetNamespace;buff;dlls;assemblies;namespace;_dotnetReflection;exportedNamespaces
+ list←x LoadNuGetDependencies(folder ns);p;verbose;batch;cfg;nuGetFolder;list;name;list2;targetNamespace;folders;dlls;assemblies;namespace;_dotnetReflection;exportedNamespaces
 ⍝ Load all dotnet namespace exported by NuGet dependencies from
 ⍝ folder into `ns` (namspace).
 ⍝ Returns a list with the names of all loaded NuGet packages.
@@ -6,12 +6,11 @@
  list←''
  ('"',folder,'" is not a Cider project directory')Assert F.IsDir folder
  cfg←ReadProjectConfig folder
- nuGetFolder←folder,'/','dependencies'GetNuGetDependencies cfg
- targetNamespace←''
- :If '='∊buff←2⊃⎕NPARTS nuGetFolder
-     targetNamespace←{⍵↓⍨⍵⍳'='}buff
-     nuGetFolder←(-1+≢targetNamespace)↓nuGetFolder
+ :If 0=≢folders←GetNuGetDependencyFolders cfg
+     :Return
  :EndIf
+ (nuGetFolder targetNamespace)←⊃folders
+ nuGetFolder←folder,'/',nuGetFolder
  :If F.IsDir nuGetFolder
  :AndIf 0<≢list2←F.ListFiles2 nuGetFolder,'/*.csproj'
      :If ~HasDotNet

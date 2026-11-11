@@ -1,4 +1,4 @@
- r←AddTatinDependencies Args;path;packages;projectFolder;cfg;development;ref;flag;q;list;sourceFolder;targetNS;targetNamespace;ref2;targetNS2;list2;sourceFolder2;noOf
+ r←AddTatinDependencies Args;path;packages;projectFolder;cfg;development;ref;flag;q;list;sourceFolder;targetNS;targetNamespace;ref2;targetNS2;list2;sourceFolder2;noOf;key;msg;folder;target;folder2;target2
  r←''
  packages←Args._1
  projectFolder←Args._2
@@ -18,9 +18,9 @@
  :Else
      ref←cfg.CIDER.dependencies
  :EndIf
+ key←'dependencies',(development/'_dev'),'.tatin'
  :If 0<≢targetNamespace
-     'There is already a target namespace defined; edit the project config file to change that'Assert~'='∊ref.tatin
-     ref.tatin,←'=',targetNamespace
+     ref.tatin←key P.##.AddDependencyTarget ref.tatin targetNamespace
      cfg P.WriteProjectConfig projectFolder
  :EndIf
  flag←0
@@ -37,7 +37,9 @@
              r←'Cancelled by user' ⋄ →0
          :EndIf
      :Else
-         q←'AddTatinDeps@',(2⊃⎕NPARTS projectFolder),': add dependencies to the folder ',({⍵↑⍨¯1+⍵⍳'='}ref.tatin),'/'
+         (msg folder target)←key P.##.ParseDependencySetting ref.tatin
+         msg Assert 0=≢msg
+         q←'AddTatinDeps@',(2⊃⎕NPARTS projectFolder),': add dependencies to the folder ',folder,'/'
          :If 1 P.##.C.YesOrNo q
              flag←1
          :Else
@@ -49,19 +51,21 @@
  r←⍪(⊂(⍕≢list),' Tatin ',(development/'development-'),'dependenc',((1+1<≢list)⊃'y' 'ies'),' added:'),' ',¨list
  :If 0<≢list
  :AndIf 1 P.##.C.YesOrNo'LoadTatinDependenciesAfterAdding@Would you like to (re-)load all Tatin dependencies?'
-     targetNS←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}{⍵↓⍨⍵⍳'='}ref.tatin
+     targetNS←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}target
      :If 9=⎕NC targetNS
          {}(⍎targetNS).{0=≢l←↓⎕NL 9:0 ⋄ 0=+/b←∨/¨'._tatin.'∘⍷¨⍕¨⍎¨l:0 ⋄ +/⎕EX¨b/l}⍬   ⍝ Delete all previous references
      :Else
          targetNS ⎕NS''
      :EndIf
-     sourceFolder←projectFolder,'/',P.##.RemoveTargetDefinition ref.tatin
+     sourceFolder←projectFolder,'/',folder
      list←⎕SE.Tatin.LoadDependencies sourceFolder targetNS
           ⍝ If ref points to "dev" then ref2 doesn't and vice versa
      ref2←(1+~development)⊃cfg.CIDER.(dependencies dependencies_dev)
-     targetNS2←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}{⍵↓⍨⍵⍳'='}ref2.tatin
+     (msg folder2 target2)←('dependencies',((~development)/'_dev'),'.tatin')P.##.ParseDependencySetting ref2.tatin
+     msg Assert 0=≢msg
+     targetNS2←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}target2
      :If targetNS≡targetNS2    ⍝  Only when "normal" dependencies and development dependencies go into the same namespace...
-         sourceFolder2←projectFolder,'/',P.##.RemoveTargetDefinition ref2.tatin
+         sourceFolder2←projectFolder,'/',folder2
          :If P.##.F.IsDir sourceFolder2
          :AndIf 0<≢P.##.F.ListDirs2 sourceFolder2
          :AndIf P.##.F.IsFile sourceFolder2,'/',⎕SE._Tatin.Client.Reg.BuildListFilename

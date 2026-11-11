@@ -1,8 +1,15 @@
- r←GetNuGetDependencyFolders config
- ⍝ Returns a vector of two-item vectors with (path namespaceName) from the project `config` namespace.
- ⍝ `r` might be empty in case there are no Tatin dependencies, otherwise it is a vector character vectors
- ⍝ with relative path and optionally the name of a target namespace (separated by "=").
- ⍝ Returns a nested vector in case we extend it for development one day.
+ r←GetNuGetDependencyFolders config;msg;folder;target
+⍝ Returns a vector of (folder target) pairs from the project `config` namespace: one pair when
+⍝ "dependencies.nuget" is not empty, otherwise none.
+⍝ `folder` is relative to the project folder; `target` is relative to the project space, and empty
+⍝ when the packages go into the project space itself.
+⍝ "nuget" in "dependencies_dev" is permitted but not supported, so it is ignored.
+⍝ Returns a vector rather than a single pair in case that changes one day.
+⍝ An invalid setting is signalled as an error.
  r←''
- r,←⊂'dependencies'GetNuGetDependencies config
- r~←⊂''
+ (msg folder target)←'dependencies.nuget'ParseDependencySetting'dependencies'GetNuGetDependencies config
+ msg Assert 0=≢msg
+ :If 0<≢folder
+     r,←⊂folder target
+ :EndIf
+⍝Done

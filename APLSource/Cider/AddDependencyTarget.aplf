@@ -1,0 +1,13 @@
+ r←key AddDependencyTarget(value target);msg;folder;oldTarget
+⍝ Returns the "tatin" or "nuget" dependency setting `value` with the target namespace `target` added.
+⍝ `key` names the setting, e.g. 'dependencies_dev.tatin'; it is used in messages only.
+⍝ Signals an error when `value` is invalid, defines no folder or has a target namespace already,
+⍝ and when `target` is not a valid target namespace.
+ (msg folder oldTarget)←key ParseDependencySetting value
+ msg Assert 0=≢msg
+ ('No folder is defined in "',key,'"; cannot add a target namespace')Assert 0<≢folder
+ ('There is already a target namespace defined in "',key,'"; edit the project config file to change that')Assert 0=≢oldTarget
+ r←ComposeDependencySetting folder target
+ msg←⊃key ParseDependencySetting r
+ msg Assert 0=≢msg
+⍝Done

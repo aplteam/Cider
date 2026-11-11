@@ -1,13 +1,12 @@
- r←ListNuGetDependencies projectFolder;cfg;nuGetFolder;list;list_id;r_id;b;folder
+ r←ListNuGetDependencies projectFolder;cfg;folders;list;list_id;r_id;b;folder
  r←0 2⍴''
  :If IsAlias projectFolder
      projectFolder←GetFolderFromAlias2 projectFolder
  :EndIf
  'No Cider config file found'Assert F.Exists projectFolder,'/cider.config'
  cfg←ReadProjectConfig projectFolder
- :If 0<≢nuGetFolder←⊃GetNuGetDependencyFolders cfg
-     nuGetFolder←{~'='∊2⊃⎕NPARTS ⍵:⍵ ⋄ ⊃{⍺,RemoveTargetDefinition ⍵}/⎕NPARTS ⍵}nuGetFolder
-     folder←projectFolder,'/',nuGetFolder
+ :If 0<≢folders←GetNuGetDependencyFolders cfg
+     folder←projectFolder,'/',⊃⊃folders
  :AndIf ⎕NEXISTS folder
  :AndIf 0<≢F.ListFiles2 folder,'/*.csproj'
      r←↑NuGet.Packages folder

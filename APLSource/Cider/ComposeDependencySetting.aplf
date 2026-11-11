@@ -1,0 +1,7 @@
+ r←ComposeDependencySetting(folder target)
+⍝ The opposite of `ParseDependencySetting`: returns the value of a "tatin" or "nuget" dependency setting
+⍝ for `folder` and `target`: '<folder>' when `target` is empty, otherwise '<folder>=<target>'.
+⍝ Together with `ParseDependencySetting` this is the only function that knows how such a setting is written.
+⍝ The result is not checked: pass it to `ParseDependencySetting` for that.
+ r←folder,(0<≢target)/'=',target
+⍝Done

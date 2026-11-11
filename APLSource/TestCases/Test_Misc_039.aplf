@@ -1,0 +1,25 @@
+ r←Test_Misc_039(stopFlag batchFlag);⎕TRAP;key;value;target;qdmx
+⍝ Exercise `ComposeDependencySetting` and `AddDependencyTarget`.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ →T.PassesIf'pkgs'≡##.Cider.ComposeDependencySetting'pkgs' ''
+ →T.PassesIf'pkgs=Foo.Goo'≡##.Cider.ComposeDependencySetting'pkgs' 'Foo.Goo'
+
+ key←'dependencies_dev.tatin'
+ →T.PassesIf'pkgs=Foo'≡key ##.Cider.AddDependencyTarget'pkgs' 'Foo'
+ →T.PassesIf'my pkgs=Foo.Goo'≡key ##.Cider.AddDependencyTarget'my pkgs' 'Foo.Goo'
+
+⍝ Has a target already, has no folder, is invalid, gets an absolute target, gets a target with a blank:
+ :For value target :InEach ('pkgs=Foo' '' 'pkgs=A=B' 'pkgs' 'pkgs')('Goo' 'Goo' 'Goo' '#.Goo' 'A B')
+     :Trap 11
+         {}key ##.Cider.AddDependencyTarget value target
+         →T.PassesIf 0
+     :Else
+         qdmx←⎕DMX
+         →T.PassesIf∨/('"',key,'"')⍷qdmx.EM
+     :EndTrap
+ :EndFor
+
+ r←T._OK
+⍝Done

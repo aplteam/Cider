@@ -8,7 +8,7 @@
  config.CIDER.dependencies.tatin←''
  (successFlag msg)←##.Cider.PerformConfigChecks config
  →T.PassesIf 0≡successFlag
- →T.PassesIf∨/'"dependencies_dev"'⍷msg
+ →T.PassesIf∨/'"dependencies_dev.tatin"'⍷msg
 
  r←T._OK
 ⍝Done

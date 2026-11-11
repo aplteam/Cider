@@ -1,4 +1,4 @@
- r←AddTatinDependencies(packageIDs projectFolder dev);targetFolder;cfg;ref
+ r←AddTatinDependencies(packageIDs projectFolder dev);targetFolder;cfg;key;msg;folder
 ⍝ Add one or more Tatin packages as dependencies.
 ⍝ `dev` is a flag that decides whether `dependencies` or `dependencies_dev` is the target.
  :If 1<≡packageIDs
@@ -8,11 +8,10 @@
      projectFolder←GetFolderFromAlias2 projectFolder
  :EndIf
  cfg←ReadProjectConfig projectFolder
- :If dev
-     ref←cfg.CIDER.dependencies_dev
- :Else
-     ref←cfg.CIDER.dependencies
- :EndIf
- targetFolder←projectFolder,'/',RemoveTargetDefinition ref.tatin
+ key←'dependencies',dev/'_dev'
+ (msg folder)←2↑(key,'.tatin')ParseDependencySetting key GetTatinDependencies cfg
+ msg Assert 0=≢msg
+ ('No Tatin dependency folder is defined in "',key,'.tatin"')Assert 0<≢folder
+ targetFolder←projectFolder,'/',folder
  r←⎕SE.Tatin.InstallPackages packageIDs targetFolder
 ⍝Done

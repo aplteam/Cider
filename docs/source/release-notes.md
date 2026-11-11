@@ -19,7 +19,7 @@ Here we highlight incompatabilities, if any.
 </style>
 
 -------|------------|----------------------------------------
-0.54.2 | 2026-11-10 | No compatability issues
+0.54.2 | 2026-11-10 | The "tatin" and "nuget" dependency settings in cider.config are checked<br>more strictly: blanks around the folder or in the target namespace,<br>an absolute target namespace (#.Foo) and anything but<br>&lt;folder&gt; or &lt;folder&gt;=&lt;namespace&gt; are rejected, and such a project<br>does not open any more. The format of cider.config is unchanged.
 0.54.1 | 2026-09-30 | No compatability issues
 0.54.0 | 2026-09-19 | The automation ID of the "Report Git status?" question is now<br>"HowToReportGitStatus@" (it was misspelled); anybody automating<br>that question must adjust it.
 0.53.1 | 2026-08-05 | No compatability issues

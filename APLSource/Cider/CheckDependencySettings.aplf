@@ -1,0 +1,19 @@
+ r←CheckDependencySettings config;key;name;value;msg
+⍝ Checks the dependency settings "dependencies.tatin", "dependencies_dev.tatin" and "dependencies.nuget"
+⍝ of the project `config` namespace.
+⍝ Returns a vector of messages, one for each invalid setting; empty when all of them are valid.
+⍝ "nuget" in "dependencies_dev" is permitted but not supported, so it is not checked.
+ r←''
+ :For key :In 'dependencies.tatin' 'dependencies_dev.tatin' 'dependencies.nuget'
+     name←key↑⍨¯1+key⍳'.'
+     :If '.tatin'≡¯6↑key
+         value←name GetTatinDependencies config
+     :Else
+         value←name GetNuGetDependencies config
+     :EndIf
+     msg←⊃key ParseDependencySetting value
+     :If 0<≢msg
+         r,←⊂msg
+     :EndIf
+ :EndFor
+⍝Done

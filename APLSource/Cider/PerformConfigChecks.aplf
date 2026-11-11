@@ -1,31 +1,9 @@
- (successFlag msg)←PerformConfigChecks config;namespace;path;tatinFolder;this;report;buff
+ (successFlag msg)←PerformConfigChecks config;msgs;report;buff
  successFlag←⍬
  report←''
- :For this :In 'dependencies' 'dependencies_dev'
-     :If 0=≢tatinFolder←this GetTatinDependencies config
-         :Continue
-     :EndIf
-     :If '='∊tatinFolder
-         buff←'='(≠⊆⊢)tatinFolder
-         :If (2≠≢buff)∨1≠'='+.=tatinFolder
-             ⍝ Anything but exactly <folder>=<namespace> is invalid
-             successFlag,←FAILURE
-             report,←⊂'Something is wrong with "',this,'" (',tatinFolder,'); expected <folder>=<namespace>'
-         :Else
-             (path namespace)←buff
-             successFlag,←(1+0=(⎕NS'').{⎕NC ⍵}namespace)⊃FAILURE SUCCESS
-             :If 0=¯1↑successFlag
-                 report,←⊂'Something is wrong with "',this,'" (',tatinFolder,')'
-             :EndIf
-         :EndIf
-     :ElseIf ~','∊tatinFolder
-         successFlag,←SUCCESS
-     :Else
-              ⍝ More than one is invalid
-         successFlag,←FAILURE
-         report,←⊂'Something is wrong with "',this,'"'
-     :EndIf
- :EndFor
+ msgs←CheckDependencySettings config
+ successFlag,←(1+0<≢msgs)⊃SUCCESS FAILURE
+ report,←msgs
  :If 0=config.CIDER.⎕NC'make'
      successFlag,←FAILURE
      report,←⊂'"CIDER.make" is not defined'

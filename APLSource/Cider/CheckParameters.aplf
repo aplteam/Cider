@@ -17,11 +17,7 @@
  bool←(GetValidCiderParams 0)∊list
  ('Missing Cider parameter',((1<+/~bool)/'s'),': ',{0=≢⍵:'' ⋄ ⊃{⍺,',',⍵}/⍵}(~bool)/GetValidCiderParams 0)Assert∧/bool
 ⍝ The dependency settings are checked here, before anything is loaded, so that an invalid one never leaves a project half-opened
- msg←⊃'dependencies.tatin'ParseDependencySetting'dependencies'GetTatinDependencies config
- msg Assert 0=≢msg
- msg←⊃'dependencies_dev.tatin'ParseDependencySetting'dependencies_dev'GetTatinDependencies config
- msg Assert 0=≢msg
- msg←⊃'dependencies.nuget'ParseDependencySetting'dependencies'GetNuGetDependencies config
+ msg←1↓⊃,/'; '∘,¨CheckDependencySettings config
  msg Assert 0=≢msg
  p'   Parameters are okay'
 ⍝Done

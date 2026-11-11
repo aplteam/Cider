@@ -1,0 +1,29 @@
+ r←Test_Misc_040(stopFlag batchFlag);⎕TRAP;tempDir;json;config
+⍝ A cider.config using the "<folder>=<namespace>" form survives being read, written and read again
+⍝ unchanged, and the dependency folders and target namespaces are taken from it correctly.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ json←'{ CIDER: { dependencies: { tatin: "pkgs=Foo", nuget: "nupkgs=Goo.Hoo" },'
+ json,←' dependencies_dev: { tatin: "pkgs_dev" },'
+ json,←' make: "", parent: "#", projectSpace: "Foo", source: "APLSource", tests: "" },'
+ json,←' SYSVARS: { io: 1, ml: 1 } }'
+ (⊂json)⎕NPUT tempDir,'/cider.config'
+
+ config←##.Cider.ReadProjectConfig tempDir
+ config ##.Cider.WriteProjectConfig tempDir
+ config←##.Cider.ReadProjectConfig tempDir
+
+ →T.GoToTidyUp'pkgs=Foo'≢config.CIDER.dependencies.tatin
+ →T.GoToTidyUp'pkgs_dev'≢config.CIDER.dependencies_dev.tatin
+ →T.GoToTidyUp'nupkgs=Goo.Hoo'≢config.CIDER.dependencies.nuget
+ →T.GoToTidyUp('pkgs' 'Foo')('pkgs_dev' '')≢##.Cider.GetTatinDependencyFolders config
+ →T.GoToTidyUp(,⊂'nupkgs' 'Goo.Hoo')≢##.Cider.GetNuGetDependencyFolders config
+ →T.GoToTidyUp 0≠≢##.Cider.CheckDependencySettings config
+
+ r←T._OK
+
+∆TidyUp:
+ FilesAndDirs.RmDir tempDir,'/..'
+⍝Done

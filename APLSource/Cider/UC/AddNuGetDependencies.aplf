@@ -1,4 +1,4 @@
- r←AddNuGetDependencies Args;packages;projectFolder;cfg;ref;flag;q;oldList;newList;targetNamespace;list;targetNS;projectSpaceName
+ r←AddNuGetDependencies Args;packages;projectFolder;cfg;ref;flag;q;oldList;newList;targetNamespace;list;targetNS;projectSpaceName;target
 ⍝ Returns list of (newly) installed NuGet packages.
  packages←Args._1
  projectFolder←Args._2
@@ -14,8 +14,7 @@
  cfg←P.ReadProjectConfig projectFolder
  ref←cfg.CIDER.dependencies
  :If 0<≢targetNamespace
-     'There is already a target namespace defined; edit the project config file to change that'Assert~'='∊ref.nuget
-     ref.nuget,←'=',targetNamespace
+     ref.nuget←'dependencies.nuget'P.##.AddDependencyTarget ref.nuget targetNamespace
      cfg P.WriteProjectConfig projectFolder
  :EndIf
  flag←0
@@ -39,7 +38,8 @@
  list←P.AddNuGetDependencies packages projectFolder
  r←(⍕≢list),' NuGet dependencies added'
  projectSpaceName←⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)
- targetNS←projectSpaceName{0=≢⍵:⍺ ⋄ ⍺,'.',⍵}{⍵↓⍨⍵⍳'='}ref.nuget
+ target←2⊃⊃P.##.GetNuGetDependencyFolders cfg
+ targetNS←projectSpaceName{0=≢⍵:⍺ ⋄ ⍺,'.',⍵}target
  targetNS ⎕NS''
  :If 0<≢list
  :AndIf 1 P.##.C.YesOrNo'LoadNuGetDependenciesAfterAdding@Would you like to (re-)load all NuGet dependencies?'
