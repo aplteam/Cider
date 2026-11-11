@@ -1,4 +1,4 @@
- r←AddNuGetDependencies Args;packages;projectFolder;cfg;ref;flag;q;oldList;newList;targetNamespace;list;targetNS;list2;projectSpaceName
+ r←AddNuGetDependencies Args;packages;projectFolder;cfg;ref;flag;q;oldList;newList;targetNamespace;list;targetNS;projectSpaceName
 ⍝ Returns list of (newly) installed NuGet packages.
  packages←Args._1
  projectFolder←Args._2
@@ -43,12 +43,6 @@
  targetNS ⎕NS''
  :If 0<≢list
  :AndIf 1 P.##.C.YesOrNo'LoadNuGetDependenciesAfterAdding@Would you like to (re-)load all NuGet dependencies?'
-     :If 0<≢oldList
-         :If 9=⎕NC targetNS
-             list2←,1↑[2]P.ListNuGetDependencies projectFolder
-             {}(⍎targetNS).{l←⍵ ⋄ 0=≢l:0 ⋄ 0=≢l←(0<⎕NC↑l)/l:0 ⋄ 0=+/b←∨/¨'._tatin.'∘⍷¨⍕¨{6::'' ⋄ ⍎⍵}¨⍵:0 ⋄ +/⎕EX¨b/⍵}list2   ⍝ Delete all previous references
-         :EndIf
-     :EndIf
      list←0 0 P.##.LoadNuGetDependencies projectFolder projectSpaceName   ⍝ Adds the target namespace from cider.config itself
      r←r,(⎕UCS 13),(⍕≢list),' dependencies loaded'
  :EndIf
