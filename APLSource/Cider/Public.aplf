@@ -17,6 +17,7 @@
  r,←⊂'GetNuGetDependencies'
  r,←⊂'GetProgramFilesFolder'
  r,←⊂'GetTatinDependencies'
+ r,←⊂'GetTatinDependencyFolders'
  r,←⊂'HasDotNet'
  r,←⊂'ListNuGetDependencies'
  r,←⊂'ListOpenProjects'

@@ -53,7 +53,7 @@
  :EndIf
  M.FetchLaterUserCommand cfg C targetFolder
  noOf←⎕SE.Tatin.CreateAPIfromCFG ##.Cider cfg
- 'Tally of the API is unexpected'Assert noOf∊30 31  ⍝ Depending on the existence of ReadProjectConfigFile (soon to be deleted)
+ 'Tally of the API is unexpected'Assert noOf∊31 32  ⍝ Depending on the existence of ReadProjectConfigFile (soon to be deleted)
  M.RecreateFolder path
  parms←⎕SE.Tatin.CreateBuildParms C.HOME
  parms.targetPath←C.CIDER.distributionFolder

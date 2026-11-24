@@ -19,6 +19,9 @@
  →T.GoToTidyUp'pkgs_dev'≢config.CIDER.dependencies_dev.tatin
  →T.GoToTidyUp'nupkgs=Goo.Hoo'≢config.CIDER.dependencies.nuget
  →T.GoToTidyUp('pkgs' 'Foo')('pkgs_dev' '')≢##.Cider.GetTatinDependencyFolders config
+ →T.GoToTidyUp(,⊂'pkgs' 'Foo')≢'dependencies'##.Cider.GetTatinDependencyFolders config
+ →T.GoToTidyUp(,⊂'pkgs_dev' '')≢'dependencies_dev'##.Cider.GetTatinDependencyFolders config
+ →T.GoToTidyUp('pkgs' 'Foo')('pkgs_dev' '')≢##.Cider.API.GetTatinDependencyFolders config
  →T.GoToTidyUp(,⊂'nupkgs' 'Goo.Hoo')≢##.Cider.GetNuGetDependencyFolders config
  →T.GoToTidyUp 0≠≢##.Cider.CheckDependencySettings config
 
