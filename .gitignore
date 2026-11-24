@@ -13,6 +13,7 @@ conga.crash
 /docs/site/
 /.venv/
 /TestResults/
+/.claude/
 
 # Internal documents are kept local in:
 /KaiMisc/
