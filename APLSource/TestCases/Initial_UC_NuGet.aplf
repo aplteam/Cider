@@ -1,4 +1,7 @@
  r←Initial_UC_NuGet ps
+ :If 0=⎕NC'∆DotNetIsAvailable'
+     ∆DotNetIsAvailable←IsDotNetAvailable
+ :EndIf
  :If 0=⎕NC'∆ExecNuGetTest'
      :If ~ps.batchFlag
      :AndIf ~∨/' cider_fns="Test_UC_NuGet_'⍷#.GetCommandLine
