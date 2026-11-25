@@ -1,0 +1,35 @@
+ R←Test_Tatin_006(stopFlag batchFlag);⎕TRAP;res;folder;parms;rc;log
+⍝ Open project with a tatin package. The config file rules that the package goes into NS1, using the
+⍝ new form: "tatin" holds only the folder and "tatinTarget" the namespace. Same outcome as Test_Tatin_002.
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
+⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+
+ parms←⎕NS''
+ parms.folder←folder
+ parms.watch←'ns'
+ parms.ignoreUserExec←1
+ parms.batch←1
+ ##.Cider.C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ (res log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp∨/'ERROR'⍷log
+
+ →T.GoToTidyUp~res
+ →T.GoToTidyUp 1≠≢#.TEMP.⎕NL 3
+ →T.GoToTidyUp 0≠#.TEMP.⎕NC'Tester2'
+ →T.GoToTidyUp 9≠#.TEMP.NS1.⎕NC'Tester2'
+ →T.GoToTidyUp 0≠#.TEMP.NS1.NS2.⎕NC'Tester2'
+ →T.GoToTidyUp #.TEMP.NS1.NS2.Hello2≢'Galaxy'
+
+ R←T._OK
+
+∆TidyUp:
+ ##.Cider.C.Cleanup
+ res←∆LINK'Break' '#.TEMP'
+ Assert res ∆StartsWith'Unlinked:'
+ #.⎕EX'TEMP'
+⍝Done

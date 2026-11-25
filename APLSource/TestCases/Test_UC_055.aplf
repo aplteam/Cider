@@ -1,0 +1,74 @@
+ R←Test_UC_055(stopFlag batchFlag);C;cfg;folder;log;msg;parms;rc;res;stop;success;tempDir;⎕TRAP
+⍝ Exercise ]Cider.AddTatinDependencies -target= in both forms of the dependency settings:
+⍝ * "dependencies" uses the old form: the target is added to "tatin" as "mypackages=Foo"
+⍝ * "dependencies_dev" uses the new form: the target goes into "tatinTarget", "tatin" is left alone
+⍝ Finally a dependency setting without a folder: the user declines to edit the project config file.
+⍝ *** WARNING: want to rename this fn? Keep in mind to rename its folder under "Tests/" as well:
+⍝ ***          the test data is located via this function's own name (∆GetTestPath⊃⎕SI).
+ ⎕TRAP←(999 'C' '∘∘∘ ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If 0=IsDotNetAvailable
+     R←T._NotApplicable ⋄ →0
+ :EndIf
+
+ #.⎕SHADOW'TEMP' ⋄ 'TEMP'#.⎕NS''
+ folder←∆GetTestPath⊃⎕SI
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ tempDir ⎕NCOPY⍠1⊢folder,'/*'
+
+ parms←##.Cider.CreateOpenParms''
+ parms.folder←∊⎕NPARTS tempDir
+ parms.noPkgLoad←0
+ parms.batch←1
+ parms.ignoreUserExec←1
+
+ C←∆GetRefToCommTools
+
+ C.AddAutomation'YesOrNo' 'ChangeCurrentDir@' 'n'
+ (success log)←##.Cider.OpenProject parms
+ →T.GoToTidyUp~success
+ →T.GoToTidyUp∨/'ERROR'⍷log
+
+ stop←0
+
+⍝ Old form
+ C.AddAutomation'YesOrNo' 'AddTatinDeps@' 'y'
+ C.AddAutomation'YesOrNo' 'LoadTatinDependenciesAfterAdding@' 'y'
+ (rc msg res)←stop ∆UCMD'AddTatinDependencies FilesAndDirs "',tempDir,'" -target=Foo'
+ →T.GoToTidyUp rc≠0
+ →T.GoToTidyUp 0≠≢msg
+ cfg←##.Cider.ReadProjectConfig tempDir
+ →T.GoToTidyUp'mypackages=Foo'≢cfg.CIDER.dependencies.tatin
+ →T.GoToTidyUp 0≠cfg.CIDER.dependencies.⎕NC⊂'tatinTarget'
+ →T.GoToTidyUp 9≠⌊#.TEMP.⎕NC⊂'Foo'
+ →T.GoToTidyUp 9≠⌊#.TEMP.Foo.⎕NC⊂'FilesAndDirs'
+
+⍝ New form
+ C.AddAutomation'YesOrNo' 'AddTatinDeps@' 'y'
+ C.AddAutomation'YesOrNo' 'LoadTatinDependenciesAfterAdding@' 'y'
+ (rc msg res)←stop ∆UCMD'AddTatinDependencies APLTreeUtils2 "',tempDir,'" -development -target=Goo'
+ →T.GoToTidyUp rc≠0
+ →T.GoToTidyUp 0≠≢msg
+ cfg←##.Cider.ReadProjectConfig tempDir
+ →T.GoToTidyUp('devpackages' 'Goo')≢cfg.CIDER.dependencies_dev.(tatin tatinTarget)
+ →T.GoToTidyUp'mypackages=Foo'≢cfg.CIDER.dependencies.tatin
+ →T.GoToTidyUp 9≠⌊#.TEMP.⎕NC⊂'Goo'
+ →T.GoToTidyUp 9≠⌊#.TEMP.Goo.⎕NC⊂'APLTreeUtils2'
+
+⍝ No folder defined, and the user declines to edit the project config file
+ cfg.CIDER.dependencies_dev.(tatin tatinTarget)←'' ''
+ cfg ##.Cider.WriteProjectConfig tempDir
+ C.AddAutomation'YesOrNo' 'EditProjectConfig@' 'n'
+ (rc msg res)←stop ∆UCMD'AddTatinDependencies APLTreeUtils2 "',tempDir,'" -development'
+ →T.GoToTidyUp rc≠0
+ →T.GoToTidyUp 0≠≢msg
+ →T.GoToTidyUp~∨/'Cancelled by user'⍷res
+
+ R←T._OK
+
+∆TidyUp:
+ C.Cleanup
+ {}∆LINK'Break' '#.TEMP'
+ FilesAndDirs.RmDir tempDir,'/..'
+⍝Done

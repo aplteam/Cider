@@ -331,6 +331,35 @@ returns either the value of `tatin` in the given branch or an empty vector if `t
 
 The `config` argument is typically derived from the project config.
 
+The value is returned as it is written in the config file, so it may carry a target namespace (`tatin-packages=Foo`). To get the folder and the target namespace, use [`GetTatinDependencyFolders`](#get-tatin-dependency-folders).
+
+
+## Get Tatin dependency folders
+
+    r←{name} GetTatinDependencyFolders config
+
+Where
+
+-   `name` (optional) is `'dependencies'` or `'dependencies_dev'`
+-   `config` is the project config namespace, as returned by `ReadProjectConfig`
+
+returns a vector of `(folder target)` pairs, one for each Tatin dependency folder that is defined. Without `name` both `dependencies` and `dependencies_dev` are reported, in that order.
+
+-   `folder` is relative to the project folder
+-   `target` is the namespace the packages are loaded into, relative to the project space; empty means the project space itself
+
+The result is empty when no Tatin dependency folder is defined. An invalid setting is signalled as an error.
+
+```
+      cfg←⎕SE.Cider.ReadProjectConfig '/path/to/project'
+      ⎕SE.Cider.GetTatinDependencyFolders cfg
+  tatin-packages  Cider    tatin-packages_dev  TestCases
+      'dependencies_dev' ⎕SE.Cider.GetTatinDependencyFolders cfg
+  tatin-packages_dev  TestCases
+```
+
+Use this rather than interpreting the settings in the config file yourself.
+
 
 
 ## Has DotNet

@@ -7,7 +7,7 @@
 ⍝ Returns a vector rather than a single pair in case that changes one day.
 ⍝ An invalid setting is signalled as an error.
  r←''
- (msg folder target)←'dependencies.nuget'ParseDependencySetting'dependencies'GetNuGetDependencies config
+ (msg folder target)←'dependencies.nuget'ParseDependencySetting'dependencies'GetDependencyNamespace config
  msg Assert 0=≢msg
  :If 0<≢folder
      r,←⊂folder target

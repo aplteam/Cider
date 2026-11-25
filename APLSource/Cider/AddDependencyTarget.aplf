@@ -1,13 +1,31 @@
- r←key AddDependencyTarget(value target);msg;folder;oldTarget
-⍝ Returns the "tatin" or "nuget" dependency setting `value` with the target namespace `target` added.
-⍝ `key` names the setting, e.g. 'dependencies_dev.tatin'; it is used in messages only.
-⍝ Signals an error when `value` is invalid, defines no folder or has a target namespace already,
-⍝ and when `target` is not a valid target namespace.
- (msg folder oldTarget)←key ParseDependencySetting value
+ {r}←key AddDependencyTarget(ref target);name;targetKey;msg;folder;oldTarget;tmp
+⍝ Adds the target namespace `target` to the "tatin" or "nuget" dependency setting in the namespace `ref`.
+⍝ `key` names the setting, e.g. 'dependencies_dev.tatin'; see `ParseDependencySetting` for details.
+⍝ `ref` is changed in place, in the form the setting already uses: when there is a "tatinTarget"
+⍝ ("nugetTarget") the target goes there; otherwise it is added to "tatin" ("nuget") as '<folder>=<target>'.
+⍝ Signals an error when the setting is invalid, defines no folder or has a target namespace already,
+⍝ and when `target` is not a valid target namespace. `ref` is not changed then.
+⍝ The shy result is always 1.
+ r←1
+ name←key↓⍨key⍳'.'
+ targetKey←name,'Target'
+ (msg folder oldTarget)←key ParseDependencySetting ref
  msg Assert 0=≢msg
  ('No folder is defined in "',key,'"; cannot add a target namespace')Assert 0<≢folder
  ('There is already a target namespace defined in "',key,'"; edit the project config file to change that')Assert 0=≢oldTarget
- r←ComposeDependencySetting folder target
- msg←⊃key ParseDependencySetting r
+⍝ Compose the new setting in a scratch namespace and check it before `ref` is touched
+ tmp←⎕NS''
+ :If 0<ref.⎕NC targetKey
+     ⍎'tmp.',name,'←folder'
+     ⍎'tmp.',targetKey,'←target'
+ :Else
+     ⍎'tmp.',name,'←ComposeDependencySetting folder target'
+ :EndIf
+ msg←⊃key ParseDependencySetting tmp
  msg Assert 0=≢msg
+ :If 0<ref.⎕NC targetKey
+     ⍎'ref.',targetKey,'←target'
+ :Else
+     ⍎'ref.',name,'←tmp.',name
+ :EndIf
 ⍝Done

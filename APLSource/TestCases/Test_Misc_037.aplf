@@ -1,41 +1,68 @@
- r←Test_Misc_037(stopFlag batchFlag);⎕TRAP;msg;folder;target
-⍝ Exercise `ParseDependencySetting` with valid settings: split into folder and target, no message.
+ r←Test_Misc_037(stopFlag batchFlag);⎕TRAP;msg;folder;target;P
+⍝ Exercise `ParseDependencySetting` with valid settings in both forms: split into folder and target, no message.
 ⍝ This is the control for Test_Misc_038.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
+ P←##.Cider.ParseDependencySetting
 
  ⍝ Empty: no such folder
- (msg folder target)←'dependencies.tatin'##.Cider.ParseDependencySetting''
+ (msg folder target)←'dependencies.tatin'P ∆MakeDependencyNamespace ⍬
+ →T.PassesIf(0=≢msg)∧(0=≢folder)∧0=≢target
+ (msg folder target)←'dependencies.tatin'P ∆MakeDependencyNamespace'tatin' ''
+ →T.PassesIf(0=≢msg)∧(0=≢folder)∧0=≢target
+ (msg folder target)←'dependencies.tatin'P ∆MakeDependencyNamespace'tatin' '' 'tatinTarget' ''
  →T.PassesIf(0=≢msg)∧(0=≢folder)∧0=≢target
 
  ⍝ No target namespace: packages go into the project space
- (msg folder target)←'dependencies.tatin'##.Cider.ParseDependencySetting'tatin-packages'
+ (msg folder target)←'dependencies.tatin'P ∆MakeDependencyNamespace'tatin' 'tatin-packages'
  →T.PassesIf 0=≢msg
  →T.PassesIf'tatin-packages'≡folder
  →T.PassesIf 0=≢target
 
- (msg folder target)←'dependencies_dev.tatin'##.Cider.ParseDependencySetting'tatin-packages_dev=TestCases'
+ (msg folder target)←'dependencies_dev.tatin'P ∆MakeDependencyNamespace'tatin' 'tatin-packages_dev=TestCases'
  →T.PassesIf 0=≢msg
  →T.PassesIf'tatin-packages_dev'≡folder
  →T.PassesIf'TestCases'≡target
 
  ⍝ A target below a child of the project space
- (msg folder target)←'dependencies.nuget'##.Cider.ParseDependencySetting'nuget-packages=Foo.Goo'
+ (msg folder target)←'dependencies.nuget'P ∆MakeDependencyNamespace'nuget' 'nuget-packages=Foo.Goo'
  →T.PassesIf 0=≢msg
  →T.PassesIf'nuget-packages'≡folder
  →T.PassesIf'Foo.Goo'≡target
 
  ⍝ A folder that is not a direct child of the project folder
- (msg folder target)←'dependencies.nuget'##.Cider.ParseDependencySetting'deps/nuget=Goo'
+ (msg folder target)←'dependencies.nuget'P ∆MakeDependencyNamespace'nuget' 'deps/nuget=Goo'
  →T.PassesIf 0=≢msg
  →T.PassesIf'deps/nuget'≡folder
  →T.PassesIf'Goo'≡target
 
  ⍝ A blank inside a folder name is fine
- (msg folder target)←'dependencies.tatin'##.Cider.ParseDependencySetting'my packages=Foo'
+ (msg folder target)←'dependencies.tatin'P ∆MakeDependencyNamespace'tatin' 'my packages=Foo'
  →T.PassesIf 0=≢msg
  →T.PassesIf'my packages'≡folder
  →T.PassesIf'Foo'≡target
+
+ ⍝ The new form: the target comes from "tatinTarget" ("nugetTarget")
+ (msg folder target)←'dependencies_dev.tatin'P ∆MakeDependencyNamespace'tatin' 'tatin-packages_dev' 'tatinTarget' 'TestCases'
+ →T.PassesIf 0=≢msg
+ →T.PassesIf'tatin-packages_dev'≡folder
+ →T.PassesIf'TestCases'≡target
+
+ (msg folder target)←'dependencies.tatin'P ∆MakeDependencyNamespace'tatin' 'tatin-packages' 'tatinTarget' ''
+ →T.PassesIf 0=≢msg
+ →T.PassesIf'tatin-packages'≡folder
+ →T.PassesIf 0=≢target
+
+ (msg folder target)←'dependencies.nuget'P ∆MakeDependencyNamespace'nuget' 'my nuget' 'nugetTarget' 'Foo.Goo'
+ →T.PassesIf 0=≢msg
+ →T.PassesIf'my nuget'≡folder
+ →T.PassesIf'Foo.Goo'≡target
+
+ ⍝ "tatinTarget" does not affect "nuget"
+ (msg folder target)←'dependencies.nuget'P ∆MakeDependencyNamespace'nuget' 'nupkgs=Goo' 'tatinTarget' 'Foo'
+ →T.PassesIf 0=≢msg
+ →T.PassesIf'nupkgs'≡folder
+ →T.PassesIf'Goo'≡target
 
  r←T._OK
 ⍝Done

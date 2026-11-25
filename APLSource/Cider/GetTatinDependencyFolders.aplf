@@ -1,6 +1,7 @@
  r←{name}GetTatinDependencyFolders config;names;key;msg;folder;target
 ⍝ Returns a vector of (folder target) pairs from the project `config` namespace, one for each of
-⍝ "dependencies.tatin" and "dependencies_dev.tatin" that is not empty.
+⍝ "dependencies.tatin" and "dependencies_dev.tatin" that is not empty. Both forms of a setting are
+⍝ understood: '<folder>=<namespace>' as well as '<folder>' with "tatinTarget" (see `ParseDependencySetting`).
 ⍝ `config` is a project config namespace as returned by `ReadProjectConfig`.
 ⍝ The optional left argument `name` restricts the result to either 'dependencies' or 'dependencies_dev'.
 ⍝ `folder` is relative to the project folder; `target` is relative to the project space, and empty
@@ -15,7 +16,7 @@
      names←,⊂,name
  :EndIf
  :For key :In names
-     (msg folder target)←(key,'.tatin')ParseDependencySetting key GetTatinDependencies config
+     (msg folder target)←(key,'.tatin')ParseDependencySetting key GetDependencyNamespace config
      msg Assert 0=≢msg
      :If 0<≢folder
          r,←⊂folder target

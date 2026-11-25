@@ -1,0 +1,10 @@
+ r←name GetDependencyNamespace config
+⍝ Returns a reference to the namespace "dependencies" or "dependencies_dev" (defined by `name`) of the
+⍝ project `config` namespace, ready to be passed to `ParseDependencySetting`.
+⍝ When there is no such namespace an empty one is returned, which means: no such dependencies.
+ :If 9=config.CIDER.⎕NC name
+     r←config.CIDER⍎name
+ :Else
+     r←⎕NS''
+ :EndIf
+⍝Done

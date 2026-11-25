@@ -9,7 +9,7 @@
  :EndIf
  cfg←ReadProjectConfig projectFolder
  key←'dependencies',dev/'_dev'
- (msg folder)←2↑(key,'.tatin')ParseDependencySetting key GetTatinDependencies cfg
+ (msg folder)←2↑(key,'.tatin')ParseDependencySetting key GetDependencyNamespace cfg
  msg Assert 0=≢msg
  ('No Tatin dependency folder is defined in "',key,'.tatin"')Assert 0<≢folder
  targetFolder←projectFolder,'/',folder

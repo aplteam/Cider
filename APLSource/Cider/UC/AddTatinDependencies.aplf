@@ -20,7 +20,7 @@
  :EndIf
  key←'dependencies',(development/'_dev'),'.tatin'
  :If 0<≢targetNamespace
-     ref.tatin←key P.##.AddDependencyTarget ref.tatin targetNamespace
+     key P.##.AddDependencyTarget ref targetNamespace
      cfg P.WriteProjectConfig projectFolder
  :EndIf
  flag←0
@@ -37,7 +37,7 @@
              r←'Cancelled by user' ⋄ →0
          :EndIf
      :Else
-         (msg folder target)←key P.##.ParseDependencySetting ref.tatin
+         (msg folder target)←key P.##.ParseDependencySetting ref
          msg Assert 0=≢msg
          q←'AddTatinDeps@',(2⊃⎕NPARTS projectFolder),': add dependencies to the folder ',folder,'/'
          :If 1 P.##.C.YesOrNo q
@@ -61,7 +61,7 @@
      list←⎕SE.Tatin.LoadDependencies sourceFolder targetNS
           ⍝ If ref points to "dev" then ref2 doesn't and vice versa
      ref2←(1+~development)⊃cfg.CIDER.(dependencies dependencies_dev)
-     (msg folder2 target2)←('dependencies',((~development)/'_dev'),'.tatin')P.##.ParseDependencySetting ref2.tatin
+     (msg folder2 target2)←('dependencies',((~development)/'_dev'),'.tatin')P.##.ParseDependencySetting ref2
      msg Assert 0=≢msg
      targetNS2←(⊃{⍺,'.',⍵}/cfg.CIDER.(parent projectSpace)){0=≢⍵:⍺ ⋄ ⍺,'.',⍵}target2
      :If targetNS≡targetNS2    ⍝  Only when "normal" dependencies and development dependencies go into the same namespace...

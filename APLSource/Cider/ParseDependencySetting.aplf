@@ -1,22 +1,43 @@
- r←key ParseDependencySetting value;folder;target;msg
-⍝ Splits the value of a "tatin" or "nuget" dependency setting into folder and target namespace, and checks it.
+ r←key ParseDependencySetting ref;name;targetKey;value;hasTargetKey;folder;target;msg
+⍝ Takes a "tatin" or "nuget" dependency setting from the namespace `ref`, splits it into folder and target namespace, and checks it.
 ⍝ This is the only function that knows how such a setting is written: all other code works with its result.
-⍝ `key` names the setting, e.g. 'dependencies_dev.tatin'; it is used in the message only.
-⍝ `value` is either '<folder>' or '<folder>=<namespace>'; empty means there is no such folder.
+⍝ `key` names the setting, e.g. 'dependencies_dev.tatin'; the part after the dot is the name looked up in `ref`.
+⍝ `ref` is a dependency namespace such as `config.CIDER.dependencies`; use `GetDependencyNamespace` to get one.
+⍝ A setting comes in one of two forms:
+⍝ * The old form: "tatin" is '<folder>' or '<folder>=<namespace>', and there is no "tatinTarget".
+⍝ * The new form: "tatin" is '<folder>' and "tatinTarget" is '<namespace>' or empty.
+⍝ The same goes for "nuget" and "nugetTarget". Using both forms at once ('=' in "tatin" plus "tatinTarget") is an error.
+⍝ An empty or missing folder means there is no such folder.
 ⍝ Blanks around the folder or in the target namespace are rejected rather than removed: they are typos.
 ⍝ Returns (msg folder target):
-⍝ * `msg` is empty when `value` is valid; otherwise it says what is wrong, naming `key`.
-⍝ * `folder` and `target` are empty when `value` is empty or invalid.
+⍝ * `msg` is empty when the setting is valid; otherwise it says what is wrong, naming `key`.
+⍝ * `folder` and `target` are empty when there is no folder or the setting is invalid.
 ⍝ * An empty `target` means the project space; otherwise `target` is relative to the project space.
  r←'' '' ''
- value←,value       ⍝ A one-character value from an APL caller is a scalar
- :If 0=≢value
+ name←key↓⍨key⍳'.'
+ targetKey←name,'Target'
+ value←''
+ :If 0<ref.⎕NC name
+     value←,ref⍎name        ⍝ A one-character value from an APL caller is a scalar
+ :EndIf
+ hasTargetKey←0<ref.⎕NC targetKey
+ :If hasTargetKey
+     folder←value
+     target←,ref⍎targetKey
+     msg←'Something is wrong with "',key,'" (',value,') and "',key,'Target" (',target,'): '
+ :Else
+     folder←value↑⍨¯1+value⍳'='
+     target←value↓⍨value⍳'='
+     msg←'Something is wrong with "',key,'" (',value,'): '
+ :EndIf
+ :If 0=≢value,target
      :Return
  :EndIf
- folder←value↑⍨¯1+value⍳'='
- target←value↓⍨value⍳'='
- msg←'Something is wrong with "',key,'" (',value,'): '
- :If 1<'='+.=value
+ :If hasTargetKey∧'='∊value
+     msg,←'use either <folder>=<namespace> or "',name,'Target", not both'
+ :ElseIf hasTargetKey∧0=≢folder
+     msg,←'a target namespace needs a folder'
+ :ElseIf 1<'='+.=value
      msg,←'expected <folder> or <folder>=<namespace>'
  :ElseIf ('='∊value)∧(0=≢folder)∨0=≢target
      msg,←'expected <folder> or <folder>=<namespace>'

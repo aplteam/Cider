@@ -1,5 +1,5 @@
- r←Test_Misc_039(stopFlag batchFlag);⎕TRAP;key;value;target;qdmx
-⍝ Exercise `ComposeDependencySetting` and `AddDependencyTarget`.
+ r←Test_Misc_039(stopFlag batchFlag);⎕TRAP;key;value;target;qdmx;ns;tatinTarget
+⍝ Exercise `ComposeDependencySetting` and `AddDependencyTarget` in both forms.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
 
@@ -7,17 +7,50 @@
  →T.PassesIf'pkgs=Foo.Goo'≡##.Cider.ComposeDependencySetting'pkgs' 'Foo.Goo'
 
  key←'dependencies_dev.tatin'
- →T.PassesIf'pkgs=Foo'≡key ##.Cider.AddDependencyTarget'pkgs' 'Foo'
- →T.PassesIf'my pkgs=Foo.Goo'≡key ##.Cider.AddDependencyTarget'my pkgs' 'Foo.Goo'
 
-⍝ Has a target already, has no folder, is invalid, gets an absolute target, gets a target with a blank:
+⍝ The old form: the target is added to "tatin"
+ ns←∆MakeDependencyNamespace'tatin' 'pkgs'
+ key ##.Cider.AddDependencyTarget ns'Foo'
+ →T.PassesIf'pkgs=Foo'≡ns.tatin
+ →T.PassesIf 0=ns.⎕NC⊂'tatinTarget'
+ ns←∆MakeDependencyNamespace'tatin' 'my pkgs'
+ key ##.Cider.AddDependencyTarget ns'Foo.Goo'
+ →T.PassesIf'my pkgs=Foo.Goo'≡ns.tatin
+
+⍝ The new form: the target goes into "tatinTarget" ("nugetTarget"); the folder is left alone
+ ns←∆MakeDependencyNamespace'tatin' 'pkgs' 'tatinTarget' ''
+ key ##.Cider.AddDependencyTarget ns'Foo'
+ →T.PassesIf'pkgs'≡ns.tatin
+ →T.PassesIf'Foo'≡ns.tatinTarget
+ ns←∆MakeDependencyNamespace'nuget' 'nupkgs' 'nugetTarget' ''
+ 'dependencies.nuget'##.Cider.AddDependencyTarget ns'Goo'
+ →T.PassesIf'nupkgs'≡ns.nuget
+ →T.PassesIf'Goo'≡ns.nugetTarget
+
+⍝ Old form: has a target already, has no folder, is invalid, gets an absolute target, gets a target with a blank.
+⍝ The namespace must be unchanged afterwards.
  :For value target :InEach ('pkgs=Foo' '' 'pkgs=A=B' 'pkgs' 'pkgs')('Goo' 'Goo' 'Goo' '#.Goo' 'A B')
+     ns←∆MakeDependencyNamespace'tatin'value
      :Trap 11
-         {}key ##.Cider.AddDependencyTarget value target
+         key ##.Cider.AddDependencyTarget ns target
          →T.PassesIf 0
      :Else
          qdmx←⎕DMX
          →T.PassesIf∨/('"',key,'"')⍷qdmx.EM
+         →T.PassesIf value≡ns.tatin
+     :EndTrap
+ :EndFor
+
+⍝ New form: has a target already, has no folder, uses both forms, gets an absolute target, gets a target with a blank
+ :For value tatinTarget target :InEach ('pkgs' '' 'pkgs=A' 'pkgs' 'pkgs')('Foo' '' '' '' '')('Goo' 'Goo' 'Goo' '#.Goo' 'A B')
+     ns←∆MakeDependencyNamespace'tatin'value'tatinTarget'tatinTarget
+     :Trap 11
+         key ##.Cider.AddDependencyTarget ns target
+         →T.PassesIf 0
+     :Else
+         qdmx←⎕DMX
+         →T.PassesIf∨/('"',key,'"')⍷qdmx.EM
+         →T.PassesIf(value tatinTarget)≡ns.(tatin tatinTarget)
      :EndTrap
  :EndFor
 

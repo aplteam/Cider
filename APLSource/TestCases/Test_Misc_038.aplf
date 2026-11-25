@@ -1,13 +1,23 @@
- r←Test_Misc_038(stopFlag batchFlag);⎕TRAP;msg;folder;target;value
-⍝ Exercise `ParseDependencySetting` with invalid settings: each one must return a message
+ r←Test_Misc_038(stopFlag batchFlag);⎕TRAP;msg;folder;target;value;tatinTarget;key
+⍝ Exercise `ParseDependencySetting` with invalid settings in both forms: each one must return a message
 ⍝ that names the setting, and neither a folder nor a target.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
+ key←'dependencies_dev.tatin'
 
+⍝ The old form: "tatin" only
  :For value :In 'pkgs=A=B' 'pkgs==A' 'pkgs=' '=A'(,'=')'pkgs,pkgs2' 'pkgs,pkgs2=A' 'pkgs=#.A' 'pkgs=⎕SE.A' 'pkgs=1A' 'pkgs=A,B' 'pkgs=⎕IO' 'pkgs ' ' pkgs' 'pkgs =A' 'pkgs= A' 'pkgs=A ' 'pkgs=A B'
-     (msg folder target)←'dependencies_dev.tatin'##.Cider.ParseDependencySetting value
+     (msg folder target)←key ##.Cider.ParseDependencySetting ∆MakeDependencyNamespace'tatin'value
      →T.PassesIf 0<≢msg
-     →T.PassesIf∨/'"dependencies_dev.tatin"'⍷msg
+     →T.PassesIf∨/('"',key,'"')⍷msg
+     →T.PassesIf(0=≢folder)∧0=≢target
+ :EndFor
+
+⍝ The new form: "tatin" plus "tatinTarget". The first two use both forms at once, the third has no folder.
+ :For value tatinTarget :InEach ('pkgs=A' 'pkgs=A' '' 'pkgs' 'pkgs' 'pkgs' 'pkgs' 'pkgs,pkgs2' ' pkgs' 'pkgs ')('B' '' 'A' '#.A' 'A B' ' A' '1A' 'A' 'A' 'A')
+     (msg folder target)←key ##.Cider.ParseDependencySetting ∆MakeDependencyNamespace'tatin'value'tatinTarget'tatinTarget
+     →T.PassesIf 0<≢msg
+     →T.PassesIf∨/('"',key,'"')⍷msg
      →T.PassesIf(0=≢folder)∧0=≢target
  :EndFor
 

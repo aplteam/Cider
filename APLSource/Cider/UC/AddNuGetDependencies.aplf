@@ -14,7 +14,7 @@
  cfg←P.ReadProjectConfig projectFolder
  ref←cfg.CIDER.dependencies
  :If 0<≢targetNamespace
-     ref.nuget←'dependencies.nuget'P.##.AddDependencyTarget ref.nuget targetNamespace
+     'dependencies.nuget'P.##.AddDependencyTarget ref targetNamespace
      cfg P.WriteProjectConfig projectFolder
  :EndIf
  flag←0

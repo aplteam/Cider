@@ -1,0 +1,10 @@
+ r←∆MakeDependencyNamespace nameValues;names;values;name;value
+⍝ Returns a dependency namespace as `ParseDependencySetting` expects it, e.g. `config.CIDER.dependencies`.
+⍝ `nameValues` is a flat list of names and values: 'tatin' 'pkgs' 'tatinTarget' 'Foo'. Empty gives an empty namespace.
+ r←⎕NS''
+ names←((≢nameValues)⍴1 0)/nameValues
+ values←((≢nameValues)⍴0 1)/nameValues
+ :For name value :InEach names values
+     ⍎'r.',name,'←value'
+ :EndFor
+⍝Done
