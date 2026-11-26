@@ -13,8 +13,9 @@
      →T.PassesIf(0=≢folder)∧0=≢target
  :EndFor
 
-⍝ The new form: "tatin" plus "tatinTarget". The first two use both forms at once, the third has no folder.
- :For value tatinTarget :InEach ('pkgs=A' 'pkgs=A' '' 'pkgs' 'pkgs' 'pkgs' 'pkgs' 'pkgs,pkgs2' ' pkgs' 'pkgs ')('B' '' 'A' '#.A' 'A B' ' A' '1A' 'A' 'A' 'A')
+⍝ The new form: "tatin" plus "tatinTarget". The first two use both forms at once but name different namespaces,
+⍝ the next three use both forms consistently but are invalid anyway; the sixth has no folder.
+ :For value tatinTarget :InEach ('pkgs=A' 'pkgs=A' 'pkgs=' '=A' 'pkgs=A=B' '' 'pkgs' 'pkgs' 'pkgs' 'pkgs' 'pkgs,pkgs2' ' pkgs' 'pkgs ')('B' '' '' 'A' 'A=B' 'A' '#.A' 'A B' ' A' '1A' 'A' 'A' 'A')
      (msg folder target)←key ##.Cider.ParseDependencySetting ∆MakeDependencyNamespace'tatin'value'tatinTarget'tatinTarget
      →T.PassesIf 0<≢msg
      →T.PassesIf∨/('"',key,'"')⍷msg

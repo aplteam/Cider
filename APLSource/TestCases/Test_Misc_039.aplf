@@ -41,8 +41,9 @@
      :EndTrap
  :EndFor
 
-⍝ New form: has a target already, has no folder, uses both forms, gets an absolute target, gets a target with a blank
- :For value tatinTarget target :InEach ('pkgs' '' 'pkgs=A' 'pkgs' 'pkgs')('Foo' '' '' '' '')('Goo' 'Goo' 'Goo' '#.Goo' 'A B')
+⍝ New form: has a target already, has no folder, uses both forms with different namespaces, uses both forms with
+⍝ the same namespace (so has a target already), gets an absolute target, gets a target with a blank
+ :For value tatinTarget target :InEach ('pkgs' '' 'pkgs=A' 'pkgs=A' 'pkgs' 'pkgs')('Foo' '' '' 'A' '' '')('Goo' 'Goo' 'Goo' 'Goo' '#.Goo' 'A B')
      ns←∆MakeDependencyNamespace'tatin'value'tatinTarget'tatinTarget
      :Trap 11
          key ##.Cider.AddDependencyTarget ns target

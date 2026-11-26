@@ -1,4 +1,4 @@
- r←key ParseDependencySetting ref;name;targetKey;value;hasTargetKey;folder;target;msg
+ r←key ParseDependencySetting ref;name;targetKey;value;hasTargetKey;folder;target;msg;oldTarget
 ⍝ Takes a "tatin" or "nuget" dependency setting from the namespace `ref`, splits it into folder and target namespace, and checks it.
 ⍝ This is the only function that knows how such a setting is written: all other code works with its result.
 ⍝ `key` names the setting, e.g. 'dependencies_dev.tatin'; the part after the dot is the name looked up in `ref`.
@@ -6,7 +6,9 @@
 ⍝ A setting comes in one of two forms:
 ⍝ * The old form: "tatin" is '<folder>' or '<folder>=<namespace>', and there is no "tatinTarget".
 ⍝ * The new form: "tatin" is '<folder>' and "tatinTarget" is '<namespace>' or empty.
-⍝ The same goes for "nuget" and "nugetTarget". Using both forms at once ('=' in "tatin" plus "tatinTarget") is an error.
+⍝ The same goes for "nuget" and "nugetTarget". Both forms at once ('<folder>=<namespace>' in "tatin" plus "tatinTarget")
+⍝ are accepted as long as they name the same namespace, so that a config file can serve Cider versions that know only
+⍝ the old form; when they name different namespaces it is an error.
 ⍝ An empty or missing folder means there is no such folder.
 ⍝ Blanks around the folder or in the target namespace are rejected rather than removed: they are typos.
 ⍝ Returns (msg folder target):
@@ -22,19 +24,21 @@
  :EndIf
  hasTargetKey←0<ref.⎕NC targetKey
  :If hasTargetKey
-     folder←value
+     folder←value↑⍨¯1+value⍳'='
+     oldTarget←value↓⍨value⍳'='
      target←,ref⍎targetKey
      msg←'Something is wrong with "',key,'" (',value,') and "',key,'Target" (',target,'): '
  :Else
      folder←value↑⍨¯1+value⍳'='
      target←value↓⍨value⍳'='
+     oldTarget←target
      msg←'Something is wrong with "',key,'" (',value,'): '
  :EndIf
  :If 0=≢value,target
      :Return
  :EndIf
- :If hasTargetKey∧'='∊value
-     msg,←'use either <folder>=<namespace> or "',name,'Target", not both'
+ :If hasTargetKey∧('='∊value)∧oldTarget≢target
+     msg,←'"',name,'" and "',name,'Target" name different namespaces'
  :ElseIf hasTargetKey∧0=≢folder
      msg,←'a target namespace needs a folder'
  :ElseIf 1<'='+.=value

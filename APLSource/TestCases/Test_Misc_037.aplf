@@ -58,6 +58,12 @@
  →T.PassesIf'my nuget'≡folder
  →T.PassesIf'Foo.Goo'≡target
 
+ ⍝ Both forms at once, naming the same namespace
+ (msg folder target)←'dependencies.tatin'P ∆MakeDependencyNamespace'tatin' 'tatin-packages=Foo.Goo' 'tatinTarget' 'Foo.Goo'
+ →T.PassesIf 0=≢msg
+ →T.PassesIf'tatin-packages'≡folder
+ →T.PassesIf'Foo.Goo'≡target
+
  ⍝ "tatinTarget" does not affect "nuget"
  (msg folder target)←'dependencies.nuget'P ∆MakeDependencyNamespace'nuget' 'nupkgs=Goo' 'tatinTarget' 'Foo'
  →T.PassesIf 0=≢msg

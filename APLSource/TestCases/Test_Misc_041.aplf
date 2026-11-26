@@ -1,8 +1,8 @@
  r←Test_Misc_041(stopFlag batchFlag);⎕TRAP;tempDir;json;config;msgs;dev
 ⍝ A cider.config using the new form ("tatin" plus "tatinTarget", "nuget" plus "nugetTarget") survives
 ⍝ being read, written and read again unchanged, and the dependency folders and target namespaces are
-⍝ taken from it correctly, also when there is no "dependencies_dev" at all. Using both forms at once is
-⍝ reported by `CheckDependencySettings`.
+⍝ taken from it correctly, also when there is no "dependencies_dev" at all. Both forms at once are
+⍝ fine when they name the same namespace and reported by `CheckDependencySettings` otherwise.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  r←T._Failed
 
@@ -32,8 +32,13 @@
  →T.GoToTidyUp 0≠≢##.Cider.CheckDependencySettings config
  config.CIDER.dependencies_dev←dev
 
-⍝ Both forms at once
+⍝ Both forms at once, naming the same namespace: fine
  config.CIDER.dependencies.tatin←'pkgs=Foo'
+ →T.GoToTidyUp 0≠≢##.Cider.CheckDependencySettings config
+ →T.GoToTidyUp('pkgs' 'Foo')('pkgs_dev' '')≢##.Cider.GetTatinDependencyFolders config
+
+⍝ Both forms at once, naming different namespaces: an error
+ config.CIDER.dependencies.tatin←'pkgs=Goo'
  msgs←##.Cider.CheckDependencySettings config
  →T.GoToTidyUp 1≠≢msgs
  →T.GoToTidyUp~∨/'"dependencies.tatin"'⍷⊃msgs
