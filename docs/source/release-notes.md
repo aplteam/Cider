@@ -19,7 +19,7 @@ Here we highlight incompatabilities, if any.
 </style>
 
 -------|------------|----------------------------------------
-0.54.2 | 2026-11-10 | The "tatin" and "nuget" dependency settings in cider.config are checked<br>more strictly: blanks around the folder or in the target namespace,<br>an absolute target namespace (#.Foo) and anything but<br>&lt;folder&gt; or &lt;folder&gt;=&lt;namespace&gt; are rejected, and such a project<br>does not open any more. The format of cider.config is unchanged.
+0.55.0 | 2026-11-27 | Invalid "tatin" and "nuget" dependency settings are now<br>rejected, and such a project does not open any more.<br>`AddTatinDependencies` and `AddNuGetDependencies` (API) throw an<br>error when no dependency folder is defined.
 0.54.1 | 2026-09-30 | No compatability issues
 0.54.0 | 2026-09-19 | The automation ID of the "Report Git status?" question is now<br>"HowToReportGitStatus@" (it was misspelled); anybody automating<br>that question must adjust it.
 0.53.1 | 2026-08-05 | No compatability issues
@@ -46,6 +46,8 @@ Here we highlight incompatabilities, if any.
 0.42.3 | 2024-09-05 | No compatability issues
 0.42.2 | 2024-08-04 | Bug fixes.
 0.42.1 | 2024-07-12 | Injecting `TatinVars` has changed.<br><br>`]Cider.ProjectConfig`'s `-print` option replaced by `-edit`.
+
+
 
 
 
