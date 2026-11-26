@@ -16,6 +16,7 @@
 
  ref←∆GetRefToCommTools
  ref.AddAutomation'YesOrNo' 'SureCreateProj@' 'y'
+ #.⎕SHADOW'HOO'
  (rc msg res)←∆UCMD'CreateProject "./" #.HOO -batch -ignoreUserExec'
  Assert rc=0
  list←##.Cider.ListOpenProjects 0
@@ -32,5 +33,4 @@
  Assert res ∆StartsWith'Unlinked:'
  rc←FilesAndDirs.RmDir tempDir,'/../..'
  Assert 0=+/∊rc
- #.⎕EX'HOO'
 ⍝Done

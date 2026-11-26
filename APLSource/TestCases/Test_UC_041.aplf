@@ -10,6 +10,7 @@
 
  ref←∆GetRefToCommTools
  ref.AddAutomation'YesOrNo' 'SureCreateProj@' 'Y'
+ #.⎕SHADOW'aaaa'
  (rc msg res)←∆UCMD'CreateProject . -noEdit -batch -ignoreUserExec'
  Assert rc=0
  list←##.Cider.ListOpenProjects 0
