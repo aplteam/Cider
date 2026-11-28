@@ -45,8 +45,6 @@
  →T.GoToTidyUp 9≠⌊#.TEMP.Foo.⎕NC⊂'FilesAndDirs'
 
 ⍝ New form
- C.AddAutomation'YesOrNo' 'AddTatinDeps@' 'y'
- C.AddAutomation'YesOrNo' 'LoadTatinDependenciesAfterAdding@' 'y'
  (rc msg res)←stop ∆UCMD'AddTatinDependencies APLTreeUtils2 "',tempDir,'" -development -target=Goo'
  →T.GoToTidyUp rc≠0
  →T.GoToTidyUp 0≠≢msg

@@ -4,7 +4,7 @@
  :EndIf
  :If 0=⎕NC'∆ExecNuGetTest'
      :If ~ps.batchFlag
-     :AndIf ~∨/' cider_fns="Test_UC_NuGet_'⍷#.GetCommandLine
+     :AndIf ~∨/' cider_fns=Test_UC_NuGet_'⍷(∊' ',¨2 ⎕NQ #'GetCommandLineArgs')~'"'
          ∆ExecNuGetTest←CommTools.YesOrNo'Do you want to execute NuGet-related test cases?'
      :Else
          ∆ExecNuGetTest←1
