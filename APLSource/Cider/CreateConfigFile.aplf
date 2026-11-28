@@ -3,6 +3,7 @@
  ('The folder already hosts a file "',ConfigFilename,'"')Assert~⎕NEXISTS filename
  globalCiderConfigFilename←GetCiderGlobalConfigHomeFolder,'cider.config.template'
  tatinVars←TatinVars
+ 'The Cider package has no folder on disk any more, so its config template cannot be read'Assert 0<≢tatinVars.HOME
  :If 0=⎕NEXISTS globalCiderConfigFilename
      ⍝ First attempt
      globalCiderConfigFilename(⎕NCOPY F.ExecNfunction)tatinVars.HOME,'/cider.config.template'

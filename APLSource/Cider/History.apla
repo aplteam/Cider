@@ -1,4 +1,8 @@
 (
+ '* 0.55.1 ⋄ 2026-11-28'
+ '  * CreateProject now says that the Cider package has no folder on disk any more when'
+ '    `TatinVars.HOME` is empty, instead of failing with a FILE NAME ERROR on'
+ '    "/cider.config.template" (#136)'
  '* 0.55.0 ⋄ 2026-11-25             '
  '  * New public function `GetTatinDependencyFolders` returns the Tatin dependency folders of a'
  '    project with their target namespaces, so that other tools (Tatin) do not need to interpret'

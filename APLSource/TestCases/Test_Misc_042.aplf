@@ -1,0 +1,35 @@
+ r←Test_Misc_042(stopFlag batchFlag);⎕TRAP;tempDir;tv;hadHome;home;qdmx;filename
+⍝ `CreateConfigFile` reports a clear error when the Cider package has no folder on disk any more,
+⍝ which shows as an empty `TatinVars.HOME` (issue #136). It used to fail with a FILE NAME ERROR
+⍝ on "/cider.config.template". `TatinVars.HOME` is emptied for the test and restored afterwards.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ r←T._Failed
+
+ tempDir←∆GetFolderInTempDir⊃⎕SI
+ filename←tempDir,'/cider.config'
+ tv←##.Cider.TatinVars
+ hadHome←2=tv.⎕NC'HOME'
+ :If hadHome
+     home←tv.HOME
+ :EndIf
+ tv.HOME←''
+
+ :Trap 11
+     {}##.Cider.CreateConfigFile filename'Foo'
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp~∨/'no folder on disk'⍷qdmx.EM
+ :EndTrap
+ →T.GoToTidyUp ⎕NEXISTS filename
+
+ r←T._OK
+
+∆TidyUp:
+ :If hadHome
+     tv.HOME←home
+ :Else
+     {}tv.⎕EX'HOME'
+ :EndIf
+ FilesAndDirs.RmDir tempDir,'/..'
+⍝Done
