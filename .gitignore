@@ -12,7 +12,6 @@ conga.crash
 **/.DS_Store
 /docs/site/
 /.venv/
-/TestResults/
 .claude/
 
 # Internal documents are kept local in:
